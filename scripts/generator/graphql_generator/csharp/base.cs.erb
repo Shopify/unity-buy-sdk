@@ -1,0 +1,122 @@
+using System;
+using System.Text;
+using System.Collections;
+using System.Collections.Generic;
+
+namespace <%= schema_name %> {   
+    public class InputBase {
+      private Hashtable keysValues;
+
+      public InputBase() {
+        keysValues = new Hashtable();
+      }
+
+      public override string ToString() {
+        StringBuilder stringValue = new StringBuilder();
+        bool isNotFirstKeyValue = false;
+
+        stringValue.Append("{");
+
+        foreach (DictionaryEntry keyValue in keysValues) {
+          if (isNotFirstKeyValue) {
+            stringValue.Append(",");
+          }
+
+          stringValue.Append(keyValue.Key);
+          stringValue.Append(":");
+          stringValue.Append(InputValueToString.Get(keyValue.Value));
+
+          isNotFirstKeyValue = true;
+        }
+
+        stringValue.Append("}");
+
+        return stringValue.ToString();
+      }
+
+      protected void Add(string key, object value) {
+        keysValues.Add(key, value);
+      }
+    }
+
+    public class QueryBase {
+      protected StringBuilder query;
+      private bool hasFields = false;
+
+
+      public void StartField(string fieldName) {
+        if (hasFields) {
+          query.Append(",");
+        }
+
+        query.Append(fieldName);
+        hasFields = true;
+      }
+    }
+
+    public class Arguments {
+      private StringBuilder query;
+      private bool hasArguments = false;
+
+      public Arguments() {
+        this.query = new StringBuilder();
+      }
+
+      public void Add(string name, object value) {
+        if (hasArguments) {
+          query.Append(",");
+        } else {
+          query.Append("(");
+        }
+
+        query.Append(name);
+        query.Append(":");
+
+        query.Append(InputValueToString.Get(value));
+
+        hasArguments = true;
+      }
+
+      public override string ToString() {
+        if (hasArguments) {
+          query.Append(")");
+          return query.ToString();
+        } else {
+          return "";
+        }
+      }
+    }
+
+    public class InputValueToString {
+      public static string GetList(object value) {
+        StringBuilder arrayString = new StringBuilder();
+
+        arrayString.Append("[");
+
+        bool isNotFirstListItem = false;
+
+        foreach(object listValue in (IList) value) {
+          if (isNotFirstListItem) {
+            arrayString.Append(",");
+          }
+
+          arrayString.Append(Get(listValue));
+          isNotFirstListItem = true;
+        }
+
+        arrayString.Append("]");
+
+        return arrayString.ToString();
+      }
+
+      public static string Get(object value) {
+        if (value is IList) {
+          return GetList(value);
+        } else if (value is string) {
+          return String.Format("\"{0}\"", value);
+        } else {
+          return value.ToString();
+        }
+      }
+    }
+}
