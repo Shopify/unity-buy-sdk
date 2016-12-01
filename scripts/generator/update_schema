@@ -39,7 +39,7 @@ if domain
   end
 
   schema_filename = CACHED_SCHEMA_FILENAME
-  body = Net::HTTP.get(URI("https://#{domain}/services/ping/graphql_schema"))
+  body = Net::HTTP.get(URI("https://#{domain}/services/ping/storefront_graphql_schema"))
   File.write(schema_filename, JSON.pretty_generate(JSON.parse(body)))
 end
 
