@@ -1,10 +1,10 @@
 <% isRoot = schema.root_name?(type.name) %>
 <% isQueryRoot = type.name == schema.query_root_name %>
-using System;
-using System.Text;
-using System.Collections.Generic;
+namespace <%= schema_name %> {
+    using System;
+    using System.Text;
+    using System.Collections.Generic;
 
-namespace <%= schema_name %> {   
     <% case type.kind when 'OBJECT', 'INTERFACE', 'UNION' %>
         /* This is a regular object */
 
