@@ -14,7 +14,11 @@ module GraphQLGenerator
     ROOT_ERB = erb_for(File.expand_path("../csharp/root.cs.erb", __FILE__))
     TYPE_ERB = erb_for(File.expand_path("../csharp/type.cs.erb", __FILE__))
     ID_ERB = erb_for(File.expand_path("../csharp/id.cs.erb", __FILE__))
-    BASE_ERB = erb_for(File.expand_path("../csharp/base.cs.erb", __FILE__))
+    ARGUMENTS_ERB = erb_for(File.expand_path("../csharp/arguments.cs.erb", __FILE__))
+    INPUT_BASE_ERB = erb_for(File.expand_path("../csharp/input_base.cs.erb", __FILE__))
+    INPUT_VALUE_TO_STRING = erb_for(File.expand_path("../csharp/input_value_to_string.cs.erb", __FILE__))
+    QUERY_BASE = erb_for(File.expand_path("../csharp/query_base.cs.erb", __FILE__))
+
     IDENTATION = " " * 4
 
     RESERVED_WORDS = [
@@ -60,13 +64,17 @@ module GraphQLGenerator
       end
 
       # output root file
-      File.write("#{path}/Root.cs", generate_root_file())
+      File.write("#{path}/Root.cs", reformat(ROOT_ERB.result(binding)))
 
       # output base classes
-      File.write("#{path}/BaseClasses.cs", generate_base_classes())
+      File.write("#{path}/Arguments.cs", reformat(ARGUMENTS_ERB.result(binding)))
+      File.write("#{path}/InputBase.cs", reformat(INPUT_BASE_ERB.result(binding)))
+      File.write("#{path}/InputValueToString.cs", reformat(INPUT_VALUE_TO_STRING.result(binding)))
+      File.write("#{path}/QueryBase.cs", reformat(QUERY_BASE.result(binding)))
+
 
       # output the id type
-      File.write("#{path_types}/ID.cs", generate_id())
+      File.write("#{path_types}/ID.cs", reformat(ID_ERB.result(binding)))
 
       schema.types.reject{ |type| type.name.start_with?('__') || type.scalar? }.each do |type|
         if type.object? then
@@ -79,21 +87,9 @@ module GraphQLGenerator
       end
     end 
 
-    def generate_root_file
-      reformat(ROOT_ERB.result(binding))
-    end
-
     def generate_type(type)
       reformat(TYPE_ERB.result(binding))
     end 
-
-    def generate_id()
-      reformat(ID_ERB.result(binding))
-    end
-
-    def generate_base_classes()
-      reformat(BASE_ERB.result(binding))
-    end
 
     def escape_reserved_word(word)
       return word unless RESERVED_WORDS.include?(word)

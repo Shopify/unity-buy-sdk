@@ -4,7 +4,10 @@ tmp/
 # ignore generated files for now
 Assets/Shopify/Unity/Types
 Assets/Shopify/Unity/Types.meta
-Assets/Shopify/Unity/BaseClasses.*
+Assets/Shopify/Unity/Arguments.*
+Assets/Shopify/Unity/InputBase.*
+Assets/Shopify/Unity/InputValueToString.*
+Assets/Shopify/Unity/QueryBase.*
 Assets/Shopify/Unity/Root.*
 
 ####### Test files

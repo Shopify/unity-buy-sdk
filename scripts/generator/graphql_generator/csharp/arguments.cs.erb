@@ -1,0 +1,39 @@
+namespace <%= schema_name %> {
+    using System;
+    using System.Text;
+    using System.Collections;
+    using System.Collections.Specialized;
+
+    public class Arguments {
+      private StringBuilder query;
+      private bool hasArguments = false;
+
+      public Arguments() {
+        this.query = new StringBuilder();
+      }
+
+      public void Add(string name, object value) {
+        if (hasArguments) {
+          query.Append(",");
+        } else {
+          query.Append("(");
+        }
+
+        query.Append(name);
+        query.Append(":");
+
+        query.Append(InputValueToString.Get(value));
+
+        hasArguments = true;
+      }
+
+      public override string ToString() {
+        if (hasArguments) {
+          query.Append(")");
+          return query.ToString();
+        } else {
+          return "";
+        }
+      }
+    }
+}
