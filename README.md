@@ -29,7 +29,20 @@ If you'd like to run tests in Unity use Unity >5.3.0.
 3. Click on _Window > Editor Tests Runner_
 4. In the opened Editor Tests Runner click _"Run All"_
 
-### Testing in Terminal
+### Testing In Terminal Using Headless Unity
+Headless Unity is basically Unity running Editor tests without the GUI.
+When running these tests ensure that Unity is not open.
+
+To run tests in Headless Unity run the following command:
+```bash
+$ scripts/test_unity.sh
+```
+
+### Testing In Terminal Using Mono
+There might be cases where you want to run tests fully outside of Unity.
+That's where using Mono to run tests is handy. We're using mono as it's the development platform on which Unity
+is built on.
+
 To run tests run the following command:
 ```bash
 $ scripts/test.sh
