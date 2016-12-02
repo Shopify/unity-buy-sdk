@@ -1,7 +1,7 @@
 namespace Shopify.Tests
 {
     using NUnit.Framework;
-    using APISchema;
+    using Shopify.Unity;
 
     [TestFixture]
     public class TestGraphQLGenerator {
