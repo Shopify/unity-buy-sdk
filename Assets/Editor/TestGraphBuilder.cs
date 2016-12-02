@@ -18,6 +18,16 @@ namespace Shopify.Tests
             );
         }
 
+        [Test] 
+        public void inputTypeToString() {
+            ApiCustomerAccessTokenCreateInputInput input = new ApiCustomerAccessTokenCreateInputInput(email: "email@email.com", password: "123456", clientMutationId: "333");
+
+            Assert.AreEqual(
+                "{email:\"email@email.com\",password:\"123456\",clientMutationId:\"333\"}",
+                input.ToString()
+            );
+        }
+
         [Test]
         public void mutationRootBuildsQuery() {
             MutationQuery query = Root.buildMutation()

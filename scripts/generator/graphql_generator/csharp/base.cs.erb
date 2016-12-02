@@ -2,13 +2,13 @@ namespace <%= schema_name %> {
     using System;
     using System.Text;
     using System.Collections;
-    using System.Collections.Generic;
+    using System.Collections.Specialized;
 
     public class InputBase {
-      private Hashtable keysValues;
+      private OrderedDictionary keysValues;
 
       public InputBase() {
-        keysValues = new Hashtable();
+        keysValues = new OrderedDictionary();
       }
 
       public override string ToString() {
