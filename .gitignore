@@ -2,9 +2,10 @@
 tmp/
 
 # ignore generated files for now
-Shopify/Unity/Types
-Shopify/Unity/BaseClasses.cs
-Shopify/Unity/Root.cs
+Assets/Shopify/Unity/Types
+Assets/Shopify/Unity/Types.meta
+Assets/Shopify/Unity/BaseClasses.*
+Assets/Shopify/Unity/Root.*
 
 ####### Test files
 test.dll

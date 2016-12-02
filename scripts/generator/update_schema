@@ -70,4 +70,4 @@ GraphQLGenerator::CSharp.new(schema,
     #   imports: ['com.shopify.mobile.lib.GraphQL.GID'],
     # )
   ]
-).save("#{ROOT_DIR}/Shopify/Unity");
+).save("#{ROOT_DIR}/Assets/Shopify/Unity");
