@@ -1,10 +1,14 @@
-####### generator files
+####### Generator files
 tmp/
 
 # ignore generated files for now
 Shopify/Unity/Types
 Shopify/Unity/BaseClasses.cs
 Shopify/Unity/Root.cs
+
+####### Test files
+test.dll
+TestResult.xml
 
 ####### Unity
 
