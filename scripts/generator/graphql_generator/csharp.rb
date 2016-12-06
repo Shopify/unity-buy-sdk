@@ -40,28 +40,22 @@ module GraphQLGenerator
       Scalar.new(
         graph_type: 'Int',
         csharp_type: 'int',
-        deserialize_expr: ->(expr) { "jsonAsInteger(#{expr}, key)" },
       ),
       Scalar.new(
         graph_type: 'Float',
         csharp_type: 'double',
-        deserialize_expr: ->(expr) { "jsonAsDouble(#{expr}, key)" },
       ),
       Scalar.new(
         graph_type: 'String',
         csharp_type: 'string',
-        deserialize_expr: ->(expr) { "jsonAsString(#{expr}, key)" },
       ),
       Scalar.new(
         graph_type: 'Boolean',
         csharp_type: 'bool',
-        deserialize_expr: ->(expr) { "jsonAsBoolean(#{expr}, key)" },
       ),
       Scalar.new(
         graph_type: 'ID',
         csharp_type: 'ID',
-        deserialize_expr: ->(expr) { "new ID(jsonAsString(#{expr}, key))" },
-        imports: ['com.shopify.mobile.lib.GraphQL.ID'],
       ),
     ]
     

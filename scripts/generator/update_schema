@@ -53,14 +53,10 @@ GraphQLGenerator::CSharp.new(schema,
     GraphQLGenerator::CSharp::Scalar.new(
       graph_type: 'DateTime',
       csharp_type: 'long',
-      deserialize_expr: ->(expr) { "DateTime.Parse(jsonAsString(#{expr}, key))" },
-      imports: ['com.shopify.mobile.lib.util.ShopifyDateTimeFormatter'],
     ),
     GraphQLGenerator::CSharp::Scalar.new(
       graph_type: 'Money',
       csharp_type: 'decimal',
-      deserialize_expr: ->(expr) { "new System.Convert.ToDecimal(jsonAsString(#{expr}, key))" },
-      imports: [],
     ),
     # Need to implement GID currently it's using generated ID class
     # GraphQLGenerator::CSharp::Scalar.new(
