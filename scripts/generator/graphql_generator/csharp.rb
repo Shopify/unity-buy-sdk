@@ -1,16 +1,27 @@
-require_relative './base.rb'
+require 'erb'
 require_relative './csharp/scalar'
+require_relative './reformatter'
 
 module GraphQLGenerator
-  class CSharp < Base
-    attr_reader :scalars
+  class CSharp
+    class << self
+      def erb_for(template_filename)
+        erb = ERB.new(File.read(template_filename))
+        erb.filename = template_filename
+        erb
+      end
+    end
 
-    def initialize(schema, custom_scalars: [], **options)
-      super(schema, **options)
+    attr_reader :scalars, :schema, :namespace
+  
+    def initialize(schema, namespace:, custom_scalars: [], script_name: $0)
+      @schema = schema
+      @namespace = namespace
+      @script_name = script_name
 
       @scalars = (BUILTIN_SCALARS + custom_scalars).reduce({}) { |hash, scalar| hash[scalar.graph_type] = scalar; hash }
     end
-
+    
     ROOT_ERB = erb_for(File.expand_path("../csharp/root.cs.erb", __FILE__))
     TYPE_ERB = erb_for(File.expand_path("../csharp/type.cs.erb", __FILE__))
     ID_ERB = erb_for(File.expand_path("../csharp/id.cs.erb", __FILE__))
@@ -19,7 +30,7 @@ module GraphQLGenerator
     INPUT_VALUE_TO_STRING = erb_for(File.expand_path("../csharp/input_value_to_string.cs.erb", __FILE__))
     QUERY_BASE = erb_for(File.expand_path("../csharp/query_base.cs.erb", __FILE__))
 
-    IDENTATION = " " * 4
+    INDENTATION = " " * 4
 
     RESERVED_WORDS = [
       "abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char", "checked", "class", "const", "continue", "decimal", "default", "delegate", "do", "double", "else", "enum", "event", "explicit", "extern", "false", "finally", "fixed", "float", "for", "foreach", "goto", "if", "implicit", "in", "int", "interface", "internal", "is", "lock", "long", "namespace", "new", "null", "object", "operator", "out",  "override", "params", "private", "protected", "public", "readonly", "ref", "return", "sbyte", "sealed", "short", "sizeof", "stackalloc", "static", "string","struct", "switch", "this", "throw", "true", "try", "typeof", "uint", "ulong", "unchecked", "unsafe", "ushort", "using", "virtual", "void", "volatile", "while", "query"
@@ -53,6 +64,7 @@ module GraphQLGenerator
         imports: ['com.shopify.mobile.lib.GraphQL.ID'],
       ),
     ]
+    
 
     def save(path)
       path_types = "#{path}/Types"
@@ -92,6 +104,10 @@ module GraphQLGenerator
     def escape_reserved_word(word)
       return word unless RESERVED_WORDS.include?(word)
       "#{word}Value"
+    end
+
+    def reformat(code)
+      Reformatter.new(indent: INDENTATION).reformat(code)
     end
 
     # will return a C# type from a GraphQL type

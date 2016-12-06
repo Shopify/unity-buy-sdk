@@ -47,7 +47,7 @@ schema = GraphQLSchema.new(JSON.parse(File.read(schema_filename)))
 script_name = "scripts/generator/update_schema"
 
 GraphQLGenerator::CSharp.new(schema,
-  nest_under: 'Shopify.Unity',
+  namespace: 'Shopify.Unity',
   script_name: script_name,
   custom_scalars: [
     GraphQLGenerator::CSharp::Scalar.new(

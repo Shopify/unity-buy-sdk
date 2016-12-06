@@ -1,5 +1,5 @@
 module GraphQLGenerator
-  class CSharp < Base
+  class CSharp
     class Scalar
       attr_reader :csharp_type, :graph_type, :imports
 
