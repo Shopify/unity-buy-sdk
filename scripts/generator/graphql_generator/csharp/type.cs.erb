@@ -94,7 +94,7 @@ namespace <%= schema_name %> {
         }
     <% when 'INPUT_OBJECT' %>
         /* This is an input object */
-        public class <%= type.classify_name %>Input : InputBase {
+        public class <%= type.classify_name %> : InputBase {
             <%
                 # we want to setup arguments for queries here
                 args = ""
@@ -114,7 +114,7 @@ namespace <%= schema_name %> {
             %>
 
             <%# create a constructor for the input type %>
-            public <%= type.classify_name %>Input(<%= args %>) {
+            public <%= type.classify_name %>(<%= args %>) {
                 <%# handle adding required fields %>
                 <% type.required_input_fields.each do |field| %>
                     Add("<%= field.name %>", <%= escape_reserved_word(field.name) %>);

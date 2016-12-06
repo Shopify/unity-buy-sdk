@@ -19,7 +19,7 @@ namespace Shopify.Tests
 
         [Test]
         public void generatedGraphQLInputObjects() {
-            Assert.IsTrue(DoesExist("ApiCustomerAccessTokenCreateInputInput"));
+            Assert.IsTrue(DoesExist("ApiCustomerAccessTokenCreateInput"));
         }
 
         [Test]
@@ -37,7 +37,7 @@ namespace Shopify.Tests
 
         [Test] 
         public void inputObjectToString() {
-            ApiCustomerAccessTokenCreateInputInput input = new ApiCustomerAccessTokenCreateInputInput(email: "email@email.com", password: "123456", clientMutationId: "333");
+            ApiCustomerAccessTokenCreateInput input = new ApiCustomerAccessTokenCreateInput(email: "email@email.com", password: "123456", clientMutationId: "333");
 
             Assert.AreEqual(
                 "{email:\"email@email.com\",password:\"123456\",clientMutationId:\"333\"}",
@@ -53,7 +53,7 @@ namespace Shopify.Tests
                         .accessToken()
                     )
                     .clientMutationId(), 
-                    new ApiCustomerAccessTokenCreateInputInput(email: "email@email.com", password: "123456", clientMutationId: "333")
+                    new ApiCustomerAccessTokenCreateInput(email: "email@email.com", password: "123456", clientMutationId: "333")
                 );
 
             Assert.AreEqual(

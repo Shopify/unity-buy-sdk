@@ -79,8 +79,6 @@ module GraphQLGenerator
       schema.types.reject{ |type| type.name.start_with?('__') || type.scalar? }.each do |type|
         if type.object? then
           File.write("#{path_types}/#{type.name}Query.cs", generate_type(type))
-        elsif type.input_object? then
-          File.write("#{path_types}/#{type.name}Input.cs", generate_type(type))
         else
           File.write("#{path_types}/#{type.name}.cs", generate_type(type))
         end 
@@ -119,7 +117,7 @@ module GraphQLGenerator
         when 'OBJECT', 'INTERFACE', 'UNION'
           outType = type.name
         when 'INPUT_OBJECT'
-          outType = "#{type.classify_name}Input"
+          outType = "#{type.classify_name}"
         else
           raise NotImplementedError, "Unhandled #{type.kind} response type"
         end
