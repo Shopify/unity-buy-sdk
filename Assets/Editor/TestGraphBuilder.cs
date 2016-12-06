@@ -52,8 +52,8 @@ namespace Shopify.Tests
                     .apiCustomerAccessToken(a => a
                         .accessToken()
                     )
-                    .clientMutationId(), 
-                    new ApiCustomerAccessTokenCreateInput(email: "email@email.com", password: "123456", clientMutationId: "333")
+                    .clientMutationId(),
+                    input: new ApiCustomerAccessTokenCreateInput(email: "email@email.com", password: "123456", clientMutationId: "333")
                 );
 
             Assert.AreEqual(
