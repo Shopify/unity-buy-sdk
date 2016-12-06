@@ -63,10 +63,9 @@ module GraphQLGenerator
     def save(path)
       path_types = "#{path}/Types"
 
-      # create the Types directory if it doesn't exist
       begin
         Dir.mkdir path_types
-      rescue
+      rescue Errno::EEXIST
       end
 
       # output root file
