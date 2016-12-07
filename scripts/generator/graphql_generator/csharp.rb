@@ -24,7 +24,6 @@ module GraphQLGenerator
     
     ROOT_ERB = erb_for(File.expand_path("../csharp/root.cs.erb", __FILE__))
     TYPE_ERB = erb_for(File.expand_path("../csharp/type.cs.erb", __FILE__))
-    ID_ERB = erb_for(File.expand_path("../csharp/id.cs.erb", __FILE__))
     ARGUMENTS_ERB = erb_for(File.expand_path("../csharp/arguments.cs.erb", __FILE__))
     INPUT_BASE_ERB = erb_for(File.expand_path("../csharp/input_base.cs.erb", __FILE__))
     INPUT_VALUE_TO_STRING = erb_for(File.expand_path("../csharp/input_value_to_string.cs.erb", __FILE__))
@@ -81,10 +80,6 @@ module GraphQLGenerator
       File.write("#{path}/InputBase.cs", reformat(INPUT_BASE_ERB.result(binding)))
       File.write("#{path}/InputValueToString.cs", reformat(INPUT_VALUE_TO_STRING.result(binding)))
       File.write("#{path}/QueryBase.cs", reformat(QUERY_BASE.result(binding)))
-
-
-      # output the id type
-      File.write("#{path_types}/ID.cs", reformat(ID_ERB.result(binding)))
 
       schema.types.reject{ |type| type.builtin? || type.scalar? }.each do |type|
         if type.object?
