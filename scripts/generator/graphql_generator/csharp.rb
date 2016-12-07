@@ -105,48 +105,48 @@ module GraphQLGenerator
 
     # will return a C# type from a GraphQL type
     def get_arg_type(type, isOptional=false)
-        type = type.unwrap_non_null
-        outType = ""
+      type = type.unwrap_non_null
+      outType = ""
 
-        case type.kind
-        when "SCALAR"
-          if isOptional && type.name != "String" && type.name != "ID"
-            outType = "#{scalars[type.name].csharp_type}?"
-          else
-            outType = scalars[type.name].csharp_type
-          end
-        when 'LIST'
-          outType = "List<#{get_arg_type(type.of_type)}>"
-        when 'ENUM'
-          if isOptional
-            outType = "#{type.name}?"
-          else
-            outType = type.name
-          end
-        when 'OBJECT', 'INTERFACE', 'UNION'
-          outType = type.name
-        when 'INPUT_OBJECT'
-          outType = "#{type.classify_name}"
+      case type.kind
+      when "SCALAR"
+        if isOptional && type.name != "String" && type.name != "ID"
+          outType = "#{scalars[type.name].csharp_type}?"
         else
-          raise NotImplementedError, "Unhandled #{type.kind} response type"
+          outType = scalars[type.name].csharp_type
         end
+      when 'LIST'
+        outType = "List<#{get_arg_type(type.of_type)}>"
+      when 'ENUM'
+        if isOptional
+          outType = "#{type.name}?"
+        else
+          outType = type.name
+        end
+      when 'OBJECT', 'INTERFACE', 'UNION'
+        outType = type.name
+      when 'INPUT_OBJECT'
+        outType = "#{type.classify_name}"
+      else
+        raise NotImplementedError, "Unhandled #{type.kind} response type"
+      end
 
-        outType
+      outType
     end
 
     # will return an arg definition from a graphql type
     def get_arg_type_and_name(hasArgs, arg, isOptional=false)
-        type = get_arg_type(arg.type, isOptional)
+      type = get_arg_type(arg.type, isOptional)
 
-        if isOptional
-            arg_string = "#{type} #{escape_reserved_word(arg.name)} = null"
-        else
-            arg_string = "#{type} #{escape_reserved_word(arg.name)}"
-        end
+      if isOptional
+          arg_string = "#{type} #{escape_reserved_word(arg.name)} = null"
+      else
+          arg_string = "#{type} #{escape_reserved_word(arg.name)}"
+      end
 
-        arg_string.prepend(', ') if hasArgs
+      arg_string.prepend(', ') if hasArgs
 
-        arg_string
+      arg_string
     end
   end
 end
