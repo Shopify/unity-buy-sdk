@@ -81,7 +81,7 @@ module GraphQLGenerator
       # output the id type
       File.write("#{path_types}/ID.cs", reformat(ID_ERB.result(binding)))
 
-      schema.types.reject{ |type| type.name.start_with?('__') || type.scalar? }.each do |type|
+      schema.types.reject{ |type| type.builtin? || type.scalar? }.each do |type|
         if type.object? then
           File.write("#{path_types}/#{type.name}Query.cs", generate_type(type))
         else
