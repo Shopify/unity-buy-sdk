@@ -8,22 +8,22 @@ namespace Shopify.Tests
     [TestFixture]
     public class TestGraphQLGenerator {
         [Test]
-        public void generatedGraphQLEnums() {
+        public void GeneratedGraphQLEnums() {
             Assert.IsTrue(DoesExist("CropRegion"));
         }
 
         [Test]
-        public void generatedGraphQLInterfaces() {
+        public void GeneratedGraphQLInterfaces() {
             Assert.IsTrue(DoesExist("Node"));
         }
 
         [Test]
-        public void generatedGraphQLInputObjects() {
+        public void GeneratedGraphQLInputObjects() {
             Assert.IsTrue(DoesExist("ApiCustomerAccessTokenCreateInput"));
         }
 
         [Test]
-        public void queryRootBuildsQuery() {
+        public void QueryRootBuildsQuery() {
             QueryRootQuery query = Root.buildQuery();
             query.shop(s =>
                 s.name()
@@ -36,7 +36,7 @@ namespace Shopify.Tests
         }
 
         [Test] 
-        public void inputObjectToString() {
+        public void InputObjectToString() {
             ApiCustomerAccessTokenCreateInput input = new ApiCustomerAccessTokenCreateInput(email: "email@email.com", password: "123456", clientMutationId: "333");
 
             Assert.AreEqual(
@@ -46,7 +46,7 @@ namespace Shopify.Tests
         }
 
         [Test]
-        public void mutationRootBuildsQuery() {
+        public void MutationRootBuildsQuery() {
             MutationQuery query = Root.buildMutation()
                 .apiCustomerAccessTokenCreate(r => r
                     .apiCustomerAccessToken(a => a
