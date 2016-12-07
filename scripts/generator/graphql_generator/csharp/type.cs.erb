@@ -14,7 +14,7 @@ namespace <%= namespace %> {
         <%# the following will start defining the class. Each type name will be followed by Query. eg. ShopQuery %>
         public class <%= type.classify_name %>Query : QueryBase {
             <%# create the constuctor %>
-            <% if isRoot then %>
+            <% if isRoot %>
                 public <%= type.classify_name %>Query() {
                     this.query = new StringBuilder("<%= "mutation" unless isQueryRoot %>{");
                 }
@@ -84,7 +84,7 @@ namespace <%= namespace %> {
             <% end %>
 
             <%# if this is the root we want to add in a ToString method %>
-            <% if isRoot then %>
+            <% if isRoot %>
                 public override string ToString() {
                 query.Append("}");
 

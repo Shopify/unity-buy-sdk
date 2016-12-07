@@ -82,7 +82,7 @@ module GraphQLGenerator
       File.write("#{path_types}/ID.cs", reformat(ID_ERB.result(binding)))
 
       schema.types.reject{ |type| type.builtin? || type.scalar? }.each do |type|
-        if type.object? then
+        if type.object?
           File.write("#{path_types}/#{type.name}Query.cs", generate_type(type))
         else
           File.write("#{path_types}/#{type.name}.cs", generate_type(type))
@@ -110,7 +110,7 @@ module GraphQLGenerator
 
         case type.kind
         when "SCALAR"
-          if isOptional && type.name != "String" && type.name != "ID" then
+          if isOptional && type.name != "String" && type.name != "ID"
             outType = "#{scalars[type.name].csharp_type}?"
           else
             outType = scalars[type.name].csharp_type
@@ -118,7 +118,7 @@ module GraphQLGenerator
         when 'LIST'
           outType = "List<#{get_arg_type(type.of_type)}>"
         when 'ENUM'
-          if isOptional then
+          if isOptional
             outType = "#{type.name}?"
           else
             outType = type.name
@@ -138,7 +138,7 @@ module GraphQLGenerator
     def get_arg_type_and_name(hasArgs, arg, isOptional=false)
         type = get_arg_type(arg.type, isOptional)
 
-        if isOptional then
+        if isOptional
             arg_string = "#{type} #{escape_reserved_word(arg.name)} = null"
         else
             arg_string = "#{type} #{escape_reserved_word(arg.name)}"
