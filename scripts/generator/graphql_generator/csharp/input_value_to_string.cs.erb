@@ -3,6 +3,7 @@ namespace <%= namespace %> {
     using System.Text;
     using System.Collections;
     using System.Collections.Specialized;
+    using MiniJSON;
     
     public class InputValueToString {
       public static string GetList(object value) {
@@ -26,14 +27,19 @@ namespace <%= namespace %> {
         return arrayString.ToString();
       }
 
-      public static string Get(object value) {
-        if (value is IList) {
-          return GetList(value);
-        } else if (value is string) {
-          return String.Format("\"{0}\"", value);
-        } else {
-          return value.ToString();
+        public static string Get(object value) {
+            if (value is IList) {
+                return GetList(value);
+            } else if (
+                value is string || 
+                value is bool || 
+                value is long || 
+                value is double
+            ) {
+                return Json.Serialize(value);
+            } else {
+                return value.ToString();
+            }
         }
-      }
     }
 }
