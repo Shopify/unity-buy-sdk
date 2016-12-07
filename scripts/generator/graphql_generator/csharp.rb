@@ -128,7 +128,7 @@ module GraphQLGenerator
       when 'INPUT_OBJECT'
         outType = "#{type.classify_name}"
       else
-        raise NotImplementedError, "Unhandled #{type.kind} response type"
+        raise NotImplementedError, "Unhandled #{type.kind} input type"
       end
 
       outType
