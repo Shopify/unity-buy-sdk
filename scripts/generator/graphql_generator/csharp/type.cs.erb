@@ -45,7 +45,7 @@ namespace <%= namespace %> {
 
                     # now handle optional args
                     field.optional_args.each do |arg|
-                        args = "#{args}#{get_arg_type_and_name(hasArgs, arg, true)}"
+                        args = "#{args}#{get_arg_type_and_name(hasArgs, arg)}"
                         hasArgs = true
                     end
                 %>
@@ -108,7 +108,7 @@ namespace <%= namespace %> {
 
                 # now handle optional args
                 type.optional_input_fields.each do |field|
-                    args = "#{args}#{get_arg_type_and_name(hasArgs, field, true)}"
+                    args = "#{args}#{get_arg_type_and_name(hasArgs, field)}"
                     hasArgs = true
                 end
             %>

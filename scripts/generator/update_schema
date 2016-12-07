@@ -53,17 +53,12 @@ GraphQLGenerator::CSharp.new(schema,
     GraphQLGenerator::CSharp::Scalar.new(
       graph_type: 'DateTime',
       csharp_type: 'long',
+      nullable_csharp_type: 'long?',
     ),
     GraphQLGenerator::CSharp::Scalar.new(
       graph_type: 'Money',
       csharp_type: 'decimal',
+      nullable_csharp_type: 'decimal?',
     ),
-    # Need to implement GID currently it's using generated ID class
-    # GraphQLGenerator::CSharp::Scalar.new(
-    #   graph_type: 'ID',
-    #   csharp_type: 'GID',
-    #   deserialize_expr: ->(expr) { "new GID(jsonAsString(#{expr}, key))" },
-    #   imports: ['com.shopify.mobile.lib.GraphQL.GID'],
-    # )
   ]
 ).save("#{ROOT_DIR}/Assets/Shopify/Unity");

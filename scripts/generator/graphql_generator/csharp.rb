@@ -39,23 +39,28 @@ module GraphQLGenerator
     BUILTIN_SCALARS = [
       Scalar.new(
         graph_type: 'Int',
-        csharp_type: 'int',
+        csharp_type: 'long',
+        nullable_csharp_type: 'long?',
       ),
       Scalar.new(
         graph_type: 'Float',
         csharp_type: 'double',
+        nullable_csharp_type: 'double?',
       ),
       Scalar.new(
         graph_type: 'String',
         csharp_type: 'string',
+        nullable_csharp_type: 'string',
       ),
       Scalar.new(
         graph_type: 'Boolean',
         csharp_type: 'bool',
+        nullable_csharp_type: 'bool?',
       ),
       Scalar.new(
         graph_type: 'ID',
-        csharp_type: 'ID',
+        csharp_type: 'string',
+        nullable_csharp_type: 'string',
       ),
     ]
     
@@ -104,44 +109,32 @@ module GraphQLGenerator
     end
 
     # will return a C# type from a GraphQL type
-    def get_arg_type(type, isOptional=false)
-      type = type.unwrap_non_null
-      outType = ""
-
+    def get_arg_type(type, is_non_null: false)
       case type.kind
+      when "NON_NULL"
+        get_arg_type(type.of_type, is_non_null: true);
       when "SCALAR"
-        if isOptional && type.name != "String" && type.name != "ID"
-          outType = "#{scalars[type.name].csharp_type}?"
-        else
-          outType = scalars[type.name].csharp_type
-        end
+        is_non_null ? scalars[type.name].csharp_type : scalars[type.name].nullable_csharp_type
       when 'LIST'
-        outType = "List<#{get_arg_type(type.of_type)}>"
+        # in C# lists cannot be built out of non-null types because the list is already nullable
+        "List<#{get_arg_type(type.of_type.unwrap_non_null, is_non_null: true)}>"
       when 'ENUM'
-        if isOptional
-          outType = "#{type.name}?"
-        else
-          outType = type.name
-        end
-      when 'OBJECT', 'INTERFACE', 'UNION'
-        outType = type.name
+        is_non_null ? type.name : "#{type.name}?"
       when 'INPUT_OBJECT'
-        outType = "#{type.classify_name}"
+        type.classify_name
       else
         raise NotImplementedError, "Unhandled #{type.kind} input type"
       end
-
-      outType
     end
 
     # will return an arg definition from a graphql type
-    def get_arg_type_and_name(hasArgs, arg, isOptional=false)
-      type = get_arg_type(arg.type, isOptional)
+    def get_arg_type_and_name(hasArgs, arg)
+      type = get_arg_type(arg.type)
 
-      if isOptional
-          arg_string = "#{type} #{escape_reserved_word(arg.name)} = null"
+      if arg.type.non_null?
+        arg_string = "#{type} #{escape_reserved_word(arg.name)}"
       else
-          arg_string = "#{type} #{escape_reserved_word(arg.name)}"
+        arg_string = "#{type} #{escape_reserved_word(arg.name)} = null"
       end
 
       arg_string.prepend(', ') if hasArgs
