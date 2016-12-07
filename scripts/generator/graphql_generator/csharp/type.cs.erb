@@ -26,31 +26,7 @@ namespace <%= namespace %> {
 
             <%# now create methods to add fields to queries %>
             <% type.fields.each do |field| %>
-                <%
-                    # we want to setup arguments for queries here
-                    args = ""
-                    hasArgs = false
-
-                    # if this field is an Object we'll need to add in delegates
-                    if field.type.subfields?
-                        args = "#{args}#{field.type.unwrap.classify_name}Delegate addTo";
-                        hasArgs = true
-                    end
-
-                    # now we want to setup required args if there are any
-                    field.required_args.each do |arg|
-                        args = "#{args}#{get_arg_type_and_name(hasArgs, arg)}"
-                        hasArgs = true
-                    end
-
-                    # now handle optional args
-                    field.optional_args.each do |arg|
-                        args = "#{args}#{get_arg_type_and_name(hasArgs, arg)}"
-                        hasArgs = true
-                    end
-                %>
-
-                public <%= type.classify_name %>Query <%= escape_reserved_word(field.name) %>(<%= args %>) {
+                public <%= type.classify_name %>Query <%= escape_reserved_word(field.name) %>(<%= get_field_args(field) %>) {
                     StartField("<%= field.name %>");
 
                     <%# now we we want to handle generating arguments %>
@@ -86,35 +62,17 @@ namespace <%= namespace %> {
             <%# if this is the root we want to add in a ToString method %>
             <% if isRoot %>
                 public override string ToString() {
-                query.Append("}");
+                    query.Append("}");
 
-                return query.ToString();
+                    return query.ToString();
                 }
             <% end %>
         }
     <% when 'INPUT_OBJECT' %>
         /* This is an input object */
         public class <%= type.classify_name %> : InputBase {
-            <%
-                # we want to setup arguments for queries here
-                args = ""
-                hasArgs = false
-
-                # now we want to setup required args if there are any
-                type.required_input_fields.each do |field|
-                    args = "#{args}#{get_arg_type_and_name(hasArgs, field)}"
-                    hasArgs = true
-                end
-
-                # now handle optional args
-                type.optional_input_fields.each do |field|
-                    args = "#{args}#{get_arg_type_and_name(hasArgs, field)}"
-                    hasArgs = true
-                end
-            %>
-
             <%# create a constructor for the input type %>
-            public <%= type.classify_name %>(<%= args %>) {
+            public <%= type.classify_name %>(<%= get_input_args(type) %>) {
                 <%# handle adding required fields %>
                 <% type.required_input_fields.each do |field| %>
                     Add("<%= field.name %>", <%= escape_reserved_word(field.name) %>);
