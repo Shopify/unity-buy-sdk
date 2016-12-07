@@ -1,7 +1,6 @@
 namespace Shopify.Tests
 {
     using System;
-    using System.Linq;
     using NUnit.Framework;
     using Shopify.Unity;
 
@@ -9,17 +8,17 @@ namespace Shopify.Tests
     public class TestGraphQLGenerator {
         [Test]
         public void GeneratedGraphQLEnums() {
-            Assert.IsTrue(DoesExist("CropRegion"));
+            Assert.IsTrue(Utils.DoesExist("CropRegion"));
         }
 
         [Test]
         public void GeneratedGraphQLInterfaces() {
-            Assert.IsTrue(DoesExist("Node"));
+            Assert.IsTrue(Utils.DoesExist("Node"));
         }
 
         [Test]
         public void GeneratedGraphQLInputObjects() {
-            Assert.IsTrue(DoesExist("ApiCustomerAccessTokenCreateInput"));
+            Assert.IsTrue(Utils.DoesExist("ApiCustomerAccessTokenCreateInput"));
         }
 
         [Test]
@@ -62,11 +61,9 @@ namespace Shopify.Tests
             );
         }
 
-        private bool DoesExist(string className) {
-            return (from assembly in AppDomain.CurrentDomain.GetAssemblies()
-            from type in assembly.GetTypes()
-            where type.Name == className
-            select type).Any();
+        [Test]
+        public void EnumHasUnknown() {
+            Assert.IsTrue(Enum.IsDefined(typeof(CropRegion), "UNKNOWN"));
         }
     }    
 }
