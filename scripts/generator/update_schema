@@ -53,12 +53,10 @@ GraphQLGenerator::CSharp.new(schema,
     GraphQLGenerator::CSharp::Scalar.new(
       graph_type: 'DateTime',
       csharp_type: 'long',
-      nullable_csharp_type: 'long?',
     ),
     GraphQLGenerator::CSharp::Scalar.new(
       graph_type: 'Money',
       csharp_type: 'decimal',
-      nullable_csharp_type: 'decimal?',
     ),
   ]
 ).save("#{ROOT_DIR}/Assets/Shopify/Unity");

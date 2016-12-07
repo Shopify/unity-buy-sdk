@@ -24,7 +24,6 @@ module GraphQLGenerator
         Scalar.new(
           graph_type: key,
           csharp_type: 'string',
-          nullable_csharp_type: 'string',
         );
       end
     end
@@ -46,27 +45,22 @@ module GraphQLGenerator
       Scalar.new(
         graph_type: 'Int',
         csharp_type: 'long',
-        nullable_csharp_type: 'long?',
       ),
       Scalar.new(
         graph_type: 'Float',
         csharp_type: 'double',
-        nullable_csharp_type: 'double?',
       ),
       Scalar.new(
         graph_type: 'String',
         csharp_type: 'string',
-        nullable_csharp_type: 'string',
       ),
       Scalar.new(
         graph_type: 'Boolean',
         csharp_type: 'bool',
-        nullable_csharp_type: 'bool?',
       ),
       Scalar.new(
         graph_type: 'ID',
         csharp_type: 'string',
-        nullable_csharp_type: 'string',
       ),
     ]
     
@@ -116,7 +110,7 @@ module GraphQLGenerator
       when "NON_NULL"
         get_arg_type(type.of_type, is_non_null: true);
       when "SCALAR"
-        is_non_null ? scalars[type.name].csharp_type : scalars[type.name].nullable_csharp_type
+        is_non_null ? scalars[type.name].non_nullable_type : scalars[type.name].nullable_type
       when 'LIST'
         # in C# lists cannot be built out of non-null types because the list is already nullable
         "List<#{get_arg_type(type.of_type.unwrap_non_null, is_non_null: true)}>"
