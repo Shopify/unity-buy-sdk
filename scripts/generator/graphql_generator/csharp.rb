@@ -20,6 +20,13 @@ module GraphQLGenerator
       @script_name = script_name
 
       @scalars = (BUILTIN_SCALARS + custom_scalars).reduce({}) { |hash, scalar| hash[scalar.graph_type] = scalar; hash }
+      @scalars.default_proc = proc do |hash,key|
+        Scalar.new(
+          graph_type: key,
+          csharp_type: 'string',
+          nullable_csharp_type: 'string',
+        );
+      end
     end
     
     ROOT_ERB = erb_for(File.expand_path("../csharp/root.cs.erb", __FILE__))
