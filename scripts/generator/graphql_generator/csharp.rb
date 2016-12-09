@@ -123,59 +123,51 @@ module GraphQLGenerator
     end
 
     # will return an arg definition from a graphql type
-    def get_arg_type_and_name(hasArgs, arg)
+    def get_arg_type_and_name(arg)
       type = get_arg_type(arg.type)
 
       arg_string = "#{type} #{escape_reserved_word(arg.name)}"
       arg_string << " = null" unless arg.type.non_null?
-      arg_string.prepend(', ') if hasArgs
-
+      
       arg_string
     end
 
     def get_field_args(field)
       # we want to setup arguments for queries here
-      args = ""
-      hasArgs = false
-
+      args = []
+  
       if field.type.subfields?
-        args = "#{args}#{field.type.unwrap.classify_name}Delegate addTo";
-        hasArgs = true
+        args << "#{field.type.unwrap.classify_name}Delegate addTo";
       end
 
       # now we want to setup required args if there are any
       field.required_args.each do |field|
-          args = "#{args}#{get_arg_type_and_name(hasArgs, field)}"
-          hasArgs = true
+          args << "#{get_arg_type_and_name(field)}"
       end
 
       # now handle optional args
       field.optional_args.each do |field|
-          args = "#{args}#{get_arg_type_and_name(hasArgs, field)}"
-          hasArgs = true
+          args << "#{get_arg_type_and_name(field)}"
       end
 
-      args
+      args.join(",")
     end
     
     def get_input_args(type)
       # we want to setup arguments for queries here
-      args = ""
-      hasArgs = false
+      args = []
 
       # now we want to setup required args if there are any
       type.required_input_fields.each do |field|
-          args = "#{args}#{get_arg_type_and_name(hasArgs, field)}"
-          hasArgs = true
+          args << "#{get_arg_type_and_name(field)}"
       end
 
       # now handle optional args
       type.optional_input_fields.each do |field|
-          args = "#{args}#{get_arg_type_and_name(hasArgs, field)}"
-          hasArgs = true
+          args << "#{get_arg_type_and_name(field)}"
       end
 
-      args
+      args.join(",")
     end
   end
 end
