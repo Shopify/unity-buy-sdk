@@ -112,8 +112,7 @@ module GraphQLGenerator
       when "SCALAR"
         is_non_null ? scalars[type.name].non_nullable_type : scalars[type.name].nullable_type
       when 'LIST'
-        # in C# lists cannot be built out of non-null types because the list is already nullable
-        "List<#{get_arg_type(type.of_type.unwrap_non_null, is_non_null: true)}>"
+        "List<#{get_arg_type(type.of_type)}>"
       when 'ENUM'
         is_non_null ? type.name : "#{type.name}?"
       when 'INPUT_OBJECT'
