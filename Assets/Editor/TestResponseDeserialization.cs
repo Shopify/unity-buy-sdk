@@ -2,6 +2,7 @@ namespace Shopify.Tests {
     using NUnit.Framework;
     using System.Collections.Generic;
     using Shopify.Unity;
+    using Shopify.Unity.MiniJSON;
     
     [TestFixture]
     public class TestResponseDeserialization {
@@ -28,8 +29,6 @@ namespace Shopify.Tests {
 
         [Test]
         public void CanDeserializeEnum() {
-            string shopName = "test-shop";
-
             Dictionary<string,object> dataJSONShop = new Dictionary<string,object>() {
                 { "currencyCode", "CAD" }   
             }; 
@@ -49,8 +48,6 @@ namespace Shopify.Tests {
 
         [Test]
         public void WillReturnUnkownEnum() {
-            string shopName = "test-shop";
-
             Dictionary<string,object> dataJSONShop = new Dictionary<string,object>() {
                 { "currencyCode", "DOESNT EXIST" }   
             }; 
@@ -66,6 +63,27 @@ namespace Shopify.Tests {
             QueryRoot response = new QueryRoot(dataJSON);
 
             Assert.AreEqual(CurrencyCode.UNKNOWN, response.shop.currencyCode);
+        }
+
+        [Test]
+        public void CanDeserializeLists() {
+            string stringJSON = @"{
+              ""data"": {
+                ""product"": {
+                  ""tags"": [
+                    ""blue"",
+                    ""button"",
+                    ""fancy""
+                  ]
+                }
+              }
+            }";
+
+            Dictionary<string,object> dataJSON = (Dictionary<string,object>) Json.Deserialize(stringJSON);
+
+            QueryRoot response = new QueryRoot(dataJSON);
+
+            // Assert.AreEqual("List<string>", response.product.tags.GetType().Name);
         }
     }
 }

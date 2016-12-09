@@ -105,7 +105,7 @@ module GraphQLGenerator
       Reformatter.new(indent: INDENTATION).reformat(code)
     end
 
-    def get_response_type(type)
+    def get_response_type(type, isTopLevel: true)
       case type.kind
       when "NON_NULL"
         get_response_type(type.of_type);
@@ -113,7 +113,7 @@ module GraphQLGenerator
         scalars[type.name].nullable_type
       when 'LIST'
         # in C# lists cannot be built out of non-null types because the list is already nullable
-        "List<#{get_response_type(type.of_type.unwrap_non_null)}>"
+        "List<#{get_response_type(type.of_type.unwrap_non_null, isTopLevel: false)}>"
       when 'ENUM'
         "#{type.name}?"
       when 'OBJECT', 'INTERFACE'
@@ -189,23 +189,50 @@ module GraphQLGenerator
       args.join(",")
     end
 
+    def get_response_init_object_interface(field)
+      type = field.type.unwrap_non_null
+
+      "_#{field.name} = new #{type.classify_name}((Dictionary<string,object>) GetJSON(\"#{field.name}\"));"
+    end
+
+    def get_response_init_scalar(field)
+      type = field.type.unwrap_non_null
+
+      "_#{field.name} = (#{get_response_type(type)}) GetJSON(\"#{field.name}\");"
+    end
+
+    def get_response_init_enum(field)
+      type = field.type.unwrap_non_null
+
+      "try {\n" \
+      "   _#{field.name} = (#{field.type.unwrap_non_null.classify_name}) Enum.Parse(typeof(#{field.type.unwrap_non_null.classify_name}), (string) GetJSON(\"#{field.name}\"));\n" \
+      "} catch(ArgumentException) {\n" \
+      "   _#{field.name} = #{field.type.unwrap_non_null.classify_name}.UNKNOWN;\n" \
+      "}\n"
+    end
+
     def get_response_inits(type)
       out = ""
 
       type.fields.each do |field|
         type = field.type.unwrap_non_null
 
-        if type.object? || type.interface?
-          out = "#{out}" \
-          "if (GetJSON(\"#{field.name}\") != null) {\n" \
-          "    Data[\"#{field.name}\"] = new #{type.classify_name}((Dictionary<string,object>) GetJSON(\"#{field.name}\"));\n" \
-          "}\n\n"
+        out << "if (GetJSON(\"#{field.name}\") != null) {\n" \
+
+        case type.kind
+        when "INTERFACE", "OBJECT"     
+          out << "    #{get_response_init_object_interface(field)}\n"
+        when "LIST"
+          out << "    // TODO: this is a list\n"
+        when "ENUM"
+          out << "    #{get_response_init_enum(field)}\n"
+        when "SCALAR"
+          out << "    #{get_response_init_scalar(field)}\n"
         else
-          out = "#{out}" \
-          "if (GetJSON(\"#{field.name}\") != null) {\n" \
-          "    Data[\"#{field.name}\"] = GetJSON(\"#{field.name}\");\n" \
-          "}\n\n"
-        end                 
+          raise NotImplementedError, "Unhandled #{type.kind} init for type"
+        end
+
+        out << "}\n\n"               
       end
 
       out
