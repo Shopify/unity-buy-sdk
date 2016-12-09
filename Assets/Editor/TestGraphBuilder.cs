@@ -65,5 +65,17 @@ namespace Shopify.Tests
         public void EnumHasUnknown() {
             Assert.IsTrue(Enum.IsDefined(typeof(CropRegion), "UNKNOWN"));
         }
+
+        [Test]
+        public void ArgumentToString() {
+            Arguments args = new Arguments();
+
+            args.Add("firstArg", 0);
+            args.Add("secondArg", "I AM SECOND");
+
+            Assert.AreEqual("(firstArg:0,secondArg:\"I AM SECOND\")", args.ToString());
+            // this is to test that ToString does not mutate
+            Assert.AreEqual("(firstArg:0,secondArg:\"I AM SECOND\")", args.ToString()); 
+        }
     }    
 }

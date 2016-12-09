@@ -29,8 +29,7 @@ namespace <%= namespace %> {
 
       public override string ToString() {
         if (hasArguments) {
-          query.Append(")");
-          return query.ToString();
+          return query.ToString() + ")";
         } else {
           return "";
         }
