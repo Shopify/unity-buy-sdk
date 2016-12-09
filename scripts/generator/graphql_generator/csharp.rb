@@ -126,12 +126,8 @@ module GraphQLGenerator
     def get_arg_type_and_name(hasArgs, arg)
       type = get_arg_type(arg.type)
 
-      if arg.type.non_null?
-        arg_string = "#{type} #{escape_reserved_word(arg.name)}"
-      else
-        arg_string = "#{type} #{escape_reserved_word(arg.name)} = null"
-      end
-
+      arg_string = "#{type} #{escape_reserved_word(arg.name)}"
+      arg_string << " = null" unless arg.type.non_null?
       arg_string.prepend(', ') if hasArgs
 
       arg_string
