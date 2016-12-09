@@ -1,0 +1,45 @@
+namespace <%= namespace %> {
+    using System;
+    using System.Text;
+    using System.Collections;
+    using System.Collections.Specialized;
+    using MiniJSON;
+    
+    public class InputValueToString {
+      public static string GetList(object value) {
+        StringBuilder arrayString = new StringBuilder();
+
+        arrayString.Append("[");
+
+        bool isNotFirstListItem = false;
+
+        foreach(object listValue in (IList) value) {
+          if (isNotFirstListItem) {
+            arrayString.Append(",");
+          }
+
+          arrayString.Append(Get(listValue));
+          isNotFirstListItem = true;
+        }
+
+        arrayString.Append("]");
+
+        return arrayString.ToString();
+      }
+
+        public static string Get(object value) {
+            if (value is IList) {
+                return GetList(value);
+            } else if (
+                value is string || 
+                value is bool || 
+                value is long || 
+                value is double
+            ) {
+                return Json.Serialize(value);
+            } else {
+                return value.ToString();
+            }
+        }
+    }
+}

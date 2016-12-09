@@ -1,0 +1,62 @@
+#!/usr/bin/env ruby
+
+require 'net/http'
+require 'json'
+require 'optparse'
+require 'graphql_schema'
+
+require_relative './graphql_generator/csharp'
+
+domain = "app.shopify.com"
+schema_filename = nil
+ROOT_DIR = File.expand_path("../../..", __FILE__)
+GENERATOR_DIR = File.expand_path("..", __FILE__)
+TMP_DIR = File.join("#{GENERATOR_DIR}", "tmp/")
+CACHED_SCHEMA_FILENAME = File.join("#{TMP_DIR}", "graphql_schema.json")
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: ./script/update_schema [options]"
+
+  opts.on("-d", "--dev", "Get development schema from app.myshopify.io") do
+    domain = "app.myshopify.io"
+  end
+  opts.on("-fFILENAME", "--file=FILENAME", "Get schema from file") do |filename|
+    schema_filename = filename
+    domain = nil
+  end
+  opts.on("-c", "--cached-schema", "Used cached schema from last run") do |filename|
+    schema_filename = CACHED_SCHEMA_FILENAME
+    domain = nil
+  end
+end.parse!
+
+if domain
+  puts "Making tmp directory at #{TMP_DIR}"
+  begin
+    Dir.mkdir TMP_DIR
+  rescue
+    puts "tmp directory existed"
+  end
+
+  schema_filename = CACHED_SCHEMA_FILENAME
+  body = Net::HTTP.get(URI("https://#{domain}/services/ping/storefront_graphql_schema"))
+  File.write(schema_filename, JSON.pretty_generate(JSON.parse(body)))
+end
+
+schema = GraphQLSchema.new(JSON.parse(File.read(schema_filename)))
+script_name = "scripts/generator/update_schema"
+
+GraphQLGenerator::CSharp.new(schema,
+  namespace: 'Shopify.Unity',
+  script_name: script_name,
+  custom_scalars: [
+    GraphQLGenerator::CSharp::Scalar.new(
+      graph_type: 'DateTime',
+      csharp_type: 'long',
+    ),
+    GraphQLGenerator::CSharp::Scalar.new(
+      graph_type: 'Money',
+      csharp_type: 'decimal',
+    ),
+  ]
+).save("#{ROOT_DIR}/Assets/Shopify/Unity");
