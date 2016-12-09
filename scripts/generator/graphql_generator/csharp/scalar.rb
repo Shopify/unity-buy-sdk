@@ -4,7 +4,7 @@ module GraphQLGenerator
       attr_reader :csharp_type, :graph_type
 
       WRAPPER_OBJECT = {
-        'int' => 'int',
+        'int' => 'int?',
         'long' => 'long?',
         'double' => 'double?',
         'bool' => 'bool?',
