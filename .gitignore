@@ -9,6 +9,8 @@ Assets/Shopify/Unity/InputBase.*
 Assets/Shopify/Unity/InputValueToString.*
 Assets/Shopify/Unity/QueryBase.*
 Assets/Shopify/Unity/Root.*
+Assets/Shopify/Unity/AbstractResponse.*
+Assets/Shopify/Unity/TopLevelResponse.*
 
 ####### Test files
 test.dll

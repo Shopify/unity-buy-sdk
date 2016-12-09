@@ -1,0 +1,55 @@
+namespace <%= namespace %> {
+    using System;
+    using System.Collections.Generic;
+
+    public class TopLevelResponse : AbstractResponse {
+        private const string KEY_DATA = "data";
+        private const string KEY_ERRORS = "errors";
+
+        public bool HasErrors {
+            get {
+                return _HasErrors;
+            }
+        }
+
+        protected List<Exception> ResponseErrors;
+
+        private bool _HasErrors = false;
+
+        public TopLevelResponse(Dictionary<string,object> dataJSON) {
+            object errors;
+            object data;
+
+            dataJSON.TryGetValue(KEY_ERRORS, out errors);
+            dataJSON.TryGetValue(KEY_DATA, out data);
+
+            if (errors != null) {
+                _HasErrors = true;
+                ParseErrors((Dictionary<string,object>) dataJSON);
+            } else if (data != null) {
+                DataJSON = (Dictionary<string,object>) data;
+            } else {
+                throw new Exception(String.Format("Response JSON did not contain {0} or {1}", KEY_DATA, KEY_ERRORS));
+            }
+        }
+
+        public List<Exception> Errors() {
+            return ResponseErrors;
+        }
+
+        private void ParseErrors(Dictionary<string,object> dataJSON) {
+            ResponseErrors = new List<Exception>();
+
+            // if there's an error such as no query is sent errors will not be an array
+            if (dataJSON[KEY_ERRORS] is string) {
+                ResponseErrors.Add(new Exception((string) dataJSON[KEY_ERRORS]));
+            } else {
+                List<object> errorsJSON = (List<object>) dataJSON[KEY_ERRORS];
+
+                foreach(Dictionary<string,object> error in errorsJSON) {
+                    ResponseErrors.Add(new Exception((string) error["message"]));
+                }
+            }
+        }
+    }
+}

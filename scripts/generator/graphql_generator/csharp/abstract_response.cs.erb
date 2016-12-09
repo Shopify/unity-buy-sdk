@@ -1,0 +1,24 @@
+namespace <%= namespace %> {
+    using System.Collections.Generic;
+
+    public abstract class AbstractResponse {
+        protected Dictionary<string,object> DataJSON;
+        protected Dictionary<string,object> Data;
+
+        protected object Get(string field) {
+            object outObject;
+
+            Data.TryGetValue(field, out outObject);
+
+            return outObject;
+        }
+
+        protected object GetJSON(string field) {
+            object outObject;
+
+            DataJSON.TryGetValue(field, out outObject);
+
+            return outObject;
+        }
+    }
+}

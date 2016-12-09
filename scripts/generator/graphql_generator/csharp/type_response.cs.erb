@@ -1,0 +1,34 @@
+namespace <%= namespace %> {
+    using System.Collections.Generic;
+
+    public class <%= type.classify_name %> : <%= schema.root_name?(type.name) ? "TopLevelResponse" : "AbstractResponse" %> {
+        <%# output getters for fields %>
+        <% type.fields.each do |field| %>
+            public <%= get_response_type(field.type) %> <%= field.name %> {
+                get {
+                    return (<%= get_response_type(field.type) %>) Get("<%= field.name %>");
+                }
+            }
+        <% end %>
+
+        <%# If this a root type we'll call TopLevelResponse constructor %>
+        <% if schema.root_name?(type.name) %>
+            public <%= type.classify_name %>(Dictionary<string, object> dataJSON) : base(dataJSON) {
+                Data = new Dictionary<string,object>();
+
+                <%= get_response_inits type %>
+            }
+        <% else %>
+            public <%= type.classify_name %>(Dictionary<string, object> dataJSON) {
+                DataJSON = dataJSON;
+                Data = new Dictionary<string,object>();
+
+                <%= get_response_inits type %>
+            }
+        <% end %>
+
+        public override string ToString() {
+            return "<%= type.classify_name %>";
+        }
+    }
+}

@@ -28,11 +28,18 @@ module GraphQLGenerator
       end
     end
     
-    ROOT_ERB = erb_for(File.expand_path("../csharp/root.cs.erb", __FILE__))
+    ERBS = {
+      "Root.cs" => erb_for(File.expand_path("../csharp/root.cs.erb", __FILE__)),
+      "Arguments.cs" => erb_for(File.expand_path("../csharp/arguments.cs.erb", __FILE__)),
+      "InputBase.cs" => erb_for(File.expand_path("../csharp/input_base.cs.erb", __FILE__)),
+      "InputValueToString.cs" => erb_for(File.expand_path("../csharp/input_value_to_string.cs.erb", __FILE__)),
+      "QueryBase.cs" => erb_for(File.expand_path("../csharp/query_base.cs.erb", __FILE__)),
+      "TopLevelResponse.cs" => erb_for(File.expand_path("../csharp/top_level_response.cs.erb", __FILE__)),
+      "AbstractResponse.cs" => erb_for(File.expand_path("../csharp/abstract_response.cs.erb", __FILE__)),
+    }
+
     TYPE_ERB = erb_for(File.expand_path("../csharp/type.cs.erb", __FILE__))
-    ARGUMENTS_ERB = erb_for(File.expand_path("../csharp/arguments.cs.erb", __FILE__))
-    INPUT_BASE_ERB = erb_for(File.expand_path("../csharp/input_base.cs.erb", __FILE__))
-    INPUT_VALUE_TO_STRING = erb_for(File.expand_path("../csharp/input_value_to_string.cs.erb", __FILE__))
+    TYPE_RESPONSE_ERB = erb_for(File.expand_path("../csharp/type_response.cs.erb", __FILE__))
 
     INDENTATION = " " * 4
 
@@ -72,25 +79,21 @@ module GraphQLGenerator
       rescue Errno::EEXIST
       end
 
-      # output root file
-      File.write("#{path}/Root.cs", reformat(ROOT_ERB.result(binding)))
+      # output classes on root
+      ERBS.each do |key,erb|
+        File.write("#{path}/#{key}", reformat(erb.result(binding)))
+      end
 
-      # output base classes
-      File.write("#{path}/Arguments.cs", reformat(ARGUMENTS_ERB.result(binding)))
-      File.write("#{path}/InputBase.cs", reformat(INPUT_BASE_ERB.result(binding)))
-      File.write("#{path}/InputValueToString.cs", reformat(INPUT_VALUE_TO_STRING.result(binding)))
-
+      # output type definitions
       schema.types.reject{ |type| type.builtin? || type.scalar? }.each do |type|
-        if type.object?
-          File.write("#{path_types}/#{type.name}Query.cs", generate_type(type))
-        else
-          File.write("#{path_types}/#{type.name}.cs", generate_type(type))
+        # output 
+        if type.object? || type.interface?
+          File.write("#{path_types}/#{type.name}Query.cs", reformat(TYPE_ERB.result(binding)))
+          File.write("#{path_types}/#{type.name}.cs", reformat(TYPE_RESPONSE_ERB.result(binding)))
+        elsif type.input_object?
+          File.write("#{path_types}/#{type.name}.cs", reformat(TYPE_ERB.result(binding)))
         end 
       end
-    end 
-
-    def generate_type(type)
-      reformat(TYPE_ERB.result(binding))
     end 
 
     def escape_reserved_word(word)
@@ -100,6 +103,24 @@ module GraphQLGenerator
 
     def reformat(code)
       Reformatter.new(indent: INDENTATION).reformat(code)
+    end
+
+    def get_response_type(type)
+      case type.kind
+      when "NON_NULL"
+        get_response_type(type.of_type);
+      when "SCALAR"
+        scalars[type.name].nullable_type
+      when 'LIST'
+        # in C# lists cannot be built out of non-null types because the list is already nullable
+        "List<#{get_response_type(type.of_type.unwrap_non_null)}>"
+      when 'ENUM'
+        "#{type.name}?"
+      when 'OBJECT', 'INTERFACE'
+        type.classify_name
+      else
+        raise NotImplementedError, "Unhandled #{type.kind} response type"
+      end
     end
 
     # will return a C# type from a GraphQL type
@@ -166,6 +187,28 @@ module GraphQLGenerator
       end
 
       args.join(",")
+    end
+
+    def get_response_inits(type)
+      out = ""
+
+      type.fields.each do |field|
+        type = field.type.unwrap_non_null
+
+        if type.object? || type.interface?
+          out = "#{out}" \
+          "if (GetJSON(\"#{field.name}\") != null) {\n" \
+          "    Data[\"#{field.name}\"] = new #{type.classify_name}((Dictionary<string,object>) GetJSON(\"#{field.name}\"));\n" \
+          "}\n\n"
+        else
+          out = "#{out}" \
+          "if (GetJSON(\"#{field.name}\") != null) {\n" \
+          "    Data[\"#{field.name}\"] = GetJSON(\"#{field.name}\");\n" \
+          "}\n\n"
+        end                 
+      end
+
+      out
     end
   end
 end
