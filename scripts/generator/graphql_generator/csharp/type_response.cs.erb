@@ -1,4 +1,5 @@
 namespace <%= namespace %> {
+    using System;
     using System.Collections.Generic;
 
     public class <%= type.classify_name %> : <%= schema.root_name?(type.name) ? "TopLevelResponse" : "AbstractResponse" %> {
@@ -6,7 +7,19 @@ namespace <%= namespace %> {
         <% type.fields.each do |field| %>
             public <%= get_response_type(field.type) %> <%= field.name %> {
                 get {
-                    return (<%= get_response_type(field.type) %>) Get("<%= field.name %>");
+                    <% if field.type.unwrap_non_null.kind == 'ENUM' %>
+                        <%= field.type.unwrap_non_null.classify_name %> returnValue;
+
+                        try {
+                            returnValue = (<%= field.type.unwrap_non_null.classify_name %>) Enum.Parse(typeof(<%= field.type.unwrap_non_null.classify_name %>), (string) Get("<%= field.name %>"));
+                        } catch(ArgumentException) {
+                            returnValue = <%= field.type.unwrap_non_null.classify_name %>.UNKNOWN;
+                        }
+
+                        return returnValue;
+                    <% else %>
+                        return (<%= get_response_type(field.type) %>) Get("<%= field.name %>");
+                    <% end %>
                 }
             }
         <% end %>
