@@ -62,9 +62,7 @@ namespace <%= namespace %> {
             <%# if this is the root we want to add in a ToString method %>
             <% if isRoot %>
                 public override string ToString() {
-                    query.Append("}");
-
-                    return query.ToString();
+                    return query.ToString() + "}";
                 }
             <% end %>
         }

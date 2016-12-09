@@ -59,6 +59,11 @@ namespace Shopify.Tests
                 "mutation{apiCustomerAccessTokenCreate(input:{email:\"email@email.com\",password:\"123456\",clientMutationId:\"333\"}){apiCustomerAccessToken{accessToken},clientMutationId}}",
                 query.ToString()
             );
+            // check that ToString does not mutate
+            Assert.AreEqual(
+                "mutation{apiCustomerAccessTokenCreate(input:{email:\"email@email.com\",password:\"123456\",clientMutationId:\"333\"}){apiCustomerAccessToken{accessToken},clientMutationId}}",
+                query.ToString()
+            );
         }
 
         [Test]
