@@ -196,9 +196,7 @@ module GraphQLGenerator
     end
 
     def get_response_init_scalar(field)
-      type = field.type.unwrap_non_null
-
-      "_#{field.name} = (#{get_response_type(type)}) GetJSON(\"#{field.name}\");"
+      "_#{field.name} = (#{get_response_type(field.type)}) GetJSON(\"#{field.name}\");"
     end
 
     def get_response_init_enum(field)
@@ -214,8 +212,7 @@ module GraphQLGenerator
     def get_response_init_list(field)
       type = field.type.unwrap_non_null
 
-      "List<object> listJSON = (List<object>) GetJSON(\"#{field.name}\");\n" \
-      "_#{field.name} = (List<#{get_response_type(type.of_type)}>) CastList(listJSON, typeof(#{get_response_type(type.of_type)}));\n"
+      "_#{field.name} = (List<#{get_response_type(type.of_type)}>) CastList((List<object>) GetJSON(\"#{field.name}\"), typeof(#{get_response_type(type.of_type)}));\n"
     end
 
     def get_response_inits(type)
