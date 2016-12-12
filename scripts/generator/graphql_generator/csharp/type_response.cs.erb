@@ -19,15 +19,12 @@ namespace <%= namespace %> {
         <%# If this a root type we'll call TopLevelResponse constructor %>
         <% if schema.root_name?(type.name) %>
             public <%= type.classify_name %>(Dictionary<string, object> dataJSON) : base(dataJSON) {
-                Data = new Dictionary<string,object>();
-
                 <%= get_response_inits type %>
             }
         <% else %>
             public <%= type.classify_name %>(Dictionary<string, object> dataJSON) {
                 DataJSON = dataJSON;
-                Data = new Dictionary<string,object>();
-
+                
                 <%= get_response_inits type %>
             }
         <% end %>
