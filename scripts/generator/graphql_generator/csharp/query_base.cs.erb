@@ -9,13 +9,21 @@ namespace <%= namespace %> {
       private bool hasFields = false;
 
 
-      public void StartField(string fieldName) {
+      protected void StartField(string fieldName) {
         if (hasFields) {
           query.Append(",");
         }
 
         query.Append(fieldName);
         hasFields = true;
+      }
+
+      protected void StartInlineFragment(string inlineFragmentOn) {
+        query.AppendFormat("... on {0} {{", inlineFragmentOn);
+      }
+
+      protected void StopInlineFragment() {
+        query.Append("}");
       }
     }
 }

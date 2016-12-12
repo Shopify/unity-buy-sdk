@@ -59,6 +59,17 @@ namespace <%= namespace %> {
                 }
             <% end %>
 
+            <% unless type.object? %>
+                <% type.possible_types.each do |possible_type| %>
+                    public <%= type.classify_name %>Query on<%= possible_type.classify_name %>(<%= possible_type.classify_name %>Delegate addTo) {
+                        StartInlineFragment("<%= possible_type.name %>");
+                        addTo(new <%= possible_type.classify_name %>Query(query));
+                        StopInlineFragment();
+                        return this;
+                    }
+                <% end %>
+            <% end %>
+
             <%# if this is the root we want to add in a ToString method %>
             <% if isRoot %>
                 public override string ToString() {

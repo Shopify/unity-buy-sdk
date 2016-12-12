@@ -82,5 +82,17 @@ namespace Shopify.Tests
             // this is to test that ToString does not mutate
             Assert.AreEqual("(firstArg:0,secondArg:\"I AM SECOND\")", args.ToString()); 
         }
+
+        [Test]
+        public void UsingInlineFragment() {
+            QueryRootQuery query = Root.buildQuery().node(n => n
+                .onProduct(p => p
+                    .title()
+                ),
+                id: "12345"
+            );
+
+            Assert.AreEqual("{node(id:\"12345\"){... on Product {title}}}", query.ToString());
+        }
     }    
 }
