@@ -5,15 +5,6 @@ namespace <%= namespace %> {
 
     public abstract class AbstractResponse {
         protected Dictionary<string,object> DataJSON;
-        protected Dictionary<string,object> Data;
-
-        protected object Get(string field) {
-            object outObject;
-
-            Data.TryGetValue(field, out outObject);
-
-            return outObject;
-        }
 
         protected object GetJSON(string field) {
             object outObject;
