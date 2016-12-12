@@ -5,15 +5,15 @@ namespace <%= namespace %> {
     public class <%= type.classify_name %> : <%= schema.root_name?(type.name) ? "TopLevelResponse" : "AbstractResponse" %> {
         <%# output getters for fields %>
         <% type.fields.each do |field| %>
-            public <%= get_response_type(field.type) %> <%= field.name %> {
+            public <%= get_response_type(field.type) %> <%= escape_reserved_word(field.name) %> {
                 get {
-                    return _<%= field.name %>;
+                    return _<%= escape_reserved_word(field.name) %>;
                 }
             }
         <% end %>
         
         <% type.fields.each do |field| %>
-            private <%= get_response_type(field.type) %> _<%= field.name %>;
+            private <%= get_response_type(field.type) %> _<%= escape_reserved_word(field.name) %>;
         <% end %>
 
         <%# If this a root type we'll call TopLevelResponse constructor %>

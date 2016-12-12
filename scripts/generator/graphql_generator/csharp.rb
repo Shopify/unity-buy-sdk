@@ -192,27 +192,27 @@ module GraphQLGenerator
     def get_response_init_object_interface(field)
       type = field.type.unwrap_non_null
 
-      "_#{field.name} = new #{type.classify_name}((Dictionary<string,object>) GetJSON(\"#{field.name}\"));"
+      "_#{escape_reserved_word(field.name)} = new #{type.classify_name}((Dictionary<string,object>) GetJSON(\"#{field.name}\"));"
     end
 
     def get_response_init_scalar(field)
-      "_#{field.name} = (#{get_response_type(field.type)}) GetJSON(\"#{field.name}\");"
+      "_#{escape_reserved_word(field.name)} = (#{get_response_type(field.type)}) GetJSON(\"#{field.name}\");"
     end
 
     def get_response_init_enum(field)
       type = field.type.unwrap_non_null
 
       "try {\n" \
-      "   _#{field.name} = (#{field.type.unwrap_non_null.classify_name}) Enum.Parse(typeof(#{field.type.unwrap_non_null.classify_name}), (string) GetJSON(\"#{field.name}\"));\n" \
+      "   _#{escape_reserved_word(field.name)} = (#{field.type.unwrap_non_null.classify_name}) Enum.Parse(typeof(#{field.type.unwrap_non_null.classify_name}), (string) GetJSON(\"#{field.name}\"));\n" \
       "} catch(ArgumentException) {\n" \
-      "   _#{field.name} = #{field.type.unwrap_non_null.classify_name}.UNKNOWN;\n" \
+      "   _#{escape_reserved_word(field.name)} = #{field.type.unwrap_non_null.classify_name}.UNKNOWN;\n" \
       "}\n"
     end
 
     def get_response_init_list(field)
       type = field.type.unwrap_non_null
 
-      "_#{field.name} = (List<#{get_response_type(type.of_type)}>) CastList((List<object>) GetJSON(\"#{field.name}\"), typeof(#{get_response_type(type.of_type)}));\n"
+      "_#{escape_reserved_word(field.name)} = (List<#{get_response_type(type.of_type)}>) CastList((List<object>) GetJSON(\"#{field.name}\"), typeof(#{get_response_type(type.of_type)}));\n"
     end
 
     def get_response_inits(type)
