@@ -1,5 +1,6 @@
 namespace Shopify.Tests {
     using NUnit.Framework;
+    using System;
     using System.Collections.Generic;
     using Shopify.Unity;
     using Shopify.Unity.MiniJSON;
@@ -8,38 +9,32 @@ namespace Shopify.Tests {
     public class TestResponseDeserialization {
         [Test]
         public void CanDeserializeBasic() {
-            string shopName = "test-shop";
+            string stringJSON = @"{
+                ""data"": {
+                    ""shop"": { 
+                        ""name"": ""test-shop""
+                    }
+                }
+            }";
 
-            Dictionary<string,object> dataJSONShop = new Dictionary<string,object>() {
-                { "name", shopName }   
-            }; 
-
-            Dictionary<string,object> dataJSONQueryRoot = new Dictionary<string,object>() {
-                { "shop", dataJSONShop }   
-            };            
-
-            Dictionary<string,object> dataJSON = new Dictionary<string,object>() {
-                { "data", dataJSONQueryRoot }   
-            }; 
+            Dictionary<string,object> dataJSON = (Dictionary<string,object>) Json.Deserialize(stringJSON);
 
             QueryRoot response = new QueryRoot(dataJSON);
 
-            Assert.AreEqual(shopName, response.shop.name);
+            Assert.AreEqual("test-shop", response.shop.name);
         }
 
         [Test]
         public void CanDeserializeEnum() {
-            Dictionary<string,object> dataJSONShop = new Dictionary<string,object>() {
-                { "currencyCode", "CAD" }   
-            }; 
+            string stringJSON = @"{
+                ""data"": {
+                    ""shop"": { 
+                        ""currencyCode"": ""CAD""
+                    }
+                }
+            }";
 
-            Dictionary<string,object> dataJSONQueryRoot = new Dictionary<string,object>() {
-                { "shop", dataJSONShop }   
-            };            
-
-            Dictionary<string,object> dataJSON = new Dictionary<string,object>() {
-                { "data", dataJSONQueryRoot }   
-            }; 
+            Dictionary<string,object> dataJSON = (Dictionary<string,object>) Json.Deserialize(stringJSON);
 
             QueryRoot response = new QueryRoot(dataJSON);
 
@@ -48,17 +43,15 @@ namespace Shopify.Tests {
 
         [Test]
         public void WillReturnUnkownEnum() {
-            Dictionary<string,object> dataJSONShop = new Dictionary<string,object>() {
-                { "currencyCode", "DOESNT EXIST" }   
-            }; 
+            string stringJSON = @"{
+                ""data"": {
+                    ""shop"": { 
+                        ""currencyCode"": ""I AM NOT REAL""
+                    }
+                }
+            }";
 
-            Dictionary<string,object> dataJSONQueryRoot = new Dictionary<string,object>() {
-                { "shop", dataJSONShop }   
-            };            
-
-            Dictionary<string,object> dataJSON = new Dictionary<string,object>() {
-                { "data", dataJSONQueryRoot }   
-            }; 
+            Dictionary<string,object> dataJSON = (Dictionary<string,object>) Json.Deserialize(stringJSON);
 
             QueryRoot response = new QueryRoot(dataJSON);
 
