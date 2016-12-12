@@ -105,7 +105,7 @@ module GraphQLGenerator
       Reformatter.new(indent: INDENTATION).reformat(code)
     end
 
-    def get_response_type(type, isTopLevel: true)
+    def get_response_type(type)
       case type.kind
       when "NON_NULL"
         get_response_type(type.of_type);
@@ -113,7 +113,7 @@ module GraphQLGenerator
         scalars[type.name].nullable_type
       when 'LIST'
         # in C# lists cannot be built out of non-null types because the list is already nullable
-        "List<#{get_response_type(type.of_type.unwrap_non_null, isTopLevel: false)}>"
+        "List<#{get_response_type(type.of_type)}>"
       when 'ENUM'
         "#{type.name}?"
       when 'OBJECT', 'INTERFACE'
@@ -211,6 +211,13 @@ module GraphQLGenerator
       "}\n"
     end
 
+    def get_response_init_list(field)
+      type = field.type.unwrap_non_null
+
+      "List<object> listJSON = (List<object>) GetJSON(\"#{field.name}\");\n" \
+      "_#{field.name} = (List<#{get_response_type(type.of_type)}>) CastList(listJSON, typeof(#{get_response_type(type.of_type)}));\n"
+    end
+
     def get_response_inits(type)
       out = ""
 
@@ -223,7 +230,7 @@ module GraphQLGenerator
         when "INTERFACE", "OBJECT"     
           out << "    #{get_response_init_object_interface(field)}\n"
         when "LIST"
-          out << "    // TODO: this is a list\n"
+          out << "    #{get_response_init_list(field)}\n"
         when "ENUM"
           out << "    #{get_response_init_enum(field)}\n"
         when "SCALAR"

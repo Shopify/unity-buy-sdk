@@ -1,4 +1,6 @@
 namespace <%= namespace %> {
+    using System;
+    using System.Collections;
     using System.Collections.Generic;
 
     public abstract class AbstractResponse {
@@ -19,6 +21,32 @@ namespace <%= namespace %> {
             DataJSON.TryGetValue(field, out outObject);
 
             return outObject;
+        }
+
+
+        protected IList CastList(IList list, Type genericListType) {
+            if (list == null) {
+                return null;
+            }
+
+            // The following will create a new list of type genericListType
+            Type listType = typeof(List<>);
+            Type typeToConstruct = listType.MakeGenericType(genericListType);
+
+            IList outList = (IList) Activator.CreateInstance(typeToConstruct);
+            
+            foreach(object item in list) {
+                // if this is a multi dimensional list we want to continue to recurse
+                if (item is IList) {
+                    Type childListType = list.GetType().GetGenericTypeDefinition();
+
+                    outList.Add(CastList((IList) item, childListType));
+                } else {
+                    outList.Add(item);
+                }
+            }
+
+            return outList;
         }
     }
 }

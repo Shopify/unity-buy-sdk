@@ -83,7 +83,34 @@ namespace Shopify.Tests {
 
             QueryRoot response = new QueryRoot(dataJSON);
 
-            // Assert.AreEqual("List<string>", response.product.tags.GetType().Name);
+            CollectionAssert.AreEqual(
+                new List<string>() {"blue", "button", "fancy"},
+                response.product.tags
+            );
+        }
+
+        [Test]
+        public void CanDeserializeListsWithNull() {
+            string stringJSON = @"{
+              ""data"": {
+                ""product"": {
+                  ""tags"": [
+                    ""blue"",
+                    null,
+                    ""fancy""
+                  ]
+                }
+              }
+            }";
+
+            Dictionary<string,object> dataJSON = (Dictionary<string,object>) Json.Deserialize(stringJSON);
+
+            QueryRoot response = new QueryRoot(dataJSON);
+
+            CollectionAssert.AreEqual(
+                new List<string>() {"blue", null, "fancy"},
+                response.product.tags
+            );
         }
     }
 }
