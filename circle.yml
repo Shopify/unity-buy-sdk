@@ -1,7 +1,10 @@
 machine:
+  # These are actually not needed but since Circle expects all OSX projects to be
+  # XCode / iOS projects we need to drop these in
   environment:
     XCODE_SCHEME: symbolicator
     XCODE_WORKSPACE: symbolicator
+  # Also not needed but Circle needs this
   xcode:
     version: 7.3
 dependencies:
