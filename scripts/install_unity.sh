@@ -9,13 +9,13 @@ if [ ! -d "$UNITY_DOWNLOAD_DIR" ]; then
     mkdir -p $UNITY_DOWNLOAD_DIR
     curl -o $UNITY_PKG_LOCATION $UNITY_PKG_URL
     out "Finished Downloading Unity"
+fi
 
-    out "Start Install Unity"
-    sudo installer -dumplog -package $UNITY_PKG_LOCATION -target /
+out "Start Install Unity"
+sudo installer -dumplog -package $UNITY_PKG_LOCATION -target /
 
-    if [ $? = 0 ] ; then
-        out "Finished Install Unity"
-    else
-        die "Unable to install Unity"
-    fi
+if [ $? = 0 ] ; then
+    out "Finished Install Unity"
+else
+    die "Unable to install Unity"
 fi
