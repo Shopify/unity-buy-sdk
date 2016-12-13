@@ -13,6 +13,7 @@ dependencies:
     - ./scripts/build.sh
   cache_directories:
     - "unity/"
+    - "/Applications/Unity/Unity.app/Contents/MacOS/Unity"
 test:
   override:
     - ./scripts/test_unity.sh
