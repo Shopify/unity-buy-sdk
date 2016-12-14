@@ -15,5 +15,5 @@ end() {
     out "Finished: $@"
 }
 
-PROJECT_ROOT=$(pwd)
+PROJECT_ROOT=${PROJECT_ROOT:-$(pwd)}
 SCRIPTS_ROOT="$PROJECT_ROOT/scripts"

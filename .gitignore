@@ -13,6 +13,7 @@ Assets/Shopify/Unity/Root.*
 ####### Test files
 test.dll
 TestResult.xml
+/unity/
 
 ####### Unity test files
 EditorTestResults.xml

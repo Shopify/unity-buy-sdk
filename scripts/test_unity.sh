@@ -22,6 +22,10 @@ if [ $? = 0 ] ; then
 else
     echo "Tests failed. Exited with $?"
     echo "------------------\n\n"
-    cat $UNITY_LOG_PATH
+    if [ -e "EditorTestResults.xml" ]; then
+        cat EditorTestResults.xml
+    else
+        cat $UNITY_LOG_PATH 
+    fi
     exit 1
 fi

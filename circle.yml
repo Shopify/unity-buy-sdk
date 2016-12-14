@@ -1,0 +1,25 @@
+machine:
+  environment:
+    PROJECT_ROOT: $PWD/unity-buy-sdk
+    UNITY_DOWNLOAD_DIR: $PROJECT_ROOT/unity
+    UNITY_PKG_LOCATION: $UNITY_DOWNLOAD_DIR/Unity.pkg
+    UNITY_PKG_URL: http://netstorage.unity3d.com/unity/fdbb5133b820/MacEditorInstaller/Unity-5.3.4f1.pkg
+    # These are actually not needed but since Circle expects all OSX projects to be
+    # XCode / iOS projects we need to drop these in
+    XCODE_SCHEME: symbolicator
+    XCODE_WORKSPACE: symbolicator
+  # Also not needed but Circle needs this
+  xcode:
+    version: 7.3
+dependencies:
+  pre:
+    # The application is expecting xcode to be installed in its normal location
+    - sudo ln -s /Applications/Xcode-7.3.app /Applications/Xcode.app
+  override:
+    - ./scripts/install_unity.sh
+    - ./scripts/build.sh
+  cache_directories:
+    - "unity/"
+test:
+  override:
+    - ./scripts/test_unity.sh
