@@ -1,7 +1,11 @@
 machine:
-  # These are actually not needed but since Circle expects all OSX projects to be
-  # XCode / iOS projects we need to drop these in
   environment:
+    PROJECT_ROOT: $PWD
+    UNITY_DOWNLOAD_DIR: $PWD/unity
+    UNITY_PKG_LOCATION: $UNITY_DOWNLOAD_DIR/Unity.pkg
+    UNITY_PKG_URL: http://netstorage.unity3d.com/unity/fdbb5133b820/MacEditorInstaller/Unity-5.3.4f1.pkg
+    # These are actually not needed but since Circle expects all OSX projects to be
+    # XCode / iOS projects we need to drop these in
     XCODE_SCHEME: symbolicator
     XCODE_WORKSPACE: symbolicator
   # Also not needed but Circle needs this
