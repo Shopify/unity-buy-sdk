@@ -6,30 +6,30 @@ namespace <%= namespace %> {
 
     public class QueryBase {
       protected StringBuilder query;
-      private bool hasFields = false;
+      private bool HasFields = false;
 
 
       protected void StartField(string fieldName) {
-        if (hasFields) {
+        if (HasFields) {
           query.Append(",");
         }
 
         query.Append(fieldName);
-        hasFields = true;
+        HasFields = true;
       }
 
       protected void StartInlineFragment(string inlineFragmentOn) {
         query.AppendFormat("... on {0} {{", inlineFragmentOn);
 
-        // resetting hasFields as the inlineFragment has no fields yet
-        hasFields = false;
+        // resetting HasFields as the inlineFragment has no fields yet
+        HasFields = false;
       }
 
       protected void StopInlineFragment() {
         query.Append("}");
 
-        // resetting hasFields as we're hopping out of the inline fragment
-        hasFields = false;
+        // resetting HasFields as we're hopping out of the inline fragment
+        HasFields = false;
       }
     }
 }
