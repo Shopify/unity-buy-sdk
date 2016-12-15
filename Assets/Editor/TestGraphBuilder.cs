@@ -24,12 +24,13 @@ namespace Shopify.Tests
         [Test]
         public void QueryRootBuildsQuery() {
             QueryRootQuery query = Root.buildQuery();
-            query.shop(s =>
-                s.name()
+            query.shop(s => s
+                .name()
+                .description()
             );
 
             Assert.AreEqual(
-                "{shop{name}}",
+                "{shop {name description }}",
                 query.ToString()
             );
         }
@@ -56,12 +57,12 @@ namespace Shopify.Tests
                 );
 
             Assert.AreEqual(
-                "mutation{apiCustomerAccessTokenCreate(input:{email:\"email@email.com\",password:\"123456\",clientMutationId:\"333\"}){apiCustomerAccessToken{accessToken},clientMutationId}}",
+                "mutation{apiCustomerAccessTokenCreate (input:{email:\"email@email.com\",password:\"123456\",clientMutationId:\"333\"}){apiCustomerAccessToken {accessToken }clientMutationId }}",
                 query.ToString()
             );
             // check that ToString does not mutate
             Assert.AreEqual(
-                "mutation{apiCustomerAccessTokenCreate(input:{email:\"email@email.com\",password:\"123456\",clientMutationId:\"333\"}){apiCustomerAccessToken{accessToken},clientMutationId}}",
+                "mutation{apiCustomerAccessTokenCreate (input:{email:\"email@email.com\",password:\"123456\",clientMutationId:\"333\"}){apiCustomerAccessToken {accessToken }clientMutationId }}",
                 query.ToString()
             );
         }
@@ -81,6 +82,18 @@ namespace Shopify.Tests
             Assert.AreEqual("(firstArg:0,secondArg:\"I AM SECOND\")", args.ToString());
             // this is to test that ToString does not mutate
             Assert.AreEqual("(firstArg:0,secondArg:\"I AM SECOND\")", args.ToString()); 
+        }
+
+        [Test]
+        public void UsingInlineFragment() {
+            QueryRootQuery query = Root.buildQuery().node(n => n
+                .onProduct(p => p
+                    .title()
+                ),
+                id: "12345"
+            );
+
+            Assert.AreEqual("{node (id:\"12345\"){...on Product{title }}}", query.ToString());
         }
     }    
 }
