@@ -12,23 +12,25 @@ namespace <%= namespace %> {
         public delegate void <%= type.classify_name %>Delegate(<%= type.classify_name %>Query query);
 
         <%# the following will start defining the class. Each type name will be followed by Query. eg. ShopQuery %>
-        public class <%= type.classify_name %>Query : QueryBase {
+        public class <%= type.classify_name %>Query {
+            private StringBuilder Query;
+
             <%# create the constuctor %>
             <% if isRoot %>
                 public <%= type.classify_name %>Query() {
-                    this.query = new StringBuilder("<%= "mutation" unless isQueryRoot %>{");
+                    Query = new StringBuilder("<%= "mutation" unless isQueryRoot %>{");
                 }
             <% else %>
                 public <%= type.classify_name %>Query(StringBuilder query) {
-                    this.query = query;
+                    Query = query;
                 }
             <% end %>
 
             <%# now create methods to add fields to queries %>
             <% type.fields.each do |field| %>
                 public <%= type.classify_name %>Query <%= escape_reserved_word(field.name) %>(<%= get_field_args(field) %>) {
-                    StartField("<%= field.name %>");
-
+                    Query.Append("<%= field.name %> ");
+                
                     <%# now we we want to handle generating arguments %>
                     <% if field.args.any? %>
                         Arguments args = new Arguments();
@@ -44,15 +46,15 @@ namespace <%= namespace %> {
                             }
                         <% end %>
 
-                        query.Append(args.ToString());
+                        Query.Append(args.ToString());
                     <% end %>
 
 
                     <%# if this field is an OBJECT we want to be able to query subfields %>
                     <% if field.type.subfields? %>
-                        query.Append("{");
-                        addTo(new <%= field.type.unwrap.classify_name %>Query(query));
-                        query.Append("}");
+                        Query.Append("{");
+                        addTo(new <%= field.type.unwrap.classify_name %>Query(Query));
+                        Query.Append("}");
                     <% end %>
 
                     return this;
@@ -62,9 +64,9 @@ namespace <%= namespace %> {
             <% unless type.object? %>
                 <% type.possible_types.each do |possible_type| %>
                     public <%= type.classify_name %>Query on<%= possible_type.classify_name %>(<%= possible_type.classify_name %>Delegate addTo) {
-                        StartInlineFragment("<%= possible_type.name %>");
-                        addTo(new <%= possible_type.classify_name %>Query(query));
-                        StopInlineFragment();
+                        Query.Append("...on <%= possible_type.classify_name %>{");
+                        addTo(new <%= possible_type.classify_name %>Query(Query));
+                        Query.Append("}");
                         return this;
                     }
                 <% end %>
@@ -73,7 +75,22 @@ namespace <%= namespace %> {
             <%# if this is the root we want to add in a ToString method %>
             <% if isRoot %>
                 public override string ToString() {
-                    return query.ToString() + "}";
+                    return BuildOptimizedQuery();
+                }
+
+                private string BuildOptimizedQuery() {
+                    StringBuilder tempQuery = new StringBuilder(Query.ToString());
+
+                    // add in the final closing "}"
+                    tempQuery.Append("}");
+
+                    // optimize query by removing extra white space
+                    tempQuery.Replace(" (", "(");
+                    tempQuery.Replace(" )", ")");
+                    tempQuery.Replace(" {", "{");
+                    tempQuery.Replace(" }", "}");
+
+                    return tempQuery.ToString();
                 }
             <% end %>
         }

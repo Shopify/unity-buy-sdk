@@ -33,7 +33,6 @@ module GraphQLGenerator
     ARGUMENTS_ERB = erb_for(File.expand_path("../csharp/arguments.cs.erb", __FILE__))
     INPUT_BASE_ERB = erb_for(File.expand_path("../csharp/input_base.cs.erb", __FILE__))
     INPUT_VALUE_TO_STRING = erb_for(File.expand_path("../csharp/input_value_to_string.cs.erb", __FILE__))
-    QUERY_BASE = erb_for(File.expand_path("../csharp/query_base.cs.erb", __FILE__))
 
     INDENTATION = " " * 4
 
@@ -80,7 +79,6 @@ module GraphQLGenerator
       File.write("#{path}/Arguments.cs", reformat(ARGUMENTS_ERB.result(binding)))
       File.write("#{path}/InputBase.cs", reformat(INPUT_BASE_ERB.result(binding)))
       File.write("#{path}/InputValueToString.cs", reformat(INPUT_VALUE_TO_STRING.result(binding)))
-      File.write("#{path}/QueryBase.cs", reformat(QUERY_BASE.result(binding)))
 
       schema.types.reject{ |type| type.builtin? || type.scalar? }.each do |type|
         if type.object?

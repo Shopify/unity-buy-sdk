@@ -56,12 +56,12 @@ namespace Shopify.Tests
                 );
 
             Assert.AreEqual(
-                "mutation{apiCustomerAccessTokenCreate(input:{email:\"email@email.com\",password:\"123456\",clientMutationId:\"333\"}){apiCustomerAccessToken{accessToken},clientMutationId}}",
+                "mutation{apiCustomerAccessTokenCreate(input:{email:\"email@email.com\",password:\"123456\",clientMutationId:\"333\"}){apiCustomerAccessToken{accessToken}clientMutationId}}",
                 query.ToString()
             );
             // check that ToString does not mutate
             Assert.AreEqual(
-                "mutation{apiCustomerAccessTokenCreate(input:{email:\"email@email.com\",password:\"123456\",clientMutationId:\"333\"}){apiCustomerAccessToken{accessToken},clientMutationId}}",
+                "mutation{apiCustomerAccessTokenCreate(input:{email:\"email@email.com\",password:\"123456\",clientMutationId:\"333\"}){apiCustomerAccessToken{accessToken}clientMutationId}}",
                 query.ToString()
             );
         }
@@ -92,7 +92,7 @@ namespace Shopify.Tests
                 id: "12345"
             );
 
-            Assert.AreEqual("{node(id:\"12345\"){... on Product {title}}}", query.ToString());
+            Assert.AreEqual("{node(id:\"12345\"){...on Product{title}}}", query.ToString());
         }
     }    
 }
