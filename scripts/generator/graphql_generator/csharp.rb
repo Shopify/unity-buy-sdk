@@ -104,15 +104,14 @@ module GraphQLGenerator
       Reformatter.new(indent: INDENTATION).reformat(code)
     end
 
-    def response_type(type)
+    def response_type(type, is_list_type: false)
       case type.kind
       when "NON_NULL"
         response_type(type.of_type);
       when "SCALAR"
         scalars[type.name].nullable_type
       when 'LIST'
-        # in C# lists cannot be built out of non-null types because the list is already nullable
-        "List<#{response_type(type.of_type)}>"
+        "List<#{graph_type_to_csharp_type(type.of_type)}>"
       when 'ENUM'
         "#{type.name}?"
       when 'OBJECT', 'INTERFACE'
@@ -122,18 +121,17 @@ module GraphQLGenerator
       end
     end
 
-    # will return a C# type from a GraphQL type
-    def arg_type(type, is_non_null: false)
+    def graph_type_to_csharp_type(type, is_non_null: false)
       case type.kind
       when "NON_NULL"
-        arg_type(type.of_type, is_non_null: true);
+        graph_type_to_csharp_type(type.of_type, is_non_null: true);
       when "SCALAR"
         is_non_null ? scalars[type.name].non_nullable_type : scalars[type.name].nullable_type
       when 'LIST'
-        "List<#{arg_type(type.of_type)}>"
+        "List<#{graph_type_to_csharp_type(type.of_type)}>"
       when 'ENUM'
         is_non_null ? type.name : "#{type.name}?"
-      when 'INPUT_OBJECT'
+      when 'INPUT_OBJECT', 'OBJECT', 'INTERFACE'
         type.classify_name
       else
         raise NotImplementedError, "Unhandled #{type.kind} input type"
@@ -142,7 +140,7 @@ module GraphQLGenerator
 
     # will return an arg definition from a graphql type
     def arg_type_and_name(arg)
-      type = arg_type(arg.type)
+      type = graph_type_to_csharp_type(arg.type)
 
       arg_string = "#{type} #{escape_reserved_word(arg.name)}"
       arg_string << " = null" unless arg.type.non_null?
