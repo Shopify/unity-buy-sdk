@@ -24,12 +24,13 @@ namespace Shopify.Tests
         [Test]
         public void QueryRootBuildsQuery() {
             QueryRootQuery query = Root.buildQuery();
-            query.shop(s =>
-                s.name()
+            query.shop(s => s
+                .name()
+                .description()
             );
 
             Assert.AreEqual(
-                "{shop{name}}",
+                "{shop{name description}}",
                 query.ToString()
             );
         }
