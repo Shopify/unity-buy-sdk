@@ -33,7 +33,6 @@ module GraphQLGenerator
       "Arguments.cs" => erb_for(File.expand_path("../csharp/arguments.cs.erb", __FILE__)),
       "InputBase.cs" => erb_for(File.expand_path("../csharp/input_base.cs.erb", __FILE__)),
       "InputValueToString.cs" => erb_for(File.expand_path("../csharp/input_value_to_string.cs.erb", __FILE__)),
-      "QueryBase.cs" => erb_for(File.expand_path("../csharp/query_base.cs.erb", __FILE__)),
       "TopLevelResponse.cs" => erb_for(File.expand_path("../csharp/top_level_response.cs.erb", __FILE__)),
       "AbstractResponse.cs" => erb_for(File.expand_path("../csharp/abstract_response.cs.erb", __FILE__)),
     }

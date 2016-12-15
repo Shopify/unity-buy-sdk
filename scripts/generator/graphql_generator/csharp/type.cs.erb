@@ -28,7 +28,7 @@ namespace <%= namespace %> {
 
             <%# now create methods to add fields to queries %>
             <% type.fields.each do |field| %>
-                public <%= type.classify_name %>Query <%= escape_reserved_word(field.name) %>(<%= get_field_args(field) %>) {
+                public <%= type.classify_name %>Query <%= escape_reserved_word(field.name) %>(<%= field_args(field) %>) {
                     Query.Append("<%= field.name %> ");
                 
                     <%# now we we want to handle generating arguments %>
