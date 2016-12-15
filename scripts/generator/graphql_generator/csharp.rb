@@ -105,15 +105,15 @@ module GraphQLGenerator
       Reformatter.new(indent: INDENTATION).reformat(code)
     end
 
-    def get_response_type(type)
+    def response_type(type)
       case type.kind
       when "NON_NULL"
-        get_response_type(type.of_type);
+        response_type(type.of_type);
       when "SCALAR"
         scalars[type.name].nullable_type
       when 'LIST'
         # in C# lists cannot be built out of non-null types because the list is already nullable
-        "List<#{get_response_type(type.of_type)}>"
+        "List<#{response_type(type.of_type)}>"
       when 'ENUM'
         "#{type.name}?"
       when 'OBJECT', 'INTERFACE'
@@ -124,14 +124,14 @@ module GraphQLGenerator
     end
 
     # will return a C# type from a GraphQL type
-    def get_arg_type(type, is_non_null: false)
+    def arg_type(type, is_non_null: false)
       case type.kind
       when "NON_NULL"
-        get_arg_type(type.of_type, is_non_null: true);
+        arg_type(type.of_type, is_non_null: true);
       when "SCALAR"
         is_non_null ? scalars[type.name].non_nullable_type : scalars[type.name].nullable_type
       when 'LIST'
-        "List<#{get_arg_type(type.of_type)}>"
+        "List<#{arg_type(type.of_type)}>"
       when 'ENUM'
         is_non_null ? type.name : "#{type.name}?"
       when 'INPUT_OBJECT'
@@ -142,8 +142,8 @@ module GraphQLGenerator
     end
 
     # will return an arg definition from a graphql type
-    def get_arg_type_and_name(arg)
-      type = get_arg_type(arg.type)
+    def arg_type_and_name(arg)
+      type = arg_type(arg.type)
 
       arg_string = "#{type} #{escape_reserved_word(arg.name)}"
       arg_string << " = null" unless arg.type.non_null?
@@ -151,7 +151,7 @@ module GraphQLGenerator
       arg_string
     end
 
-    def get_field_args(field)
+    def field_args(field)
       # we want to setup arguments for queries here
       args = []
   
@@ -161,45 +161,45 @@ module GraphQLGenerator
 
       # now we want to setup required args if there are any
       field.required_args.each do |field|
-          args << "#{get_arg_type_and_name(field)}"
+          args << "#{arg_type_and_name(field)}"
       end
 
       # now handle optional args
       field.optional_args.each do |field|
-          args << "#{get_arg_type_and_name(field)}"
+          args << "#{arg_type_and_name(field)}"
       end
 
       args.join(",")
     end
     
-    def get_input_args(type)
+    def input_args(type)
       # we want to setup arguments for queries here
       args = []
 
       # now we want to setup required args if there are any
       type.required_input_fields.each do |field|
-          args << "#{get_arg_type_and_name(field)}"
+          args << "#{arg_type_and_name(field)}"
       end
 
       # now handle optional args
       type.optional_input_fields.each do |field|
-          args << "#{get_arg_type_and_name(field)}"
+          args << "#{arg_type_and_name(field)}"
       end
 
       args.join(",")
     end
 
-    def get_response_init_object_interface(field)
+    def response_init_object_interface(field)
       type = field.type.unwrap_non_null
 
       "_#{escape_reserved_word(field.name)} = new #{type.classify_name}((Dictionary<string,object>) GetJSON(\"#{field.name}\"));"
     end
 
-    def get_response_init_scalar(field)
-      "_#{escape_reserved_word(field.name)} = (#{get_response_type(field.type)}) GetJSON(\"#{field.name}\");"
+    def response_init_scalar(field)
+      "_#{escape_reserved_word(field.name)} = (#{response_type(field.type)}) GetJSON(\"#{field.name}\");"
     end
 
-    def get_response_init_enum(field)
+    def response_init_enum(field)
       type = field.type.unwrap_non_null
 
       "try {\n" \
@@ -209,13 +209,13 @@ module GraphQLGenerator
       "}\n"
     end
 
-    def get_response_init_list(field)
+    def response_init_list(field)
       type = field.type.unwrap_non_null
 
-      "_#{escape_reserved_word(field.name)} = (List<#{get_response_type(type.of_type)}>) CastList((List<object>) GetJSON(\"#{field.name}\"), typeof(#{get_response_type(type.of_type)}));\n"
+      "_#{escape_reserved_word(field.name)} = (List<#{response_type(type.of_type)}>) CastList((List<object>) GetJSON(\"#{field.name}\"), typeof(#{response_type(type.of_type)}));\n"
     end
 
-    def get_response_inits(type)
+    def response_inits(type)
       out = ""
 
       type.fields.each do |field|
@@ -225,13 +225,13 @@ module GraphQLGenerator
 
         case type.kind
         when "INTERFACE", "OBJECT"     
-          out << "    #{get_response_init_object_interface(field)}\n"
+          out << "    #{response_init_object_interface(field)}\n"
         when "LIST"
-          out << "    #{get_response_init_list(field)}\n"
+          out << "    #{response_init_list(field)}\n"
         when "ENUM"
-          out << "    #{get_response_init_enum(field)}\n"
+          out << "    #{response_init_enum(field)}\n"
         when "SCALAR"
-          out << "    #{get_response_init_scalar(field)}\n"
+          out << "    #{response_init_scalar(field)}\n"
         else
           raise NotImplementedError, "Unhandled #{type.kind} init for type"
         end

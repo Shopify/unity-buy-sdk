@@ -83,7 +83,7 @@ namespace <%= namespace %> {
         /* This is an input object */
         public class <%= type.classify_name %> : InputBase {
             <%# create a constructor for the input type %>
-            public <%= type.classify_name %>(<%= get_input_args(type) %>) {
+            public <%= type.classify_name %>(<%= input_args(type) %>) {
                 <%# handle adding required fields %>
                 <% type.required_input_fields.each do |field| %>
                     Add("<%= field.name %>", <%= escape_reserved_word(field.name) %>);
