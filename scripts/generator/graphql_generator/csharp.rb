@@ -90,7 +90,7 @@ module GraphQLGenerator
         if type.object? || type.interface?
           File.write("#{path_types}/#{type.name}Query.cs", reformat(TYPE_ERB.result(binding)))
           File.write("#{path_types}/#{type.name}.cs", reformat(TYPE_RESPONSE_ERB.result(binding)))
-        elsif type.input_object?
+        elsif type.input_object? || type.kind == 'ENUM'
           File.write("#{path_types}/#{type.name}.cs", reformat(TYPE_ERB.result(binding)))
         end 
       end
@@ -201,12 +201,9 @@ module GraphQLGenerator
 
     def response_init_enum(field)
       type = field.type.unwrap_non_null
+      enum_type_name = field.type.unwrap_non_null.classify_name
 
-      "try {\n" \
-      "   _#{escape_reserved_word(field.name)} = (#{field.type.unwrap_non_null.classify_name}) Enum.Parse(typeof(#{field.type.unwrap_non_null.classify_name}), (string) GetJSON(\"#{field.name}\"));\n" \
-      "} catch(ArgumentException) {\n" \
-      "   _#{escape_reserved_word(field.name)} = #{field.type.unwrap_non_null.classify_name}.UNKNOWN;\n" \
-      "}\n"
+      "   _#{field.name} = GetEnumValue<#{enum_type_name}>(\"#{field.name}\");"
     end
 
     def response_init_list(field)

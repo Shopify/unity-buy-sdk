@@ -99,7 +99,7 @@ namespace <%= namespace %> {
         }
     <% when 'ENUM' %>
         public enum <%= type.classify_name %> {
-            <%= type.enum_values.map{ |enum| enum.name }.push("UNKNOWN").join(", ") %>
+            <%= type.enum_values.map{ |enum| enum.name }.unshift("UNKNOWN").join(", ") %>
         }
     <% end %>
 }

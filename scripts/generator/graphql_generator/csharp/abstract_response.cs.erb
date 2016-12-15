@@ -14,6 +14,13 @@ namespace <%= namespace %> {
             return outObject;
         }
 
+        protected T GetEnumValue<T>(string field) where T : struct, IConvertible {
+            T enumValue;
+
+            Enum.TryParse((string) GetJSON(field), out enumValue);
+
+            return enumValue;
+        }
 
         protected IList CastList(IList list, Type genericListType) {
             if (list == null) {
