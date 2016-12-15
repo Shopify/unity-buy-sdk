@@ -28,15 +28,6 @@ module GraphQLGenerator
       end
     end
     
-    ERBS = {
-      "Root.cs" => erb_for(File.expand_path("../csharp/root.cs.erb", __FILE__)),
-      "Arguments.cs" => erb_for(File.expand_path("../csharp/arguments.cs.erb", __FILE__)),
-      "InputBase.cs" => erb_for(File.expand_path("../csharp/input_base.cs.erb", __FILE__)),
-      "InputValueToString.cs" => erb_for(File.expand_path("../csharp/input_value_to_string.cs.erb", __FILE__)),
-      "TopLevelResponse.cs" => erb_for(File.expand_path("../csharp/top_level_response.cs.erb", __FILE__)),
-      "AbstractResponse.cs" => erb_for(File.expand_path("../csharp/abstract_response.cs.erb", __FILE__)),
-    }
-
     TYPE_ERB = erb_for(File.expand_path("../csharp/type.cs.erb", __FILE__))
     TYPE_RESPONSE_ERB = erb_for(File.expand_path("../csharp/type_response.cs.erb", __FILE__))
 
@@ -79,8 +70,16 @@ module GraphQLGenerator
       end
 
       # output classes on root
-      ERBS.each do |key,erb|
-        File.write("#{path}/#{key}", reformat(erb.result(binding)))
+      %w(
+        Root
+        Arguments
+        InputBase
+        InputValueToString
+        TopLevelResponse
+        AbstractResponse
+      ).each do |class_file_name|
+        erb = CSharp::erb_for(File.expand_path("../csharp/#{class_file_name}.cs.erb", __FILE__))
+        File.write("#{path}/#{class_file_name}.cs", reformat(erb.result(binding)))
       end
 
       # output type definitions
