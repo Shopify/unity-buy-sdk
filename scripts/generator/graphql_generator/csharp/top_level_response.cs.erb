@@ -6,15 +6,7 @@ namespace <%= namespace %> {
         private const string KEY_DATA = "data";
         private const string KEY_ERRORS = "errors";
 
-        public bool HasErrors {
-            get {
-                return _HasErrors;
-            }
-        }
-
-        protected List<Exception> ResponseErrors;
-
-        private bool _HasErrors = false;
+        public List<Exception> ResponseErrors;
 
         public TopLevelResponse(Dictionary<string,object> dataJSON) {
             object errors;
@@ -24,7 +16,6 @@ namespace <%= namespace %> {
             dataJSON.TryGetValue(KEY_DATA, out data);
 
             if (errors != null) {
-                _HasErrors = true;
                 ParseErrors((Dictionary<string,object>) dataJSON);
             } else if (data != null) {
                 DataJSON = (Dictionary<string,object>) data;
