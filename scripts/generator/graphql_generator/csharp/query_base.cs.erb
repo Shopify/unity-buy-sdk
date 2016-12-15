@@ -20,10 +20,16 @@ namespace <%= namespace %> {
 
       protected void StartInlineFragment(string inlineFragmentOn) {
         query.AppendFormat("... on {0} {{", inlineFragmentOn);
+
+        // resetting hasFields as the inlineFragment has no fields yet
+        hasFields = false;
       }
 
       protected void StopInlineFragment() {
         query.Append("}");
+
+        // resetting hasFields as we're hopping out of the inline fragment
+        hasFields = false;
       }
     }
 }
