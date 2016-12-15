@@ -75,22 +75,7 @@ namespace <%= namespace %> {
             <%# if this is the root we want to add in a ToString method %>
             <% if isRoot %>
                 public override string ToString() {
-                    return BuildOptimizedQuery();
-                }
-
-                private string BuildOptimizedQuery() {
-                    StringBuilder tempQuery = new StringBuilder(Query.ToString());
-
-                    // add in the final closing "}"
-                    tempQuery.Append("}");
-
-                    // optimize query by removing extra white space
-                    tempQuery.Replace(" (", "(");
-                    tempQuery.Replace(" )", ")");
-                    tempQuery.Replace(" {", "{");
-                    tempQuery.Replace(" }", "}");
-
-                    return tempQuery.ToString();
+                    return Query.ToString() + "}";
                 }
             <% end %>
         }
