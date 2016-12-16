@@ -5,20 +5,24 @@ namespace <%= namespace %> {
     public class <%= type.classify_name %> : AbstractResponse {
         <%# output getters for fields %>
         <% type.fields.each do |field| %>
-            public <%= response_type(field.type) %> <%= escape_reserved_word(field.name) %> {
+            public <%= graph_type_to_csharp_type(field.type) %> <%= escape_reserved_word(field.name) %> {
                 get {
-                    return _<%= escape_reserved_word(field.name) %>;
+                    if (Data.ContainsKey("<%= field.name %>")) {
+                        return (<%= graph_type_to_csharp_type(field.type) %>) Data["<%= field.name %>"];
+                    } else {
+                        throw new NoQueryException("<%= field.name %>");
+                    }
                 }
             }
         <% end %>
         
         <% type.fields.each do |field| %>
-            private <%= response_type(field.type) %> _<%= escape_reserved_word(field.name) %>;
+            private <%= graph_type_to_csharp_type(field.type) %> _<%= escape_reserved_word(field.name) %>;
         <% end %>
 
         <%# Constructor %>
         public <%= type.classify_name %>(Dictionary<string, object> dataJSON) {
-            DataJSON = dataJSON;
+            Data = new Dictionary<string,object>();
             
             <%= response_inits type %>
         }

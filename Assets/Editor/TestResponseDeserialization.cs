@@ -158,5 +158,28 @@ namespace Shopify.Tests {
                 response.product.tags
             );
         }
+
+        [Test]
+        public void AccessingFieldNotQueriedThrowsException() {
+            Exception error = null;
+            string stringJSON = @"{
+                ""shop"": { 
+                    ""name"": ""test-shop""
+                }
+            }";
+
+            Dictionary<string,object> dataJSON = (Dictionary<string,object>) Json.Deserialize(stringJSON);
+
+            QueryRoot response = new QueryRoot(dataJSON);
+
+            try {
+                CurrencyCode code = response.shop.currencyCode;
+            } catch(NoQueryException e) {
+                error = e;
+            }
+
+            Assert.IsNotNull(error);
+            Assert.AreEqual("It looks like you did not query the field: currencyCode", error.Message);
+        }
     }
 }

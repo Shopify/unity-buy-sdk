@@ -77,6 +77,7 @@ module GraphQLGenerator
         InputValueToString
         TopLevelResponse
         AbstractResponse
+        NoQueryException
       ).each do |class_file_name|
         erb = CSharp::erb_for(File.expand_path("../csharp/#{class_file_name}.cs.erb", __FILE__))
         File.write("#{path}/#{class_file_name}.cs", reformat(erb.result(binding)))
@@ -101,23 +102,6 @@ module GraphQLGenerator
 
     def reformat(code)
       Reformatter.new(indent: INDENTATION).reformat(code)
-    end
-
-    def response_type(type, is_list_type: false)
-      case type.kind
-      when "NON_NULL"
-        response_type(type.of_type);
-      when "SCALAR"
-        scalars[type.name].nullable_type
-      when 'LIST'
-        "List<#{graph_type_to_csharp_type(type.of_type)}>"
-      when 'ENUM'
-        "#{type.name}?"
-      when 'OBJECT', 'INTERFACE'
-        type.classify_name
-      else
-        raise NotImplementedError, "Unhandled #{type.kind} response type"
-      end
     end
 
     def graph_type_to_csharp_type(type, is_non_null: false)
@@ -188,51 +172,57 @@ module GraphQLGenerator
     def response_init_object_interface(field)
       type = field.type.unwrap_non_null
 
-      "_#{escape_reserved_word(field.name)} = new #{type.classify_name}((Dictionary<string,object>) GetJSON(\"#{field.name}\"));"
+      "new #{type.classify_name}((Dictionary<string,object>) dataJSON[\"#{field.name}\"])"
     end
 
     def response_init_scalar(field)
-      "_#{escape_reserved_word(field.name)} = (#{response_type(field.type)}) GetJSON(\"#{field.name}\");"
+      "(#{graph_type_to_csharp_type(field.type)}) dataJSON[\"#{field.name}\"]"
     end
 
     def response_init_enum(field)
       type = field.type.unwrap_non_null
       enum_type_name = field.type.unwrap_non_null.classify_name
 
-      "   _#{field.name} = GetEnumValue<#{enum_type_name}>(\"#{field.name}\");"
+      "GetEnumValue<#{enum_type_name}>(dataJSON[\"#{field.name}\"])"
     end
 
     def response_init_list(field)
       type = field.type.unwrap_non_null
 
-      "_#{escape_reserved_word(field.name)} = (List<#{response_type(type.of_type)}>) CastList((List<object>) GetJSON(\"#{field.name}\"), typeof(#{response_type(type.of_type)}));\n"
+      "(List<#{graph_type_to_csharp_type(type.of_type)}>) CastList((List<object>) dataJSON[\"#{field.name}\"], typeof(#{graph_type_to_csharp_type(type.of_type)}))"
     end
 
     def response_inits(type)
       out = ""
 
+      out << "foreach (string key in dataJSON.Keys) {\n"
+      out << "switch(key) {\n"
+
       type.fields.each do |field|
         type = field.type.unwrap_non_null
 
-        out << "if (GetJSON(\"#{field.name}\") != null) {\n" \
-
+        out << "case \"#{field.name}\":\n" \
+        
+        out << "Data.Add(\"#{field.name}\", "
         case type.kind
         when "INTERFACE", "OBJECT"     
-          out << "    #{response_init_object_interface(field)}\n"
+          out << response_init_object_interface(field)
         when "LIST"
-          out << "    #{response_init_list(field)}\n"
+          out << response_init_list(field)
         when "ENUM"
-          out << "    #{response_init_enum(field)}\n"
+          out << response_init_enum(field)
         when "SCALAR"
-          out << "    #{response_init_scalar(field)}\n"
+          out << response_init_scalar(field)
         else
           raise NotImplementedError, "Unhandled #{type.kind} init for type"
         end
 
-        out << "}\n\n"               
+        out << ");\n"
+
+        out << "break;\n\n"               
       end
 
-      out
+      out << "}\n}\n\n"
     end
   end
 end
