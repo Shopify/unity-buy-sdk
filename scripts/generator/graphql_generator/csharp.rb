@@ -202,9 +202,9 @@ module GraphQLGenerator
       type.fields.each do |field|
         type = field.type.unwrap_non_null
 
-        out << "case \"#{field.name}\":\n" \
-        
+        out << "case \"#{field.name}\":\n"
         out << "Data.Add(\"#{field.name}\", "
+        
         case type.kind
         when "INTERFACE", "OBJECT"     
           out << response_init_object_interface(field)
@@ -219,7 +219,6 @@ module GraphQLGenerator
         end
 
         out << ");\n"
-
         out << "break;\n\n"               
       end
 
