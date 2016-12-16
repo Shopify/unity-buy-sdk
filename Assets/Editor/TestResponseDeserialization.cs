@@ -37,7 +37,7 @@ namespace Shopify.Tests {
 
             Assert.IsNull(response.data);
             Assert.IsNotNull(response.errors);
-            Assert.AreEqual("Parameter Missing or Invalid", response.errors[0].Message);
+            Assert.AreEqual("Parameter Missing or Invalid", response.errors[0]);
         }
 
         [Test]
@@ -67,7 +67,7 @@ namespace Shopify.Tests {
 
             Assert.IsNull(response.data);
             Assert.IsNotNull(response.errors);
-            Assert.AreEqual("Field 'doesntExist' doesn't exist on type 'Shop'", response.errors[0].Message);
+            Assert.AreEqual("Field 'doesntExist' doesn't exist on type 'Shop'", response.errors[0]);
         }
 
         [Test]

@@ -12,14 +12,14 @@ namespace <%= namespace %> {
             }
         }
 
-        public List<Exception> errors {
+        public List<string> errors {
             get {
                 return _errors;
             }
         }
 
         private Dictionary<string,object> _data;
-        private List<Exception> _errors;
+        private List<string> _errors;
 
         public TopLevelResponse(Dictionary<string,object> dataJSON) {
             object errors;
@@ -29,7 +29,7 @@ namespace <%= namespace %> {
             dataJSON.TryGetValue(KEY_DATA, out data);
 
             if (errors != null) {
-                ParseErrors((Dictionary<string,object>) dataJSON);
+                _errors = ParseErrors((Dictionary<string,object>) dataJSON);
             } else if (data != null) {
                 _data = (Dictionary<string,object>) data;
             } else {
@@ -37,20 +37,22 @@ namespace <%= namespace %> {
             }
         }
 
-        private void ParseErrors(Dictionary<string,object> dataJSON) {
-            _errors = new List<Exception>();
+        private List<string> ParseErrors(Dictionary<string,object> dataJSON) {
+            List<string> errors = new List<string>();
 
             // there are cases where the returned errors are not an Array but are a string
             // instead. This conditional handle this.
             if (dataJSON[KEY_ERRORS] is string) {
-                _errors.Add(new Exception((string) dataJSON[KEY_ERRORS]));
+                errors.Add((string) dataJSON[KEY_ERRORS]);
             } else {
                 List<object> errorsJSON = (List<object>) dataJSON[KEY_ERRORS];
 
                 foreach(Dictionary<string,object> error in errorsJSON) {
-                    _errors.Add(new Exception((string) error["message"]));
+                    errors.Add((string) error["message"]);
                 }
             }
+
+            return errors;
         }
     }
 }
