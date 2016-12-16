@@ -78,6 +78,7 @@ module GraphQLGenerator
         TopLevelResponse
         AbstractResponse
         NoQueryException
+        InvalidServerResponseException
       ).each do |class_file_name|
         erb = CSharp::erb_for(File.expand_path("../csharp/#{class_file_name}.cs.erb", __FILE__))
         File.write("#{path}/#{class_file_name}.cs", reformat(erb.result(binding)))

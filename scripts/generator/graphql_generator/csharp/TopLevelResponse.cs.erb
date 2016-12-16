@@ -3,8 +3,8 @@ namespace <%= namespace %> {
     using System.Collections.Generic;
 
     public class TopLevelResponse {
-        private const string KEY_DATA = "data";
-        private const string KEY_ERRORS = "errors";
+        internal const string KEY_DATA = "data";
+        internal const string KEY_ERRORS = "errors";
 
         public Dictionary<string,object> data {
             get {
@@ -33,7 +33,7 @@ namespace <%= namespace %> {
             } else if (data != null) {
                 _data = (Dictionary<string,object>) data;
             } else {
-                throw new Exception(String.Format("Response JSON did not contain {0} or {1}", KEY_DATA, KEY_ERRORS));
+                throw new InvalidServerResponseException();
             }
         }
 
