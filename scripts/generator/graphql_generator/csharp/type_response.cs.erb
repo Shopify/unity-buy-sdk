@@ -2,7 +2,7 @@ namespace <%= namespace %> {
     using System;
     using System.Collections.Generic;
 
-    public class <%= type.classify_name %> : <%= schema.root_name?(type.name) ? "TopLevelResponse" : "AbstractResponse" %> {
+    public class <%= type.classify_name %> : AbstractResponse {
         <%# output getters for fields %>
         <% type.fields.each do |field| %>
             public <%= response_type(field.type) %> <%= escape_reserved_word(field.name) %> {
@@ -16,17 +16,11 @@ namespace <%= namespace %> {
             private <%= response_type(field.type) %> _<%= escape_reserved_word(field.name) %>;
         <% end %>
 
-        <%# If this a root type we'll call TopLevelResponse constructor %>
-        <% if schema.root_name?(type.name) %>
-            public <%= type.classify_name %>(Dictionary<string, object> dataJSON) : base(dataJSON) {
-                <%= response_inits type %>
-            }
-        <% else %>
-            public <%= type.classify_name %>(Dictionary<string, object> dataJSON) {
-                DataJSON = dataJSON;
-                
-                <%= response_inits type %>
-            }
-        <% end %>
+        <%# Constructor %>
+        public <%= type.classify_name %>(Dictionary<string, object> dataJSON) {
+            DataJSON = dataJSON;
+            
+            <%= response_inits type %>
+        }
     }
 }

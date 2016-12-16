@@ -8,12 +8,73 @@ namespace Shopify.Tests {
     [TestFixture]
     public class TestResponseDeserialization {
         [Test]
-        public void CanDeserializeBasic() {
+        public void TopLevelReturnsData() {
             string stringJSON = @"{
                 ""data"": {
                     ""shop"": { 
                         ""name"": ""test-shop""
                     }
+                }
+            }";
+
+            Dictionary<string,object> dataJSON = (Dictionary<string,object>) Json.Deserialize(stringJSON);
+
+            TopLevelResponse response = new TopLevelResponse(dataJSON);
+
+            Assert.IsNotNull(response.data);
+            Assert.IsNull(response.errors);
+        }
+
+        [Test]
+        public void TopLevelHandlesStringExceptions() {
+            string stringJSON = @"{
+                ""errors"": ""Parameter Missing or Invalid""
+            }";
+
+            Dictionary<string,object> dataJSON = (Dictionary<string,object>) Json.Deserialize(stringJSON);
+
+            TopLevelResponse response = new TopLevelResponse(dataJSON);
+
+            Assert.IsNull(response.data);
+            Assert.IsNotNull(response.errors);
+            Assert.AreEqual("Parameter Missing or Invalid", response.errors[0].Message);
+        }
+
+        [Test]
+        public void TopLevelHandlesListExceptions() {
+            string stringJSON = @"{
+                ""errors"": [
+                    {
+                        ""message"": ""Field 'doesntExist' doesn't exist on type 'Shop'"",
+                        ""locations"": [
+                            {
+                                ""line"": 3,
+                                ""column"": 5
+                            }
+                        ],
+                        ""fields"": [
+                            ""query"",
+                            ""shop"",
+                            ""doesntExist""
+                        ]
+                    }
+                ]
+            }";
+
+            Dictionary<string,object> dataJSON = (Dictionary<string,object>) Json.Deserialize(stringJSON);
+
+            TopLevelResponse response = new TopLevelResponse(dataJSON);
+
+            Assert.IsNull(response.data);
+            Assert.IsNotNull(response.errors);
+            Assert.AreEqual("Field 'doesntExist' doesn't exist on type 'Shop'", response.errors[0].Message);
+        }
+
+        [Test]
+        public void CanDeserializeBasic() {
+            string stringJSON = @"{
+                ""shop"": { 
+                    ""name"": ""test-shop""
                 }
             }";
 
@@ -27,10 +88,8 @@ namespace Shopify.Tests {
         [Test]
         public void CanDeserializeEnum() {
             string stringJSON = @"{
-                ""data"": {
-                    ""shop"": { 
-                        ""currencyCode"": ""CAD""
-                    }
+                ""shop"": { 
+                    ""currencyCode"": ""CAD""
                 }
             }";
 
@@ -44,10 +103,8 @@ namespace Shopify.Tests {
         [Test]
         public void WillReturnUnkownEnum() {
             string stringJSON = @"{
-                ""data"": {
-                    ""shop"": { 
-                        ""currencyCode"": ""I AM NOT REAL""
-                    }
+                ""shop"": { 
+                    ""currencyCode"": ""I AM NOT REAL""
                 }
             }";
 
@@ -61,15 +118,13 @@ namespace Shopify.Tests {
         [Test]
         public void CanDeserializeLists() {
             string stringJSON = @"{
-              ""data"": {
                 ""product"": {
-                  ""tags"": [
-                    ""blue"",
-                    ""button"",
-                    ""fancy""
-                  ]
+                    ""tags"": [
+                        ""blue"",
+                        ""button"",
+                        ""fancy""
+                    ]
                 }
-              }
             }";
 
             Dictionary<string,object> dataJSON = (Dictionary<string,object>) Json.Deserialize(stringJSON);
@@ -85,15 +140,13 @@ namespace Shopify.Tests {
         [Test]
         public void CanDeserializeListsWithNull() {
             string stringJSON = @"{
-              ""data"": {
                 ""product"": {
-                  ""tags"": [
-                    ""blue"",
-                    null,
-                    ""fancy""
-                  ]
+                    ""tags"": [
+                        ""blue"",
+                        null,
+                        ""fancy""
+                    ]
                 }
-              }
             }";
 
             Dictionary<string,object> dataJSON = (Dictionary<string,object>) Json.Deserialize(stringJSON);

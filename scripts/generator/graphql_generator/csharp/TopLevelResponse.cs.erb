@@ -2,11 +2,24 @@ namespace <%= namespace %> {
     using System;
     using System.Collections.Generic;
 
-    public class TopLevelResponse : AbstractResponse {
+    public class TopLevelResponse {
         private const string KEY_DATA = "data";
         private const string KEY_ERRORS = "errors";
 
-        public List<Exception> ResponseErrors;
+        public Dictionary<string,object> data {
+            get {
+                return _data;
+            }
+        }
+
+        public List<Exception> errors {
+            get {
+                return _errors;
+            }
+        }
+
+        private Dictionary<string,object> _data;
+        private List<Exception> _errors;
 
         public TopLevelResponse(Dictionary<string,object> dataJSON) {
             object errors;
@@ -18,28 +31,24 @@ namespace <%= namespace %> {
             if (errors != null) {
                 ParseErrors((Dictionary<string,object>) dataJSON);
             } else if (data != null) {
-                DataJSON = (Dictionary<string,object>) data;
+                _data = (Dictionary<string,object>) data;
             } else {
                 throw new Exception(String.Format("Response JSON did not contain {0} or {1}", KEY_DATA, KEY_ERRORS));
             }
         }
 
-        public List<Exception> Errors() {
-            return ResponseErrors;
-        }
-
         private void ParseErrors(Dictionary<string,object> dataJSON) {
-            ResponseErrors = new List<Exception>();
+            _errors = new List<Exception>();
 
             // there are cases where the returned errors are not an Array but are a string
             // instead. This conditional handle this.
             if (dataJSON[KEY_ERRORS] is string) {
-                ResponseErrors.Add(new Exception((string) dataJSON[KEY_ERRORS]));
+                _errors.Add(new Exception((string) dataJSON[KEY_ERRORS]));
             } else {
                 List<object> errorsJSON = (List<object>) dataJSON[KEY_ERRORS];
 
                 foreach(Dictionary<string,object> error in errorsJSON) {
-                    ResponseErrors.Add(new Exception((string) error["message"]));
+                    _errors.Add(new Exception((string) error["message"]));
                 }
             }
         }
