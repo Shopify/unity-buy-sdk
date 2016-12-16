@@ -9,7 +9,11 @@ namespace <%= namespace %> {
         protected T GetEnumValue<T>(object jsonValue) where T : struct, IConvertible {
             T enumValue;
 
-            Enum.TryParse((string) jsonValue, out enumValue);
+            try {
+                enumValue = (T) Enum.Parse(typeof(T), (string) jsonValue);
+            } catch(ArgumentException) {
+                enumValue = (T) Enum.Parse(typeof(T), "UNKNOWN");
+            }
 
             return enumValue;
         }
