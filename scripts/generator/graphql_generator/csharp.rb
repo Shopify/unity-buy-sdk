@@ -32,7 +32,7 @@ module GraphQLGenerator
     TYPE_RESPONSE_ERB = erb_for(File.expand_path("../csharp/type_response.cs.erb", __FILE__))
 
     INDENTATION = " " * 4
-    ALIAS_SUFFIX = "__"
+    ALIAS_SUFFIX = "___"
 
     RESERVED_WORDS = [
       "abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char", "checked", "class", "const", "continue", "decimal", "default", "delegate", "do", "double", "else", "enum", "event", "explicit", "extern", "false", "finally", "fixed", "float", "for", "foreach", "goto", "if", "implicit", "in", "int", "interface", "internal", "is", "lock", "long", "namespace", "new", "null", "object", "operator", "out",  "override", "params", "private", "protected", "public", "readonly", "ref", "return", "sbyte", "sealed", "short", "sizeof", "stackalloc", "static", "string","struct", "switch", "this", "throw", "true", "try", "typeof", "uint", "ulong", "unchecked", "unsafe", "ushort", "using", "virtual", "void", "volatile", "while", "query"
@@ -177,7 +177,7 @@ module GraphQLGenerator
     def response_init_object(field)
       type = field.type.unwrap_non_null
 
-      "new #{type.classify_name}((Dictionary<string,object>) dataJSON[\"#{field.name}\"])"
+      "new #{type.classify_name}((Dictionary<string,object>) dataJSON[key])"
     end
 
     def response_init_interface(field)
@@ -187,20 +187,20 @@ module GraphQLGenerator
     end
 
     def response_init_scalar(field)
-      "(#{graph_type_to_csharp_type(field.type)}) dataJSON[\"#{field.name}\"]"
+      "(#{graph_type_to_csharp_type(field.type)}) dataJSON[key]"
     end
 
     def response_init_enum(field)
       type = field.type.unwrap_non_null
       enum_type_name = field.type.unwrap_non_null.classify_name
 
-      "CastUtils.GetEnumValue<#{enum_type_name}>(dataJSON[\"#{field.name}\"])"
+      "CastUtils.GetEnumValue<#{enum_type_name}>(dataJSON[key])"
     end
 
     def response_init_list(field)
       type = field.type.unwrap_non_null
 
-      "CastUtils.CastList<List<#{graph_type_to_csharp_type(type.of_type)}>>((IList) dataJSON[\"#{field.name}\"])"
+      "CastUtils.CastList<List<#{graph_type_to_csharp_type(type.of_type)}>>((IList) dataJSON[key])"
     end
   end
 end

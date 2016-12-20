@@ -31,13 +31,24 @@ namespace <%= namespace %> {
         <%# Constructor %>
         public <%= "Unknown" if type.interface? %><%= type.classify_name %>(Dictionary<string, object> dataJSON) {
             Data = new Dictionary<string,object>();
-            
+        
             foreach (string key in dataJSON.Keys) {
-                switch(key) {
+                string dataName = key;
+                string fieldName = key;
+                Regex regexAlias = new Regex("(.+)<%= ALIAS_SUFFIX %>(.+)");
+
+                if (regexAlias.IsMatch(key)) {
+                    Match match = regexAlias.Match(key);
+
+                    dataName = match.Groups[1].Value;
+                    fieldName = match.Groups[2].Value;
+                }
+
+                switch(fieldName) {
                     <% type.fields.each do |field| %>
                     case "<%= field.name %>":
                         Data.Add(
-                            "<%= field.name %>",
+                            dataName,
                             <% case field.type.unwrap_non_null.kind
                                when "OBJECT" %>
                                 <%= response_init_object(field) %>
