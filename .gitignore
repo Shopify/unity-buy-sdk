@@ -13,6 +13,7 @@ Assets/Shopify/Unity/AbstractResponse.*
 Assets/Shopify/Unity/TopLevelResponse.*
 Assets/Shopify/Unity/InvalidServerResponseException.*
 Assets/Shopify/Unity/NoQueryException.*
+Assets/Shopify/Unity/CastUtils.*
 
 ####### Test files
 test.dll

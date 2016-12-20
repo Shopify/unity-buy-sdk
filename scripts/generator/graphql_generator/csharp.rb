@@ -77,6 +77,7 @@ module GraphQLGenerator
         InputValueToString
         TopLevelResponse
         AbstractResponse
+        CastUtils
         NoQueryException
         InvalidServerResponseException
       ).each do |class_file_name|
@@ -184,13 +185,13 @@ module GraphQLGenerator
       type = field.type.unwrap_non_null
       enum_type_name = field.type.unwrap_non_null.classify_name
 
-      "GetEnumValue<#{enum_type_name}>(dataJSON[\"#{field.name}\"])"
+      "CastUtils.GetEnumValue<#{enum_type_name}>(dataJSON[\"#{field.name}\"])"
     end
 
     def response_init_list(field)
       type = field.type.unwrap_non_null
 
-      "(List<#{graph_type_to_csharp_type(type.of_type)}>) CastList((List<object>) dataJSON[\"#{field.name}\"], typeof(#{graph_type_to_csharp_type(type.of_type)}))"
+      "CastUtils.CastList<List<#{graph_type_to_csharp_type(type.of_type)}>>((IList) dataJSON[\"#{field.name}\"])"
     end
 
     def response_inits(type)

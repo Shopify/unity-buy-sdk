@@ -1,5 +1,6 @@
 namespace <%= namespace %> {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
 
     public class <%= type.classify_name %> : AbstractResponse {
@@ -16,10 +17,6 @@ namespace <%= namespace %> {
             }
         <% end %>
         
-        <% type.fields.each do |field| %>
-            private <%= graph_type_to_csharp_type(field.type) %> _<%= escape_reserved_word(field.name) %>;
-        <% end %>
-
         <%# Constructor %>
         public <%= type.classify_name %>(Dictionary<string, object> dataJSON) {
             Data = new Dictionary<string,object>();
