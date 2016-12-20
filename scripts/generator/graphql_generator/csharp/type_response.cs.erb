@@ -21,7 +21,29 @@ namespace <%= namespace %> {
         public <%= type.classify_name %>(Dictionary<string, object> dataJSON) {
             Data = new Dictionary<string,object>();
             
-            <%= response_inits type %>
+            foreach (string key in dataJSON.Keys) {
+                switch(key) {
+                    <% type.fields.each do |field| %>
+                    case "<%= field.name %>":
+                        Data.Add(
+                            "<%= field.name %>",
+                            <% case field.type.unwrap_non_null.kind
+                               when "INTERFACE", "OBJECT" %>
+                                <%= response_init_object_interface(field) %>
+                            <% when "LIST" %>
+                                <%= response_init_list(field) %>
+                            <% when "ENUM" %>
+                                <%= response_init_enum(field) %>
+                            <% when "SCALAR" %>
+                                <%= response_init_scalar(field) %>
+                            <% else %>
+                                <% raise NotImplementedError, "Unhandled #{type.kind} init for type" %>
+                            <% end %>
+                        );
+                    break;
+                    <% end %>
+                }
+            }
         }
     }
 }

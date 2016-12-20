@@ -193,37 +193,5 @@ module GraphQLGenerator
 
       "CastUtils.CastList<List<#{graph_type_to_csharp_type(type.of_type)}>>((IList) dataJSON[\"#{field.name}\"])"
     end
-
-    def response_inits(type)
-      out = ""
-
-      out << "foreach (string key in dataJSON.Keys) {\n"
-      out << "switch(key) {\n"
-
-      type.fields.each do |field|
-        type = field.type.unwrap_non_null
-
-        out << "case \"#{field.name}\":\n"
-        out << "Data.Add(\"#{field.name}\", "
-        
-        case type.kind
-        when "INTERFACE", "OBJECT"     
-          out << response_init_object_interface(field)
-        when "LIST"
-          out << response_init_list(field)
-        when "ENUM"
-          out << response_init_enum(field)
-        when "SCALAR"
-          out << response_init_scalar(field)
-        else
-          raise NotImplementedError, "Unhandled #{type.kind} init for type"
-        end
-
-        out << ");\n"
-        out << "break;\n\n"               
-      end
-
-      out << "}\n}\n\n"
-    end
   end
 end
