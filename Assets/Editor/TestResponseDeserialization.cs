@@ -35,7 +35,7 @@ namespace Shopify.Tests {
             Dictionary<string,object> dataJSON = (Dictionary<string,object>) Json.Deserialize(stringJSON);
 
             try {
-                TopLevelResponse response = new TopLevelResponse(dataJSON);
+                new TopLevelResponse(dataJSON);
             } catch(InvalidServerResponseException error) {
                 caughtError = error;
             }

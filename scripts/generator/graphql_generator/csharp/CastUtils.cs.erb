@@ -32,8 +32,6 @@ namespace <%= namespace %> {
                 if (item == null) {
                     outList.Add(null);
                 } else {
-                    Type itemType = item.GetType();
-                
                     if (item is IList) {
                         outList.Add(CastList((IList) item, listType.GetGenericArguments()[0]));
                     } else if(outItemType.IsEnum) {
