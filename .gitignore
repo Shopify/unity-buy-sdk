@@ -14,6 +14,7 @@ Assets/Shopify/Unity/TopLevelResponse.*
 Assets/Shopify/Unity/InvalidServerResponseException.*
 Assets/Shopify/Unity/NoQueryException.*
 Assets/Shopify/Unity/CastUtils.*
+Assets/Shopify/Unity/ValidationUtils.*
 Assets/Shopify/Unity/AliasException.*
 
 ####### Test files

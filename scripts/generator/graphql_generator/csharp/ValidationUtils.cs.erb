@@ -1,0 +1,11 @@
+namespace <%= namespace %> {
+    using System.Text.RegularExpressions;
+
+    public class ValidationUtils {
+        public static bool IsAliasNameValid(string alias) {
+            Regex regex = new Regex("[_A-Za-z][_0-9A-Za-z]+");
+
+            return regex.IsMatch(alias);
+        }
+    }
+}

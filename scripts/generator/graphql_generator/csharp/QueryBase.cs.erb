@@ -15,6 +15,8 @@ namespace <%= namespace %> {
                 throw new AliasException("You must call `withAlias` then select a field. ex. shop.withAlias(\"myShopName\").name()");
             } else if (String.IsNullOrEmpty(alias)) {
                 throw new AliasException("When using `withAlias` you must pass in a string which is the alias name");
+            } else if (!ValidationUtils.IsAliasNameValid(alias)) {
+                throw new AliasException("Alias name was invalid format");
             }
 
             CurrentAlias = alias;

@@ -80,6 +80,7 @@ module GraphQLGenerator
         TopLevelResponse
         AbstractResponse
         CastUtils
+        ValidationUtils
         NoQueryException
         InvalidServerResponseException
         AliasException

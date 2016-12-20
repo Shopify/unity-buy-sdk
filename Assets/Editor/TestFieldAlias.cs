@@ -1,5 +1,6 @@
 namespace Shopify.Tests
 {
+    using System;
     using System.Collections.Generic;
     using NUnit.Framework;
     using Shopify.Unity;
@@ -22,7 +23,7 @@ namespace Shopify.Tests
         }
 
         [Test]
-        public void ExceptionIsThrownForBlankAlias() {
+        public void ExceptionIsThrownForBlankAliasInQuery() {
             QueryRootQuery query = Root.buildQuery();
             AliasException caughtError = null;
 
@@ -56,6 +57,23 @@ namespace Shopify.Tests
         }
 
         [Test]
+        public void ExceptionIsThrownForInvalidAliasNameForQuery() {
+            QueryRootQuery query = Root.buildQuery();
+            AliasException caughtError = null;
+
+            try {
+                query.shop(s => s
+                    .name()
+                    .withAlias("$$$$").withAlias("more").description()
+                );
+            } catch(AliasException error) {
+                caughtError = error;
+            }
+
+            Assert.AreEqual("Alias name was invalid format", caughtError.Message);
+        }
+
+        [Test]
         public void DeserializeAliasedField() {
             string stringJSON = @"{
                 ""aliasName___name"": ""test-shop""
@@ -69,7 +87,7 @@ namespace Shopify.Tests
         }
 
         [Test]
-        public void DeserializeAliasedFieldWhichWasNotQueried() {
+        public void ThrowsExceptionAliasedFieldWhichWasNotQueried() {
             string stringJSON = @"{
                 ""name"": ""test-shop""
             }";
@@ -87,6 +105,48 @@ namespace Shopify.Tests
 
             Assert.IsNotNull(caughtError);
             Assert.AreEqual("It looks like you did not query the field `currencyCode` with alias `aliasName`", caughtError.Message);
+        }
+
+        [Test]
+        public void ExceptionIsThrownForInvalidAliasNameForResponse() {
+            AliasException caughtError = null;
+            string stringJSON = @"{
+                ""aliasName___name"": ""test-shop""
+            }";
+
+            Dictionary<string,object> dataJSON = (Dictionary<string,object>) Json.Deserialize(stringJSON);
+            
+            Shop response = new Shop(dataJSON);
+
+            try {
+                Assert.AreEqual("test-shop", response.withAlias("$$$").name);
+            } catch(AliasException error) {
+                caughtError = error;
+            }
+
+            Assert.IsNotNull(caughtError);
+            Assert.AreEqual("Alias name was invalid format", caughtError.Message);
+        }
+
+        [Test]
+        public void ExceptionIsThrownForBlankAliasInResponse() {
+            AliasException caughtError = null;
+            string stringJSON = @"{
+                ""aliasName___name"": ""test-shop""
+            }";
+
+            Dictionary<string,object> dataJSON = (Dictionary<string,object>) Json.Deserialize(stringJSON);
+            
+            Shop response = new Shop(dataJSON);
+
+            try {
+                Assert.AreEqual("test-shop", response.withAlias("").name);
+            } catch(AliasException error) {
+                caughtError = error;
+            }
+
+            Assert.IsNotNull(caughtError);
+            Assert.AreEqual("When using `withAlias` you must pass in a string which is the alias name", caughtError.Message);
         }
     }
 }
