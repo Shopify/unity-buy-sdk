@@ -28,7 +28,7 @@ namespace <%= namespace %> {
 
             <%# now create methods to add fields to queries %>
             <% type.fields.each do |field| %>
-                public <%= type.classify_name %>Query <%= escape_reserved_word(field.name) %>(<%= get_field_args(field) %>) {
+                public <%= type.classify_name %>Query <%= escape_reserved_word(field.name) %>(<%= field_args(field) %>) {
                     Query.Append("<%= field.name %> ");
                 
                     <%# now we we want to handle generating arguments %>
@@ -83,7 +83,7 @@ namespace <%= namespace %> {
         /* This is an input object */
         public class <%= type.classify_name %> : InputBase {
             <%# create a constructor for the input type %>
-            public <%= type.classify_name %>(<%= get_input_args(type) %>) {
+            public <%= type.classify_name %>(<%= input_args(type) %>) {
                 <%# handle adding required fields %>
                 <% type.required_input_fields.each do |field| %>
                     Add("<%= field.name %>", <%= escape_reserved_word(field.name) %>);
@@ -99,7 +99,7 @@ namespace <%= namespace %> {
         }
     <% when 'ENUM' %>
         public enum <%= type.classify_name %> {
-            <%= type.enum_values.map{ |enum| enum.name }.push("UNKNOWN").join(", ") %>
+            <%= type.enum_values.map{ |enum| enum.name }.unshift("UNKNOWN").join(", ") %>
         }
     <% end %>
 }

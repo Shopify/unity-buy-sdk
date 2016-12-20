@@ -9,6 +9,11 @@ Assets/Shopify/Unity/InputBase.*
 Assets/Shopify/Unity/InputValueToString.*
 Assets/Shopify/Unity/QueryBase.*
 Assets/Shopify/Unity/Root.*
+Assets/Shopify/Unity/AbstractResponse.*
+Assets/Shopify/Unity/TopLevelResponse.*
+Assets/Shopify/Unity/InvalidServerResponseException.*
+Assets/Shopify/Unity/NoQueryException.*
+Assets/Shopify/Unity/CastUtils.*
 
 ####### Test files
 test.dll

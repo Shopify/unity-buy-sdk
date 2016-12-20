@@ -28,11 +28,8 @@ module GraphQLGenerator
       end
     end
     
-    ROOT_ERB = erb_for(File.expand_path("../csharp/root.cs.erb", __FILE__))
     TYPE_ERB = erb_for(File.expand_path("../csharp/type.cs.erb", __FILE__))
-    ARGUMENTS_ERB = erb_for(File.expand_path("../csharp/arguments.cs.erb", __FILE__))
-    INPUT_BASE_ERB = erb_for(File.expand_path("../csharp/input_base.cs.erb", __FILE__))
-    INPUT_VALUE_TO_STRING = erb_for(File.expand_path("../csharp/input_value_to_string.cs.erb", __FILE__))
+    TYPE_RESPONSE_ERB = erb_for(File.expand_path("../csharp/type_response.cs.erb", __FILE__))
 
     INDENTATION = " " * 4
 
@@ -72,25 +69,32 @@ module GraphQLGenerator
       rescue Errno::EEXIST
       end
 
-      # output root file
-      File.write("#{path}/Root.cs", reformat(ROOT_ERB.result(binding)))
+      # output classes on root
+      %w(
+        Root
+        Arguments
+        InputBase
+        InputValueToString
+        TopLevelResponse
+        AbstractResponse
+        CastUtils
+        NoQueryException
+        InvalidServerResponseException
+      ).each do |class_file_name|
+        erb = CSharp::erb_for(File.expand_path("../csharp/#{class_file_name}.cs.erb", __FILE__))
+        File.write("#{path}/#{class_file_name}.cs", reformat(erb.result(binding)))
+      end
 
-      # output base classes
-      File.write("#{path}/Arguments.cs", reformat(ARGUMENTS_ERB.result(binding)))
-      File.write("#{path}/InputBase.cs", reformat(INPUT_BASE_ERB.result(binding)))
-      File.write("#{path}/InputValueToString.cs", reformat(INPUT_VALUE_TO_STRING.result(binding)))
-
+      # output type definitions
       schema.types.reject{ |type| type.builtin? || type.scalar? }.each do |type|
-        if type.object?
-          File.write("#{path_types}/#{type.name}Query.cs", generate_type(type))
-        else
-          File.write("#{path_types}/#{type.name}.cs", generate_type(type))
+        # output 
+        if type.object? || type.interface?
+          File.write("#{path_types}/#{type.name}Query.cs", reformat(TYPE_ERB.result(binding)))
+          File.write("#{path_types}/#{type.name}.cs", reformat(TYPE_RESPONSE_ERB.result(binding)))
+        elsif type.input_object? || type.kind == 'ENUM'
+          File.write("#{path_types}/#{type.name}.cs", reformat(TYPE_ERB.result(binding)))
         end 
       end
-    end 
-
-    def generate_type(type)
-      reformat(TYPE_ERB.result(binding))
     end 
 
     def escape_reserved_word(word)
@@ -102,18 +106,17 @@ module GraphQLGenerator
       Reformatter.new(indent: INDENTATION).reformat(code)
     end
 
-    # will return a C# type from a GraphQL type
-    def get_arg_type(type, is_non_null: false)
+    def graph_type_to_csharp_type(type, is_non_null: false)
       case type.kind
       when "NON_NULL"
-        get_arg_type(type.of_type, is_non_null: true);
+        graph_type_to_csharp_type(type.of_type, is_non_null: true);
       when "SCALAR"
         is_non_null ? scalars[type.name].non_nullable_type : scalars[type.name].nullable_type
       when 'LIST'
-        "List<#{get_arg_type(type.of_type)}>"
+        "List<#{graph_type_to_csharp_type(type.of_type)}>"
       when 'ENUM'
         is_non_null ? type.name : "#{type.name}?"
-      when 'INPUT_OBJECT'
+      when 'INPUT_OBJECT', 'OBJECT', 'INTERFACE'
         type.classify_name
       else
         raise NotImplementedError, "Unhandled #{type.kind} input type"
@@ -121,8 +124,8 @@ module GraphQLGenerator
     end
 
     # will return an arg definition from a graphql type
-    def get_arg_type_and_name(arg)
-      type = get_arg_type(arg.type)
+    def arg_type_and_name(arg)
+      type = graph_type_to_csharp_type(arg.type)
 
       arg_string = "#{type} #{escape_reserved_word(arg.name)}"
       arg_string << " = null" unless arg.type.non_null?
@@ -130,7 +133,7 @@ module GraphQLGenerator
       arg_string
     end
 
-    def get_field_args(field)
+    def field_args(field)
       # we want to setup arguments for queries here
       args = []
   
@@ -140,32 +143,55 @@ module GraphQLGenerator
 
       # now we want to setup required args if there are any
       field.required_args.each do |field|
-          args << "#{get_arg_type_and_name(field)}"
+          args << "#{arg_type_and_name(field)}"
       end
 
       # now handle optional args
       field.optional_args.each do |field|
-          args << "#{get_arg_type_and_name(field)}"
+          args << "#{arg_type_and_name(field)}"
       end
 
       args.join(",")
     end
     
-    def get_input_args(type)
+    def input_args(type)
       # we want to setup arguments for queries here
       args = []
 
       # now we want to setup required args if there are any
       type.required_input_fields.each do |field|
-          args << "#{get_arg_type_and_name(field)}"
+          args << "#{arg_type_and_name(field)}"
       end
 
       # now handle optional args
       type.optional_input_fields.each do |field|
-          args << "#{get_arg_type_and_name(field)}"
+          args << "#{arg_type_and_name(field)}"
       end
 
       args.join(",")
+    end
+
+    def response_init_object_interface(field)
+      type = field.type.unwrap_non_null
+
+      "new #{type.classify_name}((Dictionary<string,object>) dataJSON[\"#{field.name}\"])"
+    end
+
+    def response_init_scalar(field)
+      "(#{graph_type_to_csharp_type(field.type)}) dataJSON[\"#{field.name}\"]"
+    end
+
+    def response_init_enum(field)
+      type = field.type.unwrap_non_null
+      enum_type_name = field.type.unwrap_non_null.classify_name
+
+      "CastUtils.GetEnumValue<#{enum_type_name}>(dataJSON[\"#{field.name}\"])"
+    end
+
+    def response_init_list(field)
+      type = field.type.unwrap_non_null
+
+      "CastUtils.CastList<List<#{graph_type_to_csharp_type(type.of_type)}>>((IList) dataJSON[\"#{field.name}\"])"
     end
   end
 end

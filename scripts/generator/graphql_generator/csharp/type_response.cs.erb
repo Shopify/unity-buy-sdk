@@ -1,0 +1,49 @@
+namespace <%= namespace %> {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
+    public class <%= type.classify_name %> : AbstractResponse {
+        <%# output getters for fields %>
+        <% type.fields.each do |field| %>
+            public <%= graph_type_to_csharp_type(field.type) %> <%= escape_reserved_word(field.name) %> {
+                get {
+                    if (Data.ContainsKey("<%= field.name %>")) {
+                        return (<%= graph_type_to_csharp_type(field.type) %>) Data["<%= field.name %>"];
+                    } else {
+                        throw new NoQueryException("<%= field.name %>");
+                    }
+                }
+            }
+        <% end %>
+        
+        <%# Constructor %>
+        public <%= type.classify_name %>(Dictionary<string, object> dataJSON) {
+            Data = new Dictionary<string,object>();
+            
+            foreach (string key in dataJSON.Keys) {
+                switch(key) {
+                    <% type.fields.each do |field| %>
+                    case "<%= field.name %>":
+                        Data.Add(
+                            "<%= field.name %>",
+                            <% case field.type.unwrap_non_null.kind
+                               when "INTERFACE", "OBJECT" %>
+                                <%= response_init_object_interface(field) %>
+                            <% when "LIST" %>
+                                <%= response_init_list(field) %>
+                            <% when "ENUM" %>
+                                <%= response_init_enum(field) %>
+                            <% when "SCALAR" %>
+                                <%= response_init_scalar(field) %>
+                            <% else %>
+                                <% raise NotImplementedError, "Unhandled #{type.kind} init for type" %>
+                            <% end %>
+                        );
+                    break;
+                    <% end %>
+                }
+            }
+        }
+    }
+}
