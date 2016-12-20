@@ -2,10 +2,6 @@ namespace <%= namespace %> {
     using System;
 
     public class InvalidServerResponseException : Exception {
-        public InvalidServerResponseException(string message) : base(GetMessage(message)) {}
-
-        private static string GetMessage(string message) {
-            return message;
-        }
+        public InvalidServerResponseException(string message) : base(message) {}
     }
 }
