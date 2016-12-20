@@ -31,13 +31,17 @@ namespace Shopify.Tests {
                 ""errors"": ""Parameter Missing or Invalid""
             }";
 
+            InvalidServerResponseException caughtError = null;
             Dictionary<string,object> dataJSON = (Dictionary<string,object>) Json.Deserialize(stringJSON);
 
-            TopLevelResponse response = new TopLevelResponse(dataJSON);
+            try {
+                TopLevelResponse response = new TopLevelResponse(dataJSON);
+            } catch(InvalidServerResponseException error) {
+                caughtError = error;
+            }
 
-            Assert.IsNull(response.data);
-            Assert.IsNotNull(response.errors);
-            Assert.AreEqual("Parameter Missing or Invalid", response.errors[0]);
+            Assert.IsNotNull(caughtError);
+            Assert.AreEqual("Response JSON at `errors` did not contain an Array of Object's", caughtError.Message);
         }
 
         [Test]

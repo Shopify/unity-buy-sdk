@@ -2,10 +2,10 @@ namespace <%= namespace %> {
     using System;
 
     public class InvalidServerResponseException : Exception {
-        public InvalidServerResponseException() : base(GetMessage()) {}
+        public InvalidServerResponseException(string message) : base(GetMessage(message)) {}
 
-        private static string GetMessage() {
-            return String.Format(String.Format("Response JSON did not contain {0} or {1}", TopLevelResponse.KEY_DATA, TopLevelResponse.KEY_ERRORS));
+        private static string GetMessage(string message) {
+            return message;
         }
     }
 }
