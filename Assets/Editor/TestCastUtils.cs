@@ -47,7 +47,7 @@ namespace Shopify.Tests
                 new List<object>() { "Toronto", "Seinäjoki", "Vancouver" }
             };
 
-            List<List<string>> castList = (List<List<string>>) CastUtils.CastList(list, typeof(List<List<string>>));
+            List<List<string>> castList = CastUtils.CastList<List<List<string>>>(list);
 
             CollectionAssert.AreEqual(list, castList);
         }

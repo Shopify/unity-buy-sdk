@@ -5,12 +5,16 @@ namespace <%= namespace %> {
 
     public class CastUtils {
         public static T GetEnumValue<T>(object jsonValue) where T : struct, IConvertible {
-            T enumValue;
+            return (T) GetEnumValue(jsonValue, typeof(T));
+        }
+
+        private static object GetEnumValue(object jsonValue, Type enumType) {
+            object enumValue;
 
             try {
-                enumValue = (T) Enum.Parse(typeof(T), (string) jsonValue);
+                enumValue = Enum.Parse(enumType, (string) jsonValue);
             } catch(ArgumentException) {
-                enumValue = (T) Enum.Parse(typeof(T), "UNKNOWN");
+                enumValue = Enum.Parse(enumType, "UNKNOWN");
             }
 
             return enumValue;
@@ -20,7 +24,7 @@ namespace <%= namespace %> {
             return (T) CastList(list, typeof(T));
         }
 
-        public static object CastList(IList list, Type listType) {
+        private static object CastList(IList list, Type listType) {
             IList outList = (IList) Activator.CreateInstance(listType);
             Type outItemType = listType.GetGenericArguments()[0];
 
@@ -33,11 +37,7 @@ namespace <%= namespace %> {
                     if (item is IList) {
                         outList.Add(CastList((IList) item, listType.GetGenericArguments()[0]));
                     } else if(outItemType.IsEnum) {
-                        try {
-                            outList.Add(Enum.Parse(outItemType, (string) item));
-                        } catch(ArgumentException) {
-                            outList.Add(Enum.Parse(outItemType, "UNKNOWN"));
-                        }
+                        outList.Add(GetEnumValue(item, outItemType));
                     } else if(outItemType.IsValueType) {
                         outList.Add(Convert.ChangeType(item, outItemType));
                     } else if(outItemType.IsClass) {
