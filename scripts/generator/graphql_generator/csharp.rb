@@ -32,6 +32,7 @@ module GraphQLGenerator
     TYPE_RESPONSE_ERB = erb_for(File.expand_path("../csharp/type_response.cs.erb", __FILE__))
 
     INDENTATION = " " * 4
+    ALIAS_SUFFIX = "__"
 
     RESERVED_WORDS = [
       "abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char", "checked", "class", "const", "continue", "decimal", "default", "delegate", "do", "double", "else", "enum", "event", "explicit", "extern", "false", "finally", "fixed", "float", "for", "foreach", "goto", "if", "implicit", "in", "int", "interface", "internal", "is", "lock", "long", "namespace", "new", "null", "object", "operator", "out",  "override", "params", "private", "protected", "public", "readonly", "ref", "return", "sbyte", "sealed", "short", "sizeof", "stackalloc", "static", "string","struct", "switch", "this", "throw", "true", "try", "typeof", "uint", "ulong", "unchecked", "unsafe", "ushort", "using", "virtual", "void", "volatile", "while", "query"
@@ -72,6 +73,7 @@ module GraphQLGenerator
       # output classes on root
       %w(
         Root
+        QueryBase
         Arguments
         InputBase
         InputValueToString
@@ -80,6 +82,7 @@ module GraphQLGenerator
         CastUtils
         NoQueryException
         InvalidServerResponseException
+        AliasException
       ).each do |class_file_name|
         erb = CSharp::erb_for(File.expand_path("../csharp/#{class_file_name}.cs.erb", __FILE__))
         File.write("#{path}/#{class_file_name}.cs", reformat(erb.result(binding)))

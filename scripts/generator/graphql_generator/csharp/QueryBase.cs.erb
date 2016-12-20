@@ -1,0 +1,35 @@
+namespace <%= namespace %> {
+    using System;
+    using System.Text;
+
+    public class QueryBase {
+        protected StringBuilder Query;
+        protected string CurrentAlias;
+
+        public QueryBase(StringBuilder query) {
+            Query = query;
+        }
+
+        protected QueryBase withAlias(string alias) {
+            if (CurrentAlias != null) {
+                throw new AliasException("You must call `withAlias` then select a field. ex. shop.withAlias(\"myShopName\").name()");
+            } else if (String.IsNullOrEmpty(alias)) {
+                throw new AliasException("When using `withAlias` you must pass in a string which is the alias name");
+            }
+
+            CurrentAlias = alias;
+
+            return this;
+        }
+
+        protected void StartField(string fieldName) {
+            if (CurrentAlias != null) {
+                Query.AppendFormat("{0}<%= ALIAS_SUFFIX %>{1}:", CurrentAlias, fieldName);
+                
+                CurrentAlias = null;
+            }
+
+            Query.Append(String.Format("{0} ", fieldName));
+        }
+    }
+}
