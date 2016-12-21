@@ -29,8 +29,7 @@ module GraphQLGenerator
     end
     
     TYPE_ERB = erb_for(File.expand_path("../csharp/type.cs.erb", __FILE__))
-    RESPONSE_OBJECT_ERB = erb_for(File.expand_path("../csharp/response_object.cs.erb", __FILE__))
-    RESPONSE_INTERFACE_ERB = erb_for(File.expand_path("../csharp/response_interface.cs.erb", __FILE__))
+    TYPE_RESPONSE_ERB = erb_for(File.expand_path("../csharp/type_response.cs.erb", __FILE__))
 
     INDENTATION = " " * 4
 
@@ -89,12 +88,9 @@ module GraphQLGenerator
       # output type definitions
       schema.types.reject{ |type| type.builtin? || type.scalar? }.each do |type|
         # output 
-        if type.object?
+        if type.object? || type.interface?
           File.write("#{path_types}/#{type.name}Query.cs", reformat(TYPE_ERB.result(binding)))
-          File.write("#{path_types}/#{type.name}.cs", reformat(RESPONSE_OBJECT_ERB.result(binding)))
-        elsif type.interface?
-          File.write("#{path_types}/#{type.name}Query.cs", reformat(TYPE_ERB.result(binding)))
-          File.write("#{path_types}/#{type.name}.cs", reformat(RESPONSE_INTERFACE_ERB.result(binding)))
+          File.write("#{path_types}/#{type.name}.cs", reformat(TYPE_RESPONSE_ERB.result(binding)))
         elsif type.input_object? || type.kind == 'ENUM'
           File.write("#{path_types}/#{type.name}.cs", reformat(TYPE_ERB.result(binding)))
         end 

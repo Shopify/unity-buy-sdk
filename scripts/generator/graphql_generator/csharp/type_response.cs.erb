@@ -3,27 +3,31 @@ namespace <%= namespace %> {
     using System.Collections;
     using System.Collections.Generic;
 
-    public interface <%= type.classify_name %> {
-        <% type.fields.each do |field| %>
-            <%= graph_type_to_csharp_type(field.type) %> <%= field.name %>();
-        <% end %>
-    }
-
-    public class Unknown<%= type.classify_name %> : AbstractResponse, <%= type.classify_name %> {
-        public static <%= type.classify_name %> Create(Dictionary<string, object> dataJSON) {
-            string typeName = (string) dataJSON["__typename"];
-
-            switch(typeName) {
-                <% type.possible_types.each do |possible_type| %>
-                    case "<%= possible_type.name %>":
-                        return new <%= possible_type.classify_name %>(dataJSON);
-                <% end %>
-
-                default:
-                    return new Unknown<%= type.classify_name %>(dataJSON);
-            }
+    <% if type.object? %>
+        public class <%= type.classify_name %> : AbstractResponse<%= ", " + type.interfaces.map{|interface| interface.classify_name }.join(",") if type.interfaces.any? %> {
+    <% elsif type.interface? %>
+         public interface <%= type.classify_name %> {
+            <% type.fields.each do |field| %>
+                <%= graph_type_to_csharp_type(field.type) %> <%= field.name %>();
+            <% end %>
         }
 
+        public class Unknown<%= type.classify_name %> : AbstractResponse, <%= type.classify_name %> {
+
+            public static <%= type.classify_name %> Create(Dictionary<string, object> dataJSON) {
+                string typeName = (string) dataJSON["__typename"];
+
+                switch(typeName) {
+                    <% type.possible_types.each do |possible_type| %>
+                        case "<%= possible_type.name %>":
+                            return new <%= possible_type.classify_name %>(dataJSON);
+                    <% end %>
+
+                    default:
+                        return new Unknown<%= type.classify_name %>(dataJSON);
+                }
+            }
+    <% end %>
         <%# output getters for fields %>
         <% type.fields.each do |field| %>
             public <%= graph_type_to_csharp_type(field.type) %> <%= escape_reserved_word(field.name) %>() {
@@ -36,7 +40,7 @@ namespace <%= namespace %> {
         <% end %>
         
         <%# Constructor %>
-        public Unknown<%= type.classify_name %>(Dictionary<string, object> dataJSON) {
+        public <%= "Unknown" if type.interface? %><%= type.classify_name %>(Dictionary<string, object> dataJSON) {
             Data = new Dictionary<string,object>();
             
             foreach (string key in dataJSON.Keys) {
@@ -46,8 +50,10 @@ namespace <%= namespace %> {
                         Data.Add(
                             "<%= field.name %>",
                             <% case field.type.unwrap_non_null.kind
-                               when "INTERFACE", "OBJECT" %>
-                                <%= response_init_object_interface(field) %>
+                               when "OBJECT" %>
+                                <%= response_init_object(field) %>
+                            <% when "INTERFACE" %>
+                                <%= response_init_interface(field) %>
                             <% when "LIST" %>
                                 <%= response_init_list(field) %>
                             <% when "ENUM" %>
