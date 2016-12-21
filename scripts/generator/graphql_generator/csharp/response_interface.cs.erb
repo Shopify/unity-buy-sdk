@@ -5,7 +5,7 @@ namespace <%= namespace %> {
 
     public interface <%= type.classify_name %> {
         <% type.fields.each do |field| %>
-            <%= graph_type_to_csharp_type(field.type) %> <%= field.name %>(<%= 'string alias = ""' if field.args.any? %>);
+            <%= graph_type_to_csharp_type(field.type) %> <%= field.name %>();
         <% end %>
     }
 
