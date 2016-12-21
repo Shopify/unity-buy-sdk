@@ -4,7 +4,6 @@ namespace <%= namespace %> {
     using System.Collections.Generic;
 
     <% if type.object? %>
-        
         public class <%= type.classify_name %> : AbstractResponse<%= type.interfaces.map{|interface| ", #{interface.classify_name}" }.join %> {
     <% elsif type.interface? %>
          public interface <%= type.classify_name %> {
