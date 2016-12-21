@@ -62,11 +62,7 @@ namespace <%= namespace %> {
         <%# output getters for fields %>
         <% type.fields.each do |field| %>
             public <%= graph_type_to_csharp_type(field.type) %> <%= escape_reserved_word(field.name) %>() {
-                if (Data.ContainsKey("<%= field.name %>")) {
-                    return (<%= graph_type_to_csharp_type(field.type) %>) Data["<%= field.name %>"];
-                } else {
-                    throw new NoQueryException("<%= field.name %>");
-                }
+                return Get<<%= graph_type_to_csharp_type(field.type) %>>("<%= field.name %>");
             }
         <% end %>
     }
