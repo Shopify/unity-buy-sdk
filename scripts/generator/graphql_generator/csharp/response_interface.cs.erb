@@ -1,0 +1,67 @@
+namespace <%= namespace %> {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
+    public interface <%= type.classify_name %> {
+        <% type.fields.each do |field| %>
+            <%= graph_type_to_csharp_type(field.type) %> <%= field.name %>(<%= 'string alias = ""' if field.args.any? %>);
+        <% end %>
+    }
+
+    public class Unknown<%= type.classify_name %> : AbstractResponse, <%= type.classify_name %> {
+        public static <%= type.classify_name %> Create(Dictionary<string, object> dataJSON) {
+            string typeName = (string) dataJSON["__typename"];
+
+            switch(typeName) {
+                <% type.possible_types.each do |possible_type| %>
+                    case "<%= possible_type.name %>":
+                        return new <%= possible_type.classify_name %>(dataJSON);
+                <% end %>
+
+                default:
+                    return new Unknown<%= type.classify_name %>(dataJSON);
+            }
+        }
+
+        <%# output getters for fields %>
+        <% type.fields.each do |field| %>
+            public <%= graph_type_to_csharp_type(field.type) %> <%= escape_reserved_word(field.name) %>() {
+                if (Data.ContainsKey("<%= field.name %>")) {
+                    return (<%= graph_type_to_csharp_type(field.type) %>) Data["<%= field.name %>"];
+                } else {
+                    throw new NoQueryException("<%= field.name %>");
+                }
+            }
+        <% end %>
+        
+        <%# Constructor %>
+        public Unknown<%= type.classify_name %>(Dictionary<string, object> dataJSON) {
+            Data = new Dictionary<string,object>();
+            
+            foreach (string key in dataJSON.Keys) {
+                switch(key) {
+                    <% type.fields.each do |field| %>
+                    case "<%= field.name %>":
+                        Data.Add(
+                            "<%= field.name %>",
+                            <% case field.type.unwrap_non_null.kind
+                               when "INTERFACE", "OBJECT" %>
+                                <%= response_init_object_interface(field) %>
+                            <% when "LIST" %>
+                                <%= response_init_list(field) %>
+                            <% when "ENUM" %>
+                                <%= response_init_enum(field) %>
+                            <% when "SCALAR" %>
+                                <%= response_init_scalar(field) %>
+                            <% else %>
+                                <% raise NotImplementedError, "Unhandled #{type.kind} init for type" %>
+                            <% end %>
+                        );
+                    break;
+                    <% end %>
+                }
+            }
+        }
+    }
+}

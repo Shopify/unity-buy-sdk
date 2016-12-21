@@ -23,6 +23,10 @@ namespace <%= namespace %> {
             <% else %>
                 public <%= type.classify_name %>Query(StringBuilder query) {
                     Query = query;
+
+                    <% unless type.object? %>
+                        Query.Append("__typename ");
+                    <% end %>
                 }
             <% end %>
 
