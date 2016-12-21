@@ -28,17 +28,6 @@ namespace <%= namespace %> {
                 }
             }
     <% end %>
-        <%# output getters for fields %>
-        <% type.fields.each do |field| %>
-            public <%= graph_type_to_csharp_type(field.type) %> <%= escape_reserved_word(field.name) %>() {
-                if (Data.ContainsKey("<%= field.name %>")) {
-                    return (<%= graph_type_to_csharp_type(field.type) %>) Data["<%= field.name %>"];
-                } else {
-                    throw new NoQueryException("<%= field.name %>");
-                }
-            }
-        <% end %>
-        
         <%# Constructor %>
         public <%= "Unknown" if type.interface? %><%= type.classify_name %>(Dictionary<string, object> dataJSON) {
             Data = new Dictionary<string,object>();
@@ -69,5 +58,16 @@ namespace <%= namespace %> {
                 }
             }
         }
+
+        <%# output getters for fields %>
+        <% type.fields.each do |field| %>
+            public <%= graph_type_to_csharp_type(field.type) %> <%= escape_reserved_word(field.name) %>() {
+                if (Data.ContainsKey("<%= field.name %>")) {
+                    return (<%= graph_type_to_csharp_type(field.type) %>) Data["<%= field.name %>"];
+                } else {
+                    throw new NoQueryException("<%= field.name %>");
+                }
+            }
+        <% end %>
     }
 }
