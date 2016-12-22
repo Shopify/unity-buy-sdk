@@ -19,6 +19,7 @@ Assets/Shopify/Unity/AliasException.*
 
 ####### Test files
 test.dll
+test.dll.mdb
 TestResult.xml
 /unity/
 
