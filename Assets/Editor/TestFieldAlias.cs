@@ -10,143 +10,132 @@ namespace Shopify.Tests
     public class TestFieldAlias {
         [Test]
         public void GenerateQueryWithAlias() {
-            QueryRootQuery query = Root.buildQuery();
-            query.shop(s => s
-                .name()
-                .withAlias("an_alias").description()
+            QueryRootQuery query = new QueryRootQuery();
+            query.customerAddress(
+                a => a.city(),
+                alias: "an_alias", id: "1234"
             );
 
             Assert.AreEqual(
-                "{shop {name an_alias___description:description }}",
+                @"{an_alias___customerAddress:customerAddress (id:""1234""){city }}",
                 query.ToString()
             );
         }
 
         [Test]
         public void ExceptionIsThrownForBlankAliasInQuery() {
-            QueryRootQuery query = Root.buildQuery();
             AliasException caughtError = null;
-
+            QueryRootQuery query = new QueryRootQuery();
+            
             try {
-                query.shop(s => s
-                    .name()
-                    .withAlias("").description()
+                query.customerAddress(
+                    a => a.city(),
+                    alias: "", id: "1234"
                 );
             } catch(AliasException error) {
                 caughtError = error;
             }
 
-            Assert.AreEqual("When using `withAlias` you must pass in a string which is the alias name", caughtError.Message);
-        }
-
-        [Test]
-        public void ExceptionIsThrownForTwoWithAliasCalls() {
-            QueryRootQuery query = Root.buildQuery();
-            AliasException caughtError = null;
-
-            try {
-                query.shop(s => s
-                    .name()
-                    .withAlias("something").withAlias("more").description()
-                );
-            } catch(AliasException error) {
-                caughtError = error;
-            }
-
-            Assert.AreEqual("You must call `withAlias` then select a field. ex. shop.withAlias(\"myShopName\").name()", caughtError.Message);
+            Assert.IsNotNull(caughtError);
+            Assert.AreEqual("`alias` cannot be a blank string", caughtError.Message);
         }
 
         [Test]
         public void ExceptionIsThrownForInvalidAliasNameForQuery() {
-            QueryRootQuery query = Root.buildQuery();
+            QueryRootQuery query = new QueryRootQuery();
             AliasException caughtError = null;
 
             try {
-                query.shop(s => s
-                    .name()
-                    .withAlias("$$$$").withAlias("more").description()
+                query.customerAddress(
+                    a => a.city(),
+                    alias: "$$$", id: "1234"
                 );
             } catch(AliasException error) {
                 caughtError = error;
             }
 
-            Assert.AreEqual("Alias name was invalid format", caughtError.Message);
+            Assert.IsNotNull(caughtError);
+            Assert.AreEqual("`alias` was invalid format", caughtError.Message);
         }
 
         [Test]
         public void DeserializeAliasedField() {
             string stringJSON = @"{
-                ""aliasName___name"": ""test-shop""
+                ""aliasName___customerAddress"": {
+                    ""city"": ""Toronto""
+                }
             }";
 
             Dictionary<string,object> dataJSON = (Dictionary<string,object>) Json.Deserialize(stringJSON);
             
-            Shop response = new Shop(dataJSON);
-
-            Assert.AreEqual("test-shop", response.withAlias("aliasName").name);
+            QueryRoot response = new QueryRoot(dataJSON);
+            
+            Assert.AreEqual("Toronto", response.customerAddress(alias: "aliasName").city());
         }
 
         [Test]
         public void ThrowsExceptionAliasedFieldWhichWasNotQueried() {
-            string stringJSON = @"{
-                ""name"": ""test-shop""
-            }";
+            string stringJSON = @"{}";
 
             NoQueryException caughtError = null;
             Dictionary<string,object> dataJSON = (Dictionary<string,object>) Json.Deserialize(stringJSON);
             
-            Shop response = new Shop(dataJSON);
+            QueryRoot response = new QueryRoot(dataJSON);
 
             try {
-                CurrencyCode code = response.withAlias("aliasName").currencyCode;
+                response.customerAddress(alias: "aliasName").city();
             } catch(NoQueryException error) {
                 caughtError = error;
             }
 
             Assert.IsNotNull(caughtError);
-            Assert.AreEqual("It looks like you did not query the field `currencyCode` with alias `aliasName`", caughtError.Message);
+            Assert.AreEqual("It looks like you did not query the field `customerAddress` with alias `aliasName`", caughtError.Message);
         }
 
         [Test]
         public void ExceptionIsThrownForInvalidAliasNameForResponse() {
-            AliasException caughtError = null;
             string stringJSON = @"{
-                ""aliasName___name"": ""test-shop""
+                ""aliasName___customerAddress"": {
+                    ""city"": ""Toronto""
+                }
             }";
 
+            AliasException caughtError = null;
             Dictionary<string,object> dataJSON = (Dictionary<string,object>) Json.Deserialize(stringJSON);
             
-            Shop response = new Shop(dataJSON);
+            QueryRoot response = new QueryRoot(dataJSON);
 
             try {
-                Assert.AreEqual("test-shop", response.withAlias("$$$").name);
+                response.customerAddress(alias: "$$$").city();
             } catch(AliasException error) {
                 caughtError = error;
             }
 
             Assert.IsNotNull(caughtError);
-            Assert.AreEqual("Alias name was invalid format", caughtError.Message);
+            Assert.AreEqual("`alias` was invalid format", caughtError.Message);
         }
 
         [Test]
         public void ExceptionIsThrownForBlankAliasInResponse() {
-            AliasException caughtError = null;
             string stringJSON = @"{
-                ""aliasName___name"": ""test-shop""
+                ""aliasName___customerAddress"": {
+                    ""city"": ""Toronto""
+                }
             }";
 
+            AliasException caughtError = null;
             Dictionary<string,object> dataJSON = (Dictionary<string,object>) Json.Deserialize(stringJSON);
             
-            Shop response = new Shop(dataJSON);
+            QueryRoot response = new QueryRoot(dataJSON);
 
             try {
-                Assert.AreEqual("test-shop", response.withAlias("").name);
+                response.customerAddress(alias: "").city();
             } catch(AliasException error) {
                 caughtError = error;
             }
 
             Assert.IsNotNull(caughtError);
-            Assert.AreEqual("When using `withAlias` you must pass in a string which is the alias name", caughtError.Message);
+            Assert.AreEqual("`alias` cannot be a blank string", caughtError.Message);
         }
     }
 }

@@ -1,11 +1,16 @@
 namespace <%= namespace %> {
+    using System;
     using System.Text.RegularExpressions;
 
     public class ValidationUtils {
-        public static bool IsAliasNameValid(string alias) {
+        public static void ValidateAlias(string alias) {
             Regex regex = new Regex("[_A-Za-z][_0-9A-Za-z]+");
-
-            return regex.IsMatch(alias);
+            
+            if (String.IsNullOrEmpty(alias)) {
+                throw new AliasException("`alias` cannot be a blank string");
+            } else if(!regex.IsMatch(alias)) {
+                throw new AliasException("`alias` was invalid format");
+            }
         }
     }
 }

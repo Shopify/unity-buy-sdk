@@ -1,15 +1,22 @@
 namespace <%= namespace %> {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
 
     public abstract class AbstractResponse {
         protected Dictionary<string,object> Data;
 
-        protected T Get<T>(string field) {
-            if (Data.ContainsKey(field)) {
-                return (T) Data[field];
+        protected T Get<T>(string field, string alias = null) {
+            string key = alias != null ? String.Format("{0}<%= ALIAS_SUFFIX %>{1}", alias, field) : field;
+
+            if (Data.ContainsKey(key)) {
+                return (T) Data[key];
             } else {
-                throw new NoQueryException(field);
+                if (alias != null) {
+                    throw new NoQueryException(String.Format("It looks like you did not query the field `{0}` with alias `{1}`", field, alias));
+                } else {
+                    throw new NoQueryException(String.Format("It looks like you did not query the field `{0}`", field));
+                }
             }
         }
     }

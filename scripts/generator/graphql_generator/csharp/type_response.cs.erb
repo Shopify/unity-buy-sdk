@@ -2,6 +2,7 @@ namespace <%= namespace %> {
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Text.RegularExpressions;
 
     <% if type.object? %>
         public class <%= type.classify_name %> : AbstractResponse<%= type.interfaces.map{|interface| ", #{interface.classify_name}" }.join %> {
@@ -33,22 +34,20 @@ namespace <%= namespace %> {
             Data = new Dictionary<string,object>();
         
             foreach (string key in dataJSON.Keys) {
-                string dataName = key;
                 string fieldName = key;
-                Regex regexAlias = new Regex("(.+)<%= ALIAS_SUFFIX %>(.+)");
+                Regex regexAlias = new Regex(".+<%= ALIAS_SUFFIX %>(.+)");
 
                 if (regexAlias.IsMatch(key)) {
                     Match match = regexAlias.Match(key);
 
-                    dataName = match.Groups[1].Value;
-                    fieldName = match.Groups[2].Value;
+                    fieldName = match.Groups[1].Value;
                 }
 
                 switch(fieldName) {
                     <% type.fields.each do |field| %>
                     case "<%= field.name %>":
                         Data.Add(
-                            dataName,
+                            key,
                             <% case field.type.unwrap_non_null.kind
                                when "OBJECT" %>
                                 <%= response_init_object(field) %>
@@ -72,8 +71,16 @@ namespace <%= namespace %> {
 
         <%# output getters for fields %>
         <% type.fields.each do |field| %>
-            public <%= graph_type_to_csharp_type(field.type) %> <%= escape_reserved_word(field.name) %>() {
-                return Get<<%= graph_type_to_csharp_type(field.type) %>>("<%= field.name %>");
+            public <%= graph_type_to_csharp_type(field.type) %> <%= escape_reserved_word(field.name) %>(<%= 'string alias = null' if field.args.any? %>) {
+                <% if field.args.any? %>
+                    if (alias != null) {
+                        ValidationUtils.ValidateAlias(alias);
+                    }
+
+                    return Get<<%= graph_type_to_csharp_type(field.type) %>>("<%= field.name %>", alias);
+                <% else %>
+                    return Get<<%= graph_type_to_csharp_type(field.type) %>>("<%= field.name %>");
+                <% end %>
             }
         <% end %>
     }

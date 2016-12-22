@@ -73,7 +73,6 @@ module GraphQLGenerator
       # output classes on root
       %w(
         Root
-        QueryBase
         Arguments
         InputBase
         InputValueToString
@@ -153,6 +152,10 @@ module GraphQLGenerator
       # now handle optional args
       field.optional_args.each do |field|
           args << "#{arg_type_and_name(field)}"
+      end
+
+      if field.args.any?
+        args << 'string alias = null'
       end
 
       args.join(",")

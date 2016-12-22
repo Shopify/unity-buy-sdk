@@ -33,10 +33,17 @@ namespace <%= namespace %> {
             <%# now create methods to add fields to queries %>
             <% type.fields.each do |field| %>
                 public <%= type.classify_name %>Query <%= escape_reserved_word(field.name) %>(<%= field_args(field) %>) {
-                    Query.Append("<%= field.name %> ");
-                
                     <%# now we we want to handle generating arguments %>
                     <% if field.args.any? %>
+                        if (alias != null) {
+                            ValidationUtils.ValidateAlias(alias);
+
+                            Query.Append(alias);
+                            Query.Append("<%= ALIAS_SUFFIX + field.name %>:");
+                        }
+
+                        Query.Append("<%= field.name %> ");
+
                         Arguments args = new Arguments();
 
                         <%# handle adding required args to the args generator %>
@@ -51,6 +58,8 @@ namespace <%= namespace %> {
                         <% end %>
 
                         Query.Append(args.ToString());
+                    <% else %>
+                        Query.Append("<%= field.name %> ");
                     <% end %>
 
 
