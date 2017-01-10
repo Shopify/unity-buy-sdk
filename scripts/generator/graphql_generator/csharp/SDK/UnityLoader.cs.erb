@@ -1,9 +1,57 @@
 #if UNITY_EDITOR
-namespace <%= namespace %>.SDK {
+namespace Shopify.Unity.SDK {
     using UnityEngine;
+    using System.Collections;
     using System.Collections.Generic;
-    
+
+    internal class LoaderComponent : MonoBehaviour {
+        string URL;
+        string Authorization;
+        LoaderResponse Callback;
+
+        public LoaderComponent SetURL(string url) {
+            URL = url;
+
+            return this;
+        }
+
+        public LoaderComponent SetAuthorization(string authorization) {
+            Authorization = authorization;
+
+            return this;
+        }
+
+        public void Load(string query, LoaderResponse callback) {
+            Callback = callback;
+
+            WWWForm form = new WWWForm();
+            form.headers["Content-Type"] = "application/x-www-form-urlencoded";
+            form.headers["Authorization"] = Authorization;
+
+            form.AddField("query", query);
+
+            WWW w = new WWW(URL, form);
+
+            StartCoroutine(DoWWW(w));
+        }
+
+        private IEnumerator DoWWW(WWW w) {
+            yield return w;
+
+            if (!string.IsNullOrEmpty(w.error)) {
+                Callback(null, w.error);
+            } else {
+                Callback(w.text, null);
+            }
+
+            w.Dispose();
+            MonoBehaviour.Destroy(this);
+        }
+    }
+
     public class UnityLoader : ILoader {
+        static GameObject LoaderGameObject;
+
         string URL;
         string Authorization;
 
@@ -13,21 +61,14 @@ namespace <%= namespace %>.SDK {
         }
 
         public void Load(string query, LoaderResponse callback) {
-            WWWForm form = new WWWForm();
-            form.headers["Content-Type"] = "application/x-www-form-urlencoded";
-            form.headers["Authorization"] = Authorization;
-
-            form.AddField("query", query);
-
-            WWW w = new WWW(URL, form);
-
-            yield return w;
-
-            if (!string.IsNullOrEmpty(w.error)) {
-                callback(null, w.error);
-            } else {
-                callback(w.text, null);
+            if (LoaderGameObject == null) {
+                LoaderGameObject = new GameObject();
             }
+
+            LoaderGameObject.AddComponent<LoaderComponent>()
+            .SetURL(URL)
+            .SetAuthorization(Authorization)
+            .Load(query, callback);
         }
     }
 }
