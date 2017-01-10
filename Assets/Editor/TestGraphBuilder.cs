@@ -93,7 +93,7 @@ namespace Shopify.Tests
                 id: "12345"
             );
 
-            Assert.AreEqual("{node (id:\"12345\"){...on Product{title }}}", query.ToString());
+            Assert.AreEqual("{node (id:\"12345\"){__typename ...on Product{title }}}", query.ToString());
         }
     }    
 }

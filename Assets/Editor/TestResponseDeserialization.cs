@@ -86,7 +86,7 @@ namespace Shopify.Tests {
 
             QueryRoot response = new QueryRoot(dataJSON);
 
-            Assert.AreEqual("test-shop", response.shop.name);
+            Assert.AreEqual("test-shop", response.shop().name());
         }
 
         [Test]
@@ -101,7 +101,7 @@ namespace Shopify.Tests {
 
             QueryRoot response = new QueryRoot(dataJSON);
 
-            Assert.AreEqual(CurrencyCode.CAD, response.shop.currencyCode);
+            Assert.AreEqual(CurrencyCode.CAD, response.shop().currencyCode());
         }
 
         [Test]
@@ -116,7 +116,7 @@ namespace Shopify.Tests {
 
             QueryRoot response = new QueryRoot(dataJSON);
 
-            Assert.AreEqual(CurrencyCode.UNKNOWN, response.shop.currencyCode);
+            Assert.AreEqual(CurrencyCode.UNKNOWN, response.shop().currencyCode());
         }
 
         [Test]
@@ -137,7 +137,7 @@ namespace Shopify.Tests {
 
             CollectionAssert.AreEqual(
                 new List<string>() {"blue", "button", "fancy"},
-                response.product.tags
+                response.product().tags()
             );
         }
 
@@ -159,7 +159,7 @@ namespace Shopify.Tests {
 
             CollectionAssert.AreEqual(
                 new List<string>() {"blue", null, "fancy"},
-                response.product.tags
+                response.product().tags()
             );
         }
 
@@ -177,13 +177,47 @@ namespace Shopify.Tests {
             QueryRoot response = new QueryRoot(dataJSON);
 
             try {
-                CurrencyCode code = response.shop.currencyCode;
+                CurrencyCode code = response.shop().currencyCode();
             } catch(NoQueryException e) {
                 error = e;
             }
 
             Assert.IsNotNull(error);
             Assert.AreEqual("It looks like you did not query the field: currencyCode", error.Message);
+        }
+
+        [Test]
+        public void CanDeserializeInterfaces() {
+            string stringJSON = @"{
+                ""node"": { 
+                    ""__typename"": ""Product"",
+                    ""title"": ""I AM A PRODUCT""
+                }
+            }";
+
+            Dictionary<string,object> dataJSON = (Dictionary<string,object>) Json.Deserialize(stringJSON);
+
+            QueryRoot query = new QueryRoot(dataJSON);
+
+            Assert.IsTrue(query.node() is Node);
+            Assert.IsTrue(query.node() is Product);
+        }
+
+        [Test]
+        public void InterfaceCanDeseralizeUnknownType() {
+            string stringJSON = @"{
+                ""node"": { 
+                    ""__typename"": ""IAmNotReal"",
+                    ""title"": ""I AM A PRODUCT""
+                }
+            }";
+
+            Dictionary<string,object> dataJSON = (Dictionary<string,object>) Json.Deserialize(stringJSON);
+
+            QueryRoot query = new QueryRoot(dataJSON);
+
+            Assert.IsTrue(query.node() is Node);
+            Assert.IsTrue(query.node() is UnknownNode);
         }
     }
 }

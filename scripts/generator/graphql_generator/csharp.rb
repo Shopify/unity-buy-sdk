@@ -171,10 +171,16 @@ module GraphQLGenerator
       args.join(",")
     end
 
-    def response_init_object_interface(field)
+    def response_init_object(field)
       type = field.type.unwrap_non_null
 
       "new #{type.classify_name}((Dictionary<string,object>) dataJSON[\"#{field.name}\"])"
+    end
+
+    def response_init_interface(field)
+      type = field.type.unwrap_non_null
+
+      "Unknown#{type.classify_name}.Create((Dictionary<string,object>) dataJSON[\"#{field.name}\"])"
     end
 
     def response_init_scalar(field)
