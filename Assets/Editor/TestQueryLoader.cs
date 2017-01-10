@@ -77,7 +77,7 @@ namespace Shopify.Tests {
             Assert.IsNull(response.errors);
             Assert.IsNull(response.httpError);
             Assert.IsNotNull(response.data);
-            Assert.AreEqual("test shop", response.data.shop().name());
+            Assert.AreEqual("test shop", response.data.shop.name);
         }
 
         [Test]
@@ -95,7 +95,7 @@ namespace Shopify.Tests {
             Assert.IsNull(response.errors);
             Assert.IsNull(response.httpError);
             Assert.IsNotNull(response.data);
-            Assert.AreEqual("test shop", response.data.shop().name());
+            Assert.AreEqual("test shop", response.data.shop.name);
         }
 
         [Test]
@@ -110,7 +110,7 @@ namespace Shopify.Tests {
             Assert.IsNull(response.errors);
             Assert.IsNull(response.httpError);
             Assert.IsNotNull(response.data);
-            Assert.AreEqual("12345", response.data.apiCustomerAccessTokenCreate().apiCustomerAccessToken().accessToken());
+            Assert.AreEqual("12345", response.data.apiCustomerAccessTokenCreate.apiCustomerAccessToken.accessToken);
         }
 
         [Test]
@@ -128,7 +128,7 @@ namespace Shopify.Tests {
             Assert.IsNull(response.errors);
             Assert.IsNull(response.httpError);
             Assert.IsNotNull(response.data);
-            Assert.AreEqual("test shop", response.data.shop().name());
+            Assert.AreEqual("test shop", response.data.shop.name);
         }
     }
 }

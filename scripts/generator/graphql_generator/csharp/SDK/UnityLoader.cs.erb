@@ -1,76 +1,33 @@
 #if UNITY_EDITOR
 namespace <%= namespace %>.SDK {
     using UnityEngine;
-    using System.Text;
-    using System.Collections;
     using System.Collections.Generic;
-    using <%= namespace %>.MiniJSON;
-
-    internal class LoaderComponent : MonoBehaviour {
+    
+    public class UnityLoader : ILoader {
         string URL;
         string Authorization;
-        LoaderResponse Callback;
 
-        public LoaderComponent SetURL(string url) {
+        public UnityLoader(string url, string authorization) {
             URL = url;
-
-            return this;
-        }
-
-        public LoaderComponent SetAuthorization(string authorization) {
             Authorization = authorization;
-
-            return this;
         }
 
         public void Load(string query, LoaderResponse callback) {
-            Callback = callback;
+            WWWForm form = new WWWForm();
+            form.headers["Content-Type"] = "application/x-www-form-urlencoded";
+            form.headers["Authorization"] = Authorization;
 
-            Dictionary<string,string> headers = new Dictionary<string,string>();
-            headers["Content-Type"] = "application/graphql";
-            headers["Authorization"] = Authorization;
+            form.AddField("query", query);
 
-            byte[] body = Encoding.ASCII.GetBytes(query);
+            WWW w = new WWW(URL, form);
 
-            WWW w = new WWW(URL, body, headers);
-
-            StartCoroutine(DoWWW(w));
-        }
-
-        private IEnumerator DoWWW(WWW w) {
             yield return w;
 
             if (!string.IsNullOrEmpty(w.error)) {
-                Callback(null, w.error);
+                callback(null, w.error);
             } else {
-                Callback(w.text, null);
+                callback(w.text, null);
             }
-
-            w.Dispose();
-            MonoBehaviour.Destroy(this);
-        }
-    }
-
-    public class UnityLoader : ILoader {
-        static GameObject LoaderGameObject;
-
-        string Domain;
-        string Authorization;
-
-        public UnityLoader(string domain, string authorization) {
-            Domain = domain;
-            Authorization = authorization;
-        }
-
-        public void Load(string query, LoaderResponse callback) {
-            if (LoaderGameObject == null) {
-                LoaderGameObject = new GameObject();
-            }
-
-            LoaderGameObject.AddComponent<LoaderComponent>()
-            .SetURL("https://" + Domain + "/api/graphql.json")
-            .SetAuthorization("Basic " + Authorization)
-            .Load(query, callback);
         }
     }
 }
