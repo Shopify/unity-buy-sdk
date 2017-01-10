@@ -64,9 +64,15 @@ module GraphQLGenerator
 
     def save(path)
       path_types = "#{path}/Types"
+      path_sdk = "#{path}/SDK"
 
       begin
         Dir.mkdir path_types
+      rescue Errno::EEXIST
+      end
+
+      begin
+        Dir.mkdir path_sdk
       rescue Errno::EEXIST
       end
 
@@ -76,13 +82,18 @@ module GraphQLGenerator
         Arguments
         InputBase
         InputValueToString
-        TopLevelResponse
         AbstractResponse
         CastUtils
         ValidationUtils
         NoQueryException
         InvalidServerResponseException
         AliasException
+        SDK/QueryLoader
+        SDK/UnityLoader
+        SDK/TopLevelResponse
+        SDK/MutationResponse
+        SDK/QueryResponse
+        SDK/ILoader
       ).each do |class_file_name|
         erb = CSharp::erb_for(File.expand_path("../csharp/#{class_file_name}.cs.erb", __FILE__))
         File.write("#{path}/#{class_file_name}.cs", reformat(erb.result(binding)))

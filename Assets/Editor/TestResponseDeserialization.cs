@@ -3,6 +3,7 @@ namespace Shopify.Tests {
     using System;
     using System.Collections.Generic;
     using Shopify.Unity;
+    using Shopify.Unity.SDK;
     using Shopify.Unity.MiniJSON;
     
     [TestFixture]
@@ -21,7 +22,7 @@ namespace Shopify.Tests {
 
             TopLevelResponse response = new TopLevelResponse(dataJSON);
 
-            Assert.IsNotNull(response.data);
+            Assert.IsNotNull(response.DataJSON);
             Assert.IsNull(response.errors);
         }
 
@@ -69,7 +70,7 @@ namespace Shopify.Tests {
 
             TopLevelResponse response = new TopLevelResponse(dataJSON);
 
-            Assert.IsNull(response.data);
+            Assert.IsNull(response.DataJSON);
             Assert.IsNotNull(response.errors);
             Assert.AreEqual("Field 'doesntExist' doesn't exist on type 'Shop'", response.errors[0]);
         }

@@ -1,0 +1,7 @@
+namespace <%= namespace %>.SDK {
+    public delegate void LoaderResponse(string response, string error);
+
+    public interface ILoader {
+        void Load(string query, LoaderResponse callback);
+    }
+}

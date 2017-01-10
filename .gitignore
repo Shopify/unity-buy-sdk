@@ -16,6 +16,7 @@ Assets/Shopify/Unity/NoQueryException.*
 Assets/Shopify/Unity/CastUtils.*
 Assets/Shopify/Unity/ValidationUtils.*
 Assets/Shopify/Unity/AliasException.*
+Assets/Shopify/Unity/SDK/*
 
 ####### Test files
 test.dll

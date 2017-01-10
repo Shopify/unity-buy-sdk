@@ -1,0 +1,34 @@
+#if UNITY_EDITOR
+namespace <%= namespace %>.SDK {
+    using UnityEngine;
+    using System.Collections.Generic;
+    
+    public class UnityLoader : ILoader {
+        string URL;
+        string Authorization;
+
+        public UnityLoader(string url, string authorization) {
+            URL = url;
+            Authorization = authorization;
+        }
+
+        public void Load(string query, LoaderResponse callback) {
+            WWWForm form = new WWWForm();
+            form.headers["Content-Type"] = "application/x-www-form-urlencoded";
+            form.headers["Authorization"] = Authorization;
+
+            form.AddField("query", query);
+
+            WWW w = new WWW(URL, form);
+
+            yield return w;
+
+            if (!string.IsNullOrEmpty(w.error)) {
+                callback(null, w.error);
+            } else {
+                callback(w.text, null);
+            }
+        }
+    }
+}
+#endif

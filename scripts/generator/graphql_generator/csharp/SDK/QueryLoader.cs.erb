@@ -1,0 +1,57 @@
+namespace <%= namespace %>.SDK {
+    using System;
+    using System.Collections.Generic;
+    using <%= namespace %>;
+    using <%= namespace %>.MiniJSON;
+
+    public delegate void QueryResponseCallback(QueryResponse response);
+    public delegate void MutationResponseCallback(MutationResponse response);
+
+    public class QueryLoader {
+        ILoader Loader;
+
+        public QueryLoader(ILoader loader) {
+            Loader = loader;
+        }
+
+        public void Query(<%= schema.query_root_name %>Delegate addTo, QueryResponseCallback callback) {
+            <%= schema.query_root_name %>Query query = new <%= schema.query_root_name %>Query();
+
+            addTo(query);
+
+            Query(query, callback);
+        }
+        
+        public void Query(<%= schema.query_root_name %>Query query, QueryResponseCallback callback) {
+            Loader.Load(query.ToString(), (string response, string error) => {
+                if (error != null) {
+                    callback(new QueryResponse(error));
+                } else {
+                    Dictionary<string,object> jsonResponse = (Dictionary<string,object>) Json.Deserialize(response);
+
+                    callback(new QueryResponse(jsonResponse));
+                }
+            });
+        }
+
+        public void Mutation(<%= schema.mutation_root_name %>Delegate addTo, MutationResponseCallback callback) {
+            <%= schema.mutation_root_name %>Query query = new <%= schema.mutation_root_name %>Query();
+
+            addTo(query);
+
+            Mutation(query, callback);
+        }
+
+        public void Mutation(<%= schema.mutation_root_name %>Query query, MutationResponseCallback callback) {
+            Loader.Load(query.ToString(), (string response, string error) => {
+                if (error != null) {
+                    callback(new MutationResponse(error));
+                } else {
+                    Dictionary<string,object> jsonResponse = (Dictionary<string,object>) Json.Deserialize(response);
+
+                    callback(new MutationResponse(jsonResponse));
+                }
+            });
+        }
+    }
+}
