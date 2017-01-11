@@ -22,6 +22,7 @@ test.dll
 test.dll.mdb
 TestResult.xml
 /unity/
+scripts/test_watch.sh
 
 ####### Unity test files
 EditorTestResults.xml
