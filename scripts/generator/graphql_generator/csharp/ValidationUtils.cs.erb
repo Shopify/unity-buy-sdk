@@ -4,7 +4,7 @@ namespace <%= namespace %> {
 
     public class ValidationUtils {
         public static void ValidateAlias(string alias) {
-            Regex regex = new Regex("[_A-Za-z][_0-9A-Za-z]+");
+            Regex regex = new Regex("^[_A-Za-z][_0-9A-Za-z]*$");
             
             if (String.IsNullOrEmpty(alias)) {
                 throw new AliasException("`alias` cannot be a blank string");
