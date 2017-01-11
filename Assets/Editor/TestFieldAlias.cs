@@ -11,13 +11,13 @@ namespace Shopify.Tests
         [Test]
         public void GenerateQueryWithAlias() {
             QueryRootQuery query = new QueryRootQuery();
-            query.customerAddress(
-                a => a.city(),
+            query.node(
+                node => node.id(),
                 alias: "an_alias", id: "1234"
             );
 
             Assert.AreEqual(
-                @"{an_alias___customerAddress:customerAddress (id:""1234""){city }}",
+                @"{an_alias___node:node (id:""1234""){__typename id }}",
                 query.ToString()
             );
         }
@@ -28,8 +28,8 @@ namespace Shopify.Tests
             QueryRootQuery query = new QueryRootQuery();
             
             try {
-                query.customerAddress(
-                    a => a.city(),
+                query.node(
+                    node => node.id(),
                     alias: "", id: "1234"
                 );
             } catch(AliasException error) {
@@ -46,8 +46,8 @@ namespace Shopify.Tests
             AliasException caughtError = null;
 
             try {
-                query.customerAddress(
-                    a => a.city(),
+                query.node(
+                    node => node.id(),
                     alias: "$$$", id: "1234"
                 );
             } catch(AliasException error) {
@@ -61,8 +61,8 @@ namespace Shopify.Tests
         [Test]
         public void DeserializeAliasedField() {
             string stringJSON = @"{
-                ""aliasName___customerAddress"": {
-                    ""city"": ""Toronto""
+                ""aliasName___product"": {
+                    ""title"": ""This is a product""
                 }
             }";
 
@@ -70,7 +70,7 @@ namespace Shopify.Tests
             
             QueryRoot response = new QueryRoot(dataJSON);
             
-            Assert.AreEqual("Toronto", response.customerAddress(alias: "aliasName").city());
+            Assert.AreEqual("This is a product", response.product(alias: "aliasName").title());
         }
 
         [Test]
@@ -83,13 +83,13 @@ namespace Shopify.Tests
             QueryRoot response = new QueryRoot(dataJSON);
 
             try {
-                response.customerAddress(alias: "aliasName").city();
+                response.node(alias: "aliasName").id();
             } catch(NoQueryException error) {
                 caughtError = error;
             }
 
             Assert.IsNotNull(caughtError);
-            Assert.AreEqual("It looks like you did not query the field `customerAddress` with alias `aliasName`", caughtError.Message);
+            Assert.AreEqual("It looks like you did not query the field `node` with alias `aliasName`", caughtError.Message);
         }
 
         [Test]
@@ -106,7 +106,7 @@ namespace Shopify.Tests
             QueryRoot response = new QueryRoot(dataJSON);
 
             try {
-                response.customerAddress(alias: "$$$").city();
+                response.node(alias: "$$$").id();
             } catch(AliasException error) {
                 caughtError = error;
             }
@@ -118,8 +118,8 @@ namespace Shopify.Tests
         [Test]
         public void ExceptionIsThrownForBlankAliasInResponse() {
             string stringJSON = @"{
-                ""aliasName___customerAddress"": {
-                    ""city"": ""Toronto""
+                ""aliasName___product"": {
+                    ""title"": ""This is a product""
                 }
             }";
 
@@ -129,7 +129,7 @@ namespace Shopify.Tests
             QueryRoot response = new QueryRoot(dataJSON);
 
             try {
-                response.customerAddress(alias: "").city();
+                response.product(alias: "").title();
             } catch(AliasException error) {
                 caughtError = error;
             }
