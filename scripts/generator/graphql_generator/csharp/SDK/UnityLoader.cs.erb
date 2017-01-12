@@ -27,13 +27,12 @@ namespace <%= namespace %>.SDK {
             Callback = callback;
 
             Dictionary<string,string> headers = new Dictionary<string,string>();
-            headers["Content-Type"] = "application/json";
+            headers["Content-Type"] = "application/graphql";
             headers["Authorization"] = Authorization;
 
-            string jsonPayload = "{\"query\": \"" + query + "\"}";
-            byte[] payload = Encoding.ASCII.GetBytes(jsonPayload);
+            byte[] body = Encoding.ASCII.GetBytes(query);
 
-            WWW w = new WWW(URL, payload, headers);
+            WWW w = new WWW(URL, body, headers);
 
             StartCoroutine(DoWWW(w));
         }
