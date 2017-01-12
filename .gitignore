@@ -14,11 +14,15 @@ Assets/Shopify/Unity/TopLevelResponse.*
 Assets/Shopify/Unity/InvalidServerResponseException.*
 Assets/Shopify/Unity/NoQueryException.*
 Assets/Shopify/Unity/CastUtils.*
+Assets/Shopify/Unity/ValidationUtils.*
+Assets/Shopify/Unity/AliasException.*
 
 ####### Test files
 test.dll
+test.dll.mdb
 TestResult.xml
 /unity/
+scripts/test_watch.sh
 
 ####### Unity test files
 EditorTestResults.xml

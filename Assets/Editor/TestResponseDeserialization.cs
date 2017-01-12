@@ -183,7 +183,7 @@ namespace Shopify.Tests {
             }
 
             Assert.IsNotNull(error);
-            Assert.AreEqual("It looks like you did not query the field: currencyCode", error.Message);
+            Assert.AreEqual("It looks like you did not query the field `currencyCode`", error.Message);
         }
 
         [Test]
