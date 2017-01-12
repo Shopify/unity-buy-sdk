@@ -39,7 +39,7 @@ namespace <%= namespace %> {
                             ValidationUtils.ValidateAlias(alias);
 
                             Query.Append(alias);
-                            Query.Append("<%= ALIAS_SUFFIX + field.name %>:");
+                            Query.Append("<%= ALIAS_SEPARATOR + field.name %>:");
                         }
 
                         Query.Append("<%= field.name %> ");
