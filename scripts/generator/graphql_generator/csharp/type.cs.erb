@@ -38,8 +38,9 @@ namespace <%= namespace %> {
                         if (alias != null) {
                             ValidationUtils.ValidateAlias(alias);
 
+                            Query.Append("<%= field.name + ALIAS_SEPARATOR %>");
                             Query.Append(alias);
-                            Query.Append("<%= ALIAS_SEPARATOR + field.name %>:");
+                            Query.Append(":");
                         }
 
                         Query.Append("<%= field.name %> ");

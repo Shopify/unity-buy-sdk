@@ -17,7 +17,7 @@ namespace Shopify.Tests
             );
 
             Assert.AreEqual(
-                @"{an_alias___node:node (id:""1234""){__typename id }}",
+                @"{node___an_alias:node (id:""1234""){__typename id }}",
                 query.ToString()
             );
         }
@@ -61,7 +61,7 @@ namespace Shopify.Tests
         [Test]
         public void DeserializeAliasedField() {
             string stringJSON = @"{
-                ""aliasName___product"": {
+                ""product___aliasName"": {
                     ""title"": ""This is a product""
                 }
             }";

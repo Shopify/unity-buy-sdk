@@ -7,7 +7,7 @@ namespace <%= namespace %> {
         protected Dictionary<string,object> Data;
 
         protected T Get<T>(string field, string alias = null) {
-            string key = alias != null ? String.Format("{0}<%= ALIAS_SEPARATOR %>{1}", alias, field) : field;
+            string key = alias != null ? String.Format("{0}<%= ALIAS_SEPARATOR %>{1}", field, alias) : field;
 
             if (Data.ContainsKey(key)) {
                 return (T) Data[key];
