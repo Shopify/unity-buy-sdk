@@ -36,10 +36,9 @@ namespace <%= namespace %> {
             foreach (string key in dataJSON.Keys) {
                 string fieldName = key;
                 Regex regexAlias = new Regex("^(.+)<%= ALIAS_SEPARATOR %>.+$");
+                Match match = regexAlias.Match(key);
 
-                if (regexAlias.IsMatch(key)) {
-                    Match match = regexAlias.Match(key);
-
+                if (match.Success) {
                     fieldName = match.Groups[1].Value;
                 }
 
