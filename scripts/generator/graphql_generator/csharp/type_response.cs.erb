@@ -72,10 +72,6 @@ namespace <%= namespace %> {
         <% type.fields.each do |field| %>
             public <%= graph_type_to_csharp_type(field.type) %> <%= escape_reserved_word(field.name) %>(<%= 'string alias = null' if field.args.any? %>) {
                 <% if field.args.any? %>
-                    if (alias != null) {
-                        ValidationUtils.ValidateAlias(alias);
-                    }
-
                     return Get<<%= graph_type_to_csharp_type(field.type) %>>("<%= field.name %>", alias);
                 <% else %>
                     return Get<<%= graph_type_to_csharp_type(field.type) %>>("<%= field.name %>");
