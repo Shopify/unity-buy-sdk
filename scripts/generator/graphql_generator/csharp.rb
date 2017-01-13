@@ -206,5 +206,41 @@ module GraphQLGenerator
 
       "CastUtils.CastList<List<#{graph_type_to_csharp_type(type.of_type)}>>((IList) dataJSON[key])"
     end
+
+    def type_from_name(type_name)
+      schema.types.find { |type| type.name == type_name }
+    end
+
+    def field_from_type(type, field_name)
+      type.fields.find { |field| field.name == field_name }
+    end
+
+    def is_connection?(type)
+      type.name.end_with? "Connection"
+    end
+
+    def edges_type_from_connection_type(type)
+      if is_connection? type
+        edges = field_from_type type, "edges"
+
+        type_from_name edges.type.unwrap.name
+      else
+        nil
+      end
+    end
+
+    def node_type_from_connection_type(type)
+      if is_connection? type
+        edge_type = edges_type_from_connection_type type
+        
+        type_from_name edge_type.name
+
+        node = field_from_type edge_type, "node"
+
+        type_from_name node.type.unwrap.name
+      else
+        nil
+      end
+    end
   end
 end

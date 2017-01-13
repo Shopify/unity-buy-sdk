@@ -5,7 +5,20 @@ namespace <%= namespace %> {
     using System.Text.RegularExpressions;
 
     <% if type.object? %>
-        public class <%= type.classify_name %> : AbstractResponse<%= type.interfaces.map{|interface| ", #{interface.classify_name}" }.join %> {
+        public class <%= type.classify_name %> : AbstractResponse<%= ", IEnumerable" if is_connection? type %><%= type.interfaces.map{|interface| ", #{interface.classify_name}" }.join %> {
+
+        <% if is_connection? type %>
+            /* Creates ability to cast <%= type.classify_name %> to List<<%= node_type_from_connection_type(type).classify_name %>> */
+            public static explicit operator List<<%= node_type_from_connection_type(type).classify_name %>>(<%= type.classify_name %> connection) {
+                List<<%= node_type_from_connection_type(type).classify_name %>> nodes = new List<<%= node_type_from_connection_type(type).classify_name %>>();
+
+                foreach(<%= edges_type_from_connection_type(type).classify_name %> edge in connection.edges()) {
+                    nodes.Add(edge.node());
+                }
+
+                return nodes;
+            }
+        <% end %>
     <% elsif type.interface? %>
          public interface <%= type.classify_name %> {
             <% type.fields.each do |field| %>
@@ -67,6 +80,12 @@ namespace <%= namespace %> {
                 }
             }
         }
+
+        <% if is_connection? type %>
+            public IEnumerator GetEnumerator() {
+                return (IEnumerator) this;
+            }
+        <% end %>
 
         <%# output getters for fields %>
         <% type.fields.each do |field| %>
