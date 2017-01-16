@@ -216,30 +216,26 @@ module GraphQLGenerator
     end
 
     def is_connection?(type)
-      type.name.end_with? "Connection"
+      type.name.end_with?("Connection")
     end
 
     def edges_type_from_connection_type(type)
-      if is_connection? type
-        edges = field_from_type type, "edges"
+      if is_connection?(type)
+        edges = field_from_type(type, "edges")
 
-        type_from_name edges.type.unwrap.name
-      else
-        nil
+        type_from_name(edges.type.unwrap.name)
       end
     end
 
     def node_type_from_connection_type(type)
-      if is_connection? type
-        edge_type = edges_type_from_connection_type type
+      if is_connection?(type)
+        edge_type = edges_type_from_connection_type(type)
         
-        type_from_name edge_type.name
+        type_from_name(edge_type.name)
 
-        node = field_from_type edge_type, "node"
+        node = field_from_type(edge_type, "node")
 
-        type_from_name node.type.unwrap.name
-      else
-        nil
+        type_from_name(node.type.unwrap.name)
       end
     end
   end
