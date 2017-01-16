@@ -10,13 +10,15 @@ namespace <%= namespace %> {
         <% if is_connection? type %>
             /* Creates ability to cast <%= type.classify_name %> to List<<%= node_type_from_connection_type(type).classify_name %>> */
             public static explicit operator List<<%= node_type_from_connection_type(type).classify_name %>>(<%= type.classify_name %> connection) {
-                List<<%= node_type_from_connection_type(type).classify_name %>> nodes = new List<<%= node_type_from_connection_type(type).classify_name %>>();
+                if (connection.Nodes == null) {
+                    connection.Nodes = new List<<%= node_type_from_connection_type(type).classify_name %>>();
 
-                foreach(<%= edges_type_from_connection_type(type).classify_name %> edge in connection.edges()) {
-                    nodes.Add(edge.node());
+                    foreach(<%= edges_type_from_connection_type(type).classify_name %> edge in connection.edges()) {
+                        connection.Nodes.Add(edge.node());
+                    }
                 }
 
-                return nodes;
+                return connection.Nodes;
             }
         <% end %>
     <% elsif type.interface? %>
@@ -82,6 +84,8 @@ namespace <%= namespace %> {
         }
 
         <% if is_connection? type %>
+            protected List<<%= node_type_from_connection_type(type).classify_name %>> Nodes;
+
             public IEnumerator GetEnumerator() {
                 return (IEnumerator) this;
             }
