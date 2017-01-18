@@ -7,7 +7,7 @@ namespace <%= namespace %> {
     <% if type.object? %>
         public class <%= type.classify_name %> : AbstractResponse, ICloneable<%= ", IEnumerable" if is_connection? type %><%= type.interfaces.map{|interface| ", #{interface.classify_name}" }.join %> {
 
-        <% if is_connection? type %>
+        <% if is_connection?(type) %>
             /* Creates ability to cast <%= type.classify_name %> to List<<%= node_type_from_connection_type(type).classify_name %>> */
             public static explicit operator List<<%= node_type_from_connection_type(type).classify_name %>>(<%= type.classify_name %> connection) {
                 if (connection.Nodes == null) {
@@ -84,7 +84,7 @@ namespace <%= namespace %> {
             }
         }
 
-        <% if is_connection? type %>
+        <% if is_connection?(type) %>
             protected List<<%= node_type_from_connection_type(type).classify_name %>> Nodes;
 
             public IEnumerator GetEnumerator() {
@@ -107,7 +107,7 @@ namespace <%= namespace %> {
             return new <%= "Unknown" if type.interface? %><%= type.classify_name %>(DataJSON);
         }
 
-        <% if connection?(type) %>
+        <% if is_connection?(type) %>
         public void AddFromConnection(<%= type.classify_name %> connection) {
             List<<%= field_from_type(type,"edges").type.unwrap.name %>> clonedList = new List<<%= field_from_type(type,"edges").type.unwrap.name %>>();
 
