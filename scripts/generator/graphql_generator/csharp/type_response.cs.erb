@@ -5,7 +5,7 @@ namespace <%= namespace %> {
     using System.Text.RegularExpressions;
 
     <% if type.object? %>
-        public class <%= type.classify_name %> : AbstractResponse<%= ", IEnumerable" if is_connection? type %><%= type.interfaces.map{|interface| ", #{interface.classify_name}" }.join %> {
+        public class <%= type.classify_name %> : AbstractResponse, ICloneable<%= ", IEnumerable" if is_connection? type %><%= type.interfaces.map{|interface| ", #{interface.classify_name}" }.join %> {
 
         <% if is_connection? type %>
             /* Creates ability to cast <%= type.classify_name %> to List<<%= node_type_from_connection_type(type).classify_name %>> */
@@ -28,7 +28,7 @@ namespace <%= namespace %> {
             <% end %>
         }
 
-        public class Unknown<%= type.classify_name %> : AbstractResponse, <%= type.classify_name %> {
+        public class Unknown<%= type.classify_name %> : AbstractResponse, ICloneable, <%= type.classify_name %> {
 
             public static <%= type.classify_name %> Create(Dictionary<string, object> dataJSON) {
                 string typeName = (string) dataJSON["__typename"];
@@ -46,6 +46,7 @@ namespace <%= namespace %> {
     <% end %>
         <%# Constructor %>
         public <%= "Unknown" if type.interface? %><%= type.classify_name %>(Dictionary<string, object> dataJSON) {
+            DataJSON = dataJSON;
             Data = new Dictionary<string,object>();
         
             foreach (string key in dataJSON.Keys) {
@@ -100,6 +101,28 @@ namespace <%= namespace %> {
                     return Get<<%= graph_type_to_csharp_type(field.type) %>>("<%= field.name %>");
                 <% end %>
             }
+        <% end %>
+
+        public object Clone() {
+            return new <%= "Unknown" if type.interface? %><%= type.classify_name %>(DataJSON);
+        }
+
+        <% if connection?(type) %>
+        public void AddFromConnection(<%= type.classify_name %> connection) {
+            List<<%= field_from_type(type,"edges").type.unwrap.name %>> clonedList = new List<<%= field_from_type(type,"edges").type.unwrap.name %>>();
+
+            foreach(<%= field_from_type(type,"edges").type.unwrap.name %> edge in connection.edges()) {
+                clonedList.Add((<%= field_from_type(type,"edges").type.unwrap.name %>) edge.Clone());
+            }
+
+            if (Data.ContainsKey("edges")) {
+                edges().AddRange(clonedList);
+                Data["pageInfo"] = connection.pageInfo().Clone();
+            } else {
+                Data["edges"] = clonedList;
+                Data["pageInfo"] = connection.pageInfo().Clone();
+            }
+        }
         <% end %>
     }
 }

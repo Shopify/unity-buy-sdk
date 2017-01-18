@@ -5,6 +5,7 @@ namespace <%= namespace %> {
 
     public abstract class AbstractResponse {
         protected Dictionary<string,object> Data;
+        protected Dictionary<string,object> DataJSON;
 
         protected T Get<T>(string field, string alias = null) {
             if (alias != null) {
