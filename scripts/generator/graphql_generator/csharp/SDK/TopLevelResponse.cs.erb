@@ -1,4 +1,4 @@
-namespace <%= namespace %> {
+namespace <%= namespace %>.SDK {
     using System;
     using System.Collections.Generic;
 
@@ -6,9 +6,15 @@ namespace <%= namespace %> {
         private const string KEY_DATA = "data";
         private const string KEY_ERRORS = "errors";
 
-        public Dictionary<string,object> data {
+        public string httpError {
             get {
-                return _data;
+                return _httpError;
+            }
+        }
+
+        public Dictionary<string,object> DataJSON {
+            get {
+                return _DataJSON;
             }
         }
 
@@ -18,12 +24,15 @@ namespace <%= namespace %> {
             }
         }
 
-        private Dictionary<string,object> _data;
+        private string _httpError;
+        private Dictionary<string,object> _DataJSON;
         private List<string> _errors;
 
         public TopLevelResponse(Dictionary<string,object> dataJSON) {
             object errors;
             object data;
+
+            _httpError = null;
 
             dataJSON.TryGetValue(KEY_ERRORS, out errors);
             dataJSON.TryGetValue(KEY_DATA, out data);
@@ -37,8 +46,14 @@ namespace <%= namespace %> {
             }
 
             if (data != null) {
-                _data = (Dictionary<string,object>) data;
+                _DataJSON = (Dictionary<string,object>) data;
             }  
+        }
+
+        public TopLevelResponse(string httpError) {
+            _httpError = httpError;
+            _DataJSON = null;
+            _errors = null;
         }
 
         private List<string> ParseErrors(Dictionary<string,object> dataJSON) {

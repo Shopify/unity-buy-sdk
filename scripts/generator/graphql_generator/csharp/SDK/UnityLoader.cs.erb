@@ -1,0 +1,78 @@
+#if UNITY_EDITOR
+namespace <%= namespace %>.SDK {
+    using UnityEngine;
+    using System.Text;
+    using System.Collections;
+    using System.Collections.Generic;
+    using <%= namespace %>.MiniJSON;
+
+    internal class LoaderComponent : MonoBehaviour {
+        string URL;
+        string Authorization;
+        LoaderResponse Callback;
+
+        public LoaderComponent SetURL(string url) {
+            URL = url;
+
+            return this;
+        }
+
+        public LoaderComponent SetAuthorization(string authorization) {
+            Authorization = authorization;
+
+            return this;
+        }
+
+        public void Load(string query, LoaderResponse callback) {
+            Callback = callback;
+
+            Dictionary<string,string> headers = new Dictionary<string,string>();
+            headers["Content-Type"] = "application/graphql";
+            headers["Authorization"] = Authorization;
+
+            byte[] body = Encoding.ASCII.GetBytes(query);
+
+            WWW w = new WWW(URL, body, headers);
+
+            StartCoroutine(DoWWW(w));
+        }
+
+        private IEnumerator DoWWW(WWW w) {
+            yield return w;
+
+            if (!string.IsNullOrEmpty(w.error)) {
+                Callback(null, w.error);
+            } else {
+                Callback(w.text, null);
+            }
+
+            w.Dispose();
+        }
+    }
+
+    public class UnityLoader : ILoader {
+        static GameObject LoaderGameObject;
+        static LoaderComponent Loader;
+
+        string Domain;
+        string Authorization;
+
+        public UnityLoader(string domain, string authorization) {
+            Domain = domain;
+            Authorization = authorization;
+        }
+
+        public void Load(string query, LoaderResponse callback) {
+            if (LoaderGameObject == null) {
+                LoaderGameObject = new GameObject("ShopifyLoader");
+                Loader = LoaderGameObject.AddComponent<LoaderComponent>()
+                    .SetURL("https://" + Domain + "/api/graphql.json")
+                    .SetAuthorization("Basic " + Authorization);
+            }
+
+            Loader
+            .Load(query, callback);
+        }
+    }
+}
+#endif

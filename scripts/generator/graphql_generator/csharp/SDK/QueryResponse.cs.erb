@@ -1,0 +1,25 @@
+namespace <%= namespace %>.SDK {
+    using System;
+    using System.Collections.Generic;
+
+    public class QueryResponse : TopLevelResponse {
+        
+        public <%= schema.query_root_name %> data {
+            get {
+                return _data;
+            }
+        }
+
+        private <%= schema.query_root_name %> _data;
+
+        public QueryResponse(Dictionary<string,object> dataJSON) : base(dataJSON) {
+            if (this.DataJSON != null) {
+                _data = new <%= schema.query_root_name %>(this.DataJSON);
+            }
+        }
+
+        public QueryResponse(string httpError) : base(httpError) {
+
+        }
+    }
+}
