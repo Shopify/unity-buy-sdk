@@ -244,13 +244,13 @@ namespace Shopify.Tests {
             QueryResponse mergedResponse = null;
 
             ConnectionLoader.Query(
-                () => {
-                    countRequests++;
-                
-                    return CollectionTestQueries.queries[countRequests - 1];
-                },
                 (response) => {
-                    return countRequests < CollectionTestQueries.queries.Count;
+                    if (countRequests < CollectionTestQueries.queries.Count) {
+                        countRequests++;
+                        return CollectionTestQueries.queries[countRequests - 1];
+                    } else {
+                        return null;
+                    }
                 },
                 (responses) => {
                     allResponses = responses;
