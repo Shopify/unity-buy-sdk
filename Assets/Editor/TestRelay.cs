@@ -1,11 +1,89 @@
 namespace Shopify.Tests {
     using NUnit.Framework;
+    using System;
     using System.Collections.Generic;
     using Shopify.Unity;
     using Shopify.Unity.MiniJSON;
+    using Shopify.Unity.SDK;
+
+    class CollectionTestQueries {
+        public static QueryRootQuery query1 = (new QueryRootQuery()).shop(s => s.
+            products(p => p.
+                edges(e => e.
+                    node(n => n.
+                        title()
+                    ).
+                    cursor()
+                ).
+                pageInfo(pi => pi.
+                    hasNextPage()
+                ),
+                first: 1
+            )
+        );
+        public static QueryRootQuery query2 = (new QueryRootQuery()).shop(s => s.
+            products(p => p.
+                edges(e => e.
+                    node(n => n.
+                        title()
+                    ).
+                    cursor()
+                ).
+                pageInfo(pi => pi.
+                    hasNextPage()
+                ),
+                first: 1, after: "first page"
+            )
+        );
+        public static List<QueryRootQuery> queries = new List<QueryRootQuery> {query1, query2};
+    }
+
+    class CollectionTestLoader : ILoader {
+        public void Load(string query, LoaderResponse callback) {
+            if (query == CollectionTestQueries.query1.ToString()) {
+                callback(@"{""data"":{
+                    ""shop"": {
+                        ""products"": {
+                            ""edges"": [
+                                {
+                                    ""node"": {
+                                        ""title"": ""Product1""
+                                    },
+                                    ""cursor"": ""first page""
+                                }
+                            ],
+                            ""pageInfo"": {
+                                ""hasNextPage"": true
+                            }
+                        }
+                    }
+                }}", null);
+            } else if (query == CollectionTestQueries.query2.ToString()) {
+                callback(@"{""data"":{
+                    ""shop"": {
+                        ""products"": {
+                            ""edges"": [
+                                {
+                                    ""node"": {
+                                        ""title"": ""Product2""
+                                    },
+                                    ""cursor"": ""second page""
+                                }
+                            ],
+                            ""pageInfo"": {
+                                ""hasNextPage"": false
+                            }
+                        }
+                    }
+                }}", null);
+            }
+        }
+    }
 
     [TestFixture]
     public class TestRelay {
+        
+
         [Test]
         public void TestCastConnectionToList() {
             string stringJSON = @"{
@@ -110,6 +188,42 @@ namespace Shopify.Tests {
             Assert.AreEqual(1, queryResponse1.edges().Count);
             Assert.AreEqual("product1", queryResponse1.edges()[0].node().title());
             Assert.AreEqual(true, queryResponse1.pageInfo().hasNextPage());
+        }
+
+        [Test]
+        public void TestConnectionLoader() {
+            QueryResponse finalMergedResponse = new QueryResponse((Dictionary<string, object>) Json.Deserialize(@"{
+                ""data"": {}
+            }"));
+            int countRequests = 0;
+            CollectionLoader collectionLoader = new CollectionLoader(new QueryLoader(new CollectionTestLoader()));
+            List<QueryResponse> allResponses = null;
+            QueryResponse mergedResponse = null;
+
+            collectionLoader.Query(
+                () => {
+                    countRequests++;
+                
+                    return CollectionTestQueries.queries[countRequests - 1];
+                },
+                (response) => {
+                    return countRequests < CollectionTestQueries.queries.Count;
+                },
+                (responses) => {
+                    allResponses = responses;
+
+                    return finalMergedResponse;
+                },
+                (response) => {
+                    mergedResponse = response;
+                }
+            );
+
+            Assert.AreEqual(2, countRequests);
+            Assert.AreEqual(2, allResponses.Count);
+            Assert.AreEqual("Product1", allResponses[0].data.shop().products().edges()[0].node().title());
+            Assert.AreEqual("Product2", allResponses[1].data.shop().products().edges()[0].node().title());
+            Assert.AreEqual(finalMergedResponse, mergedResponse);
         }
     }
 }
