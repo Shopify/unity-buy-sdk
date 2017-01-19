@@ -1,7 +1,7 @@
 namespace <%= namespace %>.SDK {
     using System.Collections.Generic;
 
-    public class CollectionLoader {
+    public class ConnectionLoader {
         public delegate <%= schema.query_root_name %>Query QueryBuilderHandler();
         public delegate bool QueryResponseHandler(QueryResponse response);
         public delegate QueryResponse QueryResponseMergeHandler(List<QueryResponse> responses);
@@ -9,7 +9,7 @@ namespace <%= namespace %>.SDK {
 
         private QueryLoader Loader;
 
-        public CollectionLoader(QueryLoader loader) {
+        public ConnectionLoader(QueryLoader loader) {
             Loader = loader;
         }
 

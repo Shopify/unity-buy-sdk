@@ -89,7 +89,7 @@ module GraphQLGenerator
         InvalidServerResponseException
         AliasException
         SDK/QueryLoader
-        SDK/CollectionLoader
+        SDK/ConnectionLoader
         SDK/UnityLoader
         SDK/TopLevelResponse
         SDK/MutationResponse
