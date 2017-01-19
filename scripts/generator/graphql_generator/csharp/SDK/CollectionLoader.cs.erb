@@ -16,9 +16,9 @@ namespace <%= namespace %>.SDK {
         public void Query(QueryBuilderHandler getQuery, QueryResponseHandler getShouldQuery, QueryResponseMergeHandler getMerged, QueryResponseDelegate callback) {
             List<QueryResponse> responses = new List<QueryResponse>();
 
-            <%= schema.query_root_name %>Query query = getQuery();
-
             QueryLoop queryLoop = (loop) => {
+                <%= schema.query_root_name %>Query query = getQuery();
+
                 Loader.Query(query, (response) => {
                     bool shouldQuery = getShouldQuery(response);
 

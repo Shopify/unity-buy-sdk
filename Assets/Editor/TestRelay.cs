@@ -232,5 +232,41 @@ namespace Shopify.Tests {
             Assert.AreEqual("Product2", allResponses[1].data.shop().products().edges()[0].node().title());
             Assert.AreEqual(finalMergedResponse, mergedResponse);
         }
+
+        [Test]
+        public void TestConnectionLoader() {
+            QueryResponse finalMergedResponse = new QueryResponse((Dictionary<string, object>) Json.Deserialize(@"{
+                ""data"": {}
+            }"));
+            int countRequests = 0;
+            CollectionLoader collectionLoader = new CollectionLoader(new QueryLoader(new CollectionTestLoader()));
+            List<QueryResponse> allResponses = null;
+            QueryResponse mergedResponse = null;
+
+            collectionLoader.Query(
+                () => {
+                    countRequests++;
+                
+                    return CollectionTestQueries.queries[countRequests - 1];
+                },
+                (response) => {
+                    return countRequests < CollectionTestQueries.queries.Count;
+                },
+                (responses) => {
+                    allResponses = responses;
+
+                    return finalMergedResponse;
+                },
+                (response) => {
+                    mergedResponse = response;
+                }
+            );
+
+            Assert.AreEqual(2, countRequests);
+            Assert.AreEqual(2, allResponses.Count);
+            Assert.AreEqual("Product1", allResponses[0].data.shop().products().edges()[0].node().title());
+            Assert.AreEqual("Product2", allResponses[1].data.shop().products().edges()[0].node().title());
+            Assert.AreEqual(finalMergedResponse, mergedResponse);
+        }
     }
 }
