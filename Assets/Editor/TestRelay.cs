@@ -239,11 +239,11 @@ namespace Shopify.Tests {
                 ""data"": {}
             }"));
             int countRequests = 0;
-            CollectionLoader collectionLoader = new CollectionLoader(new QueryLoader(new CollectionTestLoader()));
+            ConnectionLoader ConnectionLoader = new ConnectionLoader(new QueryLoader(new CollectionTestLoader()));
             List<QueryResponse> allResponses = null;
             QueryResponse mergedResponse = null;
 
-            collectionLoader.Query(
+            ConnectionLoader.Query(
                 () => {
                     countRequests++;
                 
