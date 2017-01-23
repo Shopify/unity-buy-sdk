@@ -1,5 +1,6 @@
 namespace Shopify.Tests {
     using System;
+    using System.Text;
     using System.Collections.Generic;
     using Shopify.Unity;
     using Shopify.Unity.SDK;
@@ -8,6 +9,7 @@ namespace Shopify.Tests {
         private static bool Initialized;
 
         public static int CountProductsPages = 10;
+        public static int PageSize = 250;
         public static List<QueryRootQuery> QueryProducts;
         public static Dictionary<string,string> ResponseProducts;
 
@@ -30,29 +32,36 @@ namespace Shopify.Tests {
                                 pageInfo(pi => pi.
                                     hasNextPage()
                                 ),
-                                first: 250, after: i > 0 ? (i - 1).ToString() : null
+                                first: PageSize, after: i > 0 ? (i * PageSize - 1).ToString() : null
                             )
                         );
-           
+
+                StringBuilder edges = new StringBuilder();
+
+                for(int j = 0; j < PageSize; j++) {
+                    
+                    edges.Append(String.Format(@"{{
+                        ""cursor"": ""{0}"",
+                        ""node"": {{
+                            ""title"": ""Product{0}""
+                        }}
+                    }}{1}", i * PageSize + j, j < PageSize - 1 ? "," : ""));
+                }
+
                 ResponseProducts[query.ToString()] = String.Format(@"{{
                     ""data"": {{
                         ""shop"": {{
                             ""products"": {{
                                 ""edges"": [
-                                    {{
-                                        ""cursor"": ""{0}"",
-                                        ""node"": {{
-                                            ""title"": ""Product{1}""
-                                        }}
-                                    }}
+                                    {0}
                                 ],
                                 ""pageInfo"": {{
-                                    ""hasNextPage"": {2}
+                                    ""hasNextPage"": {1}
                                 }}
                             }}
                         }}
                     }}
-                }}", i, i, i < CountProductsPages - 1 ? "true" : "false");
+                }}", edges.ToString(), i < CountProductsPages - 1 ? "true" : "false");
             }
         }
 
@@ -66,7 +75,8 @@ namespace Shopify.Tests {
             if (ResponseProducts.ContainsKey(query)) {
                 callback(ResponseProducts[query], null);
             } else {
-                throw new Exception("NO RESPONSE");
+                Console.WriteLine("NO RESPONSE: " + query);
+                throw new Exception("NO QUERY RESPONSE");
             }
         }
     }
