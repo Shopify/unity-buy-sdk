@@ -232,48 +232,5 @@ namespace Shopify.Tests {
             Assert.AreEqual("Product2", allResponses[1].data.shop().products().edges()[0].node().title());
             Assert.AreEqual(finalMergedResponse, mergedResponse);
         }
-
-        [Test]
-        public void TestConnectionLoader() {
-            QueryResponse finalMergedResponse = new QueryResponse((Dictionary<string, object>) Json.Deserialize(@"{
-                ""data"": {}
-            }"));
-            int countRequests = 0;
-            ConnectionLoader ConnectionLoader = new ConnectionLoader(new QueryLoader(new CollectionTestLoader()));
-            List<QueryResponse> responsesToRequestQuery = new List<QueryResponse>();
-            List<QueryResponse> allResponses = null;
-            QueryResponse mergedResponse = null;
-
-            ConnectionLoader.Query(
-                (response) => {
-                    responsesToRequestQuery.Add(response);
-
-                    if (countRequests < CollectionTestQueries.queries.Count) {
-                        countRequests++;
-                        return CollectionTestQueries.queries[countRequests - 1];
-                    } else {
-                        return null;
-                    }
-                },
-                (responses) => {
-                    allResponses = responses;
-
-                    return finalMergedResponse;
-                },
-                (response) => {
-                    mergedResponse = response;
-                }
-            );
-
-            Assert.AreEqual(3, responsesToRequestQuery.Count);
-            Assert.AreEqual(null, responsesToRequestQuery[0]);
-            Assert.AreEqual("Product1", responsesToRequestQuery[1].data.shop().products().edges()[0].node().title());
-            Assert.AreEqual("Product2", responsesToRequestQuery[2].data.shop().products().edges()[0].node().title());
-            Assert.AreEqual(2, countRequests);
-            Assert.AreEqual(2, allResponses.Count);
-            Assert.AreEqual("Product1", allResponses[0].data.shop().products().edges()[0].node().title());
-            Assert.AreEqual("Product2", allResponses[1].data.shop().products().edges()[0].node().title());
-            Assert.AreEqual(finalMergedResponse, mergedResponse);
-        }
     }
 }
