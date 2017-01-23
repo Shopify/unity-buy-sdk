@@ -1,0 +1,36 @@
+namespace <%= namespace %>.SDK {
+    using System.Collections.Generic;
+
+    public class ConnectionLoader {
+        public delegate <%= schema.query_root_name %>Query RequestQueryHandler(QueryResponse response = null);
+        public delegate QueryResponse ResponseMergeHandler(List<QueryResponse> responses);
+        private delegate void QueryLoop(QueryLoop loop);
+
+        private QueryLoader Loader;
+
+        public ConnectionLoader(QueryLoader loader) {
+            Loader = loader;
+        }
+
+        public void Query(RequestQueryHandler getQuery, ResponseMergeHandler getMerged, QueryResponseDelegate callback) {
+            List<QueryResponse> responses = new List<QueryResponse>();
+            <%= schema.query_root_name %>Query query = getQuery(null);
+
+            QueryLoop queryLoop = (loop) => {
+                Loader.Query(query, (response) => {
+                    responses.Add(response);
+
+                    query = getQuery(response);
+
+                    if (query != null) {
+                        loop(loop);
+                    } else {
+                        callback(getMerged(responses));
+                    }
+                });
+            };
+
+            queryLoop(queryLoop);
+        }
+    }
+}

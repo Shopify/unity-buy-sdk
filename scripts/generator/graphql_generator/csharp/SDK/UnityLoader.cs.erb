@@ -47,12 +47,12 @@ namespace <%= namespace %>.SDK {
             }
 
             w.Dispose();
+            MonoBehaviour.Destroy(this);
         }
     }
 
     public class UnityLoader : ILoader {
         static GameObject LoaderGameObject;
-        static LoaderComponent Loader;
 
         string Domain;
         string Authorization;
@@ -64,13 +64,12 @@ namespace <%= namespace %>.SDK {
 
         public void Load(string query, LoaderResponse callback) {
             if (LoaderGameObject == null) {
-                LoaderGameObject = new GameObject("ShopifyLoader");
-                Loader = LoaderGameObject.AddComponent<LoaderComponent>()
-                    .SetURL("https://" + Domain + "/api/graphql.json")
-                    .SetAuthorization("Basic " + Authorization);
+                LoaderGameObject = new GameObject();
             }
 
-            Loader
+            LoaderGameObject.AddComponent<LoaderComponent>()
+            .SetURL("https://" + Domain + "/api/graphql.json")
+            .SetAuthorization("Basic " + Authorization)
             .Load(query, callback);
         }
     }
