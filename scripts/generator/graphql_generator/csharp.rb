@@ -226,12 +226,12 @@ module GraphQLGenerator
       type.fields.find { |field| field.name == field_name }
     end
 
-    def is_connection?(type)
+    def connection?(type)
       type.name.end_with?("Connection")
     end
 
     def edges_type_from_connection_type(type)
-      if is_connection?(type)
+      if connection?(type)
         edges = field_from_type(type, "edges")
 
         type_from_name(edges.type.unwrap.name)
@@ -239,7 +239,7 @@ module GraphQLGenerator
     end
 
     def node_type_from_connection_type(type)
-      if is_connection?(type)
+      if connection?(type)
         edge_type = edges_type_from_connection_type(type)
         
         type_from_name(edge_type.name)
