@@ -139,6 +139,17 @@ module GraphQLGenerator
       end
     end
 
+    def graph_type_to_csharp_cast(type, value, is_non_null = false)
+      case type.kind
+      when "NON_NULL"
+        graph_type_to_csharp_cast(type.of_type, value, is_non_null: true);
+      when "SCALAR"
+        scalars[type.name].cast_value(value)
+      else
+        "(#{graph_type_to_csharp_type(type)})"
+      end
+    end
+
     # will return an arg definition from a graphql type
     def arg_type_and_name(arg)
       type = graph_type_to_csharp_type(arg.type)
@@ -204,7 +215,7 @@ module GraphQLGenerator
     end
 
     def response_init_scalar(field)
-      "(#{graph_type_to_csharp_type(field.type)}) dataJSON[key]"
+      graph_type_to_csharp_cast(field.type, "dataJSON[key]")
     end
 
     def response_init_enum(field)

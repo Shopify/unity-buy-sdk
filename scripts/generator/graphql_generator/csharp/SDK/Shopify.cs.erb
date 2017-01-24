@@ -68,38 +68,62 @@ namespace <%= namespace %>.SDK {
                 (response) => {
                     QueryRootQuery query = null;
 
-                    if (response == null) {
+                    if (response == null || response.data.shop().products().pageInfo().hasNextPage()) {
                         query = new QueryRootQuery();
-                        query.shop(s => s
-                            .products(pc => pc
-                                .edges(e => e
-                                    .node(p => p
-                                        .title()
-                                    )
-                                    .cursor()
-                                )
-                                .pageInfo(pi => pi
-                                    .hasNextPage()
-                                ),
-                                first: first
-                            )
-                        );
-                    } else if(response.data.shop().products().pageInfo().hasNextPage()) {
-                        List<ProductEdge> edges = response.data.shop().products().edges();
+                        List<ProductEdge> edges = response != null ? response.data.shop().products().edges() : null;
 
                         query = new QueryRootQuery();
                         query.shop(s => s
                             .products(pc => pc
                                 .edges(e => e
                                     .node(p => p
+                                        .id()
                                         .title()
+                                        .bodyHtml()
+                                        .images(ic => ic
+                                            .edges(ie => ie
+                                                .node(imn => imn
+                                                    .altText()
+                                                    .src()
+                                                )
+                                                .cursor()
+                                            )
+                                            .pageInfo(pi => pi
+                                                .hasNextPage()
+                                            ),
+                                            first: 250
+                                        )
+                                        .options(pn => pn
+                                            .name()
+                                            .values()
+                                        )
+                                        .variants(pvc => pvc
+                                            .edges(pve => pve
+                                                .node(pnv => pnv
+                                                    .available()
+                                                    .images(pnvi => pnvi
+                                                        .altText()
+                                                        .src()
+                                                    )
+                                                    .price()
+                                                    .title()
+                                                    .weight()
+                                                    .weightUnit()
+                                                )
+                                                .cursor()
+                                            )
+                                            .pageInfo(pvp => pvp
+                                                .hasNextPage()
+                                            ),
+                                            first: 250
+                                        )
                                     )
                                     .cursor()
                                 )
                                 .pageInfo(pi => pi
                                     .hasNextPage()
                                 ),
-                                first: first, after: edges[edges.Count - 1].cursor()
+                                first: first, after: edges != null ? edges[edges.Count - 1].cursor() : null
                             )
                         );
                     }

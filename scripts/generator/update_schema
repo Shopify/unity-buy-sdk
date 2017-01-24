@@ -57,6 +57,7 @@ GraphQLGenerator::CSharp.new(schema,
     GraphQLGenerator::CSharp::Scalar.new(
       graph_type: 'Money',
       csharp_type: 'decimal',
+      custom_cast: ->(value) { "Convert.ToDecimal(#{value})" },
     ),
   ]
 ).save("#{ROOT_DIR}/Assets/Shopify/Unity");

@@ -19,7 +19,7 @@ namespace Shopify.Tests
         }
 
         [Test]
-        public void TestProducts() {
+        public void TestProductsAll() {
             List<Product> products = null;
 
             ShopifyBuy.Init(new MockLoader());

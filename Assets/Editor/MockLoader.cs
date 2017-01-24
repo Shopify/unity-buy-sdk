@@ -21,15 +21,54 @@ namespace Shopify.Tests {
 
             for(int i = 0; i < CountProductsPages; i++) {
                 QueryRootQuery query = new QueryRootQuery().
-                        shop(s => s.
-                            products(p => p.
-                                edges(e => e.
-                                    node(n => n.
-                                        title()
-                                    ).
-                                    cursor()
-                                ).
-                                pageInfo(pi => pi.
+                        shop(s => s
+                            .products(p => p
+                                .edges(e => e
+                                    .node(pn => pn
+                                        .id()
+                                        .title()
+                                        .bodyHtml()
+                                        .images(ic => ic
+                                            .edges(ie => ie
+                                                .node(imn => imn
+                                                    .altText()
+                                                    .src()
+                                                )
+                                                .cursor()
+                                            )
+                                            .pageInfo(pi => pi
+                                                .hasNextPage()
+                                            ),
+                                            first: 250
+                                        )
+                                        .options(po => po
+                                            .name()
+                                            .values()
+                                        )
+                                        .variants(pvc => pvc
+                                            .edges(pve => pve
+                                                .node(pnv => pnv
+                                                    .available()
+                                                    .images(pnvi => pnvi
+                                                        .altText()
+                                                        .src()
+                                                    )
+                                                    .price()
+                                                    .title()
+                                                    .weight()
+                                                    .weightUnit()
+                                                )
+                                                .cursor()
+                                            )
+                                            .pageInfo(pvp => pvp
+                                                .hasNextPage()
+                                            ),
+                                            first: 250
+                                        )
+                                    )
+                                    .cursor()
+                                )
+                                .pageInfo(pi => pi.
                                     hasNextPage()
                                 ),
                                 first: PageSize, after: i > 0 ? (i * PageSize - 1).ToString() : null
@@ -43,7 +82,46 @@ namespace Shopify.Tests {
                     edges.Append(String.Format(@"{{
                         ""cursor"": ""{0}"",
                         ""node"": {{
-                            ""title"": ""Product{0}""
+                            ""id"": ""{0}"",
+                            ""title"": ""Product{0}"",
+                            ""bodyHtml"": ""<div>This is product {0}</div>"",
+                            ""images"": {{
+                                ""edges"": [
+                                    {{
+                                        ""node"": {{
+                                            ""altText"": ""I am an image {0}"",
+                                            ""src"": ""http:://cdn.com/images/{0}""
+                                        }},
+                                        ""cursor"": ""image0""
+                                    }}
+                                ],
+                                ""pageInfo"": {{
+                                    ""hasNextPage"": false
+                                }}
+                            }},
+                            ""options"": [
+                                {{
+                                    ""name"": ""default option"",
+                                    ""values"": [""default-opt""]
+                                }}
+                            ],
+                            ""variants"": {{
+                                ""edges"": [
+                                    {{
+                                        ""node"": {{
+                                            ""available"": true,
+                                            ""images"": [],
+                                            ""price"": 3.01,
+                                            ""weight"": 1.02,
+                                            ""weightUnit"": ""KILOGRAMS""
+                                        }},
+                                        ""cursor"": ""variant0""
+                                    }}
+                                ],
+                                ""pageInfo"": {{
+                                    ""hasNextPage"": false
+                                }}
+                            }}
                         }}
                     }}{1}", i * PageSize + j, j < PageSize - 1 ? "," : ""));
                 }
