@@ -61,8 +61,9 @@ namespace Shopify.Tests
         [Test]
         public void DeserializeAliasedField() {
             string stringJSON = @"{
-                ""product___aliasName"": {
-                    ""title"": ""This is a product""
+                ""node___aliasName"": {
+                    ""__typename"": ""Product"",
+                    ""id"": ""1""
                 }
             }";
 
@@ -70,7 +71,7 @@ namespace Shopify.Tests
             
             QueryRoot response = new QueryRoot(dataJSON);
             
-            Assert.AreEqual("This is a product", response.product(alias: "aliasName").title());
+            Assert.AreEqual("1", response.node(alias: "aliasName").id());
         }
 
         [Test]
@@ -118,8 +119,8 @@ namespace Shopify.Tests
         [Test]
         public void ExceptionIsThrownForBlankAliasInResponse() {
             string stringJSON = @"{
-                ""aliasName___product"": {
-                    ""title"": ""This is a product""
+                ""aliasName___node"": {
+                    ""id"": ""1""
                 }
             }";
 
@@ -129,7 +130,7 @@ namespace Shopify.Tests
             QueryRoot response = new QueryRoot(dataJSON);
 
             try {
-                response.product(alias: "").title();
+                response.node(alias: "").id();
             } catch(AliasException error) {
                 caughtError = error;
             }

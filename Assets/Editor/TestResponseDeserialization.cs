@@ -123,7 +123,8 @@ namespace Shopify.Tests {
         [Test]
         public void CanDeserializeLists() {
             string stringJSON = @"{
-                ""product"": {
+                ""node"": {
+                    ""__typename"": ""Product"",
                     ""tags"": [
                         ""blue"",
                         ""button"",
@@ -138,14 +139,15 @@ namespace Shopify.Tests {
 
             CollectionAssert.AreEqual(
                 new List<string>() {"blue", "button", "fancy"},
-                response.product().tags()
+                ((Product) response.node()).tags()
             );
         }
 
         [Test]
         public void CanDeserializeListsWithNull() {
             string stringJSON = @"{
-                ""product"": {
+                ""node"": {
+                    ""__typename"": ""Product"",
                     ""tags"": [
                         ""blue"",
                         null,
@@ -160,7 +162,7 @@ namespace Shopify.Tests {
 
             CollectionAssert.AreEqual(
                 new List<string>() {"blue", null, "fancy"},
-                response.product().tags()
+                ((Product) response.node()).tags()
             );
         }
 
