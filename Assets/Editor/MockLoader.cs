@@ -12,13 +12,19 @@ namespace Shopify.Tests {
         public static int PageSize = 250;
         public static List<QueryRootQuery> QueryProducts;
         public static Dictionary<string,string> ResponseProducts;
+        public static List<QueryRootQuery> QueryNodes;
+        public static Dictionary<string,string> ResponseNodes;
 
         private static void Initialize() {
+            InitProducts(); 
+            InitNodes();
             Initialized = true;
+        }
 
+        private static void InitProducts() {
             QueryProducts = new List<QueryRootQuery>();
             ResponseProducts = new Dictionary<string,string>();
-
+        
             for(int i = 0; i < CountProductsPages; i++) {
                 QueryRootQuery query = new QueryRootQuery().
                         shop(s => s
@@ -39,7 +45,7 @@ namespace Shopify.Tests {
                                             .pageInfo(pi => pi
                                                 .hasNextPage()
                                             ),
-                                            first: 250
+                                            first: PageSize
                                         )
                                         .options(po => po
                                             .name()
@@ -63,7 +69,7 @@ namespace Shopify.Tests {
                                             .pageInfo(pvp => pvp
                                                 .hasNextPage()
                                             ),
-                                            first: 250
+                                            first: PageSize
                                         )
                                     )
                                     .cursor()
@@ -74,57 +80,6 @@ namespace Shopify.Tests {
                                 first: PageSize, after: i > 0 ? (i * PageSize - 1).ToString() : null
                             )
                         );
-
-                StringBuilder edges = new StringBuilder();
-
-                for(int j = 0; j < PageSize; j++) {
-                    
-                    edges.Append(String.Format(@"{{
-                        ""cursor"": ""{0}"",
-                        ""node"": {{
-                            ""id"": ""{0}"",
-                            ""title"": ""Product{0}"",
-                            ""bodyHtml"": ""<div>This is product {0}</div>"",
-                            ""images"": {{
-                                ""edges"": [
-                                    {{
-                                        ""node"": {{
-                                            ""altText"": ""I am an image {0}"",
-                                            ""src"": ""http:://cdn.com/images/{0}""
-                                        }},
-                                        ""cursor"": ""image0""
-                                    }}
-                                ],
-                                ""pageInfo"": {{
-                                    ""hasNextPage"": false
-                                }}
-                            }},
-                            ""options"": [
-                                {{
-                                    ""name"": ""default option"",
-                                    ""values"": [""default-opt""]
-                                }}
-                            ],
-                            ""variants"": {{
-                                ""edges"": [
-                                    {{
-                                        ""node"": {{
-                                            ""available"": true,
-                                            ""images"": [],
-                                            ""price"": 3.01,
-                                            ""weight"": 1.02,
-                                            ""weightUnit"": ""KILOGRAMS""
-                                        }},
-                                        ""cursor"": ""variant0""
-                                    }}
-                                ],
-                                ""pageInfo"": {{
-                                    ""hasNextPage"": false
-                                }}
-                            }}
-                        }}
-                    }}{1}", i * PageSize + j, j < PageSize - 1 ? "," : ""));
-                }
 
                 ResponseProducts[query.ToString()] = String.Format(@"{{
                     ""data"": {{
@@ -139,8 +94,206 @@ namespace Shopify.Tests {
                             }}
                         }}
                     }}
-                }}", edges.ToString(), i < CountProductsPages - 1 ? "true" : "false");
+                }}", GetProductEdges(i), GetJSONBool(i < CountProductsPages - 1));
             }
+        }
+
+        private static void InitNodes() {
+            ResponseNodes = new Dictionary<string,string>();
+            QueryRootQuery query = new QueryRootQuery();
+            
+            query.node(n => n
+                .onProduct(p => p
+                    .images(ic => ic
+                        .edges(ie => ie
+                            .node(imn => imn
+                                .altText()
+                                .src()
+                            )
+                            .cursor()
+                        )
+                        .pageInfo(pi => pi
+                            .hasNextPage()
+                        ),
+                        first: PageSize, after: "image249"
+                    )
+                ),
+                id: "1", alias: "product1"
+            );
+
+            query.node(n => n
+                .onProduct(p => p
+                    .images(ic => ic
+                        .edges(ie => ie
+                            .node(imn => imn
+                                .altText()
+                                .src()
+                            )
+                            .cursor()
+                        )
+                        .pageInfo(pi => pi
+                            .hasNextPage()
+                        ),
+                        first: PageSize, after: "image249"
+                    )
+                ),
+                id: "2", alias: "product2"
+            );
+
+            ResponseNodes[query.ToString()] = String.Format(@"{{
+                ""data"": {{
+                    ""node___product1"": {{
+                        ""__typename"": ""Product"",
+                        ""images"": {{
+                            ""edges"": [
+                                {0}
+                            ],
+                            ""pageInfo"": {{
+                                ""hasNextPage"": {1}
+                            }}
+                        }}
+                    }},
+                    ""node___product2"": {{
+                        ""__typename"": ""Product"",
+                        ""images"": {{
+                            ""edges"": [
+                                {2}
+                            ],
+                            ""pageInfo"": {{
+                                ""hasNextPage"": {3}
+                            }}
+                        }}
+                    }}
+                }}
+            }}", GetImages(1, 1, 250), GetJSONBool(false), GetImages(1, 2, 250), GetJSONBool(true));
+
+            query = new QueryRootQuery();
+            query.node(n => n
+                .onProduct(p => p
+                    .images(ic => ic
+                        .edges(ie => ie
+                            .node(imn => imn
+                                .altText()
+                                .src()
+                            )
+                            .cursor()
+                        )
+                        .pageInfo(pi => pi
+                            .hasNextPage()
+                        ),
+                        first: PageSize, after: "image499"
+                    )
+                ),
+                id: "2", alias: "product2"
+            );
+
+            ResponseNodes[query.ToString()] = String.Format(@"{{
+                ""data"": {{
+                    ""node___product2"": {{
+                        ""__typename"": ""Product"",
+                        ""images"": {{
+                            ""edges"": [
+                                {0}
+                            ],
+                            ""pageInfo"": {{
+                                ""hasNextPage"": {1}
+                            }}
+                        }}
+                    }}
+                }}
+            }}", GetImages(2, 2, 250), GetJSONBool(false));
+        }
+
+        private static string GetProductEdges(int page) {
+            StringBuilder edges = new StringBuilder();
+
+            for(int j = 0; j < PageSize; j++) {
+                int product = page * PageSize + j;
+                bool imagesHasNextPage = product == 1 || product == 2;
+                bool variantsHasNextPage = product == 2;
+                
+                edges.Append(String.Format(@"{{
+                    ""cursor"": ""{0}"",
+                    ""node"": {{
+                        ""id"": ""{0}"",
+                        ""title"": ""Product{0}"",
+                        ""bodyHtml"": ""<div>This is product {0}</div>"",
+                        ""images"": {{
+                            ""edges"": [
+                                {1}
+                            ],
+                            ""pageInfo"": {{
+                                ""hasNextPage"": {2}
+                            }}
+                        }},
+                        ""options"": [
+                            {{
+                                ""name"": ""default option"",
+                                ""values"": [""default-opt""]
+                            }}
+                        ],
+                        ""variants"": {{
+                            ""edges"": [
+                                {3}
+                            ],
+                            ""pageInfo"": {{
+                                ""hasNextPage"": {4}
+                            }}
+                        }}
+                    }}
+                }}{5}", 
+                product, 
+                GetImages(0, product, imagesHasNextPage ? PageSize : 1), 
+                GetJSONBool(imagesHasNextPage),
+                GetVariants(0, product, variantsHasNextPage ? PageSize : 1),
+                GetJSONBool(variantsHasNextPage),
+                j < PageSize - 1 ? "," : ""));
+            }
+
+            return edges.ToString();
+        }
+
+        private static string GetVariants(int page, int product, int countVariants = 1) {
+            StringBuilder edges = new StringBuilder();
+
+            for(int i = 0; i < countVariants; i++) {
+                int variant = page * PageSize + i;
+
+                edges.Append(String.Format(@"{{
+                    ""node"": {{
+                        ""available"": true,
+                        ""images"": [],
+                        ""title"": ""variant{0}"",
+                        ""price"": 3.01,
+                        ""weight"": 1.02,
+                        ""weightUnit"": ""KILOGRAMS""
+                    }},
+                    ""cursor"": ""variant{1}""
+                }}{1}", variant, i < countVariants - 1 ? "," : ""));
+            }
+            return edges.ToString();
+        }
+
+        private static string GetImages(int page, int product, int countImages = 1) {
+            StringBuilder edges = new StringBuilder();
+
+            for(int i = 0; i < countImages; i++) {
+                int image = page * PageSize + i;
+
+                edges.Append(String.Format(@"{{
+                    ""node"": {{
+                        ""altText"": ""I am an image {0}"",
+                        ""src"": ""http://cdn.com/images/{0}-{1}""
+                    }},
+                    ""cursor"": ""image{0}""
+                }}{1}", image, i < countImages - 1 ? "," : ""));
+            }
+
+            return edges.ToString();        
+        }
+
+        private static string GetJSONBool(bool value) {
+            return value ? "true" : "false";
         }
 
         public MockLoader() {
@@ -152,6 +305,8 @@ namespace Shopify.Tests {
         public void Load(string query, LoaderResponse callback) {
             if (ResponseProducts.ContainsKey(query)) {
                 callback(ResponseProducts[query], null);
+            } else if (ResponseNodes.ContainsKey(query)) {
+                callback(ResponseNodes[query], null);
             } else {
                 Console.WriteLine("NO RESPONSE: " + query);
                 throw new Exception("NO QUERY RESPONSE");

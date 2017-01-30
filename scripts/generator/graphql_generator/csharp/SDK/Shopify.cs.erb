@@ -62,6 +62,119 @@ namespace <%= namespace %>.SDK {
         }
 
         public void products(ResponseProductsHandler callback, int first = 250) {
+            GetProductsList((products) => {
+                GetConnectionsForProducts(products, callback);
+            }, first);
+        }
+
+        private List<bool> GetProductsToQueryImages(List<Product> products) {
+            List<bool> imagesToQuery = new List<bool>();
+
+            for(int i = 0; i < products.Count; i++) {
+                imagesToQuery.Add(products[i].images().pageInfo().hasNextPage());
+            }
+
+            return imagesToQuery;
+        }
+
+        private void GetConnectionsForProducts(List<Product> products, ResponseProductsHandler callback) {
+            List<bool> rootImagesToQuery = GetProductsToQueryImages(products);
+            List<bool> imagesToQuery = rootImagesToQuery;
+
+            if (imagesToQuery.Contains(true)) {
+                ConnectionLoader loader = new ConnectionLoader(Loader);
+
+                loader.Query(
+                    (response) => {
+                        QueryRootQuery query = null;
+
+                        if (response != null) {
+                            imagesToQuery = GetProductsToQueryImages(products);
+                        }
+
+                        for (int i = 0; i < imagesToQuery.Count; i++) {
+                            bool shouldQuery = imagesToQuery[i];
+                            List<ImageEdge> imageEdges;
+
+                            if (shouldQuery && response != null) {
+                                try {
+                                    shouldQuery = ((Product) response.data.node(String.Format("product{0}", i))).images().pageInfo().hasNextPage();
+                                } catch(NoQueryException error) {
+                                    // we may have not needed to query anymore for products
+                                    shouldQuery = false;
+                                }   
+                            }
+
+                            if (shouldQuery) {
+                                if (response == null) {
+                                    imageEdges = products[i].images().edges();
+                                } else {
+                                    imageEdges = ((Product) response.data.node(String.Format("product{0}", i))).images().edges();
+                                }
+                                
+                                if (query == null) {
+                                    query = new QueryRootQuery();
+                                }
+
+                                query.node(n => n
+                                    .onProduct(p => p
+                                        .images(ic => ic
+                                            .edges(ie => ie
+                                                .node(imn => imn
+                                                    .altText()
+                                                    .src()
+                                                )
+                                                .cursor()
+                                            )
+                                            .pageInfo(pi => pi
+                                                .hasNextPage()
+                                            ),
+                                            first: 250, after: imageEdges[imageEdges.Count - 1].cursor()
+                                        )
+                                    ),
+                                    id: products[i].id(), alias: String.Format("product{0}", i)
+                                );
+                            }
+                        }
+
+                        return query;
+                    },
+                    (responses) => {
+                        QueryResponse firstResponse = responses[0];
+                        Product firstProduct;
+                        Product productToMerge;
+
+                        foreach(QueryResponse response in responses) {
+                            if (response != firstResponse) {
+                                for (int i = 0; i < rootImagesToQuery.Count; i++) {
+                                    try {
+                                        firstProduct = (Product) firstResponse.data.node(String.Format("product{0}", i));
+                                        productToMerge = (Product) response.data.node(String.Format("product{0}", i));
+                                        firstProduct.images().AddFromConnection(productToMerge.images());
+                                    } catch(NoQueryException error) {}
+                                }
+                            }
+                        }
+
+                        return firstResponse;
+                    },
+                    (response) => {
+                        for (int i = 0; i < rootImagesToQuery.Count; i++) {
+                            if (rootImagesToQuery[i]) {
+                                Product productToMerge = (Product) response.data.node(String.Format("product{0}", i));
+                                products[i].images().AddFromConnection(productToMerge.images());
+                            }
+                        }
+
+                        callback(products);
+                    }
+                );
+            } else {
+                callback(products);
+            }
+        }
+
+        private void GetProductsList(ResponseProductsHandler callback, int first = 250) {
             ConnectionLoader loader = new ConnectionLoader(Loader);
 
             loader.Query(
