@@ -9,7 +9,7 @@ namespace Shopify.Tests {
         private static bool Initialized;
 
         public static int CountProductsPages = 4;
-        public static int PageSize = 250;
+        public static int PageSize = DefaultQueries.MaxPageSize;
         public static List<QueryRootQuery> QueryProducts;
         public static Dictionary<string,string> ResponseProducts;
         public static List<QueryRootQuery> QueryNodes;
@@ -26,60 +26,13 @@ namespace Shopify.Tests {
             ResponseProducts = new Dictionary<string,string>();
         
             for(int i = 0; i < CountProductsPages; i++) {
-                QueryRootQuery query = new QueryRootQuery().
-                        shop(s => s
-                            .products(p => p
-                                .edges(e => e
-                                    .node(pn => pn
-                                        .id()
-                                        .title()
-                                        .bodyHtml()
-                                        .images(ic => ic
-                                            .edges(ie => ie
-                                                .node(imn => imn
-                                                    .altText()
-                                                    .src()
-                                                )
-                                                .cursor()
-                                            )
-                                            .pageInfo(pi => pi
-                                                .hasNextPage()
-                                            ),
-                                            first: PageSize
-                                        )
-                                        .options(po => po
-                                            .name()
-                                            .values()
-                                        )
-                                        .variants(pvc => pvc
-                                            .edges(pve => pve
-                                                .node(pnv => pnv
-                                                    .available()
-                                                    .images(pnvi => pnvi
-                                                        .altText()
-                                                        .src()
-                                                    )
-                                                    .price()
-                                                    .title()
-                                                    .weight()
-                                                    .weightUnit()
-                                                )
-                                                .cursor()
-                                            )
-                                            .pageInfo(pvp => pvp
-                                                .hasNextPage()
-                                            ),
-                                            first: PageSize
-                                        )
-                                    )
-                                    .cursor()
-                                )
-                                .pageInfo(pi => pi.
-                                    hasNextPage()
-                                ),
-                                first: PageSize, after: i > 0 ? (i * PageSize - 1).ToString() : null
-                            )
-                        );
+                QueryRootQuery query = new QueryRootQuery();
+
+                DefaultQueries.ShopProducts(
+                    query: query, 
+                    first: PageSize, 
+                    after: i > 0 ? (i * PageSize - 1).ToString() : null
+                );
 
                 ResponseProducts[query.ToString()] = String.Format(@"{{
                     ""data"": {{
@@ -105,17 +58,7 @@ namespace Shopify.Tests {
             query.node(n => n
                 .onProduct(p => p
                     .id()
-                    .images(ic => ic
-                        .edges(ie => ie
-                            .node(imn => imn
-                                .altText()
-                                .src()
-                            )
-                            .cursor()
-                        )
-                        .pageInfo(pi => pi
-                            .hasNextPage()
-                        ),
+                    .images(ic => DefaultQueries.ImageConnection(ic),
                         first: PageSize, after: "image249"
                     )
                 ),
@@ -125,38 +68,12 @@ namespace Shopify.Tests {
             query.node(n => n
                 .onProduct(p => p
                     .id()
-                    .images(ic => ic
-                        .edges(ie => ie
-                            .node(imn => imn
-                                .altText()
-                                .src()
-                            )
-                            .cursor()
-                        )
-                        .pageInfo(pi => pi
-                            .hasNextPage()
-                        ),
+                    .images(ic => DefaultQueries.ImageConnection(ic),
                         first: PageSize, after: "image249"
                     )
-                    .variants(vc => vc
-                        .edges(ve => ve
-                            .node(vn => vn
-                                .available()
-                                .images(pnvi => pnvi
-                                    .altText()
-                                    .src()
-                                )
-                                .price()
-                                .title()
-                                .weight()
-                                .weightUnit()
-                            )
-                            .cursor()
-                        )
-                        .pageInfo(pi => pi
-                            .hasNextPage()
-                        ),
-                        first: 250, after: "variant249"
+                    .variants(
+                        vc => DefaultQueries.ProductVariantConnection(vc),
+                        first: DefaultQueries.MaxPageSize, after: "variant249"
                     )
                 ),
                 id: "2", alias: "product2"
@@ -197,23 +114,13 @@ namespace Shopify.Tests {
                         }}
                     }}
                 }}
-            }}", GetImages(1, 1, 250), GetJSONBool(false), GetImages(1, 2, 250), GetJSONBool(true), GetVariants(1, 2, 250), GetJSONBool(false));
+            }}", GetImages(1, 1, DefaultQueries.MaxPageSize), GetJSONBool(false), GetImages(1, 2, DefaultQueries.MaxPageSize), GetJSONBool(true), GetVariants(1, 2, DefaultQueries.MaxPageSize), GetJSONBool(false));
 
             query = new QueryRootQuery();
             query.node(n => n
                 .onProduct(p => p
                     .id()
-                    .images(ic => ic
-                        .edges(ie => ie
-                            .node(imn => imn
-                                .altText()
-                                .src()
-                            )
-                            .cursor()
-                        )
-                        .pageInfo(pi => pi
-                            .hasNextPage()
-                        ),
+                    .images(ic => DefaultQueries.ImageConnection(ic),
                         first: PageSize, after: "image499"
                     )
                 ),
@@ -235,7 +142,7 @@ namespace Shopify.Tests {
                         }}
                     }}
                 }}
-            }}", GetImages(2, 2, 250), GetJSONBool(false));
+            }}", GetImages(2, 2, DefaultQueries.MaxPageSize), GetJSONBool(false));
         }
 
         private static string GetProductEdges(int page) {

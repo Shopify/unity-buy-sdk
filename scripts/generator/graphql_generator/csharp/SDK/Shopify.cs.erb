@@ -123,18 +123,8 @@ namespace <%= namespace %>.SDK {
                     connectionType: typeof(ImageConnection), 
                     edgeType: typeof(ImageEdge), 
                     query: (p, after) => {
-                        p.images(ic => ic
-                            .edges(ie => ie
-                                .node(ien => ien
-                                    .altText()
-                                    .src()
-                                )
-                                .cursor()
-                            )
-                            .pageInfo(pi => pi
-                                .hasNextPage()
-                            ),
-                            first: 250, after: after
+                        p.images(ic => DefaultQueries.ImageConnection(ic),
+                            first: DefaultQueries.MaxPageSize, after: after
                         );
                     },
                     merge: (p, pr) => {
@@ -146,25 +136,8 @@ namespace <%= namespace %>.SDK {
                     connectionType: typeof(ProductVariantConnection), 
                     edgeType: typeof(ProductVariantEdge), 
                     query: (p, after) => {
-                        p.variants(vc => vc
-                            .edges(ve => ve
-                                .node(vn => vn
-                                    .available()
-                                    .images(pnvi => pnvi
-                                        .altText()
-                                        .src()
-                                    )
-                                    .price()
-                                    .title()
-                                    .weight()
-                                    .weightUnit()
-                                )
-                                .cursor()
-                            )
-                            .pageInfo(pi => pi
-                                .hasNextPage()
-                            ),
-                            first: 250, after: after
+                        p.variants(vc => DefaultQueries.ProductVariantConnection(vc),
+                            first: DefaultQueries.MaxPageSize, after: after
                         );
                     },
                     merge: (p, pr) => {
@@ -197,7 +170,7 @@ namespace <%= namespace %>.SDK {
                     connectionInfoQueried.Add(connectionInfoForProduct);
 
                     query.node(n => n
-                    .onProduct((p) => {
+                        .onProduct((p) => {
                             p.id();
 
                             for(int j = 0; j < afters.Count; j++) {
@@ -250,58 +223,10 @@ namespace <%= namespace %>.SDK {
                         query = new QueryRootQuery();
                         
                         query = new QueryRootQuery();
-                        query.shop(s => s
-                            .products(pc => pc
-                                .edges(e => e
-                                    .node(p => p
-                                        .id()
-                                        .title()
-                                        .bodyHtml()
-                                        .images(ic => ic
-                                            .edges(ie => ie
-                                                .node(imn => imn
-                                                    .altText()
-                                                    .src()
-                                                )
-                                                .cursor()
-                                            )
-                                            .pageInfo(pi => pi
-                                                .hasNextPage()
-                                            ),
-                                            first: 250
-                                        )
-                                        .options(pn => pn
-                                            .name()
-                                            .values()
-                                        )
-                                        .variants(pvc => pvc
-                                            .edges(pve => pve
-                                                .node(pnv => pnv
-                                                    .available()
-                                                    .images(pnvi => pnvi
-                                                        .altText()
-                                                        .src()
-                                                    )
-                                                    .price()
-                                                    .title()
-                                                    .weight()
-                                                    .weightUnit()
-                                                )
-                                                .cursor()
-                                            )
-                                            .pageInfo(pvp => pvp
-                                                .hasNextPage()
-                                            ),
-                                            first: 250
-                                        )
-                                    )
-                                    .cursor()
-                                )
-                                .pageInfo(pi => pi
-                                    .hasNextPage()
-                                ),
-                                first: countToLoad > 250 ? 250 : countToLoad, after: edges != null ? edges[edges.Count - 1].cursor() : after
-                            )
+                        DefaultQueries.ShopProducts(
+                            query: query, 
+                            first: countToLoad > DefaultQueries.MaxPageSize ? DefaultQueries.MaxPageSize : countToLoad, 
+                            after: edges != null ? edges[edges.Count - 1].cursor() : after
                         );
                     }
 

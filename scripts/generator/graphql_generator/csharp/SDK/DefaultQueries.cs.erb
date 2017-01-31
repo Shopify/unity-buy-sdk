@@ -1,0 +1,75 @@
+namespace <%= namespace %>.SDK {
+    public class DefaultQueries {
+        public static readonly int MaxPageSize = 250;
+
+        public static void ShopProducts(QueryRootQuery query, int first = 250, string after = null) {
+            query.shop(s => s
+                .products(pc => pc
+                    .edges(e => e
+                        .node(p => p
+                            .id()
+                            .title()
+                            .bodyHtml()
+                            .images(ic => DefaultQueries.ImageConnection(ic),
+                                first: DefaultQueries.MaxPageSize
+                            )
+                            .options(pn => pn
+                                .name()
+                                .values()
+                            )
+                            .variants(pvc => DefaultQueries.ProductVariantConnection(pvc),
+                                first: DefaultQueries.MaxPageSize
+                            )
+                        )
+                        .cursor()
+                    )
+                    .pageInfo(pi => pi
+                        .hasNextPage()
+                    ),
+                    first: first, after: after
+                )
+            );
+        }
+
+        public static void ImageConnection(ImageConnectionQuery imageConnection) {
+            imageConnection
+            .edges(ie => ie
+                .node(imn => DefaultQueries.Image(imn))
+                .cursor()
+            )
+            .pageInfo(pi => pi
+                .hasNextPage()
+            );
+        }
+
+        public static void ProductVariantConnection(ProductVariantConnectionQuery variantConnection) {
+            variantConnection
+            .edges(pve => pve
+                .node(pnv => DefaultQueries.ProductVariant(pnv))
+                .cursor()
+            )
+            .pageInfo(pvp => pvp
+                .hasNextPage()
+            );
+        }
+
+        public static void Image(ImageQuery image) {
+            image
+            .altText()
+            .src();
+        }
+
+        public static void ProductVariant(ProductVariantQuery variant) {
+            variant
+            .available()
+            .images(pnvi => pnvi
+                .altText()
+                .src()
+            )
+            .price()
+            .title()
+            .weight()
+            .weightUnit();
+        }
+    }
+}
