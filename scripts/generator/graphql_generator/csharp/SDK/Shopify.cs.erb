@@ -215,12 +215,12 @@ namespace <%= namespace %>.SDK {
             if (productsQueried.Count == 0) {
                 callback(products, null, null);
             } else {
-                Loader.Query(query, (respone) => {
+                Loader.Query(query, (response) => {
                     for(int i = 0; i < productsQueried.Count; i++) {
                         int idxQueried = productsQueried[i];
                         List<ConnectionInfo> infos = connectionInfoQueried[i];
                         Product product = products[idxQueried];
-                        Product productResult = (Product) respone.data.node(String.Format("product{0}", idxQueried));
+                        Product productResult = (Product) response.data.node(String.Format("product{0}", idxQueried));
 
                         foreach(ConnectionInfo info in infos) {
                             info.QueryMergeHandler(product, productResult);
@@ -239,6 +239,7 @@ namespace <%= namespace %>.SDK {
             loader.Query(
                 (response) => {
                     QueryRootQuery query = null;
+
                     List<ProductEdge> edges = response != null ? response.data.shop().products().edges() : null;
 
                     if (edges != null) {

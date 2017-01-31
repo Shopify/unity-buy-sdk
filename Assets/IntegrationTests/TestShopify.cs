@@ -5,18 +5,18 @@ namespace Shopify.Unity.Tests
 
     [IntegrationTest.DynamicTest ("TestScene")]
     [IntegrationTest.SucceedWithAssertions]
-    public class TestLoad250Products : MonoBehaviour {
+    public class TestLoad3Products : MonoBehaviour {
         void Start() {
             ShopifyBuy.Init("351c122017d0f2a957d32ae728ad749c", "graphql.myshopify.com");
 
-            System.Console.WriteLine("START LOAD");
-
             ShopifyBuy.Client().products(
-                first: 250,
-                callback: (products) => {
-                    System.Console.WriteLine("---> LOADED: " + products.Count);
+                first: 3,
+                callback: (products, errors, httpErrors) => {
+                    IntegrationTest.Equals(null, errors);
+                    IntegrationTest.Equals(null, httpErrors);
+                    IntegrationTest.Assert(products.Count == 3, "Loaded products");
 
-                    IntegrationTest.Assert(products.Count > 0, "Loaded products");
+                    IntegrationTest.Pass();
                 }
             );
         }

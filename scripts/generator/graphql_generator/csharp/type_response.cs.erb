@@ -109,6 +109,8 @@ namespace <%= namespace %> {
 
         <% if connection?(type) %>
         public void AddFromConnection(<%= type.classify_name %> connection) {
+            connection.Nodes = null;
+
             List<<%= field_from_type(type,"edges").type.unwrap.name %>> clonedList = new List<<%= field_from_type(type,"edges").type.unwrap.name %>>();
 
             foreach(<%= field_from_type(type,"edges").type.unwrap.name %> edge in connection.edges()) {

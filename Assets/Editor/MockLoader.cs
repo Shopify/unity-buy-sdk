@@ -8,7 +8,7 @@ namespace Shopify.Tests {
     public class MockLoader : ILoader {
         private static bool Initialized;
 
-        public static int CountProductsPages = 10;
+        public static int CountProductsPages = 4;
         public static int PageSize = 250;
         public static List<QueryRootQuery> QueryProducts;
         public static Dictionary<string,string> ResponseProducts;
