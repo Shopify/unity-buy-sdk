@@ -43,7 +43,7 @@ namespace Shopify.Tests
         }
 
         [Test]
-        public void TestProductsSome() {
+        public void TestProductsFirst() {
             List<Product> products = null;
 
             ShopifyBuy.Init(new MockLoader());
@@ -53,6 +53,21 @@ namespace Shopify.Tests
             }, first: 250);
 
             Assert.AreEqual(250, products.Count);
+        }
+
+        [Test]
+        public void TestProductsAfter() {
+            List<Product> products = null;
+
+            ShopifyBuy.Init(new MockLoader());
+
+            ShopifyBuy.Client().products(callback: (p) => {
+                products = p;
+            }, first: 250, after: "249");
+
+            Assert.AreEqual(250, products.Count);
+            Assert.AreEqual("250", products[0].id());
+            Assert.AreEqual("499", products[products.Count - 1].id());
         }
     }
 }

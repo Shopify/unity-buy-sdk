@@ -65,10 +65,10 @@ namespace <%= namespace %>.SDK {
             Loader = new QueryLoader(loader);
         }
 
-        public void products(ResponseProductsHandler callback, int? first = null) {
+        public void products(ResponseProductsHandler callback, int? first = null, string after = null) {
             GetProductsList((products) => {
                 GetConnectionsForProducts(products, callback);
-            }, first);
+            }, first: first, after: after);
         }
 
         private string GetAfter(ConnectionInfo info, object connection) {
@@ -226,7 +226,7 @@ namespace <%= namespace %>.SDK {
             }
         }
 
-        private void GetProductsList(ResponseProductsHandler callback, int? first = null) {
+        private void GetProductsList(ResponseProductsHandler callback, int? first = null, string after = null) {
             ConnectionLoader loader = new ConnectionLoader(Loader);
             int countToLoad = first == null ? int.MaxValue : (int) first;
 
@@ -293,7 +293,7 @@ namespace <%= namespace %>.SDK {
                                 .pageInfo(pi => pi
                                     .hasNextPage()
                                 ),
-                                first: countToLoad > 250 ? 250 : countToLoad, after: edges != null ? edges[edges.Count - 1].cursor() : null
+                                first: countToLoad > 250 ? 250 : countToLoad, after: edges != null ? edges[edges.Count - 1].cursor() : after
                             )
                         );
                     }
