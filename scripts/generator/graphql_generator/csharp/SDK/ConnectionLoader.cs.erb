@@ -18,14 +18,20 @@ namespace <%= namespace %>.SDK {
 
             QueryLoop queryLoop = (loop) => {
                 Loader.Query(query, (response) => {
-                    responses.Add(response);
-
-                    query = getQuery(response);
-
-                    if (query != null) {
-                        loop(loop);
+                    if (response.HTTPError != null) {
+                        callback(response);
+                    } else if(response.errors != null) {
+                        callback(response);
                     } else {
-                        callback(getMerged(responses));
+                        responses.Add(response);
+
+                        query = getQuery(response);
+
+                        if (query != null) {
+                            loop(loop);
+                        } else {
+                            callback(getMerged(responses));
+                        }
                     }
                 });
             };

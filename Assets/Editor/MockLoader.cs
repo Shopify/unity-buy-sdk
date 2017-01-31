@@ -341,6 +341,10 @@ namespace Shopify.Tests {
                 callback(ResponseProducts[query], null);
             } else if (ResponseNodes.ContainsKey(query)) {
                 callback(ResponseNodes[query], null);
+            } else if (query.Contains(@"after:""404""")) {
+                callback(null, "404 from mock loader");
+            } else if (query.Contains(@"after:""666""")) {
+                callback(@"{""errors"": [{""message"": ""GraphQL error from mock loader""}]}", null);
             } else {
                 throw new Exception("NO QUERY RESPONSE: \n\n" + query + "\n\n");
             }

@@ -48,7 +48,7 @@ namespace Shopify.Tests {
 
             Assert.IsNull(response.data);
             Assert.IsNull(response.errors);
-            Assert.AreEqual("Error: 404 Not Found error", response.httpError);
+            Assert.AreEqual("Error: 404 Not Found error", response.HTTPError);
         }
 
         [Test]
@@ -62,7 +62,7 @@ namespace Shopify.Tests {
 
             Assert.IsNull(response.data);
             Assert.IsNull(response.errors);
-            Assert.AreEqual("Error: 404 Not Found error", response.httpError);
+            Assert.AreEqual("Error: 404 Not Found error", response.HTTPError);
         }
 
         [Test]
@@ -75,7 +75,7 @@ namespace Shopify.Tests {
             });
 
             Assert.IsNull(response.errors);
-            Assert.IsNull(response.httpError);
+            Assert.IsNull(response.HTTPError);
             Assert.IsNotNull(response.data);
             Assert.AreEqual("test shop", response.data.shop().name());
         }
@@ -93,7 +93,7 @@ namespace Shopify.Tests {
             );
 
             Assert.IsNull(response.errors);
-            Assert.IsNull(response.httpError);
+            Assert.IsNull(response.HTTPError);
             Assert.IsNotNull(response.data);
             Assert.AreEqual("test shop", response.data.shop().name());
         }
@@ -108,7 +108,7 @@ namespace Shopify.Tests {
             });
 
             Assert.IsNull(response.errors);
-            Assert.IsNull(response.httpError);
+            Assert.IsNull(response.HTTPError);
             Assert.IsNotNull(response.data);
             Assert.AreEqual("12345", response.data.apiCustomerAccessTokenCreate().apiCustomerAccessToken().accessToken());
         }
@@ -126,7 +126,7 @@ namespace Shopify.Tests {
             );
 
             Assert.IsNull(response.errors);
-            Assert.IsNull(response.httpError);
+            Assert.IsNull(response.HTTPError);
             Assert.IsNotNull(response.data);
             Assert.AreEqual("test shop", response.data.shop().name());
         }

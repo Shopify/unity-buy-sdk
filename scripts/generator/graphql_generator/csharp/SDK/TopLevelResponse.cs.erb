@@ -6,9 +6,9 @@ namespace <%= namespace %>.SDK {
         private const string KEY_DATA = "data";
         private const string KEY_ERRORS = "errors";
 
-        public string httpError {
+        public string HTTPError {
             get {
-                return _httpError;
+                return _HTTPError;
             }
         }
 
@@ -24,7 +24,7 @@ namespace <%= namespace %>.SDK {
             }
         }
 
-        private string _httpError;
+        private string _HTTPError;
         private Dictionary<string,object> _DataJSON;
         private List<string> _errors;
 
@@ -32,7 +32,7 @@ namespace <%= namespace %>.SDK {
             object errors;
             object data;
 
-            _httpError = null;
+            _HTTPError = null;
 
             dataJSON.TryGetValue(KEY_ERRORS, out errors);
             dataJSON.TryGetValue(KEY_DATA, out data);
@@ -51,7 +51,7 @@ namespace <%= namespace %>.SDK {
         }
 
         public TopLevelResponse(string httpError) {
-            _httpError = httpError;
+            _HTTPError = httpError;
             _DataJSON = null;
             _errors = null;
         }

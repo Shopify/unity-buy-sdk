@@ -48,7 +48,7 @@ namespace <%= namespace %>.SDK {
         private static Dictionary<string, ShopifyClient> ClientByDomain = new Dictionary<string, ShopifyClient>();
     }
 
-    public delegate void ResponseProductsHandler(List<Product> products);
+    public delegate void ResponseProductsHandler(List<Product> products, List<string> errors, string httpError);
     public delegate void QueryProductHandler(ProductQuery product, string after);
     public delegate void QueryProductMergeHandler(Product product, Product productResult);
 
@@ -57,7 +57,7 @@ namespace <%= namespace %>.SDK {
 
         public ShopifyClient(string apiKey, string domain) {
             #if UNITY_EDITOR
-            Loader = new QueryLoader(new UnitLoader(domain, Base64(apiKey)));
+            Loader = new QueryLoader(new UnityLoader(domain, Base64(apiKey)));
             #endif
         }
 
@@ -66,8 +66,14 @@ namespace <%= namespace %>.SDK {
         }
 
         public void products(ResponseProductsHandler callback, int? first = null, string after = null) {
-            GetProductsList((products) => {
-                GetConnectionsForProducts(products, callback);
+            GetProductsList((products, errors, httpError) => {
+                if (httpError != null) {
+                    callback(null, null, httpError);
+                } else if (errors != null) {
+                    callback(null, errors, null);
+                } else {
+                    GetConnectionsForProducts(products, callback);
+                }
             }, first: first, after: after);
         }
 
@@ -207,7 +213,7 @@ namespace <%= namespace %>.SDK {
             }
 
             if (productsQueried.Count == 0) {
-                callback(products);
+                callback(products, null, null);
             } else {
                 Loader.Query(query, (respone) => {
                     for(int i = 0; i < productsQueried.Count; i++) {
@@ -314,7 +320,13 @@ namespace <%= namespace %>.SDK {
                     return firstResponse;
                 },
                 (response) => {
-                    callback((List<Product>) response.data.shop().products());
+                    if (response.HTTPError != null) {
+                        callback(null, null, response.HTTPError);
+                    } else if (response.errors != null) {
+                        callback(null, response.errors, null);
+                    } else {
+                        callback((List<Product>) response.data.shop().products(), null, null);
+                    }
                 }
             );
         }
