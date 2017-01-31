@@ -41,5 +41,18 @@ namespace Shopify.Tests
             Assert.AreEqual(3 * MockLoader.PageSize, products[2].images().edges().Count, "Third page has 3 pages of images");
             Assert.AreEqual(2 * MockLoader.PageSize, products[2].variants().edges().Count, "Third page has 2 pages of variants");
         }
+
+        [Test]
+        public void TestProductsSome() {
+            List<Product> products = null;
+
+            ShopifyBuy.Init(new MockLoader());
+
+            ShopifyBuy.Client().products(callback: (p) => {
+                products = p;
+            }, first: 250);
+
+            Assert.AreEqual(250, products.Count);
+        }
     }
 }

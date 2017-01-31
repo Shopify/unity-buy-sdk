@@ -65,7 +65,7 @@ namespace <%= namespace %>.SDK {
             Loader = new QueryLoader(loader);
         }
 
-        public void products(ResponseProductsHandler callback, int first = 250) {
+        public void products(ResponseProductsHandler callback, int? first = null) {
             GetProductsList((products) => {
                 GetConnectionsForProducts(products, callback);
             }, first);
@@ -226,17 +226,22 @@ namespace <%= namespace %>.SDK {
             }
         }
 
-        private void GetProductsList(ResponseProductsHandler callback, int first = 250) {
+        private void GetProductsList(ResponseProductsHandler callback, int? first = null) {
             ConnectionLoader loader = new ConnectionLoader(Loader);
+            int countToLoad = first == null ? int.MaxValue : (int) first;
 
             loader.Query(
                 (response) => {
                     QueryRootQuery query = null;
+                    List<ProductEdge> edges = response != null ? response.data.shop().products().edges() : null;
 
-                    if (response == null || response.data.shop().products().pageInfo().hasNextPage()) {
+                    if (edges != null) {
+                        countToLoad -= edges.Count;
+                    }
+
+                    if (response == null || (countToLoad > 0 && response.data.shop().products().pageInfo().hasNextPage())) {
                         query = new QueryRootQuery();
-                        List<ProductEdge> edges = response != null ? response.data.shop().products().edges() : null;
-
+                        
                         query = new QueryRootQuery();
                         query.shop(s => s
                             .products(pc => pc
@@ -288,7 +293,7 @@ namespace <%= namespace %>.SDK {
                                 .pageInfo(pi => pi
                                     .hasNextPage()
                                 ),
-                                first: first, after: edges != null ? edges[edges.Count - 1].cursor() : null
+                                first: countToLoad > 250 ? 250 : countToLoad, after: edges != null ? edges[edges.Count - 1].cursor() : null
                             )
                         );
                     }
