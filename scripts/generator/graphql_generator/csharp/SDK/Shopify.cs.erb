@@ -1,6 +1,8 @@
 namespace <%= namespace %>.SDK {
     using System;
     using System.Text;
+    using System.Reflection;
+    using System.Collections;
     using System.Collections.Generic;
 
     public class ShopifyBuy {
@@ -47,6 +49,8 @@ namespace <%= namespace %>.SDK {
     }
 
     public delegate void ResponseProductsHandler(List<Product> products);
+    public delegate void QueryProductHandler(ProductQuery product, string after);
+    public delegate void QueryProductMergeHandler(Product product, Product productResult);
 
     public class ShopifyClient {
         QueryLoader Loader;
@@ -67,110 +71,158 @@ namespace <%= namespace %>.SDK {
             }, first);
         }
 
-        private List<bool> GetProductsToQueryImages(List<Product> products) {
-            List<bool> imagesToQuery = new List<bool>();
+        private string GetAfter(ConnectionInfo info, object connection) {
+            string after = null;
+            
+            MethodInfo pageInfoMethod = info.ConnectionType.GetMethod("pageInfo");
+            PageInfo pageInfo = (PageInfo) pageInfoMethod.Invoke(connection, null);
 
-            for(int i = 0; i < products.Count; i++) {
-                imagesToQuery.Add(products[i].images().pageInfo().hasNextPage());
+            MethodInfo edgesMethod = info.ConnectionType.GetMethod("edges");
+            MethodInfo cursorMethod = info.EdgeType.GetMethod("cursor");
+
+            if (pageInfo.hasNextPage()) {
+                IList edges = edgesMethod.Invoke(connection, null) as IList;
+                after = (string) cursorMethod.Invoke(edges[edges.Count - 1], null);
+            }
+        
+            return after;
+        }
+
+        private object GetConnectionForProduct(ConnectionInfo info, Product product) {
+            MethodInfo methodConnection = product.GetType().GetMethod(info.Name);
+
+            return methodConnection.Invoke(product, new object[] { null });
+        }
+
+        private struct ConnectionInfo {
+            public ConnectionInfo(string name, Type connectionType, Type edgeType, QueryProductHandler query, QueryProductMergeHandler merge) {
+                Name = name;
+                ConnectionType = connectionType;
+                EdgeType = edgeType;
+                QueryHandler = query;
+                QueryMergeHandler = merge;
             }
 
-            return imagesToQuery;
+            public string Name;
+            public Type ConnectionType;
+            public Type EdgeType;
+            public QueryProductHandler QueryHandler;
+            public QueryProductMergeHandler QueryMergeHandler;
         }
 
         private void GetConnectionsForProducts(List<Product> products, ResponseProductsHandler callback) {
-            List<bool> rootImagesToQuery = GetProductsToQueryImages(products);
-            List<bool> imagesToQuery = rootImagesToQuery;
-
-            if (imagesToQuery.Contains(true)) {
-                ConnectionLoader loader = new ConnectionLoader(Loader);
-
-                loader.Query(
-                    (response) => {
-                        QueryRootQuery query = null;
-
-                        if (response != null) {
-                            imagesToQuery = GetProductsToQueryImages(products);
-                        }
-
-                        for (int i = 0; i < imagesToQuery.Count; i++) {
-                            bool shouldQuery = imagesToQuery[i];
-                            List<ImageEdge> imageEdges;
-
-                            if (shouldQuery && response != null) {
-                                try {
-                                    shouldQuery = ((Product) response.data.node(String.Format("product{0}", i))).images().pageInfo().hasNextPage();
-                                } catch(NoQueryException error) {
-                                    // we may have not needed to query anymore for products
-                                    shouldQuery = false;
-                                }   
-                            }
-
-                            if (shouldQuery) {
-                                if (response == null) {
-                                    imageEdges = products[i].images().edges();
-                                } else {
-                                    imageEdges = ((Product) response.data.node(String.Format("product{0}", i))).images().edges();
-                                }
-                                
-                                if (query == null) {
-                                    query = new QueryRootQuery();
-                                }
-
-                                query.node(n => n
-                                    .onProduct(p => p
-                                        .images(ic => ic
-                                            .edges(ie => ie
-                                                .node(imn => imn
-                                                    .altText()
-                                                    .src()
-                                                )
-                                                .cursor()
-                                            )
-                                            .pageInfo(pi => pi
-                                                .hasNextPage()
-                                            ),
-                                            first: 250, after: imageEdges[imageEdges.Count - 1].cursor()
-                                        )
-                                    ),
-                                    id: products[i].id(), alias: String.Format("product{0}", i)
-                                );
-                            }
-                        }
-
-                        return query;
+            List<ConnectionInfo> connections = new List<ConnectionInfo>() { 
+                new ConnectionInfo(
+                    name: "images", 
+                    connectionType: typeof(ImageConnection), 
+                    edgeType: typeof(ImageEdge), 
+                    query: (p, after) => {
+                        p.images(ic => ic
+                            .edges(ie => ie
+                                .node(ien => ien
+                                    .altText()
+                                    .src()
+                                )
+                                .cursor()
+                            )
+                            .pageInfo(pi => pi
+                                .hasNextPage()
+                            ),
+                            first: 250, after: after
+                        );
                     },
-                    (responses) => {
-                        QueryResponse firstResponse = responses[0];
-                        Product firstProduct;
-                        Product productToMerge;
-
-                        foreach(QueryResponse response in responses) {
-                            if (response != firstResponse) {
-                                for (int i = 0; i < rootImagesToQuery.Count; i++) {
-                                    try {
-                                        firstProduct = (Product) firstResponse.data.node(String.Format("product{0}", i));
-                                        productToMerge = (Product) response.data.node(String.Format("product{0}", i));
-                                        firstProduct.images().AddFromConnection(productToMerge.images());
-                                    } catch(NoQueryException error) {}
-                                }
-                            }
-                        }
-
-                        return firstResponse;
-                    },
-                    (response) => {
-                        for (int i = 0; i < rootImagesToQuery.Count; i++) {
-                            if (rootImagesToQuery[i]) {
-                                Product productToMerge = (Product) response.data.node(String.Format("product{0}", i));
-                                products[i].images().AddFromConnection(productToMerge.images());
-                            }
-                        }
-
-                        callback(products);
+                    merge: (p, pr) => {
+                        p.images().AddFromConnection(pr.images());
                     }
-                );
-            } else {
+                ),
+                new ConnectionInfo(
+                    name: "variants", 
+                    connectionType: typeof(ProductVariantConnection), 
+                    edgeType: typeof(ProductVariantEdge), 
+                    query: (p, after) => {
+                        p.variants(vc => vc
+                            .edges(ve => ve
+                                .node(vn => vn
+                                    .available()
+                                    .images(pnvi => pnvi
+                                        .altText()
+                                        .src()
+                                    )
+                                    .price()
+                                    .title()
+                                    .weight()
+                                    .weightUnit()
+                                )
+                                .cursor()
+                            )
+                            .pageInfo(pi => pi
+                                .hasNextPage()
+                            ),
+                            first: 250, after: after
+                        );
+                    },
+                    merge: (p, pr) => {
+                        p.variants().AddFromConnection(pr.variants());
+                    }
+                )
+            };
+
+            List<int> productsQueried = new List<int>();
+            List<List<ConnectionInfo>> connectionInfoQueried = new List<List<ConnectionInfo>>();
+            QueryRootQuery query = new QueryRootQuery();
+
+            for(int i = 0; i < products.Count; i++) {
+                Product product = products[i];
+                List<string> afters = new List<string>();
+                List<ConnectionInfo> connectionInfoForProduct = new List<ConnectionInfo>();
+                
+                foreach(ConnectionInfo info in connections) {
+                    object connection = GetConnectionForProduct(info, product);
+                    string after = GetAfter(info, connection);
+
+                    if (after != null) {
+                        afters.Add(after);
+                        connectionInfoForProduct.Add(info);
+                    }
+                }
+
+                if (connectionInfoForProduct.Count > 0) {
+                    productsQueried.Add(i);
+                    connectionInfoQueried.Add(connectionInfoForProduct);
+
+                    query.node(n => n
+                    .onProduct((p) => {
+                            p.id();
+
+                            for(int j = 0; j < afters.Count; j++) {
+                                string after = afters[j];
+                                ConnectionInfo info = connectionInfoForProduct[j];
+                                
+                                info.QueryHandler(p, after);
+                            }
+                        }),
+                        id: product.id(), alias: String.Format("product{0}", i)
+                    );
+                }
+            }
+
+            if (productsQueried.Count == 0) {
                 callback(products);
+            } else {
+                Loader.Query(query, (respone) => {
+                    for(int i = 0; i < productsQueried.Count; i++) {
+                        int idxQueried = productsQueried[i];
+                        List<ConnectionInfo> infos = connectionInfoQueried[i];
+                        Product product = products[idxQueried];
+                        Product productResult = (Product) respone.data.node(String.Format("product{0}", idxQueried));
+
+                        foreach(ConnectionInfo info in infos) {
+                            info.QueryMergeHandler(product, productResult);
+                        }
+                    }
+
+                    GetConnectionsForProducts(products, callback);
+                });
             }
         }
 

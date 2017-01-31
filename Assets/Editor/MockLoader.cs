@@ -104,6 +104,7 @@ namespace Shopify.Tests {
             
             query.node(n => n
                 .onProduct(p => p
+                    .id()
                     .images(ic => ic
                         .edges(ie => ie
                             .node(imn => imn
@@ -123,6 +124,7 @@ namespace Shopify.Tests {
 
             query.node(n => n
                 .onProduct(p => p
+                    .id()
                     .images(ic => ic
                         .edges(ie => ie
                             .node(imn => imn
@@ -136,6 +138,26 @@ namespace Shopify.Tests {
                         ),
                         first: PageSize, after: "image249"
                     )
+                    .variants(vc => vc
+                        .edges(ve => ve
+                            .node(vn => vn
+                                .available()
+                                .images(pnvi => pnvi
+                                    .altText()
+                                    .src()
+                                )
+                                .price()
+                                .title()
+                                .weight()
+                                .weightUnit()
+                            )
+                            .cursor()
+                        )
+                        .pageInfo(pi => pi
+                            .hasNextPage()
+                        ),
+                        first: 250, after: "variant249"
+                    )
                 ),
                 id: "2", alias: "product2"
             );
@@ -144,6 +166,7 @@ namespace Shopify.Tests {
                 ""data"": {{
                     ""node___product1"": {{
                         ""__typename"": ""Product"",
+                        ""id"": ""1"",
                         ""images"": {{
                             ""edges"": [
                                 {0}
@@ -155,6 +178,7 @@ namespace Shopify.Tests {
                     }},
                     ""node___product2"": {{
                         ""__typename"": ""Product"",
+                        ""id"": ""2"",
                         ""images"": {{
                             ""edges"": [
                                 {2}
@@ -162,14 +186,23 @@ namespace Shopify.Tests {
                             ""pageInfo"": {{
                                 ""hasNextPage"": {3}
                             }}
+                        }},
+                        ""variants"": {{
+                            ""edges"": [
+                                {4}
+                            ],
+                            ""pageInfo"": {{
+                                ""hasNextPage"": {5}
+                            }}
                         }}
                     }}
                 }}
-            }}", GetImages(1, 1, 250), GetJSONBool(false), GetImages(1, 2, 250), GetJSONBool(true));
+            }}", GetImages(1, 1, 250), GetJSONBool(false), GetImages(1, 2, 250), GetJSONBool(true), GetVariants(1, 2, 250), GetJSONBool(false));
 
             query = new QueryRootQuery();
             query.node(n => n
                 .onProduct(p => p
+                    .id()
                     .images(ic => ic
                         .edges(ie => ie
                             .node(imn => imn
@@ -191,6 +224,7 @@ namespace Shopify.Tests {
                 ""data"": {{
                     ""node___product2"": {{
                         ""__typename"": ""Product"",
+                        ""id"": ""2"",
                         ""images"": {{
                             ""edges"": [
                                 {0}
@@ -268,7 +302,7 @@ namespace Shopify.Tests {
                         ""weight"": 1.02,
                         ""weightUnit"": ""KILOGRAMS""
                     }},
-                    ""cursor"": ""variant{1}""
+                    ""cursor"": ""variant{0}""
                 }}{1}", variant, i < countVariants - 1 ? "," : ""));
             }
             return edges.ToString();
@@ -308,8 +342,7 @@ namespace Shopify.Tests {
             } else if (ResponseNodes.ContainsKey(query)) {
                 callback(ResponseNodes[query], null);
             } else {
-                Console.WriteLine("NO RESPONSE: " + query);
-                throw new Exception("NO QUERY RESPONSE");
+                throw new Exception("NO QUERY RESPONSE: \n\n" + query + "\n\n");
             }
         }
     }
