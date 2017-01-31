@@ -88,7 +88,7 @@ module GraphQLGenerator
         NoQueryException
         InvalidServerResponseException
         AliasException
-        SDK/Shopify
+        SDK/ShopifyBuy
         SDK/DefaultQueries
         SDK/QueryLoader
         SDK/ConnectionLoader
