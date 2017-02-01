@@ -106,7 +106,7 @@ namespace <%= namespace %>.SDK {
                         )
                     };
 
-                    QueryConnectionsFromNode(products.ConvertAll(p => (Node) p), connectionInfos, BuildProductQueryOnNode, (nodes, errorsNode, httpErrorsNode) => {
+                    QueryConnectionsFromNodes(products.ConvertAll(p => (Node) p), connectionInfos, BuildProductQueryOnNode, (nodes, errorsNode, httpErrorsNode) => {
                         callback(nodes.ConvertAll(n => (Product) n), errorsNode, httpErrorsNode);
                     });
                 }
@@ -179,7 +179,7 @@ namespace <%= namespace %>.SDK {
             methodAddFromConnection.Invoke(baseConnection, new object[]{ connectionToMerge });
         }
 
-        private void QueryConnectionsFromNode(List<Node> nodes, List<ConnectionInfo> connectionInfos, BuildQueryOnNode buildQuery, ResponseNodeHandler callback) {
+        private void QueryConnectionsFromNodes(List<Node> nodes, List<ConnectionInfo> connectionInfos, BuildQueryOnNode buildQuery, ResponseNodeHandler callback) {
             List<int> indicesQueried = new List<int>();
             List<List<ConnectionInfo>> connectionInfoQueried = new List<List<ConnectionInfo>>();
             QueryRootQuery query = new QueryRootQuery();
@@ -219,7 +219,7 @@ namespace <%= namespace %>.SDK {
                             }
                         }
 
-                        QueryConnectionsFromNode(nodes, connectionInfos, buildQuery, callback);
+                        QueryConnectionsFromNodes(nodes, connectionInfos, buildQuery, callback);
                     }
                 });
             }
