@@ -198,7 +198,7 @@ namespace Shopify.Tests {
             int countRequests = 0;
             ConnectionLoader ConnectionLoader = new ConnectionLoader(new QueryLoader(new CollectionTestLoader()));
             List<QueryResponse> responsesToRequestQuery = new List<QueryResponse>();
-            List<QueryResponse> allResponses = null;
+            List<QueryResponse> allResponsesExceptFirst = new List<QueryResponse>();
             QueryResponse mergedResponse = null;
 
             ConnectionLoader.Query(
@@ -212,9 +212,9 @@ namespace Shopify.Tests {
                         return null;
                     }
                 },
-                (responses) => {
-                    allResponses = responses;
-
+                (firstResponse, response) => {
+                    allResponsesExceptFirst.Add(response);
+                    
                     return finalMergedResponse;
                 },
                 (response) => {
@@ -227,9 +227,8 @@ namespace Shopify.Tests {
             Assert.AreEqual("Product1", responsesToRequestQuery[1].data.shop().products().edges()[0].node().title());
             Assert.AreEqual("Product2", responsesToRequestQuery[2].data.shop().products().edges()[0].node().title());
             Assert.AreEqual(2, countRequests);
-            Assert.AreEqual(2, allResponses.Count);
-            Assert.AreEqual("Product1", allResponses[0].data.shop().products().edges()[0].node().title());
-            Assert.AreEqual("Product2", allResponses[1].data.shop().products().edges()[0].node().title());
+            Assert.AreEqual(1, allResponsesExceptFirst.Count);
+            Assert.AreEqual("Product2", allResponsesExceptFirst[0].data.shop().products().edges()[0].node().title());
             Assert.AreEqual(finalMergedResponse, mergedResponse);
         }
     }

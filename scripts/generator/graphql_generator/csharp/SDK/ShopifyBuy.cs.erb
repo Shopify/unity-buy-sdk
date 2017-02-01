@@ -72,7 +72,7 @@ namespace <%= namespace %>.SDK {
                 } else if (errors != null) {
                     callback(null, errors, null);
                 } else {
-                    GetConnectionsForProducts(products, callback);
+                    GetConnectionInfosForProducts(products, callback);
                 }
             }, first: first, after: after);
         }
@@ -116,8 +116,8 @@ namespace <%= namespace %>.SDK {
             public QueryProductMergeHandler QueryMergeHandler;
         }
 
-        private void GetConnectionsForProducts(List<Product> products, ResponseProductsHandler callback) {
-            List<ConnectionInfo> connections = new List<ConnectionInfo>() { 
+        private void GetConnectionInfosForProducts(List<Product> products, ResponseProductsHandler callback) {
+            List<ConnectionInfo> connectionInfos = new List<ConnectionInfo>() { 
                 new ConnectionInfo(
                     name: "images", 
                     connectionType: typeof(ImageConnection), 
@@ -155,7 +155,7 @@ namespace <%= namespace %>.SDK {
                 List<string> afters = new List<string>();
                 List<ConnectionInfo> connectionInfoForProduct = new List<ConnectionInfo>();
                 
-                foreach(ConnectionInfo info in connections) {
+                foreach(ConnectionInfo info in connectionInfos) {
                     object connection = GetConnectionForProduct(info, product);
                     string after = GetAfter(info, connection);
 
@@ -189,18 +189,24 @@ namespace <%= namespace %>.SDK {
                 callback(products, null, null);
             } else {
                 Loader.Query(query, (response) => {
-                    for(int i = 0; i < productsQueried.Count; i++) {
-                        int idxQueried = productsQueried[i];
-                        List<ConnectionInfo> infos = connectionInfoQueried[i];
-                        Product product = products[idxQueried];
-                        Product productResult = (Product) response.data.node(String.Format("product{0}", idxQueried));
+                    if (response.HTTPError != null) {
+                        callback(null, null, response.HTTPError);
+                    } else if (response.errors != null) {
+                        callback(null, response.errors, null);
+                    } else {
+                        for(int i = 0; i < productsQueried.Count; i++) {
+                            int idxQueried = productsQueried[i];
+                            List<ConnectionInfo> infos = connectionInfoQueried[i];
+                            Product product = products[idxQueried];
+                            Product productResult = (Product) response.data.node(String.Format("product{0}", idxQueried));
 
-                        foreach(ConnectionInfo info in infos) {
-                            info.QueryMergeHandler(product, productResult);
+                            foreach(ConnectionInfo info in infos) {
+                                info.QueryMergeHandler(product, productResult);
+                            }
                         }
-                    }
 
-                    GetConnectionsForProducts(products, callback);
+                        GetConnectionInfosForProducts(products, callback);
+                    }
                 });
             }
         }
@@ -232,16 +238,10 @@ namespace <%= namespace %>.SDK {
 
                     return query;
                 },
-                (responses) => {
-                    QueryResponse firstResponse = responses[0];
-
-                    foreach(QueryResponse response in responses) {
-                        if (response != firstResponse) {
-                            firstResponse.data.shop().products().AddFromConnection(
-                                response.data.shop().products()
-                            );
-                        }
-                    }
+                (firstResponse, response) => {
+                    firstResponse.data.shop().products().AddFromConnection(
+                        response.data.shop().products()
+                    );
 
                     return firstResponse;
                 },

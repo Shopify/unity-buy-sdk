@@ -3,7 +3,7 @@ namespace <%= namespace %>.SDK {
 
     public class ConnectionLoader {
         public delegate <%= schema.query_root_name %>Query RequestQueryHandler(QueryResponse response = null);
-        public delegate QueryResponse ResponseMergeHandler(List<QueryResponse> responses);
+        public delegate QueryResponse ResponseMergeHandler(QueryResponse mergedResponse, QueryResponse newResponse);
         private delegate void QueryLoop(QueryLoop loop);
 
         private QueryLoader Loader;
@@ -12,8 +12,8 @@ namespace <%= namespace %>.SDK {
             Loader = loader;
         }
 
-        public void Query(RequestQueryHandler getQuery, ResponseMergeHandler getMerged, QueryResponseDelegate callback) {
-            List<QueryResponse> responses = new List<QueryResponse>();
+        public void Query(RequestQueryHandler getQuery, ResponseMergeHandler doMerge, QueryResponseDelegate callback) {
+            QueryResponse mergedResponse = null;
             <%= schema.query_root_name %>Query query = getQuery(null);
 
             QueryLoop queryLoop = (loop) => {
@@ -23,14 +23,18 @@ namespace <%= namespace %>.SDK {
                     } else if(response.errors != null) {
                         callback(response);
                     } else {
-                        responses.Add(response);
-
+                        if (mergedResponse == null) {
+                            mergedResponse = response;
+                        } else {
+                            mergedResponse = doMerge(mergedResponse, response);
+                        }
+                        
                         query = getQuery(response);
 
                         if (query != null) {
                             loop(loop);
                         } else {
-                            callback(getMerged(responses));
+                            callback(mergedResponse);
                         }
                     }
                 });
