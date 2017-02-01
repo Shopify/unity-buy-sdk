@@ -49,8 +49,8 @@ namespace <%= namespace %>.SDK {
     }
 
     public delegate void ResponseProductsHandler(List<Product> products, List<string> errors, string httpError);
-    public delegate void QueryProductHandler(ProductQuery product, string after);
-    public delegate void QueryProductMergeHandler(Product product, Product productResult);
+    delegate void QueryProductHandler(ProductQuery product, string after);
+    delegate void QueryProductMergeHandler(Product product, Product productResult);
 
     public class ShopifyClient {
         QueryLoader Loader;
