@@ -1,5 +1,25 @@
 namespace <%= namespace %>.SDK {
+    using System;
+    using System.Reflection;
+    using System.Collections;
     using System.Collections.Generic;
+
+    public delegate object ResponseConnectionHandler(object response);
+    public delegate void BuildQueryOnNodeHandler(QueryRootQuery query, List<ConnectionInfo> connectionInfosToBuildQuery, string nodeId, string alias);
+    public delegate void ResponseNodeHandler(List<Node> nodes, List<string> errors, string httpError);
+    public delegate void QueryNodeHandler(object node, string after);
+    
+    public struct ConnectionInfo {
+        public ConnectionInfo(ResponseConnectionHandler getConnection, QueryNodeHandler query, string after = null) {
+            GetConnection = getConnection;
+            Query = query;
+            After = after;
+        }
+
+        public string After;
+        public ResponseConnectionHandler GetConnection;
+        public QueryNodeHandler Query;
+    }
 
     public class ConnectionLoader {
         public delegate <%= schema.query_root_name %>Query RequestQueryHandler(QueryResponse response = null);
@@ -10,28 +30,6 @@ namespace <%= namespace %>.SDK {
 
         public ConnectionLoader(QueryLoader loader) {
             Loader = loader;
-        }
-
-
-
-
-        public delegate void CollectionQueryHandler(QueryRootQuery query, string after);
-        public delegate void CollectionMergeHandler(QueryRoot baseQuery, QueryRoot queryToMerge);
-
-        public struct ConnectionQueryInfo {
-            public ConnectionQueryInfo(string connectionName, CollectionQueryHandler query, CollectionMergeHandler merge) {
-                ConnectionName = connectionName;
-                Query = query;
-                Merge = merge;
-            }
-
-            public string ConnectionName;
-            public CollectionQueryHandler Query;
-            public CollectionMergeHandler Merge;
-        }
-
-        public void QueryConnections(params ConnectionQueryInfo[] connectionInfos) {
-            
         }
 
         public void Query(RequestQueryHandler getQuery, ResponseMergeHandler doMerge, QueryResponseDelegate callback) {
@@ -63,6 +61,103 @@ namespace <%= namespace %>.SDK {
             };
 
             queryLoop(queryLoop);
+        }
+
+        public void QueryConnectionsOnNodes(List<Node> nodes, List<ConnectionInfo> connectionInfos, BuildQueryOnNodeHandler buildQuery, ResponseNodeHandler callback) {
+            List<int> indicesQueried = new List<int>();
+            List<List<ConnectionInfo>> connectionInfoQueried = new List<List<ConnectionInfo>>();
+            QueryRootQuery query = new QueryRootQuery();
+
+            for(int i = 0; i < nodes.Count; i++) {
+                Node node = nodes[i];
+                List<ConnectionInfo> connectionInfosToBuildQuery = GetConnectionInfosToBuildQueriesFrom(connectionInfos, node);
+                
+                if (connectionInfosToBuildQuery.Count > 0) {
+                    indicesQueried.Add(i);
+                    connectionInfoQueried.Add(connectionInfosToBuildQuery);
+                    
+                    buildQuery(query, connectionInfosToBuildQuery, node.id(), GetAliasForIdx(i));
+                }
+            }
+
+            if (indicesQueried.Count == 0) {
+                callback(nodes, null, null);
+            } else {
+                Loader.Query(query, (response) => {
+                    if (response.HTTPError != null) {
+                        callback(null, null, response.HTTPError);
+                    } else if (response.errors != null) {
+                        callback(null, response.errors, null);
+                    } else {
+                        for(int i = 0; i < indicesQueried.Count; i++) {
+                            int idxQueried = indicesQueried[i];
+                            List<ConnectionInfo> infos = connectionInfoQueried[i];
+                            object baseResult = nodes[idxQueried];
+                            object resultToMerge = response.data.node(GetAliasForIdx(idxQueried));
+
+                            foreach(ConnectionInfo info in infos) {
+                                object baseConnection = info.GetConnection(baseResult);
+                                object connectionToMerge = info.GetConnection(resultToMerge);
+
+                                MergeConnections(baseConnection, connectionToMerge);
+                            }
+                        }
+
+                        QueryConnectionsOnNodes(nodes, connectionInfos, buildQuery, callback);
+                    }
+                });
+            }
+        }
+
+        private string GetAliasForIdx(int idx) {
+            return String.Format("product{0}", idx);
+        }
+
+        private List<ConnectionInfo> GetConnectionInfosToBuildQueriesFrom(List<ConnectionInfo> infos, object responseObject) {
+            List<ConnectionInfo> infosToQuery = new List<ConnectionInfo>();
+
+            foreach(ConnectionInfo info in infos) {
+                object connection = info.GetConnection(responseObject);
+                string after = GetAfter(connection);
+
+                if (after != null) {
+                    infosToQuery.Add(new ConnectionInfo(info.GetConnection, info.Query, after));
+                }
+            }
+
+            return infosToQuery;
+        }
+
+        private string GetAfter(object connection) {
+            string after = null;
+            
+            Type connectionType = connection.GetType();
+            
+            MethodInfo pageInfoMethod = connectionType.GetMethod("pageInfo");
+            PageInfo pageInfo = (PageInfo) pageInfoMethod.Invoke(connection, null);
+
+            MethodInfo edgesMethod = connectionType.GetMethod("edges");
+            
+            if (pageInfo.hasNextPage()) {
+                IList edges = edgesMethod.Invoke(connection, null) as IList;
+
+                if (edges.Count > 0) {
+                    object lastEdge = edges[edges.Count - 1];
+
+                    MethodInfo cursorMethod = lastEdge.GetType().GetMethod("cursor");
+
+                    after = (string) cursorMethod.Invoke(edges[edges.Count - 1], null);
+                }
+            }
+        
+            return after;
+        }
+
+        private void MergeConnections(object baseConnection, object connectionToMerge) {
+            MethodInfo methodAddFromConnection = baseConnection.GetType().GetMethod("AddFromConnection");
+
+            // this will merge connectionToMerge into baseConnection
+            methodAddFromConnection.Invoke(baseConnection, new object[]{ connectionToMerge });
         }
     }
 }
