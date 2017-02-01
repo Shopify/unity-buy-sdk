@@ -73,7 +73,26 @@ namespace <%= namespace %>.SDK {
                 } else if (errors != null) {
                     callback(null, errors, null);
                 } else {
-                    QueryConnectionsFromNode(products, callback);
+                    List<ConnectionInfo> connectionInfos = new List<ConnectionInfo>() { 
+                        new ConnectionInfo(
+                            getConnection: (p) => ((Product) p).images(),
+                            query: (p, imagesAfter) => {
+                                ((ProductQuery) p).images(ic => DefaultQueries.ImageConnection(ic),
+                                    first: DefaultQueries.MaxPageSize, after: imagesAfter
+                                );
+                            }
+                        ),
+                        new ConnectionInfo(
+                            getConnection: (p) => ((Product) p).variants(),
+                            query: (p, variantsAfter) => {
+                                ((ProductQuery) p).variants(vc => DefaultQueries.ProductVariantConnection(vc),
+                                    first: DefaultQueries.MaxPageSize, after: variantsAfter
+                                );
+                            }
+                        )
+                    };
+
+                    QueryConnectionsFromNode(products, connectionInfos, callback);
                 }
             }, first: first, after: after);
         }
@@ -110,76 +129,71 @@ namespace <%= namespace %>.SDK {
         }
 
         private struct ConnectionInfo {
-            public ConnectionInfo(ResponseConnectionHandler getConnection, QueryNodeHandler query) {
+            public ConnectionInfo(ResponseConnectionHandler getConnection, QueryNodeHandler query, string after = null) {
                 GetConnection = getConnection;
-                QueryHandler = query;
+                Query = query;
+                After = after;
             }
 
+            public string After;
             public ResponseConnectionHandler GetConnection;
-            public QueryNodeHandler QueryHandler;
+            public QueryNodeHandler Query;
         }
 
-        private void QueryConnectionsFromNode(List<Product> products, ResponseProductsHandler callback) {
-            List<ConnectionInfo> connectionInfos = new List<ConnectionInfo>() { 
-                new ConnectionInfo(
-                    getConnection: (p) => ((Product) p).images(),
-                    query: (p, after) => {
-                        ((ProductQuery) p).images(ic => DefaultQueries.ImageConnection(ic),
-                            first: DefaultQueries.MaxPageSize, after: after
-                        );
-                    }
-                ),
-                new ConnectionInfo(
-                    getConnection: (p) => ((Product) p).variants(),
-                    query: (p, after) => {
-                        ((ProductQuery) p).variants(vc => DefaultQueries.ProductVariantConnection(vc),
-                            first: DefaultQueries.MaxPageSize, after: after
-                        );
-                    }
-                )
-            };
+        private List<ConnectionInfo> GetConnectionInfosToBuildQueriesFrom(List<ConnectionInfo> infos, object responseObject) {
+            List<ConnectionInfo> infosToQuery = new List<ConnectionInfo>();
 
-            List<int> productsQueried = new List<int>();
+            foreach(ConnectionInfo info in infos) {
+                object connection = info.GetConnection(responseObject);
+                string after = GetAfter(connection);
+
+                if (after != null) {
+                    infosToQuery.Add(new ConnectionInfo(info.GetConnection, info.Query, after));
+                }
+            }
+
+            return infosToQuery;
+        }
+
+        private void BuildProductQueryOnNode(QueryRootQuery query, List<ConnectionInfo> connectionInfosToBuildQuery, string productId, int productIdx) {
+            query.node(n => n
+                .onProduct((p) => {
+                    p.id();
+
+                    foreach(ConnectionInfo info in connectionInfosToBuildQuery) {
+                        info.Query(p, info.After);
+                    }
+                }),
+                id: productId, alias: String.Format("product{0}", productIdx)
+            );
+        }
+
+        private void MergeConnections(object baseConnection, object connectionToMerge) {
+            MethodInfo methodAddFromConnection = baseConnection.GetType().GetMethod("AddFromConnection");
+
+            // this will merge connectionToMerge into baseConnection
+            methodAddFromConnection.Invoke(baseConnection, new object[]{ connectionToMerge });
+        }
+
+        private void QueryConnectionsFromNode(List<Product> nodes, List<ConnectionInfo> connectionInfos, ResponseProductsHandler callback) {
+            List<int> indicesQueried = new List<int>();
             List<List<ConnectionInfo>> connectionInfoQueried = new List<List<ConnectionInfo>>();
             QueryRootQuery query = new QueryRootQuery();
 
-            for(int i = 0; i < products.Count; i++) {
-                Product product = products[i];
-                List<string> afters = new List<string>();
-                List<ConnectionInfo> connectionInfosToBuildQuery = new List<ConnectionInfo>();
+            for(int i = 0; i < nodes.Count; i++) {
+                Node node = nodes[i];
+                List<ConnectionInfo> connectionInfosToBuildQuery = GetConnectionInfosToBuildQueriesFrom(connectionInfos, node);
                 
-                foreach(ConnectionInfo info in connectionInfos) {
-                    object connection = info.GetConnection(product);
-                    string after = GetAfter(connection);
-
-                    if (after != null) {
-                        afters.Add(after);
-                        connectionInfosToBuildQuery.Add(info);
-                    }
-                }
-
                 if (connectionInfosToBuildQuery.Count > 0) {
-                    productsQueried.Add(i);
+                    indicesQueried.Add(i);
                     connectionInfoQueried.Add(connectionInfosToBuildQuery);
                     
-                    query.node(n => n
-                        .onProduct((p) => {
-                            p.id();
-
-                            for(int j = 0; j < afters.Count; j++) {
-                                string after = afters[j];
-                                ConnectionInfo info = connectionInfosToBuildQuery[j];
-                                
-                                info.QueryHandler(p, after);
-                            }
-                        }),
-                        id: product.id(), alias: String.Format("product{0}", i)
-                    );
+                    BuildProductQueryOnNode(query, connectionInfosToBuildQuery, node.id(), i);
                 }
             }
 
-            if (productsQueried.Count == 0) {
-                callback(products, null, null);
+            if (indicesQueried.Count == 0) {
+                callback(nodes, null, null);
             } else {
                 Loader.Query(query, (response) => {
                     if (response.HTTPError != null) {
@@ -187,24 +201,21 @@ namespace <%= namespace %>.SDK {
                     } else if (response.errors != null) {
                         callback(null, response.errors, null);
                     } else {
-                        for(int i = 0; i < productsQueried.Count; i++) {
-                            int idxQueried = productsQueried[i];
+                        for(int i = 0; i < indicesQueried.Count; i++) {
+                            int idxQueried = indicesQueried[i];
                             List<ConnectionInfo> infos = connectionInfoQueried[i];
-                            Product product = products[idxQueried];
-                            Product productResult = (Product) response.data.node(String.Format("product{0}", idxQueried));
+                            object baseResult = nodes[idxQueried];
+                            object resultToMerge = response.data.node(String.Format("product{0}", idxQueried));
 
                             foreach(ConnectionInfo info in infos) {
-                                object baseConnection = info.GetConnection(product);
-                                object connectionToMerge = info.GetConnection(productResult);
+                                object baseConnection = info.GetConnection(baseResult);
+                                object connectionToMerge = info.GetConnection(resultToMerge);
 
-                                MethodInfo methodAddFromConnection = baseConnection.GetType().GetMethod("AddFromConnection");
-
-                                // this will merge connectionToMerge into baseConnection
-                                methodAddFromConnection.Invoke(baseConnection, new object[]{ connectionToMerge });
+                                MergeConnections(baseConnection, connectionToMerge);
                             }
                         }
 
-                        QueryConnectionsFromNode(products, callback);
+                        QueryConnectionsFromNode(nodes, connectionInfos, callback);
                     }
                 });
             }
