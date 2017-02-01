@@ -12,6 +12,28 @@ namespace <%= namespace %>.SDK {
             Loader = loader;
         }
 
+
+
+
+        public delegate void CollectionQueryHandler(QueryRootQuery query, string after);
+        public delegate void CollectionMergeHandler(QueryRoot baseQuery, QueryRoot queryToMerge);
+
+        public struct ConnectionQueryInfo {
+            public ConnectionQueryInfo(string connectionName, CollectionQueryHandler query, CollectionMergeHandler merge) {
+                ConnectionName = connectionName;
+                Query = query;
+                Merge = merge;
+            }
+
+            public string ConnectionName;
+            public CollectionQueryHandler Query;
+            public CollectionMergeHandler Merge;
+        }
+
+        public void QueryConnections(params ConnectionQueryInfo[] connectionInfos) {
+            
+        }
+
         public void Query(RequestQueryHandler getQuery, ResponseMergeHandler doMerge, QueryResponseDelegate callback) {
             QueryResponse mergedResponse = null;
             <%= schema.query_root_name %>Query query = getQuery(null);
