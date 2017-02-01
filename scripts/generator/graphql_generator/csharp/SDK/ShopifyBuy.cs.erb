@@ -5,6 +5,18 @@ namespace <%= namespace %>.SDK {
     using System.Collections;
     using System.Collections.Generic;
 
+    struct ConnectionInfo {
+        public ConnectionInfo(ResponseConnectionHandler getConnection, QueryNodeHandler query, string after = null) {
+            GetConnection = getConnection;
+            Query = query;
+            After = after;
+        }
+
+        public string After;
+        public ResponseConnectionHandler GetConnection;
+        public QueryNodeHandler Query;
+    }
+
     public class ShopifyBuy {
         public static ShopifyClient Client() {
             return DefaultClient;
@@ -49,6 +61,8 @@ namespace <%= namespace %>.SDK {
     }
 
     public delegate void ResponseProductsHandler(List<Product> products, List<string> errors, string httpError);
+    delegate void BuildQueryOnNode(QueryRootQuery query, List<ConnectionInfo> connectionInfosToBuildQuery, string nodeId, int nodeIdx);
+    delegate void ResponseNodeHandler(List<Node> nodes, List<string> errors, string httpError);
     delegate object GetNodeHandler(QueryRootQuery query);
     delegate void QueryNodeHandler(object node, string after);
     delegate object ResponseConnectionHandler(object response);
@@ -92,7 +106,9 @@ namespace <%= namespace %>.SDK {
                         )
                     };
 
-                    QueryConnectionsFromNode(products, connectionInfos, callback);
+                    QueryConnectionsFromNode(products.ConvertAll(p => (Node) p), connectionInfos, BuildProductQueryOnNode, (nodes, errorsNode, httpErrorsNode) => {
+                        callback(nodes.ConvertAll(n => (Product) n), errorsNode, httpErrorsNode);
+                    });
                 }
             }, first: first, after: after);
         }
@@ -126,18 +142,6 @@ namespace <%= namespace %>.SDK {
             MethodInfo methodConnection = product.GetType().GetMethod(connectionName);
 
             return methodConnection.Invoke(product, new object[] { null });
-        }
-
-        private struct ConnectionInfo {
-            public ConnectionInfo(ResponseConnectionHandler getConnection, QueryNodeHandler query, string after = null) {
-                GetConnection = getConnection;
-                Query = query;
-                After = after;
-            }
-
-            public string After;
-            public ResponseConnectionHandler GetConnection;
-            public QueryNodeHandler Query;
         }
 
         private List<ConnectionInfo> GetConnectionInfosToBuildQueriesFrom(List<ConnectionInfo> infos, object responseObject) {
@@ -175,7 +179,7 @@ namespace <%= namespace %>.SDK {
             methodAddFromConnection.Invoke(baseConnection, new object[]{ connectionToMerge });
         }
 
-        private void QueryConnectionsFromNode(List<Product> nodes, List<ConnectionInfo> connectionInfos, ResponseProductsHandler callback) {
+        private void QueryConnectionsFromNode(List<Node> nodes, List<ConnectionInfo> connectionInfos, BuildQueryOnNode buildQuery, ResponseNodeHandler callback) {
             List<int> indicesQueried = new List<int>();
             List<List<ConnectionInfo>> connectionInfoQueried = new List<List<ConnectionInfo>>();
             QueryRootQuery query = new QueryRootQuery();
@@ -188,7 +192,7 @@ namespace <%= namespace %>.SDK {
                     indicesQueried.Add(i);
                     connectionInfoQueried.Add(connectionInfosToBuildQuery);
                     
-                    BuildProductQueryOnNode(query, connectionInfosToBuildQuery, node.id(), i);
+                    buildQuery(query, connectionInfosToBuildQuery, node.id(), i);
                 }
             }
 
@@ -215,7 +219,7 @@ namespace <%= namespace %>.SDK {
                             }
                         }
 
-                        QueryConnectionsFromNode(nodes, connectionInfos, callback);
+                        QueryConnectionsFromNode(nodes, connectionInfos, buildQuery, callback);
                     }
                 });
             }
