@@ -256,7 +256,8 @@ namespace Shopify.Tests {
                             ""altText"": ""I am an image {0}"",
                             ""src"": ""http://cdn.com/images/collection{0}-{1}""
                         }},
-                        ""title"": ""I am collection {0}""
+                        ""title"": ""I am collection {0}"",
+                        ""updatedAt"": ""2016-09-11T21:32:43Z""
 
                     }},
                     ""cursor"": ""collection{0}""
