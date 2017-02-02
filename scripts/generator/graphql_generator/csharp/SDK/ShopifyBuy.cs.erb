@@ -69,8 +69,8 @@ namespace <%= namespace %>.SDK {
                 } else if (errors != null) {
                     callback(null, errors, null);
                 } else {
-                    List<ConnectionInfo> connectionInfos = new List<ConnectionInfo>() { 
-                        new ConnectionInfo(
+                    List<ConnectionQueryInfo> connectionInfos = new List<ConnectionQueryInfo>() { 
+                        new ConnectionQueryInfo(
                             getConnection: (p) => ((Product) p).images(),
                             query: (p, imagesAfter) => {
                                 ((ProductQuery) p).images(ic => DefaultQueries.ImageConnection(ic),
@@ -78,7 +78,7 @@ namespace <%= namespace %>.SDK {
                                 );
                             }
                         ),
-                        new ConnectionInfo(
+                        new ConnectionQueryInfo(
                             getConnection: (p) => ((Product) p).variants(),
                             query: (p, variantsAfter) => {
                                 ((ProductQuery) p).variants(vc => DefaultQueries.ProductVariantConnection(vc),
@@ -98,12 +98,12 @@ namespace <%= namespace %>.SDK {
             }, first: first, after: after);
         }
 
-        private void BuildProductQueryOnNode(QueryRootQuery query, List<ConnectionInfo> connectionInfosToBuildQuery, string productId, string alias) {
+        private void BuildProductQueryOnNode(QueryRootQuery query, List<ConnectionQueryInfo> connectionInfosToBuildQuery, string productId, string alias) {
             query.node(n => n
                 .onProduct((p) => {
                     p.id();
 
-                    foreach(ConnectionInfo info in connectionInfosToBuildQuery) {
+                    foreach(ConnectionQueryInfo info in connectionInfosToBuildQuery) {
                         info.Query(p, info.After);
                     }
                 }),
@@ -115,7 +115,7 @@ namespace <%= namespace %>.SDK {
             ConnectionLoader loader = new ConnectionLoader(Loader);
             int countToLoad = first == null ? int.MaxValue : (int) first;
 
-            loader.Query(
+            loader.QueryConnection(
                 (response) => {
                     QueryRootQuery query = null;
 
@@ -138,12 +138,8 @@ namespace <%= namespace %>.SDK {
 
                     return query;
                 },
-                (firstResponse, response) => {
-                    firstResponse.data.shop().products().AddFromConnection(
-                        response.data.shop().products()
-                    );
-
-                    return firstResponse;
+                (response) => {
+                    return ((QueryRoot) response).shop().products();
                 },
                 (response) => {
                     if (response.HTTPError != null) {
