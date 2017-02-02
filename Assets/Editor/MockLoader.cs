@@ -180,14 +180,24 @@ namespace Shopify.Tests {
                             ""pageInfo"": {{
                                 ""hasNextPage"": {4}
                             }}
+                        }},
+                        ""collections"": {{
+                            ""edges"": [
+                                {5}
+                            ],
+                            ""pageInfo"": {{
+                                ""hasNextPage"": {6}
+                            }}
                         }}
                     }}
-                }}{5}", 
+                }}{7}", 
                 product, 
                 GetImages(0, product, imagesHasNextPage ? PageSize : 1), 
                 GetJSONBool(imagesHasNextPage),
                 GetVariants(0, product, variantsHasNextPage ? PageSize : 1),
                 GetJSONBool(variantsHasNextPage),
+                GetCollections(0, product, 1),
+                GetJSONBool(false),
                 j < PageSize - 1 ? "," : ""));
             }
 
@@ -228,6 +238,29 @@ namespace Shopify.Tests {
                     }},
                     ""cursor"": ""image{0}""
                 }}{1}", image, i < countImages - 1 ? "," : ""));
+            }
+
+            return edges.ToString();        
+        }
+
+        private static string GetCollections(int page, int product, int countCollections = 1) {
+            StringBuilder edges = new StringBuilder();
+
+            for(int i = 0; i < countCollections; i++) {
+                int collection = page * PageSize + i;
+
+                edges.Append(String.Format(@"{{
+                    ""node"": {{
+                        ""id"": ""collection{0}"",
+                        ""images"": {{
+                            ""altText"": ""I am an image {0}"",
+                            ""src"": ""http://cdn.com/images/collection{0}-{1}""
+                        }},
+                        ""title"": ""I am collection {0}""
+
+                    }},
+                    ""cursor"": ""collection{0}""
+                }}{1}", collection, i < countCollections - 1 ? "," : ""));
             }
 
             return edges.ToString();        

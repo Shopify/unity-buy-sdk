@@ -41,12 +41,15 @@ namespace Shopify.Tests
 
             Assert.AreEqual(1, products[0].images().edges().Count, "First product has one image");
             Assert.AreEqual(1, products[0].variants().edges().Count, "First product has one variant");
+            Assert.AreEqual(1, products[0].collections().edges().Count, "First product has one collection");
 
             Assert.AreEqual(2 * MockLoader.PageSize, products[1].images().edges().Count, "Second product has 2 pages of images");
             Assert.AreEqual(1, products[1].variants().edges().Count, "Second product has 1 variant");
+            Assert.AreEqual(1, products[1].collections().edges().Count, "Second product has one collection");
             
             Assert.AreEqual(3 * MockLoader.PageSize, products[2].images().edges().Count, "Third page has 3 pages of images");
             Assert.AreEqual(2 * MockLoader.PageSize, products[2].variants().edges().Count, "Third page has 2 pages of variants");
+            Assert.AreEqual(1, products[1].collections().edges().Count, "Third product has one collection");
         }
 
         [Test]

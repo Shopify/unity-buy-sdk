@@ -10,14 +10,20 @@ namespace <%= namespace %>.SDK {
                             .id()
                             .title()
                             .bodyHtml()
-                            .images(ic => DefaultQueries.ImageConnection(ic),
+                            .images(
+                                ic => DefaultQueries.ImageConnection(ic),
                                 first: DefaultQueries.MaxPageSize
                             )
                             .options(pn => pn
                                 .name()
                                 .values()
                             )
-                            .variants(pvc => DefaultQueries.ProductVariantConnection(pvc),
+                            .variants(
+                                pvc => DefaultQueries.ProductVariantConnection(pvc),
+                                first: DefaultQueries.MaxPageSize
+                            )
+                            .collections(
+                                pcc => DefaultQueries.ProductsCollectionConnection(pcc),
                                 first: DefaultQueries.MaxPageSize
                             )
                         )
@@ -53,6 +59,17 @@ namespace <%= namespace %>.SDK {
             );
         }
 
+        public static void ProductsCollectionConnection(CollectionConnectionQuery collectionConnection) {
+            collectionConnection
+            .edges(pce => pce
+                .node(pnc => DefaultQueries.ProductCollection(pnc))
+                .cursor()
+            )
+            .pageInfo(pcp => pcp
+                .hasNextPage()
+            );
+        }
+
         public static void Image(ImageQuery image) {
             image
             .altText()
@@ -70,6 +87,16 @@ namespace <%= namespace %>.SDK {
             .title()
             .weight()
             .weightUnit();
+        }
+
+        public static void ProductCollection(CollectionQuery collection) {
+            collection
+            .id()
+            .image(pci => pci
+                .altText()
+                .src()
+            )
+            .title();
         }
     }
 }

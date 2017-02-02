@@ -85,6 +85,14 @@ namespace <%= namespace %>.SDK {
                                     first: DefaultQueries.MaxPageSize, after: variantsAfter
                                 );
                             }
+                        ),
+                        new ConnectionQueryInfo(
+                            getConnection: (p) => ((Product) p).collections(),
+                            query: (p, collectionsAfter) => {
+                                ((ProductQuery) p).collections(cc => DefaultQueries.ProductsCollectionConnection(cc),
+                                    first: DefaultQueries.MaxPageSize, after: collectionsAfter
+                                );
+                            }
                         )
                     };
 
