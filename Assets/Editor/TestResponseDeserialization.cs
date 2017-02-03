@@ -222,5 +222,34 @@ namespace Shopify.Tests {
             Assert.IsTrue(query.node() is Node);
             Assert.IsTrue(query.node() is UnknownNode);
         }
+
+        [Test]
+        public void TestCustomScalarDateTime() {
+            string json = @"{
+                ""updatedAt"": ""2016-09-11T21:32:43Z""
+            }";
+
+            Collection collection = new Collection((Dictionary<string,object>) Json.Deserialize(json));
+            DateTime date = collection.updatedAt();
+
+            Assert.AreEqual(2016, date.Year);
+            Assert.AreEqual(9, date.Month);
+            Assert.AreEqual(11, date.Day);
+            Assert.AreEqual(17, date.Hour); 
+            Assert.AreEqual(32, date.Minute);
+            Assert.AreEqual(43, date.Second);
+        }
+
+
+        [Test]
+        public void TestCustomScalarMoney() {
+            string json = @"{
+                ""price"": ""3.23""
+            }";
+
+            ProductVariant variant = new ProductVariant((Dictionary<string,object>) Json.Deserialize(json));
+        
+            Assert.AreEqual(3.23M, variant.price());
+        }
     }
 }

@@ -53,7 +53,7 @@ GraphQLGenerator::CSharp.new(schema,
     GraphQLGenerator::CSharp::Scalar.new(
       graph_type: 'DateTime',
       csharp_type: 'DateTime',
-      custom_cast: ->(value) { "Convert.ToDateTime(#{value})" },
+      custom_cast: ->(value) { "DateTime.SpecifyKind(Convert.ToDateTime(#{value}), DateTimeKind.Utc)" },
     ),
     GraphQLGenerator::CSharp::Scalar.new(
       graph_type: 'Money',
