@@ -61,23 +61,27 @@ namespace <%= namespace %> {
                 switch(fieldName) {
                     <% type.fields.each do |field| %>
                     case "<%= field.name %>":
-                        Data.Add(
-                            key,
-                            <% case field.type.unwrap_non_null.kind
-                               when "OBJECT" %>
-                                <%= response_init_object(field) %>
-                            <% when "INTERFACE" %>
-                                <%= response_init_interface(field) %>
-                            <% when "LIST" %>
-                                <%= response_init_list(field) %>
-                            <% when "ENUM" %>
-                                <%= response_init_enum(field) %>
-                            <% when "SCALAR" %>
-                                <%= response_init_scalar(field) %>
-                            <% else %>
-                                <% raise NotImplementedError, "Unhandled #{type.kind} init for type" %>
-                            <% end %>
-                        );
+                        if (dataJSON[key] == null) {
+                            Data.Add(key, null);
+                        } else {
+                            Data.Add(
+                                key,
+                                <% case field.type.unwrap_non_null.kind
+                                when "OBJECT" %>
+                                    <%= response_init_object(field) %>
+                                <% when "INTERFACE" %>
+                                    <%= response_init_interface(field) %>
+                                <% when "LIST" %>
+                                    <%= response_init_list(field) %>
+                                <% when "ENUM" %>
+                                    <%= response_init_enum(field) %>
+                                <% when "SCALAR" %>
+                                    <%= response_init_scalar(field) %>
+                                <% else %>
+                                    <% raise NotImplementedError, "Unhandled #{type.kind} init for type" %>
+                                <% end %>
+                            );
+                        }
                     break;
                     <% end %>
                 }
