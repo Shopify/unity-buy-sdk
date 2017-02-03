@@ -27,9 +27,7 @@ namespace <%= namespace %>.SDK {
                 if (error != null) {
                     callback(new QueryResponse(error));
                 } else {
-                    Dictionary<string,object> jsonResponse = (Dictionary<string,object>) Json.Deserialize(response);
-
-                    callback(new QueryResponse(jsonResponse));
+                    callback(new QueryResponse(GetJSON(response)));
                 }
             });
         }
@@ -47,11 +45,19 @@ namespace <%= namespace %>.SDK {
                 if (error != null) {
                     callback(new MutationResponse(error));
                 } else {
-                    Dictionary<string,object> jsonResponse = (Dictionary<string,object>) Json.Deserialize(response);
-
-                    callback(new MutationResponse(jsonResponse));
+                    callback(new MutationResponse(GetJSON(response)));
                 }
             });
+        }
+
+        private Dictionary<string, object> GetJSON(string response) {
+            Dictionary<string, object> json = (Dictionary<string, object>) Json.Deserialize(response);
+
+            if (json == null) {
+                throw new InvalidServerResponseException("Server did not return valid JSON data");
+            }
+
+            return json;
         }
     }
 }

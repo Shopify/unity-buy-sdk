@@ -12,7 +12,7 @@ namespace <%= namespace %>.SDK {
         private <%= schema.mutation_root_name %> _data;
 
         public MutationResponse(Dictionary<string,object> dataJSON) : base(dataJSON) {
-            if (this.DataJSON != null) {
+            if (DataJSON != null) {
                 _data = new <%= schema.mutation_root_name %>(this.DataJSON);
             }
         }
