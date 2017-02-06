@@ -230,12 +230,13 @@ namespace Shopify.Tests {
             }";
 
             Collection collection = new Collection((Dictionary<string,object>) Json.Deserialize(json));
-            DateTime date = collection.updatedAt();
+            DateTimeOffset date = new DateTimeOffset(collection.updatedAt());
+            date = date.ToUniversalTime();
 
             Assert.AreEqual(2016, date.Year);
             Assert.AreEqual(9, date.Month);
             Assert.AreEqual(11, date.Day);
-            Assert.AreEqual(17, date.Hour); 
+            Assert.AreEqual(21, date.Hour); 
             Assert.AreEqual(32, date.Minute);
             Assert.AreEqual(43, date.Second);
         }
