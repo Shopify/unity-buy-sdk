@@ -394,7 +394,7 @@ namespace Shopify.Tests {
             }
         }
         
-        public void Load(string query, LoaderResponse callback) {
+        public void Load(string query, LoaderResponseHandler callback) {
             if (ResponseProducts.ContainsKey(query)) {
                 callback(ResponseProducts[query], null);
             } else if (ResponseNodes.ContainsKey(query)) {
