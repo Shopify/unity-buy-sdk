@@ -17,7 +17,7 @@ namespace Shopify.Unity.Tests
             QueryLoader queryLoader = new QueryLoader(new UnityLoader(domain, authorization));
 
             queryLoader.Query(TestQueries.Query, (QueryResponse response) => {
-                IntegrationTest.Assert(response.httpError == null, "http errors were not null: " + response.httpError);
+                IntegrationTest.Assert(response.HTTPError == null, "http errors were not null: " + response.HTTPError);
                 IntegrationTest.Assert(response.errors == null, "GraphQL errors were null");
                 IntegrationTest.Assert(response.data != null, "Received a response");
                 IntegrationTest.Assert(response.data.shop().name() != null, "graphql");

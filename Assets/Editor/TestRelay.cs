@@ -192,16 +192,12 @@ namespace Shopify.Tests {
 
         [Test]
         public void TestConnectionLoader() {
-            QueryResponse finalMergedResponse = new QueryResponse((Dictionary<string, object>) Json.Deserialize(@"{
-                ""data"": {}
-            }"));
             int countRequests = 0;
             ConnectionLoader ConnectionLoader = new ConnectionLoader(new QueryLoader(new CollectionTestLoader()));
             List<QueryResponse> responsesToRequestQuery = new List<QueryResponse>();
-            List<QueryResponse> allResponses = null;
             QueryResponse mergedResponse = null;
 
-            ConnectionLoader.Query(
+            ConnectionLoader.QueryConnection(
                 (response) => {
                     responsesToRequestQuery.Add(response);
 
@@ -212,10 +208,8 @@ namespace Shopify.Tests {
                         return null;
                     }
                 },
-                (responses) => {
-                    allResponses = responses;
-
-                    return finalMergedResponse;
+                (response) => {
+                    return ((QueryRoot) response).shop().products();
                 },
                 (response) => {
                     mergedResponse = response;
@@ -227,10 +221,7 @@ namespace Shopify.Tests {
             Assert.AreEqual("Product1", responsesToRequestQuery[1].data.shop().products().edges()[0].node().title());
             Assert.AreEqual("Product2", responsesToRequestQuery[2].data.shop().products().edges()[0].node().title());
             Assert.AreEqual(2, countRequests);
-            Assert.AreEqual(2, allResponses.Count);
-            Assert.AreEqual("Product1", allResponses[0].data.shop().products().edges()[0].node().title());
-            Assert.AreEqual("Product2", allResponses[1].data.shop().products().edges()[0].node().title());
-            Assert.AreEqual(finalMergedResponse, mergedResponse);
+            Assert.AreEqual(2, mergedResponse.data.shop().products().edges().Count);
         }
     }
 }

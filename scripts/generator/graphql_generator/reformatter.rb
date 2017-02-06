@@ -17,7 +17,7 @@ module GraphQLGenerator
         stripped_line = line.strip
 
         if INDENT_END_CHARS.include?(stripped_line[0])
-          indent_level -= 1
+          indent_level -= 1 if indent_level - 1 > 0
           # no blank lines immediately preceding end of block
           output.rstrip!
           output << "\n"

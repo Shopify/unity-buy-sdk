@@ -123,7 +123,8 @@ namespace Shopify.Tests {
         [Test]
         public void CanDeserializeLists() {
             string stringJSON = @"{
-                ""product"": {
+                ""node"": {
+                    ""__typename"": ""Product"",
                     ""tags"": [
                         ""blue"",
                         ""button"",
@@ -138,14 +139,15 @@ namespace Shopify.Tests {
 
             CollectionAssert.AreEqual(
                 new List<string>() {"blue", "button", "fancy"},
-                response.product().tags()
+                ((Product) response.node()).tags()
             );
         }
 
         [Test]
         public void CanDeserializeListsWithNull() {
             string stringJSON = @"{
-                ""product"": {
+                ""node"": {
+                    ""__typename"": ""Product"",
                     ""tags"": [
                         ""blue"",
                         null,
@@ -160,7 +162,7 @@ namespace Shopify.Tests {
 
             CollectionAssert.AreEqual(
                 new List<string>() {"blue", null, "fancy"},
-                response.product().tags()
+                ((Product) response.node()).tags()
             );
         }
 
@@ -219,6 +221,36 @@ namespace Shopify.Tests {
 
             Assert.IsTrue(query.node() is Node);
             Assert.IsTrue(query.node() is UnknownNode);
+        }
+
+        [Test]
+        public void TestCustomScalarDateTime() {
+            string json = @"{
+                ""updatedAt"": ""2016-09-11T21:32:43Z""
+            }";
+
+            Collection collection = new Collection((Dictionary<string,object>) Json.Deserialize(json));
+            DateTimeOffset date = new DateTimeOffset(collection.updatedAt());
+            date = date.ToUniversalTime();
+
+            Assert.AreEqual(2016, date.Year);
+            Assert.AreEqual(9, date.Month);
+            Assert.AreEqual(11, date.Day);
+            Assert.AreEqual(21, date.Hour); 
+            Assert.AreEqual(32, date.Minute);
+            Assert.AreEqual(43, date.Second);
+        }
+
+
+        [Test]
+        public void TestCustomScalarMoney() {
+            string json = @"{
+                ""price"": ""3.23""
+            }";
+
+            ProductVariant variant = new ProductVariant((Dictionary<string,object>) Json.Deserialize(json));
+        
+            Assert.AreEqual(3.23M, variant.price());
         }
     }
 }

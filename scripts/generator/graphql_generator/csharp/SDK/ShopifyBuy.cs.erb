@@ -1,0 +1,252 @@
+namespace <%= namespace %>.SDK {
+    using System;
+    using System.Text;
+    using System.Collections;
+    using System.Collections.Generic;
+
+    public class ShopifyBuy {
+        public static ShopifyClient Client() {
+            return DefaultClient;
+        }
+
+        public static ShopifyClient Client(string domain) {
+            if (ClientByDomain.ContainsKey(domain)) {
+                return ClientByDomain[domain];
+            } else {
+                return null;
+            }
+        }
+
+        public static ShopifyClient Init(string apiKey, string domain) {
+            ClientByDomain[domain] = new ShopifyClient(apiKey, domain);
+
+            if (DefaultClient == null) {
+                DefaultClient = ClientByDomain[domain];
+            }
+
+            return ClientByDomain[domain];
+        }
+
+        public static ShopifyClient Init(ILoader loader, string domain = null) {
+            if (domain != null) {
+                ClientByDomain[domain] = new ShopifyClient(loader);
+
+                if (DefaultClient == null) {
+                    DefaultClient = ClientByDomain[domain];
+                }
+
+                return ClientByDomain[domain];
+            } else {
+                DefaultClient = new ShopifyClient(loader);
+
+                return DefaultClient;
+            }
+        }
+
+        private static ShopifyClient DefaultClient;
+        private static Dictionary<string, ShopifyClient> ClientByDomain = new Dictionary<string, ShopifyClient>();
+    }
+
+    public delegate void ResponseProductsHandler(List<Product> products, List<string> errors, string httpError);
+    public delegate void ResponseCollectionsHandler(List<Collection> collections, List<string> errors, string httpError);
+
+    public class ShopifyClient {
+        QueryLoader Loader;
+
+        public ShopifyClient(string apiKey, string domain) {
+            #if UNITY_EDITOR
+            Loader = new QueryLoader(new UnityLoader(domain, Base64(apiKey)));
+            #endif
+        }
+
+        public ShopifyClient(ILoader loader) {
+            Loader = new QueryLoader(loader);
+        }
+
+        public void products(ResponseProductsHandler callback, int? first = null, string after = null) {
+            GetProductsList((products, errors, httpError) => {
+                if (httpError != null) {
+                    callback(null, null, httpError);
+                } else if (errors != null) {
+                    callback(null, errors, null);
+                } else {
+                    List<ConnectionQueryInfo> connectionInfos = new List<ConnectionQueryInfo>() { 
+                        new ConnectionQueryInfo(
+                            getConnection: (p) => ((Product) p).images(),
+                            query: (p, imagesAfter) => {
+                                ((ProductQuery) p).images(ic => DefaultQueries.products.ImageConnection(ic),
+                                    first: DefaultQueries.MaxPageSize, after: imagesAfter
+                                );
+                            }
+                        ),
+                        new ConnectionQueryInfo(
+                            getConnection: (p) => ((Product) p).variants(),
+                            query: (p, variantsAfter) => {
+                                ((ProductQuery) p).variants(vc => DefaultQueries.products.ProductVariantConnection(vc),
+                                    first: DefaultQueries.MaxPageSize, after: variantsAfter
+                                );
+                            }
+                        ),
+                        new ConnectionQueryInfo(
+                            getConnection: (p) => ((Product) p).collections(),
+                            query: (p, collectionsAfter) => {
+                                ((ProductQuery) p).collections(cc => DefaultQueries.products.CollectionConnection(cc),
+                                    first: DefaultQueries.MaxPageSize, after: collectionsAfter
+                                );
+                            }
+                        )
+                    };
+
+                    ConnectionLoader loader = new ConnectionLoader(Loader);
+                    List<Node> nodes = products.ConvertAll(p => (Node) p);
+                    
+                    loader.QueryConnectionsOnNodes(nodes, connectionInfos, BuildProductQueryOnNode, (nodesResult, errorsNode, httpErrorsNode) => {
+                        callback(nodesResult.ConvertAll(n => (Product) n), errorsNode, httpErrorsNode);
+                    });
+                }
+            }, first: first, after: after);
+        }
+
+        public void collections(ResponseCollectionsHandler callback, int? first = null, string after = null) {
+            GetCollectionsList((collections, errors, httpError) => {
+                if (httpError != null) {
+                    callback(null, null, httpError);
+                } else if (errors != null) {
+                    callback(null, errors, null);
+                } else {
+                    List<ConnectionQueryInfo> connectionInfos = new List<ConnectionQueryInfo>() { 
+                        new ConnectionQueryInfo(
+                            getConnection: (c) => ((Collection) c).products(),
+                            query: (c, productsAfter) => {
+                                ((CollectionQuery) c).products(pc => DefaultQueries.collections.ProductConnection(pc),
+                                    first: DefaultQueries.MaxPageSize, after: productsAfter
+                                );
+                            }
+                        )
+                    };
+
+                    ConnectionLoader loader = new ConnectionLoader(Loader);
+                    List<Node> nodes = collections.ConvertAll(p => (Node) p);
+                    
+                    loader.QueryConnectionsOnNodes(nodes, connectionInfos, BuildCollectionQueryOnNode, (nodesResult, errorsNode, httpErrorsNode) => {
+                        callback(nodesResult.ConvertAll(n => (Collection) n), errorsNode, httpErrorsNode);
+                    });
+                }
+            }, first: first, after: after);
+        }
+
+        private void BuildProductQueryOnNode(QueryRootQuery query, List<ConnectionQueryInfo> connectionInfosToBuildQuery, string productId, string alias) {
+            query.node(n => n
+                .onProduct((p) => {
+                    p.id();
+
+                    foreach(ConnectionQueryInfo info in connectionInfosToBuildQuery) {
+                        info.Query(p, info.After);
+                    }
+                }),
+                id: productId, alias: alias
+            );
+        }
+
+        private void BuildCollectionQueryOnNode(QueryRootQuery query, List<ConnectionQueryInfo> connectionInfosToBuildQuery, string collectionId, string alias) {
+            query.node(n => n
+                .onCollection(c => {
+                    c.id();
+
+                    foreach(ConnectionQueryInfo info in connectionInfosToBuildQuery) {
+                        info.Query(c, info.After);
+                    }
+                }),
+                id: collectionId, alias: alias
+            );
+        }
+
+        private void GetProductsList(ResponseProductsHandler callback, int? first = null, string after = null) {
+            ConnectionLoader loader = new ConnectionLoader(Loader);
+            int countToLoad = first == null ? int.MaxValue : (int) first;
+
+            loader.QueryConnection(
+                (response) => {
+                    QueryRootQuery query = null;
+
+                    List<ProductEdge> edges = response != null ? response.data.shop().products().edges() : null;
+
+                    if (edges != null) {
+                        countToLoad -= edges.Count;
+                    }
+
+                    if (response == null || (countToLoad > 0 && response.data.shop().products().pageInfo().hasNextPage())) {
+                        query = new QueryRootQuery();
+                        
+                        query = new QueryRootQuery();
+                        DefaultQueries.products.ShopProducts(
+                            query: query, 
+                            first: countToLoad > DefaultQueries.MaxPageSize ? DefaultQueries.MaxPageSize : countToLoad, 
+                            after: edges != null ? edges[edges.Count - 1].cursor() : after
+                        );
+                    }
+
+                    return query;
+                },
+                (response) => {
+                    return ((QueryRoot) response).shop().products();
+                },
+                (response) => {
+                    if (response.HTTPError != null) {
+                        callback(null, null, response.HTTPError);
+                    } else if (response.errors != null) {
+                        callback(null, response.errors, null);
+                    } else {
+                        callback((List<Product>) response.data.shop().products(), null, null);
+                    }
+                }
+            );
+        }
+        
+        private void GetCollectionsList(ResponseCollectionsHandler callback, int? first = null, string after = null) {
+            ConnectionLoader loader = new ConnectionLoader(Loader);
+            int countToLoad = first == null ? int.MaxValue : (int) first;
+
+            loader.QueryConnection(
+                (response) => {
+                    QueryRootQuery query = null;
+
+                    List<CollectionEdge> edges = response != null ? response.data.shop().collections().edges() : null;
+
+                    if (edges != null) {
+                        countToLoad -= edges.Count;
+                    }
+
+                    if (response == null || (countToLoad > 0 && response.data.shop().collections().pageInfo().hasNextPage())) {
+                        query = new QueryRootQuery();
+                        
+                        query = new QueryRootQuery();
+                        DefaultQueries.collections.ShopCollections(
+                            query: query, 
+                            first: countToLoad > DefaultQueries.MaxPageSize ? DefaultQueries.MaxPageSize : countToLoad, 
+                            after: edges != null ? edges[edges.Count - 1].cursor() : after
+                        );
+                    }
+
+                    return query;
+                },
+                (response) => {
+                    return ((QueryRoot) response).shop().collections();
+                },
+                (response) => {
+                    if (response.HTTPError != null) {
+                        callback(null, null, response.HTTPError);
+                    } else if (response.errors != null) {
+                        callback(null, response.errors, null);
+                    } else {
+                        callback((List<Collection>) response.data.shop().collections(), null, null);
+                    }
+                }
+            );
+        }
+
+        private string Base64(string apiKey) {
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes(apiKey));
+        }
+    }
+}

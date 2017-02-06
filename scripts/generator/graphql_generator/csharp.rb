@@ -88,6 +88,8 @@ module GraphQLGenerator
         NoQueryException
         InvalidServerResponseException
         AliasException
+        SDK/ShopifyBuy
+        SDK/DefaultQueries
         SDK/QueryLoader
         SDK/ConnectionLoader
         SDK/UnityLoader
@@ -135,6 +137,17 @@ module GraphQLGenerator
         type.classify_name
       else
         raise NotImplementedError, "Unhandled #{type.kind} input type"
+      end
+    end
+
+    def graph_type_to_csharp_cast(type, value, is_non_null = false)
+      case type.kind
+      when "NON_NULL"
+        graph_type_to_csharp_cast(type.of_type, value, is_non_null: true);
+      when "SCALAR"
+        scalars[type.name].cast_value(value)
+      else
+        "(#{graph_type_to_csharp_type(type)})"
       end
     end
 
@@ -199,11 +212,11 @@ module GraphQLGenerator
     def response_init_interface(field)
       type = field.type.unwrap_non_null
 
-      "Unknown#{type.classify_name}.Create((Dictionary<string,object>) dataJSON[\"#{field.name}\"])"
+      "Unknown#{type.classify_name}.Create((Dictionary<string,object>) dataJSON[key])"
     end
 
     def response_init_scalar(field)
-      "(#{graph_type_to_csharp_type(field.type)}) dataJSON[key]"
+      graph_type_to_csharp_cast(field.type, "dataJSON[key]")
     end
 
     def response_init_enum(field)

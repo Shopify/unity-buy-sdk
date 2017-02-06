@@ -13,7 +13,7 @@ namespace <%= namespace %>.SDK {
         private <%= schema.query_root_name %> _data;
 
         public QueryResponse(Dictionary<string,object> dataJSON) : base(dataJSON) {
-            if (this.DataJSON != null) {
+            if (DataJSON != null) {
                 _data = new <%= schema.query_root_name %>(this.DataJSON);
             }
         }
