@@ -31,7 +31,7 @@ namespace <%= namespace %>.SDK {
             Loader = loader;
         }
 
-        public void QueryConnection(BuildQueryOnConnectionLoopDelegate getQuery, GetConnectionFromResponseDelegate getConnection, QueryResponseDelegate callback) {
+        public void QueryConnection(BuildQueryOnConnectionLoopDelegate getQuery, GetConnectionFromResponseDelegate getConnection, QueryResponseHandler callback) {
             QueryResponse mergedResponse = null;
             <%= schema.query_root_name %>Query query = getQuery(null);
 

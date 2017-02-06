@@ -9,7 +9,7 @@ namespace <%= namespace %>.SDK {
     internal class LoaderComponent : MonoBehaviour {
         string URL;
         string Authorization;
-        LoaderResponse Callback;
+        LoaderResponseHandler Callback;
 
         public LoaderComponent SetURL(string url) {
             URL = url;
@@ -23,7 +23,7 @@ namespace <%= namespace %>.SDK {
             return this;
         }
 
-        public void Load(string query, LoaderResponse callback) {
+        public void Load(string query, LoaderResponseHandler callback) {
             Callback = callback;
 
             Dictionary<string,string> headers = new Dictionary<string,string>();
@@ -62,7 +62,7 @@ namespace <%= namespace %>.SDK {
             Authorization = authorization;
         }
 
-        public void Load(string query, LoaderResponse callback) {
+        public void Load(string query, LoaderResponseHandler callback) {
             if (LoaderGameObject == null) {
                 LoaderGameObject = new GameObject();
             }

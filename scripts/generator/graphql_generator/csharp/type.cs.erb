@@ -67,7 +67,7 @@ namespace <%= namespace %> {
                     <%# if this field is an OBJECT we want to be able to query subfields %>
                     <% if field.type.subfields? %>
                         Query.Append("{");
-                        addTo(new <%= field.type.unwrap.classify_name %>Query(Query));
+                        buildQuery(new <%= field.type.unwrap.classify_name %>Query(Query));
                         Query.Append("}");
                     <% end %>
 
@@ -77,9 +77,9 @@ namespace <%= namespace %> {
 
             <% unless type.object? %>
                 <% type.possible_types.each do |possible_type| %>
-                    public <%= type.classify_name %>Query on<%= possible_type.classify_name %>(<%= possible_type.classify_name %>Delegate addTo) {
+                    public <%= type.classify_name %>Query on<%= possible_type.classify_name %>(<%= possible_type.classify_name %>Delegate buildQuery) {
                         Query.Append("...on <%= possible_type.classify_name %>{");
-                        addTo(new <%= possible_type.classify_name %>Query(Query));
+                        buildQuery(new <%= possible_type.classify_name %>Query(Query));
                         Query.Append("}");
                         return this;
                     }

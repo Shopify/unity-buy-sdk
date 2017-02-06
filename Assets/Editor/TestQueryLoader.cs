@@ -22,7 +22,7 @@ namespace Shopify.Tests {
 
         }
 
-        public void Load(string query, LoaderResponse callback) {
+        public void Load(string query, LoaderResponseHandler callback) {
             if (query == TestQueries.QueryFail.ToString() || query == TestQueries.MutationFail.ToString()) {
                 callback(null, "Error: 404 Not Found error");
             } else if (query == TestQueries.Query.ToString()) {

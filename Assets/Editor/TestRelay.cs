@@ -39,7 +39,7 @@ namespace Shopify.Tests {
     }
 
     class CollectionTestLoader : ILoader {
-        public void Load(string query, LoaderResponse callback) {
+        public void Load(string query, LoaderResponseHandler callback) {
             if (query == CollectionTestQueries.query1.ToString()) {
                 callback(@"{""data"":{
                     ""shop"": {

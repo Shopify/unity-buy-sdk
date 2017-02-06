@@ -4,8 +4,8 @@ namespace <%= namespace %>.SDK {
     using <%= namespace %>;
     using <%= namespace %>.MiniJSON;
 
-    public delegate void QueryResponseDelegate(QueryResponse response);
-    public delegate void MutationResponseDelegate(MutationResponse response);
+    public delegate void QueryResponseHandler(QueryResponse response);
+    public delegate void MutationResponseHandler(MutationResponse response);
 
     public class QueryLoader {
         ILoader Loader;
@@ -14,15 +14,15 @@ namespace <%= namespace %>.SDK {
             Loader = loader;
         }
 
-        public void Query(<%= schema.query_root_name %>Delegate addTo, QueryResponseDelegate callback) {
+        public void Query(<%= schema.query_root_name %>Delegate buildQuery, QueryResponseHandler callback) {
             <%= schema.query_root_name %>Query query = new <%= schema.query_root_name %>Query();
 
-            addTo(query);
+            buildQuery(query);
 
             Query(query, callback);
         }
         
-        public void Query(<%= schema.query_root_name %>Query query, QueryResponseDelegate callback) {
+        public void Query(<%= schema.query_root_name %>Query query, QueryResponseHandler callback) {
             Loader.Load(query.ToString(), (string response, string error) => {
                 if (error != null) {
                     callback(new QueryResponse(error));
@@ -32,15 +32,15 @@ namespace <%= namespace %>.SDK {
             });
         }
 
-        public void Mutation(<%= schema.mutation_root_name %>Delegate addTo, MutationResponseDelegate callback) {
+        public void Mutation(<%= schema.mutation_root_name %>Delegate buildQuery, MutationResponseHandler callback) {
             <%= schema.mutation_root_name %>Query query = new <%= schema.mutation_root_name %>Query();
 
-            addTo(query);
+            buildQuery(query);
 
             Mutation(query, callback);
         }
 
-        public void Mutation(<%= schema.mutation_root_name %>Query query, MutationResponseDelegate callback) {
+        public void Mutation(<%= schema.mutation_root_name %>Query query, MutationResponseHandler callback) {
             Loader.Load(query.ToString(), (string response, string error) => {
                 if (error != null) {
                     callback(new MutationResponse(error));

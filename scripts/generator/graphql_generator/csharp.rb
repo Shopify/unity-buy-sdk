@@ -166,7 +166,7 @@ module GraphQLGenerator
       args = []
   
       if field.type.subfields?
-        args << "#{field.type.unwrap.classify_name}Delegate addTo";
+        args << "#{field.type.unwrap.classify_name}Delegate buildQuery";
       end
 
       # now we want to setup required args if there are any
