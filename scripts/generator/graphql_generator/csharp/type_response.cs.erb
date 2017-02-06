@@ -3,6 +3,7 @@ namespace <%= namespace %>.GraphQL {
     using System.Collections;
     using System.Collections.Generic;
     using System.Text.RegularExpressions;
+    using <%= namespace %>.SDK;
 
     <% if type.object? %>
         public class <%= type.classify_name %> : AbstractResponse, ICloneable<%= ", IEnumerable" if connection? type %><%= type.interfaces.map{|interface| ", #{interface.classify_name}" }.join %> {

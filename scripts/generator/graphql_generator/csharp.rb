@@ -72,16 +72,16 @@ module GraphQLGenerator
 
       # output classes on root
       %w(
-        Arguments
-        InputBase
-        InputValueToString
-        AbstractResponse
-        CastUtils
-        ValidationUtils
-        NoQueryException
-        InvalidServerResponseException
-        AliasException
-        SDK/ShopifyBuy
+        ShopifyBuy
+        SDK/Arguments
+        SDK/InputBase
+        SDK/InputValueToString
+        SDK/CastUtils
+        SDK/ValidationUtils
+        SDK/AbstractResponse
+        SDK/NoQueryException
+        SDK/AliasException
+        SDK/InvalidServerResponseException
         SDK/DefaultQueries
         SDK/QueryLoader
         SDK/ConnectionLoader
