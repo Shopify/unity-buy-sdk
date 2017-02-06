@@ -2,8 +2,8 @@
 tmp/
 
 # ignore generated files for now
-Assets/Shopify/Unity/Types
-Assets/Shopify/Unity/Types.meta
+Assets/Shopify/Unity/GraphQL
+Assets/Shopify/Unity/GraphQL.meta
 Assets/Shopify/Unity/Arguments.*
 Assets/Shopify/Unity/InputBase.*
 Assets/Shopify/Unity/InputValueToString.*

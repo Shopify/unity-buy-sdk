@@ -3,6 +3,7 @@ namespace <%= namespace %>.SDK {
     using System.Reflection;
     using System.Collections;
     using System.Collections.Generic;
+    using <%= namespace %>.GraphQL;
 
     public delegate <%= schema.query_root_name %>Query BuildQueryOnConnectionLoopDelegate(QueryResponse response = null);
     public delegate object GetConnectionFromResponseDelegate(object response);

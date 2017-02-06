@@ -3,6 +3,7 @@ namespace Shopify.Tests
     using System;
     using NUnit.Framework;
     using Shopify.Unity;
+    using Shopify.Unity.GraphQL;
 
     [TestFixture]
     public class TestGraphQLGenerator {
@@ -23,7 +24,7 @@ namespace Shopify.Tests
 
         [Test]
         public void QueryRootBuildsQuery() {
-            QueryRootQuery query = Root.buildQuery();
+            QueryRootQuery query = new QueryRootQuery();
             query.shop(s => s
                 .name()
                 .description()
@@ -47,14 +48,16 @@ namespace Shopify.Tests
 
         [Test]
         public void MutationRootBuildsQuery() {
-            MutationQuery query = Root.buildMutation()
-                .apiCustomerAccessTokenCreate(r => r
-                    .apiCustomerAccessToken(a => a
-                        .accessToken()
-                    )
-                    .clientMutationId(),
-                    input: new ApiCustomerAccessTokenCreateInput(email: "email@email.com", password: "123456", clientMutationId: "333")
-                );
+            MutationQuery query = new MutationQuery();
+            
+            query
+            .apiCustomerAccessTokenCreate(r => r
+                .apiCustomerAccessToken(a => a
+                    .accessToken()
+                )
+                .clientMutationId(),
+                input: new ApiCustomerAccessTokenCreateInput(email: "email@email.com", password: "123456", clientMutationId: "333")
+            );
 
             Assert.AreEqual(
                 "mutation{apiCustomerAccessTokenCreate (input:{email:\"email@email.com\",password:\"123456\",clientMutationId:\"333\"}){apiCustomerAccessToken {accessToken }clientMutationId }}",
@@ -86,7 +89,8 @@ namespace Shopify.Tests
 
         [Test]
         public void UsingInlineFragment() {
-            QueryRootQuery query = Root.buildQuery().node(n => n
+            QueryRootQuery query = new QueryRootQuery();
+            query.node(n => n
                 .onProduct(p => p
                     .title()
                 ),
