@@ -29,6 +29,10 @@ namespace <%= namespace %>.SDK {
         private List<string> _errors;
 
         public TopLevelResponse(Dictionary<string,object> dataJSON) {
+            if (dataJSON == null) {
+                throw new InvalidServerResponseException("Server returned invalid JSON");
+            }
+
             object errors;
             object data;
 

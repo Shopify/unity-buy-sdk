@@ -68,6 +68,41 @@ namespace Shopify.Tests
         }
 
         [Test]
+        public void TestCollectionsAll() {
+            List<Collection> collections = null;
+
+            ShopifyBuy.Init(new MockLoader());
+
+            ShopifyBuy.Client().collections(callback: (c, errors, httpError) => {
+                collections = c;
+                Assert.IsNull(errors);
+                Assert.IsNull(httpError);
+            });
+
+            Assert.AreEqual(MockLoader.CountCollectionsPages * MockLoader.PageSize, collections.Count);
+            Assert.AreEqual("I am collection 0", collections[0].title());
+            Assert.AreEqual("I am collection 1", collections[1].title());
+
+            Assert.AreEqual(2 * MockLoader.PageSize, collections[0].products().edges().Count, "First collection has one product");
+            Assert.AreEqual(1, collections[1].products().edges().Count, "Second collection has one product");
+        }
+
+        [Test]
+        public void TestCollectionsFirst() {
+            List<Product> products = null;
+
+            ShopifyBuy.Init(new MockLoader());
+
+            ShopifyBuy.Client().products(callback: (p, errors, httpError) => {
+                products = p;
+                Assert.IsNull(errors);
+                Assert.IsNull(null, httpError);
+            }, first: 250);
+
+            Assert.AreEqual(250, products.Count);
+        }
+
+        [Test]
         public void TestProductsAfter() {
             List<Product> products = null;
 

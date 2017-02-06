@@ -48,6 +48,7 @@ namespace <%= namespace %>.SDK {
     }
 
     public delegate void ResponseProductsHandler(List<Product> products, List<string> errors, string httpError);
+    public delegate void ResponseCollectionsHandler(List<Collection> collections, List<string> errors, string httpError);
 
     public class ShopifyClient {
         QueryLoader Loader;
@@ -73,7 +74,7 @@ namespace <%= namespace %>.SDK {
                         new ConnectionQueryInfo(
                             getConnection: (p) => ((Product) p).images(),
                             query: (p, imagesAfter) => {
-                                ((ProductQuery) p).images(ic => DefaultQueries.ImageConnection(ic),
+                                ((ProductQuery) p).images(ic => DefaultQueries.products.ImageConnection(ic),
                                     first: DefaultQueries.MaxPageSize, after: imagesAfter
                                 );
                             }
@@ -81,7 +82,7 @@ namespace <%= namespace %>.SDK {
                         new ConnectionQueryInfo(
                             getConnection: (p) => ((Product) p).variants(),
                             query: (p, variantsAfter) => {
-                                ((ProductQuery) p).variants(vc => DefaultQueries.ProductVariantConnection(vc),
+                                ((ProductQuery) p).variants(vc => DefaultQueries.products.ProductVariantConnection(vc),
                                     first: DefaultQueries.MaxPageSize, after: variantsAfter
                                 );
                             }
@@ -89,7 +90,7 @@ namespace <%= namespace %>.SDK {
                         new ConnectionQueryInfo(
                             getConnection: (p) => ((Product) p).collections(),
                             query: (p, collectionsAfter) => {
-                                ((ProductQuery) p).collections(cc => DefaultQueries.ProductsCollectionConnection(cc),
+                                ((ProductQuery) p).collections(cc => DefaultQueries.products.CollectionConnection(cc),
                                     first: DefaultQueries.MaxPageSize, after: collectionsAfter
                                 );
                             }
@@ -106,6 +107,34 @@ namespace <%= namespace %>.SDK {
             }, first: first, after: after);
         }
 
+        public void collections(ResponseCollectionsHandler callback, int? first = null, string after = null) {
+            GetCollectionsList((collections, errors, httpError) => {
+                if (httpError != null) {
+                    callback(null, null, httpError);
+                } else if (errors != null) {
+                    callback(null, errors, null);
+                } else {
+                    List<ConnectionQueryInfo> connectionInfos = new List<ConnectionQueryInfo>() { 
+                        new ConnectionQueryInfo(
+                            getConnection: (c) => ((Collection) c).products(),
+                            query: (c, productsAfter) => {
+                                ((CollectionQuery) c).products(pc => DefaultQueries.collections.ProductConnection(pc),
+                                    first: DefaultQueries.MaxPageSize, after: productsAfter
+                                );
+                            }
+                        )
+                    };
+
+                    ConnectionLoader loader = new ConnectionLoader(Loader);
+                    List<Node> nodes = collections.ConvertAll(p => (Node) p);
+                    
+                    loader.QueryConnectionsOnNodes(nodes, connectionInfos, BuildCollectionQueryOnNode, (nodesResult, errorsNode, httpErrorsNode) => {
+                        callback(nodesResult.ConvertAll(n => (Collection) n), errorsNode, httpErrorsNode);
+                    });
+                }
+            }, first: first, after: after);
+        }
+
         private void BuildProductQueryOnNode(QueryRootQuery query, List<ConnectionQueryInfo> connectionInfosToBuildQuery, string productId, string alias) {
             query.node(n => n
                 .onProduct((p) => {
@@ -116,6 +145,19 @@ namespace <%= namespace %>.SDK {
                     }
                 }),
                 id: productId, alias: alias
+            );
+        }
+
+        private void BuildCollectionQueryOnNode(QueryRootQuery query, List<ConnectionQueryInfo> connectionInfosToBuildQuery, string collectionId, string alias) {
+            query.node(n => n
+                .onCollection(c => {
+                    c.id();
+
+                    foreach(ConnectionQueryInfo info in connectionInfosToBuildQuery) {
+                        info.Query(c, info.After);
+                    }
+                }),
+                id: collectionId, alias: alias
             );
         }
 
@@ -137,7 +179,7 @@ namespace <%= namespace %>.SDK {
                         query = new QueryRootQuery();
                         
                         query = new QueryRootQuery();
-                        DefaultQueries.ShopProducts(
+                        DefaultQueries.products.ShopProducts(
                             query: query, 
                             first: countToLoad > DefaultQueries.MaxPageSize ? DefaultQueries.MaxPageSize : countToLoad, 
                             after: edges != null ? edges[edges.Count - 1].cursor() : after
@@ -156,6 +198,48 @@ namespace <%= namespace %>.SDK {
                         callback(null, response.errors, null);
                     } else {
                         callback((List<Product>) response.data.shop().products(), null, null);
+                    }
+                }
+            );
+        }
+        
+        private void GetCollectionsList(ResponseCollectionsHandler callback, int? first = null, string after = null) {
+            ConnectionLoader loader = new ConnectionLoader(Loader);
+            int countToLoad = first == null ? int.MaxValue : (int) first;
+
+            loader.QueryConnection(
+                (response) => {
+                    QueryRootQuery query = null;
+
+                    List<CollectionEdge> edges = response != null ? response.data.shop().collections().edges() : null;
+
+                    if (edges != null) {
+                        countToLoad -= edges.Count;
+                    }
+
+                    if (response == null || (countToLoad > 0 && response.data.shop().collections().pageInfo().hasNextPage())) {
+                        query = new QueryRootQuery();
+                        
+                        query = new QueryRootQuery();
+                        DefaultQueries.collections.ShopCollections(
+                            query: query, 
+                            first: countToLoad > DefaultQueries.MaxPageSize ? DefaultQueries.MaxPageSize : countToLoad, 
+                            after: edges != null ? edges[edges.Count - 1].cursor() : after
+                        );
+                    }
+
+                    return query;
+                },
+                (response) => {
+                    return ((QueryRoot) response).shop().collections();
+                },
+                (response) => {
+                    if (response.HTTPError != null) {
+                        callback(null, null, response.HTTPError);
+                    } else if (response.errors != null) {
+                        callback(null, response.errors, null);
+                    } else {
+                        callback((List<Collection>) response.data.shop().collections(), null, null);
                     }
                 }
             );

@@ -1,8 +1,6 @@
 namespace <%= namespace %>.SDK {
-    public class DefaultQueries {
-        public static readonly int MaxPageSize = 250;
-
-        public static void ShopProducts(QueryRootQuery query, int first = 250, string after = null) {
+    public class ProductsQueries {
+        public void ShopProducts(QueryRootQuery query, int first = 250, string after = null) {
             query.shop(s => s
                 .products(pc => pc
                     .edges(e => e
@@ -11,7 +9,7 @@ namespace <%= namespace %>.SDK {
                             .title()
                             .bodyHtml()
                             .images(
-                                ic => DefaultQueries.ImageConnection(ic),
+                                ic => ImageConnection(ic),
                                 first: DefaultQueries.MaxPageSize
                             )
                             .options(pn => pn
@@ -19,11 +17,11 @@ namespace <%= namespace %>.SDK {
                                 .values()
                             )
                             .variants(
-                                pvc => DefaultQueries.ProductVariantConnection(pvc),
+                                pvc => ProductVariantConnection(pvc),
                                 first: DefaultQueries.MaxPageSize
                             )
                             .collections(
-                                pcc => DefaultQueries.ProductsCollectionConnection(pcc),
+                                pcc => CollectionConnection(pcc),
                                 first: DefaultQueries.MaxPageSize
                             )
                         )
@@ -37,10 +35,10 @@ namespace <%= namespace %>.SDK {
             );
         }
 
-        public static void ImageConnection(ImageConnectionQuery imageConnection) {
+        public void ImageConnection(ImageConnectionQuery imageConnection) {
             imageConnection
             .edges(ie => ie
-                .node(imn => DefaultQueries.Image(imn))
+                .node(imn => Image(imn))
                 .cursor()
             )
             .pageInfo(pi => pi
@@ -48,10 +46,10 @@ namespace <%= namespace %>.SDK {
             );
         }
 
-        public static void ProductVariantConnection(ProductVariantConnectionQuery variantConnection) {
+        public void ProductVariantConnection(ProductVariantConnectionQuery variantConnection) {
             variantConnection
             .edges(pve => pve
-                .node(pnv => DefaultQueries.ProductVariant(pnv))
+                .node(pnv => ProductVariant(pnv))
                 .cursor()
             )
             .pageInfo(pvp => pvp
@@ -59,10 +57,10 @@ namespace <%= namespace %>.SDK {
             );
         }
 
-        public static void ProductsCollectionConnection(CollectionConnectionQuery collectionConnection) {
+        public void CollectionConnection(CollectionConnectionQuery collectionConnection) {
             collectionConnection
             .edges(pce => pce
-                .node(pnc => DefaultQueries.ProductCollection(pnc))
+                .node(pnc => Collection(pnc))
                 .cursor()
             )
             .pageInfo(pcp => pcp
@@ -70,13 +68,13 @@ namespace <%= namespace %>.SDK {
             );
         }
 
-        public static void Image(ImageQuery image) {
+        public void Image(ImageQuery image) {
             image
             .altText()
             .src();
         }
 
-        public static void ProductVariant(ProductVariantQuery variant) {
+        public void ProductVariant(ProductVariantQuery variant) {
             variant
             .available()
             .images(pnvi => pnvi
@@ -89,7 +87,7 @@ namespace <%= namespace %>.SDK {
             .weightUnit();
         }
 
-        public static void ProductCollection(CollectionQuery collection) {
+        public void Collection(CollectionQuery collection) {
             collection
             .id()
             .image(pci => pci
@@ -99,5 +97,59 @@ namespace <%= namespace %>.SDK {
             .title()
             .updatedAt();
         }
+    }
+
+    public class CollectionsQueries {
+        public void ShopCollections(QueryRootQuery query, int first = 250, string after = null) {
+            query.shop(s => s
+                .collections(cc => cc
+                    .edges(e => e
+                        .node(c => Collection(c))
+                        .cursor()
+                    )
+                    .pageInfo(pi => pi
+                        .hasNextPage()
+                    ),
+                    first: first, after: after
+                )
+            );
+        }
+
+        public void Collection(CollectionQuery collection) {
+            collection
+            .id()
+            .image(pci => pci
+                .altText()
+                .src()
+            )
+            .title()
+            .updatedAt()
+            .products(pc => ProductConnection(pc),
+                first: DefaultQueries.MaxPageSize
+            );
+        }
+
+        public void ProductConnection(ProductConnectionQuery productConnection) {
+            productConnection
+            .edges(e => e
+                .node(p => Product(p))
+                .cursor()
+            )
+            .pageInfo(pi => pi
+                .hasNextPage()
+            );
+        }
+
+        public void Product(ProductQuery product) {
+            product
+            .id();
+        }
+    }
+
+    public class DefaultQueries {
+        public static readonly int MaxPageSize = 250;
+
+        public static ProductsQueries products = new ProductsQueries();
+        public static CollectionsQueries collections = new CollectionsQueries();
     }
 }
