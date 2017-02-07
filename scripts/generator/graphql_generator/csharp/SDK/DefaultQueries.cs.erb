@@ -1,4 +1,6 @@
 namespace <%= namespace %>.SDK {
+    using <%= namespace %>.GraphQL;
+
     public class ProductsQueries {
         public void ShopProducts(QueryRootQuery query, int first = 250, string after = null) {
             query.shop(s => s

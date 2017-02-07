@@ -2,21 +2,11 @@
 tmp/
 
 # ignore generated files for now
-Assets/Shopify/Unity/Types
-Assets/Shopify/Unity/Types.meta
-Assets/Shopify/Unity/Arguments.*
-Assets/Shopify/Unity/InputBase.*
-Assets/Shopify/Unity/InputValueToString.*
-Assets/Shopify/Unity/QueryBase.*
-Assets/Shopify/Unity/Root.*
-Assets/Shopify/Unity/AbstractResponse.*
-Assets/Shopify/Unity/TopLevelResponse.*
-Assets/Shopify/Unity/InvalidServerResponseException.*
-Assets/Shopify/Unity/NoQueryException.*
-Assets/Shopify/Unity/CastUtils.*
-Assets/Shopify/Unity/ValidationUtils.*
-Assets/Shopify/Unity/AliasException.*
-Assets/Shopify/Unity/SDK/*
+Assets/Shopify/Unity/ShopifyBuy*
+Assets/Shopify/Unity/GraphQL
+Assets/Shopify/Unity/GraphQL.meta
+Assets/Shopify/Unity/SDK
+Assets/Shopify/Unity/SDK.meta
 
 ####### Test files
 test.dll

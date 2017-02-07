@@ -63,32 +63,25 @@ module GraphQLGenerator
     
 
     def save(path)
-      path_types = "#{path}/Types"
-      path_sdk = "#{path}/SDK"
+      path_graphql = "#{path}/GraphQL"
 
       begin
-        Dir.mkdir path_types
-      rescue Errno::EEXIST
-      end
-
-      begin
-        Dir.mkdir path_sdk
+        Dir.mkdir path_graphql
       rescue Errno::EEXIST
       end
 
       # output classes on root
       %w(
-        Root
-        Arguments
-        InputBase
-        InputValueToString
-        AbstractResponse
-        CastUtils
-        ValidationUtils
-        NoQueryException
-        InvalidServerResponseException
-        AliasException
-        SDK/ShopifyBuy
+        ShopifyBuy
+        SDK/Arguments
+        SDK/InputBase
+        SDK/InputValueToString
+        SDK/CastUtils
+        SDK/ValidationUtils
+        SDK/AbstractResponse
+        SDK/NoQueryException
+        SDK/AliasException
+        SDK/InvalidServerResponseException
         SDK/DefaultQueries
         SDK/QueryLoader
         SDK/ConnectionLoader
@@ -98,6 +91,12 @@ module GraphQLGenerator
         SDK/QueryResponse
         SDK/ILoader
       ).each do |class_file_name|
+        directory = "#{path}/#{File.dirname(class_file_name)}"
+
+        unless File.directory?(directory)
+          Dir.mkdir(directory)
+        end
+
         erb = CSharp::erb_for(File.expand_path("../csharp/#{class_file_name}.cs.erb", __FILE__))
         File.write("#{path}/#{class_file_name}.cs", reformat(erb.result(binding)))
       end
@@ -106,10 +105,10 @@ module GraphQLGenerator
       schema.types.reject{ |type| type.builtin? || type.scalar? }.each do |type|
         # output 
         if type.object? || type.interface?
-          File.write("#{path_types}/#{type.name}Query.cs", reformat(TYPE_ERB.result(binding)))
-          File.write("#{path_types}/#{type.name}.cs", reformat(TYPE_RESPONSE_ERB.result(binding)))
+          File.write("#{path_graphql}/#{type.name}Query.cs", reformat(TYPE_ERB.result(binding)))
+          File.write("#{path_graphql}/#{type.name}.cs", reformat(TYPE_RESPONSE_ERB.result(binding)))
         elsif type.input_object? || type.kind == 'ENUM'
-          File.write("#{path_types}/#{type.name}.cs", reformat(TYPE_ERB.result(binding)))
+          File.write("#{path_graphql}/#{type.name}.cs", reformat(TYPE_ERB.result(binding)))
         end 
       end
     end 

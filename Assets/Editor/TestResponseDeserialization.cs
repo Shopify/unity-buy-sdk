@@ -3,6 +3,7 @@ namespace Shopify.Tests {
     using System;
     using System.Collections.Generic;
     using Shopify.Unity;
+    using Shopify.Unity.GraphQL;
     using Shopify.Unity.SDK;
     using Shopify.Unity.MiniJSON;
     

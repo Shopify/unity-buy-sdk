@@ -1,7 +1,7 @@
 namespace Shopify.Unity.Tests
 {
     using UnityEngine;
-    using Shopify.Unity.SDK;
+    using Shopify.Unity;
 
     [IntegrationTest.DynamicTest ("TestScene")]
     [IntegrationTest.SucceedWithAssertions]

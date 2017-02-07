@@ -2,6 +2,7 @@ namespace Shopify.Unity.Tests
 {
     using UnityEngine;
     using Shopify.Unity.SDK;
+    using Shopify.Unity.GraphQL;
 
     public class TestQueries {
         public static QueryRootQuery Query = new QueryRootQuery().shop(shop => shop.name());

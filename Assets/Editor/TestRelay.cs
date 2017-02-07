@@ -2,7 +2,7 @@ namespace Shopify.Tests {
     using NUnit.Framework;
     using System;
     using System.Collections.Generic;
-    using Shopify.Unity;
+    using Shopify.Unity.GraphQL;
     using Shopify.Unity.MiniJSON;
     using Shopify.Unity.SDK;
 

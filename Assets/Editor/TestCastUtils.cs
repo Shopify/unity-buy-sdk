@@ -1,7 +1,7 @@
 namespace Shopify.Tests
 {
     using NUnit.Framework;
-    using Shopify.Unity;
+    using Shopify.Unity.SDK;
     using System.Collections.Generic;
 
     public enum TestEnum {
