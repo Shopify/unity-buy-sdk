@@ -23,8 +23,6 @@ module GraphQLGenerator
       @version = version_file.gets.strip
       version_file.close
 
-      puts @version
-
       @scalars = (BUILTIN_SCALARS + custom_scalars).reduce({}) { |hash, scalar| hash[scalar.graph_type] = scalar; hash }
       @scalars.default_proc = proc do |hash,key|
         Scalar.new(
