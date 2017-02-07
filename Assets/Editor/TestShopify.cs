@@ -4,7 +4,7 @@ namespace Shopify.Tests
     using NUnit.Framework;
     using Shopify.Unity;
     using Shopify.Unity.GraphQL;
-    
+
     [TestFixture]
     public class TestShopify {
         /*
