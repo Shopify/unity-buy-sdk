@@ -18,6 +18,7 @@ scripts/test_watch.sh
 ####### Unity test files
 EditorTestResults.xml
 test.log
+export.log
 
 ####### Unity
 
