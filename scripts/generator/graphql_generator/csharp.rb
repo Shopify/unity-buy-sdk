@@ -12,12 +12,18 @@ module GraphQLGenerator
       end
     end
 
-    attr_reader :scalars, :schema, :namespace
+    attr_reader :scalars, :schema, :namespace, :version
   
     def initialize(schema, namespace:, custom_scalars: [], script_name: $0)
       @schema = schema
       @namespace = namespace
       @script_name = script_name
+
+      version_file = File.new(File.expand_path("../../../version", __FILE__), "r")
+      @version = version_file.gets.strip
+      version_file.close
+
+      puts @version
 
       @scalars = (BUILTIN_SCALARS + custom_scalars).reduce({}) { |hash, scalar| hash[scalar.graph_type] = scalar; hash }
       @scalars.default_proc = proc do |hash,key|
@@ -66,7 +72,7 @@ module GraphQLGenerator
       path_graphql = "#{path}/GraphQL"
 
       begin
-        Dir.mkdir path_graphql
+        Dir.mkdir(path_graphql)
       rescue Errno::EEXIST
       end
 
