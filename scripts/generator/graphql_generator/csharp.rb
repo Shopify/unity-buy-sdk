@@ -19,9 +19,7 @@ module GraphQLGenerator
       @namespace = namespace
       @script_name = script_name
 
-      version_file = File.new(File.expand_path("../../../version", __FILE__), "r")
-      @version = version_file.gets.strip
-      version_file.close
+      @version = File.read(File.expand_path("../../../version", __FILE__)).strip
 
       @scalars = (BUILTIN_SCALARS + custom_scalars).reduce({}) { |hash, scalar| hash[scalar.graph_type] = scalar; hash }
       @scalars.default_proc = proc do |hash,key|
