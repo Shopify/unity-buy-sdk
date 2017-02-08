@@ -40,7 +40,7 @@ VERSION="${VERSION_ARRAY[0]}.${VERSION_ARRAY[1]}.${VERSION_ARRAY[2]}"
 echo $VERSION > $SCRIPTS_ROOT/version
 echo "Bumped $1: $VERSION"
 
-# The following will run generate to generate C# for client
+# Run generate.sh to create source code including the potentially new version number
 $SCRIPTS_ROOT/generate.sh
 check "generate"
 
