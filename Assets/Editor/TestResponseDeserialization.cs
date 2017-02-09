@@ -181,7 +181,7 @@ namespace Shopify.Tests {
             QueryRoot response = new QueryRoot(dataJSON);
 
             try {
-                CurrencyCode code = response.shop().currencyCode();
+                response.shop().currencyCode();
             } catch(NoQueryException e) {
                 error = e;
             }
