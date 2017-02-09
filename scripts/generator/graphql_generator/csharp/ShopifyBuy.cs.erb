@@ -7,6 +7,8 @@ namespace <%= namespace %> {
     using <%= namespace %>.GraphQL;
 
     public class ShopifyBuy {
+        public const string VERSION = "<%= version %>";
+
         public static ShopifyClient Client() {
             return DefaultClient;
         }

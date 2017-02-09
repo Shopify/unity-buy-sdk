@@ -4,12 +4,24 @@ The Unity Buy SDK allows Unity developers to query and sell products within Unit
 
 ## Table Of Contents
 
-- [Build the GraphQL Client](#build-the-graphql-client)
+- [Using the Unity Buy SDK in Unity](#using-the-unity-buy-sdk-in-unity)
+- [Build the GraphQL Client](#build-the-unity-buy-sdk)
 - [Testing](#testing)
     + [Testing in Unity](#testing-in-unity)
     + [Testing in Terminal](#testing-in-terminal)
 
-## Build the GraphQL Client
+## Using the Unity Buy SDK in Unity
+
+By following the steps below you'll install the Unity Buy SDK into your Unity project using the [shopify-buy.unitypackage](https://github.com/Shopify/unity-buy-sdk/raw/master/shopify-buy.unitypackage):
+
+1. Download the [shopify-buy.unitypackage](https://github.com/Shopify/unity-buy-sdk/raw/master/shopify-buy.unitypackage)
+2. Ensure your project is open in Unity
+3. Open the downloaded [shopify-buy.unitypackage](https://github.com/Shopify/unity-buy-sdk/raw/master/shopify-buy.unitypackage)
+
+Alternately you could clone this repo build the Unity Buy SDK by following the documentation below. After building the SDK
+you can copy `Assets/Shopify/` to your project. `Assets/Shopify/` will contain all source needed to run the Unity Buy SDK.
+
+## Build the Unity Buy SDK
 
 Under the hood the Unity Buy SDK works on top of GraphQL. In order to query Shopify we generate a GraphQL client
 based on the Store Front API introspection schema.

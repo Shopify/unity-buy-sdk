@@ -4,6 +4,7 @@ namespace Shopify.Tests
     using NUnit.Framework;
     using Shopify.Unity;
     using Shopify.Unity.GraphQL;
+    using System.Text.RegularExpressions;
 
     [TestFixture]
     public class TestShopify {
@@ -142,6 +143,13 @@ namespace Shopify.Tests
                 Assert.IsNull(errors);
                 Assert.AreEqual("404 from mock loader", httpError);
             }, first: 250, after: "404");
+        }
+
+        [Test]
+        public void TestHasVersionNumber() {
+            Regex version = new Regex(@"\d+\.\d+\.\d+");
+
+            Assert.IsTrue(version.IsMatch(ShopifyBuy.VERSION));
         }
     }
 }
