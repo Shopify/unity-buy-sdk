@@ -38,7 +38,7 @@ fi
 VERSION="${VERSION_ARRAY[0]}.${VERSION_ARRAY[1]}.${VERSION_ARRAY[2]}"
 
 echo $VERSION > $SCRIPTS_ROOT/version
-echo "Bumped $1: $VERSION"
+echo "Version used $1: $VERSION"
 
 # Run generate.sh to create source code including the potentially new version number
 $SCRIPTS_ROOT/generate.sh
