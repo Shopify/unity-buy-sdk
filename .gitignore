@@ -54,7 +54,7 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
-!shopify-buy-*.unitypackage
+!shopify-buy.unitypackage
 
 ####### ruby
 *.gem
