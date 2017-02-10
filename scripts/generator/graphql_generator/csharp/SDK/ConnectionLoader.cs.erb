@@ -76,7 +76,7 @@ namespace <%= namespace %>.SDK {
                     indicesQueried.Add(i);
                     connectionInfoQueried.Add(connectionInfosToBuildQuery);
                     
-                    buildQuery(query, connectionInfosToBuildQuery, node.id(), GetAliasForIdx(i));
+                    buildQuery(query, connectionInfosToBuildQuery, node.id(), DefaultQueries.GetAliasFromIndex(i));
                 }
             }
 
@@ -93,7 +93,7 @@ namespace <%= namespace %>.SDK {
                             int idxQueried = indicesQueried[i];
                             List<ConnectionQueryInfo> infos = connectionInfoQueried[i];
                             object baseResult = nodes[idxQueried];
-                            object resultToMerge = response.data.node(GetAliasForIdx(idxQueried));
+                            object resultToMerge = response.data.node(DefaultQueries.GetAliasFromIndex(idxQueried));
 
                             foreach(ConnectionQueryInfo info in infos) {
                                 object baseConnection = info.GetConnection(baseResult);
@@ -107,10 +107,6 @@ namespace <%= namespace %>.SDK {
                     }
                 });
             }
-        }
-
-        private string GetAliasForIdx(int idx) {
-            return String.Format("a{0}", idx);
         }
 
         private List<ConnectionQueryInfo> GetConnectionInfosToBuildQueriesFrom(List<ConnectionQueryInfo> infos, object responseObject) {

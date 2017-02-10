@@ -227,6 +227,134 @@ namespace Shopify.Tests {
                     }}
                 }}
             }}", GetImages(2, 2, DefaultQueries.MaxPageSize), GetJSONBool(false));
+
+
+
+
+
+
+            query = new QueryRootQuery();
+            
+            query.node(n => n
+                .onProduct(p => DefaultQueries.products.Product(p)),
+                id: "productId333", alias: "a0"
+            );
+
+            query.node(n => n
+                .onProduct(p => DefaultQueries.products.Product(p)),
+                id: "productId444", alias: "a1"
+            );
+
+            ResponseNodes[query.ToString()] = String.Format(@"{{
+                ""data"": {{
+                    ""node___a0"": {{
+                        ""__typename"": ""Product"",
+                        ""id"": ""productId333"",
+                        ""images"": {{
+                            ""edges"": [
+                                {0}
+                            ],
+                            ""pageInfo"": {{
+                                ""hasNextPage"": {1}
+                            }}
+                        }},
+                        ""variants"": {{
+                            ""edges"": [
+                                {4}
+                            ],
+                            ""pageInfo"": {{
+                                ""hasNextPage"": {5}
+                            }}
+                        }},
+                        ""collections"": {{
+                            ""edges"": [
+                                {{
+                                    ""node"": {{
+                                        ""id"": ""0"",
+                                        ""images"": {{
+                                            ""altText"": ""I am an image 0"",
+                                            ""src"": ""http://cdn.com/images/collection0""
+                                        }},
+                                        ""title"": ""I am collection 0"",
+                                        ""updatedAt"": ""2016-09-11T21:32:43Z""
+                                    }},
+                                    ""cursor"": ""0""
+                                }}
+                            ],
+                            ""pageInfo"": {{
+                                ""hasNextPage"": false
+                            }}
+                        }}
+                    }},
+                    ""node___a1"": {{
+                        ""__typename"": ""Product"",
+                        ""id"": ""productId444"",
+                        ""images"": {{
+                            ""edges"": [
+                                {2}
+                            ],
+                            ""pageInfo"": {{
+                                ""hasNextPage"": {3}
+                            }}
+                        }},
+                        ""variants"": {{
+                            ""edges"": [
+                                {4}
+                            ],
+                            ""pageInfo"": {{
+                                ""hasNextPage"": {5}
+                            }}
+                        }},
+                        ""collections"": {{
+                            ""edges"": [
+                                {{
+                                    ""node"": {{
+                                        ""id"": ""0"",
+                                        ""images"": {{
+                                            ""altText"": ""I am an image 0"",
+                                            ""src"": ""http://cdn.com/images/collection0""
+                                        }},
+                                        ""title"": ""I am collection 0"",
+                                        ""updatedAt"": ""2016-09-11T21:32:43Z""
+                                    }},
+                                    ""cursor"": ""0""
+                                }}
+                            ],
+                            ""pageInfo"": {{
+                                ""hasNextPage"": false
+                            }}
+                        }}
+                    }}
+                }}
+            }}", GetImages(1, 1, DefaultQueries.MaxPageSize), GetJSONBool(true), GetImages(1, 2, DefaultQueries.MaxPageSize), GetJSONBool(false), GetVariants(1, 2, DefaultQueries.MaxPageSize), GetJSONBool(false));
+
+            query = new QueryRootQuery();
+            query.node(n => n
+                .onProduct(p => p
+                    .id()
+                    .images(ic => DefaultQueries.products.ImageConnection(ic),
+                        first: PageSize, after: "image499"
+                    )
+                ),
+                id: "productId333", alias: "a0"
+            );
+
+            ResponseNodes[query.ToString()] = String.Format(@"{{
+                ""data"": {{
+                    ""node___a0"": {{
+                        ""__typename"": ""Product"",
+                        ""id"": ""productId333"",
+                        ""images"": {{
+                            ""edges"": [
+                                {0}
+                            ],
+                            ""pageInfo"": {{
+                                ""hasNextPage"": {1}
+                            }}
+                        }}
+                    }}
+                }}
+            }}", GetImages(2, 2, DefaultQueries.MaxPageSize), GetJSONBool(false));
         }
 
         private static void InitResponseOnNodeForCollection() {

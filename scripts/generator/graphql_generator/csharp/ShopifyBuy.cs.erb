@@ -541,6 +541,42 @@ namespace <%= namespace %> {
                 }
             );
         }
+
+        private void GetConnectionsFromProducts(List<Product> products, ResponseProductsHandler callback) {
+            List<ConnectionQueryInfo> connectionInfos = new List<ConnectionQueryInfo>() { 
+                new ConnectionQueryInfo(
+                    getConnection: (p) => ((Product) p).images(),
+                    query: (p, imagesAfter) => {
+                        ((ProductQuery) p).images(ic => DefaultQueries.products.ImageConnection(ic),
+                            first: DefaultQueries.MaxPageSize, after: imagesAfter
+                        );
+                    }
+                ),
+                new ConnectionQueryInfo(
+                    getConnection: (p) => ((Product) p).variants(),
+                    query: (p, variantsAfter) => {
+                        ((ProductQuery) p).variants(vc => DefaultQueries.products.ProductVariantConnection(vc),
+                            first: DefaultQueries.MaxPageSize, after: variantsAfter
+                        );
+                    }
+                ),
+                new ConnectionQueryInfo(
+                    getConnection: (p) => ((Product) p).collections(),
+                    query: (p, collectionsAfter) => {
+                        ((ProductQuery) p).collections(cc => DefaultQueries.products.CollectionConnection(cc),
+                            first: DefaultQueries.MaxPageSize, after: collectionsAfter
+                        );
+                    }
+                )
+            };
+
+            ConnectionLoader loader = new ConnectionLoader(Loader);
+            List<Node> nodes = products.ConvertAll(p => (Node) p);
+            
+            loader.QueryConnectionsOnNodes(nodes, connectionInfos, BuildProductQueryOnNode, (nodesResult, errorsNode, httpErrorsNode) => {
+                callback(nodesResult.ConvertAll(n => (Product) n), errorsNode, httpErrorsNode);
+            });
+        }
         
         private void GetCollectionsList(ResponseCollectionsHandler callback, int? first = null, string after = null) {
             ConnectionLoader loader = new ConnectionLoader(Loader);
