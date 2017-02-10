@@ -223,7 +223,7 @@ namespace Shopify.Tests {
                     ""node"": {{
                         ""id"": ""{0}"",
                         ""title"": ""Product{0}"",
-                        ""bodyHtml"": ""<div>This is product {0}</div>"",
+                        ""descriptionHtml"": ""<div>This is product {0}</div>"",
                         ""images"": {{
                             ""edges"": [
                                 {1}
