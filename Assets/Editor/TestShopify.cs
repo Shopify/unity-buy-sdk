@@ -25,6 +25,47 @@ namespace Shopify.Tests
         }
 
         [Test]
+        public void TestGenericQuery() {
+            ShopifyBuy.Init(new MockLoader());
+            QueryRoot response = null;
+
+            ShopifyBuy.Client().Query(
+                (q) => q.shop(s => s
+                    .name()
+                ), 
+                (data, errors, httpError) => {
+                    response = data;
+                    Assert.IsNull(errors);
+                    Assert.IsNull(httpError);
+                }
+            );
+
+            Assert.AreEqual("this is the test shop yo", response.shop().name());
+        }
+
+        [Test]
+        public void TestGenericMutation() {
+            ShopifyBuy.Init(new MockLoader());
+            Mutation response = null;
+
+            ShopifyBuy.Client().Mutation(
+                (q) => q.apiCustomerAccessTokenCreate((a) => a
+                    .apiCustomerAccessToken(at => at
+                        .accessToken()
+                    ),
+                    input: new ApiCustomerAccessTokenCreateInput("some@email.com", "password")
+                ),
+                (data, errors, httpError) => {
+                    response = data;
+                    Assert.IsNull(errors);
+                    Assert.IsNull(httpError);
+                }
+            );
+
+            Assert.AreEqual("i am a token", response.apiCustomerAccessTokenCreate().apiCustomerAccessToken().accessToken());
+        }
+
+        [Test]
         public void TestProductsAll() {
             List<Product> products = null;
 
