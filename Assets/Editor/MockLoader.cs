@@ -313,6 +313,7 @@ namespace Shopify.Tests {
 
                 edges.Append(String.Format(@"{{
                     ""node"": {{
+                        ""id"": ""{0}"",
                         ""available"": true,
                         ""images"": [],
                         ""title"": ""variant{0}"",
