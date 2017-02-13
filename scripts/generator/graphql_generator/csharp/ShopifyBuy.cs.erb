@@ -304,6 +304,43 @@ namespace <%= namespace %> {
             }, imageResolutions: imageResolutions, first: first, after: after);
         }
 
+		public void products(ResponseProductsHandler callback, string firstProductId, params string[] otherProductIds) {
+            List<string> productIds = new List<string>();
+            productIds.Add(firstProductId);
+            productIds.AddRange(otherProductIds);
+
+            QueryRootQuery query = new QueryRootQuery();
+            
+            for (int i = 0; i < productIds.Count; i++) {
+                string productId = productIds[i];
+                
+                query.node(n => n
+                    .onProduct((p) => {
+                        DefaultQueries.products.Product(p);
+                    }),
+                    id: productId, alias: DefaultQueries.GetAliasFromIndex(i)
+                );
+            }
+
+            Loader.Query(query, (response) => {
+                if (response.HTTPError != null) {
+                    callback(null, null, response.HTTPError);
+                } else if (response.errors != null) {
+                    callback(null, response.errors, null);
+                } else {
+                    List<Product> products = new List<Product>();
+
+                    for (int i = 0; i < productIds.Count; i++) {
+                        Product product = (Product) response.data.node(DefaultQueries.GetAliasFromIndex(i));
+
+                        products.Add(product);
+                    }
+
+                    GetConnectionsFromProducts(products, callback);
+                }
+            });
+        }
+
         /// <summary>
         /// Will generate a query to receive all <c>collections</c> from a Shopify store. The generated query will query the following on collections:
         ///     - id
