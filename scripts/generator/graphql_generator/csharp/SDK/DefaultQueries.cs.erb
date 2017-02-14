@@ -78,6 +78,7 @@ namespace <%= namespace %>.SDK {
 
         public void ProductVariant(ProductVariantQuery variant) {
             variant
+            .id()
             .available()
             .images(pnvi => pnvi
                 .altText()
