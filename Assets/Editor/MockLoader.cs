@@ -12,9 +12,9 @@ namespace Shopify.Tests {
         public static int CountCollectionsPages = 4;
         public static int PageSize = DefaultQueries.MaxPageSize;
         public static Dictionary<string,string> ResponseProducts;
-        public static List<QueryRootQuery> QueryNodes;
         public static Dictionary<string,string> ResponseNodes;
         public static Dictionary<string,string> ResponseCollections;
+        public static Dictionary<string,string> ResponseGeneric;
 
 
         private static void Initialize() {
@@ -22,10 +22,45 @@ namespace Shopify.Tests {
             InitCollections();
 
             ResponseNodes = new Dictionary<string,string>();
+            InitGeneric();
             InitResponseOnNodeForProduct();
             InitResponseOnNodeForCollection();
 
             Initialized = true;
+        }
+
+        private static void InitGeneric() {
+            ResponseGeneric = new Dictionary<string,string>();
+
+            QueryRootQuery query = new QueryRootQuery();
+            query.shop(s => s.name());
+
+            ResponseGeneric[query.ToString()] = @"{
+                ""data"": {
+                    ""shop"": {
+                        ""name"": ""this is the test shop yo""
+                    }
+                }
+            }";
+
+            MutationQuery mutation = new MutationQuery();
+
+            mutation.apiCustomerAccessTokenCreate((a) => a
+                .apiCustomerAccessToken(at => at
+                    .accessToken()
+                ),
+                input: new ApiCustomerAccessTokenCreateInput("some@email.com", "password")
+            );
+
+            ResponseGeneric[mutation.ToString()] = @"{
+                ""data"": {
+                    ""apiCustomerAccessTokenCreate"": {
+                        ""apiCustomerAccessToken"": {
+                            ""accessToken"": ""i am a token""
+                        }
+                    }
+                }
+            }";
         }
 
         private static void InitProducts() {
@@ -396,7 +431,9 @@ namespace Shopify.Tests {
         }
         
         public void Load(string query, LoaderResponseHandler callback) {
-            if (ResponseProducts.ContainsKey(query)) {
+            if (ResponseGeneric.ContainsKey(query)) {
+                callback(ResponseGeneric[query], null);
+            } else if (ResponseProducts.ContainsKey(query)) {
                 callback(ResponseProducts[query], null);
             } else if (ResponseNodes.ContainsKey(query)) {
                 callback(ResponseNodes[query], null);
