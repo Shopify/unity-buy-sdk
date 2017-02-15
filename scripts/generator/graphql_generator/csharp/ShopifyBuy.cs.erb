@@ -53,6 +53,8 @@ namespace <%= namespace %> {
 
     public delegate void ResponseProductsHandler(List<Product> products, List<string> errors, string httpError);
     public delegate void ResponseCollectionsHandler(List<Collection> collections, List<string> errors, string httpError);
+    public delegate void ResponseQueryHandler(<%= schema.query_root_name %> response, List<string> errors, string httpError);
+    public delegate void ResponseMutationHandler(<%= schema.mutation_root_name %> response, List<string> errors, string httpError);
 
     public class ShopifyClient {
         QueryLoader Loader;
@@ -137,6 +139,34 @@ namespace <%= namespace %> {
                     });
                 }
             }, first: first, after: after);
+        }
+
+        public void Query(<%= schema.query_root_name %>Query query, ResponseQueryHandler callback) {
+            Loader.Query(query, (response) => {
+                callback(response.data, response.errors, response.HTTPError);
+            });
+        }
+        
+        public void Query(<%= schema.query_root_name %>Delegate buildQuery, ResponseQueryHandler callback) {
+            <%= schema.query_root_name %>Query query = new <%= schema.query_root_name %>Query();
+
+            buildQuery(query);
+
+            Query(query, callback);
+        }
+
+        public void Mutation(<%= schema.mutation_root_name %>Query query, ResponseMutationHandler callback) {
+            Loader.Mutation(query, (response) => {
+                callback(response.data, response.errors, response.HTTPError);
+            });
+        }
+
+        public void Mutation(<%= schema.mutation_root_name %>Delegate buildQuery, ResponseMutationHandler callback) {
+            <%= schema.mutation_root_name %>Query query = new <%= schema.mutation_root_name %>Query();
+
+            buildQuery(query);
+
+            Mutation(query, callback);
         }
 
         private void BuildProductQueryOnNode(QueryRootQuery query, List<ConnectionQueryInfo> connectionInfosToBuildQuery, string productId, string alias) {
