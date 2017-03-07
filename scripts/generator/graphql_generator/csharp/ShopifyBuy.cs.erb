@@ -78,7 +78,7 @@ namespace <%= namespace %> {
             _Domain = domain;
 
             #if UNITY_EDITOR
-            Loader = new QueryLoader(new UnityLoader(domain, Base64(apiKey)));
+            Loader = new QueryLoader(new UnityLoader(domain, apiKey));
             #endif
         }
 
@@ -301,10 +301,6 @@ namespace <%= namespace %> {
                     }
                 }
             );
-        }
-
-        private string Base64(string apiKey) {
-            return Convert.ToBase64String(Encoding.UTF8.GetBytes(apiKey));
         }
     }
 }
