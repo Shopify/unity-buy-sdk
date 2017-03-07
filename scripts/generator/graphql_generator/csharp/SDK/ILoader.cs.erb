@@ -2,6 +2,13 @@ namespace <%= namespace %>.SDK {
     public delegate void LoaderResponseHandler(string response, string error);
 
     public interface ILoader {
+        string Domain {
+            get;
+        }
+        string ApiKey {
+            get;
+        }
+        
         void Load(string query, LoaderResponseHandler callback);
     }
 }

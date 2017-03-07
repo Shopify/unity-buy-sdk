@@ -2,11 +2,8 @@
 tmp/
 
 # ignore generated files for now
-Assets/Shopify/Unity/ShopifyBuy*
-Assets/Shopify/Unity/GraphQL
-Assets/Shopify/Unity/GraphQL.meta
-Assets/Shopify/Unity/SDK
-Assets/Shopify/Unity/SDK.meta
+Assets/Shopify/Unity/
+!Assets/Shopify/Unity/Vendor*
 
 ####### Test files
 test.dll

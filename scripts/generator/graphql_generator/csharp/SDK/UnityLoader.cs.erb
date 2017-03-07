@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 namespace <%= namespace %>.SDK {
     using UnityEngine;
+    using System;
     using System.Text;
     using System.Collections;
     using System.Collections.Generic;
@@ -54,12 +55,28 @@ namespace <%= namespace %>.SDK {
     public class UnityLoader : ILoader {
         static GameObject LoaderGameObject;
 
-        string Domain;
-        string Authorization;
+        public string Domain {
+            get {
+                return _Domain;
+            }
+        }
 
-        public UnityLoader(string domain, string authorization) {
-            Domain = domain;
-            Authorization = authorization;
+        public string ApiKey {
+            get {
+                return _ApiKey;
+            }
+        }
+
+        string _Domain;
+        string _ApiKey;
+        string Authorization;
+        
+
+        public UnityLoader(string domain, string apiKey) {
+            _ApiKey = apiKey;
+            _Domain = domain;
+
+            Authorization = Base64(apiKey);
         }
 
         public void Load(string query, LoaderResponseHandler callback) {
@@ -71,6 +88,10 @@ namespace <%= namespace %>.SDK {
             .SetURL("https://" + Domain + "/api/graphql.json")
             .SetAuthorization("Basic " + Authorization)
             .Load(query, callback);
+        }
+
+        private string Base64(string apiKey) {
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes(apiKey));
         }
     }
 }

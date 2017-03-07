@@ -13,7 +13,7 @@ namespace Shopify.Unity.Tests
     public class TestUnityLoader : MonoBehaviour {
         void Start() {
             string domain = "graphql.myshopify.com";
-            string authorization = "MzUxYzEyMjAxN2QwZjJhOTU3ZDMyYWU3MjhhZDc0OWM=";
+            string authorization = "351c122017d0f2a957d32ae728ad749c";
 
             QueryLoader queryLoader = new QueryLoader(new UnityLoader(domain, authorization));
 

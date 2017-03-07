@@ -75,6 +75,7 @@ module GraphQLGenerator
       # output classes on root
       %w(
         ShopifyBuy
+        PurchaseSession
         SDK/Arguments
         SDK/InputBase
         SDK/InputValueToString
@@ -148,7 +149,7 @@ module GraphQLGenerator
       when "SCALAR"
         scalars[type.name].cast_value(value)
       else
-        "(#{graph_type_to_csharp_type(type)})"
+        "(#{graph_type_to_csharp_type(type)}) #{value}"
       end
     end
 

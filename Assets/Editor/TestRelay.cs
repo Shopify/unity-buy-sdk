@@ -39,6 +39,18 @@ namespace Shopify.Tests {
     }
 
     class CollectionTestLoader : ILoader {
+        public string Domain {
+            get {
+                return "someshop.myshopify.com";
+            }
+        }
+
+        public string ApiKey {
+            get {
+                return "1234";
+            }
+        }
+
         public void Load(string query, LoaderResponseHandler callback) {
             if (query == CollectionTestQueries.query1.ToString()) {
                 callback(@"{""data"":{

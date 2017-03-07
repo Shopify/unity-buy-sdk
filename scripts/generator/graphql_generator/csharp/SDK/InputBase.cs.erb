@@ -34,8 +34,16 @@ namespace <%= namespace %>.SDK {
         return stringValue.ToString();
       }
 
-      protected void Add(string key, object value) {
-        keysValues.Add(key, value);
+      protected void Set(string key, object value) {
+        if (keysValues.Contains(key)) {
+          keysValues[key] = value;
+        } else {
+          keysValues.Add(key, value);
+        }
+      }
+
+      protected object Get(string key) {
+        return keysValues[key];
       }
     }
 }
