@@ -22,6 +22,8 @@ namespace Shopify.Tests
             Assert.IsNotNull(ShopifyBuy.Client());
             Assert.IsNotNull(ShopifyBuy.Client("domain.com"));
             Assert.AreEqual(ShopifyBuy.Client(), ShopifyBuy.Client("domain.com"));
+            Assert.AreEqual("domain.com", ShopifyBuy.Client().Domain);
+            Assert.AreEqual("apiKey", ShopifyBuy.Client().ApiKey);
         }
 
         [Test]

@@ -57,15 +57,35 @@ namespace <%= namespace %> {
     public delegate void ResponseMutationHandler(<%= schema.mutation_root_name %> response, List<string> errors, string httpError);
 
     public class ShopifyClient {
+        public string ApiKey {
+            get {
+                return _ApiKey;
+            }
+        }
+
+        public string Domain {
+            get {
+                return _Domain;
+            }
+        }
+
         QueryLoader Loader;
+        string _ApiKey;
+        string _Domain;
 
         public ShopifyClient(string apiKey, string domain) {
+            _ApiKey = apiKey;
+            _Domain = domain;
+
             #if UNITY_EDITOR
             Loader = new QueryLoader(new UnityLoader(domain, Base64(apiKey)));
             #endif
         }
 
         public ShopifyClient(ILoader loader) {
+            _ApiKey = loader.ApiKey;
+            _Domain = loader.Domain;
+
             Loader = new QueryLoader(loader);
         }
 
@@ -167,6 +187,10 @@ namespace <%= namespace %> {
             buildQuery(query);
 
             Mutation(query, callback);
+        }
+
+        public <%= namespace %>.PurchaseSession PurchaseSession() {
+            return new <%= namespace %>.PurchaseSession(this);
         }
 
         private void BuildProductQueryOnNode(QueryRootQuery query, List<ConnectionQueryInfo> connectionInfosToBuildQuery, string productId, string alias) {
