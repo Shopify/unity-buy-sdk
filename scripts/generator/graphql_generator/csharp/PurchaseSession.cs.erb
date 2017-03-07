@@ -4,8 +4,6 @@ namespace <%= namespace %> {
     using <%= namespace %>.SDK;
     using <%= namespace %>.GraphQL;
 
-    public delegate void PurchaseSessionSyncHandler(string purchaseSessionID, List<string> errors, string httpError);
-
     public class PurchaseSessionLineItems {
         private List<LineItemInput> LineItems = new List<LineItemInput>();
 
