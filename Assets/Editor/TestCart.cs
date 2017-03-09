@@ -3,6 +3,7 @@ namespace Shopify.Tests
     using System.Collections.Generic;
     using NUnit.Framework;
     using Shopify.Unity;
+    using Shopify.Unity.GraphQL;
     using System.Text.RegularExpressions;
 
     [TestFixture]
@@ -63,6 +64,38 @@ namespace Shopify.Tests
 
             Assert.AreEqual("http://graphql.myshopify.com/cart/20756129155:33,20756129347:2", cart.GetWebCheckoutLink());
             Assert.AreEqual("http://graphql.myshopify.com/cart/20756129155:33,20756129347:2?note=i-am-a-note", cart.GetWebCheckoutLink("i-am-a-note"));
+        }
+
+        [Test]
+        public void ModifyLineItems() {
+            ShopifyBuy.Init(new MockLoader());
+
+            string productId1 = "gid://shopify/ProductVariant/20756129155";
+            string productId2 = "gid://shopify/ProductVariant/20756129347";
+            List<AttributeInput> attributes1 = new List<AttributeInput>() {
+                new AttributeInput("fancy", "i am fancy"),
+                new AttributeInput("boring", "i am boring")
+            };
+            List<AttributeInput> attributes2 = new List<AttributeInput>() {
+                new AttributeInput("animal", "lion"),
+                new AttributeInput("spotted", "no")
+            };
+
+            Cart cart = ShopifyBuy.Client().Cart();
+
+            cart.LineItems.Set(productId1, 33);
+            cart.LineItems.Set(productId2, 33);
+            
+            cart.LineItems.Set(productId1, 100);
+            cart.LineItems.Set(productId1, null, attributes1);
+            cart.LineItems.Set(productId2, 6, attributes2);
+
+            Assert.AreEqual(100, cart.LineItems.Get(productId1).quantity, "variant 20756129155 quantity is 100 after change");
+            Assert.AreEqual(6, cart.LineItems.Get(productId2).quantity, "variant 20756129155 quantity is 100 after change");
+            Assert.AreEqual("i am fancy", cart.LineItems.Get(productId1).customAttributes[0].value);
+            Assert.AreEqual("i am boring", cart.LineItems.Get(productId1).customAttributes[1].value);
+            Assert.AreEqual("lion", cart.LineItems.Get(productId2).customAttributes[0].value);
+            Assert.AreEqual("no", cart.LineItems.Get(productId2).customAttributes[1].value);
         }
     }
 }
