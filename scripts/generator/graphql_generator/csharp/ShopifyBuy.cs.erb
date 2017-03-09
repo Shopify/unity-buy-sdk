@@ -9,6 +9,13 @@ namespace <%= namespace %> {
     public class ShopifyBuy {
         public const string VERSION = "<%= version %>";
 
+        #if (SHOPIFY_TEST)
+        public static void Reset() {
+            DefaultClient = null;
+            ClientByDomain = new Dictionary<string, ShopifyClient>();
+        }
+        #endif
+
         public static ShopifyClient Client() {
             return DefaultClient;
         }
@@ -72,6 +79,8 @@ namespace <%= namespace %> {
         QueryLoader Loader;
         string _ApiKey;
         string _Domain;
+        Cart DefaultCart;
+        Dictionary<string,Cart> CartsById;
 
         public ShopifyClient(string apiKey, string domain) {
             _ApiKey = apiKey;
@@ -189,8 +198,24 @@ namespace <%= namespace %> {
             Mutation(query, callback);
         }
 
-        public <%= namespace %>.PurchaseSession PurchaseSession() {
-            return new <%= namespace %>.PurchaseSession(this);
+        public Cart Cart(string cartId = null) {
+            if (cartId == null) {
+                if (DefaultCart == null) {
+                    DefaultCart = new Cart(this);
+                }
+
+                return DefaultCart;
+            } else {
+                if (CartsById == null) {
+                    CartsById = new Dictionary<string, Cart>();
+                }
+
+                if (!CartsById.ContainsKey(cartId)) {
+                    CartsById[cartId] = new Cart(this);
+                }
+
+                return CartsById[cartId];
+            }
         }
 
         private void BuildProductQueryOnNode(QueryRootQuery query, List<ConnectionQueryInfo> connectionInfosToBuildQuery, string productId, string alias) {

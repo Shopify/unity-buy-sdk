@@ -4,7 +4,7 @@ namespace <%= namespace %> {
     using <%= namespace %>.SDK;
     using <%= namespace %>.GraphQL;
 
-    public class PurchaseSessionLineItems {
+    public class CartLineItems {
         private List<LineItemInput> LineItems = new List<LineItemInput>();
 
         public void Set(string variantId, long? quantity = null, List<AttributeInput> customAttributes = null) {
@@ -66,23 +66,23 @@ namespace <%= namespace %> {
         }
     }
 
-    public class PurchaseSession {
-        public PurchaseSessionLineItems LineItems {
+    public class Cart {
+        public CartLineItems LineItems {
             get {
                 return _LineItems;
             }
         }
 
-        private PurchaseSessionLineItems _LineItems;
+        private CartLineItems _LineItems;
 
         private ShopifyClient Client;
 
-        public PurchaseSession(ShopifyClient client) {
+        public Cart(ShopifyClient client) {
             Client = client;
-            _LineItems = new PurchaseSessionLineItems();
+            _LineItems = new CartLineItems();
         }
 
-        public string WebCheckoutLink(string note = null) {
+        public string GetWebCheckoutLink(string note = null) {
             StringBuilder url = new StringBuilder();
             bool hasLineItem = false;
             

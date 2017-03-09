@@ -75,7 +75,7 @@ module GraphQLGenerator
       # output classes on root
       %w(
         ShopifyBuy
-        PurchaseSession
+        Cart
         SDK/Arguments
         SDK/InputBase
         SDK/InputValueToString

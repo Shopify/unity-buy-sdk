@@ -8,12 +8,19 @@ namespace Shopify.Tests
 
     [TestFixture]
     public class TestShopify {
+        [SetUp]
+        public void Setup() {
+            #if (SHOPIFY_TEST)
+            ShopifyBuy.Reset();
+            #endif
+        }
+
         /*
         * since ShopifyBuy uses static methods and the following tests setting up the generic client
         * this test needs to be run first which is why this test starts with _ since nunit runs tests alphabetically
         */
         [Test]
-        public void _TestInit() {
+        public void TestInit() {
             Assert.IsNull(ShopifyBuy.Client());
             Assert.IsNull(ShopifyBuy.Client("domain.com"));
 
