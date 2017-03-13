@@ -19,9 +19,9 @@ dependencies:
     - sudo ln -s /Applications/Xcode-7.3.app /Applications/Xcode.app
   override:
     - ./scripts/install_unity.sh
-    - ./scripts/build.sh
   cache_directories:
     - "unity/"
 test:
   override:
+    - ./scripts/build.sh
     - ./scripts/test_unity.sh
