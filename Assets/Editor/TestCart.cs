@@ -3,6 +3,7 @@ namespace Shopify.Tests
     using System.Collections.Generic;
     using NUnit.Framework;
     using Shopify.Unity;
+    using Shopify.Unity.MiniJSON;
     using Shopify.Unity.GraphQL;
     using System.Text.RegularExpressions;
 
@@ -96,6 +97,132 @@ namespace Shopify.Tests
             Assert.AreEqual("i am boring", cart.LineItems.Get(productId1).customAttributes[1].value);
             Assert.AreEqual("lion", cart.LineItems.Get(productId2).customAttributes[0].value);
             Assert.AreEqual("no", cart.LineItems.Get(productId2).customAttributes[1].value);
+        }
+
+        [Test]
+        public void AddEditRemoveViaSelectedOptions() {
+            ShopifyBuy.Init(new MockLoader());
+
+            Cart cart = ShopifyBuy.Client().Cart();
+
+            string jsonString = @"
+                {
+                    ""title"": ""Many Variant"",
+                    ""options"": [
+                        {
+                        ""name"": ""Size"",
+                        ""values"": [
+                            ""Large"",
+                            ""Small""
+                        ]
+                        },
+                        {
+                        ""name"": ""Color"",
+                        ""values"": [
+                            ""Red"",
+                            ""Blue""
+                        ]
+                        }
+                    ],
+                    ""variants"": {
+                        ""edges"": [
+                        {
+                            ""node"": {
+                            ""id"": ""gid://shopify/ProductVariant/28472670531"",
+                            ""selectedOptions"": [
+                                {
+                                ""name"": ""Size"",
+                                ""value"": ""Large""
+                                },
+                                {
+                                ""name"": ""Color"",
+                                ""value"": ""Red""
+                                }
+                            ]
+                            }
+                        },
+                        {
+                            ""node"": {
+                            ""id"": ""gid://shopify/ProductVariant/28472705027"",
+                            ""selectedOptions"": [
+                                {
+                                ""name"": ""Size"",
+                                ""value"": ""Large""
+                                },
+                                {
+                                ""name"": ""Color"",
+                                ""value"": ""Blue""
+                                }
+                            ]
+                            }
+                        },
+                        {
+                            ""node"": {
+                            ""id"": ""gid://shopify/ProductVariant/28472705091"",
+                            ""selectedOptions"": [
+                                {
+                                ""name"": ""Size"",
+                                ""value"": ""Small""
+                                },
+                                {
+                                ""name"": ""Color"",
+                                ""value"": ""Red""
+                                }
+                            ]
+                            }
+                        },
+                        {
+                            ""node"": {
+                            ""id"": ""gid://shopify/ProductVariant/28472705155"",
+                            ""selectedOptions"": [
+                                {
+                                ""name"": ""Size"",
+                                ""value"": ""Small""
+                                },
+                                {
+                                ""name"": ""Color"",
+                                ""value"": ""Blue""
+                                }
+                            ]
+                            }
+                        }
+                        ]
+                    }
+                }
+            ";
+
+            Product product = new Product((Dictionary<string, object>) Json.Deserialize(jsonString));
+
+            Dictionary<string, string> selectedOptions1 = new Dictionary<string, string>() {
+                {"Size", "Small"},
+                {"Color", "Red"}
+            };
+
+            Dictionary<string, string> selectedOptions2 = new Dictionary<string, string>() {
+                {"Size", "Large"},
+                {"Color", "Blue"}
+            };
+
+            Dictionary<string, string> selectedOptions3 = new Dictionary<string, string>() {
+                {"Size", "Large"},
+                {"Color", "Red"}
+            };
+
+
+            cart.LineItems.Set(product, selectedOptions1, 3);
+            cart.LineItems.Set(product, selectedOptions2, 123);
+
+            Assert.AreEqual(3, cart.LineItems.Get(product, selectedOptions1).quantity, "was able to set using selected options");
+            Assert.AreEqual(123, cart.LineItems.Get(product, selectedOptions2).quantity, "was able to set using selected options");
+
+            cart.LineItems.Set(product, selectedOptions1, 13);
+
+            Assert.AreEqual(13, cart.LineItems.Get(product, selectedOptions1).quantity, "was able to reset using selected options");
+
+            Assert.IsTrue(cart.LineItems.Delete(product, selectedOptions1), "returned true when line item was deleted");
+            Assert.IsFalse(cart.LineItems.Delete(product, selectedOptions3), "returned false when no line item existed");
+
+            Assert.AreEqual(null, cart.LineItems.Get(product, selectedOptions1), "Get retuned null after attempting access deleted line item");
         }
     }
 }

@@ -1,8 +1,13 @@
 namespace <%= namespace %> {
+    using System;
     using System.Collections.Generic;
     using System.Text;
     using <%= namespace %>.SDK;
     using <%= namespace %>.GraphQL;
+
+    public class NoMatchingVariantException : Exception {
+        public NoMatchingVariantException(string message) : base(message) {}
+    }
 
     public class CartLineItems {
         private List<LineItemInput> LineItems = new List<LineItemInput>();
@@ -37,6 +42,16 @@ namespace <%= namespace %> {
             Set(variant.id(), quantity, customAttributes);
         }
 
+        public void Set(Product product, Dictionary<string, string> selectedOptions, long? quantity = null, List<AttributeInput> customAttributes = null) {
+            string variantId = VariantIdFromSelectedOptions(product, selectedOptions);
+
+            if (variantId == null) {
+                throw new NoMatchingVariantException("Could not `Set` line item as no matching variant could be found for selected options");
+            }
+
+            Set(variantId, quantity, customAttributes);
+        }
+
         public List<LineItemInput> GetAll() {
             return LineItems;
         }
@@ -47,6 +62,16 @@ namespace <%= namespace %> {
 
         public LineItemInput Get(ProductVariant variant) {
             return Get(variant.id());
+        }
+
+        public LineItemInput Get(Product product, Dictionary<string, string> selectedOptions) {
+            string variantId = VariantIdFromSelectedOptions(product, selectedOptions);
+
+            if (variantId == null) {
+                return null;
+            }
+
+            return Get(variantId);
         }
 
         public bool Delete(string variantId) {
@@ -61,8 +86,49 @@ namespace <%= namespace %> {
             }
         }
 
+        public bool Delete(Product product, Dictionary<string, string> selectedOptions) {
+            string variantId = VariantIdFromSelectedOptions(product, selectedOptions);
+
+            if (variantId == null) {
+                return false;
+            }
+
+            return Delete(variantId);
+        }
+
         public bool Delete(ProductVariant variant) {
             return Delete(variant.id());
+        }
+
+        private string VariantIdFromSelectedOptions(Product product, Dictionary<string, string> selectedOptions) {
+            List<ProductVariant> variants = (List<ProductVariant>) product.variants();
+            string variantId = null;
+
+            foreach(ProductVariant variant in variants) {
+                List<SelectedOption> variantSelectedOptions = variant.selectedOptions();
+                variantId = variant.id();
+
+                if (variantSelectedOptions.Count != selectedOptions.Keys.Count) {
+                    variantId = null;
+                } else {
+                    foreach(SelectedOption variantOption in variantSelectedOptions) {
+                        string optionName = variantOption.name();
+                        string optionValue = variantOption.value();
+
+                        if (!selectedOptions.ContainsKey(optionName) || selectedOptions[optionName] != optionValue) {
+                            variantId = null;
+
+                            break;
+                        }
+                    }
+                }
+
+                if (variantId != null) {
+                    break;
+                }
+            }
+
+            return variantId;
         }
     }
 
