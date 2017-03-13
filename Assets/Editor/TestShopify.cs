@@ -15,10 +15,6 @@ namespace Shopify.Tests
             #endif
         }
 
-        /*
-        * since ShopifyBuy uses static methods and the following tests setting up the generic client
-        * this test needs to be run first which is why this test starts with _ since nunit runs tests alphabetically
-        */
         [Test]
         public void TestInit() {
             Assert.IsNull(ShopifyBuy.Client());
