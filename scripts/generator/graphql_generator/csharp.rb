@@ -265,5 +265,76 @@ module GraphQLGenerator
         type_from_name(node.type.unwrap.name)
       end
     end
+
+    def doc_generic(summary)
+      return "/// <summary>\n" \
+             "/// #{summary.split("\n").map{|part| part.strip }.join("\n/// ")}\n" \
+             "/// </summary>"
+    end
+
+    def docs_query_object(type)
+      if type.description
+        return doc_generic(type.description)
+      else
+        return doc_generic("#{type.classify_name} is an query object")
+      end
+    end
+
+    def docs_possible_types(type)
+      return "<list type=\"bullet\">\n#{type.possible_types.map{|type| "<item><description><see cref=\"#{type.classify_name}\" /></description></item>" }.join("\n")}\n</list>"
+    end
+
+    def docs_response_object(type)
+      if type.interface?
+        return doc_generic(
+          "#{"Unknown" if type.interface?}#{type.classify_name} is a response object.\n" \
+          "With <see cref=\"#{"Unknown" if type.interface?}#{type.classify_name}.Create\" /> you'll be able instantiate objects implementing #{type.classify_name}.\n" \
+          "<c>#{"Unknown" if type.interface?}#{type.classify_name}.Create</c> will return one of the following types:\n#{docs_possible_types(type)}"
+        )
+      elsif connection?(type)
+        if type.description
+          return doc_generic("#{type.description}. #{type.classify_name} can be cast to <c>List<#{node_type_from_connection_type(type).classify_name}></c>")
+        else
+          return doc_generic("#{type.classify_name} is a response object. #{type.classify_name} can be cast to <c>List<#{node_type_from_connection_type(type).classify_name}></c>")
+        end
+      else
+        if type.description
+          return doc_generic(type.description)
+        else
+          return doc_generic("#{type.classify_name} is a response object")
+        end
+      end
+    end
+
+    def docs_input_object(type)
+      if type.description
+        return doc_generic(type.description)
+      else
+        return doc_generic("#{type.classify_name} is an input object")
+      end
+    end
+
+    def docs_enum(type)
+      if type.description
+        return doc_generic(type.description)
+      else
+        return doc_generic("#{type.classify_name} is an enum")
+      end
+    end
+
+    def docs_response_field(field)
+      if field.args.any?
+        alias_doc = "/// <param name=\"alias\">If the original field queried was queried using an alias pass the matching string</param>"
+      else
+        alias_doc = ""
+      end
+
+      if field.description
+        return "#{doc_generic(field.description)}\n" +
+               alias_doc
+      else
+        return alias_doc
+      end
+    end
   end
 end

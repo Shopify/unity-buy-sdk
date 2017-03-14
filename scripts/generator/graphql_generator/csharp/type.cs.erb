@@ -11,12 +11,11 @@ namespace <%= namespace %>.GraphQL {
     using <%= namespace %>.SDK;
 
     <% case type.kind when 'OBJECT', 'INTERFACE', 'UNION' %>
-        /* This is a regular object */
-
         <%# the following will define a delegate for lamdas. Each delegate name will be followed by Delegate. eg. ShopDelegate %>
         public delegate void <%= type.classify_name %>Delegate(<%= type.classify_name %>Query query);
 
         <%# the following will start defining the class. Each type name will be followed by Query. eg. ShopQuery %>
+        <%= docs_query_object(type) %>
         public class <%= type.classify_name %>Query {
             private StringBuilder Query;
 
@@ -37,6 +36,11 @@ namespace <%= namespace %>.GraphQL {
 
             <%# now create methods to add fields to queries %>
             <% type.fields.each do |field| %>
+                <% if field.description %>
+                /// <summary>
+                /// <%= field.description %>
+                /// </summary>
+                <% end %>
                 public <%= type.classify_name %>Query <%= escape_reserved_word(field.name) %>(<%= field_args(field) %>) {
                     <%# now we we want to handle generating arguments %>
                     <% if field.args.any? %>
@@ -82,6 +86,9 @@ namespace <%= namespace %>.GraphQL {
 
             <% unless type.object? %>
                 <% type.possible_types.each do |possible_type| %>
+                    /// <summary>
+                    /// will allow you to write queries on <%= possible_type.classify_name %>
+                    /// </summary>
                     public <%= type.classify_name %>Query on<%= possible_type.classify_name %>(<%= possible_type.classify_name %>Delegate buildQuery) {
                         Query.Append("...on <%= possible_type.classify_name %>{");
                         buildQuery(new <%= possible_type.classify_name %>Query(Query));
@@ -99,7 +106,7 @@ namespace <%= namespace %>.GraphQL {
             <% end %>
         }
     <% when 'INPUT_OBJECT' %>
-        /* This is an input object */
+        <%= docs_input_object(type) %>
         public class <%= type.classify_name %> : InputBase {
             <% type.input_fields.each do |field| %>
             public <%= graph_type_to_csharp_type(field.type) %> <%= field.name %> {
@@ -128,6 +135,7 @@ namespace <%= namespace %>.GraphQL {
             }
         }
     <% when 'ENUM' %>
+        <%= docs_enum(type) %>
         public enum <%= type.classify_name %> {
             <%= type.enum_values.map{ |enum| enum.name }.unshift("UNKNOWN").join(", ") %>
         }

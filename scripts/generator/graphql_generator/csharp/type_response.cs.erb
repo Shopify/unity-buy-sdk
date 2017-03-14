@@ -6,10 +6,13 @@ namespace <%= namespace %>.GraphQL {
     using <%= namespace %>.SDK;
 
     <% if type.object? %>
+        <%= docs_response_object(type) %>
         public class <%= type.classify_name %> : AbstractResponse, ICloneable<%= ", IEnumerable" if connection? type %><%= type.interfaces.map{|interface| ", #{interface.classify_name}" }.join %> {
 
         <% if connection?(type) %>
-            /* Creates ability to cast <%= type.classify_name %> to List<<%= node_type_from_connection_type(type).classify_name %>> */
+            /// <summary>
+            /// Creates ability to cast <%= type.classify_name %> to <c>List<<%= node_type_from_connection_type(type).classify_name %>></c>
+            /// </summary>
             public static explicit operator List<<%= node_type_from_connection_type(type).classify_name %>>(<%= type.classify_name %> connection) {
                 if (connection.Nodes == null) {
                     connection.Nodes = new List<<%= node_type_from_connection_type(type).classify_name %>>();
@@ -29,8 +32,12 @@ namespace <%= namespace %>.GraphQL {
             <% end %>
         }
 
+        <%= docs_response_object(type) %>
         public class Unknown<%= type.classify_name %> : AbstractResponse, ICloneable, <%= type.classify_name %> {
-
+            /// <summary>
+            /// Instantiate objects implementing <see cref="<%= type.classify_name %>" />. Possible types are:
+            /// <%= docs_possible_types(type).split("\n").join("\n/// ") %>
+            /// </summary>
             public static <%= type.classify_name %> Create(Dictionary<string, object> dataJSON) {
                 string typeName = (string) dataJSON["__typename"];
 
@@ -119,6 +126,7 @@ namespace <%= namespace %>.GraphQL {
 
         <%# output getters for fields %>
         <% type.fields.each do |field| %>
+            <%= docs_response_field(field) %>
             public <%= graph_type_to_csharp_type(field.type) %> <%= escape_reserved_word(field.name) %>(<%= 'string alias = null' if field.args.any? %>) {
                 <% if field.args.any? %>
                     return Get<<%= graph_type_to_csharp_type(field.type) %>>("<%= field.name %>", alias);
