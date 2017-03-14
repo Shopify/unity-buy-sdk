@@ -41,13 +41,13 @@ namespace Shopify.Tests
             cart.LineItems.Set(variant, 2);
             cart.LineItems.Set("gid://shopify/Product/7336568131");
 
-            Assert.AreEqual(3, cart.LineItems.GetAll().Count, "has 3 items in cart");
+            Assert.AreEqual(3, cart.LineItems.All().Count, "has 3 items in cart");
             Assert.AreEqual(33, cart.LineItems.Get("gid://shopify/ProductVariant/20756129155").quantity, "variant 20756129155 quantity is 33");
             Assert.AreEqual(2, cart.LineItems.Get("gid://shopify/ProductVariant/20756129347").quantity, "variant 20756129347 quantity is 2");
             Assert.AreEqual(1, cart.LineItems.Get("gid://shopify/Product/7336568131").quantity, "variant 7336568131 quantity is 1");
 
             bool didDelete = cart.LineItems.Delete("gid://shopify/ProductVariant/20756129155");
-            Assert.AreEqual(2, cart.LineItems.GetAll().Count, "After remove had 2 items in cart");
+            Assert.AreEqual(2, cart.LineItems.All().Count, "After remove had 2 items in cart");
             Assert.IsTrue(didDelete, "returned true when deleting");
 
             didDelete = cart.LineItems.Delete("gid://shopify/ProductVariant/iamnotreal");

@@ -52,7 +52,7 @@ namespace <%= namespace %> {
             Set(variantId, quantity, customAttributes);
         }
 
-        public List<LineItemInput> GetAll() {
+        public List<LineItemInput> All() {
             return LineItems;
         }
 
@@ -156,7 +156,7 @@ namespace <%= namespace %> {
             url.Append(Client.Domain);
             url.Append("/cart/");
 
-            foreach(LineItemInput lineItem in LineItems.GetAll()) {
+            foreach(LineItemInput lineItem in LineItems.All()) {
                 if (hasLineItem) {
                     url.Append(",");
                 }
