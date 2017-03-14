@@ -39,8 +39,16 @@ if domain
   end
 
   schema_filename = CACHED_SCHEMA_FILENAME
-  body = Net::HTTP.get(URI("https://#{domain}/services/ping/storefront_graphql_schema"))
-  File.write(schema_filename, JSON.pretty_generate(JSON.parse(body)))
+
+  begin
+    body = Net::HTTP.get(URI("https://#{domain}/services/ping/storefront_graphql_schema"))
+    File.write(schema_filename, JSON.pretty_generate(JSON.parse(body)))
+  rescue
+    puts "Could not load schema from: https://#{domain}/services/ping/storefront_graphql_schema"
+    puts "Using cached file"
+    schema_filename = CACHED_SCHEMA_FILENAME
+    domain = nil
+  end
 end
 
 schema = GraphQLSchema.new(JSON.parse(File.read(schema_filename)))
