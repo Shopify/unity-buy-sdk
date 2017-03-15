@@ -8,12 +8,15 @@ namespace Shopify.Tests
 
     [TestFixture]
     public class TestShopify {
-        /*
-        * since ShopifyBuy uses static methods and the following tests setting up the generic client
-        * this test needs to be run first which is why this test starts with _ since nunit runs tests alphabetically
-        */
+        [SetUp]
+        public void Setup() {
+            #if (SHOPIFY_TEST)
+            ShopifyBuy.Reset();
+            #endif
+        }
+
         [Test]
-        public void _TestInit() {
+        public void TestInit() {
             Assert.IsNull(ShopifyBuy.Client());
             Assert.IsNull(ShopifyBuy.Client("domain.com"));
 
@@ -22,6 +25,32 @@ namespace Shopify.Tests
             Assert.IsNotNull(ShopifyBuy.Client());
             Assert.IsNotNull(ShopifyBuy.Client("domain.com"));
             Assert.AreEqual(ShopifyBuy.Client(), ShopifyBuy.Client("domain.com"));
+            Assert.AreEqual("domain.com", ShopifyBuy.Client().Domain);
+            Assert.AreEqual("apiKey", ShopifyBuy.Client().ApiKey);
+        }
+
+        [Test]
+        public void CannotInitTwiceUsingDomain() {
+            ShopifyBuy.Init("apiKey", "domain2.com");
+            ShopifyClient client1 = ShopifyBuy.Client("domain2.com");
+
+            ShopifyBuy.Init("apiKey", "domain2.com");
+            ShopifyClient client2 = ShopifyBuy.Client("domain2.com");
+            
+            Assert.IsNotNull(client1);
+            Assert.AreSame(client1, client2);
+        }
+
+        [Test]
+        public void CannotInitTwiceUsingLoader() {
+            ShopifyBuy.Init(new MockLoader());
+            ShopifyClient client1 = ShopifyBuy.Client("graphql.myshopify.com");
+
+            ShopifyBuy.Init(new MockLoader());
+            ShopifyClient client2 = ShopifyBuy.Client("graphql.myshopify.com");
+            
+            Assert.IsNotNull(client1);
+            Assert.AreSame(client1, client2);
         }
 
         [Test]

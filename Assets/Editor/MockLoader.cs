@@ -6,6 +6,18 @@ namespace Shopify.Tests {
     using Shopify.Unity.SDK;
 
     public class MockLoader : ILoader {
+        public string Domain {
+            get {
+                return "graphql.myshopify.com";
+            }
+        }
+
+        public string ApiKey {
+            get {
+                return "1234";
+            }
+        }
+
         private static bool Initialized;
 
         public static int CountProductsPages = 4;

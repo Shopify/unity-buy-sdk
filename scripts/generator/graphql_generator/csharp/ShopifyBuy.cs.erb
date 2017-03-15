@@ -9,6 +9,13 @@ namespace <%= namespace %> {
     public class ShopifyBuy {
         public const string VERSION = "<%= version %>";
 
+        #if (SHOPIFY_TEST)
+        public static void Reset() {
+            DefaultClient = null;
+            ClientByDomain = new Dictionary<string, ShopifyClient>();
+        }
+        #endif
+
         public static ShopifyClient Client() {
             return DefaultClient;
         }
@@ -22,29 +29,29 @@ namespace <%= namespace %> {
         }
 
         public static ShopifyClient Init(string apiKey, string domain) {
-            ClientByDomain[domain] = new ShopifyClient(apiKey, domain);
+            if (!ClientByDomain.ContainsKey(domain)) {
+                ClientByDomain[domain] = new ShopifyClient(apiKey, domain);
 
-            if (DefaultClient == null) {
-                DefaultClient = ClientByDomain[domain];
+                if (DefaultClient == null) {
+                    DefaultClient = ClientByDomain[domain];
+                }
             }
 
             return ClientByDomain[domain];
         }
 
-        public static ShopifyClient Init(ILoader loader, string domain = null) {
-            if (domain != null) {
+        public static ShopifyClient Init(ILoader loader) {
+            string domain = loader.Domain;
+
+            if (!ClientByDomain.ContainsKey(domain)) {
                 ClientByDomain[domain] = new ShopifyClient(loader);
 
                 if (DefaultClient == null) {
                     DefaultClient = ClientByDomain[domain];
                 }
-
-                return ClientByDomain[domain];
-            } else {
-                DefaultClient = new ShopifyClient(loader);
-
-                return DefaultClient;
             }
+
+            return ClientByDomain[domain];
         }
 
         private static ShopifyClient DefaultClient;
@@ -57,15 +64,37 @@ namespace <%= namespace %> {
     public delegate void ResponseMutationHandler(<%= schema.mutation_root_name %> response, List<string> errors, string httpError);
 
     public class ShopifyClient {
+        public string ApiKey {
+            get {
+                return _ApiKey;
+            }
+        }
+
+        public string Domain {
+            get {
+                return _Domain;
+            }
+        }
+
         QueryLoader Loader;
+        string _ApiKey;
+        string _Domain;
+        Cart DefaultCart;
+        Dictionary<string,Cart> CartsById;
 
         public ShopifyClient(string apiKey, string domain) {
+            _ApiKey = apiKey;
+            _Domain = domain;
+
             #if UNITY_EDITOR
-            Loader = new QueryLoader(new UnityLoader(domain, Base64(apiKey)));
+            Loader = new QueryLoader(new UnityLoader(domain, apiKey));
             #endif
         }
 
         public ShopifyClient(ILoader loader) {
+            _ApiKey = loader.ApiKey;
+            _Domain = loader.Domain;
+
             Loader = new QueryLoader(loader);
         }
 
@@ -167,6 +196,26 @@ namespace <%= namespace %> {
             buildQuery(query);
 
             Mutation(query, callback);
+        }
+
+        public Cart Cart(string cartId = null) {
+            if (cartId == null) {
+                if (DefaultCart == null) {
+                    DefaultCart = new Cart(this);
+                }
+
+                return DefaultCart;
+            } else {
+                if (CartsById == null) {
+                    CartsById = new Dictionary<string, Cart>();
+                }
+
+                if (!CartsById.ContainsKey(cartId)) {
+                    CartsById[cartId] = new Cart(this);
+                }
+
+                return CartsById[cartId];
+            }
         }
 
         private void BuildProductQueryOnNode(QueryRootQuery query, List<ConnectionQueryInfo> connectionInfosToBuildQuery, string productId, string alias) {
@@ -277,10 +326,6 @@ namespace <%= namespace %> {
                     }
                 }
             );
-        }
-
-        private string Base64(string apiKey) {
-            return Convert.ToBase64String(Encoding.UTF8.GetBytes(apiKey));
         }
     }
 }

@@ -19,6 +19,18 @@ namespace Shopify.Tests {
     }
 
     public class TestLoader : ILoader {
+        public string Domain {
+            get {
+                return "someshop.myshopify.com";
+            }
+        }
+
+        public string ApiKey {
+            get {
+                return "1234";
+            }
+        }
+
         public TestLoader() {
 
         }
