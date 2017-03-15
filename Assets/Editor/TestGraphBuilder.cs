@@ -2,6 +2,7 @@ namespace Shopify.Tests
 {
     using System;
     using NUnit.Framework;
+    using Shopify.Unity;
     using Shopify.Unity.SDK;
     using Shopify.Unity.GraphQL;
 

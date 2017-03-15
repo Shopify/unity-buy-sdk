@@ -1,6 +1,10 @@
 <% isRoot = schema.root_name?(type.name) %>
 <% isQueryRoot = type.name == schema.query_root_name %>
+<% if type.kind == 'INPUT_OBJECT' || type.kind == 'ENUM' %>
+namespace <%= namespace %> {
+<% else %>
 namespace <%= namespace %>.GraphQL {
+<% end %>
     using System;
     using System.Text;
     using System.Collections.Generic;
