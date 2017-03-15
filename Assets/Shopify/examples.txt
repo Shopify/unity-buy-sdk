@@ -125,12 +125,12 @@ void Start () {
 
         // the following example adds a line item using the first products first variant
         // in this case the cart will have 3 copies of the variant
-        cart.LineItems.Set(firstProductFirstVariant, 3);
+        cart.LineItems.AddOrUpdate(firstProductFirstVariant, 3);
 
-        // Set is overloaded to accept ProductVariant's or strings or select a variant based on selected options
+        // AddOrUpdate is overloaded to accept ProductVariant's or strings or select a variant based on selected options
         // alternately you can use a product variant id string to create line items
         // this example adds 1 item to the cart
-        cart.LineItems.Set(secondProductFirstVariant.id(), 1);
+        cart.LineItems.AddOrUpdate(secondProductFirstVariant.id(), 1);
 
         // the following line will get a checkout url using the above line items and open the url in browser
         Application.OpenURL(cart.GetWebCheckoutLink());
@@ -138,10 +138,10 @@ void Start () {
 }
 ```
 
-To adjust or change quantity on a line item you could simply just call `Set` again with the new quantity. For instance
+To adjust or change quantity on a line item you could simply just call `AddOrUpdate` again with the new quantity. For instance
 from the above example if we wanted to adjust the quantity for `firstProductFirstVariant` to 1 we could call:
 ```cs
-cart.LineItems.Set(firstProductFirstVariant, 1);
+cart.LineItems.AddOrUpdate(firstProductFirstVariant, 1);
 ```
 
 To delete a line item do the following:
@@ -196,7 +196,7 @@ void Start () {
         };
 
         // create a line item based on the selected options for a product
-        cart.LineItems.Set(firstProduct, selectedOptions, 1);
+        cart.LineItems.AddOrUpdate(firstProduct, selectedOptions, 1);
 
         // checkout the selected product
         Application.OpenURL(cart.GetWebCheckoutLink());
