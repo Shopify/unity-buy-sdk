@@ -29,29 +29,29 @@ namespace <%= namespace %> {
         }
 
         public static ShopifyClient Init(string apiKey, string domain) {
-            ClientByDomain[domain] = new ShopifyClient(apiKey, domain);
+            if (!ClientByDomain.ContainsKey(domain)) {
+                ClientByDomain[domain] = new ShopifyClient(apiKey, domain);
 
-            if (DefaultClient == null) {
-                DefaultClient = ClientByDomain[domain];
+                if (DefaultClient == null) {
+                    DefaultClient = ClientByDomain[domain];
+                }
             }
 
             return ClientByDomain[domain];
         }
 
-        public static ShopifyClient Init(ILoader loader, string domain = null) {
-            if (domain != null) {
+        public static ShopifyClient Init(ILoader loader) {
+            string domain = loader.Domain;
+
+            if (!ClientByDomain.ContainsKey(domain)) {
                 ClientByDomain[domain] = new ShopifyClient(loader);
 
                 if (DefaultClient == null) {
                     DefaultClient = ClientByDomain[domain];
                 }
-
-                return ClientByDomain[domain];
-            } else {
-                DefaultClient = new ShopifyClient(loader);
-
-                return DefaultClient;
             }
+
+            return ClientByDomain[domain];
         }
 
         private static ShopifyClient DefaultClient;

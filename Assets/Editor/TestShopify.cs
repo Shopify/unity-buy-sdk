@@ -30,6 +30,30 @@ namespace Shopify.Tests
         }
 
         [Test]
+        public void CannotInitTwiceUsingDomain() {
+            ShopifyBuy.Init("apiKey", "domain2.com");
+            ShopifyClient client1 = ShopifyBuy.Client("domain2.com");
+
+            ShopifyBuy.Init("apiKey", "domain2.com");
+            ShopifyClient client2 = ShopifyBuy.Client("domain2.com");
+            
+            Assert.IsNotNull(client1);
+            Assert.AreSame(client1, client2);
+        }
+
+        [Test]
+        public void CannotInitTwiceUsingLoader() {
+            ShopifyBuy.Init(new MockLoader());
+            ShopifyClient client1 = ShopifyBuy.Client("graphql.myshopify.com");
+
+            ShopifyBuy.Init(new MockLoader());
+            ShopifyClient client2 = ShopifyBuy.Client("graphql.myshopify.com");
+            
+            Assert.IsNotNull(client1);
+            Assert.AreSame(client1, client2);
+        }
+
+        [Test]
         public void TestGenericQuery() {
             ShopifyBuy.Init(new MockLoader());
             QueryRoot response = null;
