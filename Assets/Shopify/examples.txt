@@ -21,7 +21,7 @@ once.
 
 ### Query All Products
 
-The following example assumes you've called `ShopifyBuy.Init` and shows how to query all products in your Shopify store.
+The following example shows how to query all products in your Shopify store.
 ```cs
 using Shopify.Unity;
 
@@ -29,7 +29,7 @@ void Start () {
     string accessToken = "351c122017d0f2a957d32ae728ad749c";
     string shopDomain = "graphql.myshopify.com";
 
-    // init only needs to be called once
+    // Init only needs to be called once
     ShopifyBuy.Init(accessToken, shopDomain);
 
     // the following will query the shop for all products
@@ -96,9 +96,9 @@ void Start () {
 }
 ```
 
-It should be noted that in the above example if you were to do `product.title()` an Exception would be thrown. As stated 
+It should be noted that in the above example if you were to call `product.title()` an Exception would be thrown. As stated 
 in the begining of this document the Unity SDK is built on top of GraphQL queries. When `collections` are queried using
-this helper method only `id` is queried on `Product`. To get an idea of what fields are queried checkout `DefaultQueries.cs`.
+this helper/utility method only `id` is queried on `Product`. To get an idea of what fields are queried checkout `DefaultQueries.cs`.
 We will discuss creating custom queries later.
 
 ### Cart + Web Checkout
@@ -157,7 +157,7 @@ LineItemInput lineItem = cart.LineItems.Get(firstProductFirstVariant);
 ### Cart Line items based on selected options
 
 In Shopify a product may have many options. These options map to variants of a product. The following
-example shows how to create Line items in a Cart based on Selected options.
+example shows how to create Line items in a Cart based on selected options.
 
 ```cs
 using Shopify.Unity;
@@ -212,12 +212,45 @@ cart.LineItems.Delete(firstProduct, selectedOptions);
 
 ### Custom Queries
 
-In the above examples when querying `products` and `collections` we were actually using utility functions on
-a Shopify Buy client. These utility functions create generic queries that most people would expect to see on 
-products and collections. It is possible to however build custom queries that can be sent to the Store Front API
-to access more data.
+The Unity Buy SDK is built ontop of the StoreFront API which is a GraphQL Web API. In GraphQL you send queries
+to the end point and receive back a JSON responses. Here's an example GraphQL query to get the name of a shop, and
+details about the billing address of the store:
 
-In the following example we will build a query to request details about the shop. In specific we will query:
+```graphql
+query {
+  shop {
+      name
+      billingAddress {
+          city
+          address1
+      }
+  }
+}
+```
+
+When this query is sent to the Storefront API the JSON response from the server would look like this:
+```json
+{
+  "data": {
+    "shop": {
+      "name": "graphql",
+      "billingAddress": {
+        "city": "Toronto",
+        "address1": "80 Spadina Ave"
+      }
+    }
+  }
+}
+```
+As you can see the data takes the same form as the query sent to the GraphQL endpoint. For more info on GraphQL 
+checkout: [http://graphql.org/](http://graphql.org/)
+
+In the previous examples when querying `products` and `collections` we were actually using utility functions on
+the Shopify Buy client that generate generic queries that query data most people would expect to see on 
+products and collections. It is possible to however build custom queries that can be sent to the Store Front API
+to access additional data.
+
+In the following example we will build a query in C# which matches the GraphQL query mentioned above. Again we'll be querying:
 - The shops `name`
 - The shops `billingAddress`
     + `city`
