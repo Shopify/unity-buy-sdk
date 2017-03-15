@@ -111,7 +111,7 @@ module GraphQLGenerator
           File.write("#{path_graphql}/#{type.name}Query.cs", reformat(TYPE_ERB.result(binding)))
           File.write("#{path_graphql}/#{type.name}.cs", reformat(TYPE_RESPONSE_ERB.result(binding)))
         elsif type.input_object? || type.kind == 'ENUM'
-          File.write("#{path_graphql}/#{type.name}.cs", reformat(TYPE_ERB.result(binding)))
+          File.write("#{path}/#{type.name}.cs", reformat(TYPE_ERB.result(binding)))
         end 
       end
     end 
