@@ -37,9 +37,9 @@ namespace Shopify.Tests
 
             Shopify.Unity.GraphQL.ProductVariant variant = new Shopify.Unity.GraphQL.ProductVariant(data);
 
-            cart.LineItems.Set("gid://shopify/ProductVariant/20756129155", 33);
-            cart.LineItems.Set(variant, 2);
-            cart.LineItems.Set("gid://shopify/Product/7336568131");
+            cart.LineItems.AddOrUpdate("gid://shopify/ProductVariant/20756129155", 33);
+            cart.LineItems.AddOrUpdate(variant, 2);
+            cart.LineItems.AddOrUpdate("gid://shopify/Product/7336568131");
 
             Assert.AreEqual(3, cart.LineItems.All().Count, "has 3 items in cart");
             Assert.AreEqual(33, cart.LineItems.Get("gid://shopify/ProductVariant/20756129155").quantity, "variant 20756129155 quantity is 33");
@@ -60,8 +60,8 @@ namespace Shopify.Tests
 
             Cart cart = ShopifyBuy.Client().Cart();
 
-            cart.LineItems.Set("gid://shopify/ProductVariant/20756129155", 33);
-            cart.LineItems.Set("gid://shopify/ProductVariant/20756129347", 2);
+            cart.LineItems.AddOrUpdate("gid://shopify/ProductVariant/20756129155", 33);
+            cart.LineItems.AddOrUpdate("gid://shopify/ProductVariant/20756129347", 2);
 
             Assert.AreEqual("http://graphql.myshopify.com/cart/20756129155:33,20756129347:2", cart.GetWebCheckoutLink());
             Assert.AreEqual("http://graphql.myshopify.com/cart/20756129155:33,20756129347:2?note=i-am-a-note", cart.GetWebCheckoutLink("i-am-a-note"));
@@ -84,12 +84,12 @@ namespace Shopify.Tests
 
             Cart cart = ShopifyBuy.Client().Cart();
 
-            cart.LineItems.Set(productId1, 33);
-            cart.LineItems.Set(productId2, 33);
+            cart.LineItems.AddOrUpdate(productId1, 33);
+            cart.LineItems.AddOrUpdate(productId2, 33);
             
-            cart.LineItems.Set(productId1, 100);
-            cart.LineItems.Set(productId1, null, attributes1);
-            cart.LineItems.Set(productId2, 6, attributes2);
+            cart.LineItems.AddOrUpdate(productId1, 100);
+            cart.LineItems.AddOrUpdate(productId1, null, attributes1);
+            cart.LineItems.AddOrUpdate(productId2, 6, attributes2);
 
             Assert.AreEqual(100, cart.LineItems.Get(productId1).quantity, "variant 20756129155 quantity is 100 after change");
             Assert.AreEqual(6, cart.LineItems.Get(productId2).quantity, "variant 20756129155 quantity is 100 after change");
@@ -209,13 +209,13 @@ namespace Shopify.Tests
             };
 
 
-            cart.LineItems.Set(product, selectedOptions1, 3);
-            cart.LineItems.Set(product, selectedOptions2, 123);
+            cart.LineItems.AddOrUpdate(product, selectedOptions1, 3);
+            cart.LineItems.AddOrUpdate(product, selectedOptions2, 123);
 
             Assert.AreEqual(3, cart.LineItems.Get(product, selectedOptions1).quantity, "was able to set using selected options");
             Assert.AreEqual(123, cart.LineItems.Get(product, selectedOptions2).quantity, "was able to set using selected options");
 
-            cart.LineItems.Set(product, selectedOptions1, 13);
+            cart.LineItems.AddOrUpdate(product, selectedOptions1, 13);
 
             Assert.AreEqual(13, cart.LineItems.Get(product, selectedOptions1).quantity, "was able to reset using selected options");
 

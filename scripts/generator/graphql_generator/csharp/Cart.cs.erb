@@ -12,7 +12,7 @@ namespace <%= namespace %> {
     public class CartLineItems {
         private List<LineItemInput> LineItems = new List<LineItemInput>();
 
-        public void Set(string variantId, long? quantity = null, List<AttributeInput> customAttributes = null) {
+        public void AddOrUpdate(string variantId, long? quantity = null, List<AttributeInput> customAttributes = null) {
             LineItemInput input = Get(variantId);
 
             if (input != null) {
@@ -38,18 +38,18 @@ namespace <%= namespace %> {
             }
         }
 
-        public void Set(ProductVariant variant, long? quantity = null, List<AttributeInput> customAttributes = null) {
-            Set(variant.id(), quantity, customAttributes);
+        public void AddOrUpdate(ProductVariant variant, long? quantity = null, List<AttributeInput> customAttributes = null) {
+            AddOrUpdate(variant.id(), quantity, customAttributes);
         }
 
-        public void Set(Product product, Dictionary<string, string> selectedOptions, long? quantity = null, List<AttributeInput> customAttributes = null) {
+        public void AddOrUpdate(Product product, Dictionary<string, string> selectedOptions, long? quantity = null, List<AttributeInput> customAttributes = null) {
             string variantId = VariantIdFromSelectedOptions(product, selectedOptions);
 
             if (variantId == null) {
-                throw new NoMatchingVariantException("Could not `Set` line item as no matching variant could be found for selected options");
+                throw new NoMatchingVariantException("Could not `AddOrUpdate` line item as no matching variant could be found for selected options");
             }
 
-            Set(variantId, quantity, customAttributes);
+            AddOrUpdate(variantId, quantity, customAttributes);
         }
 
         public List<LineItemInput> All() {
