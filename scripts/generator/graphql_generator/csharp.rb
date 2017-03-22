@@ -1,8 +1,15 @@
 require 'erb'
+require 'ostruct'
 require_relative './csharp/scalar'
 require_relative './reformatter'
 
 module GraphQLGenerator
+  UNKNOWN_ENUM = OpenStruct.new
+  UNKNOWN_ENUM.name = "UNKNOWN"
+  UNKNOWN_ENUM.description = "If the SDK is not upto date with the scema in the StoreFront API it is possible\n" \
+                             "to have enum values returned that are unknown to the SDK. In this case the value\n" \
+                             "will actually be UNKNOWN"
+
   class CSharp
     class << self
       def erb_for(template_filename)
@@ -266,17 +273,57 @@ module GraphQLGenerator
       end
     end
 
-    def doc_generic(summary)
-      return "/// <summary>\n" \
-             "/// #{summary.split("\n").map{|part| part.strip }.join("\n/// ")}\n" \
-             "/// </summary>"
+    def enum_values(type)
+      type.enum_values.clone.unshift(UNKNOWN_ENUM).map{ |enum| "#{summary_doc(enum.description)}\n#{enum.name}" }.join(",\n")
+    end
+
+    def pretty_doc(documentation)
+      "/// #{documentation.split("\n").map{|part| part.strip }.join("\n/// ")}"
+    end
+
+    def summary_doc(description)
+      if description
+        "/// <summary>\n" \
+        "#{pretty_doc(description)}\n" \
+        "/// </summary>"
+      else
+        ""
+      end
+    end
+
+    def param_doc(param_name, param_description)
+      if param_description
+        return "/// <param name=\"#{param_name}\">\n" \
+               "#{pretty_doc(param_description)}\n" \
+               "/// </param>"
+      else
+        return ""
+      end
+    end
+
+    def params_doc(arguments)
+      arguments.reject{|arg| arg.description == nil}.map{|arg| param_doc(arg.name, arg.description)}.join("\n")
     end
 
     def docs_query_object(type)
-      if type.description
-        return doc_generic(type.description)
+      if schema.root_name?(type.name)
+        if type.name == schema.query_root_name
+          return summary_doc(
+            "<see cref=\"#{type.classify_name}Query\" /> is the root query builder. All StoreFront API queries" \
+            " are built off of <see cref=\"#{type.classify_name}Query\" />."
+          )
+        else
+          return summary_doc(
+            "<see cref=\"#{type.classify_name}Query\" /> is the root mutation builder. All StoreFront API mutation queries" \
+            " are built off of <see cref=\"#{type.classify_name}Query\" />."
+          )
+        end
       else
-        return doc_generic("#{type.classify_name} is an query object")
+        if type.description
+          return summary_doc(type.description)
+        else
+          return summary_doc("#{type.classify_name} is an query object")
+        end
       end
     end
 
@@ -286,52 +333,71 @@ module GraphQLGenerator
 
     def docs_response_object(type)
       if type.interface?
-        return doc_generic(
+        return summary_doc(
           "#{"Unknown" if type.interface?}#{type.classify_name} is a response object.\n" \
           "With <see cref=\"#{"Unknown" if type.interface?}#{type.classify_name}.Create\" /> you'll be able instantiate objects implementing #{type.classify_name}.\n" \
           "<c>#{"Unknown" if type.interface?}#{type.classify_name}.Create</c> will return one of the following types:\n#{docs_possible_types(type)}"
         )
       elsif connection?(type)
         if type.description
-          return doc_generic("#{type.description}. #{type.classify_name} can be cast to <c>List<#{node_type_from_connection_type(type).classify_name}></c>")
+          return summary_doc("#{type.description}. #{type.classify_name} can be cast to <c>List<#{node_type_from_connection_type(type).classify_name}></c>")
         else
-          return doc_generic("#{type.classify_name} is a response object. #{type.classify_name} can be cast to <c>List<#{node_type_from_connection_type(type).classify_name}></c>")
+          return summary_doc("#{type.classify_name} is a response object. #{type.classify_name} can be cast to <c>List<#{node_type_from_connection_type(type).classify_name}></c>")
         end
       else
         if type.description
-          return doc_generic(type.description)
+          return summary_doc(type.description)
         else
-          return doc_generic("#{type.classify_name} is a response object")
+          return summary_doc("#{type.classify_name} is a response object")
         end
       end
     end
 
     def docs_input_object(type)
       if type.description
-        return doc_generic(type.description)
+        return summary_doc(type.description)
       else
-        return doc_generic("#{type.classify_name} is an input object")
+        return summary_doc("#{type.classify_name} is an input object")
+      end
+    end
+
+    def docs_input_field(field)
+      if field.description
+        return summary_doc(field.description)
+      else
+        return ""
       end
     end
 
     def docs_enum(type)
       if type.description
-        return doc_generic(type.description)
+        return summary_doc(type.description)
       else
-        return doc_generic("#{type.classify_name} is an enum")
+        return summary_doc("#{type.classify_name} is an enum")
+      end
+    end
+
+    def docs_query_field(field)
+      params_doc = params_doc(field.args);
+      
+      if field.description
+        return "#{summary_doc(field.description)}\n#{params_doc}"
+      elsif params_doc != ""
+        return params_doc
+      else
+        return ""
       end
     end
 
     def docs_response_field(field)
       if field.args.any?
-        alias_doc = "/// <param name=\"alias\">If the original field queried was queried using an alias pass the matching string</param>"
+        alias_doc = param_doc("alias", "If the original field queried was queried using an alias pass the matching string")
       else
         alias_doc = ""
       end
 
       if field.description
-        return "#{doc_generic(field.description)}\n" +
-               alias_doc
+        return "#{summary_doc(field.description)}\n#{alias_doc}"
       else
         return alias_doc
       end
