@@ -319,11 +319,7 @@ module GraphQLGenerator
           )
         end
       else
-        if type.description
-          return summary_doc(type.description)
-        else
-          return summary_doc("#{type.classify_name} is an query object")
-        end
+        return summary_doc(type.description)
       end
     end
 
@@ -362,19 +358,15 @@ module GraphQLGenerator
     end
 
     def docs_input_field(field)
-      if field.description
-        return summary_doc(field.description)
-      else
-        return ""
-      end
+      return summary_doc(field.description)
     end
 
     def docs_enum(type)
-      if type.description
-        return summary_doc(type.description)
-      else
-        return summary_doc("#{type.classify_name} is an enum")
-      end
+      return summary_doc(type.description)
+    end
+
+    def docs_interface(type)
+      return summary_doc(type.description)
     end
 
     def docs_query_field(field)

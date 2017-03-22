@@ -11,7 +11,7 @@ namespace <%= namespace %>.GraphQL {
 
         <% if connection?(type) %>
             /// <summary>
-            /// Creates ability to cast <%= type.classify_name %> to <c>List<<%= node_type_from_connection_type(type).classify_name %>></c>
+            /// Adds the ability to cast <%= type.classify_name %> to <c>List<<%= node_type_from_connection_type(type).classify_name %>></c>
             /// </summary>
             public static explicit operator List<<%= node_type_from_connection_type(type).classify_name %>>(<%= type.classify_name %> connection) {
                 if (connection.Nodes == null) {
@@ -26,8 +26,10 @@ namespace <%= namespace %>.GraphQL {
             }
         <% end %>
     <% elsif type.interface? %>
-         public interface <%= type.classify_name %> {
+        <%= docs_interface(type) %>
+        public interface <%= type.classify_name %> {
             <% type.fields.each do |field| %>
+                <%= docs_response_field(field) %>
                 <%= graph_type_to_csharp_type(field.type) %> <%= field.name %>();
             <% end %>
         }
@@ -52,7 +54,11 @@ namespace <%= namespace %>.GraphQL {
                 }
             }
     <% end %>
-        <%# Constructor %>
+        /// <summary>
+        /// <see ref="<%= "Unknown" if type.interface? %><%= type.classify_name %>" /> accepts deserialized json data.
+        /// <see ref="<%= "Unknown" if type.interface? %><%= type.classify_name %>" /> will further parse passed in data.
+        /// </summary>
+        /// <param name="dataJSON">Deserialized JSON data for <%= type.classify_name %></param>
         public <%= "Unknown" if type.interface? %><%= type.classify_name %>(Dictionary<string, object> dataJSON) {
             DataJSON = dataJSON;
             Data = new Dictionary<string,object>();
@@ -141,6 +147,12 @@ namespace <%= namespace %>.GraphQL {
         }
 
         <% if connection?(type) %>
+        /// <summary>
+        /// This is a utility function which allow you to append newly queried data from a connection into this one.
+        /// The passed in Connection will be appended into this Connection. So basically <c>edges</c> will receive
+        /// all new <c>nodes</c> and <c>cursors</c> and <c>pageInfo</c> will be updated based on the passed Connection.
+        /// </summary>
+        /// <param name="connection"><see ref="<%= type.classify_name %>" /> response</param>
         public void AddFromConnection(<%= type.classify_name %> connection) {
             connection.Nodes = null;
 
