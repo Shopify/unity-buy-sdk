@@ -58,17 +58,17 @@ namespace Shopify.Tests {
 
             MutationQuery mutation = new MutationQuery();
 
-            mutation.apiCustomerAccessTokenCreate((a) => a
-                .apiCustomerAccessToken(at => at
+            mutation.customerAccessTokenCreate((a) => a
+                .customerAccessToken(at => at
                     .accessToken()
                 ),
-                input: new ApiCustomerAccessTokenCreateInput("some@email.com", "password")
+                input: new CustomerAccessTokenCreateInput("some@email.com", "password")
             );
 
             ResponseGeneric[mutation.ToString()] = @"{
                 ""data"": {
-                    ""apiCustomerAccessTokenCreate"": {
-                        ""apiCustomerAccessToken"": {
+                    ""customerAccessTokenCreate"": {
+                        ""customerAccessToken"": {
                             ""accessToken"": ""i am a token""
                         }
                     }

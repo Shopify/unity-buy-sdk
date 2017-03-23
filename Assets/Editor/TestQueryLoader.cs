@@ -7,14 +7,14 @@ namespace Shopify.Tests {
 
     public class TestQueries {
         public static QueryRootQuery Query = new QueryRootQuery().shop(shop => shop.name());
-        public static MutationQuery Mutation = new MutationQuery().apiCustomerAccessTokenCreate(
-            ap => ap.apiCustomerAccessToken(at => at.accessToken()),
-            input: new ApiCustomerAccessTokenCreateInput("some@email.com", "12345")
+        public static MutationQuery Mutation = new MutationQuery().customerAccessTokenCreate(
+            ap => ap.customerAccessToken(at => at.accessToken()),
+            input: new CustomerAccessTokenCreateInput("some@email.com", "12345")
         );
         public static QueryRootQuery QueryFail = new QueryRootQuery().shop(shop => shop.description());
-        public static MutationQuery MutationFail = new MutationQuery().apiCustomerAccessTokenCreate(
-            ap => ap.apiCustomerAccessToken(at => at.accessToken()),
-            input: new ApiCustomerAccessTokenCreateInput("some@emailThatFails.com", "12345")
+        public static MutationQuery MutationFail = new MutationQuery().customerAccessTokenCreate(
+            ap => ap.customerAccessToken(at => at.accessToken()),
+            input: new CustomerAccessTokenCreateInput("some@emailThatFails.com", "12345")
         );
     }
 
@@ -41,7 +41,7 @@ namespace Shopify.Tests {
             } else if (query == TestQueries.Query.ToString()) {
                 callback(@"{""data"":{""shop"": {""name"": ""test shop""}}}", null);
             } else if (query == TestQueries.Mutation.ToString()) {
-                callback(@"{""data"":{""apiCustomerAccessTokenCreate"": {""apiCustomerAccessToken"": {""accessToken"":""12345""}}}}", null);
+                callback(@"{""data"":{""customerAccessTokenCreate"": {""customerAccessToken"": {""accessToken"":""12345""}}}}", null);
             } else {
                 throw new Exception("Invalid test data");
             }
@@ -123,7 +123,7 @@ namespace Shopify.Tests {
             Assert.IsNull(response.errors);
             Assert.IsNull(response.HTTPError);
             Assert.IsNotNull(response.data);
-            Assert.AreEqual("12345", response.data.apiCustomerAccessTokenCreate().apiCustomerAccessToken().accessToken());
+            Assert.AreEqual("12345", response.data.customerAccessTokenCreate().customerAccessToken().accessToken());
         }
 
         [Test]

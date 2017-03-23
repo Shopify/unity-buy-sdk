@@ -20,7 +20,7 @@ namespace Shopify.Tests
 
         [Test]
         public void GeneratedGraphQLInputObjects() {
-            Assert.IsTrue(Utils.DoesExist("ApiCustomerAccessTokenCreateInput"));
+            Assert.IsTrue(Utils.DoesExist("CustomerAccessTokenCreateInput"));
         }
 
         [Test]
@@ -39,7 +39,7 @@ namespace Shopify.Tests
 
         [Test] 
         public void InputObjectToString() {
-            ApiCustomerAccessTokenCreateInput input = new ApiCustomerAccessTokenCreateInput(email: "email@email.com", password: "123456", clientMutationId: "333");
+            CustomerAccessTokenCreateInput input = new CustomerAccessTokenCreateInput(email: "email@email.com", password: "123456", clientMutationId: "333");
 
             Assert.AreEqual(
                 "{email:\"email@email.com\",password:\"123456\",clientMutationId:\"333\"}",
@@ -50,23 +50,23 @@ namespace Shopify.Tests
         [Test]
         public void MutationRootBuildsQuery() {
             MutationQuery query = new MutationQuery();
-            
+
             query
-            .apiCustomerAccessTokenCreate(r => r
-                .apiCustomerAccessToken(a => a
+            .customerAccessTokenCreate(r => r
+                .customerAccessToken(a => a
                     .accessToken()
                 )
                 .clientMutationId(),
-                input: new ApiCustomerAccessTokenCreateInput(email: "email@email.com", password: "123456", clientMutationId: "333")
+                input: new CustomerAccessTokenCreateInput(email: "email@email.com", password: "123456", clientMutationId: "333")
             );
 
             Assert.AreEqual(
-                "mutation{apiCustomerAccessTokenCreate (input:{email:\"email@email.com\",password:\"123456\",clientMutationId:\"333\"}){apiCustomerAccessToken {accessToken }clientMutationId }}",
+                "mutation{customerAccessTokenCreate (input:{email:\"email@email.com\",password:\"123456\",clientMutationId:\"333\"}){customerAccessToken {accessToken }clientMutationId }}",
                 query.ToString()
             );
             // check that ToString does not mutate
             Assert.AreEqual(
-                "mutation{apiCustomerAccessTokenCreate (input:{email:\"email@email.com\",password:\"123456\",clientMutationId:\"333\"}){apiCustomerAccessToken {accessToken }clientMutationId }}",
+                "mutation{customerAccessTokenCreate (input:{email:\"email@email.com\",password:\"123456\",clientMutationId:\"333\"}){customerAccessToken {accessToken }clientMutationId }}",
                 query.ToString()
             );
         }
