@@ -78,11 +78,11 @@ namespace Shopify.Tests
             Mutation response = null;
 
             ShopifyBuy.Client().Mutation(
-                (q) => q.apiCustomerAccessTokenCreate((a) => a
-                    .apiCustomerAccessToken(at => at
+                (q) => q.customerAccessTokenCreate((a) => a
+                    .customerAccessToken(at => at
                         .accessToken()
                     ),
-                    input: new ApiCustomerAccessTokenCreateInput("some@email.com", "password")
+                    input: new CustomerAccessTokenCreateInput("some@email.com", "password")
                 ),
                 (data, errors, httpError) => {
                     response = data;
@@ -91,7 +91,7 @@ namespace Shopify.Tests
                 }
             );
 
-            Assert.AreEqual("i am a token", response.apiCustomerAccessTokenCreate().apiCustomerAccessToken().accessToken());
+            Assert.AreEqual("i am a token", response.customerAccessTokenCreate().customerAccessToken().accessToken());
         }
 
         [Test]
