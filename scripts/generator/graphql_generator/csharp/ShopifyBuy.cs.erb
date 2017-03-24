@@ -64,6 +64,19 @@ namespace <%= namespace %> {
     public delegate void ResponseMutationHandler(<%= schema.mutation_root_name %> response, List<string> errors, string httpError);
 
     public class ShopifyClient {
+        public static Dictionary<string,int> defaultImageSizes = new Dictionary<string, int>() {
+            {"pico", 16},
+            {"icon", 32},
+            {"thumb", 50},
+            {"small", 100},
+            {"compact", 160},
+            {"medium", 240},
+            {"large", 480},
+            {"grande", 600},
+            {"resolution_1024", 1024},
+            {"resolution_2048", 2048}
+        };
+
         public string ApiKey {
             get {
                 return _ApiKey;
@@ -98,7 +111,11 @@ namespace <%= namespace %> {
             Loader = new QueryLoader(loader);
         }
 
-        public void products(ResponseProductsHandler callback, int? first = null, string after = null) {
+        public void products(ResponseProductsHandler callback, int? first = null, string after = null, Dictionary<string,int> imageResolutions = null) {
+            if (imageResolutions == null) {
+                imageResolutions = defaultImageSizes;
+            }
+
             GetProductsList((products, errors, httpError) => {
                 if (httpError != null) {
                     callback(null, null, httpError);
@@ -117,7 +134,7 @@ namespace <%= namespace %> {
                         new ConnectionQueryInfo(
                             getConnection: (p) => ((Product) p).variants(),
                             query: (p, variantsAfter) => {
-                                ((ProductQuery) p).variants(vc => DefaultQueries.products.ProductVariantConnection(vc),
+                                ((ProductQuery) p).variants(vc => DefaultQueries.products.ProductVariantConnection(vc, defaultImageSizes),
                                     first: DefaultQueries.MaxPageSize, after: variantsAfter
                                 );
                             }
@@ -132,6 +149,21 @@ namespace <%= namespace %> {
                         )
                     };
 
+                    foreach(string alias in imageResolutions.Keys) {
+                        connectionInfos.Add(new ConnectionQueryInfo(
+                            getConnection: (p) => ((Product) p).images(alias),
+                            query: (p, imagesAfter) => {
+                                ((ProductQuery) p).images(ic => DefaultQueries.products.ImageConnection(ic),
+                                    first: DefaultQueries.MaxPageSize, 
+                                    after: imagesAfter, 
+                                    maxWidth: imageResolutions[alias],
+                                    maxHeight: imageResolutions[alias],
+                                    alias: alias
+                                );
+                            }
+                        ));
+                    }
+
                     ConnectionLoader loader = new ConnectionLoader(Loader);
                     List<Node> nodes = products.ConvertAll(p => (Node) p);
                     
@@ -139,7 +171,7 @@ namespace <%= namespace %> {
                         callback(nodesResult.ConvertAll(n => (Product) n), errorsNode, httpErrorsNode);
                     });
                 }
-            }, first: first, after: after);
+            }, imageResolutions: imageResolutions, first: first, after: after);
         }
 
         public void collections(ResponseCollectionsHandler callback, int? first = null, string after = null) {
@@ -244,7 +276,7 @@ namespace <%= namespace %> {
             );
         }
 
-        private void GetProductsList(ResponseProductsHandler callback, int? first = null, string after = null) {
+        private void GetProductsList(ResponseProductsHandler callback, Dictionary<string,int> imageResolutions, int? first = null, string after = null) {
             ConnectionLoader loader = new ConnectionLoader(Loader);
             int countToLoad = first == null ? int.MaxValue : (int) first;
 
@@ -264,6 +296,7 @@ namespace <%= namespace %> {
                         query = new QueryRootQuery();
                         DefaultQueries.products.ShopProducts(
                             query: query, 
+                            imageResolutions: imageResolutions,
                             first: countToLoad > DefaultQueries.MaxPageSize ? DefaultQueries.MaxPageSize : countToLoad, 
                             after: edges != null ? edges[edges.Count - 1].cursor() : after
                         );
@@ -307,7 +340,8 @@ namespace <%= namespace %> {
                         DefaultQueries.collections.ShopCollections(
                             query: query, 
                             first: countToLoad > DefaultQueries.MaxPageSize ? DefaultQueries.MaxPageSize : countToLoad, 
-                            after: edges != null ? edges[edges.Count - 1].cursor() : after
+                            after: edges != null ? edges[edges.Count - 1].cursor() : after,
+                            imageResolutions: defaultImageSizes
                         );
                     }
 

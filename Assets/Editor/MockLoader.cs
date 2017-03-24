@@ -84,7 +84,8 @@ namespace Shopify.Tests {
 
                 DefaultQueries.products.ShopProducts(
                     query: query, 
-                    first: PageSize, 
+                    first: PageSize,
+                    imageResolutions: ShopifyClient.defaultImageSizes,
                     after: i > 0 ? (i * PageSize - 1).ToString() : null
                 );
 
@@ -114,7 +115,8 @@ namespace Shopify.Tests {
                 DefaultQueries.collections.ShopCollections(
                     query: query, 
                     first: PageSize, 
-                    after: i > 0 ? (i * PageSize - 1).ToString() : null
+                    after: i > 0 ? (i * PageSize - 1).ToString() : null,
+                    imageResolutions: ShopifyClient.defaultImageSizes
                 );
 
                 ResponseProducts[query.ToString()] = String.Format(@"{{
@@ -154,7 +156,7 @@ namespace Shopify.Tests {
                         first: PageSize, after: "image249"
                     )
                     .variants(
-                        vc => DefaultQueries.products.ProductVariantConnection(vc),
+                        vc => DefaultQueries.products.ProductVariantConnection(vc, ShopifyClient.defaultImageSizes),
                         first: DefaultQueries.MaxPageSize, after: "variant249"
                     )
                 ),
@@ -265,21 +267,40 @@ namespace Shopify.Tests {
                 int product = page * PageSize + i;
                 bool imagesHasNextPage = product == 1 || product == 2;
                 bool variantsHasNextPage = product == 2;
+
+                StringBuilder resolutionImageResponses = new StringBuilder();
                 
-                edges.Append(String.Format(@"{{
-                    ""cursor"": ""{0}"",
-                    ""node"": {{
-                        ""id"": ""{0}"",
-                        ""title"": ""Product{0}"",
-                        ""descriptionHtml"": ""<div>This is product {0}</div>"",
-                        ""images"": {{
+                int numAliasIterated = 0;
+                foreach(string alias in ShopifyClient.defaultImageSizes.Keys) {
+                    string aliasedImages = String.Format(@"
+                        ""images___{0}"": {{
                             ""edges"": [
                                 {1}
                             ],
                             ""pageInfo"": {{
                                 ""hasNextPage"": {2}
                             }}
-                        }},
+                        }}
+                    ",
+                    alias,
+                    GetImages(0, product, 1), 
+                    GetJSONBool(false));
+
+                    resolutionImageResponses.Append(aliasedImages);
+
+                    if (numAliasIterated < ShopifyClient.defaultImageSizes.Keys.Count - 1) {
+                        resolutionImageResponses.Append(",");
+                    }
+
+                    numAliasIterated++;
+                }
+
+                edges.Append(String.Format(@"{{
+                    ""cursor"": ""{0}"",
+                    ""node"": {{
+                        ""id"": ""{0}"",
+                        ""title"": ""Product{0}"",
+                        ""descriptionHtml"": ""<div>This is product {0}</div>"",
                         ""options"": [
                             {{
                                 ""name"": ""default option"",
@@ -301,9 +322,18 @@ namespace Shopify.Tests {
                             ""pageInfo"": {{
                                 ""hasNextPage"": {6}
                             }}
-                        }}
+                        }},
+                        ""images"": {{
+                            ""edges"": [
+                                {1}
+                            ],
+                            ""pageInfo"": {{
+                                ""hasNextPage"": {2}
+                            }}
+                        }},
+                        {7}
                     }}
-                }}{7}", 
+                }}{8}", 
                 product, 
                 GetImages(0, product, imagesHasNextPage ? PageSize : 1), 
                 GetJSONBool(imagesHasNextPage),
@@ -311,6 +341,7 @@ namespace Shopify.Tests {
                 GetJSONBool(variantsHasNextPage),
                 GetCollectionsOnProduct(0, product, 1),
                 GetJSONBool(false),
+                resolutionImageResponses.ToString(),
                 i < PageSize - 1 ? "," : ""));
             }
 
@@ -324,10 +355,30 @@ namespace Shopify.Tests {
                 int collection = page * PageSize + i;
                 bool productsHasNextPage = collection == 0;
 
+                StringBuilder resolutionImageResponses = new StringBuilder();
+                int numAliasIterated = 0;
+                foreach(string alias in ShopifyClient.defaultImageSizes.Keys) {
+                    string aliasedImages = String.Format(@"
+                        ""image___{0}"": {{
+                            ""altText"": ""I am an image {0}"",
+                            ""src"": ""http://cdn.com/images/collection{0}""
+                        }}
+                    ",
+                    alias);
+
+                    resolutionImageResponses.Append(aliasedImages);
+
+                    if (numAliasIterated < ShopifyClient.defaultImageSizes.Keys.Count - 1) {
+                        resolutionImageResponses.Append(",");
+                    }
+
+                    numAliasIterated++;
+                }                
+
                 edges.Append(String.Format(@"{{
                     ""node"": {{
                         ""id"": ""{0}"",
-                        ""images"": {{
+                        ""image"": {{
                             ""altText"": ""I am an image {0}"",
                             ""src"": ""http://cdn.com/images/collection{0}""
                         }},
@@ -340,13 +391,15 @@ namespace Shopify.Tests {
                             ""pageInfo"": {{
                                 ""hasNextPage"": {2}
                             }}
-                        }}
+                        }},
+                        {3}
                     }},
                     ""cursor"": ""{0}""
-                }}{3}", 
+                }}{4}", 
                 collection,
                 GetProductOnCollections(0, collection, productsHasNextPage ? PageSize : 1), 
                 GetJSONBool(productsHasNextPage),
+                resolutionImageResponses.ToString(),
                 i < PageSize - 1 ? "," : ""));
             }
 
@@ -359,18 +412,36 @@ namespace Shopify.Tests {
             for(int i = 0; i < countVariants; i++) {
                 int variant = page * PageSize + i;
 
+                StringBuilder resolutionImageResponses = new StringBuilder();
+                int numAliasIterated = 0;
+                foreach(string alias in ShopifyClient.defaultImageSizes.Keys) {
+                    string aliasedImages = String.Format(@"
+                        ""image___{0}"": null
+                    ",
+                    alias);
+
+                    resolutionImageResponses.Append(aliasedImages);
+
+                    if (numAliasIterated < ShopifyClient.defaultImageSizes.Keys.Count - 1) {
+                        resolutionImageResponses.Append(",");
+                    }
+
+                    numAliasIterated++;
+                }
+
                 edges.Append(String.Format(@"{{
                     ""node"": {{
                         ""id"": ""{0}"",
                         ""available"": true,
-                        ""images"": [],
+                        ""image"": null,
                         ""title"": ""variant{0}"",
                         ""price"": 3.01,
                         ""weight"": 1.02,
-                        ""weightUnit"": ""KILOGRAMS""
+                        ""weightUnit"": ""KILOGRAMS"",
+                        {1}
                     }},
                     ""cursor"": ""variant{0}""
-                }}{1}", variant, i < countVariants - 1 ? "," : ""));
+                }}{2}", variant, resolutionImageResponses.ToString(), i < countVariants - 1 ? "," : ""));
             }
             return edges.ToString();
         }
@@ -419,10 +490,6 @@ namespace Shopify.Tests {
                 edges.Append(String.Format(@"{{
                     ""node"": {{
                         ""id"": ""collection{0}"",
-                        ""images"": {{
-                            ""altText"": ""I am an image {0}"",
-                            ""src"": ""http://cdn.com/images/collection{0}-{1}""
-                        }},
                         ""title"": ""I am collection {0}"",
                         ""updatedAt"": ""2016-09-11T21:32:43Z""
                     }},

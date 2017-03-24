@@ -1,32 +1,43 @@
 namespace <%= namespace %>.SDK {
+    using System.Collections.Generic;
     using <%= namespace %>.GraphQL;
 
     public class ProductsQueries {
-        public void ShopProducts(QueryRootQuery query, int first = 250, string after = null) {
+        public void ShopProducts(QueryRootQuery query, Dictionary<string,int> imageResolutions, int first = 250, string after = null) {
             query.shop(s => s
                 .products(pc => pc
                     .edges(e => e
-                        .node(p => p
+                        .node((p) => { p
                             .id()
                             .title()
                             .descriptionHtml()
-                            .images(
-                                ic => ImageConnection(ic),
-                                first: DefaultQueries.MaxPageSize
-                            )
                             .options(pn => pn
                                 .name()
                                 .values()
                             )
                             .variants(
-                                pvc => ProductVariantConnection(pvc),
+                                pvc => ProductVariantConnection(pvc, imageResolutions),
                                 first: DefaultQueries.MaxPageSize
                             )
                             .collections(
                                 pcc => CollectionConnection(pcc),
                                 first: DefaultQueries.MaxPageSize
                             )
-                        )
+                            .images(
+                                ic => ImageConnection(ic),
+                                first: DefaultQueries.MaxPageSize
+                            );
+
+                            foreach(string alias in imageResolutions.Keys) {
+                                p.images(
+                                    ic => ImageConnection(ic),
+                                    first: DefaultQueries.MaxPageSize,
+                                    maxWidth: imageResolutions[alias],
+                                    maxHeight: imageResolutions[alias],
+                                    alias: alias
+                                );
+                            }
+                        })
                         .cursor()
                     )
                     .pageInfo(pi => pi
@@ -48,10 +59,10 @@ namespace <%= namespace %>.SDK {
             );
         }
 
-        public void ProductVariantConnection(ProductVariantConnectionQuery variantConnection) {
+        public void ProductVariantConnection(ProductVariantConnectionQuery variantConnection, Dictionary<string,int> imageResolutions) {
             variantConnection
             .edges(pve => pve
-                .node(pnv => ProductVariant(pnv))
+                .node(pnv => ProductVariant(pnv, imageResolutions))
                 .cursor()
             )
             .pageInfo(pvp => pvp
@@ -76,7 +87,7 @@ namespace <%= namespace %>.SDK {
             .src();
         }
 
-        public void ProductVariant(ProductVariantQuery variant) {
+        public void ProductVariant(ProductVariantQuery variant, Dictionary<string,int> imageResolutions) {
             variant
             .id()
             .available()
@@ -92,26 +103,31 @@ namespace <%= namespace %>.SDK {
                 .value()
             )
             .weightUnit();
+
+            foreach(string alias in imageResolutions.Keys) {
+                variant.image(
+                    pnvi => pnvi
+                    .altText()
+                    .src(),
+                    maxWidth: imageResolutions[alias], maxHeight: imageResolutions[alias], alias: alias
+                );
+            }
         }
 
         public void Collection(CollectionQuery collection) {
             collection
             .id()
-            .image(pci => pci
-                .altText()
-                .src()
-            )
             .title()
             .updatedAt();
         }
     }
 
     public class CollectionsQueries {
-        public void ShopCollections(QueryRootQuery query, int first = 250, string after = null) {
+        public void ShopCollections(QueryRootQuery query, Dictionary<string, int> imageResolutions, int first = 250, string after = null) {
             query.shop(s => s
                 .collections(cc => cc
                     .edges(e => e
-                        .node(c => Collection(c))
+                        .node(c => Collection(c, imageResolutions))
                         .cursor()
                     )
                     .pageInfo(pi => pi
@@ -122,7 +138,7 @@ namespace <%= namespace %>.SDK {
             );
         }
 
-        public void Collection(CollectionQuery collection) {
+        public void Collection(CollectionQuery collection, Dictionary<string, int> imageResolutions) {
             collection
             .id()
             .image(pci => pci
@@ -134,6 +150,18 @@ namespace <%= namespace %>.SDK {
             .products(pc => ProductConnection(pc),
                 first: DefaultQueries.MaxPageSize
             );
+
+            
+            foreach(string alias in imageResolutions.Keys) {
+                collection
+                .image(pci => pci
+                    .altText()
+                    .src(),
+                    maxWidth: imageResolutions[alias], 
+                    maxHeight: imageResolutions[alias],
+                    alias: alias
+                );
+            }
         }
 
         public void ProductConnection(ProductConnectionQuery productConnection) {
