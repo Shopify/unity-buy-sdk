@@ -24,6 +24,24 @@ namespace Shopify.Tests
         }
 
         [Test]
+        public void QuerySameFieldWithAndWithoutAlias() {
+            QueryRootQuery query = new QueryRootQuery();
+            query.node(
+                node => node.id(),
+                alias: "an_alias", id: "1234"
+            );
+
+            query.node(
+                node => node.id(), id: "1234"
+            );
+
+            Assert.AreEqual(
+                @"{node___an_alias:node (id:""1234""){__typename id }node (id:""1234""){__typename id }}",
+                query.ToString()
+            );
+        }
+
+        [Test]
         public void ExceptionIsThrownForBlankAliasInQuery() {
             AliasException caughtError = null;
             QueryRootQuery query = new QueryRootQuery();
