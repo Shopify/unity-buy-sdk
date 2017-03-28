@@ -3,6 +3,9 @@ namespace <%= namespace %>.SDK {
     using System.Collections.Generic;
     using <%= namespace %>.GraphQL;
 
+    /// <summary>
+    /// Top level response for all GraphQL mutation queries
+    /// </summary>
     public class MutationResponse : TopLevelResponse {
         public <%= schema.mutation_root_name %> data {
             get {
