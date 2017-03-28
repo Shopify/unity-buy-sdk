@@ -4,6 +4,9 @@ namespace <%= namespace %>.SDK {
     using System.Collections;
     using System.Collections.Specialized;
 
+    /// <summary>
+    /// Is used by GraphQL generator classes to create argument strings.
+    /// </summary>
     public class Arguments {
       private StringBuilder query;
       private bool hasArguments = false;
@@ -12,6 +15,11 @@ namespace <%= namespace %>.SDK {
         this.query = new StringBuilder();
       }
 
+      /// <summary>
+      /// Add's an argument
+      /// </summary>
+      /// <param name="name">Name of the argument to be added</param>
+      /// <param name="value">Value of the argument to be added</param>
       public void Add(string name, object value) {
         if (hasArguments) {
           query.Append(",");
@@ -27,6 +35,9 @@ namespace <%= namespace %>.SDK {
         hasArguments = true;
       }
 
+      /// <summary>
+      /// Returns a string which is the a GraphQL argument list
+      /// </summary>
       public override string ToString() {
         if (hasArguments) {
           return query.ToString() + ")";
