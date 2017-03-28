@@ -8,13 +8,25 @@ namespace <%= namespace %>.SDK {
     public delegate void QueryResponseHandler(QueryResponse response);
     public delegate void MutationResponseHandler(MutationResponse response);
 
+    /// <summary>
+    /// abstracts creating and sending queries and mutations via an ILoader
+    /// </summary>
     public class QueryLoader {
         ILoader Loader;
 
+        /// <summary>
+        /// accepts the <see ref="ILoader">ILoader </see> which will do network communcation to send GraphQL queries
+        /// </summary>
+        /// <param name="loader">will perform network communication to send GraphQL queries to a GraphQL endpoint</param>
         public QueryLoader(ILoader loader) {
             Loader = loader;
         }
 
+        /// <summary>
+        /// is used to generate GraphQL queries
+        /// </summary>
+        /// <param name="buildQuery">Delegate to build query</param>
+        /// <param name="callback">callback that receives the query response</param>
         public void Query(<%= schema.query_root_name %>Delegate buildQuery, QueryResponseHandler callback) {
             <%= schema.query_root_name %>Query query = new <%= schema.query_root_name %>Query();
 
@@ -23,6 +35,11 @@ namespace <%= namespace %>.SDK {
             Query(query, callback);
         }
         
+        /// <summary>
+        /// is used to send GraphQL queries to the GraphQL end point
+        /// </summary>
+        /// <param name="query">query to be sent to the GraphQL endpoint</param>
+        /// <param name="callback">callback that receives the query response</param>
         public void Query(<%= schema.query_root_name %>Query query, QueryResponseHandler callback) {
             Loader.Load(query.ToString(), (string response, string error) => {
                 if (error != null) {
@@ -33,6 +50,11 @@ namespace <%= namespace %>.SDK {
             });
         }
 
+        /// <summary>
+        /// is used to generate GraphQL mutations
+        /// </summary>
+        /// <param name="buildQuery">Delegate to build a mutation query</param>
+        /// <param name="callback">callback that receives the mutation response</param>
         public void Mutation(<%= schema.mutation_root_name %>Delegate buildQuery, MutationResponseHandler callback) {
             <%= schema.mutation_root_name %>Query query = new <%= schema.mutation_root_name %>Query();
 
@@ -41,6 +63,11 @@ namespace <%= namespace %>.SDK {
             Mutation(query, callback);
         }
 
+        /// <summary>
+        /// is used to send GraphQL mutations to a GraphQL endpoint
+        /// </summary>
+        /// <param name="query">mutation to be sent to GraphQL endpoint</param>
+        /// <param name="callback">callback that receives the mutation response</param>
         public void Mutation(<%= schema.mutation_root_name %>Query query, MutationResponseHandler callback) {
             Loader.Load(query.ToString(), (string response, string error) => {
                 if (error != null) {
