@@ -99,6 +99,20 @@ namespace <%= namespace %> {
     /// information about products, collections, and has the ability to create checkouts.
     /// </summary>
     public class ShopifyClient {
+        /// <summary>
+        /// this is a dictionary which defines aliases and <c>maxWidth</c> and <c>maxHeight</c> for images loaded by
+        /// <see ref="ShopifyClient.products">products </see> and <see ref="ShopifyClient.collections">collections</see>.
+        /// Basically all Products images, Product variant images, and Collection images will be queried using aliases
+        /// defined by this dictionaries keys and the <c>maxWidth</c> and <c>maxHeight</c> will be this dictionaries values.
+        ///
+        /// \code{.cs}
+        /// // returns an image source url whose dimensions are never greater than 100px
+        /// string srcSmallImage = productVariant.image("small").src();
+        ///
+        /// // returns an image source url whose dimensions are never greater than 1024px
+        /// string src1024Image = productVariant.image("resolution_1024").src();
+        /// \endcode
+        /// </summary>
         public static Dictionary<string,int> defaultImageSizes = new Dictionary<string, int>() {
             {"pico", 16},
             {"icon", 32},
@@ -172,7 +186,7 @@ namespace <%= namespace %> {
         ///     - id
         ///     - title
         ///     - descriptionHtml
-        ///     - images
+        ///     - images (with aliases defined by imageResolutions passed in or defaultImageSizes if imageResolutions was not passed)
         ///         - altText
         ///         - src
         ///     - options
@@ -188,8 +202,11 @@ namespace <%= namespace %> {
         ///         - selectedOptions
         ///             - name
         ///             - values
+        ///         - image (with aliases defined by imageResolutions passed in or defaultImageSizes if imageResolutions was not passed)
+        ///             - altText
+        ///             - src
         ///     - collections
-        ///         - image
+        ///         - image (with aliases defined by imageResolutions passed in or defaultImageSizes if imageResolutions was not passed)
         ///             - altText
         ///             - src
         ///         - title
@@ -204,6 +221,21 @@ namespace <%= namespace %> {
         /// this is an advanced feature but when querying Relay Connections a cursor is returned which can be used to determine 
         /// where paginated loading begins. For instance when used with <c>first: 10</c> and <c>after: "abc"</c> only the first 10
         /// products would be loaded after cursor <c>"abc"</c>
+        /// </param>
+        /// <param name="imageResolutions">
+        /// is a dictionary used to set resolutions at which images are queried. This Dictionary effects how Product images, Product Variant image, 
+        /// and Collection image is queried. If <c>imageResolutions</c> is omitted then <see ref="ShopifyClient.defaultImageSizes">ShopifyClient.defaultImageSizes</see>
+        /// will be used instead.
+        ///
+        /// This Dictionary's keys refer to an alias and it's values refer to <c>maxWidth</c> and <c>maxHeight</c> for images. So for instance
+        /// if you wanted to have images which all had a <c>maxWidth</c> and <c>maxHeight</c> of 200px you'd pass in a dictionary that looks like this:
+        /// \code{.cs}
+        /// Dictionary<string, int> imageResolutions = new Dictionary<string, int>() { {"res200_by_200", 200} };
+        /// \endcode
+        /// In the above case to access images for that resolution you'd do the following:
+        /// \code{.cs}
+        /// string src200x200 = productVariant.image("res200_by_200").src();
+        /// \endcode
         /// </param>
         public void products(ResponseProductsHandler callback, int? first = null, string after = null, Dictionary<string,int> imageResolutions = null) {
             if (imageResolutions == null) {
