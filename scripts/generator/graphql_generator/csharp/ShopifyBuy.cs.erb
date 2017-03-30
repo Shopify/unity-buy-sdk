@@ -12,6 +12,9 @@ namespace <%= namespace %> {
     // can also be used to create a <see ref="Cart">Cart </see>.
     // </summary>
     public class ShopifyBuy {
+        /// <summary>
+        /// version of the Unity Buy SDK
+        /// </summary>
         public const string VERSION = "<%= version %>";
 
         #if (SHOPIFY_TEST)
@@ -22,8 +25,9 @@ namespace <%= namespace %> {
         #endif
 
         /// <summary>
-        /// Will return the default <see ref="ShopifyClient">ShopifyClient </see>. It should be noted 
-        /// that <see ref="ShopifyBuy.Init">ShopifyBuy.Init </see> must be called before trying to call this function.
+        /// Will return the default <see ref="ShopifyClient">ShopifyClient </see>. The default client is the first client created after 
+        /// calling  <see ref="ShopifyBuy.Init">ShopifyBuy.Init </see>. It should be noted that <see ref="ShopifyBuy.Init">ShopifyBuy.Init </see>
+        /// must be called before trying to call this function.
         /// </summary>
         public static ShopifyClient Client() {
             return DefaultClient;
@@ -44,9 +48,9 @@ namespace <%= namespace %> {
 
         /// <summary>
         /// Will initialize a <see ref="ShopifyClient">ShopifyClient </see> that can be used to query the StoreFront API.
-        /// The default client which can be accessed by calling <see ref="ShopifyBuy.Client">ShopifyBuy.Client() </see> is
+        /// The default client which can be accessed by calling <see ref="ShopifyBuy.Client">ShopifyBuy.Client() </see> which is
         /// initialized after <see ref="ShopifyBuy.Init">ShopifyBuy.Init </see> is called. To access the client for the specific
-        /// domain passe call <see ref="ShopifyBuy.Client">ShopifyBuy.Client(domain) </see>.
+        /// domain passed use <see ref="ShopifyBuy.Client">ShopifyBuy.Client(domain) </see>.
         /// </summary>
         /// <param name="accessToken">access token that was generated for your store</param>
         /// <param name="domain">domain of your Shopify store</param>
@@ -66,8 +70,8 @@ namespace <%= namespace %> {
         /// Typically not used but it is possible to create a <see ref="ShopifyClient">ShopifyClient </see> by passing an instance
         /// that implements <see ref="ILoader">ILoader </see>. <see ref="ILoader">ILoader's </see> handle network communicationication with
         /// the Storefront API. This functionality is useful if you'd like to use the Unity Buy SDK in a C# environment
-        /// outside of Unity. The <c>domain</c> string is inferred from <see ref="ILoader">ILoader's </see> which can be used
-        /// to request a specific client.
+        /// outside of Unity. The <c>domain</c> string used to access specific initialized clients is inferred from 
+        /// <see ref="ILoader">ILoader.Domain</see> which can be used to request a specific client.
         /// </summary>
         /// <param name="loader">a loader which will handle network communicationication with the StoreFront API</param>
         public static ShopifyClient Init(ILoader loader) {
