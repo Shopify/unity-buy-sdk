@@ -20,11 +20,11 @@ namespace <%= namespace %> {
         private List<LineItemInput> LineItems = new List<LineItemInput>();
 
         /// <summary>
-        /// Adds a new line item using a variant id. If an existing line item exists for the variant id then that line item will be updated.
+        /// Adds or updates an existing line item using a variant id. If an existing line item exists for the variant id then that line item will be updated.
         /// </summary>
         /// <param name="variantId">variant id for a <see ref="ProductVariant">ProductVariant </see></param>
         /// <param name="quantity">the number of items you'd like to order for variantId</param>
-        /// <param name="quantity">customAttributes can be used to define extra information for this line item</param>
+        /// <param name="customAttributes">can be used to define extra information for this line item</param>
         public void AddOrUpdate(string variantId, long? quantity = null, List<AttributeInput> customAttributes = null) {
             LineItemInput input = Get(variantId);
 
@@ -52,11 +52,11 @@ namespace <%= namespace %> {
         }
 
         /// <summary>
-        /// Adds a new line item using a <see ref="ProductVariant">ProductVariant </see>. If an existing line item exists for the variant id then that line item will be updated.
+        /// Adds or updates a line item using a <see ref="ProductVariant">ProductVariant </see>. If an existing line item exists for the variant id then that line item will be updated.
         /// </summary>
         /// <param name="variant"><see ref="ProductVariant">ProductVariant </see> whose id will be used to create or update a line item</param>
         /// <param name="quantity">the number of items you'd like to order for variantId</param>
-        /// <param name="quantity">customAttributes can be used to define extra information for this line item</param>
+        /// <param name="customAttributes">can be used to define extra information for this line item</param>
         public void AddOrUpdate(ProductVariant variant, long? quantity = null, List<AttributeInput> customAttributes = null) {
             AddOrUpdate(variant.id(), quantity, customAttributes);
         }
@@ -97,7 +97,7 @@ namespace <%= namespace %> {
         }
 
         /// <summary>
-        /// Returns one <see ref="LineItemInput">Line Item </see> based on a <see ref="ProductVariant">variant </see>. If no line item
+        /// Returns one <see ref="LineItemInput">Line Item </see> based on a <see ref="ProductVariant">ProductVariant </see>. If no line item
         /// exists for the variant <c>null</c> will be returned
         /// </summary>
         /// <param name="variant">variant whose variant id used to create a line item</param>
@@ -139,7 +139,7 @@ namespace <%= namespace %> {
         }
 
         /// <summary>
-        /// Deletes one <see ref="LineItemInput">Line Item </see> based on a <see ref="ProductVariant">variant </see>. If a line
+        /// Deletes one <see ref="LineItemInput">Line Item </see> based on a <see ref="ProductVariant">ProductVariant </see>. If a line
         /// item was deleted <c>true</c> will be returned if no line item was deleted then <c>false</c> will be returned
         /// </summary>
         /// <param name="variant"><see ref="ProductVariant">variant </see> whose variant id used to delete a line item</param>
@@ -148,7 +148,7 @@ namespace <%= namespace %> {
         }
 
         /// <summary>
-        /// Deletes one <see ref="LineItemInput">Line Item </see> based on a <see ref="Product">product </see> and seleced options. 
+        /// Deletes one <see ref="LineItemInput">Line Item </see> based on a <see ref="Product">Product </see> and seleced options. 
         /// If a line item was deleted <c>true</c> will be returned if no line item was deleted then <c>false</c> will be returned
         /// </summary>
         /// <param name="product"><see ref="Product">product </see> whose options will be used to determine which line item is deleted</param>
