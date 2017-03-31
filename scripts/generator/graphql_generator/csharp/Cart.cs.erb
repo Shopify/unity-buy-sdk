@@ -196,7 +196,7 @@ namespace <%= namespace %> {
     }
 
     /// <summary>
-    /// Is used to manage line items for a order. Can also be used to receive a checkout link to checkout in browser.
+    /// Is used to manage line items for an order. Can also be used to generate a web checkout link to checkout in browser.
     /// </summary>
     public class Cart {
         /// <summary>
@@ -216,7 +216,7 @@ namespace <%= namespace %> {
         /// Constructs a new cart using a <see ref="ShopifyClient">ShopifyClient </see> typically Cart's will not be
         /// directly instantiated but instatiated using <see ref="ShopifyClient.Cart">ShopifyBuy.Client().Cart() </see>
         /// </summary>
-        /// <param>client associated with this cart</param>
+        /// <param name="client">client associated with this cart</param>
         public Cart(ShopifyClient client) {
             Client = client;
             _LineItems = new CartLineItems();
