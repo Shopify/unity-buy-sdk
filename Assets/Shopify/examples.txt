@@ -268,7 +268,7 @@ void Start () {
     // the following will build a custom query
     // this example uses named parameters but these could be omitted
     ShopifyBuy.Client().Query(
-        // pass a lambda expression to `buildQuery`
+        // pass a lambda expression to 'buildQuery'
         // the lambda will receive a QueryRootQuery instance
         buildQuery: (query) => query
             .shop(shopQuery => shopQuery
