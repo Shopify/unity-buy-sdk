@@ -6,11 +6,11 @@ namespace <%= namespace %> {
     using <%= namespace %>.SDK;
     using <%= namespace %>.GraphQL;
 
-    // <summary>
-    // Is the main entry point for the Unity Buy SDK. Using <see ref="ShopifyBuy.Client" /> you'll
-    // create a client which can create queries on the StoreFront API. <see ref="ShopifyClient">ShopifyClient </see>
-    // can also be used to create a <see ref="Cart">Cart </see>.
-    // </summary>
+    /// <summary>
+    /// Is the main entry point for the Unity Buy SDK. Using <see ref="ShopifyBuy.Client" /> you'll
+    /// create a client which can create queries on the StoreFront API. <see ref="ShopifyClient">ShopifyClient </see>
+    /// can also be used to create a <see ref="Cart">Cart </see>.
+    /// </summary>
     public class ShopifyBuy {
         /// <summary>
         /// version of the Unity Buy SDK
@@ -98,16 +98,16 @@ namespace <%= namespace %> {
     public delegate void ResponseMutationHandler(<%= schema.mutation_root_name %> response, List<string> errors, string httpError);
 
     /// <summary>
-    /// <see ref="ShopifyClient">ShopifyClient </see> is the entry point to communicate with the Shopify StoreFront API.
-    /// <see ref="ShopifyClient">ShopifyClient </see> also has functionality to easily generate and send queries to receive
+    /// <see cref="ShopifyClient">ShopifyClient </see> is the entry point to communicate with the Shopify StoreFront API.
+    /// <see cref="ShopifyClient">ShopifyClient </see> also has functionality to easily generate and send queries to receive
     /// information about products, collections, and has the ability to create checkouts.
     /// </summary>
     public class ShopifyClient {
         /// <summary>
-        /// this is a dictionary which defines aliases and <c>maxWidth</c> and <c>maxHeight</c> for images loaded by
+        /// this is a dictionary which defines aliases, <c>maxWidth</c>, and <c>maxHeight</c> for images loaded by
         /// <see ref="ShopifyClient.products">products </see> and <see ref="ShopifyClient.collections">collections </see>.
         /// Basically all Products images, Product variant images, and Collection images will be queried using aliases
-        /// defined by this dictionaries keys and the <c>maxWidth</c> and <c>maxHeight</c> will be this dictionaries values.
+        /// defined by this dictionary's keys and the <c>maxWidth</c> and <c>maxHeight</c> will be this dictionary's values.
         ///
         /// \code{.cs}
         /// // returns an image source url whose dimensions are never greater than 100px
@@ -159,8 +159,8 @@ namespace <%= namespace %> {
         /// <see ref="ShopifyClient">ShopifyClient </see> also has functionality to easily generate and send queries to receive
         /// information about products, collections, and has the ability to create checkouts.
         /// </summary>
-        /// <param name="accessToken">the access token used to query Shopify</param>
-        /// <param name="domain">domain for the Shopify store to send queries for</param>
+        /// <param name="accessToken">the access token used to query the Shopify Storefront API for a store</param>
+        /// <param name="domain">domain for the Shopify store</param>
         public ShopifyClient(string accessToken, string domain) {
             _AccessToken = accessToken;
             _Domain = domain;
@@ -312,11 +312,12 @@ namespace <%= namespace %> {
         ///         - src
         ///     - products
         ///         - id
+        ///
         /// It should be noted that <c>shop.collections</c> is a Connection (GraphQL paginated data structure). <see ref="ShopifyClient.collections">collections </see>
         /// will load all pages of collections by default unless a value is passed for the <c>first</c> param.
         /// </summary>
-        /// <param name="callback">callback that will receive responses from server</param>
-        /// <param name="first">can be used to limit how many products are returned. For instance 10 would return only 10 products</param>
+        /// <param name="callback">will receive responses from server</param>
+        /// <param name="first">can be used to limit how many products are returned. For instance 10 would return only 10 collections</param>
         /// <param name="after">
         /// this is an advanced feature but when querying Relay Connections a cursor is returned which can be used to determine 
         /// where paginated loading begins. For instance when used with <c>first: 10</c> and <c>after: "abc"</c> only the first 10
@@ -351,9 +352,11 @@ namespace <%= namespace %> {
         }
 
         /// <summary>
-        /// Allows you to write custom GraphQL queries. While having utility functions like <see ref="ShopifyClient.products">products </see>
+        /// Allows you to send custom GraphQL queries to the StoreFront API. While having utility functions like <see ref="ShopifyClient.products">products </see>
         /// <see ref="ShopifyClient.collections">collections </see> is useful. The StoreFront API has more functionality. This method
         /// allows you to access all the extra functionality that the StoreFront API provides.
+        ///
+        /// The following is a small example querying a shop's name:
         /// \code{.cs}
         /// QueryRoot query = new QueryRootQuery();
         /// query.shop(s => s
@@ -374,8 +377,8 @@ namespace <%= namespace %> {
         /// );
         /// \endcode
         /// </summary>
-        /// <param name="query">a query to be sent to the StoreFront API</param>
-        /// <param name="callback">callback which will receive a response</param>
+        /// <param name="query">a GraphQL query to be sent to the StoreFront API</param>
+        /// <param name="callback">callback which will receive a response from the query</param>
         public void Query(<%= schema.query_root_name %>Query query, ResponseQueryHandler callback) {
             Loader.Query(query, (response) => {
                 callback(response.data, response.errors, response.HTTPError);
@@ -383,7 +386,7 @@ namespace <%= namespace %> {
         }
         
         /// <summary>
-        /// Allows you to write custom GraphQL queries. While having utility functions like <see ref="ShopifyClient.products">products </see>
+        /// Allows you to build and send custom GraphQL queries to the StoreFront API. While having utility functions like <see ref="ShopifyClient.products">products </see>
         /// <see ref="ShopifyClient.collections">collections </see> is useful. The StoreFront API has more functionality. This method
         /// allows you to access all the extra functionality that the StoreFront API provides.
         ///
@@ -408,7 +411,7 @@ namespace <%= namespace %> {
         /// </summary>
         /// <param name="buildQuery">
         /// delegate that will build a query starting at <see ref="<%= schema.query_root_name %>Query"><%= schema.query_root_name %>Query </see>
-        /// which will be sent to the StoreFront api
+        /// which will be sent to the StoreFront API
         /// </param>
         /// <param name="callback">callback which will receive a response</param>
         public void Query(<%= schema.query_root_name %>Delegate buildQuery, ResponseQueryHandler callback) {
@@ -420,7 +423,7 @@ namespace <%= namespace %> {
         }
 
         /// <summary>
-        /// Allows you to write custom GraphQL mutation queries.
+        /// Allows you to send custom prebuilt GraphQL mutation queries to the StoreFront API
         /// </summary>
         /// <param name="query">a query to be sent to the StoreFront API</param>
         /// <param name="callback">callback which will receive a response</param>
@@ -431,9 +434,9 @@ namespace <%= namespace %> {
         }
 
         /// <summary>
-        /// Allows you to write custom GraphQL mutation queries.
+        /// Allows you to build and send custom GraphQL mutation queries to the Storefront API
         /// </summary>
-        /// delegate that will build a query starting at <see ref="<%= schema.query_root_name %>Query"><%= schema.mutation_root_name %>Query </see>
+        /// <param name="buildQuery">delegate that will build a query starting at <see ref="<%= schema.query_root_name %>Query"><%= schema.mutation_root_name %>Query </see></param>
         /// <param name="callback">callback which will receive a response</param>
         public void Mutation(<%= schema.mutation_root_name %>Delegate buildQuery, ResponseMutationHandler callback) {
             <%= schema.mutation_root_name %>Query query = new <%= schema.mutation_root_name %>Query();
@@ -445,7 +448,7 @@ namespace <%= namespace %> {
 
         /// <summary>
         /// Creates a <see ref="Cart">Cart </see> which can be used to manage line items for an order and create a
-        /// web checkout link. One <see ref="ShopifyClient">client </see> can have multiple carts in progress so it's
+        /// web checkout link. One <see ref="ShopifyClient">client </see> can have multiple carts so it's
         /// possible to pass in a <c>cartId</c> to reference a specific cart. If no <c>cartId</c> is passed then
         /// a default <see ref="Cart">Cart </see> is used.
         /// </summary>
