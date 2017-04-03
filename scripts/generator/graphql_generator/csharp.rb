@@ -6,7 +6,7 @@ require_relative './reformatter'
 module GraphQLGenerator
   UNKNOWN_ENUM = OpenStruct.new
   UNKNOWN_ENUM.name = "UNKNOWN"
-  UNKNOWN_ENUM.description = "If the SDK is not upto date with the scema in the StoreFront API it is possible\n" \
+  UNKNOWN_ENUM.description = "If the SDK is not up to date with the schema in the StoreFront API it is possible\n" \
                              "to have enum values returned that are unknown to the SDK. In this case the value\n" \
                              "will actually be UNKNOWN"
 

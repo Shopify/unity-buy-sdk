@@ -20,7 +20,7 @@ namespace <%= namespace %> {
         private List<LineItemInput> LineItems = new List<LineItemInput>();
 
         /// <summary>
-        /// Adds or updates an existing line item using a variant id. If an existing line item exists for the variant id then that line item will be updated.
+        /// Adds or updates an existing line item using a variant id.
         /// </summary>
         /// <param name="variantId">variant id for a <see ref="ProductVariant">ProductVariant </see></param>
         /// <param name="quantity">the number of items you'd like to order for variantId</param>
@@ -52,7 +52,7 @@ namespace <%= namespace %> {
         }
 
         /// <summary>
-        /// Adds or updates a line item using a <see ref="ProductVariant">ProductVariant </see>. If an existing line item exists for the variant id then that line item will be updated.
+        /// Adds or updates a line item using a <see ref="ProductVariant">ProductVariant </see>.
         /// </summary>
         /// <param name="variant"><see ref="ProductVariant">ProductVariant </see> whose id will be used to create or update a line item</param>
         /// <param name="quantity">the number of items you'd like to order for variantId</param>
@@ -81,7 +81,7 @@ namespace <%= namespace %> {
         }
 
         /// <summary>
-        /// Returns all <see ref="LineItemInput">Line Item's </see> that have been created
+        /// Returns all <see ref="LineItemInput">Line Items </see> that have been created
         /// </summary>
         public List<LineItemInput> All() {
             return LineItems;
@@ -142,13 +142,13 @@ namespace <%= namespace %> {
         /// Deletes one <see ref="LineItemInput">Line Item </see> based on a <see ref="ProductVariant">ProductVariant </see>. If a line
         /// item was deleted <c>true</c> will be returned if no line item was deleted then <c>false</c> will be returned
         /// </summary>
-        /// <param name="variant"><see ref="ProductVariant">variant </see> whose variant id used to delete a line item</param>
+        /// <param name="variant"><see ref="ProductVariant">variant </see> to provide the ID to delete a line item</param>
         public bool Delete(ProductVariant variant) {
             return Delete(variant.id());
         }
 
         /// <summary>
-        /// Deletes one <see ref="LineItemInput">Line Item </see> based on a <see ref="Product">Product </see> and seleced options. 
+        /// Deletes one <see ref="LineItemInput">Line Item </see> based on a <see ref="Product">Product </see> and selected options. 
         /// If a line item was deleted <c>true</c> will be returned if no line item was deleted then <c>false</c> will be returned
         /// </summary>
         /// <param name="product"><see ref="Product">product </see> whose options will be used to determine which line item is deleted</param>
@@ -213,7 +213,7 @@ namespace <%= namespace %> {
         private ShopifyClient Client;
 
         /// <summary>
-        /// Constructs a new cart using a <see ref="ShopifyClient">ShopifyClient </see> typically Cart's will not be
+        /// Constructs a new cart using a <see ref="ShopifyClient">ShopifyClient </see> typically Carts will not be
         /// directly instantiated but instatiated using <see ref="ShopifyClient.Cart">ShopifyBuy.Client().Cart() </see>
         /// </summary>
         /// <param name="client">client associated with this cart</param>
