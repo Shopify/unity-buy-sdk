@@ -5,13 +5,26 @@ namespace <%= namespace %> {
     using <%= namespace %>.SDK;
     using <%= namespace %>.GraphQL;
 
+    /// <summary>
+    /// This exception is thrown when interacting with a cart to add, update, or delete line items and no matching
+    /// variant could be found.
+    /// </summary>
     public class NoMatchingVariantException : Exception {
         public NoMatchingVariantException(string message) : base(message) {}
     }
 
+    /// <summary>
+    /// Is used to add, update, or delete line items in a <see ref="Cart">Cart </see>
+    /// </summary>
     public class CartLineItems {
         private List<LineItemInput> LineItems = new List<LineItemInput>();
 
+        /// <summary>
+        /// Adds or updates an existing line item using a variant id.
+        /// </summary>
+        /// <param name="variantId">variant id for a <see ref="ProductVariant">ProductVariant </see></param>
+        /// <param name="quantity">the number of items you'd like to order for variantId</param>
+        /// <param name="customAttributes">can be used to define extra information for this line item</param>
         public void AddOrUpdate(string variantId, long? quantity = null, List<AttributeInput> customAttributes = null) {
             LineItemInput input = Get(variantId);
 
@@ -38,10 +51,25 @@ namespace <%= namespace %> {
             }
         }
 
+        /// <summary>
+        /// Adds or updates a line item using a <see ref="ProductVariant">ProductVariant </see>.
+        /// </summary>
+        /// <param name="variant"><see ref="ProductVariant">ProductVariant </see> whose id will be used to create or update a line item</param>
+        /// <param name="quantity">the number of items you'd like to order for variantId</param>
+        /// <param name="customAttributes">can be used to define extra information for this line item</param>
         public void AddOrUpdate(ProductVariant variant, long? quantity = null, List<AttributeInput> customAttributes = null) {
             AddOrUpdate(variant.id(), quantity, customAttributes);
         }
 
+        /// <summary>
+        /// Adds a new line item using a <see ref="Product">Product </see> and selected options. If an existing line item exists for the 
+        /// variant id then that line item will be updated.
+        /// </summary>
+        /// <param name="product">product to check selected options against</param>
+        /// <param name="selectedOptions">a Dictionary used to define user selected options</param>
+        /// <param name="quantity">the number of items you'd like to order for variantId</param>
+        /// <param name="customAttributes">customAttributes can be used to define extra information for this line item</param>
+        /// <exception ref="NoMatchingVariantException">Throws when no matching variant could be found for selected options in product</exception>
         public void AddOrUpdate(Product product, Dictionary<string, string> selectedOptions, long? quantity = null, List<AttributeInput> customAttributes = null) {
             string variantId = VariantIdFromSelectedOptions(product, selectedOptions);
 
@@ -52,18 +80,37 @@ namespace <%= namespace %> {
             AddOrUpdate(variantId, quantity, customAttributes);
         }
 
+        /// <summary>
+        /// Returns all <see ref="LineItemInput">Line Items </see> that have been created
+        /// </summary>
         public List<LineItemInput> All() {
             return LineItems;
         }
 
+        /// <summary>
+        /// Returns one <see ref="LineItemInput">Line Item </see> based on a variant id. If no line item exists for the variant id
+        /// <c>null</c> will be returned
+        /// </summary>
+        /// <param name="variantId">variant id used to create a line item</param>
         public LineItemInput Get(string variantId) {
             return LineItems.Find(item => item.variantId == variantId);
         }
 
+        /// <summary>
+        /// Returns one <see ref="LineItemInput">Line Item </see> based on a <see ref="ProductVariant">ProductVariant </see>. If no line item
+        /// exists for the variant, <c>null</c> will be returned
+        /// </summary>
+        /// <param name="variant">variant whose variant id used to create a line item</param>
         public LineItemInput Get(ProductVariant variant) {
             return Get(variant.id());
         }
 
+        /// <summary>
+        /// Returns one <see ref="LineItemInput">Line Item </see> based on a <see ref="Product">product </see> and selected options. 
+        /// If no line item exists for the matching variant, <c>null</c> will be returned
+        /// </summary>
+        /// <param name="product">product whose options will be selected</param>
+        /// <param name="selectedOptions">a Dictionary used to define user selected options</param>
         public LineItemInput Get(Product product, Dictionary<string, string> selectedOptions) {
             string variantId = VariantIdFromSelectedOptions(product, selectedOptions);
 
@@ -74,6 +121,11 @@ namespace <%= namespace %> {
             return Get(variantId);
         }
 
+        /// <summary>
+        /// Deletes one <see ref="LineItemInput">Line Item </see> based on a variant id. If a line item was deleted, <c>true</c>
+        /// will be returned. If no line items were deleted, <c>false</c> will be returned
+        /// </summary>
+        /// <param name="variantId">variant id used to delete a line item</param>
         public bool Delete(string variantId) {
             int idxToDelete = LineItems.FindIndex(lineItem => lineItem.variantId == variantId);
 
@@ -86,6 +138,21 @@ namespace <%= namespace %> {
             }
         }
 
+        /// <summary>
+        /// Deletes one <see ref="LineItemInput">Line Item </see> based on a <see ref="ProductVariant">ProductVariant </see>. If a line
+        /// item was deleted, <c>true</c> will be returned. If no line items were deleted, <c>false</c> will be returned
+        /// </summary>
+        /// <param name="variant"><see ref="ProductVariant">variant </see> to provide the ID to delete a line item</param>
+        public bool Delete(ProductVariant variant) {
+            return Delete(variant.id());
+        }
+
+        /// <summary>
+        /// Deletes one <see ref="LineItemInput">Line Item </see> based on a <see ref="Product">Product </see> and selected options. 
+        /// If a line item was deleted, <c>true</c> will be returned. If no line item were deleted, <c>false</c> will be returned
+        /// </summary>
+        /// <param name="product"><see ref="Product">product </see> whose options will be used to determine which line item is deleted</param>
+        /// <param name="selectedOptions">a Dictionary used to define user selected options</param>
         public bool Delete(Product product, Dictionary<string, string> selectedOptions) {
             string variantId = VariantIdFromSelectedOptions(product, selectedOptions);
 
@@ -94,10 +161,6 @@ namespace <%= namespace %> {
             }
 
             return Delete(variantId);
-        }
-
-        public bool Delete(ProductVariant variant) {
-            return Delete(variant.id());
         }
 
         private string VariantIdFromSelectedOptions(Product product, Dictionary<string, string> selectedOptions) {
@@ -132,7 +195,13 @@ namespace <%= namespace %> {
         }
     }
 
+    /// <summary>
+    /// Is used to manage line items for an order. Can also be used to generate a web checkout link to checkout in browser.
+    /// </summary>
     public class Cart {
+        /// <summary>
+        /// Current <see ref="CartLineItems">line items </see> for this <see ref="Cart">Cart </see>
+        /// </summary>
         public CartLineItems LineItems {
             get {
                 return _LineItems;
@@ -143,11 +212,20 @@ namespace <%= namespace %> {
 
         private ShopifyClient Client;
 
+        /// <summary>
+        /// Constructs a new cart using a <see ref="ShopifyClient">ShopifyClient </see> typically Carts will not be
+        /// directly instantiated but instatiated using <see ref="ShopifyClient.Cart">ShopifyBuy.Client().Cart() </see>
+        /// </summary>
+        /// <param name="client">client associated with this cart</param>
         public Cart(ShopifyClient client) {
             Client = client;
             _LineItems = new CartLineItems();
         }
 
+        /// <summary>
+        /// Returns a link which can be used to checkout this cart's line items via a web browser
+        /// </summary>
+        /// <param name="note">can be used to create a special note for the merchant for this order</param>
         public string GetWebCheckoutLink(string note = null) {
             StringBuilder url = new StringBuilder();
             bool hasLineItem = false;

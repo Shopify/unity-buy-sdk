@@ -11,21 +11,29 @@ namespace <%= namespace %>.GraphQL {
     using <%= namespace %>.SDK;
 
     <% case type.kind when 'OBJECT', 'INTERFACE', 'UNION' %>
-        /* This is a regular object */
-
         <%# the following will define a delegate for lamdas. Each delegate name will be followed by Delegate. eg. ShopDelegate %>
         public delegate void <%= type.classify_name %>Delegate(<%= type.classify_name %>Query query);
 
         <%# the following will start defining the class. Each type name will be followed by Query. eg. ShopQuery %>
+        <%= docs_query_object(type) %>
         public class <%= type.classify_name %>Query {
             private StringBuilder Query;
 
             <%# create the constuctor %>
             <% if isRoot %>
+                /// <summary>
+                /// <see cref="<%= type.classify_name %>Query" /> constructor accepts no parameters but it will create a root
+                /// <%= isQueryRoot ? "query" : "mutation" %> builder 
+                /// </summary>
                 public <%= type.classify_name %>Query() {
                     Query = new StringBuilder("<%= "mutation" unless isQueryRoot %>{");
                 }
             <% else %>
+                /// <summary>
+                /// <see cref="<%= type.classify_name %>Query" /> is used to build queries. Typically 
+                /// <see cref="<%= type.classify_name %>Query" /> will not be used directly but instead will be used when building queries from either 
+                /// <see cref="<%= schema.query_root_name %>Query" /> or <see cref="<%= schema.mutation_root_name %>Query" />.
+                /// </summary>
                 public <%= type.classify_name %>Query(StringBuilder query) {
                     Query = query;
 
@@ -37,6 +45,7 @@ namespace <%= namespace %>.GraphQL {
 
             <%# now create methods to add fields to queries %>
             <% type.fields.each do |field| %>
+                <%= docs_query_field(field) %>
                 public <%= type.classify_name %>Query <%= escape_reserved_word(field.name) %>(<%= field_args(field) %>) {
                     <%# now we we want to handle generating arguments %>
                     <% if field.args.any? %>
@@ -82,6 +91,9 @@ namespace <%= namespace %>.GraphQL {
 
             <% unless type.object? %>
                 <% type.possible_types.each do |possible_type| %>
+                    /// <summary>
+                    /// will allow you to write queries on <%= possible_type.classify_name %>
+                    /// </summary>
                     public <%= type.classify_name %>Query on<%= possible_type.classify_name %>(<%= possible_type.classify_name %>Delegate buildQuery) {
                         Query.Append("...on <%= possible_type.classify_name %>{");
                         buildQuery(new <%= possible_type.classify_name %>Query(Query));
@@ -93,26 +105,30 @@ namespace <%= namespace %>.GraphQL {
 
             <%# if this is the root we want to add in a ToString method %>
             <% if isRoot %>
+                /// <summary>
+                /// Will return a GraphQL query
+                /// </summary>
                 public override string ToString() {
                     return Query.ToString() + "}";
                 }
             <% end %>
         }
     <% when 'INPUT_OBJECT' %>
-        /* This is an input object */
+        <%= docs_input_object(type) %>
         public class <%= type.classify_name %> : InputBase {
             <% type.input_fields.each do |field| %>
-            public <%= graph_type_to_csharp_type(field.type) %> <%= field.name %> {
-                get {
-                    return <%= graph_type_to_csharp_cast(field.type, "Get(\"#{field.name}\")") %>;
+                <%= docs_input_field(field) %>
+                public <%= graph_type_to_csharp_type(field.type) %> <%= field.name %> {
+                    get {
+                        return <%= graph_type_to_csharp_cast(field.type, "Get(\"#{field.name}\")") %>;
+                    }
+                    set {
+                        Set("<%= field.name %>", value);
+                    }
                 }
-                set {
-                     Set("<%= field.name %>", value);
-                }
-            }
             <% end %>
 
-            <%# create a constructor for the input type %>
+            <%= params_doc(type.input_fields) %>
             public <%= type.classify_name %>(<%= input_args(type) %>) {
                 <%# handle adding required fields %>
                 <% type.required_input_fields.each do |field| %>
@@ -128,8 +144,9 @@ namespace <%= namespace %>.GraphQL {
             }
         }
     <% when 'ENUM' %>
+        <%= docs_enum(type) %>
         public enum <%= type.classify_name %> {
-            <%= type.enum_values.map{ |enum| enum.name }.unshift("UNKNOWN").join(", ") %>
+            <%= enum_values(type) %>
         }
     <% end %>
 }

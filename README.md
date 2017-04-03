@@ -24,7 +24,7 @@ you can copy `Assets/Shopify/` to your project. `Assets/Shopify/` will contain a
 ## Build the Unity Buy SDK
 
 Under the hood the Unity Buy SDK works on top of GraphQL. In order to query Shopify we generate a GraphQL client
-based on the Store Front API introspection schema.
+based on the Storefront API introspection schema.
 
 To build the GraphQL client run the following command:
 ```bash

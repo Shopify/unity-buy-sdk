@@ -4,6 +4,9 @@ namespace <%= namespace %>.SDK {
     using System.Collections;
     using System.Collections.Specialized;
 
+    /// <summary>
+    /// Base class for all GraphQL query generator input objects.
+    /// </summary>
     public class InputBase {
       private OrderedDictionary keysValues;
 
@@ -11,6 +14,9 @@ namespace <%= namespace %>.SDK {
         keysValues = new OrderedDictionary();
       }
 
+      /// <summary>
+      /// returns a string representing a GraphQL input object
+      /// </summary>
       public override string ToString() {
         StringBuilder stringValue = new StringBuilder();
         bool isNotFirstKeyValue = false;

@@ -13,7 +13,7 @@ namespace Shopify.Tests {
             }
         }
 
-        public string ApiKey {
+        public string AccessToken {
             get {
                 return "1234";
             }

@@ -5,31 +5,42 @@ namespace <%= namespace %>.SDK {
     using System.Collections.Specialized;
     using MiniJSON;
     
+    /// <summary>
+    /// Is used to convert C# values to GraphQL strings for queries
+    /// </summary>
     public class InputValueToString {
-      public static string GetList(object value) {
-        StringBuilder arrayString = new StringBuilder();
+        /// <summary>
+        /// Returns a string representing a GraphQL list from a C# iteratable object implementing IList.
+        /// </summary>
+        /// <param name="value">a C# IList which will be converted to a GraphQL list string</param>
+        public static string GetList(IList value) {
+            StringBuilder arrayString = new StringBuilder();
 
-        arrayString.Append("[");
+            arrayString.Append("[");
 
-        bool isNotFirstListItem = false;
+            bool isNotFirstListItem = false;
 
-        foreach(object listValue in (IList) value) {
-          if (isNotFirstListItem) {
-            arrayString.Append(",");
-          }
+            foreach(object listValue in value) {
+                if (isNotFirstListItem) {
+                    arrayString.Append(",");
+                }
 
-          arrayString.Append(Get(listValue));
-          isNotFirstListItem = true;
+                arrayString.Append(Get(listValue));
+                isNotFirstListItem = true;
+            }
+
+            arrayString.Append("]");
+
+            return arrayString.ToString();
         }
 
-        arrayString.Append("]");
-
-        return arrayString.ToString();
-      }
-
+        /// <summary>
+        /// Converts a C# value/object to a GraphQL string value/object
+        /// </summary>
+        /// <param name="value">a C# object to be converted to a GraphQL string value</param>
         public static string Get(object value) {
             if (value is IList) {
-                return GetList(value);
+                return GetList((IList) value);
             } else if (
                 value is string || 
                 value is bool || 

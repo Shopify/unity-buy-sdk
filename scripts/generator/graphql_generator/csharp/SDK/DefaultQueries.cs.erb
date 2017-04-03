@@ -2,6 +2,9 @@ namespace <%= namespace %>.SDK {
     using System.Collections.Generic;
     using <%= namespace %>.GraphQL;
 
+    /// <summary>
+    /// Generates default queries for <see ref="ShopifyClient.products">ShopifyClient.products </see>.
+    /// </summary>
     public class ProductsQueries {
         public void ShopProducts(QueryRootQuery query, Dictionary<string,int> imageResolutions, int first = 250, string after = null) {
             query.shop(s => s
@@ -122,6 +125,9 @@ namespace <%= namespace %>.SDK {
         }
     }
 
+    /// <summary>
+    /// Generates default queries for <see ref="ShopifyClient.collections">ShopifyClient.collections </see>.
+    /// </summary>
     public class CollectionsQueries {
         public void ShopCollections(QueryRootQuery query, Dictionary<string, int> imageResolutions, int first = 250, string after = null) {
             query.shop(s => s
@@ -181,6 +187,9 @@ namespace <%= namespace %>.SDK {
         }
     }
 
+    /// <summary>
+    /// Generates default queries for <see ref="ShopifyClient.products">ShopifyClient.products </see> and <see ref="ShopifyClient.collections">ShopifyClient.collections </see>.
+    /// </summary>
     public class DefaultQueries {
         public static readonly int MaxPageSize = 250;
 

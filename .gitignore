@@ -5,6 +5,10 @@ tmp/
 Assets/Shopify/Unity/
 !Assets/Shopify/Unity/Vendor*
 
+####### Documentation
+html/
+latex/
+
 ####### Test files
 test.dll
 test.dll.mdb
@@ -18,7 +22,6 @@ test.log
 export.log
 
 ####### Unity
-
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/

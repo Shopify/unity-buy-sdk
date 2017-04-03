@@ -65,7 +65,6 @@ $UNITY_PATH \
 
 if [ $? = 0 ] ; then
     echo "Export finished"
-    exit 0
 else
     echo "Export failed. Exited with $?"
     echo "------------------\n\n"
@@ -73,3 +72,5 @@ else
 
     exit 1
 fi
+
+$SCRIPTS_ROOT/build_documentation.sh

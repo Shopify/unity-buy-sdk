@@ -2,22 +2,35 @@ namespace <%= namespace %>.SDK {
     using System;
     using System.Collections.Generic;
 
+    /// <summary>
+    /// Base class for <see ref="QueryResponse">QueryResponse </see> and <see ref="MutationResponse">MutationResponse </see>
+    /// which are top level responses for all GraphQL queries.
+    /// </summary>
     public class TopLevelResponse {
         private const string KEY_DATA = "data";
         private const string KEY_ERRORS = "errors";
 
+        /// <summary>
+        /// Contains a string representing an http error. Is <c>null</c> if there was no http error
+        /// </summary>
         public string HTTPError {
             get {
                 return _HTTPError;
             }
         }
 
+        /// <summary>
+        /// Contains JSON response data from the GraphQL query. Is <c>null</c> if no data was returned
+        /// </summary>
         public Dictionary<string,object> DataJSON {
             get {
                 return _DataJSON;
             }
         }
 
+        /// <summary>
+        /// Contains a list of errors returned by the GraphQL end point. Is <c>null</c> if no errors were returned
+        /// </summary>
         public List<string> errors {
             get {
                 return _errors;

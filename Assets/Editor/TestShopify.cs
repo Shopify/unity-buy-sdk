@@ -20,21 +20,21 @@ namespace Shopify.Tests
             Assert.IsNull(ShopifyBuy.Client());
             Assert.IsNull(ShopifyBuy.Client("domain.com"));
 
-            ShopifyBuy.Init("apiKey", "domain.com");
+            ShopifyBuy.Init("AccessToken", "domain.com");
 
             Assert.IsNotNull(ShopifyBuy.Client());
             Assert.IsNotNull(ShopifyBuy.Client("domain.com"));
             Assert.AreEqual(ShopifyBuy.Client(), ShopifyBuy.Client("domain.com"));
             Assert.AreEqual("domain.com", ShopifyBuy.Client().Domain);
-            Assert.AreEqual("apiKey", ShopifyBuy.Client().ApiKey);
+            Assert.AreEqual("AccessToken", ShopifyBuy.Client().AccessToken);
         }
 
         [Test]
         public void CannotInitTwiceUsingDomain() {
-            ShopifyBuy.Init("apiKey", "domain2.com");
+            ShopifyBuy.Init("AccessToken", "domain2.com");
             ShopifyClient client1 = ShopifyBuy.Client("domain2.com");
 
-            ShopifyBuy.Init("apiKey", "domain2.com");
+            ShopifyBuy.Init("AccessToken", "domain2.com");
             ShopifyClient client2 = ShopifyBuy.Client("domain2.com");
             
             Assert.IsNotNull(client1);
