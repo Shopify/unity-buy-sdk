@@ -53,6 +53,9 @@ UNITY_LOG_PATH=$PROJECT_ROOT/export.log
 
 which $UNITY_PATH &> /dev/null || die "Unity does not exist at $UNITY_PATH" 
 
+$SCRIPTS_ROOT/build_documentation.sh
+check "docs"
+
 # create the new unitypackage
 $UNITY_PATH \
     -batchmode \
@@ -72,5 +75,3 @@ else
 
     exit 1
 fi
-
-$SCRIPTS_ROOT/build_documentation.sh
