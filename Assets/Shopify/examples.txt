@@ -1,13 +1,13 @@
 # Examples
 
 This file contains small code snippets which document different use cases for the Unity Buy SDK. The Unity Buy SDK
-queries Shopify's Store Front API. The Store Front API is a GraphQL API. GraphQL API's accept GraphQL queries
+queries Shopify's Storefront API. The Storefront API is a GraphQL API. GraphQL API's accept GraphQL queries
 which define what data the developer would like to access.
 
 ### Initialize the SDK
 
 This code example initializes the SDK. The `ShopifyBuy.Init` method takes two `strings`. The first
-`string` being an access token to communicate with the Store Front API. The second string is the 
+`string` being an access token to communicate with the Storefront API. The second string is the 
 domain name of your shop.
 ```cs
 string accessToken = "351c122017d0f2a957d32ae728ad749c";
@@ -212,7 +212,7 @@ cart.LineItems.Delete(firstProduct, selectedOptions);
 
 ### Custom Queries
 
-The Unity Buy SDK is built ontop of the StoreFront API which is a GraphQL Web API. In GraphQL you send queries
+The Unity Buy SDK is built ontop of the Storefront API which is a GraphQL Web API. In GraphQL you send queries
 to the end point and receive back a JSON responses. Here's an example GraphQL query to get the name of a shop, and
 details about the billing address of the store:
 
@@ -247,7 +247,7 @@ checkout: [http://graphql.org/](http://graphql.org/)
 
 In the previous examples when querying `products` and `collections` we were actually using utility functions on
 the Shopify Buy client that generate generic queries that query data most people would expect to see on 
-products and collections. It is possible to however build custom queries that can be sent to the Store Front API
+products and collections. It is possible to however build custom queries that can be sent to the Storefront API
 to access additional data.
 
 In the following example we will build a query in C# which matches the GraphQL query mentioned above. Again we'll be querying:

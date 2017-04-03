@@ -6,7 +6,7 @@ require_relative './reformatter'
 module GraphQLGenerator
   UNKNOWN_ENUM = OpenStruct.new
   UNKNOWN_ENUM.name = "UNKNOWN"
-  UNKNOWN_ENUM.description = "If the SDK is not up to date with the schema in the StoreFront API it is possible\n" \
+  UNKNOWN_ENUM.description = "If the SDK is not up to date with the schema in the Storefront API it is possible\n" \
                              "to have enum values returned that are unknown to the SDK. In this case the value\n" \
                              "will actually be UNKNOWN"
 
@@ -309,12 +309,12 @@ module GraphQLGenerator
       if schema.root_name?(type.name)
         if type.name == schema.query_root_name
           return summary_doc(
-            "<see cref=\"#{type.classify_name}Query\" /> is the root query builder. All StoreFront API queries" \
+            "<see cref=\"#{type.classify_name}Query\" /> is the root query builder. All Storefront API queries" \
             " are built off of <see cref=\"#{type.classify_name}Query\" />."
           )
         else
           return summary_doc(
-            "<see cref=\"#{type.classify_name}Query\" /> is the root mutation builder. All StoreFront API mutation queries" \
+            "<see cref=\"#{type.classify_name}Query\" /> is the root mutation builder. All Storefront API mutation queries" \
             " are built off of <see cref=\"#{type.classify_name}Query\" />."
           )
         end

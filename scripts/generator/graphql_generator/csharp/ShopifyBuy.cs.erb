@@ -8,7 +8,7 @@ namespace <%= namespace %> {
 
     /// <summary>
     /// Is the main entry point for the Unity Buy SDK. Using <see ref="ShopifyBuy.Client" /> you'll
-    /// create a client which can create queries on the StoreFront API. <see ref="ShopifyClient">ShopifyClient </see>
+    /// create a client which can create queries on the Storefront API. <see ref="ShopifyClient">ShopifyClient </see>
     /// can also be used to create a <see ref="Cart">Cart </see>.
     /// </summary>
     public class ShopifyBuy {
@@ -47,7 +47,7 @@ namespace <%= namespace %> {
         }
 
         /// <summary>
-        /// Will initialize a <see ref="ShopifyClient">ShopifyClient </see> that can be used to query the StoreFront API.
+        /// Will initialize a <see ref="ShopifyClient">ShopifyClient </see> that can be used to query the Storefront API.
         /// The default client which can be accessed by calling <see ref="ShopifyBuy.Client">ShopifyBuy.Client() </see> which is
         /// initialized after <see ref="ShopifyBuy.Init">ShopifyBuy.Init </see> is called. To access the client for the specific
         /// domain passed use <see ref="ShopifyBuy.Client">ShopifyBuy.Client(domain) </see>.
@@ -73,7 +73,7 @@ namespace <%= namespace %> {
         /// outside of Unity. The <c>domain</c> string used to access specific initialized clients is inferred from 
         /// <see ref="ILoader">ILoader.Domain</see> which can be used to request a specific client.
         /// </summary>
-        /// <param name="loader">a loader which will handle network communicationication with the StoreFront API</param>
+        /// <param name="loader">a loader which will handle network communicationication with the Storefront API</param>
         public static ShopifyClient Init(ILoader loader) {
             string domain = loader.Domain;
 
@@ -98,7 +98,7 @@ namespace <%= namespace %> {
     public delegate void ResponseMutationHandler(<%= schema.mutation_root_name %> response, List<string> errors, string httpError);
 
     /// <summary>
-    /// <see cref="ShopifyClient">ShopifyClient </see> is the entry point to communicate with the Shopify StoreFront API.
+    /// <see cref="ShopifyClient">ShopifyClient </see> is the entry point to communicate with the Shopify Storefront API.
     /// <see cref="ShopifyClient">ShopifyClient </see> also has functionality to easily generate and send queries to receive
     /// information about products, collections, and has the ability to create checkouts.
     /// </summary>
@@ -155,7 +155,7 @@ namespace <%= namespace %> {
         Dictionary<string,Cart> CartsById;
 
         /// <summary>
-        /// <see ref="ShopifyClient">ShopifyClient </see> is the entry point to communicate with the Shopify StoreFront API.
+        /// <see ref="ShopifyClient">ShopifyClient </see> is the entry point to communicate with the Shopify Storefront API.
         /// <see ref="ShopifyClient">ShopifyClient </see> also has functionality to easily generate and send queries to receive
         /// information about products, collections, and has the ability to create checkouts.
         /// </summary>
@@ -177,7 +177,7 @@ namespace <%= namespace %> {
         /// outside of Unity. The <c>domain</c> string is inferred from <see ref="ILoader">ILoader's </see> which can be used
         /// to request a specific client.
         /// </summary>
-        /// <param name="loader">a loader which will handle network communicationication with the StoreFront API</param>
+        /// <param name="loader">a loader which will handle network communicationication with the Storefront API</param>
         public ShopifyClient(ILoader loader) {
             _AccessToken = loader.AccessToken;
             _Domain = loader.Domain;
@@ -352,9 +352,9 @@ namespace <%= namespace %> {
         }
 
         /// <summary>
-        /// Allows you to send custom GraphQL queries to the StoreFront API. While having utility functions like <see ref="ShopifyClient.products">products </see>
-        /// <see ref="ShopifyClient.collections">collections </see> is useful. The StoreFront API has more functionality. This method
-        /// allows you to access all the extra functionality that the StoreFront API provides.
+        /// Allows you to send custom GraphQL queries to the Storefront API. While having utility functions like <see ref="ShopifyClient.products">products </see>
+        /// <see ref="ShopifyClient.collections">collections </see> is useful. The Storefront API has more functionality. This method
+        /// allows you to access all the extra functionality that the Storefront API provides.
         ///
         /// The following is a small example querying a shop's name:
         /// \code{.cs}
@@ -367,7 +367,7 @@ namespace <%= namespace %> {
         ///     query: query,
         ///     callback: (data, errors, httpErrors) => {
         ///         if (httpErrors != null) {
-        ///             Debug.Log("There was an error communicating with the StoreFront API");
+        ///             Debug.Log("There was an error communicating with the Storefront API");
         ///         } else if (errors != null) {
         ///             Debug.Log("The GraphQL query was invalid");
         ///         } else {
@@ -377,7 +377,7 @@ namespace <%= namespace %> {
         /// );
         /// \endcode
         /// </summary>
-        /// <param name="query">a GraphQL query to be sent to the StoreFront API</param>
+        /// <param name="query">a GraphQL query to be sent to the Storefront API</param>
         /// <param name="callback">callback which will receive a response from the query</param>
         public void Query(<%= schema.query_root_name %>Query query, ResponseQueryHandler callback) {
             Loader.Query(query, (response) => {
@@ -386,9 +386,9 @@ namespace <%= namespace %> {
         }
         
         /// <summary>
-        /// Allows you to build and send custom GraphQL queries to the StoreFront API. While having utility functions like <see ref="ShopifyClient.products">products </see>
-        /// <see ref="ShopifyClient.collections">collections </see> is useful. The StoreFront API has more functionality. This method
-        /// allows you to access all the extra functionality that the StoreFront API provides.
+        /// Allows you to build and send custom GraphQL queries to the Storefront API. While having utility functions like <see ref="ShopifyClient.products">products </see>
+        /// <see ref="ShopifyClient.collections">collections </see> is useful. The Storefront API has more functionality. This method
+        /// allows you to access all the extra functionality that the Storefront API provides.
         ///
         /// For instance in the following example we will write a query that returns the Shop's name:
         /// \code{.cs}
@@ -399,7 +399,7 @@ namespace <%= namespace %> {
         ///         ),
         ///     callback: (data, errors, httpErrors) => {
         ///         if (httpErrors != null) {
-        ///             Debug.Log("There was an error communicating with the StoreFront API");
+        ///             Debug.Log("There was an error communicating with the Storefront API");
         ///         } else if (errors != null) {
         ///             Debug.Log("The GraphQL query was invalid");
         ///         } else {
@@ -411,7 +411,7 @@ namespace <%= namespace %> {
         /// </summary>
         /// <param name="buildQuery">
         /// delegate that will build a query starting at <see ref="<%= schema.query_root_name %>Query"><%= schema.query_root_name %>Query </see>
-        /// which will be sent to the StoreFront API
+        /// which will be sent to the Storefront API
         /// </param>
         /// <param name="callback">callback which will receive a response</param>
         public void Query(<%= schema.query_root_name %>Delegate buildQuery, ResponseQueryHandler callback) {
@@ -423,9 +423,9 @@ namespace <%= namespace %> {
         }
 
         /// <summary>
-        /// Allows you to send custom prebuilt GraphQL mutation queries to the StoreFront API
+        /// Allows you to send custom prebuilt GraphQL mutation queries to the Storefront API
         /// </summary>
-        /// <param name="query">a query to be sent to the StoreFront API</param>
+        /// <param name="query">a query to be sent to the Storefront API</param>
         /// <param name="callback">callback which will receive a response</param>
         public void Mutation(<%= schema.mutation_root_name %>Query query, ResponseMutationHandler callback) {
             Loader.Mutation(query, (response) => {
