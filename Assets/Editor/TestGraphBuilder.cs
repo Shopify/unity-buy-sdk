@@ -39,10 +39,10 @@ namespace Shopify.Tests
 
         [Test] 
         public void InputObjectToString() {
-            CustomerAccessTokenCreateInput input = new CustomerAccessTokenCreateInput(email: "email@email.com", password: "123456", clientMutationId: "333");
+            CustomerAccessTokenCreateInput input = new CustomerAccessTokenCreateInput(email: "email@email.com", password: "123456");
 
             Assert.AreEqual(
-                "{email:\"email@email.com\",password:\"123456\",clientMutationId:\"333\"}",
+                "{email:\"email@email.com\",password:\"123456\"}",
                 input.ToString()
             );
         }
@@ -55,18 +55,17 @@ namespace Shopify.Tests
             .customerAccessTokenCreate(r => r
                 .customerAccessToken(a => a
                     .accessToken()
-                )
-                .clientMutationId(),
-                input: new CustomerAccessTokenCreateInput(email: "email@email.com", password: "123456", clientMutationId: "333")
+                ),
+                input: new CustomerAccessTokenCreateInput(email: "email@email.com", password: "123456")
             );
 
             Assert.AreEqual(
-                "mutation{customerAccessTokenCreate (input:{email:\"email@email.com\",password:\"123456\",clientMutationId:\"333\"}){customerAccessToken {accessToken }clientMutationId }}",
+                "mutation{customerAccessTokenCreate (input:{email:\"email@email.com\",password:\"123456\"}){customerAccessToken {accessToken }}}",
                 query.ToString()
             );
             // check that ToString does not mutate
             Assert.AreEqual(
-                "mutation{customerAccessTokenCreate (input:{email:\"email@email.com\",password:\"123456\",clientMutationId:\"333\"}){customerAccessToken {accessToken }clientMutationId }}",
+                "mutation{customerAccessTokenCreate (input:{email:\"email@email.com\",password:\"123456\"}){customerAccessToken {accessToken }}}",
                 query.ToString()
             );
         }
