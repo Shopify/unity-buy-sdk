@@ -63,8 +63,8 @@ namespace Shopify.Tests
             cart.LineItems.AddOrUpdate("gid://shopify/ProductVariant/20756129155", 33);
             cart.LineItems.AddOrUpdate("gid://shopify/ProductVariant/20756129347", 2);
 
-            Assert.AreEqual("http://graphql.myshopify.com/cart/20756129155:33,20756129347:2", cart.GetWebCheckoutLink());
-            Assert.AreEqual("http://graphql.myshopify.com/cart/20756129155:33,20756129347:2?note=i-am-a-note", cart.GetWebCheckoutLink("i-am-a-note"));
+            Assert.AreEqual("http://graphql.myshopify.com/cart/20756129155:33,20756129347:2?access_token=1234", cart.GetWebCheckoutLink());
+            Assert.AreEqual("http://graphql.myshopify.com/cart/20756129155:33,20756129347:2?access_token=1234&note=i-am-a-note", cart.GetWebCheckoutLink("i-am-a-note"));
         }
 
         [Test]
