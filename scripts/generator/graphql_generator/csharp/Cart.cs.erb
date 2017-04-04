@@ -249,10 +249,12 @@ namespace <%= namespace %> {
                 url.Append(":");
                 url.Append(lineItem.quantity);
             }
+
+            url.Append("?access_token=");
+            url.Append(Client.AccessToken);
             
             if (note != null) {
-                url.Append("?");
-                url.Append("note=");
+                url.Append("&note=");
                 url.Append(note);
             }
 
