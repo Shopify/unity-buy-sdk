@@ -165,7 +165,7 @@ namespace <%= namespace %> {
             _AccessToken = accessToken;
             _Domain = domain;
 
-            #if UNITY_5_3_OR_NEWER
+            #if !SHOPIFY_UNIT_TEST
             Loader = new QueryLoader(new UnityLoader(domain, AccessToken));
             #endif
         }
