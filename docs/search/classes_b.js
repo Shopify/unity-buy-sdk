@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['toplevelresponse',['TopLevelResponse',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_top_level_response.html',1,'Shopify::Unity::SDK']]],
-  ['transaction',['Transaction',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_transaction.html',1,'Shopify::Unity::GraphQL']]],
-  ['transactionquery',['TransactionQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_transaction_query.html',1,'Shopify::Unity::GraphQL']]]
+  ['unityloader',['UnityLoader',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_unity_loader.html',1,'Shopify::Unity::SDK']]],
+  ['unknownnode',['UnknownNode',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_unknown_node.html',1,'Shopify::Unity::GraphQL']]],
+  ['usererror',['UserError',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_user_error.html',1,'Shopify::Unity::GraphQL']]],
+  ['usererrorquery',['UserErrorQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_user_error_query.html',1,'Shopify::Unity::GraphQL']]]
 ];

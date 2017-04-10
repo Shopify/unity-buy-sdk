@@ -8,6 +8,7 @@ var searchData=
   ['nok',['NOK',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba9da9d122fdf01b1db2816592e00f28ad',1,'Shopify::Unity']]],
   ['nomatchingvariantexception',['NoMatchingVariantException',['../class_shopify_1_1_unity_1_1_no_matching_variant_exception.html',1,'Shopify::Unity']]],
   ['noqueryexception',['NoQueryException',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_no_query_exception.html',1,'Shopify::Unity::SDK']]],
+  ['note',['note',['../class_shopify_1_1_unity_1_1_checkout_attributes_update_input.html#a95613dc1d8fed4af86da1863c91d1a48',1,'Shopify.Unity.CheckoutAttributesUpdateInput.note()'],['../class_shopify_1_1_unity_1_1_checkout_create_input.html#aa92cbab8dfb92aff9f4f81ba506584e6',1,'Shopify.Unity.CheckoutCreateInput.note()']]],
   ['npr',['NPR',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba8c1a521d101eb24d139dc9ddfa30002f',1,'Shopify::Unity']]],
   ['nzd',['NZD',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba2e3f914e325a1ca0cb82a132af1002d3',1,'Shopify::Unity']]]
 ];

@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['balance',['balance',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_applied_gift_card.html#a165640eb441b57cbcf012bac7c8c910a',1,'Shopify.Unity.GraphQL.AppliedGiftCard.balance()'],['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_applied_gift_card_query.html#a3df946b00a45d9160a737b99caa9deda',1,'Shopify.Unity.GraphQL.AppliedGiftCardQuery.balance()']]],
   ['bam',['BAM',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba1a7b8a7f177e024e1685e780c47649c6',1,'Shopify::Unity']]],
   ['bbd',['BBD',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba80e01d9926b54fe729410d78954faada',1,'Shopify::Unity']]],
   ['bdt',['BDT',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbad87492e57553dd834ebe968ab2cc8107',1,'Shopify::Unity']]],
