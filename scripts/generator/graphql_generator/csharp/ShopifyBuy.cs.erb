@@ -165,7 +165,7 @@ namespace <%= namespace %> {
             _AccessToken = accessToken;
             _Domain = domain;
 
-            #if UNITY_EDITOR
+            #if UNITY_5_3_OR_NEWER
             Loader = new QueryLoader(new UnityLoader(domain, AccessToken));
             #endif
         }
