@@ -30,6 +30,8 @@ namespace <%= namespace %>.SDK {
             Dictionary<string,string> headers = new Dictionary<string,string>();
             headers["Content-Type"] = "application/graphql";
             headers["X-Shopify-Storefront-Access-Token"] = Authorization;
+            headers["X-SDK-Version"] = ShopifyBuy.VERSION;
+            headers["X-SDK-Variant"] = "unity";
 
             byte[] body = Encoding.ASCII.GetBytes(query);
 
