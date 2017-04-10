@@ -29,7 +29,7 @@ namespace <%= namespace %>.SDK {
 
             Dictionary<string,string> headers = new Dictionary<string,string>();
             headers["Content-Type"] = "application/graphql";
-            headers["Authorization"] = Authorization;
+            headers["X-Shopify-Storefront-Access-Token"] = Authorization;
 
             byte[] body = Encoding.ASCII.GetBytes(query);
 
@@ -101,7 +101,7 @@ namespace <%= namespace %>.SDK {
 
             LoaderGameObject.AddComponent<LoaderComponent>()
             .SetURL("https://" + Domain + "/api/graphql.json")
-            .SetAuthorization("Basic " + Authorization)
+            .SetAuthorization(Authorization)
             .Load(query, callback);
         }
 
