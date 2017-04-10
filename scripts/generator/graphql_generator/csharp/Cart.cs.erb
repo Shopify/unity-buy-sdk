@@ -17,7 +17,7 @@ namespace <%= namespace %> {
     /// Is used to add, update, or delete line items in a <see ref="Cart">Cart </see>
     /// </summary>
     public class CartLineItems {
-        private List<LineItemInput> LineItems = new List<LineItemInput>();
+        private List<CheckoutLineItemInput> LineItems = new List<CheckoutLineItemInput>();
 
         /// <summary>
         /// Adds or updates an existing line item using a variant id.
@@ -26,7 +26,7 @@ namespace <%= namespace %> {
         /// <param name="quantity">the number of items you'd like to order for variantId</param>
         /// <param name="customAttributes">can be used to define extra information for this line item</param>
         public void AddOrUpdate(string variantId, long? quantity = null, List<AttributeInput> customAttributes = null) {
-            LineItemInput input = Get(variantId);
+            CheckoutLineItemInput input = Get(variantId);
 
             if (input != null) {
                 if (quantity != null) {
@@ -42,7 +42,7 @@ namespace <%= namespace %> {
                 }
 
                 LineItems.Add(
-                  new LineItemInput(
+                  new CheckoutLineItemInput(
                     variantId: variantId,
                     quantity: (long) quantity,
                     customAttributes: customAttributes
@@ -81,37 +81,37 @@ namespace <%= namespace %> {
         }
 
         /// <summary>
-        /// Returns all <see ref="LineItemInput">Line Items </see> that have been created
+        /// Returns all <see ref="CheckoutLineItemInput">Line Items </see> that have been created
         /// </summary>
-        public List<LineItemInput> All() {
+        public List<CheckoutLineItemInput> All() {
             return LineItems;
         }
 
         /// <summary>
-        /// Returns one <see ref="LineItemInput">Line Item </see> based on a variant id. If no line item exists for the variant id
+        /// Returns one <see ref="CheckoutLineItemInput">Line Item </see> based on a variant id. If no line item exists for the variant id
         /// <c>null</c> will be returned
         /// </summary>
         /// <param name="variantId">variant id used to create a line item</param>
-        public LineItemInput Get(string variantId) {
+        public CheckoutLineItemInput Get(string variantId) {
             return LineItems.Find(item => item.variantId == variantId);
         }
 
         /// <summary>
-        /// Returns one <see ref="LineItemInput">Line Item </see> based on a <see ref="ProductVariant">ProductVariant </see>. If no line item
+        /// Returns one <see ref="CheckoutLineItemInput">Line Item </see> based on a <see ref="ProductVariant">ProductVariant </see>. If no line item
         /// exists for the variant, <c>null</c> will be returned
         /// </summary>
         /// <param name="variant">variant whose variant id used to create a line item</param>
-        public LineItemInput Get(ProductVariant variant) {
+        public CheckoutLineItemInput Get(ProductVariant variant) {
             return Get(variant.id());
         }
 
         /// <summary>
-        /// Returns one <see ref="LineItemInput">Line Item </see> based on a <see ref="Product">product </see> and selected options. 
+        /// Returns one <see ref="CheckoutLineItemInput">Line Item </see> based on a <see ref="Product">product </see> and selected options. 
         /// If no line item exists for the matching variant, <c>null</c> will be returned
         /// </summary>
         /// <param name="product">product whose options will be selected</param>
         /// <param name="selectedOptions">a Dictionary used to define user selected options</param>
-        public LineItemInput Get(Product product, Dictionary<string, string> selectedOptions) {
+        public CheckoutLineItemInput Get(Product product, Dictionary<string, string> selectedOptions) {
             string variantId = VariantIdFromSelectedOptions(product, selectedOptions);
 
             if (variantId == null) {
@@ -122,7 +122,7 @@ namespace <%= namespace %> {
         }
 
         /// <summary>
-        /// Deletes one <see ref="LineItemInput">Line Item </see> based on a variant id. If a line item was deleted, <c>true</c>
+        /// Deletes one <see ref="CheckoutLineItemInput">Line Item </see> based on a variant id. If a line item was deleted, <c>true</c>
         /// will be returned. If no line items were deleted, <c>false</c> will be returned
         /// </summary>
         /// <param name="variantId">variant id used to delete a line item</param>
@@ -139,7 +139,7 @@ namespace <%= namespace %> {
         }
 
         /// <summary>
-        /// Deletes one <see ref="LineItemInput">Line Item </see> based on a <see ref="ProductVariant">ProductVariant </see>. If a line
+        /// Deletes one <see ref="CheckoutLineItemInput">Line Item </see> based on a <see ref="ProductVariant">ProductVariant </see>. If a line
         /// item was deleted, <c>true</c> will be returned. If no line items were deleted, <c>false</c> will be returned
         /// </summary>
         /// <param name="variant"><see ref="ProductVariant">variant </see> to provide the ID to delete a line item</param>
@@ -148,7 +148,7 @@ namespace <%= namespace %> {
         }
 
         /// <summary>
-        /// Deletes one <see ref="LineItemInput">Line Item </see> based on a <see ref="Product">Product </see> and selected options. 
+        /// Deletes one <see ref="CheckoutLineItemInput">Line Item </see> based on a <see ref="Product">Product </see> and selected options. 
         /// If a line item was deleted, <c>true</c> will be returned. If no line item were deleted, <c>false</c> will be returned
         /// </summary>
         /// <param name="product"><see ref="Product">product </see> whose options will be used to determine which line item is deleted</param>
@@ -234,7 +234,7 @@ namespace <%= namespace %> {
             url.Append(Client.Domain);
             url.Append("/cart/");
 
-            foreach(LineItemInput lineItem in LineItems.All()) {
+            foreach(CheckoutLineItemInput lineItem in LineItems.All()) {
                 if (hasLineItem) {
                     url.Append(",");
                 }
