@@ -69,4 +69,12 @@ To run tests run the following command:
 $ scripts/test.sh
 ```
 
+Optionally for more effecient develop you may want to run the following:
+```bash
+$ scripts/test_watch.sh
+```
+
+`test_watch.sh` watches all development files for changes. Once a change is detected tests will be recompiled and run.
+
+
 <img src="https://cdn.shopify.com/shopify-marketing_assets/builds/19.0.0/shopify-full-color-black.svg" width="200" />
