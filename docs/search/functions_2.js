@@ -106,8 +106,7 @@ var searchData=
   ['customerresetinput',['CustomerResetInput',['../class_shopify_1_1_unity_1_1_customer_reset_input.html#ad8860bb1d9b51b5c6a7d0f4548365091',1,'Shopify::Unity::CustomerResetInput']]],
   ['customerresetpayload',['CustomerResetPayload',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_customer_reset_payload.html#a1c9a3fdfb90475c53acf3cf5efdcebae',1,'Shopify::Unity::GraphQL::CustomerResetPayload']]],
   ['customerresetpayloadquery',['CustomerResetPayloadQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_customer_reset_payload_query.html#ab5e201b15a2e3412ec437a415839e09f',1,'Shopify::Unity::GraphQL::CustomerResetPayloadQuery']]],
-  ['customerupdate',['customerUpdate',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_mutation.html#ad644dfd7411431fa2184f64c4425bd0e',1,'Shopify::Unity::GraphQL::Mutation']]],
-  ['customerupdateinput',['CustomerUpdateInput',['../class_shopify_1_1_unity_1_1_customer_update_input.html#a3cfe36e0d8db4b445661721cd7553ca0',1,'Shopify::Unity::CustomerUpdateInput']]],
+  ['customerupdate',['customerUpdate',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_mutation.html#ad644dfd7411431fa2184f64c4425bd0e',1,'Shopify.Unity.GraphQL.Mutation.customerUpdate()'],['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_mutation_query.html#a26786d9e4956a1b9e17b65f98d14cf8c',1,'Shopify.Unity.GraphQL.MutationQuery.customerUpdate()']]],
   ['customerupdatepayload',['CustomerUpdatePayload',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_customer_update_payload.html#a6168cd07a40dacf9a236d54a82e2873e',1,'Shopify::Unity::GraphQL::CustomerUpdatePayload']]],
   ['customerupdatepayloadquery',['CustomerUpdatePayloadQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_customer_update_payload_query.html#a4079e9319be77e2a7dfb066ab4dc42a3',1,'Shopify::Unity::GraphQL::CustomerUpdatePayloadQuery']]]
 ];

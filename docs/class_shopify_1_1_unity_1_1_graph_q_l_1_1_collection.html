@@ -88,11 +88,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa2d85242f3376bfb5dc0095f4f12f494"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_collection.html#aa2d85242f3376bfb5dc0095f4f12f494">Collection</a> (Dictionary&lt; string, object &gt; dataJSON)</td></tr>
 <tr class="memdesc:aa2d85242f3376bfb5dc0095f4f12f494"><td class="mdescLeft">&#160;</td><td class="mdescRight">accepts deserialized json data.  will further parse passed in data.  <a href="#aa2d85242f3376bfb5dc0095f4f12f494">More...</a><br /></td></tr>
 <tr class="separator:aa2d85242f3376bfb5dc0095f4f12f494"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef375f887b044fabe9d98d083f5fbfd4"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_collection.html#aef375f887b044fabe9d98d083f5fbfd4">description</a> (string alias=null)</td></tr>
+<tr class="memdesc:aef375f887b044fabe9d98d083f5fbfd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stripped description of the collection, single line with HTML tags removed.  <a href="#aef375f887b044fabe9d98d083f5fbfd4">More...</a><br /></td></tr>
+<tr class="separator:aef375f887b044fabe9d98d083f5fbfd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0623146d8dd0bc91f9ffa4ccbfeafa01"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_collection.html#a0623146d8dd0bc91f9ffa4ccbfeafa01">descriptionHtml</a> ()</td></tr>
 <tr class="memdesc:a0623146d8dd0bc91f9ffa4ccbfeafa01"><td class="mdescLeft">&#160;</td><td class="mdescRight">The description of the collection, complete with HTML formatting.  <a href="#a0623146d8dd0bc91f9ffa4ccbfeafa01">More...</a><br /></td></tr>
 <tr class="separator:a0623146d8dd0bc91f9ffa4ccbfeafa01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7ca8c439b4d47e1e3b546bde6fb9c5d"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_collection.html#ab7ca8c439b4d47e1e3b546bde6fb9c5d">descriptionPlainSummary</a> ()</td></tr>
-<tr class="memdesc:ab7ca8c439b4d47e1e3b546bde6fb9c5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stripped description of the collection, single line with HTML tags removed truncated to 60 characters.  <a href="#ab7ca8c439b4d47e1e3b546bde6fb9c5d">More...</a><br /></td></tr>
+<tr class="memdesc:ab7ca8c439b4d47e1e3b546bde6fb9c5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stripped description of the collection, single line with HTML tags removed. Truncated to 60 characters.  <a href="#ab7ca8c439b4d47e1e3b546bde6fb9c5d">More...</a><br /></td></tr>
 <tr class="separator:ab7ca8c439b4d47e1e3b546bde6fb9c5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b40d82705e9a06ac687fae12993cd8f"><td class="memItemLeft" align="right" valign="top"><a id="a2b40d82705e9a06ac687fae12993cd8f"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>handle</b> ()</td></tr>
@@ -166,6 +169,40 @@ Dictionary&lt; string, object &gt;&#160;</td><td class="memItemRight" valign="bo
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="aef375f887b044fabe9d98d083f5fbfd4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef375f887b044fabe9d98d083f5fbfd4">&#9670;&nbsp;</a></span>description()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">string Shopify.Unity.GraphQL.Collection.description </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>alias</em> = <code>null</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Stripped description of the collection, single line with HTML tags removed. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">alias</td><td>If the original field queried was queried using an alias pass the matching string </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a0623146d8dd0bc91f9ffa4ccbfeafa01"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0623146d8dd0bc91f9ffa4ccbfeafa01">&#9670;&nbsp;</a></span>descriptionHtml()</h2>
 
@@ -216,7 +253,7 @@ Dictionary&lt; string, object &gt;&#160;</td><td class="memItemRight" valign="bo
 </table>
 </div><div class="memdoc">
 
-<p>Stripped description of the collection, single line with HTML tags removed truncated to 60 characters. </p>
+<p>Stripped description of the collection, single line with HTML tags removed. Truncated to 60 characters. </p>
 
 </div>
 </div>
