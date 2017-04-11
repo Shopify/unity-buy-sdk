@@ -17,8 +17,8 @@ namespace Shopify.Unity.Tests
                     IntegrationTest.Assert(null == errors, "No graphql errors");
                     IntegrationTest.Assert(null == httpErrors, "No http errors");
                     IntegrationTest.Assert(products.Count == 3, "Loaded products");
-                    IntegrationTest.Assert("beans" == products[0].title(), "Title product 0: beans");
-                    IntegrationTest.Assert("Orphean Steel Bag" == products[1].title(), "Title product 1: Orphean Steel Bag");
+                    IntegrationTest.Assert("Snare Boot" == products[0].title(), "Title product 0: Snare Boot");
+                    IntegrationTest.Assert("Neptune Boot" == products[1].title(), "Title product 1: Neptune Boot");
 
                     List<string> aliases = new List<string>() {
                         "pico",
