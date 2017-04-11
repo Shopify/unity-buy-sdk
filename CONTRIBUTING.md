@@ -15,9 +15,9 @@ git clone git@github.com:your-username/unity-buy-sdk.git
 ```
 *Note: replace "your-username" with your Github handle*
 
-Install the project's dependencies:
+To check your the project's dependencies run:
 ```
-$ scripts/setup.sh
+$ scripts/check_setup.sh
 ```
 
 Write some features.
