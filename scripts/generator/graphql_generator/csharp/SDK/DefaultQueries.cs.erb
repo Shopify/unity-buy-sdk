@@ -13,6 +13,7 @@ namespace <%= namespace %>.SDK {
                         .node((p) => { p
                             .id()
                             .title()
+                            .description()
                             .descriptionHtml()
                             .options(pn => pn
                                 .name()
@@ -152,6 +153,8 @@ namespace <%= namespace %>.SDK {
                 .src()
             )
             .title()
+            .description()
+            .descriptionHtml()
             .updatedAt()
             .products(pc => ProductConnection(pc),
                 first: DefaultQueries.MaxPageSize

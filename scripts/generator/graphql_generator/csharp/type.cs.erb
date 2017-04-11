@@ -44,7 +44,7 @@ namespace <%= namespace %>.GraphQL {
             <% end %>
 
             <%# now create methods to add fields to queries %>
-            <% type.fields.each do |field| %>
+            <% type.fields(include_deprecated: true).each do |field| %>
                 <%= docs_query_field(field) %>
                 public <%= type.classify_name %>Query <%= escape_reserved_word(field.name) %>(<%= field_args(field) %>) {
                     <%# now we we want to handle generating arguments %>
