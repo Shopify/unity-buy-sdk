@@ -4,7 +4,7 @@ namespace <%= namespace %>.SDK {
     using <%= namespace %>.GraphQL;
 
     /// <summary>
-    /// Top level response for all GraphQL mutation queries
+    /// Top-level response for all GraphQL mutation queries.
     /// </summary>
     public class MutationResponse : TopLevelResponse {
         public <%= schema.mutation_root_name %> data {
@@ -20,7 +20,7 @@ namespace <%= namespace %>.SDK {
                 _data = new <%= schema.mutation_root_name %>(this.DataJSON);
             }
         }
-        
+
         public MutationResponse(string httpError) : base(httpError) {
 
         }

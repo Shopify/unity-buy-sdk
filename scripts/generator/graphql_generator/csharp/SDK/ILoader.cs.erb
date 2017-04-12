@@ -2,25 +2,25 @@ namespace <%= namespace %>.SDK {
     public delegate void LoaderResponseHandler(string response, string error);
 
     /// <summary>
-    /// interface which classes that will perform network communication must define
+    /// An interface that must be defined by classes that will perform network communication.
     /// </summary>
     public interface ILoader {
         /// <summary>
-        /// Domain to a Shopify store
+        /// Domain of a Shopify store.
         /// </summary>
         string Domain {
             get;
         }
 
         /// <summary>
-        /// Access token used to communicate with a Shopify store
+        /// Access token used to communicate with a Shopify store.
         /// </summary>
         string AccessToken {
             get;
         }
-        
+
         /// <summary>
-        /// will send the GraphQL query to the GraphQL endpoint
+        /// Sends the GraphQL query to the GraphQL endpoint.
         /// </summary>
         /// <param name="query">a GraphQL query</param>
         /// <param name="callback">a callback which will receive a response from the GraphQL query</param>

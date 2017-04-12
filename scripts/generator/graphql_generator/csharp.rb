@@ -7,9 +7,9 @@ require_relative './reformatter'
 module GraphQLGenerator
   UNKNOWN_ENUM = OpenStruct.new
   UNKNOWN_ENUM.name = "UNKNOWN"
-  UNKNOWN_ENUM.description = "If the SDK is not up to date with the schema in the Storefront API it is possible\n" \
+  UNKNOWN_ENUM.description = "If the SDK is not up to date with the schema in the Storefront API, it is possible\n" \
                              "to have enum values returned that are unknown to the SDK. In this case the value\n" \
-                             "will actually be UNKNOWN"
+                             "will actually be UNKNOWN."
 
   class CSharp
     class << self
@@ -21,7 +21,7 @@ module GraphQLGenerator
     end
 
     attr_reader :scalars, :schema, :namespace, :version
-  
+
     def initialize(schema, namespace:, custom_scalars: [], script_name: $0)
       @schema = schema
       @namespace = namespace
@@ -37,7 +37,7 @@ module GraphQLGenerator
         );
       end
     end
-    
+
     TYPE_ERB = erb_for(File.expand_path("../csharp/type.cs.erb", __FILE__))
     TYPE_RESPONSE_ERB = erb_for(File.expand_path("../csharp/type_response.cs.erb", __FILE__))
 
@@ -70,7 +70,7 @@ module GraphQLGenerator
         csharp_type: 'string',
       ),
     ]
-    
+
 
     def save(path)
       path_graphql = "#{path}/GraphQL"
@@ -118,15 +118,15 @@ module GraphQLGenerator
 
       # output type definitions
       schema.types.reject{ |type| type.builtin? || type.scalar? }.each do |type|
-        # output 
+        # output
         if type.object? || type.interface?
           File.write("#{path_graphql}/#{type.name}Query.cs", reformat(TYPE_ERB.result(binding)))
           File.write("#{path}/#{type.name}.cs", reformat(TYPE_RESPONSE_ERB.result(binding)))
         elsif type.input_object? || type.kind == 'ENUM'
           File.write("#{path}/#{type.name}.cs", reformat(TYPE_ERB.result(binding)))
-        end 
+        end
       end
-    end 
+    end
 
     def escape_reserved_word(word)
       return word unless RESERVED_WORDS.include?(word)
@@ -171,14 +171,14 @@ module GraphQLGenerator
 
       arg_string = "#{type} #{escape_reserved_word(arg.name)}"
       arg_string << " = null" unless arg.type.non_null?
-      
+
       arg_string
     end
 
     def field_args(field)
       # we want to setup arguments for queries here
       args = []
-  
+
       if field.type.subfields?
         args << "#{field.type.unwrap.classify_name}Delegate buildQuery";
       end
@@ -199,7 +199,7 @@ module GraphQLGenerator
 
       args.join(",")
     end
-    
+
     def input_args(type)
       # we want to setup arguments for queries here
       args = []
@@ -269,7 +269,7 @@ module GraphQLGenerator
     def node_type_from_connection_type(type)
       if connection?(type)
         edge_type = edges_type_from_connection_type(type)
-        
+
         type_from_name(edge_type.name)
 
         node = field_from_type(edge_type, "node")
@@ -345,15 +345,15 @@ module GraphQLGenerator
         )
       elsif connection?(type)
         if type.description
-          return summary_doc("#{type.description}. #{type.classify_name} can be cast to <c>List<#{node_type_from_connection_type(type).classify_name}></c>")
+          return summary_doc("#{type.description}. #{type.classify_name} can be cast to <c>List<#{node_type_from_connection_type(type).classify_name}></c>.")
         else
-          return summary_doc("#{type.classify_name} is a response object. #{type.classify_name} can be cast to <c>List<#{node_type_from_connection_type(type).classify_name}></c>")
+          return summary_doc("#{type.classify_name} is a response object. #{type.classify_name} can be cast to <c>List<#{node_type_from_connection_type(type).classify_name}></c>.")
         end
       else
         if type.description
           return summary_doc(type.description)
         else
-          return summary_doc("#{type.classify_name} is a response object")
+          return summary_doc("#{type.classify_name} is a response object.")
         end
       end
     end
@@ -362,7 +362,7 @@ module GraphQLGenerator
       if type.description
         return summary_doc(type.description)
       else
-        return summary_doc("#{type.classify_name} is an input object")
+        return summary_doc("#{type.classify_name} is an input object.")
       end
     end
 
@@ -380,7 +380,7 @@ module GraphQLGenerator
 
     def docs_query_field(field)
       params_doc = params_doc(field.args);
-      
+
       if field.description
         return "#{deprecation_doc_for(field)}#{summary_doc(field.description)}\n#{params_doc}"
       elsif params_doc != ""
@@ -392,7 +392,7 @@ module GraphQLGenerator
 
     def docs_response_field(field)
       if field.args.any?
-        alias_doc = param_doc("alias", "If the original field queried was queried using an alias pass the matching string")
+        alias_doc = param_doc("alias", "If the original field queried was queried using an alias, then pass the matching string.")
       else
         alias_doc = ""
       end

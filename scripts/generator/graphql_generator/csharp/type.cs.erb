@@ -23,15 +23,15 @@ namespace <%= namespace %>.GraphQL {
             <% if isRoot %>
                 /// <summary>
                 /// <see cref="<%= type.classify_name %>Query" /> constructor accepts no parameters but it will create a root
-                /// <%= isQueryRoot ? "query" : "mutation" %> builder 
+                /// <%= isQueryRoot ? "query" : "mutation" %> builder.
                 /// </summary>
                 public <%= type.classify_name %>Query() {
                     Query = new StringBuilder("<%= "mutation" unless isQueryRoot %>{");
                 }
             <% else %>
                 /// <summary>
-                /// <see cref="<%= type.classify_name %>Query" /> is used to build queries. Typically 
-                /// <see cref="<%= type.classify_name %>Query" /> will not be used directly but instead will be used when building queries from either 
+                /// <see cref="<%= type.classify_name %>Query" /> is used to build queries. Typically
+                /// <see cref="<%= type.classify_name %>Query" /> will not be used directly but instead will be used when building queries from either
                 /// <see cref="<%= schema.query_root_name %>Query" /> or <see cref="<%= schema.mutation_root_name %>Query" />.
                 /// </summary>
                 public <%= type.classify_name %>Query(StringBuilder query) {
@@ -69,7 +69,7 @@ namespace <%= namespace %>.GraphQL {
                         <% field.required_args.each do |arg| %>
                             args.Add("<%= arg.name %>", <%= escape_reserved_word(arg.name) %>);
                         <% end %>
-                        
+
                         <% field.optional_args.each do |arg| %>
                             if (<%= escape_reserved_word(arg.name) %> != null) {
                                 args.Add("<%= arg.name %>", <%= escape_reserved_word(arg.name) %>);
@@ -96,7 +96,7 @@ namespace <%= namespace %>.GraphQL {
             <% unless type.object? %>
                 <% type.possible_types.each do |possible_type| %>
                     /// <summary>
-                    /// will allow you to write queries on <%= possible_type.classify_name %>
+                    /// will allow you to write queries on <%= possible_type.classify_name %>.
                     /// </summary>
                     public <%= type.classify_name %>Query on<%= possible_type.classify_name %>(<%= possible_type.classify_name %>Delegate buildQuery) {
                         Query.Append("...on <%= possible_type.classify_name %>{");
@@ -110,7 +110,7 @@ namespace <%= namespace %>.GraphQL {
             <%# if this is the root we want to add in a ToString method %>
             <% if isRoot %>
                 /// <summary>
-                /// Will return a GraphQL query
+                /// Will return a GraphQL query.
                 /// </summary>
                 public override string ToString() {
                     return Query.ToString() + "}";
@@ -138,7 +138,7 @@ namespace <%= namespace %>.GraphQL {
                 <% type.required_input_fields.each do |field| %>
                     Set("<%= field.name %>", <%= escape_reserved_word(field.name) %>);
                 <% end %>
-                
+
                 <%# handle adding optional fields %>
                 <% type.optional_input_fields.each do |field| %>
                     if (<%= escape_reserved_word(field.name) %> != null) {
