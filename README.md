@@ -5,6 +5,7 @@ The Unity Buy SDK allows Unity developers to query and sell products within Unit
 ## Table Of Contents
 
 - [Using the Unity Buy SDK in Unity](#using-the-unity-buy-sdk-in-unity)
+- [Getting Setup For Contributing](#getting-setup-for-contributing)
 - [Build the GraphQL Client](#build-the-unity-buy-sdk)
 - [Testing](#testing)
     + [Testing in Unity](#testing-in-unity)
@@ -20,6 +21,14 @@ By following the steps below you'll install the Unity Buy SDK into your Unity pr
 
 Alternately you could clone this repo build the Unity Buy SDK by following the documentation below. After building the SDK
 you can copy `Assets/Shopify/` to your project. `Assets/Shopify/` will contain all source needed to run the Unity Buy SDK.
+
+## Getting Setup For Contributing
+
+Before contributing to the Unity Buy SDK it might be handy to check that you have the required dependencies installed on your
+computer. Run the following command to check you have all required applications:
+```bash
+$ scripts/check_setup.sh
+```
 
 ## Build the Unity Buy SDK
 
@@ -59,5 +68,13 @@ To run tests run the following command:
 ```bash
 $ scripts/test.sh
 ```
+
+Optionally for more effecient develop you may want to run the following:
+```bash
+$ scripts/test_watch.sh
+```
+
+`test_watch.sh` watches all development files for changes. Once a change is detected tests will be recompiled and run.
+
 
 <img src="https://cdn.shopify.com/shopify-marketing_assets/builds/19.0.0/shopify-full-color-black.svg" width="200" />
