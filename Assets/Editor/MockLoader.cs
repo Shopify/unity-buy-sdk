@@ -236,12 +236,12 @@ namespace Shopify.Tests {
             query = new QueryRootQuery();
             
             query.node(n => n
-                .onProduct(p => DefaultQueries.products.Product(p)),
+                .onProduct(p => DefaultQueries.products.Product(p, ShopifyClient.defaultImageSizes)),
                 id: "productId333", alias: "a0"
             );
 
             query.node(n => n
-                .onProduct(p => DefaultQueries.products.Product(p)),
+                .onProduct(p => DefaultQueries.products.Product(p, ShopifyClient.defaultImageSizes)),
                 id: "productId444", alias: "a1"
             );
 

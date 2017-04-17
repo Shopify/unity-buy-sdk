@@ -316,7 +316,7 @@ namespace <%= namespace %> {
                 
                 query.node(n => n
                     .onProduct((p) => {
-                        DefaultQueries.products.Product(p);
+                        DefaultQueries.products.Product(p, defaultImageSizes);
                     }),
                     id: productId, alias: DefaultQueries.GetAliasFromIndex(i)
                 );
@@ -592,7 +592,7 @@ namespace <%= namespace %> {
                 new ConnectionQueryInfo(
                     getConnection: (p) => ((Product) p).variants(),
                     query: (p, variantsAfter) => {
-                        ((ProductQuery) p).variants(vc => DefaultQueries.products.ProductVariantConnection(vc),
+                        ((ProductQuery) p).variants(vc => DefaultQueries.products.ProductVariantConnection(vc, defaultImageSizes),
                             first: DefaultQueries.MaxPageSize, after: variantsAfter
                         );
                     }

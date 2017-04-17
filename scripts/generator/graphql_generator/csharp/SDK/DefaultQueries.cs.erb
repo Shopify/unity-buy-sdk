@@ -11,7 +11,7 @@ namespace <%= namespace %>.SDK {
             query.shop(s => s
                 .products(pc => pc
                     .edges(e => e
-                        .node(p => Product(p))
+                        .node(p => Product(p, imageResolutions))
                         .cursor()
                     )
                     .pageInfo(pi => pi
@@ -22,7 +22,7 @@ namespace <%= namespace %>.SDK {
             );
         }
 
-        public void Product(ProductQuery product) {
+        public void Product(ProductQuery product, Dictionary<string,int> imageResolutions) {
             product
             .id()
             .title()
@@ -36,7 +36,7 @@ namespace <%= namespace %>.SDK {
                 .values()
             )
             .variants(
-                pvc => ProductVariantConnection(pvc),
+                pvc => ProductVariantConnection(pvc, imageResolutions),
                 first: DefaultQueries.MaxPageSize
             )
             .collections(
