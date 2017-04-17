@@ -231,7 +231,7 @@ namespace Shopify.Tests {
         }
 
         public static void InitResponsesForQueriesByProductId() {
-            QueryRootQuery query = query = new QueryRootQuery();
+            QueryRootQuery query = new QueryRootQuery();
             
             query.node(n => n
                 .onProduct(p => DefaultQueries.products.Product(p, ShopifyClient.DefaultImageResolutions)),
