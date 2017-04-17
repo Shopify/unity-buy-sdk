@@ -117,7 +117,7 @@ namespace <%= namespace %> {
         /// string src1024Image = productVariant.image("resolution_1024").src();
         /// \endcode
         /// </summary>
-        public static Dictionary<string,int> defaultImageSizes = new Dictionary<string, int>() {
+        public static Dictionary<string,int> DefaultImageResolutions = new Dictionary<string, int>() {
             {"pico", 16},
             {"icon", 32},
             {"thumb", 50},
@@ -190,7 +190,7 @@ namespace <%= namespace %> {
         ///     - id
         ///     - title
         ///     - descriptionHtml
-        ///     - images (with aliases defined by imageResolutions passed in or defaultImageSizes if imageResolutions was not passed)
+        ///     - images (with aliases defined by ShopifyClient.DefaultImageResolutions)
         ///         - altText
         ///         - src
         ///     - options
@@ -206,11 +206,11 @@ namespace <%= namespace %> {
         ///         - selectedOptions
         ///             - name
         ///             - values
-        ///         - image (with aliases defined by imageResolutions passed in or defaultImageSizes if imageResolutions was not passed)
+        ///         - image (with aliases defined by ShopifyClient.DefaultImageResolutions)
         ///             - altText
         ///             - src
         ///     - collections
-        ///         - image (with aliases defined by imageResolutions passed in or defaultImageSizes if imageResolutions was not passed)
+        ///         - image (with aliases defined by ShopifyClient.DefaultImageResolutions)
         ///             - altText
         ///             - src
         ///         - title
@@ -226,26 +226,7 @@ namespace <%= namespace %> {
         /// where paginated loading begins. For instance when used with <c>first: 10</c> and <c>after: "abc"</c> only the first 10
         /// products would be loaded after cursor <c>"abc"</c>
         /// </param>
-        /// <param name="imageResolutions">
-        /// is a dictionary used to set resolutions at which images are queried. This Dictionary effects how Product images, Product Variant image, 
-        /// and Collection image is queried. If <c>imageResolutions</c> is omitted then <see ref="ShopifyClient.defaultImageSizes">ShopifyClient.defaultImageSizes </see>
-        /// will be used instead.
-        ///
-        /// This Dictionary's keys refer to an alias and it's values refer to <c>maxWidth</c> and <c>maxHeight</c> for images. So for instance
-        /// if you wanted to have images which all had a <c>maxWidth</c> and <c>maxHeight</c> of 200px you'd pass in a dictionary that looks like this:
-        /// \code{.cs}
-        /// Dictionary<string, int> imageResolutions = new Dictionary<string, int>() { {"res200_by_200", 200} };
-        /// \endcode
-        /// In the above case to access images for that resolution you'd do the following:
-        /// \code{.cs}
-        /// string src200x200 = productVariant.image("res200_by_200").src();
-        /// \endcode
-        /// </param>
-        public void products(ResponseProductsHandler callback, int? first = null, string after = null, Dictionary<string,int> imageResolutions = null) {
-            if (imageResolutions == null) {
-                imageResolutions = defaultImageSizes;
-            }
-
+        public void products(ResponseProductsHandler callback, int? first = null, string after = null) {
             GetProductsList((products, errors, httpError) => {
                 if (httpError != null) {
                     callback(null, null, httpError);
@@ -264,7 +245,7 @@ namespace <%= namespace %> {
                         new ConnectionQueryInfo(
                             getConnection: (p) => ((Product) p).variants(),
                             query: (p, variantsAfter) => {
-                                ((ProductQuery) p).variants(vc => DefaultQueries.products.ProductVariantConnection(vc, defaultImageSizes),
+                                ((ProductQuery) p).variants(vc => DefaultQueries.products.ProductVariantConnection(vc, DefaultImageResolutions),
                                     first: DefaultQueries.MaxPageSize, after: variantsAfter
                                 );
                             }
@@ -279,15 +260,15 @@ namespace <%= namespace %> {
                         )
                     };
 
-                    foreach(string alias in imageResolutions.Keys) {
+                    foreach(string alias in DefaultImageResolutions.Keys) {
                         connectionInfos.Add(new ConnectionQueryInfo(
                             getConnection: (p) => ((Product) p).images(alias),
                             query: (p, imagesAfter) => {
                                 ((ProductQuery) p).images(ic => DefaultQueries.products.ImageConnection(ic),
                                     first: DefaultQueries.MaxPageSize, 
                                     after: imagesAfter, 
-                                    maxWidth: imageResolutions[alias],
-                                    maxHeight: imageResolutions[alias],
+                                    maxWidth: DefaultImageResolutions[alias],
+                                    maxHeight: DefaultImageResolutions[alias],
                                     alias: alias
                                 );
                             }
@@ -301,7 +282,7 @@ namespace <%= namespace %> {
                         callback(nodesResult.ConvertAll(n => (Product) n), errorsNode, httpErrorsNode);
                     });
                 }
-            }, imageResolutions: imageResolutions, first: first, after: after);
+            }, first: first, after: after);
         }
 
         /// <summary>
@@ -499,7 +480,7 @@ namespace <%= namespace %> {
             );
         }
 
-        private void GetProductsList(ResponseProductsHandler callback, Dictionary<string,int> imageResolutions, int? first = null, string after = null) {
+        private void GetProductsList(ResponseProductsHandler callback, int? first = null, string after = null) {
             ConnectionLoader loader = new ConnectionLoader(Loader);
             int countToLoad = first == null ? int.MaxValue : (int) first;
 
@@ -519,7 +500,7 @@ namespace <%= namespace %> {
                         query = new QueryRootQuery();
                         DefaultQueries.products.ShopProducts(
                             query: query, 
-                            imageResolutions: imageResolutions,
+                            imageResolutions: DefaultImageResolutions,
                             first: countToLoad > DefaultQueries.MaxPageSize ? DefaultQueries.MaxPageSize : countToLoad, 
                             after: edges != null ? edges[edges.Count - 1].cursor() : after
                         );
@@ -564,7 +545,7 @@ namespace <%= namespace %> {
                             query: query, 
                             first: countToLoad > DefaultQueries.MaxPageSize ? DefaultQueries.MaxPageSize : countToLoad, 
                             after: edges != null ? edges[edges.Count - 1].cursor() : after,
-                            imageResolutions: defaultImageSizes
+                            imageResolutions: DefaultImageResolutions
                         );
                     }
 
