@@ -285,6 +285,50 @@ namespace <%= namespace %> {
             }, first: first, after: after);
         }
 
+        /// <summary>
+        /// Will generate a query to receive selected <c>products</c> from a Shopify store. The generated query will query the following on products:
+        ///     - id
+        ///     - title
+        ///     - descriptionHtml
+        ///     - images (with aliases defined by ShopifyClient.defaultImageResolutions)
+        ///         - altText
+        ///         - src
+        ///     - options
+        ///         - name
+        ///         - values
+        ///     - variants
+        ///         - id
+        ///         - available
+        ///         - price
+        ///         - title
+        ///         - weight
+        ///         - weightUnit
+        ///         - selectedOptions
+        ///             - name
+        ///             - values
+        ///         - image (with aliases defined by ShopifyClient.defaultImageResolutions)
+        ///             - altText
+        ///             - src
+        ///     - collections
+        ///         - image (with aliases defined by ShopifyClient.defaultImageResolutions)
+        ///             - altText
+        ///             - src
+        ///         - title
+        ///         - updatedAt
+        ///
+        /// </summary>
+        /// <param name="callback">callback that will receive responses from server</param>
+        /// <param name="firstProductId">you must pass in at least one product id to query</param>
+        /// <param name="otherProductIds">
+        /// after the first product id you can pass in as many product ids as you'd like.
+        /// </param>
+        /// <code>
+        /// // Example usage querying two product ids
+        /// ShopifyBuy.Client().products((products, errors, httpError) => {
+        ///     Debug.Log(products[0].id()); // "gid://shopify/Product/9895276099"
+        ///     Debug.Log(products[1].id()); // "gid://shopify/Product/9895279043"
+        /// }, "gid://shopify/Product/9895276099", "gid://shopify/Product/9895279043");
+        /// </code>
 		public void products(ResponseProductsHandler callback, string firstProductId, params string[] otherProductIds) {
             List<string> productIds = new List<string>();
             productIds.Add(firstProductId);
