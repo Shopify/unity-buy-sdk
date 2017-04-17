@@ -85,7 +85,7 @@ namespace Shopify.Tests {
                 DefaultQueries.products.ShopProducts(
                     query: query, 
                     first: PageSize,
-                    imageResolutions: ShopifyClient.defaultImageSizes,
+                    imageResolutions: ShopifyClient.defaultImageResolutions,
                     after: i > 0 ? (i * PageSize - 1).ToString() : null
                 );
 
@@ -116,7 +116,7 @@ namespace Shopify.Tests {
                     query: query, 
                     first: PageSize, 
                     after: i > 0 ? (i * PageSize - 1).ToString() : null,
-                    imageResolutions: ShopifyClient.defaultImageSizes
+                    imageResolutions: ShopifyClient.defaultImageResolutions
                 );
 
                 ResponseProducts[query.ToString()] = String.Format(@"{{
@@ -156,7 +156,7 @@ namespace Shopify.Tests {
                         first: PageSize, after: "image249"
                     )
                     .variants(
-                        vc => DefaultQueries.products.ProductVariantConnection(vc, ShopifyClient.defaultImageSizes),
+                        vc => DefaultQueries.products.ProductVariantConnection(vc, ShopifyClient.defaultImageResolutions),
                         first: DefaultQueries.MaxPageSize, after: "variant249"
                     )
                 ),
@@ -236,12 +236,12 @@ namespace Shopify.Tests {
             query = new QueryRootQuery();
             
             query.node(n => n
-                .onProduct(p => DefaultQueries.products.Product(p, ShopifyClient.defaultImageSizes)),
+                .onProduct(p => DefaultQueries.products.Product(p, ShopifyClient.defaultImageResolutions)),
                 id: "productId333", alias: "a0"
             );
 
             query.node(n => n
-                .onProduct(p => DefaultQueries.products.Product(p, ShopifyClient.defaultImageSizes)),
+                .onProduct(p => DefaultQueries.products.Product(p, ShopifyClient.defaultImageResolutions)),
                 id: "productId444", alias: "a1"
             );
 
@@ -399,7 +399,7 @@ namespace Shopify.Tests {
                 StringBuilder resolutionImageResponses = new StringBuilder();
                 
                 int numAliasIterated = 0;
-                foreach(string alias in ShopifyClient.defaultImageSizes.Keys) {
+                foreach(string alias in ShopifyClient.defaultImageResolutions.Keys) {
                     string aliasedImages = String.Format(@"
                         ""images___{0}"": {{
                             ""edges"": [
@@ -416,7 +416,7 @@ namespace Shopify.Tests {
 
                     resolutionImageResponses.Append(aliasedImages);
 
-                    if (numAliasIterated < ShopifyClient.defaultImageSizes.Keys.Count - 1) {
+                    if (numAliasIterated < ShopifyClient.defaultImageResolutions.Keys.Count - 1) {
                         resolutionImageResponses.Append(",");
                     }
 
@@ -485,7 +485,7 @@ namespace Shopify.Tests {
 
                 StringBuilder resolutionImageResponses = new StringBuilder();
                 int numAliasIterated = 0;
-                foreach(string alias in ShopifyClient.defaultImageSizes.Keys) {
+                foreach(string alias in ShopifyClient.defaultImageResolutions.Keys) {
                     string aliasedImages = String.Format(@"
                         ""image___{0}"": {{
                             ""altText"": ""I am an image {0}"",
@@ -496,7 +496,7 @@ namespace Shopify.Tests {
 
                     resolutionImageResponses.Append(aliasedImages);
 
-                    if (numAliasIterated < ShopifyClient.defaultImageSizes.Keys.Count - 1) {
+                    if (numAliasIterated < ShopifyClient.defaultImageResolutions.Keys.Count - 1) {
                         resolutionImageResponses.Append(",");
                     }
 
@@ -542,7 +542,7 @@ namespace Shopify.Tests {
 
                 StringBuilder resolutionImageResponses = new StringBuilder();
                 int numAliasIterated = 0;
-                foreach(string alias in ShopifyClient.defaultImageSizes.Keys) {
+                foreach(string alias in ShopifyClient.defaultImageResolutions.Keys) {
                     string aliasedImages = String.Format(@"
                         ""image___{0}"": null
                     ",
@@ -550,7 +550,7 @@ namespace Shopify.Tests {
 
                     resolutionImageResponses.Append(aliasedImages);
 
-                    if (numAliasIterated < ShopifyClient.defaultImageSizes.Keys.Count - 1) {
+                    if (numAliasIterated < ShopifyClient.defaultImageResolutions.Keys.Count - 1) {
                         resolutionImageResponses.Append(",");
                     }
 
