@@ -47,6 +47,10 @@ namespace <%= namespace %>.GraphQL {
             <% type.fields(include_deprecated: true).each do |field| %>
                 <%= docs_query_field(field) %>
                 public <%= type.classify_name %>Query <%= escape_reserved_word(field.name) %>(<%= field_args(field) %>) {
+                    <% if field.deprecated? %>
+                    Log.DeprecatedQueryField("<%= type.name %>", "<%= field.name %>", "<%= field.deprecation_reason %>");
+                    <% end %>
+
                     <%# now we we want to handle generating arguments %>
                     <% if field.args.any? %>
                         if (alias != null) {

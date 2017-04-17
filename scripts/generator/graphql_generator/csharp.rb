@@ -100,6 +100,7 @@ module GraphQLGenerator
         SDK/MutationResponse
         SDK/QueryResponse
         SDK/ILoader
+        SDK/Log
       ).each do |class_file_name|
         directory = "#{path}/#{File.dirname(class_file_name)}"
 
@@ -274,11 +275,15 @@ module GraphQLGenerator
     end
 
     def enum_values(type)
-      type.enum_values.clone.unshift(UNKNOWN_ENUM).map{ |enum| "#{summary_doc(enum.description)}\n#{enum.name}" }.join(",\n")
+      type.enum_values.clone.unshift(UNKNOWN_ENUM).map{ |enum| "#{deprecation_doc_for(enum)}#{summary_doc(enum.description)}\n#{enum.name}" }.join(",\n")
     end
 
     def pretty_doc(documentation)
       "/// #{documentation.split("\n").map{|part| part.strip }.join("\n/// ")}"
+    end
+
+    def deprecation_doc_for(item)
+      "/// \\deprecated #{item.deprecation_reason}\n" if item.deprecated?
     end
 
     def summary_doc(description)
@@ -373,11 +378,11 @@ module GraphQLGenerator
       params_doc = params_doc(field.args);
       
       if field.description
-        return "#{summary_doc(field.description)}\n#{params_doc}"
+        return "#{deprecation_doc_for(field)}#{summary_doc(field.description)}\n#{params_doc}"
       elsif params_doc != ""
-        return params_doc
+        return "#{deprecation_doc_for(field)}#{params_doc}"
       else
-        return ""
+        return "#{deprecation_doc_for(field)}"
       end
     end
 
@@ -389,9 +394,9 @@ module GraphQLGenerator
       end
 
       if field.description
-        return "#{summary_doc(field.description)}\n#{alias_doc}"
+        return "#{deprecation_doc_for(field)}#{summary_doc(field.description)}\n#{alias_doc}"
       else
-        return alias_doc
+        return "#{deprecation_doc_for(field)}#{alias_doc}"
       end
     end
   end
