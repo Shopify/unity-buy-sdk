@@ -228,11 +228,6 @@ namespace Shopify.Tests {
                 }}
             }}", GetImages(2, 2, DefaultQueries.MaxPageSize), GetJSONBool(false));
 
-
-
-
-
-
             query = new QueryRootQuery();
             
             query.node(n => n
