@@ -221,5 +221,22 @@ namespace Shopify.Tests
 
             Assert.IsTrue(version.IsMatch(ShopifyBuy.VERSION));
         }
+
+        [Test]
+        public void TestProductsByIds() {
+            ShopifyBuy.Init(new MockLoader());
+            List<Product> products = null;
+
+            ShopifyBuy.Client().products((p, errors, httpError) => {
+                products = p;
+                Assert.IsNull(errors);
+                Assert.IsNull(httpError);
+            }, "productId333", "productId444");
+
+            Assert.AreEqual(2, products.Count);
+            Assert.AreEqual("productId333", products[0].id());
+            Assert.AreEqual("productId444", products[1].id());
+            Assert.AreEqual(500, products[0].images().edges().Count);
+        }
     }
 }
