@@ -1,5 +1,6 @@
 require 'erb'
 require 'ostruct'
+require 'fileutils'
 require_relative './csharp/scalar'
 require_relative './reformatter'
 
@@ -73,13 +74,16 @@ module GraphQLGenerator
 
     def save(path)
       path_graphql = "#{path}/GraphQL"
-
+    
       begin
         Dir.mkdir(path_graphql)
       rescue Errno::EEXIST
       end
 
-      # output classes on root
+      Dir["#{path}/**/*.cs"].reject{ |f| f[%r{Vendor/}] }.each do |file|
+        FileUtils.rm(file)
+      end
+
       %w(
         ShopifyBuy
         Cart
@@ -117,7 +121,7 @@ module GraphQLGenerator
         # output 
         if type.object? || type.interface?
           File.write("#{path_graphql}/#{type.name}Query.cs", reformat(TYPE_ERB.result(binding)))
-          File.write("#{path_graphql}/#{type.name}.cs", reformat(TYPE_RESPONSE_ERB.result(binding)))
+          File.write("#{path}/#{type.name}.cs", reformat(TYPE_RESPONSE_ERB.result(binding)))
         elsif type.input_object? || type.kind == 'ENUM'
           File.write("#{path}/#{type.name}.cs", reformat(TYPE_ERB.result(binding)))
         end 
