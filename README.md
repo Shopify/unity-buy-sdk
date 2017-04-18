@@ -1,15 +1,28 @@
 # Unity Buy SDK
 
-The Unity Buy SDK allows Unity developers to query and sell products within Unity.
+The Unity Buy SDK allows Unity developers to query and sell products within Unity from Shopify.
 
 ## Table Of Contents
 
+- [Features](#features)
 - [Using the Unity Buy SDK in Unity](#using-the-unity-buy-sdk-in-unity)
 - [Getting Setup For Contributing](#getting-setup-for-contributing)
 - [Build the GraphQL Client](#build-the-unity-buy-sdk)
 - [Testing](#testing)
     + [Testing in Unity](#testing-in-unity)
     + [Testing in Terminal](#testing-in-terminal)
+
+## Features
+
+- Query products
+- Query collections
+- Create a cart
+- Checkout via weblink
+- Custom GraphQL queries on the Storefront API
+
+Coming Soon:
+
+- Checkouts via Apple Pay and Google Pay
 
 ## Using the Unity Buy SDK in Unity
 
