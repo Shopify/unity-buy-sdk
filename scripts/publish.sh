@@ -56,6 +56,9 @@ which $UNITY_PATH &> /dev/null || die "Unity does not exist at $UNITY_PATH"
 $SCRIPTS_ROOT/build_documentation.sh
 check "docs"
 
+# copy EXAMPLES.md to Assets/Shopify/examples.txt
+cp $PROJECT_ROOT/EXAMPLES.md $PROJECT_ROOT/Assets/Shopify/examples.txt
+
 # create the new unitypackage
 $UNITY_PATH \
     -batchmode \
@@ -67,6 +70,9 @@ $UNITY_PATH \
     -quit
 
 if [ $? = 0 ] ; then
+    # clean up examples.txt
+    rm $PROJECT_ROOT/Assets/Shopify/examples.txt
+
     echo "Export finished"
 else
     echo "Export failed. Exited with $?"
