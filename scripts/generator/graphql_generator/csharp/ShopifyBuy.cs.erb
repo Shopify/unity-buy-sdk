@@ -233,56 +233,188 @@ namespace <%= namespace %> {
                 } else if (errors != null) {
                     callback(null, errors, null);
                 } else {
-                    List<ConnectionQueryInfo> connectionInfos = new List<ConnectionQueryInfo>() { 
-                        new ConnectionQueryInfo(
-                            getConnection: (p) => ((Product) p).images(),
-                            query: (p, imagesAfter) => {
-                                ((ProductQuery) p).images(ic => DefaultQueries.products.ImageConnection(ic),
-                                    first: DefaultQueries.MaxPageSize, after: imagesAfter
-                                );
-                            }
-                        ),
-                        new ConnectionQueryInfo(
-                            getConnection: (p) => ((Product) p).variants(),
-                            query: (p, variantsAfter) => {
-                                ((ProductQuery) p).variants(vc => DefaultQueries.products.ProductVariantConnection(vc, DefaultImageResolutions),
-                                    first: DefaultQueries.MaxPageSize, after: variantsAfter
-                                );
-                            }
-                        ),
-                        new ConnectionQueryInfo(
-                            getConnection: (p) => ((Product) p).collections(),
-                            query: (p, collectionsAfter) => {
-                                ((ProductQuery) p).collections(cc => DefaultQueries.products.CollectionConnection(cc),
-                                    first: DefaultQueries.MaxPageSize, after: collectionsAfter
-                                );
-                            }
-                        )
-                    };
-
-                    foreach(string alias in DefaultImageResolutions.Keys) {
-                        connectionInfos.Add(new ConnectionQueryInfo(
-                            getConnection: (p) => ((Product) p).images(alias),
-                            query: (p, imagesAfter) => {
-                                ((ProductQuery) p).images(ic => DefaultQueries.products.ImageConnection(ic),
-                                    first: DefaultQueries.MaxPageSize, 
-                                    after: imagesAfter, 
-                                    maxWidth: DefaultImageResolutions[alias],
-                                    maxHeight: DefaultImageResolutions[alias],
-                                    alias: alias
-                                );
-                            }
-                        ));
-                    }
-
-                    ConnectionLoader loader = new ConnectionLoader(Loader);
-                    List<Node> nodes = products.ConvertAll(p => (Node) p);
-                    
-                    loader.QueryConnectionsOnNodes(nodes, connectionInfos, BuildProductQueryOnNode, (nodesResult, errorsNode, httpErrorsNode) => {
-                        callback(nodesResult.ConvertAll(n => (Product) n), errorsNode, httpErrorsNode);
-                    });
+                    GetConnectionsForProducts(products, callback);
                 }
             }, first: first, after: after);
+        }
+
+        /// <summary>
+        /// Will generate a query to receive selected <c>products</c> from a Shopify store. The generated query will query the following on products:
+        ///     - id
+        ///     - title
+        ///     - descriptionHtml
+        ///     - images (with aliases defined by ShopifyClient.defaultImageResolutions)
+        ///         - altText
+        ///         - src
+        ///     - options
+        ///         - name
+        ///         - values
+        ///     - variants
+        ///         - id
+        ///         - available
+        ///         - price
+        ///         - title
+        ///         - weight
+        ///         - weightUnit
+        ///         - selectedOptions
+        ///             - name
+        ///             - values
+        ///         - image (with aliases defined by ShopifyClient.defaultImageResolutions)
+        ///             - altText
+        ///             - src
+        ///     - collections
+        ///         - image (with aliases defined by ShopifyClient.defaultImageResolutions)
+        ///             - altText
+        ///             - src
+        ///         - title
+        ///         - updatedAt
+        ///
+        /// </summary>
+        /// <param name="callback">callback that will receive responses from server</param>
+        /// <param name="firstProductId">you must pass in at least one product id to query</param>
+        /// <param name="otherProductIds">
+        /// after the first product id you can pass in as many product ids as you'd like.
+        /// </param>
+        /// <code>
+        /// // Example usage querying two product ids
+        /// ShopifyBuy.Client().products((products, errors, httpError) => {
+        ///     Debug.Log(products[0].id()); // "gid://shopify/Product/9895276099"
+        ///     Debug.Log(products[1].id()); // "gid://shopify/Product/9895279043"
+        /// }, "gid://shopify/Product/9895276099", "gid://shopify/Product/9895279043");
+        /// </code>
+		public void products(ResponseProductsHandler callback, string firstProductId, params string[] otherProductIds) {
+            List<string> productIds = new List<string>();
+            productIds.Add(firstProductId);
+            productIds.AddRange(otherProductIds);
+
+            products(callback, productIds);
+        }
+
+        /// <summary>
+        /// Will generate a query to receive selected <c>products</c> from a Shopify store. The generated query will query the following on products:
+        ///     - id
+        ///     - title
+        ///     - descriptionHtml
+        ///     - images (with aliases defined by ShopifyClient.defaultImageResolutions)
+        ///         - altText
+        ///         - src
+        ///     - options
+        ///         - name
+        ///         - values
+        ///     - variants
+        ///         - id
+        ///         - available
+        ///         - price
+        ///         - title
+        ///         - weight
+        ///         - weightUnit
+        ///         - selectedOptions
+        ///             - name
+        ///             - values
+        ///         - image (with aliases defined by ShopifyClient.defaultImageResolutions)
+        ///             - altText
+        ///             - src
+        ///     - collections
+        ///         - image (with aliases defined by ShopifyClient.defaultImageResolutions)
+        ///             - altText
+        ///             - src
+        ///         - title
+        ///         - updatedAt
+        ///
+        /// </summary>
+        /// <param name="callback">callback that will receive responses from server</param>
+        /// <param name="productIds">a list of product ids you'd like to query</param>
+        /// <code>
+        /// // Example usage querying two product ids
+        /// ShopifyBuy.Client().products((products, errors, httpError) => {
+        ///     Debug.Log(products[0].id()); // "gid://shopify/Product/9895276099"
+        ///     Debug.Log(products[1].id()); // "gid://shopify/Product/9895279043"
+        /// }, "gid://shopify/Product/9895276099", "gid://shopify/Product/9895279043");
+        /// </code>
+        public void products(ResponseProductsHandler callback, List<string> productIds) {
+            QueryRootQuery query = new QueryRootQuery();
+            
+            for (int i = 0; i < productIds.Count; i++) {
+                string productId = productIds[i];
+                
+                query.node(n => n
+                    .onProduct((p) => {
+                        DefaultQueries.products.Product(p, DefaultImageResolutions);
+                    }),
+                    id: productId, alias: DefaultQueries.GetAliasFromIndex(i)
+                );
+            }
+
+            Loader.Query(query, (response) => {
+                if (response.HTTPError != null) {
+                    callback(null, null, response.HTTPError);
+                } else if (response.errors != null) {
+                    callback(null, response.errors, null);
+                } else {
+                    List<Product> products = new List<Product>();
+
+                    for (int i = 0; i < productIds.Count; i++) {
+                        Product product = (Product) response.data.node(DefaultQueries.GetAliasFromIndex(i));
+
+                        products.Add(product);
+                    }
+
+                    GetConnectionsForProducts(products, callback);
+                }
+            });
+        }
+
+        private void GetConnectionsForProducts(List<Product> products, ResponseProductsHandler callback) {
+            List<ConnectionQueryInfo> connectionInfos = new List<ConnectionQueryInfo>() { 
+                new ConnectionQueryInfo(
+                    getConnection: (p) => ((Product) p).images(),
+                    query: (p, imagesAfter) => {
+                        ((ProductQuery) p).images(ic => DefaultQueries.products.ImageConnection(ic),
+                            first: DefaultQueries.MaxPageSize, after: imagesAfter
+                        );
+                    }
+                ),
+                new ConnectionQueryInfo(
+                    getConnection: (p) => ((Product) p).variants(),
+                    query: (p, variantsAfter) => {
+                        ((ProductQuery) p).variants(vc => DefaultQueries.products.ProductVariantConnection(vc, DefaultImageResolutions),
+                            first: DefaultQueries.MaxPageSize, after: variantsAfter
+                        );
+                    }
+                ),
+                new ConnectionQueryInfo(
+                    getConnection: (p) => ((Product) p).collections(),
+                    query: (p, collectionsAfter) => {
+                        ((ProductQuery) p).collections(cc => DefaultQueries.products.CollectionConnection(cc),
+                            first: DefaultQueries.MaxPageSize, after: collectionsAfter
+                        );
+                    }
+                )
+            };
+
+            foreach(string alias in DefaultImageResolutions.Keys) {
+                string currentAlias = alias;
+
+                connectionInfos.Add(new ConnectionQueryInfo(
+                    getConnection: (p) => ((Product) p).images(currentAlias),
+                    query: (p, imagesAfter) => {
+                        ((ProductQuery) p).images(ic => DefaultQueries.products.ImageConnection(ic),
+                            first: DefaultQueries.MaxPageSize, 
+                            after: imagesAfter, 
+                            maxWidth: DefaultImageResolutions[currentAlias],
+                            maxHeight: DefaultImageResolutions[currentAlias],
+                            alias: currentAlias
+                        );
+                    }
+                ));
+            }
+
+            ConnectionLoader loader = new ConnectionLoader(Loader);
+            List<Node> nodes = products.ConvertAll(p => (Node) p);
+            
+            loader.QueryConnectionsOnNodes(nodes, connectionInfos, BuildProductQueryOnNode, (nodesResult, errorsNode, httpErrorsNode) => {
+                callback(nodesResult.ConvertAll(n => (Product) n), errorsNode, httpErrorsNode);
+            });
         }
 
         /// <summary>
