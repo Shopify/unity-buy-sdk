@@ -306,42 +306,29 @@ namespace Shopify.Tests {
 
             query = new QueryRootQuery();
 
-            query.node(n => n
-                .onProduct(p => p
-                    .id()
-                    .images(ic => DefaultQueries.products.ImageConnection(ic),
-                        first: PageSize, after: "image249"
-                    )
-                    .images(ic => DefaultQueries.products.ImageConnection(ic),
-                        alias: "pico", first: PageSize, after: "image249", maxWidth:16, maxHeight:16
-                    )
-                    .images(ic => DefaultQueries.products.ImageConnection(ic),
-                        alias: "icon", first: PageSize, after: "image249", maxWidth:32, maxHeight:32
-                    )
-                    .images(ic => DefaultQueries.products.ImageConnection(ic),
-                        alias: "thumb", first: PageSize, after: "image249", maxWidth:50, maxHeight:50
-                    )
-                    .images(ic => DefaultQueries.products.ImageConnection(ic),
-                        alias: "small", first: PageSize, after: "image249", maxWidth:100, maxHeight:100
-                    )
-                    .images(ic => DefaultQueries.products.ImageConnection(ic),
-                        alias: "compact", first: PageSize, after: "image249", maxWidth:160, maxHeight:160
-                    )
-                    .images(ic => DefaultQueries.products.ImageConnection(ic),
-                        alias: "medium", first: PageSize, after: "image249", maxWidth:240, maxHeight:240
-                    )
-                    .images(ic => DefaultQueries.products.ImageConnection(ic),
-                        alias: "large", first: PageSize, after: "image249", maxWidth:480, maxHeight:480
-                    )
-                    .images(ic => DefaultQueries.products.ImageConnection(ic),
-                        alias: "grande", first: PageSize, after: "image249", maxWidth:600, maxHeight:600
-                    )
-                    .images(ic => DefaultQueries.products.ImageConnection(ic),
-                        alias: "resolution_1024", first: PageSize, after: "image249", maxWidth:1024, maxHeight:1024
-                    )
-                    .images(ic => DefaultQueries.products.ImageConnection(ic),
-                        alias: "resolution_2048", first: PageSize, after: "image249", maxWidth:2048, maxHeight:2048
-                    )
+            query.node(
+                n => n
+                    .onProduct((p) => {
+                        p.id()
+                        .images((ic) => { DefaultQueries.products.ImageConnection(ic); },
+                            PageSize, "image249"
+                        );
+
+                        foreach(string alias in ShopifyClient.DefaultImageResolutions.Keys) {
+                            string currentAlias = alias;
+
+                            p.images((ic) => { DefaultQueries.products.ImageConnection(ic); },
+                                PageSize, 
+                                "image249", 
+                                null, 
+                                ShopifyClient.DefaultImageResolutions[currentAlias], 
+                                ShopifyClient.DefaultImageResolutions[currentAlias], 
+                                null, 
+                                null, 
+                                currentAlias
+                            );
+                        }
+                    }
                 ),
                 id: "productId333", alias: "a0"
             );

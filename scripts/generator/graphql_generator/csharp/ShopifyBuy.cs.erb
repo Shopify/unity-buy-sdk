@@ -348,15 +348,17 @@ namespace <%= namespace %> {
             };
 
             foreach(string alias in DefaultImageResolutions.Keys) {
+                string currentAlias = alias;
+
                 connectionInfos.Add(new ConnectionQueryInfo(
-                    getConnection: (p) => ((Product) p).images(alias),
+                    getConnection: (p) => ((Product) p).images(currentAlias),
                     query: (p, imagesAfter) => {
                         ((ProductQuery) p).images(ic => DefaultQueries.products.ImageConnection(ic),
                             first: DefaultQueries.MaxPageSize, 
                             after: imagesAfter, 
-                            maxWidth: DefaultImageResolutions[alias],
-                            maxHeight: DefaultImageResolutions[alias],
-                            alias: alias
+                            maxWidth: DefaultImageResolutions[currentAlias],
+                            maxHeight: DefaultImageResolutions[currentAlias],
+                            alias: currentAlias
                         );
                     }
                 ));
