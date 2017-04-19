@@ -13,10 +13,10 @@ namespace <%= namespace %> {
     /// </summary>
     public class ShopifyBuy {
         /// <summary>
-        /// version of the Unity Buy SDK
+        /// Version of the Unity Buy SDK.
         /// </summary>
         /// \code
-        /// // example checking sdk version
+        /// // Example checking SDK version
         /// Debug.Log("Current SDK Version: " + ShopifyBuy.VERSION);
         /// \endcode
         public const string VERSION = "<%= version %>";
@@ -29,8 +29,8 @@ namespace <%= namespace %> {
         #endif
 
         /// <summary>
-        /// Will return the default <see ref="ShopifyClient">ShopifyClient </see>. The default client is the first client created after
-        /// calling  <see ref="ShopifyBuy.Init">ShopifyBuy.Init </see>. It should be noted that <see ref="ShopifyBuy.Init">ShopifyBuy.Init </see>
+        /// Returns the default <see ref="ShopifyClient">ShopifyClient </see>. The default client is the first client created after
+        /// calling  <see ref="ShopifyBuy.Init">ShopifyBuy.Init </see>. Note that <see ref="ShopifyBuy.Init">ShopifyBuy.Init </see>
         /// must be called before trying to call this function.
         /// </summary>
         /// \code
@@ -46,8 +46,8 @@ namespace <%= namespace %> {
         }
 
         /// <summary>
-        /// Will return a <see ref="ShopifyClient">ShopifyClient </see> for the <c>domain<c> passed in. This is useful
-        /// when you have multiple Shops your application is querying. It should be noted that 
+        /// Returns a <see ref="ShopifyClient">ShopifyClient </see> for the <c>domain<c> passed in. This is useful
+        /// when you have multiple Shops your application is querying. Note that
         /// <see ref="ShopifyBuy.Init">ShopifyBuy.Init </see> must be called before trying to call this function.
         /// </summary>
         /// <param name="domain">the domain associated to a client</param>
@@ -68,7 +68,7 @@ namespace <%= namespace %> {
         }
 
         /// <summary>
-        /// Will initialize a <see ref="ShopifyClient">ShopifyClient </see> that can be used to query the Storefront API.
+        /// Initializes a <see ref="ShopifyClient">ShopifyClient </see> that can be used to query the Storefront API.
         /// The default client which can be accessed by calling <see ref="ShopifyBuy.Client">ShopifyBuy.Client() </see> which is
         /// initialized after <see ref="ShopifyBuy.Init">ShopifyBuy.Init </see> is called. To access the client for the specific
         /// domain passed, use <see ref="ShopifyBuy.Client">ShopifyBuy.Client(domain) </see>.
@@ -79,7 +79,7 @@ namespace <%= namespace %> {
         /// // Example showing how to initialize the Unity Buy SDK
         /// string accessToken = "351c122017d0f2a957d32ae728ad749c";
         /// string shopDomain = "graphql.myshopify.com";
-        /// 
+        ///
         /// // Init only needs to be called once
         /// ShopifyBuy.Init(accessToken, shopDomain);
         /// \endcode
@@ -107,9 +107,9 @@ namespace <%= namespace %> {
         /// // Mock example using a custom loader for another C# platform
         /// string accessToken = "351c122017d0f2a957d32ae728ad749c";
         /// string shopDomain = "graphql.myshopify.com";
-        /// 
+        ///
         /// CustomLoaderForNonUnityPlatform loader = new CustomLoaderForNonUnityPlatform(accessToken, shopDomain);
-        /// 
+        ///
         /// // Init only needs to be called once
         /// ShopifyBuy.Init(loader);
         /// \endcode
@@ -149,10 +149,10 @@ namespace <%= namespace %> {
         /// defined by this dictionary's keys and the <c>maxWidth</c> and <c>maxHeight</c> will be this dictionary's values.
         ///
         /// \code{.cs}
-        /// // returns an image source url whose dimensions are never greater than 100px
+        /// // Returns an image source url whose dimensions are never greater than 100px
         /// string srcSmallImage = productVariant.image("small").src();
         ///
-        /// // returns an image source url whose dimensions are never greater than 1024px
+        /// // Returns an image source url whose dimensions are never greater than 1024px
         /// string src1024Image = productVariant.image("resolution_1024").src();
         /// \endcode
         /// </summary>
@@ -204,9 +204,9 @@ namespace <%= namespace %> {
         /// // Example that initializes a new ShopifyClient which will query all products
         /// string accessToken = "351c122017d0f2a957d32ae728ad749c";
         /// string shopDomain = "graphql.myshopify.com";
-        /// 
+        ///
         /// ShopifyClient client = new ShopifyClient(accessToken, shopDomain);
-        /// 
+        ///
         /// client.products((products, errors, httpError) => {
         ///     Debug.Log(products[0].title()); // "Snare Boot"
         ///     Debug.Log(products[1].title()); // "Neptune Boot"
@@ -235,9 +235,9 @@ namespace <%= namespace %> {
         /// string shopDomain = "graphql.myshopify.com";
         ///
         /// CustomLoaderForNonUnityPlatform loader = new CustomLoaderForNonUnityPlatform(accessToken, shopDomain);
-        /// 
+        ///
         /// ShopifyClient client = new ShopifyClient(loader);
-        /// 
+        ///
         /// client.products((products, errors, httpError) => {
         ///     Debug.Log(products[0].title()); // "Snare Boot"
         ///     Debug.Log(products[1].title()); // "Neptune Boot"
@@ -251,7 +251,7 @@ namespace <%= namespace %> {
         }
 
         /// <summary>
-        /// Will generate a query to receive all <c>products</c> from a Shopify store. The generated query will query the following on products:
+        /// Generates a query to receive all <c>products</c> from a Shopify store. The generated query will query the following on products:
         ///     - id
         ///     - title
         ///     - descriptionHtml
@@ -281,7 +281,7 @@ namespace <%= namespace %> {
         ///         - title
         ///         - updatedAt
         ///
-        /// It should be noted that <c>shop.products</c> is a Connection (GraphQL paginated data structure). <see ref="ShopifyClient.products">products </see>
+        /// Note that <c>shop.products</c> is a Connection (GraphQL paginated data structure). <see ref="ShopifyClient.products">products </see>
         /// will load all pages of products by default unless a value is passed for the <c>first</c> param.
         /// </summary>
         /// <param name="callback">callback that will receive responses from server</param>
@@ -312,7 +312,7 @@ namespace <%= namespace %> {
         }
 
         /// <summary>
-        /// Will generate a query to receive selected <c>products</c> from a Shopify store. The generated query will query the following on products:
+        /// Generates a query to receive selected <c>products</c> from a Shopify store. The generated query will query the following on products:
         ///     - id
         ///     - title
         ///     - descriptionHtml
@@ -364,7 +364,7 @@ namespace <%= namespace %> {
         }
 
         /// <summary>
-        /// Will generate a query to receive selected <c>products</c> from a Shopify store. The generated query will query the following on products:
+        /// Generates a query to receive selected <c>products</c> from a Shopify store. The generated query will query the following on products:
         ///     - id
         ///     - title
         ///     - descriptionHtml
@@ -399,9 +399,9 @@ namespace <%= namespace %> {
         /// <param name="productIds">a list of product ids you'd like to query</param>
         /// \code
         /// // Example usage querying two product ids using a List<string>
-        /// List<string> productIds = new List<string>() { 
-        ///     "gid://shopify/Product/9895276099", 
-        ///     "gid://shopify/Product/9895279043" 
+        /// List<string> productIds = new List<string>() {
+        ///     "gid://shopify/Product/9895276099",
+        ///     "gid://shopify/Product/9895279043"
         /// };
         ///
         /// ShopifyBuy.Client().products((products, errors, httpError) => {
@@ -411,10 +411,10 @@ namespace <%= namespace %> {
         /// \endcode
         public void products(ResponseProductsHandler callback, List<string> productIds) {
             QueryRootQuery query = new QueryRootQuery();
-            
+
             for (int i = 0; i < productIds.Count; i++) {
                 string productId = productIds[i];
-                
+
                 query.node(n => n
                     .onProduct((p) => {
                         DefaultQueries.products.Product(p, DefaultImageResolutions);
@@ -443,7 +443,7 @@ namespace <%= namespace %> {
         }
 
         /// <summary>
-        /// Will generate a query to receive all <c>collections</c> from a Shopify store. The generated query will query the following on collections:
+        /// Generates a query to receive all <c>collections</c> from a Shopify store. The generated query will query the following on collections:
         ///     - id
         ///     - title
         ///     - description
@@ -455,7 +455,7 @@ namespace <%= namespace %> {
         ///     - products
         ///         - id
         ///
-        /// It should be noted that <c>shop.collections</c> is a Connection (GraphQL paginated data structure). <see ref="ShopifyClient.collections">collections </see>
+        /// Note that <c>shop.collections</c> is a Connection (GraphQL paginated data structure). <see ref="ShopifyClient.collections">collections </see>
         /// will load all pages of collections by default unless a value is passed for the <c>first</c> param.
         /// </summary>
         /// <param name="callback">will receive responses from server</param>
@@ -466,7 +466,7 @@ namespace <%= namespace %> {
         /// products would be loaded after cursor <c>"abc"</c>.
         /// </param>
         /// \code
-        /// // Example queries all collections on a shop
+        /// // Example that queries all collections on a shop
 		/// ShopifyBuy.Client().collections((collections, errors, httpError) => {
 		/// 	Debug.Log(collections[0].title()); // "Home page"
 		/// 	Debug.Log(collections.Count); // 1 collection
@@ -508,9 +508,9 @@ namespace <%= namespace %> {
         /// <param name="query">a GraphQL query to be sent to the Storefront API</param>
         /// <param name="callback">callback which will receive a response from the query</param>
         /// \code
-        /// // Example that queries a Shop's name 
+        /// // Example that queries a Shop's name
         /// QueryRoot query = new QueryRootQuery();
-        /// 
+        ///
         /// query.shop(s => s
         ///     .name()
         /// );
@@ -545,7 +545,7 @@ namespace <%= namespace %> {
         /// </param>
         /// <param name="callback">callback which will receive a response</param>
         /// \code
-        /// // Example that build a query that queries a Shop's name
+        /// // Example that builds a query that queries a Shop's name
         /// ShopifyBuy.Client().Query(
         ///     query: q => q
         ///         .shop(s => s
@@ -576,7 +576,7 @@ namespace <%= namespace %> {
         /// <param name="query">a query to be sent to the Storefront API</param>
         /// <param name="callback">callback which will receive a response</param>
         /// \code
-        /// // Example shows how to create a custom mutation query
+        /// // Example that creates a custom mutation query
         /// MutationQuery mutation = new MutationQuery();
         ///
 		/// mutation.customerCreate(
@@ -633,7 +633,7 @@ namespace <%= namespace %> {
         /// <param name="buildQuery">delegate that will build a query starting at <see ref="<%= schema.query_root_name %>Query"><%= schema.mutation_root_name %>Query </see></param>
         /// <param name="callback">callback which will receive a response</param>
         /// \code
-        /// // Example shows how to create a new customer on a store
+        /// // Example that creates a new customer on a store
         /// ShopifyBuy.Client().Mutation(
         ///     buildQuery: (mutation) => { mutation
         ///         .customerCreate(
@@ -661,7 +661,7 @@ namespace <%= namespace %> {
         ///             }
         ///         } else {
         ///             List<UserError> userErrors = data.customerCreate().userErrors();
-        /// 
+        ///
         ///             if (userErrors != null) {
         ///                 foreach(UserError error in userErrors) {
         ///                     // field which may have a user error
@@ -692,7 +692,7 @@ namespace <%= namespace %> {
         /// </summary>
         /// <param name="cartId">can be optionally passed in. This is useful if your application needs multiple carts</param>
         /// \code
-        /// // Example checks how many line items the cart contains
+        /// // Example that checks how many line items the cart contains
         /// Cart cart = ShopifyBuy.Client().Cart();
         ///
         /// Debug.Log("The cart has " + cart.LineItems.All().Count + " line items");
@@ -718,7 +718,7 @@ namespace <%= namespace %> {
         }
 
         private void GetConnectionsForProducts(List<Product> products, ResponseProductsHandler callback) {
-            List<ConnectionQueryInfo> connectionInfos = new List<ConnectionQueryInfo>() { 
+            List<ConnectionQueryInfo> connectionInfos = new List<ConnectionQueryInfo>() {
                 new ConnectionQueryInfo(
                     getConnection: (p) => ((Product) p).images(),
                     query: (p, imagesAfter) => {
@@ -752,8 +752,8 @@ namespace <%= namespace %> {
                     getConnection: (p) => ((Product) p).images(currentAlias),
                     query: (p, imagesAfter) => {
                         ((ProductQuery) p).images(ic => DefaultQueries.products.ImageConnection(ic),
-                            first: DefaultQueries.MaxPageSize, 
-                            after: imagesAfter, 
+                            first: DefaultQueries.MaxPageSize,
+                            after: imagesAfter,
                             maxWidth: DefaultImageResolutions[currentAlias],
                             maxHeight: DefaultImageResolutions[currentAlias],
                             alias: currentAlias
@@ -764,7 +764,7 @@ namespace <%= namespace %> {
 
             ConnectionLoader loader = new ConnectionLoader(Loader);
             List<Node> nodes = products.ConvertAll(p => (Node) p);
-            
+
             loader.QueryConnectionsOnNodes(nodes, connectionInfos, BuildProductQueryOnNode, (nodesResult, errorsNode, httpErrorsNode) => {
                 callback(nodesResult.ConvertAll(n => (Product) n), errorsNode, httpErrorsNode);
             });
@@ -815,9 +815,9 @@ namespace <%= namespace %> {
 
                         query = new QueryRootQuery();
                         DefaultQueries.products.ShopProducts(
-                            query: query, 
+                            query: query,
                             imageResolutions: DefaultImageResolutions,
-                            first: countToLoad > DefaultQueries.MaxPageSize ? DefaultQueries.MaxPageSize : countToLoad, 
+                            first: countToLoad > DefaultQueries.MaxPageSize ? DefaultQueries.MaxPageSize : countToLoad,
                             after: edges != null ? edges[edges.Count - 1].cursor() : after
                         );
                     }
