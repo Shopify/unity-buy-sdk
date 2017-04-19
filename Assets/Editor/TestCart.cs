@@ -35,7 +35,7 @@ namespace Shopify.Tests
             Dictionary<string,object> data = new Dictionary<string,object>();
             data.Add("id", "gid://shopify/ProductVariant/20756129347");
 
-            Shopify.Unity.GraphQL.ProductVariant variant = new Shopify.Unity.GraphQL.ProductVariant(data);
+            ProductVariant variant = new ProductVariant(data);
 
             cart.LineItems.AddOrUpdate("gid://shopify/ProductVariant/20756129155", 33);
             cart.LineItems.AddOrUpdate(variant, 2);

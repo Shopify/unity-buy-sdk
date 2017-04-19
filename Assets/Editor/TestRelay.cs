@@ -2,9 +2,10 @@ namespace Shopify.Tests {
     using NUnit.Framework;
     using System;
     using System.Collections.Generic;
+    using Shopify.Unity;
+    using Shopify.Unity.SDK;
     using Shopify.Unity.GraphQL;
     using Shopify.Unity.MiniJSON;
-    using Shopify.Unity.SDK;
 
     class CollectionTestQueries {
         public static QueryRootQuery query1 = (new QueryRootQuery()).shop(s => s.
