@@ -36,9 +36,9 @@ namespace <%= namespace %> {
         /// \code
         /// // Example usage querying all products using `Client`
         /// ShopifyBuy.Client().products((products, errors, httpError) => {
-		/// 	Debug.Log(products[0].title()); // "Snare Boot"
-		/// 	Debug.Log(products[1].title()); // "Neptune Boot"
-		/// 	Debug.Log(products.Count); // 38 products returned
+        /// 	Debug.Log(products[0].title()); // "Snare Boot"
+        /// 	Debug.Log(products[1].title()); // "Neptune Boot"
+        /// 	Debug.Log(products.Count); // 38 products returned
         /// });
         /// \endcode
         public static ShopifyClient Client() {
@@ -54,9 +54,9 @@ namespace <%= namespace %> {
         /// \code
         /// // Example usage querying all products using `Client` and a domain
         /// ShopifyBuy.Client("graphql.myshopify.com").products((products, errors, httpError) => {
-		/// 	Debug.Log(products[0].title()); // "Snare Boot"
-		/// 	Debug.Log(products[1].title()); // "Neptune Boot"
-		/// 	Debug.Log(products.Count); // 38 products returned
+        /// 	Debug.Log(products[0].title()); // "Snare Boot"
+        /// 	Debug.Log(products[1].title()); // "Neptune Boot"
+        /// 	Debug.Log(products.Count); // 38 products returned
         /// });
         /// \endcode
         public static ShopifyClient Client(string domain) {
@@ -294,9 +294,9 @@ namespace <%= namespace %> {
         /// \code
         /// // Example usage querying all products
         /// ShopifyBuy.Client().products((products, errors, httpError) => {
-		/// 	Debug.Log(products[0].title()); // "Snare Boot"
-		/// 	Debug.Log(products[1].title()); // "Neptune Boot"
-		/// 	Debug.Log(products.Count); // 38 products returned
+        /// 	Debug.Log(products[0].title()); // "Snare Boot"
+        /// 	Debug.Log(products[1].title()); // "Neptune Boot"
+        /// 	Debug.Log(products.Count); // 38 products returned
         /// });
         /// \endcode
         public void products(ResponseProductsHandler callback, int? first = null, string after = null) {
@@ -355,7 +355,7 @@ namespace <%= namespace %> {
         ///     Debug.Log(products[1].title()); // "Neptune Boot"
         /// }, "gid://shopify/Product/9895276099", "gid://shopify/Product/9895279043");
         /// \endcode
-		public void products(ResponseProductsHandler callback, string firstProductId, params string[] otherProductIds) {
+        public void products(ResponseProductsHandler callback, string firstProductId, params string[] otherProductIds) {
             List<string> productIds = new List<string>();
             productIds.Add(firstProductId);
             productIds.AddRange(otherProductIds);
@@ -467,10 +467,10 @@ namespace <%= namespace %> {
         /// </param>
         /// \code
         /// // Example that queries all collections on a shop
-		/// ShopifyBuy.Client().collections((collections, errors, httpError) => {
-		/// 	Debug.Log(collections[0].title()); // "Home page"
-		/// 	Debug.Log(collections.Count); // 1 collection
-		/// });
+        /// ShopifyBuy.Client().collections((collections, errors, httpError) => {
+        /// 	Debug.Log(collections[0].title()); // "Home page"
+        /// 	Debug.Log(collections.Count); // 1 collection
+        /// });
         /// \endcode
         public void collections(ResponseCollectionsHandler callback, int? first = null, string after = null) {
             GetCollectionsList((collections, errors, httpError) => {
@@ -579,47 +579,47 @@ namespace <%= namespace %> {
         /// // Example that creates a custom mutation query
         /// MutationQuery mutation = new MutationQuery();
         ///
-		/// mutation.customerCreate(
-		/// 	buildQuery: (cc) => { cc
-		/// 		.userErrors(
-		/// 			buildQuery: (ue) => { ue
-		/// 				.field()
-		/// 				.message();
-		/// 			}
-		/// 		);
-		/// 	},
-		/// 	input: new CustomerCreateInput(
-		/// 		email: "mikkoh@email.com",
-		/// 		password: "oh so secret"
-		/// 	)
-		/// );
+        /// mutation.customerCreate(
+        /// 	buildQuery: (cc) => { cc
+        ///         .userErrors(
+        ///         	buildQuery: (ue) => { ue
+        ///                 .field()
+        ///                 .message();
+        ///         	}
+        ///         );
+        /// 	},
+        /// 	input: new CustomerCreateInput(
+        ///         email: "mikkoh@email.com",
+        ///         password: "oh so secret"
+        /// 	)
+        /// );
         ///
-		/// ShopifyBuy.Client().Mutation(
-		/// 	query: mutation,
-		/// 	callback: (data, errors, httpErrors) => {
-		/// 		if (httpErrors != null) {
-		/// 		    Debug.Log("There was an error communicating with the Storefront API");
-		/// 		} else if (errors != null) {
-		/// 			// output any graphql errors
-		/// 		    foreach(string error in errors) {
-		/// 				Debug.Log(error);
-		/// 			}
-		/// 		} else {
-		/// 			List<UserError> userErrors = data.customerCreate().userErrors();
+        /// ShopifyBuy.Client().Mutation(
+        /// 	query: mutation,
+        /// 	callback: (data, errors, httpErrors) => {
+        ///         if (httpErrors != null) {
+        ///             Debug.Log("There was an error communicating with the Storefront API");
+        ///         } else if (errors != null) {
+        ///         	// output any graphql errors
+        ///             foreach(string error in errors) {
+        ///                 Debug.Log(error);
+        ///         	}
+        ///         } else {
+        ///         	List<UserError> userErrors = data.customerCreate().userErrors();
         ///
-		/// 			if (userErrors != null) {
-		/// 				foreach(UserError error in userErrors) {
-		/// 					// field which may have a user error
-		/// 					Debug.Log(error.field());
-		/// 					// error message for the field which had an error
-		/// 					Debug.Log(error.message());
-		/// 				}
-		/// 			} else {
-		/// 				Debug.Log("No user errors the customer was created");
-		/// 			}
-		/// 		}
-		/// 	}
-		/// );
+        ///         	if (userErrors != null) {
+        ///                 foreach(UserError error in userErrors) {
+        ///                 	// field which may have a user error
+        ///                 	Debug.Log(error.field());
+        ///                 	// error message for the field which had an error
+        ///                 	Debug.Log(error.message());
+        ///                 }
+        ///         	} else {
+        ///                 Debug.Log("No user errors the customer was created");
+        ///         	}
+        ///         }
+        /// 	}
+        /// );
         /// \endcode
         public void Mutation(<%= schema.mutation_root_name %>Query query, ResponseMutationHandler callback) {
             Loader.Mutation(query, (response) => {
