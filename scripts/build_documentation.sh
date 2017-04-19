@@ -2,6 +2,9 @@
 
 which doxygen &> /dev/null || die "doxygen is not installed"
 
+cat $PROJECT_ROOT/scripts/docs/temp_landing.md > $PROJECT_ROOT/scripts/docs/landing.md
+cat $PROJECT_ROOT/EXAMPLES.md >> $PROJECT_ROOT/scripts/docs/landing.md
+
 doxygen Doxyfile
 
 if [ $? = 0 ] ; then

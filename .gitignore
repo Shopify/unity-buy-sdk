@@ -8,6 +8,7 @@ Assets/Shopify/Unity/
 ####### Documentation
 html/
 latex/
+scripts/docs/landing.md
 
 ####### Test files
 test.dll
