@@ -25,6 +25,13 @@ namespace <%= namespace %> {
         /// <param name="variantId">variant id for a <see ref="ProductVariant">ProductVariant </see></param>
         /// <param name="quantity">the number of items you'd like to order for variantId</param>
         /// <param name="customAttributes">can be used to define extra information for this line item</param>
+        /// \code
+        /// // Example updates the quantity of items to be purchased to 3
+        /// // if no line item exists for `variantId` then a new line item is created
+        /// Cart cart = ShopifyBuy.Client().Cart();
+        /// 
+        /// cart.LineItems.AddOrUpdate(variantId, 3);
+        /// \endcode
         public void AddOrUpdate(string variantId, long? quantity = null, List<AttributeInput> customAttributes = null) {
             CheckoutLineItemInput input = Get(variantId);
 
@@ -57,6 +64,13 @@ namespace <%= namespace %> {
         /// <param name="variant"><see ref="ProductVariant">ProductVariant </see> whose id will be used to create or update a line item</param>
         /// <param name="quantity">the number of items you'd like to order for variantId</param>
         /// <param name="customAttributes">can be used to define extra information for this line item</param>
+        /// \code
+        /// // Example updates the quantity of items to be purchased to 3
+        /// // if no line item exists for `variantId` then a new line item is created
+        /// Cart cart = ShopifyBuy.Client().Cart();
+        /// 
+        /// cart.LineItems.AddOrUpdate(variant, 3);
+        /// \endcode
         public void AddOrUpdate(ProductVariant variant, long? quantity = null, List<AttributeInput> customAttributes = null) {
             AddOrUpdate(variant.id(), quantity, customAttributes);
         }
@@ -70,6 +84,18 @@ namespace <%= namespace %> {
         /// <param name="quantity">the number of items you'd like to order for variantId</param>
         /// <param name="customAttributes">customAttributes can be used to define extra information for this line item</param>
         /// <exception ref="NoMatchingVariantException">Throws when no matching variant could be found for selected options in product</exception>
+        /// \code
+        /// // Example updates the quantity of items to be purchased to 3
+        /// // if no line item exists for `variantId` then a new line item is created
+        /// Cart cart = ShopifyBuy.Client().Cart();
+        /// 
+        /// Dictionary<string, string> selectedOptions = new Dictionary<string, string>() {
+        ///     {"Size", "Small"},
+        ///     {"Color", "Red"}
+        /// };
+        /// 
+        /// cart.LineItems.AddOrUpdate(product, selectedOptions, 3);
+        /// \endcode
         public void AddOrUpdate(Product product, Dictionary<string, string> selectedOptions, long? quantity = null, List<AttributeInput> customAttributes = null) {
             string variantId = VariantIdFromSelectedOptions(product, selectedOptions);
 
@@ -83,6 +109,12 @@ namespace <%= namespace %> {
         /// <summary>
         /// Returns all <see ref="CheckoutLineItemInput">Line Items </see> that have been created.
         /// </summary>
+        /// \code
+        /// // Example checks how many line items the cart contains
+        /// Cart cart = ShopifyBuy.Client().Cart();
+        ///
+        /// Debug.Log("The cart has " + cart.LineItems.All().Count + " line items");
+        /// \endcode
         public List<CheckoutLineItemInput> All() {
             return LineItems;
         }
@@ -92,6 +124,12 @@ namespace <%= namespace %> {
         /// <c>null</c> will be returned.
         /// </summary>
         /// <param name="variantId">variant id used to create a line item</param>
+        /// \code
+        /// // Example checks the quantity of a line item based on variantId
+        /// Cart cart = ShopifyBuy.Client().Cart();
+        /// 
+        /// Debug.Log(cart.LineItems.Get(variantId).quantity);
+        /// \endcode
         public CheckoutLineItemInput Get(string variantId) {
             return LineItems.Find(item => item.variantId == variantId);
         }
@@ -101,6 +139,12 @@ namespace <%= namespace %> {
         /// exists for the variant, <c>null</c> will be returned.
         /// </summary>
         /// <param name="variant">variant whose variant id used to create a line item</param>
+        /// \code
+        /// // Example checks the quantity of a line item based on a variant
+        /// Cart cart = ShopifyBuy.Client().Cart();
+        /// 
+        /// Debug.Log(cart.LineItems.Get(variant).quantity);
+        /// \endcode
         public CheckoutLineItemInput Get(ProductVariant variant) {
             return Get(variant.id());
         }
@@ -111,6 +155,17 @@ namespace <%= namespace %> {
         /// </summary>
         /// <param name="product">product whose options will be selected</param>
         /// <param name="selectedOptions">a Dictionary used to define user selected options</param>
+        /// \code
+        /// // Example checks the quantity of a line item based on a product and selected options
+        /// Cart cart = ShopifyBuy.Client().Cart();
+        ///
+        /// Dictionary<string, string> selectedOptions = new Dictionary<string, string>() {
+        ///     {"Size", "Small"},
+        ///     {"Color", "Red"}
+        /// };
+        /// 
+        /// Debug.Log(cart.LineItems.Get(product, selectedOptions).quantity);
+        /// \endcode
         public CheckoutLineItemInput Get(Product product, Dictionary<string, string> selectedOptions) {
             string variantId = VariantIdFromSelectedOptions(product, selectedOptions);
 
@@ -126,6 +181,12 @@ namespace <%= namespace %> {
         /// will be returned. If no line items were deleted, <c>false</c> will be returned.
         /// </summary>
         /// <param name="variantId">variant id used to delete a line item</param>
+        /// \code
+        /// // Example deletes a line item based on variantId
+        /// Cart cart = ShopifyBuy.Client().Cart();
+        /// 
+        /// Debug.Log("Did delete? " + cart.LineItems.Delete(variantId));
+        /// \endcode
         public bool Delete(string variantId) {
             int idxToDelete = LineItems.FindIndex(lineItem => lineItem.variantId == variantId);
 
@@ -143,6 +204,12 @@ namespace <%= namespace %> {
         /// item was deleted, <c>true</c> will be returned. If no line items were deleted, <c>false</c> will be returned.
         /// </summary>
         /// <param name="variant"><see ref="ProductVariant">variant </see> to provide the ID to delete a line item</param>
+        /// \code
+        /// // Example deletes a line item based on a product variant
+        /// Cart cart = ShopifyBuy.Client().Cart();
+        /// 
+        /// Debug.Log("Did delete? " + cart.LineItems.Delete(variant));
+        /// \endcode
         public bool Delete(ProductVariant variant) {
             return Delete(variant.id());
         }
@@ -153,6 +220,17 @@ namespace <%= namespace %> {
         /// </summary>
         /// <param name="product"><see ref="Product">product </see> whose options will be used to determine which line item is deleted</param>
         /// <param name="selectedOptions">a Dictionary used to define user selected options</param>
+        /// \code
+        /// // Example deletes a line item based on a product and selected options
+        /// Cart cart = ShopifyBuy.Client().Cart();
+        ///
+        /// Dictionary<string, string> selectedOptions = new Dictionary<string, string>() {
+        ///     {"Size", "Small"},
+        ///     {"Color", "Red"}
+        /// };
+        /// 
+        /// Debug.Log("Did delete? " + cart.LineItems.Delete(product, selectedOptions));
+        /// \endcode
         public bool Delete(Product product, Dictionary<string, string> selectedOptions) {
             string variantId = VariantIdFromSelectedOptions(product, selectedOptions);
 
@@ -217,6 +295,15 @@ namespace <%= namespace %> {
         /// instantiated directly, but will rather be instatiated using <see ref="ShopifyClient.Cart">ShopifyBuy.Client().Cart() </see>.
         /// </summary>
         /// <param name="client">client associated with this cart</param>
+        /// \code
+        /// // Example creates a cart using a ShopifyClient and checks how many line items it has
+        /// // (spoiler: it has 0 line items the cart was just created)
+        /// ShopifyClient client = new ShopifyClient(accessToken, shopDomain);
+        /// 
+        /// Cart cart = new Cart(client);
+        /// 
+        /// Debug.Log(cart.LineItems.All().Count);
+        /// \endcode
         public Cart(ShopifyClient client) {
             Client = client;
             _LineItems = new CartLineItems();
@@ -226,6 +313,12 @@ namespace <%= namespace %> {
         /// Returns a link which can be used to check out this cart's line items via a web browser.
         /// </summary>
         /// <param name="note">can be used to create a special note for the merchant for this order</param>
+        /// \code
+        /// // Example creates a checkout link and opens the url in the Browser
+        /// string linkToCheckout = ShopifyBuy.Client().Cart().GetWebCheckoutLink();
+        /// 
+        /// Application.OpenURL(linkToCheckout);
+        /// \endcode
         public string GetWebCheckoutLink(string note = null) {
             StringBuilder url = new StringBuilder();
             bool hasLineItem = false;
