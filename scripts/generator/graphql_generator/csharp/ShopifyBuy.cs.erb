@@ -15,6 +15,10 @@ namespace <%= namespace %> {
         /// <summary>
         /// version of the Unity Buy SDK
         /// </summary>
+        /// \code
+        /// // example checking sdk version
+        /// Debug.Log("Current SDK Version: " + ShopifyBuy.VERSION);
+        /// \endcode
         public const string VERSION = "<%= version %>";
 
         #if (SHOPIFY_TEST)
@@ -29,15 +33,32 @@ namespace <%= namespace %> {
         /// calling  <see ref="ShopifyBuy.Init">ShopifyBuy.Init </see>. It should be noted that <see ref="ShopifyBuy.Init">ShopifyBuy.Init </see>
         /// must be called before trying to call this function.
         /// </summary>
+        /// \code
+        /// // Example usage querying all products using `Client`
+        /// ShopifyBuy.Client().products((products, errors, httpError) => {
+		/// 	Debug.Log(products[0].title()); // "Snare Boot"
+		/// 	Debug.Log(products[1].title()); // "Neptune Boot"
+		/// 	Debug.Log(products.Count); // 38 products returned
+        /// });
+        /// \endcode
         public static ShopifyClient Client() {
             return DefaultClient;
         }
 
         /// <summary>
-        /// Will return a <see ref="ShopifyClient">ShopifyClient </see> for the <c>domain<c> passed in. It should be noted
-        /// that <see ref="ShopifyBuy.Init">ShopifyBuy.Init </see> must be called before trying to call this function.
+        /// Will return a <see ref="ShopifyClient">ShopifyClient </see> for the <c>domain<c> passed in. This is useful
+        /// when you have multiple Shops your application is querying. It should be noted that 
+        /// <see ref="ShopifyBuy.Init">ShopifyBuy.Init </see> must be called before trying to call this function.
         /// </summary>
         /// <param name="domain">the domain associated to a client</param>
+        /// \code
+        /// // Example usage querying all products using `Client` and a domain
+        /// ShopifyBuy.Client("graphql.myshopify.com").products((products, errors, httpError) => {
+		/// 	Debug.Log(products[0].title()); // "Snare Boot"
+		/// 	Debug.Log(products[1].title()); // "Neptune Boot"
+		/// 	Debug.Log(products.Count); // 38 products returned
+        /// });
+        /// \endcode
         public static ShopifyClient Client(string domain) {
             if (ClientByDomain.ContainsKey(domain)) {
                 return ClientByDomain[domain];
@@ -54,6 +75,14 @@ namespace <%= namespace %> {
         /// </summary>
         /// <param name="accessToken">access token that was generated for your store</param>
         /// <param name="domain">domain of your Shopify store</param>
+        /// \code
+        /// // Example showing how to initialize the Unity Buy SDK
+        /// string accessToken = "351c122017d0f2a957d32ae728ad749c";
+        /// string shopDomain = "graphql.myshopify.com";
+        /// 
+        /// // Init only needs to be called once
+        /// ShopifyBuy.Init(accessToken, shopDomain);
+        /// \endcode
         public static ShopifyClient Init(string accessToken, string domain) {
             if (!ClientByDomain.ContainsKey(domain)) {
                 ClientByDomain[domain] = new ShopifyClient(accessToken, domain);
@@ -74,6 +103,16 @@ namespace <%= namespace %> {
         /// <see ref="ILoader">ILoader.Domain</see> which can be used to request a specific client.
         /// </summary>
         /// <param name="loader">a loader which will handle network communicationication with the Storefront API</param>
+        /// \code
+        /// // Mock example using a custom loader for another C# platform
+        /// string accessToken = "351c122017d0f2a957d32ae728ad749c";
+        /// string shopDomain = "graphql.myshopify.com";
+        /// 
+        /// CustomLoaderForNonUnityPlatform loader = new CustomLoaderForNonUnityPlatform(accessToken, shopDomain);
+        /// 
+        /// // Init only needs to be called once
+        /// ShopifyBuy.Init(loader);
+        /// \endcode
         public static ShopifyClient Init(ILoader loader) {
             string domain = loader.Domain;
 
@@ -161,6 +200,18 @@ namespace <%= namespace %> {
         /// </summary>
         /// <param name="accessToken">the access token used to query the Shopify Storefront API for a store</param>
         /// <param name="domain">domain for the Shopify store</param>
+        /// \code
+        /// // Example that initializes a new ShopifyClient which will query all products
+        /// string accessToken = "351c122017d0f2a957d32ae728ad749c";
+        /// string shopDomain = "graphql.myshopify.com";
+        /// 
+        /// ShopifyClient client = new ShopifyClient(accessToken, shopDomain);
+        /// 
+        /// client.products((products, errors, httpError) => {
+        ///     Debug.Log(products[0].title()); // "Snare Boot"
+        ///     Debug.Log(products[1].title()); // "Neptune Boot"
+        /// });
+        /// \endcode
         public ShopifyClient(string accessToken, string domain) {
             _AccessToken = accessToken;
             _Domain = domain;
@@ -178,6 +229,20 @@ namespace <%= namespace %> {
         /// to request a specific client.
         /// </summary>
         /// <param name="loader">a loader which will handle network communicationication with the Storefront API</param>
+        /// \code
+        /// // Example that initializes a new ShopifyClient using a custom loader for another C# platform
+        /// string accessToken = "351c122017d0f2a957d32ae728ad749c";
+        /// string shopDomain = "graphql.myshopify.com";
+        ///
+        /// CustomLoaderForNonUnityPlatform loader = new CustomLoaderForNonUnityPlatform(accessToken, shopDomain);
+        /// 
+        /// ShopifyClient client = new ShopifyClient(loader);
+        /// 
+        /// client.products((products, errors, httpError) => {
+        ///     Debug.Log(products[0].title()); // "Snare Boot"
+        ///     Debug.Log(products[1].title()); // "Neptune Boot"
+        /// });
+        /// \endcode
         public ShopifyClient(ILoader loader) {
             _AccessToken = loader.AccessToken;
             _Domain = loader.Domain;
@@ -226,6 +291,14 @@ namespace <%= namespace %> {
         /// where paginated loading begins. For example, when used with <c>first: 10</c> and <c>after: "abc"</c>, only the first 10
         /// products would be loaded after cursor <c>"abc"</c>.
         /// </param>
+        /// \code
+        /// // Example usage querying all products
+        /// ShopifyBuy.Client().products((products, errors, httpError) => {
+		/// 	Debug.Log(products[0].title()); // "Snare Boot"
+		/// 	Debug.Log(products[1].title()); // "Neptune Boot"
+		/// 	Debug.Log(products.Count); // 38 products returned
+        /// });
+        /// \endcode
         public void products(ResponseProductsHandler callback, int? first = null, string after = null) {
             GetProductsList((products, errors, httpError) => {
                 if (httpError != null) {
@@ -275,13 +348,13 @@ namespace <%= namespace %> {
         /// <param name="otherProductIds">
         /// after the first product id you can pass in as many product ids as you'd like.
         /// </param>
-        /// <code>
+        /// \code
         /// // Example usage querying two product ids
         /// ShopifyBuy.Client().products((products, errors, httpError) => {
-        ///     Debug.Log(products[0].id()); // "gid://shopify/Product/9895276099"
-        ///     Debug.Log(products[1].id()); // "gid://shopify/Product/9895279043"
+        ///     Debug.Log(products[0].title()); // "Snare Boot"
+        ///     Debug.Log(products[1].title()); // "Neptune Boot"
         /// }, "gid://shopify/Product/9895276099", "gid://shopify/Product/9895279043");
-        /// </code>
+        /// \endcode
 		public void products(ResponseProductsHandler callback, string firstProductId, params string[] otherProductIds) {
             List<string> productIds = new List<string>();
             productIds.Add(firstProductId);
@@ -324,13 +397,18 @@ namespace <%= namespace %> {
         /// </summary>
         /// <param name="callback">callback that will receive responses from server</param>
         /// <param name="productIds">a list of product ids you'd like to query</param>
-        /// <code>
-        /// // Example usage querying two product ids
+        /// \code
+        /// // Example usage querying two product ids using a List<string>
+        /// List<string> productIds = new List<string>() { 
+        ///     "gid://shopify/Product/9895276099", 
+        ///     "gid://shopify/Product/9895279043" 
+        /// };
+        ///
         /// ShopifyBuy.Client().products((products, errors, httpError) => {
-        ///     Debug.Log(products[0].id()); // "gid://shopify/Product/9895276099"
-        ///     Debug.Log(products[1].id()); // "gid://shopify/Product/9895279043"
-        /// }, "gid://shopify/Product/9895276099", "gid://shopify/Product/9895279043");
-        /// </code>
+        ///     Debug.Log(products[0].title()); // "Snare Boot"
+        ///     Debug.Log(products[1].title()); // "Neptune Boot"
+        /// }, productIds);
+        /// \endcode
         public void products(ResponseProductsHandler callback, List<string> productIds) {
             QueryRootQuery query = new QueryRootQuery();
             
@@ -362,6 +440,281 @@ namespace <%= namespace %> {
                     GetConnectionsForProducts(products, callback);
                 }
             });
+        }
+
+        /// <summary>
+        /// Will generate a query to receive all <c>collections</c> from a Shopify store. The generated query will query the following on collections:
+        ///     - id
+        ///     - title
+        ///     - description
+        ///     - descriptionHtml
+        ///     - updatedAt
+        ///     - image
+        ///         - altText
+        ///         - src
+        ///     - products
+        ///         - id
+        ///
+        /// It should be noted that <c>shop.collections</c> is a Connection (GraphQL paginated data structure). <see ref="ShopifyClient.collections">collections </see>
+        /// will load all pages of collections by default unless a value is passed for the <c>first</c> param.
+        /// </summary>
+        /// <param name="callback">will receive responses from server</param>
+        /// <param name="first">can be used to limit how many products are returned. For instance 10 would return only 10 collections</param>
+        /// <param name="after">
+        /// This is an advanced feature but when querying Relay Connections a cursor is returned which can be used to determine
+        /// where paginated loading begins. For example, when used with <c>first: 10</c> and <c>after: "abc"</c>, only the first 10
+        /// products would be loaded after cursor <c>"abc"</c>.
+        /// </param>
+        /// \code
+        /// // Example queries all collections on a shop
+		/// ShopifyBuy.Client().collections((collections, errors, httpError) => {
+		/// 	Debug.Log(collections[0].title()); // "Home page"
+		/// 	Debug.Log(collections.Count); // 1 collection
+		/// });
+        /// \endcode
+        public void collections(ResponseCollectionsHandler callback, int? first = null, string after = null) {
+            GetCollectionsList((collections, errors, httpError) => {
+                if (httpError != null) {
+                    callback(null, null, httpError);
+                } else if (errors != null) {
+                    callback(null, errors, null);
+                } else {
+                    List<ConnectionQueryInfo> connectionInfos = new List<ConnectionQueryInfo>() {
+                        new ConnectionQueryInfo(
+                            getConnection: (c) => ((Collection) c).products(),
+                            query: (c, productsAfter) => {
+                                ((CollectionQuery) c).products(pc => DefaultQueries.collections.ProductConnection(pc),
+                                    first: DefaultQueries.MaxPageSize, after: productsAfter
+                                );
+                            }
+                        )
+                    };
+
+                    ConnectionLoader loader = new ConnectionLoader(Loader);
+                    List<Node> nodes = collections.ConvertAll(p => (Node) p);
+
+                    loader.QueryConnectionsOnNodes(nodes, connectionInfos, BuildCollectionQueryOnNode, (nodesResult, errorsNode, httpErrorsNode) => {
+                        callback(nodesResult.ConvertAll(n => (Collection) n), errorsNode, httpErrorsNode);
+                    });
+                }
+            }, first: first, after: after);
+        }
+
+        /// <summary>
+        /// Allows you to send custom GraphQL queries to the Storefront API. While having utility functions like <see ref="ShopifyClient.products">products </see>
+        /// <see ref="ShopifyClient.collections">collections </see> is useful, the Storefront API has more functionality. This method
+        /// allows you to access all the extra functionality that the Storefront API provides.
+        /// </summary>
+        /// <param name="query">a GraphQL query to be sent to the Storefront API</param>
+        /// <param name="callback">callback which will receive a response from the query</param>
+        /// \code
+        /// // Example that queries a Shop's name 
+        /// QueryRoot query = new QueryRootQuery();
+        /// 
+        /// query.shop(s => s
+        ///     .name()
+        /// );
+        ///
+        /// ShopifyBuy.Client().Query(
+        ///     query: query,
+        ///     callback: (data, errors, httpErrors) => {
+        ///         if (httpErrors != null) {
+        ///             Debug.Log("There was an error communicating with the Storefront API");
+        ///         } else if (errors != null) {
+        ///             Debug.Log("The GraphQL query was invalid");
+        ///         } else {
+        ///             Debug.Log(data.shop().name());
+        ///         }
+        ///     }
+        /// );
+        /// \endcode
+        public void Query(<%= schema.query_root_name %>Query query, ResponseQueryHandler callback) {
+            Loader.Query(query, (response) => {
+                callback(response.data, response.errors, response.HTTPError);
+            });
+        }
+
+        /// <summary>
+        /// Allows you to build and send custom GraphQL queries to the Storefront API. While having utility functions like <see ref="ShopifyClient.products">products </see>
+        /// <see ref="ShopifyClient.collections">collections </see> is useful, the Storefront API has more functionality. This method
+        /// allows you to access all the extra functionality that the Storefront API provides.
+        /// </summary>
+        /// <param name="buildQuery">
+        /// delegate that will build a query starting at <see ref="<%= schema.query_root_name %>Query"><%= schema.query_root_name %>Query </see>
+        /// which will be sent to the Storefront API
+        /// </param>
+        /// <param name="callback">callback which will receive a response</param>
+        /// \code
+        /// // Example that build a query that queries a Shop's name
+        /// ShopifyBuy.Client().Query(
+        ///     query: q => q
+        ///         .shop(s => s
+        ///             .name()
+        ///         ),
+        ///     callback: (data, errors, httpErrors) => {
+        ///         if (httpErrors != null) {
+        ///             Debug.Log("There was an error communicating with the Storefront API");
+        ///         } else if (errors != null) {
+        ///             Debug.Log("The GraphQL query was invalid");
+        ///         } else {
+        ///             Debug.Log(data.shop().name());
+        ///         }
+        ///     }
+        /// );
+        /// \endcode
+        public void Query(<%= schema.query_root_name %>Delegate buildQuery, ResponseQueryHandler callback) {
+            <%= schema.query_root_name %>Query query = new <%= schema.query_root_name %>Query();
+
+            buildQuery(query);
+
+            Query(query, callback);
+        }
+
+        /// <summary>
+        /// Allows you to send custom prebuilt GraphQL mutation queries to the Storefront API.
+        /// </summary>
+        /// <param name="query">a query to be sent to the Storefront API</param>
+        /// <param name="callback">callback which will receive a response</param>
+        /// \code
+        /// // Example shows how to create a custom mutation query
+        /// MutationQuery mutation = new MutationQuery();
+        ///
+		/// mutation.customerCreate(
+		/// 	buildQuery: (cc) => { cc
+		/// 		.userErrors(
+		/// 			buildQuery: (ue) => { ue
+		/// 				.field()
+		/// 				.message();
+		/// 			}
+		/// 		);
+		/// 	},
+		/// 	input: new CustomerCreateInput(
+		/// 		email: "mikkoh@email.com",
+		/// 		password: "oh so secret"
+		/// 	)
+		/// );
+        ///
+		/// ShopifyBuy.Client().Mutation(
+		/// 	query: mutation,
+		/// 	callback: (data, errors, httpErrors) => {
+		/// 		if (httpErrors != null) {
+		/// 		    Debug.Log("There was an error communicating with the Storefront API");
+		/// 		} else if (errors != null) {
+		/// 			// output any graphql errors
+		/// 		    foreach(string error in errors) {
+		/// 				Debug.Log(error);
+		/// 			}
+		/// 		} else {
+		/// 			List<UserError> userErrors = data.customerCreate().userErrors();
+        ///
+		/// 			if (userErrors != null) {
+		/// 				foreach(UserError error in userErrors) {
+		/// 					// field which may have a user error
+		/// 					Debug.Log(error.field());
+		/// 					// error message for the field which had an error
+		/// 					Debug.Log(error.message());
+		/// 				}
+		/// 			} else {
+		/// 				Debug.Log("No user errors the customer was created");
+		/// 			}
+		/// 		}
+		/// 	}
+		/// );
+        /// \endcode
+        public void Mutation(<%= schema.mutation_root_name %>Query query, ResponseMutationHandler callback) {
+            Loader.Mutation(query, (response) => {
+                callback(response.data, response.errors, response.HTTPError);
+            });
+        }
+
+        /// <summary>
+        /// Allows you to build and send custom GraphQL mutation queries to the Storefront API.
+        /// </summary>
+        /// <param name="buildQuery">delegate that will build a query starting at <see ref="<%= schema.query_root_name %>Query"><%= schema.mutation_root_name %>Query </see></param>
+        /// <param name="callback">callback which will receive a response</param>
+        /// \code
+        /// // Example shows how to create a new customer on a store
+        /// ShopifyBuy.Client().Mutation(
+        ///     buildQuery: (mutation) => { mutation
+        ///         .customerCreate(
+        ///             buildQuery: (cc) => { cc
+        ///                 .userErrors(
+        ///                     buildQuery: (ue) => { ue
+        ///                         .field()
+        ///                         .message();
+        ///                     }
+        ///                 );
+        ///             },
+        ///             input: new CustomerCreateInput(
+        ///                 email: "mikkoh@email.com",
+        ///                 password: "oh so secret"
+        ///             )
+        ///         );
+        ///     },
+        ///     callback: (data, errors, httpErrors) => {
+        ///         if (httpErrors != null) {
+        ///             Debug.Log("There was an error communicating with the Storefront API");
+        ///         } else if (errors != null) {
+        ///             // output any graphql errors
+        ///             foreach(string error in errors) {
+        ///                 Debug.Log(error);
+        ///             }
+        ///         } else {
+        ///             List<UserError> userErrors = data.customerCreate().userErrors();
+        /// 
+        ///             if (userErrors != null) {
+        ///                 foreach(UserError error in userErrors) {
+        ///                     // field which may have a user error
+        ///                     Debug.Log(error.field());
+        ///                     // error message for the field which had an error
+        ///                     Debug.Log(error.message());
+        ///                 }
+        ///             } else {
+        ///                 Debug.Log("No user errors the customer was created");
+        ///             }
+        ///         }
+        ///     }
+        /// );
+        /// \endcode
+        public void Mutation(<%= schema.mutation_root_name %>Delegate buildQuery, ResponseMutationHandler callback) {
+            <%= schema.mutation_root_name %>Query query = new <%= schema.mutation_root_name %>Query();
+
+            buildQuery(query);
+
+            Mutation(query, callback);
+        }
+
+        /// <summary>
+        /// Creates a <see ref="Cart">Cart </see>, which can be used to manage line items for an order and create a
+        /// web checkout link. One <see ref="ShopifyClient">client </see> can have multiple carts, so it's
+        /// possible to pass in a <c>cartId</c> to reference a specific cart. If no <c>cartId</c> is passed, then
+        /// a default <see ref="Cart">Cart </see> is used.
+        /// </summary>
+        /// <param name="cartId">can be optionally passed in. This is useful if your application needs multiple carts</param>
+        /// \code
+        /// // Example checks how many line items the cart contains
+        /// Cart cart = ShopifyBuy.Client().Cart();
+        ///
+        /// Debug.Log("The cart has " + cart.LineItems.All().Count + " line items");
+        /// \endcode
+        public Cart Cart(string cartId = null) {
+            if (cartId == null) {
+                if (DefaultCart == null) {
+                    DefaultCart = new Cart(this);
+                }
+
+                return DefaultCart;
+            } else {
+                if (CartsById == null) {
+                    CartsById = new Dictionary<string, Cart>();
+                }
+
+                if (!CartsById.ContainsKey(cartId)) {
+                    CartsById[cartId] = new Cart(this);
+                }
+
+                return CartsById[cartId];
+            }
         }
 
         private void GetConnectionsForProducts(List<Product> products, ResponseProductsHandler callback) {
@@ -415,175 +768,6 @@ namespace <%= namespace %> {
             loader.QueryConnectionsOnNodes(nodes, connectionInfos, BuildProductQueryOnNode, (nodesResult, errorsNode, httpErrorsNode) => {
                 callback(nodesResult.ConvertAll(n => (Product) n), errorsNode, httpErrorsNode);
             });
-        }
-
-        /// <summary>
-        /// Will generate a query to receive all <c>collections</c> from a Shopify store. The generated query will query the following on collections:
-        ///     - id
-        ///     - image
-        ///         - altText
-        ///         - src
-        ///     - products
-        ///         - id
-        ///
-        /// It should be noted that <c>shop.collections</c> is a Connection (GraphQL paginated data structure). <see ref="ShopifyClient.collections">collections </see>
-        /// will load all pages of collections by default unless a value is passed for the <c>first</c> param.
-        /// </summary>
-        /// <param name="callback">will receive responses from server</param>
-        /// <param name="first">can be used to limit how many products are returned. For instance 10 would return only 10 collections</param>
-        /// <param name="after">
-        /// This is an advanced feature but when querying Relay Connections a cursor is returned which can be used to determine
-        /// where paginated loading begins. For example, when used with <c>first: 10</c> and <c>after: "abc"</c>, only the first 10
-        /// products would be loaded after cursor <c>"abc"</c>.
-        /// </param>
-        public void collections(ResponseCollectionsHandler callback, int? first = null, string after = null) {
-            GetCollectionsList((collections, errors, httpError) => {
-                if (httpError != null) {
-                    callback(null, null, httpError);
-                } else if (errors != null) {
-                    callback(null, errors, null);
-                } else {
-                    List<ConnectionQueryInfo> connectionInfos = new List<ConnectionQueryInfo>() {
-                        new ConnectionQueryInfo(
-                            getConnection: (c) => ((Collection) c).products(),
-                            query: (c, productsAfter) => {
-                                ((CollectionQuery) c).products(pc => DefaultQueries.collections.ProductConnection(pc),
-                                    first: DefaultQueries.MaxPageSize, after: productsAfter
-                                );
-                            }
-                        )
-                    };
-
-                    ConnectionLoader loader = new ConnectionLoader(Loader);
-                    List<Node> nodes = collections.ConvertAll(p => (Node) p);
-
-                    loader.QueryConnectionsOnNodes(nodes, connectionInfos, BuildCollectionQueryOnNode, (nodesResult, errorsNode, httpErrorsNode) => {
-                        callback(nodesResult.ConvertAll(n => (Collection) n), errorsNode, httpErrorsNode);
-                    });
-                }
-            }, first: first, after: after);
-        }
-
-        /// <summary>
-        /// Allows you to send custom GraphQL queries to the Storefront API. While having utility functions like <see ref="ShopifyClient.products">products </see>
-        /// <see ref="ShopifyClient.collections">collections </see> is useful, the Storefront API has more functionality. This method
-        /// allows you to access all the extra functionality that the Storefront API provides.
-        ///
-        /// The following is a small example querying a shop's name:
-        /// \code{.cs}
-        /// QueryRoot query = new QueryRootQuery();
-        /// query.shop(s => s
-        ///     .name()
-        /// );
-        ///
-        /// ShopifyBuy.Client().Query(
-        ///     query: query,
-        ///     callback: (data, errors, httpErrors) => {
-        ///         if (httpErrors != null) {
-        ///             Debug.Log("There was an error communicating with the Storefront API");
-        ///         } else if (errors != null) {
-        ///             Debug.Log("The GraphQL query was invalid");
-        ///         } else {
-        ///             Debug.Log(data.shop().name());
-        ///         }
-        ///     }
-        /// );
-        /// \endcode
-        /// </summary>
-        /// <param name="query">a GraphQL query to be sent to the Storefront API</param>
-        /// <param name="callback">callback which will receive a response from the query</param>
-        public void Query(<%= schema.query_root_name %>Query query, ResponseQueryHandler callback) {
-            Loader.Query(query, (response) => {
-                callback(response.data, response.errors, response.HTTPError);
-            });
-        }
-
-        /// <summary>
-        /// Allows you to build and send custom GraphQL queries to the Storefront API. While having utility functions like <see ref="ShopifyClient.products">products </see>
-        /// <see ref="ShopifyClient.collections">collections </see> is useful, the Storefront API has more functionality. This method
-        /// allows you to access all the extra functionality that the Storefront API provides.
-        ///
-        /// For instance in the following example we will write a query that returns the Shop's name:
-        /// \code{.cs}
-        /// ShopifyBuy.Client().Query(
-        ///     query: q => q
-        ///         .shop(s => s
-        ///             .name()
-        ///         ),
-        ///     callback: (data, errors, httpErrors) => {
-        ///         if (httpErrors != null) {
-        ///             Debug.Log("There was an error communicating with the Storefront API");
-        ///         } else if (errors != null) {
-        ///             Debug.Log("The GraphQL query was invalid");
-        ///         } else {
-        ///             Debug.Log(data.shop().name());
-        ///         }
-        ///     }
-        /// );
-        /// \endcode
-        /// </summary>
-        /// <param name="buildQuery">
-        /// delegate that will build a query starting at <see ref="<%= schema.query_root_name %>Query"><%= schema.query_root_name %>Query </see>
-        /// which will be sent to the Storefront API
-        /// </param>
-        /// <param name="callback">callback which will receive a response</param>
-        public void Query(<%= schema.query_root_name %>Delegate buildQuery, ResponseQueryHandler callback) {
-            <%= schema.query_root_name %>Query query = new <%= schema.query_root_name %>Query();
-
-            buildQuery(query);
-
-            Query(query, callback);
-        }
-
-        /// <summary>
-        /// Allows you to send custom prebuilt GraphQL mutation queries to the Storefront API.
-        /// </summary>
-        /// <param name="query">a query to be sent to the Storefront API</param>
-        /// <param name="callback">callback which will receive a response</param>
-        public void Mutation(<%= schema.mutation_root_name %>Query query, ResponseMutationHandler callback) {
-            Loader.Mutation(query, (response) => {
-                callback(response.data, response.errors, response.HTTPError);
-            });
-        }
-
-        /// <summary>
-        /// Allows you to build and send custom GraphQL mutation queries to the Storefront API.
-        /// </summary>
-        /// <param name="buildQuery">delegate that will build a query starting at <see ref="<%= schema.query_root_name %>Query"><%= schema.mutation_root_name %>Query </see></param>
-        /// <param name="callback">callback which will receive a response</param>
-        public void Mutation(<%= schema.mutation_root_name %>Delegate buildQuery, ResponseMutationHandler callback) {
-            <%= schema.mutation_root_name %>Query query = new <%= schema.mutation_root_name %>Query();
-
-            buildQuery(query);
-
-            Mutation(query, callback);
-        }
-
-        /// <summary>
-        /// Creates a <see ref="Cart">Cart </see>, which can be used to manage line items for an order and create a
-        /// web checkout link. One <see ref="ShopifyClient">client </see> can have multiple carts, so it's
-        /// possible to pass in a <c>cartId</c> to reference a specific cart. If no <c>cartId</c> is passed, then
-        /// a default <see ref="Cart">Cart </see> is used.
-        /// </summary>
-        /// <param name="cartId">can be optionally passed in. This is useful if your application needs multiple carts</param>
-        public Cart Cart(string cartId = null) {
-            if (cartId == null) {
-                if (DefaultCart == null) {
-                    DefaultCart = new Cart(this);
-                }
-
-                return DefaultCart;
-            } else {
-                if (CartsById == null) {
-                    CartsById = new Dictionary<string, Cart>();
-                }
-
-                if (!CartsById.ContainsKey(cartId)) {
-                    CartsById[cartId] = new Cart(this);
-                }
-
-                return CartsById[cartId];
-            }
         }
 
         private void BuildProductQueryOnNode(QueryRootQuery query, List<ConnectionQueryInfo> connectionInfosToBuildQuery, string productId, string alias) {
