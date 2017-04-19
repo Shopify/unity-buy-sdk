@@ -25,7 +25,7 @@ namespace <%= namespace %> {
         #endif
 
         /// <summary>
-        /// Will return the default <see ref="ShopifyClient">ShopifyClient </see>. The default client is the first client created after 
+        /// Will return the default <see ref="ShopifyClient">ShopifyClient </see>. The default client is the first client created after
         /// calling  <see ref="ShopifyBuy.Init">ShopifyBuy.Init </see>. It should be noted that <see ref="ShopifyBuy.Init">ShopifyBuy.Init </see>
         /// must be called before trying to call this function.
         /// </summary>
@@ -34,7 +34,7 @@ namespace <%= namespace %> {
         }
 
         /// <summary>
-        /// Will return a <see ref="ShopifyClient">ShopifyClient </see> for the <c>domain<c> passed in. It should be noted 
+        /// Will return a <see ref="ShopifyClient">ShopifyClient </see> for the <c>domain<c> passed in. It should be noted
         /// that <see ref="ShopifyBuy.Init">ShopifyBuy.Init </see> must be called before trying to call this function.
         /// </summary>
         /// <param name="domain">the domain associated to a client</param>
@@ -50,7 +50,7 @@ namespace <%= namespace %> {
         /// Will initialize a <see ref="ShopifyClient">ShopifyClient </see> that can be used to query the Storefront API.
         /// The default client which can be accessed by calling <see ref="ShopifyBuy.Client">ShopifyBuy.Client() </see> which is
         /// initialized after <see ref="ShopifyBuy.Init">ShopifyBuy.Init </see> is called. To access the client for the specific
-        /// domain passed use <see ref="ShopifyBuy.Client">ShopifyBuy.Client(domain) </see>.
+        /// domain passed, use <see ref="ShopifyBuy.Client">ShopifyBuy.Client(domain) </see>.
         /// </summary>
         /// <param name="accessToken">access token that was generated for your store</param>
         /// <param name="domain">domain of your Shopify store</param>
@@ -67,10 +67,10 @@ namespace <%= namespace %> {
         }
 
         /// <summary>
-        /// Typically not used but it is possible to create a <see ref="ShopifyClient">ShopifyClient </see> by passing an instance
-        /// that implements <see ref="ILoader">ILoader </see>. <see ref="ILoader">ILoader's </see> handle network communicationication with
+        /// Typically not used, but it is possible to create a <see ref="ShopifyClient">ShopifyClient </see> by passing an instance
+        /// that implements <see ref="ILoader">ILoader </see>. <see ref="ILoader">ILoaders </see> handle network communicationication with
         /// the Storefront API. This functionality is useful if you'd like to use the Unity Buy SDK in a C# environment
-        /// outside of Unity. The <c>domain</c> string used to access specific initialized clients is inferred from 
+        /// outside of Unity. The <c>domain</c> string used to access specific initialized clients is inferred from
         /// <see ref="ILoader">ILoader.Domain</see> which can be used to request a specific client.
         /// </summary>
         /// <param name="loader">a loader which will handle network communicationication with the Storefront API</param>
@@ -104,9 +104,9 @@ namespace <%= namespace %> {
     /// </summary>
     public class ShopifyClient {
         /// <summary>
-        /// this is a dictionary which defines aliases, <c>maxWidth</c>, and <c>maxHeight</c> for images loaded by
+        /// This is a dictionary that defines aliases, <c>maxWidth</c>, and <c>maxHeight</c> for images loaded by
         /// <see ref="ShopifyClient.products">products </see> and <see ref="ShopifyClient.collections">collections </see>.
-        /// Basically all Products images, Product variant images, and Collection images will be queried using aliases
+        /// All Products images, Product variant images, and Collection images will be queried using aliases
         /// defined by this dictionary's keys and the <c>maxWidth</c> and <c>maxHeight</c> will be this dictionary's values.
         ///
         /// \code{.cs}
@@ -131,7 +131,7 @@ namespace <%= namespace %> {
         };
 
         /// <summary>
-        /// <see ref="ShopifyClient.AccessToken">AccessToken </see> is the access token associated with this client to query Shopify
+        /// <see ref="ShopifyClient.AccessToken">AccessToken </see> is the access token associated with this client to query Shopify.
         /// </summary>
         public string AccessToken {
             get {
@@ -140,7 +140,7 @@ namespace <%= namespace %> {
         }
 
         /// <summary>
-        /// <see ref="ShopifyClient.Domain">Domain </see> is the Shopify store domain associated with this client
+        /// <see ref="ShopifyClient.Domain">Domain </see> is the Shopify store domain associated with this client.
         /// </summary>
         public string Domain {
             get {
@@ -157,7 +157,7 @@ namespace <%= namespace %> {
         /// <summary>
         /// <see ref="ShopifyClient">ShopifyClient </see> is the entry point to communicate with the Shopify Storefront API.
         /// <see ref="ShopifyClient">ShopifyClient </see> also has functionality to easily generate and send queries to receive
-        /// information about products, collections, and has the ability to create checkouts.
+        /// information about products and collections. It also has the ability to create checkouts.
         /// </summary>
         /// <param name="accessToken">the access token used to query the Shopify Storefront API for a store</param>
         /// <param name="domain">domain for the Shopify store</param>
@@ -172,9 +172,9 @@ namespace <%= namespace %> {
 
         /// <summary>
         /// It is possible to instantiate a <see ref="ShopifyClient">ShopifyClient </see> by passing an instance
-        /// that implements <see ref="ILoader">ILoader </see>. <see ref="ILoader">ILoader's </see> handle network communication with
+        /// that implements <see ref="ILoader">ILoader </see>. <see ref="ILoader">ILoaders </see> handle network communication with
         /// the Storefront API. This functionality is useful if you'd like to use the Unity Buy SDK in a C# environment
-        /// outside of Unity. The <c>domain</c> string is inferred from <see ref="ILoader">ILoader's </see> which can be used
+        /// outside of Unity. The <c>domain</c> string is inferred from <see ref="ILoader">ILoaders </see> which can be used
         /// to request a specific client.
         /// </summary>
         /// <param name="loader">a loader which will handle network communicationication with the Storefront API</param>
@@ -222,9 +222,9 @@ namespace <%= namespace %> {
         /// <param name="callback">callback that will receive responses from server</param>
         /// <param name="first">can be used to limit how many products are returned. For instance 10 would return only 10 products</param>
         /// <param name="after">
-        /// this is an advanced feature but when querying Relay Connections a cursor is returned which can be used to determine 
-        /// where paginated loading begins. For instance when used with <c>first: 10</c> and <c>after: "abc"</c> only the first 10
-        /// products would be loaded after cursor <c>"abc"</c>
+        /// This is an advanced feature but when querying Relay Connections a cursor is returned which can be used to determine
+        /// where paginated loading begins. For example, when used with <c>first: 10</c> and <c>after: "abc"</c>, only the first 10
+        /// products would be loaded after cursor <c>"abc"</c>.
         /// </param>
         public void products(ResponseProductsHandler callback, int? first = null, string after = null) {
             GetProductsList((products, errors, httpError) => {
@@ -432,9 +432,9 @@ namespace <%= namespace %> {
         /// <param name="callback">will receive responses from server</param>
         /// <param name="first">can be used to limit how many products are returned. For instance 10 would return only 10 collections</param>
         /// <param name="after">
-        /// this is an advanced feature but when querying Relay Connections a cursor is returned which can be used to determine 
-        /// where paginated loading begins. For instance when used with <c>first: 10</c> and <c>after: "abc"</c> only the first 10
-        /// products would be loaded after cursor <c>"abc"</c>
+        /// This is an advanced feature but when querying Relay Connections a cursor is returned which can be used to determine
+        /// where paginated loading begins. For example, when used with <c>first: 10</c> and <c>after: "abc"</c>, only the first 10
+        /// products would be loaded after cursor <c>"abc"</c>.
         /// </param>
         public void collections(ResponseCollectionsHandler callback, int? first = null, string after = null) {
             GetCollectionsList((collections, errors, httpError) => {
@@ -443,7 +443,7 @@ namespace <%= namespace %> {
                 } else if (errors != null) {
                     callback(null, errors, null);
                 } else {
-                    List<ConnectionQueryInfo> connectionInfos = new List<ConnectionQueryInfo>() { 
+                    List<ConnectionQueryInfo> connectionInfos = new List<ConnectionQueryInfo>() {
                         new ConnectionQueryInfo(
                             getConnection: (c) => ((Collection) c).products(),
                             query: (c, productsAfter) => {
@@ -456,7 +456,7 @@ namespace <%= namespace %> {
 
                     ConnectionLoader loader = new ConnectionLoader(Loader);
                     List<Node> nodes = collections.ConvertAll(p => (Node) p);
-                    
+
                     loader.QueryConnectionsOnNodes(nodes, connectionInfos, BuildCollectionQueryOnNode, (nodesResult, errorsNode, httpErrorsNode) => {
                         callback(nodesResult.ConvertAll(n => (Collection) n), errorsNode, httpErrorsNode);
                     });
@@ -466,7 +466,7 @@ namespace <%= namespace %> {
 
         /// <summary>
         /// Allows you to send custom GraphQL queries to the Storefront API. While having utility functions like <see ref="ShopifyClient.products">products </see>
-        /// <see ref="ShopifyClient.collections">collections </see> is useful. The Storefront API has more functionality. This method
+        /// <see ref="ShopifyClient.collections">collections </see> is useful, the Storefront API has more functionality. This method
         /// allows you to access all the extra functionality that the Storefront API provides.
         ///
         /// The following is a small example querying a shop's name:
@@ -497,10 +497,10 @@ namespace <%= namespace %> {
                 callback(response.data, response.errors, response.HTTPError);
             });
         }
-        
+
         /// <summary>
         /// Allows you to build and send custom GraphQL queries to the Storefront API. While having utility functions like <see ref="ShopifyClient.products">products </see>
-        /// <see ref="ShopifyClient.collections">collections </see> is useful. The Storefront API has more functionality. This method
+        /// <see ref="ShopifyClient.collections">collections </see> is useful, the Storefront API has more functionality. This method
         /// allows you to access all the extra functionality that the Storefront API provides.
         ///
         /// For instance in the following example we will write a query that returns the Shop's name:
@@ -536,7 +536,7 @@ namespace <%= namespace %> {
         }
 
         /// <summary>
-        /// Allows you to send custom prebuilt GraphQL mutation queries to the Storefront API
+        /// Allows you to send custom prebuilt GraphQL mutation queries to the Storefront API.
         /// </summary>
         /// <param name="query">a query to be sent to the Storefront API</param>
         /// <param name="callback">callback which will receive a response</param>
@@ -547,7 +547,7 @@ namespace <%= namespace %> {
         }
 
         /// <summary>
-        /// Allows you to build and send custom GraphQL mutation queries to the Storefront API
+        /// Allows you to build and send custom GraphQL mutation queries to the Storefront API.
         /// </summary>
         /// <param name="buildQuery">delegate that will build a query starting at <see ref="<%= schema.query_root_name %>Query"><%= schema.mutation_root_name %>Query </see></param>
         /// <param name="callback">callback which will receive a response</param>
@@ -560,9 +560,9 @@ namespace <%= namespace %> {
         }
 
         /// <summary>
-        /// Creates a <see ref="Cart">Cart </see> which can be used to manage line items for an order and create a
-        /// web checkout link. One <see ref="ShopifyClient">client </see> can have multiple carts so it's
-        /// possible to pass in a <c>cartId</c> to reference a specific cart. If no <c>cartId</c> is passed then
+        /// Creates a <see ref="Cart">Cart </see>, which can be used to manage line items for an order and create a
+        /// web checkout link. One <see ref="ShopifyClient">client </see> can have multiple carts, so it's
+        /// possible to pass in a <c>cartId</c> to reference a specific cart. If no <c>cartId</c> is passed, then
         /// a default <see ref="Cart">Cart </see> is used.
         /// </summary>
         /// <param name="cartId">can be optionally passed in. This is useful if your application needs multiple carts</param>
@@ -628,7 +628,7 @@ namespace <%= namespace %> {
 
                     if (response == null || (countToLoad > 0 && response.data.shop().products().pageInfo().hasNextPage())) {
                         query = new QueryRootQuery();
-                        
+
                         query = new QueryRootQuery();
                         DefaultQueries.products.ShopProducts(
                             query: query, 
@@ -654,7 +654,7 @@ namespace <%= namespace %> {
                 }
             );
         }
-        
+
         private void GetCollectionsList(ResponseCollectionsHandler callback, int? first = null, string after = null) {
             ConnectionLoader loader = new ConnectionLoader(Loader);
             int countToLoad = first == null ? int.MaxValue : (int) first;
@@ -671,11 +671,11 @@ namespace <%= namespace %> {
 
                     if (response == null || (countToLoad > 0 && response.data.shop().collections().pageInfo().hasNextPage())) {
                         query = new QueryRootQuery();
-                        
+
                         query = new QueryRootQuery();
                         DefaultQueries.collections.ShopCollections(
-                            query: query, 
-                            first: countToLoad > DefaultQueries.MaxPageSize ? DefaultQueries.MaxPageSize : countToLoad, 
+                            query: query,
+                            first: countToLoad > DefaultQueries.MaxPageSize ? DefaultQueries.MaxPageSize : countToLoad,
                             after: edges != null ? edges[edges.Count - 1].cursor() : after,
                             imageResolutions: DefaultImageResolutions
                         );

@@ -4,10 +4,10 @@ namespace <%= namespace %>.SDK {
     using <%= namespace %>.GraphQL;
 
     /// <summary>
-    /// Top level response for all GraphQL queries
+    /// Top level response for all GraphQL queries.
     /// </summary>
     public class QueryResponse : TopLevelResponse {
-        
+
         public <%= schema.query_root_name %> data {
             get {
                 return _data;

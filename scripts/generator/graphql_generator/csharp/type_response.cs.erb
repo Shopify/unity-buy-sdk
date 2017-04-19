@@ -11,7 +11,7 @@ namespace <%= namespace %> {
 
         <% if connection?(type) %>
             /// <summary>
-            /// Adds the ability to cast <%= type.classify_name %> to <c>List<<%= node_type_from_connection_type(type).classify_name %>></c>
+            /// Adds the ability to cast <%= type.classify_name %> to <c>List<<%= node_type_from_connection_type(type).classify_name %>></c>.
             /// </summary>
             public static explicit operator List<<%= node_type_from_connection_type(type).classify_name %>>(<%= type.classify_name %> connection) {
                 if (connection.Nodes == null) {
@@ -55,14 +55,14 @@ namespace <%= namespace %> {
             }
     <% end %>
         /// <summary>
-        /// <see ref="<%= "Unknown" if type.interface? %><%= type.classify_name %>" /> accepts deserialized json data.
-        /// <see ref="<%= "Unknown" if type.interface? %><%= type.classify_name %>" /> will further parse passed in data.
+        /// <see ref="<%= "Unknown" if type.interface? %><%= type.classify_name %>" /> Accepts deserialized json data.
+        /// <see ref="<%= "Unknown" if type.interface? %><%= type.classify_name %>" /> Will further parse passed in data.
         /// </summary>
         /// <param name="dataJSON">Deserialized JSON data for <%= type.classify_name %></param>
         public <%= "Unknown" if type.interface? %><%= type.classify_name %>(Dictionary<string, object> dataJSON) {
             DataJSON = dataJSON;
             Data = new Dictionary<string,object>();
-        
+
             foreach (string key in dataJSON.Keys) {
                 string fieldName = key;
                 Regex regexAlias = new Regex("^(.+)<%= ALIAS_SEPARATOR %>.+$");
@@ -148,9 +148,9 @@ namespace <%= namespace %> {
 
         <% if connection?(type) %>
         /// <summary>
-        /// This is a utility function which allow you to append newly queried data from a connection into this one.
-        /// The passed in Connection will be appended into this Connection. So basically <c>edges</c> will receive
-        /// all new <c>nodes</c> and <c>cursors</c> and <c>pageInfo</c> will be updated based on the passed Connection.
+        /// This is a utility function that allows you to append newly queried data from a connection into this one.
+        /// The passed in Connection will be appended into this Connection. The <c>edges</c> will receive
+        /// all new <c>nodes</c>, and both the <c>cursors</c> and <c>pageInfo</c> will be updated based on the passed Connection.
         /// </summary>
         /// <param name="connection"><see ref="<%= type.classify_name %>" /> response</param>
         public void AddFromConnection(<%= type.classify_name %> connection) {

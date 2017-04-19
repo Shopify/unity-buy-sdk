@@ -55,13 +55,13 @@ namespace <%= namespace %>.SDK {
     }
 
     /// <summary>
-    /// will perform network communication to send GraphQL queries between Unity and a Shopify GraphQL end point
+    /// Performs network communication to send GraphQL queries between Unity and a Shopify GraphQL endpoint.
     /// </summary>
     public class UnityLoader : ILoader {
         static GameObject LoaderGameObject;
 
         /// <summary>
-        /// Shopify store domain where the GraphQL endpoint lives
+        /// Shopify store domain where the GraphQL endpoint lives.
         /// </summary>
         public string Domain {
             get {
@@ -70,7 +70,7 @@ namespace <%= namespace %>.SDK {
         }
 
         /// <summary>
-        /// access token used to communicate with the Shopify Store GraphQL end point
+        /// Access token used to communicate with the Shopify Store GraphQL endpoint.
         /// </summary>
         public string AccessToken {
             get {
@@ -80,7 +80,7 @@ namespace <%= namespace %>.SDK {
 
         string _Domain;
         string _AccessToken;
-        
+
         /// <param name="domain">Shopify store domain that you'd like to query on</param>
         /// <param name="accessToken">access token used to communicate with the Shopify Store</param>
         public UnityLoader(string domain, string accessToken) {
@@ -89,7 +89,7 @@ namespace <%= namespace %>.SDK {
         }
 
         /// <summary>
-        /// Send a query to the Storefront api
+        /// Send a query to the Storefront API.
         /// </summary>
         /// <param name="query">Query that will be sent to the Storefront API</param>
         /// <param name="callback">callback that receives a response</param>

@@ -9,13 +9,13 @@ namespace <%= namespace %>.SDK {
     public delegate void MutationResponseHandler(MutationResponse response);
 
     /// <summary>
-    /// abstracts creating and sending queries and mutations via an ILoader
+    /// Abstracts creating and sending queries and mutations via an ILoader.
     /// </summary>
     public class QueryLoader {
         ILoader Loader;
 
         /// <summary>
-        /// accepts the <see ref="ILoader">ILoader </see> which will do network communcation to send GraphQL queries
+        /// Accepts the <see ref="ILoader">ILoader </see>, which will do network communcation to send GraphQL queries.
         /// </summary>
         /// <param name="loader">will perform network communication to send GraphQL queries to a GraphQL endpoint</param>
         public QueryLoader(ILoader loader) {
@@ -23,7 +23,7 @@ namespace <%= namespace %>.SDK {
         }
 
         /// <summary>
-        /// is used to generate GraphQL queries
+        /// Generates GraphQL queries.
         /// </summary>
         /// <param name="buildQuery">Delegate to build query</param>
         /// <param name="callback">callback that receives the query response</param>
@@ -34,9 +34,9 @@ namespace <%= namespace %>.SDK {
 
             Query(query, callback);
         }
-        
+
         /// <summary>
-        /// is used to send GraphQL queries to the GraphQL end point
+        /// Sends GraphQL queries to the GraphQL endpoint.
         /// </summary>
         /// <param name="query">query to be sent to the GraphQL endpoint</param>
         /// <param name="callback">callback that receives the query response</param>
@@ -51,7 +51,7 @@ namespace <%= namespace %>.SDK {
         }
 
         /// <summary>
-        /// is used to generate GraphQL mutations
+        /// Generates GraphQL mutations.
         /// </summary>
         /// <param name="buildQuery">Delegate to build a mutation query</param>
         /// <param name="callback">callback that receives the mutation response</param>
@@ -64,7 +64,7 @@ namespace <%= namespace %>.SDK {
         }
 
         /// <summary>
-        /// is used to send GraphQL mutations to a GraphQL endpoint
+        /// Sends GraphQL mutations to a GraphQL endpoint.
         /// </summary>
         /// <param name="query">mutation to be sent to GraphQL endpoint</param>
         /// <param name="callback">callback that receives the mutation response</param>

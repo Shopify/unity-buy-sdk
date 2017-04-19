@@ -3,15 +3,15 @@ namespace <%= namespace %>.SDK {
     using System.Collections.Generic;
 
     /// <summary>
-    /// Base class for <see ref="QueryResponse">QueryResponse </see> and <see ref="MutationResponse">MutationResponse </see>
-    /// which are top level responses for all GraphQL queries.
+    /// Base class for <see ref="QueryResponse">QueryResponse </see> and <see ref="MutationResponse">MutationResponse </see>,
+    /// which are top-level responses for all GraphQL queries.
     /// </summary>
     public class TopLevelResponse {
         private const string KEY_DATA = "data";
         private const string KEY_ERRORS = "errors";
 
         /// <summary>
-        /// Contains a string representing an http error. Is <c>null</c> if there was no http error
+        /// Contains a string representing an http error. Is <c>null</c> if there was no http error.
         /// </summary>
         public string HTTPError {
             get {
@@ -20,7 +20,7 @@ namespace <%= namespace %>.SDK {
         }
 
         /// <summary>
-        /// Contains JSON response data from the GraphQL query. Is <c>null</c> if no data was returned
+        /// Contains JSON response data from the GraphQL query. Is <c>null</c> if no data was returned.
         /// </summary>
         public Dictionary<string,object> DataJSON {
             get {
@@ -29,7 +29,7 @@ namespace <%= namespace %>.SDK {
         }
 
         /// <summary>
-        /// Contains a list of errors returned by the GraphQL end point. Is <c>null</c> if no errors were returned
+        /// Contains a list of errors returned by the GraphQL end point. Is <c>null</c> if no errors were returned.
         /// </summary>
         public List<string> errors {
             get {
@@ -64,7 +64,7 @@ namespace <%= namespace %>.SDK {
 
             if (data != null) {
                 _DataJSON = (Dictionary<string,object>) data;
-            }  
+            }
         }
 
         public TopLevelResponse(string httpError) {

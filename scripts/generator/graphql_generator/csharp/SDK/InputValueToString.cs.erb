@@ -4,9 +4,9 @@ namespace <%= namespace %>.SDK {
     using System.Collections;
     using System.Collections.Specialized;
     using MiniJSON;
-    
+
     /// <summary>
-    /// Is used to convert C# values to GraphQL strings for queries
+    /// Converts C# values to GraphQL strings for queries.
     /// </summary>
     public class InputValueToString {
         /// <summary>
@@ -35,16 +35,16 @@ namespace <%= namespace %>.SDK {
         }
 
         /// <summary>
-        /// Converts a C# value/object to a GraphQL string value/object
+        /// Converts a C# value/object to a GraphQL string value/object.
         /// </summary>
         /// <param name="value">a C# object to be converted to a GraphQL string value</param>
         public static string Get(object value) {
             if (value is IList) {
                 return GetList((IList) value);
             } else if (
-                value is string || 
-                value is bool || 
-                value is long || 
+                value is string ||
+                value is bool ||
+                value is long ||
                 value is double
             ) {
                 return Json.Serialize(value);
