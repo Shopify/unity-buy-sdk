@@ -78,46 +78,52 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ab9a5c7a3da0a5fbb9fcbf8457600caca"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#ab9a5c7a3da0a5fbb9fcbf8457600caca">ShopifyClient</a> (string accessToken, string domain)</td></tr>
-<tr class="memdesc:ab9a5c7a3da0a5fbb9fcbf8457600caca"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html" title="ShopifyClient  is the entry point to communicate with the Shopify Storefront API. ShopifyClient  also...">ShopifyClient</a> is the entry point to communicate with the <a class="el" href="namespace_shopify.html">Shopify</a> Storefront API. <a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html" title="ShopifyClient  is the entry point to communicate with the Shopify Storefront API. ShopifyClient  also...">ShopifyClient</a> also has functionality to easily generate and send queries to receive information about products, collections, and has the ability to create checkouts.  <a href="#ab9a5c7a3da0a5fbb9fcbf8457600caca">More...</a><br /></td></tr>
+<tr class="memdesc:ab9a5c7a3da0a5fbb9fcbf8457600caca"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html" title="ShopifyClient  is the entry point to communicate with the Shopify Storefront API. ShopifyClient  also...">ShopifyClient</a> is the entry point to communicate with the <a class="el" href="namespace_shopify.html">Shopify</a> Storefront API. <a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html" title="ShopifyClient  is the entry point to communicate with the Shopify Storefront API. ShopifyClient  also...">ShopifyClient</a> also has functionality to easily generate and send queries to receive information about products and collections. It also has the ability to create checkouts.  <a href="#ab9a5c7a3da0a5fbb9fcbf8457600caca">More...</a><br /></td></tr>
 <tr class="separator:ab9a5c7a3da0a5fbb9fcbf8457600caca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeae7e4877b3f77ca693329eeab055b77"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#aeae7e4877b3f77ca693329eeab055b77">ShopifyClient</a> (<a class="el" href="interface_shopify_1_1_unity_1_1_s_d_k_1_1_i_loader.html">ILoader</a> loader)</td></tr>
-<tr class="memdesc:aeae7e4877b3f77ca693329eeab055b77"><td class="mdescLeft">&#160;</td><td class="mdescRight">It is possible to instantiate a <a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html" title="ShopifyClient  is the entry point to communicate with the Shopify Storefront API. ShopifyClient  also...">ShopifyClient</a> by passing an instance that implements ILoader . ILoader's handle network communication with the Storefront API. This functionality is useful if you'd like to use the <a class="el" href="namespace_shopify_1_1_unity.html">Unity</a> Buy <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a> in a C# environment outside of <a class="el" href="namespace_shopify_1_1_unity.html">Unity</a>. The <code>domain</code> string is inferred from ILoader's which can be used to request a specific client.  <a href="#aeae7e4877b3f77ca693329eeab055b77">More...</a><br /></td></tr>
+<tr class="memdesc:aeae7e4877b3f77ca693329eeab055b77"><td class="mdescLeft">&#160;</td><td class="mdescRight">It is possible to instantiate a <a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html" title="ShopifyClient  is the entry point to communicate with the Shopify Storefront API. ShopifyClient  also...">ShopifyClient</a> by passing an instance that implements ILoader . ILoaders handle network communication with the Storefront API. This functionality is useful if you'd like to use the <a class="el" href="namespace_shopify_1_1_unity.html">Unity</a> Buy <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a> in a C# environment outside of <a class="el" href="namespace_shopify_1_1_unity.html">Unity</a>. The <code>domain</code> string is inferred from ILoaders which can be used to request a specific client.  <a href="#aeae7e4877b3f77ca693329eeab055b77">More...</a><br /></td></tr>
 <tr class="separator:aeae7e4877b3f77ca693329eeab055b77"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a709e0b5547aa3ea68d788ddddaa1f0cc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#a709e0b5547aa3ea68d788ddddaa1f0cc">products</a> (ResponseProductsHandler callback, int? first=null, string after=null, Dictionary&lt; string, int &gt; imageResolutions=null)</td></tr>
-<tr class="memdesc:a709e0b5547aa3ea68d788ddddaa1f0cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Will generate a query to receive all <code>products</code> from a <a class="el" href="namespace_shopify.html">Shopify</a> store. The generated query will query the following on products:  <a href="#a709e0b5547aa3ea68d788ddddaa1f0cc">More...</a><br /></td></tr>
-<tr class="separator:a709e0b5547aa3ea68d788ddddaa1f0cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d5da4de74a48c0ab521c96d5acff0a6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#a7d5da4de74a48c0ab521c96d5acff0a6">products</a> (ResponseProductsHandler callback, int? first=null, string after=null)</td></tr>
+<tr class="memdesc:a7d5da4de74a48c0ab521c96d5acff0a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Will generate a query to receive all <code>products</code> from a <a class="el" href="namespace_shopify.html">Shopify</a> store. The generated query will query the following on products:  <a href="#a7d5da4de74a48c0ab521c96d5acff0a6">More...</a><br /></td></tr>
+<tr class="separator:a7d5da4de74a48c0ab521c96d5acff0a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac30ac6ee5c08a18a8aaaa8a7bcc0ebb2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#ac30ac6ee5c08a18a8aaaa8a7bcc0ebb2">products</a> (ResponseProductsHandler callback, string firstProductId, params string[] otherProductIds)</td></tr>
+<tr class="memdesc:ac30ac6ee5c08a18a8aaaa8a7bcc0ebb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Will generate a query to receive selected <code>products</code> from a <a class="el" href="namespace_shopify.html">Shopify</a> store. The generated query will query the following on products:  <a href="#ac30ac6ee5c08a18a8aaaa8a7bcc0ebb2">More...</a><br /></td></tr>
+<tr class="separator:ac30ac6ee5c08a18a8aaaa8a7bcc0ebb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59c704ee786c7ad5406d444df3de28db"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#a59c704ee786c7ad5406d444df3de28db">products</a> (ResponseProductsHandler callback, List&lt; string &gt; productIds)</td></tr>
+<tr class="memdesc:a59c704ee786c7ad5406d444df3de28db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Will generate a query to receive selected <code>products</code> from a <a class="el" href="namespace_shopify.html">Shopify</a> store. The generated query will query the following on products:  <a href="#a59c704ee786c7ad5406d444df3de28db">More...</a><br /></td></tr>
+<tr class="separator:a59c704ee786c7ad5406d444df3de28db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a846c8e72932b24758ab3822414855e79"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#a846c8e72932b24758ab3822414855e79">collections</a> (ResponseCollectionsHandler callback, int? first=null, string after=null)</td></tr>
 <tr class="memdesc:a846c8e72932b24758ab3822414855e79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Will generate a query to receive all <code>collections</code> from a <a class="el" href="namespace_shopify.html">Shopify</a> store. The generated query will query the following on collections:  <a href="#a846c8e72932b24758ab3822414855e79">More...</a><br /></td></tr>
 <tr class="separator:a846c8e72932b24758ab3822414855e79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5eec261f83adf485f78640cb8091245c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#a5eec261f83adf485f78640cb8091245c">Query</a> (<a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_query_root_query.html">QueryRootQuery</a> query, ResponseQueryHandler callback)</td></tr>
-<tr class="memdesc:a5eec261f83adf485f78640cb8091245c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to send custom <a class="el" href="namespace_shopify_1_1_unity_1_1_graph_q_l.html">GraphQL</a> queries to the Storefront API. While having utility functions like products collections is useful. The Storefront API has more functionality. This method allows you to access all the extra functionality that the Storefront API provides.  <a href="#a5eec261f83adf485f78640cb8091245c">More...</a><br /></td></tr>
+<tr class="memdesc:a5eec261f83adf485f78640cb8091245c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to send custom <a class="el" href="namespace_shopify_1_1_unity_1_1_graph_q_l.html">GraphQL</a> queries to the Storefront API. While having utility functions like products collections is useful, the Storefront API has more functionality. This method allows you to access all the extra functionality that the Storefront API provides.  <a href="#a5eec261f83adf485f78640cb8091245c">More...</a><br /></td></tr>
 <tr class="separator:a5eec261f83adf485f78640cb8091245c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04e609f37f0ef7ccf38980a5f87912d6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#a04e609f37f0ef7ccf38980a5f87912d6">Query</a> (QueryRootDelegate buildQuery, ResponseQueryHandler callback)</td></tr>
-<tr class="memdesc:a04e609f37f0ef7ccf38980a5f87912d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to build and send custom <a class="el" href="namespace_shopify_1_1_unity_1_1_graph_q_l.html">GraphQL</a> queries to the Storefront API. While having utility functions like products collections is useful. The Storefront API has more functionality. This method allows you to access all the extra functionality that the Storefront API provides.  <a href="#a04e609f37f0ef7ccf38980a5f87912d6">More...</a><br /></td></tr>
+<tr class="memdesc:a04e609f37f0ef7ccf38980a5f87912d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to build and send custom <a class="el" href="namespace_shopify_1_1_unity_1_1_graph_q_l.html">GraphQL</a> queries to the Storefront API. While having utility functions like products collections is useful, the Storefront API has more functionality. This method allows you to access all the extra functionality that the Storefront API provides.  <a href="#a04e609f37f0ef7ccf38980a5f87912d6">More...</a><br /></td></tr>
 <tr class="separator:a04e609f37f0ef7ccf38980a5f87912d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a762bb585ebcb20b27291a90da237407f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#a762bb585ebcb20b27291a90da237407f">Mutation</a> (<a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_mutation_query.html">MutationQuery</a> query, ResponseMutationHandler callback)</td></tr>
-<tr class="memdesc:a762bb585ebcb20b27291a90da237407f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to send custom prebuilt <a class="el" href="namespace_shopify_1_1_unity_1_1_graph_q_l.html">GraphQL</a> mutation queries to the Storefront API  <a href="#a762bb585ebcb20b27291a90da237407f">More...</a><br /></td></tr>
+<tr class="memdesc:a762bb585ebcb20b27291a90da237407f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to send custom prebuilt <a class="el" href="namespace_shopify_1_1_unity_1_1_graph_q_l.html">GraphQL</a> mutation queries to the Storefront API.  <a href="#a762bb585ebcb20b27291a90da237407f">More...</a><br /></td></tr>
 <tr class="separator:a762bb585ebcb20b27291a90da237407f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af56467c5842bbce32d13428fc69183c5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#af56467c5842bbce32d13428fc69183c5">Mutation</a> (MutationDelegate buildQuery, ResponseMutationHandler callback)</td></tr>
-<tr class="memdesc:af56467c5842bbce32d13428fc69183c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to build and send custom <a class="el" href="namespace_shopify_1_1_unity_1_1_graph_q_l.html">GraphQL</a> mutation queries to the Storefront API  <a href="#af56467c5842bbce32d13428fc69183c5">More...</a><br /></td></tr>
+<tr class="memdesc:af56467c5842bbce32d13428fc69183c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to build and send custom <a class="el" href="namespace_shopify_1_1_unity_1_1_graph_q_l.html">GraphQL</a> mutation queries to the Storefront API.  <a href="#af56467c5842bbce32d13428fc69183c5">More...</a><br /></td></tr>
 <tr class="separator:af56467c5842bbce32d13428fc69183c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64e42c2b35227dbb9921e0efcfd8fec6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html">Cart</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#a64e42c2b35227dbb9921e0efcfd8fec6">Cart</a> (string cartId=null)</td></tr>
-<tr class="memdesc:a64e42c2b35227dbb9921e0efcfd8fec6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Is used to manage line items for an order. Can also be used to generate a web checkout link to checko...">Cart</a> which can be used to manage line items for an order and create a web checkout link. One client can have multiple carts so it's possible to pass in a <code>cartId</code> to reference a specific cart. If no <code>cartId</code> is passed then a default <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Is used to manage line items for an order. Can also be used to generate a web checkout link to checko...">Cart</a> is used.  <a href="#a64e42c2b35227dbb9921e0efcfd8fec6">More...</a><br /></td></tr>
+<tr class="memdesc:a64e42c2b35227dbb9921e0efcfd8fec6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Is used to manage line items for an order. Can also be used to generate a web checkout link to check ...">Cart</a> , which can be used to manage line items for an order and create a web checkout link. One client can have multiple carts, so it's possible to pass in a <code>cartId</code> to reference a specific cart. If no <code>cartId</code> is passed, then a default <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Is used to manage line items for an order. Can also be used to generate a web checkout link to check ...">Cart</a> is used.  <a href="#a64e42c2b35227dbb9921e0efcfd8fec6">More...</a><br /></td></tr>
 <tr class="separator:a64e42c2b35227dbb9921e0efcfd8fec6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a5237b2cb2a305a1f8d08afb10a50d743"><td class="memItemLeft" align="right" valign="top">static Dictionary&lt; string, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#a5237b2cb2a305a1f8d08afb10a50d743">defaultImageSizes</a></td></tr>
-<tr class="memdesc:a5237b2cb2a305a1f8d08afb10a50d743"><td class="mdescLeft">&#160;</td><td class="mdescRight">this is a dictionary which defines aliases, <code>maxWidth</code>, and <code>maxHeight</code> for images loaded by products and collections . Basically all Products images, Product variant images, and Collection images will be queried using aliases defined by this dictionary's keys and the <code>maxWidth</code> and <code>maxHeight</code> will be this dictionary's values.  <a href="#a5237b2cb2a305a1f8d08afb10a50d743">More...</a><br /></td></tr>
-<tr class="separator:a5237b2cb2a305a1f8d08afb10a50d743"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70cbce1c143468ca162cc79d26043843"><td class="memItemLeft" align="right" valign="top">static Dictionary&lt; string, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#a70cbce1c143468ca162cc79d26043843">DefaultImageResolutions</a></td></tr>
+<tr class="memdesc:a70cbce1c143468ca162cc79d26043843"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a dictionary that defines aliases, <code>maxWidth</code>, and <code>maxHeight</code> for images loaded by products and collections . All Products images, <a class="el" href="class_shopify_1_1_unity_1_1_product.html" title="A product represents an individual item for sale in a Shopify store. Products are often physical...">Product</a> variant images, and <a class="el" href="class_shopify_1_1_unity_1_1_collection.html" title="A collection represents a grouping of products that a shop owner can create to organize them or make ...">Collection</a> images will be queried using aliases defined by this dictionary's keys and the <code>maxWidth</code> and <code>maxHeight</code> will be this dictionary's values.  <a href="#a70cbce1c143468ca162cc79d26043843">More...</a><br /></td></tr>
+<tr class="separator:a70cbce1c143468ca162cc79d26043843"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:ab4b4534535997c6cd476306fc0aa63f6"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#ab4b4534535997c6cd476306fc0aa63f6">AccessToken</a><code> [get]</code></td></tr>
-<tr class="memdesc:ab4b4534535997c6cd476306fc0aa63f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">AccessToken is the access token associated with this client to query <a class="el" href="namespace_shopify.html">Shopify</a>  <a href="#ab4b4534535997c6cd476306fc0aa63f6">More...</a><br /></td></tr>
+<tr class="memdesc:ab4b4534535997c6cd476306fc0aa63f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">AccessToken is the access token associated with this client to query <a class="el" href="namespace_shopify.html">Shopify</a>.  <a href="#ab4b4534535997c6cd476306fc0aa63f6">More...</a><br /></td></tr>
 <tr class="separator:ab4b4534535997c6cd476306fc0aa63f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40b0d007c05690925cec36ca15fa30e0"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#a40b0d007c05690925cec36ca15fa30e0">Domain</a><code> [get]</code></td></tr>
-<tr class="memdesc:a40b0d007c05690925cec36ca15fa30e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Domain is the <a class="el" href="namespace_shopify.html">Shopify</a> store domain associated with this client  <a href="#a40b0d007c05690925cec36ca15fa30e0">More...</a><br /></td></tr>
+<tr class="memdesc:a40b0d007c05690925cec36ca15fa30e0"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_shopify_1_1_unity_1_1_domain.html" title="Represents a web address. ">Domain</a> is the <a class="el" href="namespace_shopify.html">Shopify</a> store domain associated with this client.  <a href="#a40b0d007c05690925cec36ca15fa30e0">More...</a><br /></td></tr>
 <tr class="separator:a40b0d007c05690925cec36ca15fa30e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -157,7 +163,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html" title="ShopifyClient  is the entry point to communicate with the Shopify Storefront API. ShopifyClient  also...">ShopifyClient</a> is the entry point to communicate with the <a class="el" href="namespace_shopify.html">Shopify</a> Storefront API. <a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html" title="ShopifyClient  is the entry point to communicate with the Shopify Storefront API. ShopifyClient  also...">ShopifyClient</a> also has functionality to easily generate and send queries to receive information about products, collections, and has the ability to create checkouts. </p>
+<p><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html" title="ShopifyClient  is the entry point to communicate with the Shopify Storefront API. ShopifyClient  also...">ShopifyClient</a> is the entry point to communicate with the <a class="el" href="namespace_shopify.html">Shopify</a> Storefront API. <a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html" title="ShopifyClient  is the entry point to communicate with the Shopify Storefront API. ShopifyClient  also...">ShopifyClient</a> also has functionality to easily generate and send queries to receive information about products and collections. It also has the ability to create checkouts. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">accessToken</td><td>the access token used to query the <a class="el" href="namespace_shopify.html">Shopify</a> Storefront API for a store</td></tr>
@@ -192,7 +198,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>It is possible to instantiate a <a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html" title="ShopifyClient  is the entry point to communicate with the Shopify Storefront API. ShopifyClient  also...">ShopifyClient</a> by passing an instance that implements ILoader . ILoader's handle network communication with the Storefront API. This functionality is useful if you'd like to use the <a class="el" href="namespace_shopify_1_1_unity.html">Unity</a> Buy <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a> in a C# environment outside of <a class="el" href="namespace_shopify_1_1_unity.html">Unity</a>. The <code>domain</code> string is inferred from ILoader's which can be used to request a specific client. </p>
+<p>It is possible to instantiate a <a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html" title="ShopifyClient  is the entry point to communicate with the Shopify Storefront API. ShopifyClient  also...">ShopifyClient</a> by passing an instance that implements ILoader . ILoaders handle network communication with the Storefront API. This functionality is useful if you'd like to use the <a class="el" href="namespace_shopify_1_1_unity.html">Unity</a> Buy <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a> in a C# environment outside of <a class="el" href="namespace_shopify_1_1_unity.html">Unity</a>. The <code>domain</code> string is inferred from ILoaders which can be used to request a specific client. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">loader</td><td>a loader which will handle network communicationication with the Storefront API</td></tr>
@@ -227,7 +233,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Creates a <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Is used to manage line items for an order. Can also be used to generate a web checkout link to checko...">Cart</a> which can be used to manage line items for an order and create a web checkout link. One client can have multiple carts so it's possible to pass in a <code>cartId</code> to reference a specific cart. If no <code>cartId</code> is passed then a default <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Is used to manage line items for an order. Can also be used to generate a web checkout link to checko...">Cart</a> is used. </p>
+<p>Creates a <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Is used to manage line items for an order. Can also be used to generate a web checkout link to check ...">Cart</a> , which can be used to manage line items for an order and create a web checkout link. One client can have multiple carts, so it's possible to pass in a <code>cartId</code> to reference a specific cart. If no <code>cartId</code> is passed, then a default <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Is used to manage line items for an order. Can also be used to generate a web checkout link to check ...">Cart</a> is used. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">cartId</td><td>can be optionally passed in. This is useful if your application needs multiple carts</td></tr>
@@ -296,7 +302,7 @@ Properties</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">callback</td><td>will receive responses from server</td></tr>
     <tr><td class="paramname">first</td><td>can be used to limit how many products are returned. For instance 10 would return only 10 collections</td></tr>
-    <tr><td class="paramname">after</td><td>this is an advanced feature but when querying Relay Connections a cursor is returned which can be used to determine where paginated loading begins. For instance when used with <code>first: 10</code> and <code>after: "abc"</code> only the first 10 products would be loaded after cursor <code>"abc"</code> </td></tr>
+    <tr><td class="paramname">after</td><td>This is an advanced feature but when querying Relay Connections a cursor is returned which can be used to determine where paginated loading begins. For example, when used with <code>first: 10</code> and <code>after: "abc"</code>, only the first 10 products would be loaded after cursor <code>"abc"</code>. </td></tr>
   </table>
   </dd>
 </dl>
@@ -337,7 +343,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to send custom prebuilt <a class="el" href="namespace_shopify_1_1_unity_1_1_graph_q_l.html">GraphQL</a> mutation queries to the Storefront API </p>
+<p>Allows you to send custom prebuilt <a class="el" href="namespace_shopify_1_1_unity_1_1_graph_q_l.html">GraphQL</a> mutation queries to the Storefront API. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">query</td><td>a query to be sent to the Storefront API</td></tr>
@@ -382,7 +388,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to build and send custom <a class="el" href="namespace_shopify_1_1_unity_1_1_graph_q_l.html">GraphQL</a> mutation queries to the Storefront API </p>
+<p>Allows you to build and send custom <a class="el" href="namespace_shopify_1_1_unity_1_1_graph_q_l.html">GraphQL</a> mutation queries to the Storefront API. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">buildQuery</td><td>delegate that will build a query starting at MutationQuery </td></tr>
@@ -393,8 +399,8 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="a709e0b5547aa3ea68d788ddddaa1f0cc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a709e0b5547aa3ea68d788ddddaa1f0cc">&#9670;&nbsp;</a></span>products()</h2>
+<a id="a7d5da4de74a48c0ab521c96d5acff0a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d5da4de74a48c0ab521c96d5acff0a6">&#9670;&nbsp;</a></span>products() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -418,13 +424,7 @@ Properties</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>after</em> = <code>null</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Dictionary&lt; string, int &gt;&#160;</td>
-          <td class="paramname"><em>imageResolutions</em> = <code>null</code>&#160;</td>
+          <td class="paramname"><em>after</em> = <code>null</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -444,7 +444,7 @@ Properties</h2></td></tr>
 <li>id</li>
 <li>title</li>
 <li>descriptionHtml</li>
-<li>images (with aliases defined by imageResolutions passed in or defaultImageSizes if imageResolutions was not passed)<ul>
+<li>images (with aliases defined by <a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#a70cbce1c143468ca162cc79d26043843" title="This is a dictionary that defines aliases, maxWidth, and maxHeight for images loaded by products and ...">ShopifyClient.DefaultImageResolutions</a>)<ul>
 <li>altText</li>
 <li>src</li>
 </ul>
@@ -466,7 +466,7 @@ Properties</h2></td></tr>
 <li>values</li>
 </ul>
 </li>
-<li>image (with aliases defined by imageResolutions passed in or defaultImageSizes if imageResolutions was not passed)<ul>
+<li>image (with aliases defined by <a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#a70cbce1c143468ca162cc79d26043843" title="This is a dictionary that defines aliases, maxWidth, and maxHeight for images loaded by products and ...">ShopifyClient.DefaultImageResolutions</a>)<ul>
 <li>altText</li>
 <li>src</li>
 </ul>
@@ -474,7 +474,7 @@ Properties</h2></td></tr>
 </ul>
 </li>
 <li>collections<ul>
-<li>image (with aliases defined by imageResolutions passed in or defaultImageSizes if imageResolutions was not passed)<ul>
+<li>image (with aliases defined by <a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#a70cbce1c143468ca162cc79d26043843" title="This is a dictionary that defines aliases, maxWidth, and maxHeight for images loaded by products and ...">ShopifyClient.DefaultImageResolutions</a>)<ul>
 <li>altText</li>
 <li>src</li>
 </ul>
@@ -490,12 +490,196 @@ Properties</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">callback</td><td>callback that will receive responses from server</td></tr>
     <tr><td class="paramname">first</td><td>can be used to limit how many products are returned. For instance 10 would return only 10 products</td></tr>
-    <tr><td class="paramname">after</td><td>this is an advanced feature but when querying Relay Connections a cursor is returned which can be used to determine where paginated loading begins. For instance when used with <code>first: 10</code> and <code>after: "abc"</code> only the first 10 products would be loaded after cursor <code>"abc"</code> </td></tr>
-    <tr><td class="paramname">imageResolutions</td><td>is a dictionary used to set resolutions at which images are queried. This Dictionary effects how Product images, Product Variant image, and Collection image is queried. If <code>imageResolutions</code> is omitted then <a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#a5237b2cb2a305a1f8d08afb10a50d743" title="this is a dictionary which defines aliases, maxWidth, and maxHeight for images loaded by products and...">ShopifyClient.defaultImageSizes</a> will be used instead.</td></tr>
+    <tr><td class="paramname">after</td><td>This is an advanced feature but when querying Relay Connections a cursor is returned which can be used to determine where paginated loading begins. For example, when used with <code>first: 10</code> and <code>after: "abc"</code>, only the first 10 products would be loaded after cursor <code>"abc"</code>. </td></tr>
   </table>
   </dd>
 </dl>
-<p>This Dictionary's keys refer to an alias and it's values refer to <code>maxWidth</code> and <code>maxHeight</code> for images. So for instance if you wanted to have images which all had a <code>maxWidth</code> and <code>maxHeight</code> of 200px you'd pass in a dictionary that looks like this: </p><div class="fragment"><div class="line">Dictionary&lt;string, int&gt; imageResolutions = <span class="keyword">new</span> Dictionary&lt;string, int&gt;() { {<span class="stringliteral">&quot;res200_by_200&quot;</span>, 200} };</div></div><!-- fragment --><p> In the above case to access images for that resolution you'd do the following: </p><div class="fragment"><div class="line"><span class="keywordtype">string</span> src200x200 = productVariant.image(<span class="stringliteral">&quot;res200_by_200&quot;</span>).src();</div></div><!-- fragment --> 
+
+</div>
+</div>
+<a id="ac30ac6ee5c08a18a8aaaa8a7bcc0ebb2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac30ac6ee5c08a18a8aaaa8a7bcc0ebb2">&#9670;&nbsp;</a></span>products() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Shopify.Unity.ShopifyClient.products </td>
+          <td>(</td>
+          <td class="paramtype">ResponseProductsHandler&#160;</td>
+          <td class="paramname"><em>callback</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>firstProductId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">params string []&#160;</td>
+          <td class="paramname"><em>otherProductIds</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Will generate a query to receive selected <code>products</code> from a <a class="el" href="namespace_shopify.html">Shopify</a> store. The generated query will query the following on products: </p>
+<ul>
+<li>id</li>
+<li>title</li>
+<li>descriptionHtml</li>
+<li>images (with aliases defined by ShopifyClient.defaultImageResolutions)<ul>
+<li>altText</li>
+<li>src</li>
+</ul>
+</li>
+<li>options<ul>
+<li>name</li>
+<li>values</li>
+</ul>
+</li>
+<li>variants<ul>
+<li>id</li>
+<li>available</li>
+<li>price</li>
+<li>title</li>
+<li>weight</li>
+<li>weightUnit</li>
+<li>selectedOptions<ul>
+<li>name</li>
+<li>values</li>
+</ul>
+</li>
+<li>image (with aliases defined by ShopifyClient.defaultImageResolutions)<ul>
+<li>altText</li>
+<li>src</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>collections<ul>
+<li>image (with aliases defined by ShopifyClient.defaultImageResolutions)<ul>
+<li>altText</li>
+<li>src</li>
+</ul>
+</li>
+<li>title</li>
+<li>updatedAt</li>
+</ul>
+</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">callback</td><td>callback that will receive responses from server</td></tr>
+    <tr><td class="paramname">firstProductId</td><td>you must pass in at least one product id to query</td></tr>
+    <tr><td class="paramname">otherProductIds</td><td>after the first product id you can pass in as many product ids as you'd like. </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="fragment"><div class="line"><span class="comment">// Example usage querying two product ids</span></div><div class="line">ShopifyBuy.Client().products((<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a7d5da4de74a48c0ab521c96d5acff0a6">products</a>, errors, httpError) =&gt; {</div><div class="line">    Debug.Log(<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a7d5da4de74a48c0ab521c96d5acff0a6">products</a>[0].<span class="keywordtype">id</span>()); <span class="comment">// &quot;gid://shopify/Product/9895276099&quot;</span></div><div class="line">    Debug.Log(<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a7d5da4de74a48c0ab521c96d5acff0a6">products</a>[1].<span class="keywordtype">id</span>()); <span class="comment">// &quot;gid://shopify/Product/9895279043&quot;</span></div><div class="line">}, <span class="stringliteral">&quot;gid://shopify/Product/9895276099&quot;</span>, <span class="stringliteral">&quot;gid://shopify/Product/9895279043&quot;</span>);</div></div><!-- fragment --> 
+</div>
+</div>
+<a id="a59c704ee786c7ad5406d444df3de28db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59c704ee786c7ad5406d444df3de28db">&#9670;&nbsp;</a></span>products() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Shopify.Unity.ShopifyClient.products </td>
+          <td>(</td>
+          <td class="paramtype">ResponseProductsHandler&#160;</td>
+          <td class="paramname"><em>callback</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">List&lt; string &gt;&#160;</td>
+          <td class="paramname"><em>productIds</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Will generate a query to receive selected <code>products</code> from a <a class="el" href="namespace_shopify.html">Shopify</a> store. The generated query will query the following on products: </p>
+<ul>
+<li>id</li>
+<li>title</li>
+<li>descriptionHtml</li>
+<li>images (with aliases defined by ShopifyClient.defaultImageResolutions)<ul>
+<li>altText</li>
+<li>src</li>
+</ul>
+</li>
+<li>options<ul>
+<li>name</li>
+<li>values</li>
+</ul>
+</li>
+<li>variants<ul>
+<li>id</li>
+<li>available</li>
+<li>price</li>
+<li>title</li>
+<li>weight</li>
+<li>weightUnit</li>
+<li>selectedOptions<ul>
+<li>name</li>
+<li>values</li>
+</ul>
+</li>
+<li>image (with aliases defined by ShopifyClient.defaultImageResolutions)<ul>
+<li>altText</li>
+<li>src</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>collections<ul>
+<li>image (with aliases defined by ShopifyClient.defaultImageResolutions)<ul>
+<li>altText</li>
+<li>src</li>
+</ul>
+</li>
+<li>title</li>
+<li>updatedAt</li>
+</ul>
+</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">callback</td><td>callback that will receive responses from server</td></tr>
+    <tr><td class="paramname">productIds</td><td>a list of product ids you'd like to query</td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="fragment"><div class="line"><span class="comment">// Example usage querying two product ids</span></div><div class="line">ShopifyBuy.Client().products((<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a7d5da4de74a48c0ab521c96d5acff0a6">products</a>, errors, httpError) =&gt; {</div><div class="line">    Debug.Log(<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a7d5da4de74a48c0ab521c96d5acff0a6">products</a>[0].<span class="keywordtype">id</span>()); <span class="comment">// &quot;gid://shopify/Product/9895276099&quot;</span></div><div class="line">    Debug.Log(<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a7d5da4de74a48c0ab521c96d5acff0a6">products</a>[1].<span class="keywordtype">id</span>()); <span class="comment">// &quot;gid://shopify/Product/9895279043&quot;</span></div><div class="line">}, <span class="stringliteral">&quot;gid://shopify/Product/9895276099&quot;</span>, <span class="stringliteral">&quot;gid://shopify/Product/9895279043&quot;</span>);</div></div><!-- fragment --> 
 </div>
 </div>
 <a id="a5eec261f83adf485f78640cb8091245c"></a>
@@ -532,7 +716,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to send custom <a class="el" href="namespace_shopify_1_1_unity_1_1_graph_q_l.html">GraphQL</a> queries to the Storefront API. While having utility functions like products collections is useful. The Storefront API has more functionality. This method allows you to access all the extra functionality that the Storefront API provides. </p>
+<p>Allows you to send custom <a class="el" href="namespace_shopify_1_1_unity_1_1_graph_q_l.html">GraphQL</a> queries to the Storefront API. While having utility functions like products collections is useful, the Storefront API has more functionality. This method allows you to access all the extra functionality that the Storefront API provides. </p>
 <p>The following is a small example querying a shop's name: </p><div class="fragment"><div class="line">QueryRoot query = <span class="keyword">new</span> QueryRootQuery();</div><div class="line">query.shop(s =&gt; s</div><div class="line">    .name()</div><div class="line">);</div><div class="line"></div><div class="line">ShopifyBuy.Client().Query(</div><div class="line">    query: query,</div><div class="line">    callback: (data, errors, httpErrors) =&gt; {</div><div class="line">        <span class="keywordflow">if</span> (httpErrors != null) {</div><div class="line">            Debug.Log(<span class="stringliteral">&quot;There was an error communicating with the Storefront API&quot;</span>);</div><div class="line">        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (errors != null) {</div><div class="line">            Debug.Log(<span class="stringliteral">&quot;The GraphQL query was invalid&quot;</span>);</div><div class="line">        } <span class="keywordflow">else</span> {</div><div class="line">            Debug.Log(data.shop().name());</div><div class="line">        }</div><div class="line">    }</div><div class="line">);</div></div><!-- fragment --> <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">query</td><td>a <a class="el" href="namespace_shopify_1_1_unity_1_1_graph_q_l.html">GraphQL</a> query to be sent to the Storefront API</td></tr>
@@ -577,8 +761,8 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to build and send custom <a class="el" href="namespace_shopify_1_1_unity_1_1_graph_q_l.html">GraphQL</a> queries to the Storefront API. While having utility functions like products collections is useful. The Storefront API has more functionality. This method allows you to access all the extra functionality that the Storefront API provides. </p>
-<p>For instance in the following example we will write a query that returns the Shop's name: </p><div class="fragment"><div class="line">ShopifyBuy.Client().Query(</div><div class="line">    query: q =&gt; q</div><div class="line">        .shop(s =&gt; s</div><div class="line">            .name()</div><div class="line">        ),</div><div class="line">    callback: (data, errors, httpErrors) =&gt; {</div><div class="line">        <span class="keywordflow">if</span> (httpErrors != null) {</div><div class="line">            Debug.Log(<span class="stringliteral">&quot;There was an error communicating with the Storefront API&quot;</span>);</div><div class="line">        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (errors != null) {</div><div class="line">            Debug.Log(<span class="stringliteral">&quot;The GraphQL query was invalid&quot;</span>);</div><div class="line">        } <span class="keywordflow">else</span> {</div><div class="line">            Debug.Log(data.shop().name());</div><div class="line">        }</div><div class="line">    }</div><div class="line">);</div></div><!-- fragment --> <dl class="params"><dt>Parameters</dt><dd>
+<p>Allows you to build and send custom <a class="el" href="namespace_shopify_1_1_unity_1_1_graph_q_l.html">GraphQL</a> queries to the Storefront API. While having utility functions like products collections is useful, the Storefront API has more functionality. This method allows you to access all the extra functionality that the Storefront API provides. </p>
+<p>For instance in the following example we will write a query that returns the <a class="el" href="class_shopify_1_1_unity_1_1_shop.html" title="Shop represents a collection of the general settings and information about the shop. ">Shop</a>'s name: </p><div class="fragment"><div class="line">ShopifyBuy.Client().Query(</div><div class="line">    query: q =&gt; q</div><div class="line">        .shop(s =&gt; s</div><div class="line">            .name()</div><div class="line">        ),</div><div class="line">    callback: (data, errors, httpErrors) =&gt; {</div><div class="line">        <span class="keywordflow">if</span> (httpErrors != null) {</div><div class="line">            Debug.Log(<span class="stringliteral">&quot;There was an error communicating with the Storefront API&quot;</span>);</div><div class="line">        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (errors != null) {</div><div class="line">            Debug.Log(<span class="stringliteral">&quot;The GraphQL query was invalid&quot;</span>);</div><div class="line">        } <span class="keywordflow">else</span> {</div><div class="line">            Debug.Log(data.shop().name());</div><div class="line">        }</div><div class="line">    }</div><div class="line">);</div></div><!-- fragment --> <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">buildQuery</td><td>delegate that will build a query starting at QueryRootQuery which will be sent to the Storefront API </td></tr>
     <tr><td class="paramname">callback</td><td>callback which will receive a response</td></tr>
@@ -589,8 +773,8 @@ Properties</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a5237b2cb2a305a1f8d08afb10a50d743"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5237b2cb2a305a1f8d08afb10a50d743">&#9670;&nbsp;</a></span>defaultImageSizes</h2>
+<a id="a70cbce1c143468ca162cc79d26043843"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a70cbce1c143468ca162cc79d26043843">&#9670;&nbsp;</a></span>DefaultImageResolutions</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -599,7 +783,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Dictionary&lt;string,int&gt; Shopify.Unity.ShopifyClient.defaultImageSizes</td>
+          <td class="memname">Dictionary&lt;string,int&gt; Shopify.Unity.ShopifyClient.DefaultImageResolutions</td>
         </tr>
       </table>
   </td>
@@ -609,7 +793,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> Dictionary&lt;string, int&gt;() {</div><div class="line">            {<span class="stringliteral">&quot;pico&quot;</span>, 16},</div><div class="line">            {<span class="stringliteral">&quot;icon&quot;</span>, 32},</div><div class="line">            {<span class="stringliteral">&quot;thumb&quot;</span>, 50},</div><div class="line">            {<span class="stringliteral">&quot;small&quot;</span>, 100},</div><div class="line">            {<span class="stringliteral">&quot;compact&quot;</span>, 160},</div><div class="line">            {<span class="stringliteral">&quot;medium&quot;</span>, 240},</div><div class="line">            {<span class="stringliteral">&quot;large&quot;</span>, 480},</div><div class="line">            {<span class="stringliteral">&quot;grande&quot;</span>, 600},</div><div class="line">            {<span class="stringliteral">&quot;resolution_1024&quot;</span>, 1024},</div><div class="line">            {<span class="stringliteral">&quot;resolution_2048&quot;</span>, 2048}</div><div class="line">        }</div></div><!-- fragment -->
-<p>this is a dictionary which defines aliases, <code>maxWidth</code>, and <code>maxHeight</code> for images loaded by products and collections . Basically all Products images, Product variant images, and Collection images will be queried using aliases defined by this dictionary's keys and the <code>maxWidth</code> and <code>maxHeight</code> will be this dictionary's values. </p>
+<p>This is a dictionary that defines aliases, <code>maxWidth</code>, and <code>maxHeight</code> for images loaded by products and collections . All Products images, <a class="el" href="class_shopify_1_1_unity_1_1_product.html" title="A product represents an individual item for sale in a Shopify store. Products are often physical...">Product</a> variant images, and <a class="el" href="class_shopify_1_1_unity_1_1_collection.html" title="A collection represents a grouping of products that a shop owner can create to organize them or make ...">Collection</a> images will be queried using aliases defined by this dictionary's keys and the <code>maxWidth</code> and <code>maxHeight</code> will be this dictionary's values. </p>
 <div class="fragment"><div class="line"><span class="comment">// returns an image source url whose dimensions are never greater than 100px</span></div><div class="line"><span class="keywordtype">string</span> srcSmallImage = productVariant.image(<span class="stringliteral">&quot;small&quot;</span>).src();</div><div class="line"></div><div class="line"><span class="comment">// returns an image source url whose dimensions are never greater than 1024px</span></div><div class="line"><span class="keywordtype">string</span> src1024Image = productVariant.image(<span class="stringliteral">&quot;resolution_1024&quot;</span>).src();</div></div><!-- fragment --> 
 </div>
 </div>
@@ -634,7 +818,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>AccessToken is the access token associated with this client to query <a class="el" href="namespace_shopify.html">Shopify</a> </p>
+<p>AccessToken is the access token associated with this client to query <a class="el" href="namespace_shopify.html">Shopify</a>. </p>
 
 </div>
 </div>
@@ -658,7 +842,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Domain is the <a class="el" href="namespace_shopify.html">Shopify</a> store domain associated with this client </p>
+<p><a class="el" href="class_shopify_1_1_unity_1_1_domain.html" title="Represents a web address. ">Domain</a> is the <a class="el" href="namespace_shopify.html">Shopify</a> store domain associated with this client. </p>
 
 </div>
 </div>

@@ -1,13 +1,7 @@
 var searchData=
 [
-  ['selectedoption',['SelectedOption',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_selected_option.html',1,'Shopify::Unity::GraphQL']]],
-  ['selectedoptionquery',['SelectedOptionQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_selected_option_query.html',1,'Shopify::Unity::GraphQL']]],
-  ['shippingrate',['ShippingRate',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_shipping_rate.html',1,'Shopify::Unity::GraphQL']]],
-  ['shippingratequery',['ShippingRateQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_shipping_rate_query.html',1,'Shopify::Unity::GraphQL']]],
-  ['shop',['Shop',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_shop.html',1,'Shopify::Unity::GraphQL']]],
-  ['shopifybuy',['ShopifyBuy',['../class_shopify_1_1_unity_1_1_shopify_buy.html',1,'Shopify::Unity']]],
-  ['shopifyclient',['ShopifyClient',['../class_shopify_1_1_unity_1_1_shopify_client.html',1,'Shopify::Unity']]],
-  ['shoppolicy',['ShopPolicy',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_shop_policy.html',1,'Shopify::Unity::GraphQL']]],
-  ['shoppolicyquery',['ShopPolicyQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_shop_policy_query.html',1,'Shopify::Unity::GraphQL']]],
-  ['shopquery',['ShopQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_shop_query.html',1,'Shopify::Unity::GraphQL']]]
+  ['queryloader',['QueryLoader',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_query_loader.html',1,'Shopify::Unity::SDK']]],
+  ['queryresponse',['QueryResponse',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_query_response.html',1,'Shopify::Unity::SDK']]],
+  ['queryroot',['QueryRoot',['../class_shopify_1_1_unity_1_1_query_root.html',1,'Shopify::Unity']]],
+  ['queryrootquery',['QueryRootQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_query_root_query.html',1,'Shopify::Unity::GraphQL']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['httperror',['HTTPError',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_top_level_response.html#acf309d39bfe5d805f4419b4b3a935ec6',1,'Shopify::Unity::SDK::TopLevelResponse']]]
+  ['firstname',['firstName',['../class_shopify_1_1_unity_1_1_customer_create_input.html#ab31e757d65f003981ad71e1392cfa658',1,'Shopify.Unity.CustomerCreateInput.firstName()'],['../class_shopify_1_1_unity_1_1_customer_update_input.html#a1c51c4fd41bd014aeb871d1827cd2db4',1,'Shopify.Unity.CustomerUpdateInput.firstName()']]]
 ];

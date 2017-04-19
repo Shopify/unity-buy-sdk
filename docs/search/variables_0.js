@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['defaultimagesizes',['defaultImageSizes',['../class_shopify_1_1_unity_1_1_shopify_client.html#a5237b2cb2a305a1f8d08afb10a50d743',1,'Shopify::Unity::ShopifyClient']]]
+  ['defaultimageresolutions',['DefaultImageResolutions',['../class_shopify_1_1_unity_1_1_shopify_client.html#a70cbce1c143468ca162cc79d26043843',1,'Shopify::Unity::ShopifyClient']]]
 ];
