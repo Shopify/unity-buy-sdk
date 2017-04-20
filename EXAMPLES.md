@@ -12,6 +12,13 @@ Before you can start using the Unity Buy SDK, you need:
 - [a storefront access token for your app](https://help.shopify.com/api/storefront-api/getting-started#obtaining-a-storefront-access-token)
 - [to install the Unity Buy SDK into your Unity project](https://github.com/shopify/unity-buy-sdk#using-the-unity-buy-sdk-in-unity)
 
+### Before You Begin
+
+Before we start ensure that you have the following:
+
+- At least one product in your Shopify store
+- [Obtained an access token for the Storefront API](https://help.shopify.com/api/storefront-api/getting-started)
+
 ### Initialize the SDK
 
 This code example initializes the SDK. The `ShopifyBuy.Init` method takes two arguments. The first is a storefront access token to communicate with the Storefront API. The second is the domain name of your shop.
