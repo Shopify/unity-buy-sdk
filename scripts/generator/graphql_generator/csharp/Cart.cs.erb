@@ -334,10 +334,13 @@ namespace <%= namespace %> {
 
                 hasLineItem = true;
 
-                string[] variandIdSplit = lineItem.variantId.Split('/');
+                string variantId = System.Text.Encoding.UTF8.GetString(
+                    Convert.FromBase64String(lineItem.variantId)
+                );
 
-                // variant id's are in this form:
-                // gid://shopify/ProductVariant/123123
+                // convert from variant gid to variant id
+                string[] variandIdSplit = variantId.Split('/');
+
                 url.Append(variandIdSplit[variandIdSplit.Length - 1]);
                 url.Append(":");
                 url.Append(lineItem.quantity);

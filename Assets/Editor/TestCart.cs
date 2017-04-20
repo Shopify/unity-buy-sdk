@@ -33,24 +33,24 @@ namespace Shopify.Tests
             Cart cart = ShopifyBuy.Client().Cart();
 
             Dictionary<string,object> data = new Dictionary<string,object>();
-            data.Add("id", "gid://shopify/ProductVariant/20756129347");
+            data.Add("id", "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTM0Nw==");
 
             ProductVariant variant = new ProductVariant(data);
 
-            cart.LineItems.AddOrUpdate("gid://shopify/ProductVariant/20756129155", 33);
+            cart.LineItems.AddOrUpdate("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTE1NQ==", 33);
             cart.LineItems.AddOrUpdate(variant, 2);
-            cart.LineItems.AddOrUpdate("gid://shopify/Product/7336568131");
+            cart.LineItems.AddOrUpdate("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0LzczMzY1NjgxMzE=");
 
             Assert.AreEqual(3, cart.LineItems.All().Count, "has 3 items in cart");
-            Assert.AreEqual(33, cart.LineItems.Get("gid://shopify/ProductVariant/20756129155").quantity, "variant 20756129155 quantity is 33");
-            Assert.AreEqual(2, cart.LineItems.Get("gid://shopify/ProductVariant/20756129347").quantity, "variant 20756129347 quantity is 2");
-            Assert.AreEqual(1, cart.LineItems.Get("gid://shopify/Product/7336568131").quantity, "variant 7336568131 quantity is 1");
+            Assert.AreEqual(33, cart.LineItems.Get("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTE1NQ==").quantity, "variant 20756129155 quantity is 33");
+            Assert.AreEqual(2, cart.LineItems.Get("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTM0Nw==").quantity, "variant 20756129347 quantity is 2");
+            Assert.AreEqual(1, cart.LineItems.Get("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0LzczMzY1NjgxMzE=").quantity, "variant 7336568131 quantity is 1");
 
-            bool didDelete = cart.LineItems.Delete("gid://shopify/ProductVariant/20756129155");
+            bool didDelete = cart.LineItems.Delete("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTE1NQ==");
             Assert.AreEqual(2, cart.LineItems.All().Count, "After remove had 2 items in cart");
             Assert.IsTrue(didDelete, "returned true when deleting");
 
-            didDelete = cart.LineItems.Delete("gid://shopify/ProductVariant/iamnotreal");
+            didDelete = cart.LineItems.Delete("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC9pYW1ub3RyZWFs");
             Assert.IsFalse(didDelete, "returned false when did not delete");
         }
 
@@ -60,8 +60,8 @@ namespace Shopify.Tests
 
             Cart cart = ShopifyBuy.Client().Cart();
 
-            cart.LineItems.AddOrUpdate("gid://shopify/ProductVariant/20756129155", 33);
-            cart.LineItems.AddOrUpdate("gid://shopify/ProductVariant/20756129347", 2);
+            cart.LineItems.AddOrUpdate("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTE1NQ==", 33);
+            cart.LineItems.AddOrUpdate("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTM0Nw==", 2);
 
             Assert.AreEqual("http://graphql.myshopify.com/cart/20756129155:33,20756129347:2?access_token=1234", cart.GetWebCheckoutLink());
             Assert.AreEqual("http://graphql.myshopify.com/cart/20756129155:33,20756129347:2?access_token=1234&note=i-am-a-note", cart.GetWebCheckoutLink("i-am-a-note"));
@@ -71,8 +71,8 @@ namespace Shopify.Tests
         public void ModifyLineItems() {
             ShopifyBuy.Init(new MockLoader());
 
-            string productId1 = "gid://shopify/ProductVariant/20756129155";
-            string productId2 = "gid://shopify/ProductVariant/20756129347";
+            string productId1 = "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTE1NQ==";
+            string productId2 = "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTM0Nw==";
             List<AttributeInput> attributes1 = new List<AttributeInput>() {
                 new AttributeInput("fancy", "i am fancy"),
                 new AttributeInput("boring", "i am boring")
@@ -128,7 +128,7 @@ namespace Shopify.Tests
                         ""edges"": [
                         {
                             ""node"": {
-                            ""id"": ""gid://shopify/ProductVariant/28472670531"",
+                            ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yODQ3MjY3MDUzMQ=="",
                             ""selectedOptions"": [
                                 {
                                 ""name"": ""Size"",
@@ -143,7 +143,7 @@ namespace Shopify.Tests
                         },
                         {
                             ""node"": {
-                            ""id"": ""gid://shopify/ProductVariant/28472705027"",
+                            ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yODQ3MjcwNTAyNw=="",
                             ""selectedOptions"": [
                                 {
                                 ""name"": ""Size"",
@@ -158,7 +158,7 @@ namespace Shopify.Tests
                         },
                         {
                             ""node"": {
-                            ""id"": ""gid://shopify/ProductVariant/28472705091"",
+                            ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yODQ3MjcwNTA5MQ=="",
                             ""selectedOptions"": [
                                 {
                                 ""name"": ""Size"",
@@ -173,7 +173,7 @@ namespace Shopify.Tests
                         },
                         {
                             ""node"": {
-                            ""id"": ""gid://shopify/ProductVariant/28472705155"",
+                            ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yODQ3MjcwNTE1NQ=="",
                             ""selectedOptions"": [
                                 {
                                 ""name"": ""Size"",
