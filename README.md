@@ -12,7 +12,7 @@ The Unity Buy SDK allows Unity developers to query and sell products from Shopif
 - [Build the GraphQL client](#build-the-unity-buy-sdk)
 - [Testing](#testing)
     + [Testing in Unity](#testing-in-unity)
-    + [Testing in Terminal](#testing-in-terminal)
+    + [Testing in Terminal](#testing-in-terminal-using-headless-unity)
 
 ## Features
 
