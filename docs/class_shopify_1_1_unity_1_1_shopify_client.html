@@ -84,16 +84,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aeae7e4877b3f77ca693329eeab055b77"><td class="mdescLeft">&#160;</td><td class="mdescRight">It is possible to instantiate a <a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html" title="ShopifyClient  is the entry point to communicate with the Shopify Storefront API. ShopifyClient  also...">ShopifyClient</a> by passing an instance that implements ILoader . ILoaders handle network communication with the Storefront API. This functionality is useful if you'd like to use the <a class="el" href="namespace_shopify_1_1_unity.html">Unity</a> Buy <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a> in a C# environment outside of <a class="el" href="namespace_shopify_1_1_unity.html">Unity</a>. The <code>domain</code> string is inferred from ILoaders which can be used to request a specific client.  <a href="#aeae7e4877b3f77ca693329eeab055b77">More...</a><br /></td></tr>
 <tr class="separator:aeae7e4877b3f77ca693329eeab055b77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d5da4de74a48c0ab521c96d5acff0a6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#a7d5da4de74a48c0ab521c96d5acff0a6">products</a> (ResponseProductsHandler callback, int? first=null, string after=null)</td></tr>
-<tr class="memdesc:a7d5da4de74a48c0ab521c96d5acff0a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Will generate a query to receive all <code>products</code> from a <a class="el" href="namespace_shopify.html">Shopify</a> store. The generated query will query the following on products:  <a href="#a7d5da4de74a48c0ab521c96d5acff0a6">More...</a><br /></td></tr>
+<tr class="memdesc:a7d5da4de74a48c0ab521c96d5acff0a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a query to receive all <code>products</code> from a <a class="el" href="namespace_shopify.html">Shopify</a> store. The generated query will query the following on products:  <a href="#a7d5da4de74a48c0ab521c96d5acff0a6">More...</a><br /></td></tr>
 <tr class="separator:a7d5da4de74a48c0ab521c96d5acff0a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac30ac6ee5c08a18a8aaaa8a7bcc0ebb2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#ac30ac6ee5c08a18a8aaaa8a7bcc0ebb2">products</a> (ResponseProductsHandler callback, string firstProductId, params string[] otherProductIds)</td></tr>
-<tr class="memdesc:ac30ac6ee5c08a18a8aaaa8a7bcc0ebb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Will generate a query to receive selected <code>products</code> from a <a class="el" href="namespace_shopify.html">Shopify</a> store. The generated query will query the following on products:  <a href="#ac30ac6ee5c08a18a8aaaa8a7bcc0ebb2">More...</a><br /></td></tr>
+<tr class="memdesc:ac30ac6ee5c08a18a8aaaa8a7bcc0ebb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a query to receive selected <code>products</code> from a <a class="el" href="namespace_shopify.html">Shopify</a> store. The generated query will query the following on products:  <a href="#ac30ac6ee5c08a18a8aaaa8a7bcc0ebb2">More...</a><br /></td></tr>
 <tr class="separator:ac30ac6ee5c08a18a8aaaa8a7bcc0ebb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59c704ee786c7ad5406d444df3de28db"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#a59c704ee786c7ad5406d444df3de28db">products</a> (ResponseProductsHandler callback, List&lt; string &gt; productIds)</td></tr>
-<tr class="memdesc:a59c704ee786c7ad5406d444df3de28db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Will generate a query to receive selected <code>products</code> from a <a class="el" href="namespace_shopify.html">Shopify</a> store. The generated query will query the following on products:  <a href="#a59c704ee786c7ad5406d444df3de28db">More...</a><br /></td></tr>
+<tr class="memdesc:a59c704ee786c7ad5406d444df3de28db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a query to receive selected <code>products</code> from a <a class="el" href="namespace_shopify.html">Shopify</a> store. The generated query will query the following on products:  <a href="#a59c704ee786c7ad5406d444df3de28db">More...</a><br /></td></tr>
 <tr class="separator:a59c704ee786c7ad5406d444df3de28db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a846c8e72932b24758ab3822414855e79"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#a846c8e72932b24758ab3822414855e79">collections</a> (ResponseCollectionsHandler callback, int? first=null, string after=null)</td></tr>
-<tr class="memdesc:a846c8e72932b24758ab3822414855e79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Will generate a query to receive all <code>collections</code> from a <a class="el" href="namespace_shopify.html">Shopify</a> store. The generated query will query the following on collections:  <a href="#a846c8e72932b24758ab3822414855e79">More...</a><br /></td></tr>
+<tr class="memdesc:a846c8e72932b24758ab3822414855e79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a query to receive all <code>collections</code> from a <a class="el" href="namespace_shopify.html">Shopify</a> store. The generated query will query the following on collections:  <a href="#a846c8e72932b24758ab3822414855e79">More...</a><br /></td></tr>
 <tr class="separator:a846c8e72932b24758ab3822414855e79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5eec261f83adf485f78640cb8091245c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#a5eec261f83adf485f78640cb8091245c">Query</a> (<a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_query_root_query.html">QueryRootQuery</a> query, ResponseQueryHandler callback)</td></tr>
 <tr class="memdesc:a5eec261f83adf485f78640cb8091245c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to send custom <a class="el" href="namespace_shopify_1_1_unity_1_1_graph_q_l.html">GraphQL</a> queries to the Storefront API. While having utility functions like products collections is useful, the Storefront API has more functionality. This method allows you to access all the extra functionality that the Storefront API provides.  <a href="#a5eec261f83adf485f78640cb8091245c">More...</a><br /></td></tr>
@@ -108,7 +108,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:af56467c5842bbce32d13428fc69183c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to build and send custom <a class="el" href="namespace_shopify_1_1_unity_1_1_graph_q_l.html">GraphQL</a> mutation queries to the Storefront API.  <a href="#af56467c5842bbce32d13428fc69183c5">More...</a><br /></td></tr>
 <tr class="separator:af56467c5842bbce32d13428fc69183c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64e42c2b35227dbb9921e0efcfd8fec6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html">Cart</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#a64e42c2b35227dbb9921e0efcfd8fec6">Cart</a> (string cartId=null)</td></tr>
-<tr class="memdesc:a64e42c2b35227dbb9921e0efcfd8fec6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Is used to manage line items for an order. Can also be used to generate a web checkout link to check ...">Cart</a> , which can be used to manage line items for an order and create a web checkout link. One client can have multiple carts, so it's possible to pass in a <code>cartId</code> to reference a specific cart. If no <code>cartId</code> is passed, then a default <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Is used to manage line items for an order. Can also be used to generate a web checkout link to check ...">Cart</a> is used.  <a href="#a64e42c2b35227dbb9921e0efcfd8fec6">More...</a><br /></td></tr>
+<tr class="memdesc:a64e42c2b35227dbb9921e0efcfd8fec6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a> , which can be used to manage line items for an order and create a web checkout link. One client can have multiple carts, so it's possible to pass in a <code>cartId</code> to reference a specific cart. If no <code>cartId</code> is passed, then a default <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a> is used.  <a href="#a64e42c2b35227dbb9921e0efcfd8fec6">More...</a><br /></td></tr>
 <tr class="separator:a64e42c2b35227dbb9921e0efcfd8fec6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
@@ -171,7 +171,7 @@ Properties</h2></td></tr>
   </table>
   </dd>
 </dl>
-
+<div class="fragment"><div class="line"><span class="comment">// Example that initializes a new ShopifyClient which will query all products</span></div><div class="line"><span class="keywordtype">string</span> accessToken = <span class="stringliteral">&quot;351c122017d0f2a957d32ae728ad749c&quot;</span>;</div><div class="line"><span class="keywordtype">string</span> shopDomain = <span class="stringliteral">&quot;graphql.myshopify.com&quot;</span>;</div><div class="line"></div><div class="line"><a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#ab9a5c7a3da0a5fbb9fcbf8457600caca">ShopifyClient</a> client = <span class="keyword">new</span> <a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#ab9a5c7a3da0a5fbb9fcbf8457600caca">ShopifyClient</a>(accessToken, shopDomain);</div><div class="line"></div><div class="line">client.products((<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a7d5da4de74a48c0ab521c96d5acff0a6">products</a>, errors, httpError) =&gt; {</div><div class="line">    Debug.Log(<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a7d5da4de74a48c0ab521c96d5acff0a6">products</a>[0].title()); <span class="comment">// &quot;Snare Boot&quot;</span></div><div class="line">    Debug.Log(<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a7d5da4de74a48c0ab521c96d5acff0a6">products</a>[1].title()); <span class="comment">// &quot;Neptune Boot&quot;</span></div><div class="line">});</div></div><!-- fragment --> 
 </div>
 </div>
 <a id="aeae7e4877b3f77ca693329eeab055b77"></a>
@@ -205,7 +205,7 @@ Properties</h2></td></tr>
   </table>
   </dd>
 </dl>
-
+<div class="fragment"><div class="line"><span class="comment">// Example that initializes a new ShopifyClient using a custom loader for another C# platform</span></div><div class="line"><span class="keywordtype">string</span> accessToken = <span class="stringliteral">&quot;351c122017d0f2a957d32ae728ad749c&quot;</span>;</div><div class="line"><span class="keywordtype">string</span> shopDomain = <span class="stringliteral">&quot;graphql.myshopify.com&quot;</span>;</div><div class="line"></div><div class="line">CustomLoaderForNonUnityPlatform loader = <span class="keyword">new</span> CustomLoaderForNonUnityPlatform(accessToken, shopDomain);</div><div class="line"></div><div class="line"><a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#ab9a5c7a3da0a5fbb9fcbf8457600caca">ShopifyClient</a> client = <span class="keyword">new</span> <a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#ab9a5c7a3da0a5fbb9fcbf8457600caca">ShopifyClient</a>(loader);</div><div class="line"></div><div class="line">client.products((<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a7d5da4de74a48c0ab521c96d5acff0a6">products</a>, errors, httpError) =&gt; {</div><div class="line">    Debug.Log(<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a7d5da4de74a48c0ab521c96d5acff0a6">products</a>[0].title()); <span class="comment">// &quot;Snare Boot&quot;</span></div><div class="line">    Debug.Log(<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a7d5da4de74a48c0ab521c96d5acff0a6">products</a>[1].title()); <span class="comment">// &quot;Neptune Boot&quot;</span></div><div class="line">});</div></div><!-- fragment --> 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -233,14 +233,14 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Creates a <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Is used to manage line items for an order. Can also be used to generate a web checkout link to check ...">Cart</a> , which can be used to manage line items for an order and create a web checkout link. One client can have multiple carts, so it's possible to pass in a <code>cartId</code> to reference a specific cart. If no <code>cartId</code> is passed, then a default <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Is used to manage line items for an order. Can also be used to generate a web checkout link to check ...">Cart</a> is used. </p>
+<p>Creates a <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a> , which can be used to manage line items for an order and create a web checkout link. One client can have multiple carts, so it's possible to pass in a <code>cartId</code> to reference a specific cart. If no <code>cartId</code> is passed, then a default <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a> is used. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">cartId</td><td>can be optionally passed in. This is useful if your application needs multiple carts</td></tr>
   </table>
   </dd>
 </dl>
-
+<div class="fragment"><div class="line"><span class="comment">// Example that checks how many line items the cart contains</span></div><div class="line"><a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a64e42c2b35227dbb9921e0efcfd8fec6">Cart</a> cart = ShopifyBuy.Client().<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a64e42c2b35227dbb9921e0efcfd8fec6">Cart</a>();</div><div class="line"></div><div class="line">Debug.Log(<span class="stringliteral">&quot;The cart has &quot;</span> + cart.LineItems.All().Count + <span class="stringliteral">&quot; line items&quot;</span>);</div></div><!-- fragment --> 
 </div>
 </div>
 <a id="a846c8e72932b24758ab3822414855e79"></a>
@@ -283,9 +283,13 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Will generate a query to receive all <code>collections</code> from a <a class="el" href="namespace_shopify.html">Shopify</a> store. The generated query will query the following on collections: </p>
+<p>Generates a query to receive all <code>collections</code> from a <a class="el" href="namespace_shopify.html">Shopify</a> store. The generated query will query the following on collections: </p>
 <ul>
 <li>id</li>
+<li>title</li>
+<li>description</li>
+<li>descriptionHtml</li>
+<li>updatedAt</li>
 <li>image<ul>
 <li>altText</li>
 <li>src</li>
@@ -296,7 +300,7 @@ Properties</h2></td></tr>
 </ul>
 </li>
 </ul>
-<p>It should be noted that <code>shop.collections</code> is a Connection (<a class="el" href="namespace_shopify_1_1_unity_1_1_graph_q_l.html">GraphQL</a> paginated data structure). collections </p>
+<p>Note that <code>shop.collections</code> is a Connection (<a class="el" href="namespace_shopify_1_1_unity_1_1_graph_q_l.html">GraphQL</a> paginated data structure). collections </p>
 <p>will load all pages of collections by default unless a value is passed for the <code>first</code> param. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -306,7 +310,7 @@ Properties</h2></td></tr>
   </table>
   </dd>
 </dl>
-
+<div class="fragment"><div class="line"><span class="comment">// Example that queries all collections on a shop</span></div><div class="line">ShopifyBuy.Client().collections((<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a846c8e72932b24758ab3822414855e79">collections</a>, errors, httpError) =&gt; {</div><div class="line">    Debug.Log(<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a846c8e72932b24758ab3822414855e79">collections</a>[0].title()); <span class="comment">// &quot;Home page&quot;</span></div><div class="line">    Debug.Log(<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a846c8e72932b24758ab3822414855e79">collections</a>.Count); <span class="comment">// 1 collection</span></div><div class="line">});</div></div><!-- fragment --> 
 </div>
 </div>
 <a id="a762bb585ebcb20b27291a90da237407f"></a>
@@ -351,7 +355,7 @@ Properties</h2></td></tr>
   </table>
   </dd>
 </dl>
-
+<div class="fragment"><div class="line"><span class="comment">// Example that creates a custom mutation query</span></div><div class="line">MutationQuery mutation = <span class="keyword">new</span> MutationQuery();</div><div class="line"></div><div class="line">mutation.customerCreate(</div><div class="line">    buildQuery: (cc) =&gt; { cc</div><div class="line">        .userErrors(</div><div class="line">            buildQuery: (ue) =&gt; { ue</div><div class="line">                .field()</div><div class="line">                .message();</div><div class="line">            }</div><div class="line">        );</div><div class="line">    },</div><div class="line">    input: <span class="keyword">new</span> CustomerCreateInput(</div><div class="line">        email: <span class="stringliteral">&quot;mikkoh@email.com&quot;</span>,</div><div class="line">        password: <span class="stringliteral">&quot;oh so secret&quot;</span></div><div class="line">    )</div><div class="line">);</div><div class="line"></div><div class="line">ShopifyBuy.Client().Mutation(</div><div class="line">    query: mutation,</div><div class="line">    callback: (data, errors, httpErrors) =&gt; {</div><div class="line">        <span class="keywordflow">if</span> (httpErrors != null) {</div><div class="line">            Debug.Log(<span class="stringliteral">&quot;There was an error communicating with the Storefront API&quot;</span>);</div><div class="line">        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (errors != null) {</div><div class="line">            <span class="comment">// output any graphql errors</span></div><div class="line">            <span class="keywordflow">foreach</span>(<span class="keywordtype">string</span> error <span class="keywordflow">in</span> errors) {</div><div class="line">                Debug.Log(error);</div><div class="line">            }</div><div class="line">        } <span class="keywordflow">else</span> {</div><div class="line">            List&lt;UserError&gt; userErrors = data.customerCreate().userErrors();</div><div class="line"></div><div class="line">            <span class="keywordflow">if</span> (userErrors != null) {</div><div class="line">                <span class="keywordflow">foreach</span>(UserError error <span class="keywordflow">in</span> userErrors) {</div><div class="line">                    <span class="comment">// field which may have a user error</span></div><div class="line">                    Debug.Log(error.field());</div><div class="line">                    <span class="comment">// error message for the field which had an error</span></div><div class="line">                    Debug.Log(error.message());</div><div class="line">                }</div><div class="line">            } <span class="keywordflow">else</span> {</div><div class="line">                Debug.Log(<span class="stringliteral">&quot;No user errors the customer was created&quot;</span>);</div><div class="line">            }</div><div class="line">        }</div><div class="line">    }</div><div class="line">);</div></div><!-- fragment --> 
 </div>
 </div>
 <a id="af56467c5842bbce32d13428fc69183c5"></a>
@@ -396,7 +400,7 @@ Properties</h2></td></tr>
   </table>
   </dd>
 </dl>
-
+<div class="fragment"><div class="line"><span class="comment">// Example that creates a new customer on a store</span></div><div class="line">ShopifyBuy.Client().Mutation(</div><div class="line">    buildQuery: (mutation) =&gt; { mutation</div><div class="line">        .customerCreate(</div><div class="line">            buildQuery: (cc) =&gt; { cc</div><div class="line">                .userErrors(</div><div class="line">                    buildQuery: (ue) =&gt; { ue</div><div class="line">                        .field()</div><div class="line">                        .message();</div><div class="line">                    }</div><div class="line">                );</div><div class="line">            },</div><div class="line">            input: <span class="keyword">new</span> CustomerCreateInput(</div><div class="line">                email: <span class="stringliteral">&quot;mikkoh@email.com&quot;</span>,</div><div class="line">                password: <span class="stringliteral">&quot;oh so secret&quot;</span></div><div class="line">            )</div><div class="line">        );</div><div class="line">    },</div><div class="line">    callback: (data, errors, httpErrors) =&gt; {</div><div class="line">        <span class="keywordflow">if</span> (httpErrors != null) {</div><div class="line">            Debug.Log(<span class="stringliteral">&quot;There was an error communicating with the Storefront API&quot;</span>);</div><div class="line">        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (errors != null) {</div><div class="line">            <span class="comment">// output any graphql errors</span></div><div class="line">            <span class="keywordflow">foreach</span>(<span class="keywordtype">string</span> error <span class="keywordflow">in</span> errors) {</div><div class="line">                Debug.Log(error);</div><div class="line">            }</div><div class="line">        } <span class="keywordflow">else</span> {</div><div class="line">            List&lt;UserError&gt; userErrors = data.customerCreate().userErrors();</div><div class="line"></div><div class="line">            <span class="keywordflow">if</span> (userErrors != null) {</div><div class="line">                <span class="keywordflow">foreach</span>(UserError error <span class="keywordflow">in</span> userErrors) {</div><div class="line">                    <span class="comment">// field which may have a user error</span></div><div class="line">                    Debug.Log(error.field());</div><div class="line">                    <span class="comment">// error message for the field which had an error</span></div><div class="line">                    Debug.Log(error.message());</div><div class="line">                }</div><div class="line">            } <span class="keywordflow">else</span> {</div><div class="line">                Debug.Log(<span class="stringliteral">&quot;No user errors the customer was created&quot;</span>);</div><div class="line">            }</div><div class="line">        }</div><div class="line">    }</div><div class="line">);</div></div><!-- fragment --> 
 </div>
 </div>
 <a id="a7d5da4de74a48c0ab521c96d5acff0a6"></a>
@@ -439,7 +443,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Will generate a query to receive all <code>products</code> from a <a class="el" href="namespace_shopify.html">Shopify</a> store. The generated query will query the following on products: </p>
+<p>Generates a query to receive all <code>products</code> from a <a class="el" href="namespace_shopify.html">Shopify</a> store. The generated query will query the following on products: </p>
 <ul>
 <li>id</li>
 <li>title</li>
@@ -484,7 +488,7 @@ Properties</h2></td></tr>
 </ul>
 </li>
 </ul>
-<p>It should be noted that <code>shop.products</code> is a Connection (<a class="el" href="namespace_shopify_1_1_unity_1_1_graph_q_l.html">GraphQL</a> paginated data structure). products </p>
+<p>Note that <code>shop.products</code> is a Connection (<a class="el" href="namespace_shopify_1_1_unity_1_1_graph_q_l.html">GraphQL</a> paginated data structure). products </p>
 <p>will load all pages of products by default unless a value is passed for the <code>first</code> param. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -494,7 +498,7 @@ Properties</h2></td></tr>
   </table>
   </dd>
 </dl>
-
+<div class="fragment"><div class="line"><span class="comment">// Example usage querying all products</span></div><div class="line">ShopifyBuy.Client().products((<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a7d5da4de74a48c0ab521c96d5acff0a6">products</a>, errors, httpError) =&gt; {</div><div class="line">    Debug.Log(<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a7d5da4de74a48c0ab521c96d5acff0a6">products</a>[0].title()); <span class="comment">// &quot;Snare Boot&quot;</span></div><div class="line">    Debug.Log(<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a7d5da4de74a48c0ab521c96d5acff0a6">products</a>[1].title()); <span class="comment">// &quot;Neptune Boot&quot;</span></div><div class="line">    Debug.Log(<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a7d5da4de74a48c0ab521c96d5acff0a6">products</a>.Count); <span class="comment">// 38 products returned</span></div><div class="line">});</div></div><!-- fragment --> 
 </div>
 </div>
 <a id="ac30ac6ee5c08a18a8aaaa8a7bcc0ebb2"></a>
@@ -537,7 +541,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Will generate a query to receive selected <code>products</code> from a <a class="el" href="namespace_shopify.html">Shopify</a> store. The generated query will query the following on products: </p>
+<p>Generates a query to receive selected <code>products</code> from a <a class="el" href="namespace_shopify.html">Shopify</a> store. The generated query will query the following on products: </p>
 <ul>
 <li>id</li>
 <li>title</li>
@@ -590,7 +594,7 @@ Properties</h2></td></tr>
   </table>
   </dd>
 </dl>
-<div class="fragment"><div class="line"><span class="comment">// Example usage querying two product ids</span></div><div class="line">ShopifyBuy.Client().products((<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a7d5da4de74a48c0ab521c96d5acff0a6">products</a>, errors, httpError) =&gt; {</div><div class="line">    Debug.Log(<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a7d5da4de74a48c0ab521c96d5acff0a6">products</a>[0].<span class="keywordtype">id</span>()); <span class="comment">// &quot;gid://shopify/Product/9895276099&quot;</span></div><div class="line">    Debug.Log(<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a7d5da4de74a48c0ab521c96d5acff0a6">products</a>[1].<span class="keywordtype">id</span>()); <span class="comment">// &quot;gid://shopify/Product/9895279043&quot;</span></div><div class="line">}, <span class="stringliteral">&quot;gid://shopify/Product/9895276099&quot;</span>, <span class="stringliteral">&quot;gid://shopify/Product/9895279043&quot;</span>);</div></div><!-- fragment --> 
+<div class="fragment"><div class="line"><span class="comment">// Example usage querying two product ids</span></div><div class="line">ShopifyBuy.Client().products((<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a7d5da4de74a48c0ab521c96d5acff0a6">products</a>, errors, httpError) =&gt; {</div><div class="line">    Debug.Log(<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a7d5da4de74a48c0ab521c96d5acff0a6">products</a>[0].title()); <span class="comment">// &quot;Snare Boot&quot;</span></div><div class="line">    Debug.Log(<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a7d5da4de74a48c0ab521c96d5acff0a6">products</a>[1].title()); <span class="comment">// &quot;Neptune Boot&quot;</span></div><div class="line">}, <span class="stringliteral">&quot;Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyNzYwOTk=&quot;</span>, <span class="stringliteral">&quot;Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyNzkwNDM=&quot;</span>);</div></div><!-- fragment --> 
 </div>
 </div>
 <a id="a59c704ee786c7ad5406d444df3de28db"></a>
@@ -627,7 +631,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Will generate a query to receive selected <code>products</code> from a <a class="el" href="namespace_shopify.html">Shopify</a> store. The generated query will query the following on products: </p>
+<p>Generates a query to receive selected <code>products</code> from a <a class="el" href="namespace_shopify.html">Shopify</a> store. The generated query will query the following on products: </p>
 <ul>
 <li>id</li>
 <li>title</li>
@@ -679,7 +683,7 @@ Properties</h2></td></tr>
   </table>
   </dd>
 </dl>
-<div class="fragment"><div class="line"><span class="comment">// Example usage querying two product ids</span></div><div class="line">ShopifyBuy.Client().products((<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a7d5da4de74a48c0ab521c96d5acff0a6">products</a>, errors, httpError) =&gt; {</div><div class="line">    Debug.Log(<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a7d5da4de74a48c0ab521c96d5acff0a6">products</a>[0].<span class="keywordtype">id</span>()); <span class="comment">// &quot;gid://shopify/Product/9895276099&quot;</span></div><div class="line">    Debug.Log(<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a7d5da4de74a48c0ab521c96d5acff0a6">products</a>[1].<span class="keywordtype">id</span>()); <span class="comment">// &quot;gid://shopify/Product/9895279043&quot;</span></div><div class="line">}, <span class="stringliteral">&quot;gid://shopify/Product/9895276099&quot;</span>, <span class="stringliteral">&quot;gid://shopify/Product/9895279043&quot;</span>);</div></div><!-- fragment --> 
+<div class="fragment"><div class="line"><span class="comment">// Example usage querying two product ids using a List&lt;string&gt;</span></div><div class="line">List&lt;string&gt; productIds = <span class="keyword">new</span> List&lt;string&gt;() {</div><div class="line">    <span class="stringliteral">&quot;Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyNzYwOTk=&quot;</span>,</div><div class="line">    <span class="stringliteral">&quot;Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyNzkwNDM=&quot;</span></div><div class="line">};</div><div class="line"></div><div class="line">ShopifyBuy.Client().products((<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a7d5da4de74a48c0ab521c96d5acff0a6">products</a>, errors, httpError) =&gt; {</div><div class="line">    Debug.Log(<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a7d5da4de74a48c0ab521c96d5acff0a6">products</a>[0].title()); <span class="comment">// &quot;Snare Boot&quot;</span></div><div class="line">    Debug.Log(<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a7d5da4de74a48c0ab521c96d5acff0a6">products</a>[1].title()); <span class="comment">// &quot;Neptune Boot&quot;</span></div><div class="line">}, productIds);</div></div><!-- fragment --> 
 </div>
 </div>
 <a id="a5eec261f83adf485f78640cb8091245c"></a>
@@ -717,14 +721,14 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Allows you to send custom <a class="el" href="namespace_shopify_1_1_unity_1_1_graph_q_l.html">GraphQL</a> queries to the Storefront API. While having utility functions like products collections is useful, the Storefront API has more functionality. This method allows you to access all the extra functionality that the Storefront API provides. </p>
-<p>The following is a small example querying a shop's name: </p><div class="fragment"><div class="line">QueryRoot query = <span class="keyword">new</span> QueryRootQuery();</div><div class="line">query.shop(s =&gt; s</div><div class="line">    .name()</div><div class="line">);</div><div class="line"></div><div class="line">ShopifyBuy.Client().Query(</div><div class="line">    query: query,</div><div class="line">    callback: (data, errors, httpErrors) =&gt; {</div><div class="line">        <span class="keywordflow">if</span> (httpErrors != null) {</div><div class="line">            Debug.Log(<span class="stringliteral">&quot;There was an error communicating with the Storefront API&quot;</span>);</div><div class="line">        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (errors != null) {</div><div class="line">            Debug.Log(<span class="stringliteral">&quot;The GraphQL query was invalid&quot;</span>);</div><div class="line">        } <span class="keywordflow">else</span> {</div><div class="line">            Debug.Log(data.shop().name());</div><div class="line">        }</div><div class="line">    }</div><div class="line">);</div></div><!-- fragment --> <dl class="params"><dt>Parameters</dt><dd>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">query</td><td>a <a class="el" href="namespace_shopify_1_1_unity_1_1_graph_q_l.html">GraphQL</a> query to be sent to the Storefront API</td></tr>
     <tr><td class="paramname">callback</td><td>callback which will receive a response from the query</td></tr>
   </table>
   </dd>
 </dl>
-
+<div class="fragment"><div class="line"><span class="comment">// Example that queries a Shop&#39;s name</span></div><div class="line">QueryRoot query = <span class="keyword">new</span> QueryRootQuery();</div><div class="line"></div><div class="line">query.shop(s =&gt; s</div><div class="line">    .name()</div><div class="line">);</div><div class="line"></div><div class="line">ShopifyBuy.Client().Query(</div><div class="line">    query: query,</div><div class="line">    callback: (data, errors, httpErrors) =&gt; {</div><div class="line">        <span class="keywordflow">if</span> (httpErrors != null) {</div><div class="line">            Debug.Log(<span class="stringliteral">&quot;There was an error communicating with the Storefront API&quot;</span>);</div><div class="line">        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (errors != null) {</div><div class="line">            Debug.Log(<span class="stringliteral">&quot;The GraphQL query was invalid&quot;</span>);</div><div class="line">        } <span class="keywordflow">else</span> {</div><div class="line">            Debug.Log(data.shop().name());</div><div class="line">        }</div><div class="line">    }</div><div class="line">);</div></div><!-- fragment --> 
 </div>
 </div>
 <a id="a04e609f37f0ef7ccf38980a5f87912d6"></a>
@@ -762,14 +766,14 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Allows you to build and send custom <a class="el" href="namespace_shopify_1_1_unity_1_1_graph_q_l.html">GraphQL</a> queries to the Storefront API. While having utility functions like products collections is useful, the Storefront API has more functionality. This method allows you to access all the extra functionality that the Storefront API provides. </p>
-<p>For instance in the following example we will write a query that returns the <a class="el" href="class_shopify_1_1_unity_1_1_shop.html" title="Shop represents a collection of the general settings and information about the shop. ">Shop</a>'s name: </p><div class="fragment"><div class="line">ShopifyBuy.Client().Query(</div><div class="line">    query: q =&gt; q</div><div class="line">        .shop(s =&gt; s</div><div class="line">            .name()</div><div class="line">        ),</div><div class="line">    callback: (data, errors, httpErrors) =&gt; {</div><div class="line">        <span class="keywordflow">if</span> (httpErrors != null) {</div><div class="line">            Debug.Log(<span class="stringliteral">&quot;There was an error communicating with the Storefront API&quot;</span>);</div><div class="line">        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (errors != null) {</div><div class="line">            Debug.Log(<span class="stringliteral">&quot;The GraphQL query was invalid&quot;</span>);</div><div class="line">        } <span class="keywordflow">else</span> {</div><div class="line">            Debug.Log(data.shop().name());</div><div class="line">        }</div><div class="line">    }</div><div class="line">);</div></div><!-- fragment --> <dl class="params"><dt>Parameters</dt><dd>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">buildQuery</td><td>delegate that will build a query starting at QueryRootQuery which will be sent to the Storefront API </td></tr>
     <tr><td class="paramname">callback</td><td>callback which will receive a response</td></tr>
   </table>
   </dd>
 </dl>
-
+<div class="fragment"><div class="line"><span class="comment">// Example that builds a query that queries a Shop&#39;s name</span></div><div class="line">ShopifyBuy.Client().Query(</div><div class="line">    query: q =&gt; q</div><div class="line">        .shop(s =&gt; s</div><div class="line">            .name()</div><div class="line">        ),</div><div class="line">    callback: (data, errors, httpErrors) =&gt; {</div><div class="line">        <span class="keywordflow">if</span> (httpErrors != null) {</div><div class="line">            Debug.Log(<span class="stringliteral">&quot;There was an error communicating with the Storefront API&quot;</span>);</div><div class="line">        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (errors != null) {</div><div class="line">            Debug.Log(<span class="stringliteral">&quot;The GraphQL query was invalid&quot;</span>);</div><div class="line">        } <span class="keywordflow">else</span> {</div><div class="line">            Debug.Log(data.shop().name());</div><div class="line">        }</div><div class="line">    }</div><div class="line">);</div></div><!-- fragment --> 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -794,7 +798,7 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= <span class="keyword">new</span> Dictionary&lt;string, int&gt;() {</div><div class="line">            {<span class="stringliteral">&quot;pico&quot;</span>, 16},</div><div class="line">            {<span class="stringliteral">&quot;icon&quot;</span>, 32},</div><div class="line">            {<span class="stringliteral">&quot;thumb&quot;</span>, 50},</div><div class="line">            {<span class="stringliteral">&quot;small&quot;</span>, 100},</div><div class="line">            {<span class="stringliteral">&quot;compact&quot;</span>, 160},</div><div class="line">            {<span class="stringliteral">&quot;medium&quot;</span>, 240},</div><div class="line">            {<span class="stringliteral">&quot;large&quot;</span>, 480},</div><div class="line">            {<span class="stringliteral">&quot;grande&quot;</span>, 600},</div><div class="line">            {<span class="stringliteral">&quot;resolution_1024&quot;</span>, 1024},</div><div class="line">            {<span class="stringliteral">&quot;resolution_2048&quot;</span>, 2048}</div><div class="line">        }</div></div><!-- fragment -->
 <p>This is a dictionary that defines aliases, <code>maxWidth</code>, and <code>maxHeight</code> for images loaded by products and collections . All Products images, <a class="el" href="class_shopify_1_1_unity_1_1_product.html" title="A product represents an individual item for sale in a Shopify store. Products are often physical...">Product</a> variant images, and <a class="el" href="class_shopify_1_1_unity_1_1_collection.html" title="A collection represents a grouping of products that a shop owner can create to organize them or make ...">Collection</a> images will be queried using aliases defined by this dictionary's keys and the <code>maxWidth</code> and <code>maxHeight</code> will be this dictionary's values. </p>
-<div class="fragment"><div class="line"><span class="comment">// returns an image source url whose dimensions are never greater than 100px</span></div><div class="line"><span class="keywordtype">string</span> srcSmallImage = productVariant.image(<span class="stringliteral">&quot;small&quot;</span>).src();</div><div class="line"></div><div class="line"><span class="comment">// returns an image source url whose dimensions are never greater than 1024px</span></div><div class="line"><span class="keywordtype">string</span> src1024Image = productVariant.image(<span class="stringliteral">&quot;resolution_1024&quot;</span>).src();</div></div><!-- fragment --> 
+<div class="fragment"><div class="line"><span class="comment">// Returns an image source url whose dimensions are never greater than 100px</span></div><div class="line"><span class="keywordtype">string</span> srcSmallImage = productVariant.image(<span class="stringliteral">&quot;small&quot;</span>).src();</div><div class="line"></div><div class="line"><span class="comment">// Returns an image source url whose dimensions are never greater than 1024px</span></div><div class="line"><span class="keywordtype">string</span> src1024Image = productVariant.image(<span class="stringliteral">&quot;resolution_1024&quot;</span>).src();</div></div><!-- fragment --> 
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
