@@ -353,7 +353,7 @@ namespace <%= namespace %> {
         /// ShopifyBuy.Client().products((products, errors, httpError) => {
         ///     Debug.Log(products[0].title()); // "Snare Boot"
         ///     Debug.Log(products[1].title()); // "Neptune Boot"
-        /// }, "gid://shopify/Product/9895276099", "gid://shopify/Product/9895279043");
+        /// }, "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyNzYwOTk=", "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyNzkwNDM=");
         /// \endcode
         public void products(ResponseProductsHandler callback, string firstProductId, params string[] otherProductIds) {
             List<string> productIds = new List<string>();
@@ -400,8 +400,8 @@ namespace <%= namespace %> {
         /// \code
         /// // Example usage querying two product ids using a List<string>
         /// List<string> productIds = new List<string>() {
-        ///     "gid://shopify/Product/9895276099",
-        ///     "gid://shopify/Product/9895279043"
+        ///     "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyNzYwOTk=",
+        ///     "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyNzkwNDM="
         /// };
         ///
         /// ShopifyBuy.Client().products((products, errors, httpError) => {

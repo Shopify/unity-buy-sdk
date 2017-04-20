@@ -51,7 +51,7 @@ namespace Shopify.Unity.Tests
 
                     IntegrationTest.Pass();
                 },
-                "gid://shopify/Product/9895281475", "gid://shopify/Product/9895284291"
+                "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyODE0NzU=", "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyODQyOTE="
             );
         }
     }   
