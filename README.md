@@ -28,7 +28,7 @@ Coming Soon:
 
 ## Documentation
 
-- [General information about the Unity SDK](https://help.shopify.com/api/sdks/custom-storefront/unity-buy-sdk)
+- [Information about the Unity SDK](https://help.shopify.com/api/sdks/custom-storefront/unity-buy-sdk)
 - [How to obtain an access token](https://help.shopify.com/api/storefront-api/getting-started)
 - [SDK API Documentation](https://shopify.github.io/unity-buy-sdk/)
 - [Example code snippets](EXAMPLES.md)
