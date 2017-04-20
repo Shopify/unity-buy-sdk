@@ -28,11 +28,10 @@ Coming Soon:
 
 ## Documentation
 
-Documentation can be seen [here](https://shopify.github.io/unity-buy-sdk/).
-
-## Examples
-
-Examples can be viewed [here](EXAMPLES.md).
+- [General information about the Unity SDK](https://help.shopify.com/api/sdks/custom-storefront/unity-buy-sdk)
+- [How to obtain an access token](https://help.shopify.com/api/storefront-api/getting-started)
+- [SDK API Documentation](https://shopify.github.io/unity-buy-sdk/)
+- [Example code snippets](EXAMPLES.md)
 
 ## Using the Unity Buy SDK in Unity
 

@@ -8,4 +8,4 @@ You can use the Unity Buy SDK to:
 
 ## Getting started
 
-If you need to get API credentials and create a Shopify store to use with the Unity Buy SDK, then see our [general getting started guide](//help.shopify.com/api/getting-started). If you want to learn more about how this SDK works with Unity, then see the [Unity Buy SDK tutorial](//help.shopify.com/api/sdks/custom-storefront/unity-buy-sdk/getting-started).
+If you want to learn more about how this SDK works with Unity, then see the [Unity Buy SDK tutorial](//help.shopify.com/api/sdks/custom-storefront/unity-buy-sdk/getting-started).

@@ -4,6 +4,13 @@ This file contains small code snippets which document different use cases for th
 queries Shopify's Storefront API. The Storefront API is a GraphQL API. GraphQL API's accept GraphQL queries
 which define what data the developer would like to access.
 
+### Before You Begin
+
+Before we start ensure that you have the following:
+
+- At least one product in your Shopify store
+- [Obtained an access token for the Storefront API](https://help.shopify.com/api/storefront-api/getting-started)
+
 ### Initialize the SDK
 
 This code example initializes the SDK. The `ShopifyBuy.Init` method takes two `strings`. The first
