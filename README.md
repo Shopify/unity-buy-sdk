@@ -20,7 +20,7 @@ The Unity Buy SDK allows Unity developers to query and sell products from Shopif
 - Query collections
 - Create a cart
 - Check out via weblink
-- Make custom GraphQL queries using the [Storefront API](//help.shopify.com/api/storefront-api)
+- Make custom GraphQL queries using the [Storefront API](https://help.shopify.com/api/storefront-api)
 
 Coming Soon:
 
@@ -52,7 +52,7 @@ $ scripts/check_setup.sh
 
 ## Build the Unity Buy SDK
 
-Under the hood, the Unity Buy SDK works on top of GraphQL. In order to query Shopify, we generate a GraphQL client based on the [Storefront API](//help.shopify.com/api-storefront-api) introspection schema.
+Under the hood, the Unity Buy SDK works on top of GraphQL. In order to query Shopify, we generate a GraphQL client based on the [Storefront API](https://help.shopify.com/api-storefront-api) introspection schema.
 
 To build the GraphQL client, run the following command:
 ```bash

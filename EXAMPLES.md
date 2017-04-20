@@ -2,14 +2,14 @@
 
 This guide contains code examples that show different ways that you can use the Unity Buy SDK.
 
-The Unity Buy SDK queries Shopify's [Storefront API](https://help.shopify.com/api/storefront-api), which is a [GraphQL](//graphql.org) API. GraphQL APIs accept queries that define the data that you want to retrieve. The Unity Buy SDK lets you query various data from Shopify, including store information, checkout URLs, products, and collections.
+The Unity Buy SDK queries Shopify's [Storefront API](https://help.shopify.com/api/storefront-api), which is a [GraphQL](http://graphql.org) API. GraphQL APIs accept queries that define the data that you want to retrieve. The Unity Buy SDK lets you query various data from Shopify, including store information, checkout URLs, products, and collections.
 
 ### Before you begin
 
 Before you can start using the Unity Buy SDK, you need:
 
 - a Shopify store with at least one product
-- a [storefront access token](/api/storefront-api/getting-started#obtaining-a-storefront-access-token) for your app
+- a [storefront access token](https://help.shopify.com/api/storefront-api/getting-started#obtaining-a-storefront-access-token) for your app
 * to [install the Unity Buy SDK into your Unity project](https://github.com/shopify/unity-buy-sdk#using-the-unity-buy-sdk-in-unity).
 
 ### Initialize the SDK
@@ -251,7 +251,7 @@ When this query is sent to the Storefront API, the JSON response from the server
 }
 ```
 
-As you can see, the data output takes the same form as the query sent to the GraphQL endpoint. To learn more about how GraphQL handles queries and responses, see [graphql.org](//graphql.org).
+As you can see, the data output takes the same form as the query sent to the GraphQL endpoint. To learn more about how GraphQL handles queries and responses, see [graphql.org](http://graphql.org).
 
 In the previous example, the queries for `products` and `collections` were made using client-side utility functions that create generic queries for the most common types of information. But you can also send custom queries to the Storefront API to access additional data. To learn more about how the Storefront API works, see [the Storefront API documentation](https://help.shopify.com/api/storefront-api).
 
