@@ -29,7 +29,7 @@ Coming Soon:
 ## Documentation
 
 - [Information about the Unity SDK](https://help.shopify.com/api/sdks/custom-storefront/unity-buy-sdk)
-- [How to obtain an access token](https://help.shopify.com/api/storefront-api/getting-started)
+- [How to obtain a storefront access token](https://help.shopify.com/api/storefront-api/getting-started#obtaining-a-storefront-access-token)
 - [SDK API Documentation](https://shopify.github.io/unity-buy-sdk/)
 - [Example code snippets](EXAMPLES.md)
 
@@ -45,7 +45,7 @@ Alternatively, you can clone this repo and build the Unity Buy SDK by following 
 
 ## Getting set up for contributing
 
-Before contributing to the Unity Buy SDK, make sure that you have the required dependencies installed on your computer. Run the following command to check you have all required applications:
+Before contributing to the Unity Buy SDK, make sure that you have the required dependencies installed on your computer. Run the following command to check that you have all required applications:
 ```bash
 $ scripts/check_setup.sh
 ```
@@ -88,12 +88,12 @@ To run tests, run the following command:
 $ scripts/test.sh
 ```
 
-Alternatively, you might find it more efficient to run the following instead:
+Alternatively, you might find it more efficient to run the following command:
 ```bash
 $ scripts/test_watch.sh
 ```
 
-`test_watch.sh` watches all development files for changes. Once a change is detected, tests will be recompiled and run.
+`test_watch.sh` watches all development files for changes. When a change is detected, tests will be recompiled and run.
 
 
 <img src="https://cdn.shopify.com/shopify-marketing_assets/builds/19.0.0/shopify-full-color-black.svg" width="200" />
