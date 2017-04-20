@@ -9,8 +9,8 @@ The Unity Buy SDK queries Shopify's [Storefront API](https://help.shopify.com/ap
 Before you can start using the Unity Buy SDK, you need:
 
 - a Shopify store with at least one product
-- a [storefront access token](https://help.shopify.com/api/storefront-api/getting-started#obtaining-a-storefront-access-token) for your app
-* to [install the Unity Buy SDK into your Unity project](https://github.com/shopify/unity-buy-sdk#using-the-unity-buy-sdk-in-unity).
+- [a storefront access token for your app](https://help.shopify.com/api/storefront-api/getting-started#obtaining-a-storefront-access-token)
+- [to install the Unity Buy SDK into your Unity project](https://github.com/shopify/unity-buy-sdk#using-the-unity-buy-sdk-in-unity)
 
 ### Initialize the SDK
 
@@ -107,7 +107,7 @@ void Start () {
 
 In this example, if you called `product.title()` then an exception would be thrown. Since the Unity Buy SDK is built on GraphQL queries, when `collections` are queried using this method only `id` is queried on `Product`. To learn which fields are queried using this method, see `DefaultQueries.cs`.
 
-You can also make more complex requests using custom queries (see below).
+You can also make more complex requests using custom queries [(see below)](#custom-queries).
 
 ### Cart and web checkout
 
