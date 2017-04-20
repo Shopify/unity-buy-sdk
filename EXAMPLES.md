@@ -1,27 +1,34 @@
 # Examples
 
-This file contains small code snippets which document different use cases for the Unity Buy SDK. The Unity Buy SDK
-queries Shopify's Storefront API. The Storefront API is a GraphQL API. GraphQL API's accept GraphQL queries
-which define what data the developer would like to access.
+This guide contains code examples that show different ways that you can use the Unity Buy SDK.
+
+The Unity Buy SDK queries Shopify's [Storefront API](https://help.shopify.com/api/storefront-api), which is a [GraphQL](http://graphql.org) API. GraphQL APIs accept queries that define the data that you want to retrieve. The Unity Buy SDK lets you query various data from Shopify, including store information, checkout URLs, products, and collections.
+
+### Before you begin
+
+Before you can start using the Unity Buy SDK, you need:
+
+- a Shopify store with at least one product
+- [a storefront access token for your app](https://help.shopify.com/api/storefront-api/getting-started#obtaining-a-storefront-access-token)
+- [to install the Unity Buy SDK into your Unity project](https://github.com/shopify/unity-buy-sdk#using-the-unity-buy-sdk-in-unity)
 
 ### Initialize the SDK
 
-This code example initializes the SDK. The `ShopifyBuy.Init` method takes two `strings`. The first
-`string` being an access token to communicate with the Storefront API. The second string is the 
-domain name of your shop.
+This code example initializes the SDK. The `ShopifyBuy.Init` method takes two arguments. The first is a storefront access token to communicate with the Storefront API. The second is the domain name of your shop.
+
 ```cs
 string accessToken = "351c122017d0f2a957d32ae728ad749c";
 string shopDomain = "graphql.myshopify.com";
 
 ShopifyBuy.Init(accessToken, shopDomain);
 ```
-Once initialized you'll be using `ShopifyBuy.Client()` to query Shopify. Initialization only needs to happen
-once.
 
+After you initialize the SDK, you can use `ShopifyBuy.Client()` to query Shopify. You need to initialize the SDK only once.
 
-### Query All Products
+### Query all products
 
-The following example shows how to query all products in your Shopify store.
+The following example shows how to query all products in your Shopify store:
+
 ```cs
 using Shopify.Unity;
 
@@ -57,7 +64,9 @@ void Start () {
 }
 ```
 
-### Query All Collections
+### Query all collections
+
+The following example shows how to query all collections in your Shopify store:
 
 ```cs
 using Shopify.Unity;
@@ -96,15 +105,13 @@ void Start () {
 }
 ```
 
-It should be noted that in the above example if you were to call `product.title()` an Exception would be thrown. As stated 
-in the begining of this document the Unity SDK is built on top of GraphQL queries. When `collections` are queried using
-this helper/utility method only `id` is queried on `Product`. To get an idea of what fields are queried checkout `DefaultQueries.cs`.
-We will discuss creating custom queries later.
+In this example, if you called `product.title()` then an exception would be thrown. Since the Unity Buy SDK is built on GraphQL queries, when `collections` are queried using this method only `id` is queried on `Product`. To learn which fields are queried using this method, see `DefaultQueries.cs`.
 
-### Cart + Web Checkout
+You can also make more complex requests using custom queries (see below).
 
-The following example will create a cart, add line items to the cart using product variants, and create
-a webcheckout link which will be opened in the Browser.
+### Cart and web checkout
+
+The following example shows how to create a cart, add line items to the cart using product variants, and then create a web checkout link that will open in the player's browser.
 
 ```cs
 using Shopify.Unity;
@@ -138,8 +145,8 @@ void Start () {
 }
 ```
 
-To adjust or change quantity on a line item you could simply just call `AddOrUpdate` again with the new quantity. For instance
-from the above example if we wanted to adjust the quantity for `firstProductFirstVariant` to 1 we could call:
+If you want to adjust or change quantity on a line item, then you can call `AddOrUpdate` again with the new quantity. For example, if you want to adjust the quantity for `firstProductFirstVariant` to 1 in the code above, then you could call:
+
 ```cs
 cart.LineItems.AddOrUpdate(firstProductFirstVariant, 1);
 ```
@@ -154,10 +161,9 @@ To get a line item do the following:
 LineItemInput lineItem = cart.LineItems.Get(firstProductFirstVariant);
 ```
 
-### Cart Line items based on selected options
+### Cart line items based on selected options
 
-In Shopify a product may have many options. These options map to variants of a product. The following
-example shows how to create Line items in a Cart based on selected options.
+In Shopify, a product can have many options. These options map to **variants** of a product. The following example shows how to create line items in a cart based on selected product variants:
 
 ```cs
 using Shopify.Unity;
@@ -204,17 +210,18 @@ void Start () {
 }
 ```
 
-If you'd like to `Delete` or `Get` a line item using do the following:
+If you want to `Delete` or `Get` a line item, then use the following:
+
 ```cs
 cart.LineItems.Get(firstProduct, selectedOptions);
 cart.LineItems.Delete(firstProduct, selectedOptions);
 ```
 
-### Custom Queries
+### Custom queries
 
-The Unity Buy SDK is built ontop of the Storefront API which is a GraphQL Web API. In GraphQL you send queries
-to the end point and receive back a JSON responses. Here's an example GraphQL query to get the name of a shop, and
-details about the billing address of the store:
+The Unity Buy SDK is built on top of Shopify's [Storefront API](https://help.shopify.com/api/storefront-api), which is a GraphQL Web API. In GraphQL, you send queries to the endpoint and receive back a JSON responses.
+
+The following example shows a GraphQL query that retrieves a store's name and some details about its billing address:
 
 ```graphql
 query {
@@ -228,7 +235,8 @@ query {
 }
 ```
 
-When this query is sent to the Storefront API the JSON response from the server would look like this:
+When this query is sent to the Storefront API, the JSON response from the server looks like this:
+
 ```json
 {
   "data": {
@@ -242,17 +250,15 @@ When this query is sent to the Storefront API the JSON response from the server 
   }
 }
 ```
-As you can see the data takes the same form as the query sent to the GraphQL endpoint. For more info on GraphQL 
-checkout: [http://graphql.org/](http://graphql.org/)
 
-In the previous examples when querying `products` and `collections` we were actually using utility functions on
-the Shopify Buy client that generate generic queries that query data most people would expect to see on 
-products and collections. It is possible to however build custom queries that can be sent to the Storefront API
-to access additional data.
+As you can see, the data output takes the same form as the query sent to the GraphQL endpoint. To learn more about how GraphQL handles queries and responses, see [graphql.org](http://graphql.org).
 
-In the following example we will build a query in C# which matches the GraphQL query mentioned above. Again we'll be querying:
-- The shops `name`
-- The shops `billingAddress`
+In the previous example, the queries for `products` and `collections` were made using client-side utility functions that create generic queries for the most common types of information. But you can also send custom queries to the Storefront API to access additional data. To learn more about how the Storefront API works, see [the Storefront API documentation](https://help.shopify.com/api/storefront-api).
+
+The following example shows how to build a custom query in C# that matches the GraphQL query mentioned above. It retrieves the same information that was queried in the previous example:
+
+- the shop's `name`
+- the shop's `billingAddress`
     + `city`
     + `address1`
 
@@ -287,4 +293,4 @@ void Start () {
 }
 ```
 
-To create mutations you'd use `ShopifyBuy.Client().Mutation` in a similar fashion.
+To create mutations, you can use `ShopifyBuy.Client().Mutation` in a similar way.

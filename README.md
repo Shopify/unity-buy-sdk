@@ -20,7 +20,7 @@ The Unity Buy SDK allows Unity developers to query and sell products from Shopif
 - Query collections
 - Create a cart
 - Check out via weblink
-- Make custom GraphQL queries using the [Storefront API](//help.shopify.com/api/storefront-api)
+- Make custom GraphQL queries using the [Storefront API](https://help.shopify.com/api/storefront-api)
 
 Coming Soon:
 
@@ -28,11 +28,10 @@ Coming Soon:
 
 ## Documentation
 
-Documentation can be seen [here](https://shopify.github.io/unity-buy-sdk/).
-
-## Examples
-
-Examples can be viewed [here](EXAMPLES.md).
+- [Information about the Unity SDK](https://help.shopify.com/api/sdks/custom-storefront/unity-buy-sdk)
+- [How to obtain a storefront access token](https://help.shopify.com/api/storefront-api/getting-started#obtaining-a-storefront-access-token)
+- [SDK API Documentation](https://shopify.github.io/unity-buy-sdk/)
+- [Example code snippets](EXAMPLES.md)
 
 ## Using the Unity Buy SDK in Unity
 
@@ -46,14 +45,14 @@ Alternatively, you can clone this repo and build the Unity Buy SDK by following 
 
 ## Getting set up for contributing
 
-Before contributing to the Unity Buy SDK, make sure that you have the required dependencies installed on your computer. Run the following command to check you have all required applications:
+Before contributing to the Unity Buy SDK, make sure that you have the required dependencies installed on your computer. Run the following command to check that you have all required applications:
 ```bash
 $ scripts/check_setup.sh
 ```
 
 ## Build the Unity Buy SDK
 
-Under the hood, the Unity Buy SDK works on top of GraphQL. In order to query Shopify, we generate a GraphQL client based on the [Storefront API](//help.shopify.com/api-storefront-api) introspection schema.
+Under the hood, the Unity Buy SDK works on top of GraphQL. In order to query Shopify, we generate a GraphQL client based on the [Storefront API](https://help.shopify.com/api-storefront-api) introspection schema.
 
 To build the GraphQL client, run the following command:
 ```bash
@@ -89,12 +88,12 @@ To run tests, run the following command:
 $ scripts/test.sh
 ```
 
-Alternatively, you might find it more efficient to run the following instead:
+Alternatively, you might find it more efficient to run the following command:
 ```bash
 $ scripts/test_watch.sh
 ```
 
-`test_watch.sh` watches all development files for changes. Once a change is detected, tests will be recompiled and run.
+`test_watch.sh` watches all development files for changes. When a change is detected, tests will be recompiled and run.
 
 
 <img src="https://cdn.shopify.com/shopify-marketing_assets/builds/19.0.0/shopify-full-color-black.svg" width="200" />
