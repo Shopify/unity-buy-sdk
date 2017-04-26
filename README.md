@@ -24,7 +24,7 @@ The Unity Buy SDK allows Unity developers to query and sell products from Shopif
 
 Coming Soon:
 
-- Checkouts via Apple Pay and Google Pay
+- Checkouts via Apple Pay and Android Pay
 
 ## Documentation
 
