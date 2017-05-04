@@ -3,6 +3,14 @@ namespace <%= namespace %>.SDK {
     using System.Collections.Generic;
 
     public class CartLineItem {
+        public static explicit operator CheckoutLineItemInput(CartLineItem lineItem) {
+            return lineItem.GetCheckoutLineItemInput();
+        }
+
+        public static explicit operator CheckoutLineItemUpdateInput(CartLineItem lineItem) {
+            return lineItem.GetCheckoutLineItemUpdateInput();
+        }
+
         public bool IsSaved {
             get {
                 return _IsSaved;
@@ -47,6 +55,40 @@ namespace <%= namespace %>.SDK {
             _VariantId = variantId;
             _Quantity = quantity;
             _CustomAttributes = customAttributes;
+        }
+
+        public CheckoutLineItemInput GetCheckoutLineItemInput() {
+            return new CheckoutLineItemInput(
+                quantity: Quantity,
+                variantId: VariantId,
+                customAttributes: GetAttributeInputs()
+            );
+        }
+
+        public CheckoutLineItemUpdateInput GetCheckoutLineItemUpdateInput() {
+            return new CheckoutLineItemUpdateInput(
+                id: ID,
+                quantity: Quantity,
+                variantId: VariantId,
+                customAttributes: GetAttributeInputs()
+            );
+        }
+
+        private List<AttributeInput> GetAttributeInputs() {
+            List<AttributeInput> attributes = null;
+
+            if (CustomAttributes != null) {
+                attributes = new List<AttributeInput>();
+
+                foreach(string key in CustomAttributes.Keys) {
+                    attributes.Add(new AttributeInput(
+                        key: key,
+                        value: CustomAttributes[key]
+                    ));
+                }
+            }
+
+            return attributes;
         }
     }
 

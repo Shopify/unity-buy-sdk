@@ -55,6 +55,29 @@ namespace Shopify.Tests
             Assert.IsFalse(didDelete, "returned false when did not delete");
         }
 
+        public void TestCastingLineItems() {
+            ShopifyBuy.Init(new MockLoader());
+
+            Cart cart = ShopifyBuy.Client().Cart();
+            string variandId = "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTE1NQ==";
+
+            cart.LineItems.AddOrUpdate(variandId, 33, new Dictionary<string, string>() {
+                {"fun", "things"}
+            });
+
+            CheckoutLineItemInput input = (CheckoutLineItemInput) cart.LineItems.Get(variandId);
+            CheckoutLineItemUpdateInput updateInput = (CheckoutLineItemUpdateInput) cart.LineItems.Get(variandId);
+
+            Assert.IsNotNull(input);
+            Assert.IsNotNull(updateInput);
+            Assert.IsNotNull(input.customAttributes);
+            Assert.IsNotNull(updateInput.customAttributes);
+            Assert.AreEqual("fun", input.customAttributes[0].key);
+            Assert.AreEqual("fun", updateInput.customAttributes[0].key);
+            Assert.AreEqual("things", input.customAttributes[0].value);
+            Assert.AreEqual("things", updateInput.customAttributes[0].value);
+        }
+
         [Test]
         public void TestPermalink() {
             ShopifyBuy.Init(new MockLoader());
