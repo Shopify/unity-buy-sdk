@@ -14,266 +14,6 @@ namespace <%= namespace %> {
     }
 
     /// <summary>
-    /// Is used to add, update, or delete line items in a <see ref="Cart">Cart </see>.
-    /// </summary>
-    public class CartLineItems {
-        private List<CheckoutLineItemInput> LineItems = new List<CheckoutLineItemInput>();
-
-        /// <summary>
-        /// Adds or updates an existing line item using a variant id.
-        /// </summary>
-        /// <param name="variantId">variant id for a <see ref="ProductVariant">ProductVariant </see></param>
-        /// <param name="quantity">the number of items you'd like to order for variantId</param>
-        /// <param name="customAttributes">can be used to define extra information for this line item</param>
-        /// \code
-        /// // Example that updates the quantity of items to be purchased to 3.
-        /// // If no line item exists for `variantId`, then a new line item is created
-        /// Cart cart = ShopifyBuy.Client().Cart();
-        ///
-        /// cart.LineItems.AddOrUpdate(variantId, 3);
-        /// \endcode
-        public void AddOrUpdate(string variantId, long? quantity = null, List<AttributeInput> customAttributes = null) {
-            CheckoutLineItemInput input = Get(variantId);
-
-            if (input != null) {
-                if (quantity != null) {
-                    input.quantity = (long) quantity;
-                }
-
-                if (customAttributes != null) {
-                    input.customAttributes = customAttributes;
-                }
-            } else {
-                if (quantity == null) {
-                    quantity = 1;
-                }
-
-                LineItems.Add(
-                  new CheckoutLineItemInput(
-                    variantId: variantId,
-                    quantity: (long) quantity,
-                    customAttributes: customAttributes
-                  )
-                );
-            }
-        }
-
-        /// <summary>
-        /// Adds or updates a line item using a <see ref="ProductVariant">ProductVariant </see>.
-        /// </summary>
-        /// <param name="variant"><see ref="ProductVariant">ProductVariant </see> whose id will be used to create or update a line item</param>
-        /// <param name="quantity">the number of items you'd like to order for variantId</param>
-        /// <param name="customAttributes">can be used to define extra information for this line item</param>
-        /// \code
-        /// // Example that updates the quantity of items to be purchased to 3.
-        /// // If no line item exists for `variantId`, then a new line item is created
-        /// Cart cart = ShopifyBuy.Client().Cart();
-        ///
-        /// cart.LineItems.AddOrUpdate(variant, 3);
-        /// \endcode
-        public void AddOrUpdate(ProductVariant variant, long? quantity = null, List<AttributeInput> customAttributes = null) {
-            AddOrUpdate(variant.id(), quantity, customAttributes);
-        }
-
-        /// <summary>
-        /// Adds a new line item using a <see ref="Product">Product </see> and selected options. If an existing line item exists for the
-        /// variant id, then that line item will be updated.
-        /// </summary>
-        /// <param name="product">product to check selected options against</param>
-        /// <param name="selectedOptions">a Dictionary used to define user selected options</param>
-        /// <param name="quantity">the number of items you'd like to order for variantId</param>
-        /// <param name="customAttributes">customAttributes can be used to define extra information for this line item</param>
-        /// <exception ref="NoMatchingVariantException">Throws when no matching variant could be found for selected options in product</exception>
-        /// \code
-        /// // Example that updates the quantity of items to be purchased to 3.
-        /// // If no line item exists for `variantId`, then a new line item is created
-        /// Cart cart = ShopifyBuy.Client().Cart();
-        ///
-        /// Dictionary<string, string> selectedOptions = new Dictionary<string, string>() {
-        ///     {"Size", "Small"},
-        ///     {"Color", "Red"}
-        /// };
-        ///
-        /// cart.LineItems.AddOrUpdate(product, selectedOptions, 3);
-        /// \endcode
-        public void AddOrUpdate(Product product, Dictionary<string, string> selectedOptions, long? quantity = null, List<AttributeInput> customAttributes = null) {
-            string variantId = VariantIdFromSelectedOptions(product, selectedOptions);
-
-            if (variantId == null) {
-                throw new NoMatchingVariantException("Could not `AddOrUpdate` line item as no matching variant could be found for selected options");
-            }
-
-            AddOrUpdate(variantId, quantity, customAttributes);
-        }
-
-        /// <summary>
-        /// Returns all <see ref="CheckoutLineItemInput">Line Items </see> that have been created.
-        /// </summary>
-        /// \code
-        /// // Example that checks how many line items the cart contains
-        /// Cart cart = ShopifyBuy.Client().Cart();
-        ///
-        /// Debug.Log("The cart has " + cart.LineItems.All().Count + " line items");
-        /// \endcode
-        public List<CheckoutLineItemInput> All() {
-            return LineItems;
-        }
-
-        /// <summary>
-        /// Returns one <see ref="CheckoutLineItemInput">Line Item </see> based on a variant id. If no line item exists for the variant id
-        /// <c>null</c> will be returned.
-        /// </summary>
-        /// <param name="variantId">variant id used to create a line item</param>
-        /// \code
-        /// // Example that checks the quantity of a line item based on variantId
-        /// Cart cart = ShopifyBuy.Client().Cart();
-        ///
-        /// Debug.Log(cart.LineItems.Get(variantId).quantity);
-        /// \endcode
-        public CheckoutLineItemInput Get(string variantId) {
-            return LineItems.Find(item => item.variantId == variantId);
-        }
-
-        /// <summary>
-        /// Returns one <see ref="CheckoutLineItemInput">Line Item </see> based on a <see ref="ProductVariant">ProductVariant </see>. If no line item
-        /// exists for the variant, <c>null</c> will be returned.
-        /// </summary>
-        /// <param name="variant">variant whose variant id used to create a line item</param>
-        /// \code
-        /// // Example that checks the quantity of a line item based on a variant
-        /// Cart cart = ShopifyBuy.Client().Cart();
-        ///
-        /// Debug.Log(cart.LineItems.Get(variant).quantity);
-        /// \endcode
-        public CheckoutLineItemInput Get(ProductVariant variant) {
-            return Get(variant.id());
-        }
-
-        /// <summary>
-        /// Returns one <see ref="CheckoutLineItemInput">Line Item </see> based on a <see ref="Product">product </see> and selected options.
-        /// If no line item exists for the matching variant, <c>null</c> will be returned.
-        /// </summary>
-        /// <param name="product">product whose options will be selected</param>
-        /// <param name="selectedOptions">a Dictionary used to define user selected options</param>
-        /// \code
-        /// // Example that checks the quantity of a line item based on a product and selected options
-        /// Cart cart = ShopifyBuy.Client().Cart();
-        ///
-        /// Dictionary<string, string> selectedOptions = new Dictionary<string, string>() {
-        ///     {"Size", "Small"},
-        ///     {"Color", "Red"}
-        /// };
-        ///
-        /// Debug.Log(cart.LineItems.Get(product, selectedOptions).quantity);
-        /// \endcode
-        public CheckoutLineItemInput Get(Product product, Dictionary<string, string> selectedOptions) {
-            string variantId = VariantIdFromSelectedOptions(product, selectedOptions);
-
-            if (variantId == null) {
-                return null;
-            }
-
-            return Get(variantId);
-        }
-
-        /// <summary>
-        /// Deletes one <see ref="CheckoutLineItemInput">Line Item </see> based on a variant id. If a line item was deleted, <c>true</c>
-        /// will be returned. If no line items were deleted, <c>false</c> will be returned.
-        /// </summary>
-        /// <param name="variantId">variant id used to delete a line item</param>
-        /// \code
-        /// // Example that deletes a line item based on variantId
-        /// Cart cart = ShopifyBuy.Client().Cart();
-        ///
-        /// Debug.Log("Did delete? " + cart.LineItems.Delete(variantId));
-        /// \endcode
-        public bool Delete(string variantId) {
-            int idxToDelete = LineItems.FindIndex(lineItem => lineItem.variantId == variantId);
-
-            if (idxToDelete == -1) {
-                return false;
-            } else {
-                LineItems.RemoveAt(idxToDelete);
-
-                return true;
-            }
-        }
-
-        /// <summary>
-        /// Deletes one <see ref="CheckoutLineItemInput">Line Item </see> based on a <see ref="ProductVariant">ProductVariant </see>. If a line
-        /// item was deleted, <c>true</c> will be returned. If no line items were deleted, <c>false</c> will be returned.
-        /// </summary>
-        /// <param name="variant"><see ref="ProductVariant">variant </see> to provide the ID to delete a line item</param>
-        /// \code
-        /// // Example that deletes a line item based on a product variant
-        /// Cart cart = ShopifyBuy.Client().Cart();
-        ///
-        /// Debug.Log("Did delete? " + cart.LineItems.Delete(variant));
-        /// \endcode
-        public bool Delete(ProductVariant variant) {
-            return Delete(variant.id());
-        }
-
-        /// <summary>
-        /// Deletes one <see ref="CheckoutLineItemInput">Line Item </see> based on a <see ref="Product">Product </see> and selected options.
-        /// If a line item was deleted, <c>true</c> will be returned. If no line item was deleted, <c>false</c> will be returned.
-        /// </summary>
-        /// <param name="product"><see ref="Product">product </see> whose options will be used to determine which line item is deleted</param>
-        /// <param name="selectedOptions">a Dictionary used to define user selected options</param>
-        /// \code
-        /// // Example that deletes a line item based on a product and selected options
-        /// Cart cart = ShopifyBuy.Client().Cart();
-        ///
-        /// Dictionary<string, string> selectedOptions = new Dictionary<string, string>() {
-        ///     {"Size", "Small"},
-        ///     {"Color", "Red"}
-        /// };
-        ///
-        /// Debug.Log("Did delete? " + cart.LineItems.Delete(product, selectedOptions));
-        /// \endcode
-        public bool Delete(Product product, Dictionary<string, string> selectedOptions) {
-            string variantId = VariantIdFromSelectedOptions(product, selectedOptions);
-
-            if (variantId == null) {
-                return false;
-            }
-
-            return Delete(variantId);
-        }
-
-        private string VariantIdFromSelectedOptions(Product product, Dictionary<string, string> selectedOptions) {
-            List<ProductVariant> variants = (List<ProductVariant>) product.variants();
-            string variantId = null;
-
-            foreach(ProductVariant variant in variants) {
-                List<SelectedOption> variantSelectedOptions = variant.selectedOptions();
-                variantId = variant.id();
-
-                if (variantSelectedOptions.Count != selectedOptions.Keys.Count) {
-                    variantId = null;
-                } else {
-                    foreach(SelectedOption variantOption in variantSelectedOptions) {
-                        string optionName = variantOption.name();
-                        string optionValue = variantOption.value();
-
-                        if (!selectedOptions.ContainsKey(optionName) || selectedOptions[optionName] != optionValue) {
-                            variantId = null;
-
-                            break;
-                        }
-                    }
-                }
-
-                if (variantId != null) {
-                    break;
-                }
-            }
-
-            return variantId;
-        }
-    }
-
-    /// <summary>
     /// Manages line items for an order. Can also be used to generate a web checkout link to check out in browser.
     /// </summary>
     public class Cart {
@@ -327,7 +67,7 @@ namespace <%= namespace %> {
             url.Append(Client.Domain);
             url.Append("/cart/");
 
-            foreach(CheckoutLineItemInput lineItem in LineItems.All()) {
+            foreach(CartLineItem lineItem in LineItems.All()) {
                 if (hasLineItem) {
                     url.Append(",");
                 }
@@ -335,7 +75,7 @@ namespace <%= namespace %> {
                 hasLineItem = true;
 
                 string variantId = System.Text.Encoding.UTF8.GetString(
-                    Convert.FromBase64String(lineItem.variantId)
+                    Convert.FromBase64String(lineItem.VariantId)
                 );
 
                 // convert from variant gid to variant id
@@ -343,7 +83,7 @@ namespace <%= namespace %> {
 
                 url.Append(variandIdSplit[variandIdSplit.Length - 1]);
                 url.Append(":");
-                url.Append(lineItem.quantity);
+                url.Append(lineItem.Quantity);
             }
 
             url.Append("?access_token=");
