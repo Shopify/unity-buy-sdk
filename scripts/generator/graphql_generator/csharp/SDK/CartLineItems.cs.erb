@@ -333,11 +333,10 @@ namespace <%= namespace %>.SDK {
 
             foreach(ProductVariant variant in variants) {
                 List<SelectedOption> variantSelectedOptions = variant.selectedOptions();
-                variantId = variant.id();
 
-                if (variantSelectedOptions.Count != selectedOptions.Keys.Count) {
-                    variantId = null;
-                } else {
+                if (variantSelectedOptions.Count == selectedOptions.Keys.Count) {
+                    variantId = variant.id();
+
                     foreach(SelectedOption variantOption in variantSelectedOptions) {
                         string optionName = variantOption.name();
                         string optionValue = variantOption.value();
