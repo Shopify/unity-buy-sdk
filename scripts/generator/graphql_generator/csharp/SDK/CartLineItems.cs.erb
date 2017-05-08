@@ -1,6 +1,7 @@
 namespace <%= namespace %>.SDK {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
 
     public class CartLineItem {
         public static explicit operator CheckoutLineItemInput(CartLineItem lineItem) {
@@ -34,14 +35,17 @@ namespace <%= namespace %>.SDK {
             }
         }
 
-        public Dictionary<string, string> CustomAttributes {
+        public IDictionary<string, string> CustomAttributes {
             get {
                 return _CustomAttributes;
             }
 
             set {
                 _IsSaved = false;
-                _CustomAttributes = value;
+
+                if (value != null) {
+                    _CustomAttributes = new ReadOnlyDictionary<string, string>(value);
+                }
             }
         }
 
@@ -49,12 +53,15 @@ namespace <%= namespace %>.SDK {
         private bool _IsSaved;
         private string _VariantId;
         private long _Quantity;
-        private Dictionary<string, string> _CustomAttributes;
+        private ReadOnlyDictionary<string, string> _CustomAttributes;
         
-        public CartLineItem(string variantId, long quantity = 1, Dictionary<string, string> customAttributes = null) {
+        public CartLineItem(string variantId, long quantity = 1, IDictionary<string, string> customAttributes = null) {
             _VariantId = variantId;
             _Quantity = quantity;
-            _CustomAttributes = customAttributes;
+
+            if (customAttributes != null) {
+                _CustomAttributes = new ReadOnlyDictionary<string, string>(customAttributes);
+            }
         }
 
         public CheckoutLineItemInput GetCheckoutLineItemInput() {

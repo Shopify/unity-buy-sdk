@@ -1,5 +1,6 @@
 namespace Shopify.Tests
 {
+    using System;
     using System.Collections.Generic;
     using NUnit.Framework;
     using Shopify.Unity;
@@ -55,6 +56,7 @@ namespace Shopify.Tests
             Assert.IsFalse(didDelete, "returned false when did not delete");
         }
 
+        [Test]
         public void TestCastingLineItems() {
             ShopifyBuy.Init(new MockLoader());
 
@@ -76,6 +78,27 @@ namespace Shopify.Tests
             Assert.AreEqual("fun", updateInput.customAttributes[0].key);
             Assert.AreEqual("things", input.customAttributes[0].value);
             Assert.AreEqual("things", updateInput.customAttributes[0].value);
+        }
+
+        [Test]
+        public void TestModifyingCustomAttributesErrors() {
+            ShopifyBuy.Init(new MockLoader());
+
+            NotSupportedException exception = null;
+            Cart cart = ShopifyBuy.Client().Cart();
+            string variandId = "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTE1NQ==";
+
+            cart.LineItems.AddOrUpdate(variandId, 33, new Dictionary<string, string>() {
+                {"fun", "things"}
+            });
+
+            try {
+                cart.LineItems.Get(variandId).CustomAttributes["fun"] = "nope";
+            } catch(NotSupportedException e) {
+                exception = e;
+            }
+
+            Assert.IsNotNull(exception, "Threw an expection when trying to modify CustomAttributes directly");
         }
 
         [Test]
