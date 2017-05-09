@@ -44,7 +44,7 @@ namespace <%= namespace %>.SDK {
                 _IsSaved = false;
 
                 if (value != null) {
-                    _CustomAttributes = new ReadOnlyDictionary<string, string>(value);
+                    _CustomAttributes = new ObservableDictionary<string, string>(value, OnCustomAttributesChange);
                 }
             }
         }
@@ -53,18 +53,20 @@ namespace <%= namespace %>.SDK {
         private bool _IsSaved;
         private string _VariantId;
         private long _Quantity;
-        private ReadOnlyDictionary<string, string> _CustomAttributes;
+        private ObservableDictionary<string, string> _CustomAttributes;
         
         public CartLineItem(string variantId, long quantity = 1, IDictionary<string, string> customAttributes = null) {
             _VariantId = variantId;
             _Quantity = quantity;
 
             if (customAttributes != null) {
-                _CustomAttributes = new ReadOnlyDictionary<string, string>(customAttributes);
+                CustomAttributes = new ObservableDictionary<string, string>(customAttributes, OnCustomAttributesChange);
             }
         }
 
         public CheckoutLineItemInput GetCheckoutLineItemInput() {
+            _IsSaved = true;
+
             return new CheckoutLineItemInput(
                 quantity: Quantity,
                 variantId: VariantId,
@@ -73,6 +75,8 @@ namespace <%= namespace %>.SDK {
         }
 
         public CheckoutLineItemUpdateInput GetCheckoutLineItemUpdateInput() {
+            _IsSaved = true;
+
             return new CheckoutLineItemUpdateInput(
                 id: ID,
                 quantity: Quantity,
@@ -96,6 +100,10 @@ namespace <%= namespace %>.SDK {
             }
 
             return attributes;
+        }
+
+        private void OnCustomAttributesChange() {
+            _IsSaved = false;
         }
     }
 

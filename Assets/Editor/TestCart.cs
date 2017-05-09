@@ -81,10 +81,9 @@ namespace Shopify.Tests
         }
 
         [Test]
-        public void TestModifyingCustomAttributesErrors() {
+        public void TestModifyingCustomAttributesMadeLineNotBeSaved() {
             ShopifyBuy.Init(new MockLoader());
 
-            NotSupportedException exception = null;
             Cart cart = ShopifyBuy.Client().Cart();
             string variandId = "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTE1NQ==";
 
@@ -92,13 +91,15 @@ namespace Shopify.Tests
                 {"fun", "things"}
             });
 
-            try {
-                cart.LineItems.Get(variandId).CustomAttributes["fun"] = "nope";
-            } catch(NotSupportedException e) {
-                exception = e;
-            }
+            Assert.IsFalse(cart.LineItems.Get(variandId).IsSaved, "initially is not saved");
 
-            Assert.IsNotNull(exception, "Threw an expection when trying to modify CustomAttributes directly");
+            cart.LineItems.Get(variandId).GetCheckoutLineItemUpdateInput();
+
+            Assert.IsTrue(cart.LineItems.Get(variandId).IsSaved, "after get input is saved");
+
+            cart.LineItems.Get(variandId).CustomAttributes["fun"] = "stuff";
+
+            Assert.IsFalse(cart.LineItems.Get(variandId).IsSaved, "after change is not saved");
         }
 
         [Test]
