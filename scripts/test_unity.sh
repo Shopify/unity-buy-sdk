@@ -8,7 +8,7 @@ which $UNITY_PATH &> /dev/null || die "Unity does not exist at $UNITY_PATH"
 
 convertNUnitToJUnit() {
     if [ ! -z "${UNITY_CIRCLE_XML_OUT_PATH}" ]; then
-        mkdir $UNITY_CIRCLE_XML_PATH
+        mkdir $UNITY_CIRCLE_XML_DIR
         xsltproc -o $UNITY_CIRCLE_XML_OUT_PATH $SCRIPTS_ROOT/nunit-to-junit.xsl EditorTestResults.xml
     fi
 }
@@ -33,7 +33,7 @@ else
     echo "------------------\n\n"
     if [ -e "EditorTestResults.xml" ]; then
         cat EditorTestResults.xml
-       convertNUnitToJUnit
+        convertNUnitToJUnit
     else
         cat $UNITY_LOG_PATH 
     fi
