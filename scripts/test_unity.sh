@@ -20,6 +20,7 @@ $UNITY_PATH \
     -logFile $UNITY_LOG_PATH \
     -projectPath $PROJECT_ROOT \
     -runEditorTests \
+    -buildTarget osx \
     -quit
 
 if [ $? = 0 ] ; then
