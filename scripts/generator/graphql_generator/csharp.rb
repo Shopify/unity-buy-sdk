@@ -99,6 +99,8 @@ module GraphQLGenerator
         SDK/AliasException
         SDK/InvalidServerResponseException
         SDK/DefaultQueries
+        SDK/DefaultQueriesProducts
+        SDK/DefaultQueriesCollections
         SDK/QueryLoader
         SDK/ConnectionLoader
         SDK/UnityLoader
