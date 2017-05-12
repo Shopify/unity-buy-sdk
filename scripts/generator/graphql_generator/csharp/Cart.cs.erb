@@ -26,9 +26,22 @@ namespace <%= namespace %> {
             }
         }
 
-        private CartLineItems _LineItems;
+        private bool IsSaved {
+            get {
+                return IsCreated && _IsSaved;
+            }
+        }
 
+        private bool IsCreated {
+            get {
+                return Checkout != null;
+            }
+        }
+
+        private CartLineItems _LineItems;
+        private bool _IsSaved;
         private ShopifyClient Client;
+        private Checkout Checkout;
 
         /// <summary>
         /// Constructs a new cart using a <see ref="ShopifyClient">ShopifyClient </see>. Typically, carts won't be
@@ -49,52 +62,36 @@ namespace <%= namespace %> {
             _LineItems = new CartLineItems();
         }
 
-        /// <summary>
-        /// Returns a link which can be used to check out this cart's line items via a web browser.
-        /// </summary>
-        /// <param name="note">can be used to create a special note for the merchant for this order</param>
-        /// \code
-        /// // Example that creates a checkout link and opens the url in the Browser
-        /// string linkToCheckout = ShopifyBuy.Client().Cart().GetWebCheckoutLink();
-        ///
-        /// Application.OpenURL(linkToCheckout);
-        /// \endcode
-        public string GetWebCheckoutLink(string note = null) {
-            StringBuilder url = new StringBuilder();
-            bool hasLineItem = false;
+        public void GetWebCheckoutLink(Action<string> success, Action<List<string>, string> failure, string note = null) {
+            CheckoutSave((errors, httpError) => {
+                if (errors == null && httpError == null) {
 
-            url.Append("http://");
-            url.Append(Client.Domain);
-            url.Append("/cart/");
-
-            foreach(CartLineItem lineItem in LineItems.All()) {
-                if (hasLineItem) {
-                    url.Append(",");
+                } else {
+                    failure(errors, httpError);
                 }
+            });
+        }
 
-                hasLineItem = true;
-
-                string variantId = System.Text.Encoding.UTF8.GetString(
-                    Convert.FromBase64String(lineItem.VariantId)
-                );
-
-                // convert from variant gid to variant id
-                string[] variandIdSplit = variantId.Split('/');
-
-                url.Append(variandIdSplit[variandIdSplit.Length - 1]);
-                url.Append(":");
-                url.Append(lineItem.Quantity);
+        private void CheckoutSave(Action<List<string>, string> callback) {
+            if (!IsCreated) {
+                CheckoutCreate(callback);
+            } else if(!IsSaved) {
+                CheckoutUpdate(callback);
+            } else {
+                callback(null, null);
             }
+        }
 
-            url.Append("?access_token=");
-            url.Append(Client.AccessToken);
+        private void CheckoutCreate(Action<List<string>, string> callback) {
+            
+        }
 
-            if (note != null) {
-                url.Append("&note=");
-                url.Append(note);
-            }
+        private void CheckoutUpdate(Action<List<string>, string> callback) {
 
-            return url.ToString();
+        }
+
+        private void CheckoutPoll(Action<List<string>, string> callback) {
+
         }
     }
 }
