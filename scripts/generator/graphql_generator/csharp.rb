@@ -91,9 +91,11 @@ module GraphQLGenerator
         SDK/InputBase
         SDK/InputValueToString
         SDK/CastUtils
+        SDK/CartLineItems
         SDK/ValidationUtils
         SDK/AbstractResponse
         SDK/NoQueryException
+        SDK/ObservableDictionary
         SDK/AliasException
         SDK/InvalidServerResponseException
         SDK/DefaultQueries
