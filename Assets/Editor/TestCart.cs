@@ -107,12 +107,27 @@ namespace Shopify.Tests
             ShopifyBuy.Init(new MockLoader());
             
             Cart cart = ShopifyBuy.Client().Cart();
-            
+            string responseURL = null;
+            string responseHttpError = null;
+            List<string> responseErrors = null;
+
+
             cart.LineItems.AddOrUpdate("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTE1NQ==", 33);
             cart.LineItems.AddOrUpdate("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTM0Nw==", 2);
-            
-            Assert.AreEqual("http://graphql.myshopify.com/cart/20756129155:33,20756129347:2?access_token=1234", cart.GetWebCheckoutLink());
-            Assert.AreEqual("http://graphql.myshopify.com/cart/20756129155:33,20756129347:2?access_token=1234&note=i-am-a-note", cart.GetWebCheckoutLink("i-am-a-note"));
+
+            cart.GetWebCheckoutLink(
+                success: (url) => {
+                    responseURL = url;
+                },
+                failure: (errors, httpError) => {
+                    responseHttpError = httpError;
+                    responseErrors = errors;
+                }
+            );
+
+            Assert.IsNotNull(responseURL);
+            Assert.IsNull(responseHttpError);
+            Assert.IsNull(responseErrors);
         }
         
         [Test]
