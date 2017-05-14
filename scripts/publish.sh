@@ -66,7 +66,7 @@ $UNITY_PATH \
     -silent-crashes \
     -logFile $UNITY_LOG_PATH \
     -projectPath $PROJECT_ROOT \
-    -exportPackage Assets/Shopify shopify-buy.unitypackage \
+    -exportPackage Assets/Shopify Assets/Plugins shopify-buy.unitypackage \
     -quit
 
 if [ $? = 0 ] ; then
