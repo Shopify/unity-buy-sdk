@@ -1,0 +1,112 @@
+namespace <%= namespace %>.SDK {
+    using System;
+    using System.Collections.Generic;
+    using <%= namespace %>.GraphQL;
+
+    public class DefaultQueriesCheckout {
+        public void Create(MutationQuery query, List<CheckoutLineItemInput> lineItems) {
+            query.checkoutCreate(
+                buildQuery: checkoutCreate => checkoutCreate
+                    .checkout(checkout => 
+                        Checkout(checkout)
+                        .lineItems(
+                            buildQuery: li => CheckoutLineItems(li),
+                            first: DefaultQueries.MaxPageSize
+                        )
+                    )
+                    .userErrors(userErrors => userErrors
+                        .field()
+                        .message()
+                    ),
+                input: new CheckoutCreateInput(
+                    lineItems: lineItems
+                )
+            );
+        }
+
+        public void Poll(QueryRootQuery query, string checkoutID) {
+            query.node(
+                buildQuery: node => node
+                    .onCheckout(checkout => Checkout(checkout)),
+                id: checkoutID
+            );
+        }
+
+        public void LineItemsAdd(MutationQuery query, string checkoutID, List<CheckoutLineItemInput> lineItems) {
+            query.checkoutLineItemsAdd(
+                buildQuery: lineItemAdd => lineItemAdd
+                    .checkout(checkout => 
+                        Checkout(checkout)
+                        .lineItems(
+                            buildQuery: li => CheckoutLineItems(li),
+                            first: DefaultQueries.MaxPageSize
+                        )
+                    )
+                    .userErrors(userErrors => userErrors
+                        .field()
+                        .message()
+                    ),
+                checkoutId: checkoutID,
+                lineItems: lineItems
+            );
+        }
+
+        public void LineItemsRemove(MutationQuery query, string checkoutID, List<string> lineItemIds) {
+            query.checkoutLineItemsRemove(
+                buildQuery: lineItemRemove => lineItemRemove
+                    .checkout(checkout => 
+                        Checkout(checkout)
+                        .lineItems(
+                            buildQuery: li => CheckoutLineItems(li),
+                            first: DefaultQueries.MaxPageSize
+                        )
+                    )
+                    .userErrors(userErrors => userErrors
+                        .field()
+                        .message()
+                    ),
+                checkoutId: checkoutID,
+                lineItemIds: lineItemIds
+            );
+        }
+
+        public void LineItemsUpdate(MutationQuery query, string checkoutID, List<CheckoutLineItemUpdateInput> lineItems) {
+            query.checkoutLineItemsUpdate(
+                buildQuery: lineItemUpdate => lineItemUpdate
+                    .checkout(checkout => 
+                        Checkout(checkout)
+                        .lineItems(
+                            buildQuery: li => CheckoutLineItems(li),
+                            first: DefaultQueries.MaxPageSize
+                        )
+                    )
+                    .userErrors(userErrors => userErrors
+                        .field()
+                        .message()
+                    ),
+                checkoutId: checkoutID,
+                lineItems: lineItems
+            );
+        }
+
+        private CheckoutQuery Checkout(CheckoutQuery checkout) {
+            return checkout
+                .id()
+                .webUrl()
+                .ready();
+        }
+
+        private CheckoutLineItemConnectionQuery CheckoutLineItems(CheckoutLineItemConnectionQuery lineItems) {
+            return lineItems
+                .edges(edge => edge
+                    .node(node => node
+                        .id()
+                        .variant(variant => variant
+                            .id()
+                        )
+                    )
+                    .cursor()
+                );
+        }
+    }
+}
