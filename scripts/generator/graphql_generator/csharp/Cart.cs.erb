@@ -28,20 +28,24 @@ namespace <%= namespace %> {
 
         private bool IsSaved {
             get {
-                return IsCreated && _IsSaved;
+                return IsCreated && 
+                    LineItems.New().Count == 0 &&
+                    LineItems.Modified().Count == 0 &&
+                    LineItems.Deleted().Count == 0;
             }
         }
 
         private bool IsCreated {
             get {
-                return Checkout != null;
+                return CheckoutId != null;
             }
         }
 
         private CartLineItems _LineItems;
-        private bool _IsSaved;
         private ShopifyClient Client;
-        private Checkout Checkout;
+        private string CheckoutId = null;
+        private string CheckoutWebUrl = null;
+        private bool IsCheckoutReady = true;
 
         /// <summary>
         /// Constructs a new cart using a <see ref="ShopifyClient">ShopifyClient </see>. Typically, carts won't be
@@ -64,10 +68,10 @@ namespace <%= namespace %> {
 
         public void GetWebCheckoutLink(Action<string> success, Action<List<string>, string> failure, string note = null) {
             CheckoutSave((errors, httpError) => {
-                if (errors == null && httpError == null) {
-
-                } else {
+                if (errors != null || httpError != null) {
                     failure(errors, httpError);
+                } else {
+                    success(CheckoutWebUrl);
                 }
             });
         }
@@ -83,7 +87,25 @@ namespace <%= namespace %> {
         }
 
         private void CheckoutCreate(Action<List<string>, string> callback) {
-            
+            MutationQuery query = new MutationQuery();
+
+            List<CheckoutLineItemInput> newLineItemInput = CartLineItems.ConvertToCheckoutLineItemInput(LineItems.New());
+
+            DefaultQueries.checkout.Create(query, newLineItemInput);
+
+            Client.Mutation(query, (Mutation response, List<string> errors, string httpError) => {
+                if (errors != null || httpError != null) {
+                    callback(errors, httpError);
+                } else {
+                    Checkout checkout = response.checkoutCreate().checkout();
+
+                    CheckoutId = checkout.id();
+                    IsCheckoutReady = checkout.ready();
+                    CheckoutWebUrl = checkout.webUrl();
+
+                    CheckoutPoll(callback);
+                }
+            });
         }
 
         private void CheckoutUpdate(Action<List<string>, string> callback) {
@@ -91,7 +113,29 @@ namespace <%= namespace %> {
         }
 
         private void CheckoutPoll(Action<List<string>, string> callback) {
+            if (IsCheckoutReady) {
+                callback(null, null);
+            } else {
+                QueryRootQuery query = new QueryRootQuery();
 
+                DefaultQueries.checkout.Poll(query, CheckoutId);
+
+                Client.Query(query, (QueryRoot response, List<string> errors, string httpError) => {
+                    if (errors != null || httpError != null) {
+                        callback(errors, httpError);
+                    } else {
+                        Checkout checkout = (Checkout) response.node();
+
+                        IsCheckoutReady = checkout.ready();
+
+                        if (IsCheckoutReady) {
+                            callback(null, null);
+                        } else {
+                            CheckoutPoll(callback);
+                        }
+                    }
+                });
+            }
         }
     }
 }
