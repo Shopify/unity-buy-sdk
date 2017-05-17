@@ -36,6 +36,8 @@ class BuySerializableTests: XCTestCase {
     let phone        = "123-456-7890"
     let address1     = "80 Spadina Ave"
     let address2     = "420 Wellington"
+    let edgeAddress1 = "420\\nWellington"
+    let edgeAddress2 = "80\\nSpadina\\nAve"
     let city         = "Toronto"
     let company      = "Shopify"
     let country      = "Canada"
@@ -106,13 +108,20 @@ class BuySerializableTests: XCTestCase {
     //  MARK: - PKContact -
     //
     func testPKContactSerializable() {
-        let billingContact     = createContact()
-        let billingContactDict = billingContact.asDictionary()
-        
-        assertEqualContact(billingContactDict, contact: billingContact)
-        
-        XCTAssertNotNil(billingContact.asJSONString())
-        XCTAssertNoThrow(try JSONSerialization.jsonObject(with: billingContact.asJSONString().data(using: .utf8)!))
+        let billingContact = createContact()
+        assertPKContactSerializable(billingContact)
+    }
+    
+    func testPKContactMultiAddressSerializable() {
+        let billingContact           = createContact()
+        billingContact.postalAddress = createMultiPostalAddress()
+        assertPKContactSerializable(billingContact)
+    }
+    
+    func testPKContactMultiAddressSerializableEdgeCase() {
+        let billingContact           = createContact()
+        billingContact.postalAddress = createMultiPostalAddressEdgeCase()
+        assertPKContactSerializable(billingContact)
     }
     
     // ----------------------------------
@@ -135,6 +144,18 @@ class BuySerializableTests: XCTestCase {
         return postalAddress
     }
     
+    func createMultiPostalAddress() -> CNPostalAddress {
+        let postalAddress    = createPostalAddress() as! CNMutablePostalAddress
+        postalAddress.street = address1 + "\n" + address2
+        return postalAddress
+    }
+    
+    func createMultiPostalAddressEdgeCase() -> CNPostalAddress {
+        let postalAddress    = createPostalAddress() as! CNMutablePostalAddress
+        postalAddress.street = edgeAddress1 + "\n" + edgeAddress2
+        return postalAddress
+    }
+    
     func createContact() -> PKContact {
         let contact           = PKContact.init()
         contact.name          = createPersonName()
@@ -150,11 +171,27 @@ class BuySerializableTests: XCTestCase {
     func assertEqualContact(_ contactDict: Dictionary<String, Any>, contact: PKContact) {
         XCTAssertEqual(contactDict[PKContactSerializedField.firstName.rawValue] as? String, contact.name?.givenName);
         XCTAssertEqual(contactDict[PKContactSerializedField.lastName.rawValue]  as? String, contact.name?.familyName);
-        XCTAssertEqual(contactDict[PKContactSerializedField.address1.rawValue]  as? String, contact.postalAddress?.street);
         XCTAssertEqual(contactDict[PKContactSerializedField.city.rawValue]      as? String, contact.postalAddress?.city);
         XCTAssertEqual(contactDict[PKContactSerializedField.country.rawValue]   as? String, contact.postalAddress?.country);
         XCTAssertEqual(contactDict[PKContactSerializedField.province.rawValue]  as? String, contact.postalAddress?.state);
         XCTAssertEqual(contactDict[PKContactSerializedField.zip.rawValue]       as? String, contact.postalAddress?.postalCode);
         XCTAssertEqual(contactDict[PKContactSerializedField.email.rawValue]     as? String, contact.emailAddress);
+        
+        if let firstAddress = contactDict[PKContactSerializedField.address1.rawValue] as? String {
+            if let secondAddress = contactDict[PKContactSerializedField.address2.rawValue] as? String {
+                XCTAssertEqual(firstAddress + "\n" + secondAddress, contact.postalAddress?.street);
+            }
+            else
+            {
+                XCTAssertEqual(firstAddress, contact.postalAddress?.street);
+            }
+        }
+    }
+    
+    func assertPKContactSerializable(_ contact: PKContact) {
+        let contactDict = contact.asDictionary()
+        assertEqualContact(contactDict, contact: contact)
+        XCTAssertNotNil(contact.asJSONString())
+        XCTAssertNoThrow(try JSONSerialization.jsonObject(with: contact.asJSONString().data(using: .utf8)!))
     }
 }
