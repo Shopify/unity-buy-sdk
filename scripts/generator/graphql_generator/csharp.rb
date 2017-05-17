@@ -101,6 +101,7 @@ module GraphQLGenerator
         SDK/DefaultQueries
         SDK/DefaultQueriesProducts
         SDK/DefaultQueriesCollections
+        SDK/DefaultQueriesCheckout
         SDK/QueryLoader
         SDK/ConnectionLoader
         SDK/UnityLoader
