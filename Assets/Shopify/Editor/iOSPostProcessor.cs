@@ -5,7 +5,11 @@
 
     public class iOSPostProcessor {
         
-        const string iOSTestsPath = "Libraries/Plugins/iOS/Shopify/BuyTests/";
+        private const string iOSTestsPath         = "Libraries/Plugins/iOS/Shopify/BuyTests/";
+        private const string unityTestFilePath    = "Unity-iPhone Tests/Unity_iPhone_Tests.m";
+        private const string swiftVersionKey      = "SWIFT_VERSION";
+        private const string runpathSearchKey     = "LD_RUNPATH_SEARCH_PATHS";
+        private const string projectModuleNameKey = "PRODUCT_MODULE_NAME";
 
         private struct ProjectInfo {
 
@@ -51,12 +55,14 @@
         public static void Process(string buildPath) {
             string testPath   = Path.Combine(buildPath, iOSTestsPath);
             var testDirectory = new DirectoryInfo(testPath);
-            var info          = new ProjectInfo(buildPath);    
+            var info          = new ProjectInfo(buildPath);  
+            var project       = info.project;  
             info.SetFilesInDirectoryToTestTarget(testDirectory);
-            info.project.SetBuildProperty(info.GetAllTargetIds(), "SWIFT_VERSION",           "3.0");
-            info.project.SetBuildProperty(info.unityTargetID,     "LD_RUNPATH_SEARCH_PATHS", "@executable_path/Frameworks");
-            info.project.SetBuildProperty(info.testTargetID,      "LD_RUNPATH_SEARCH_PATHS", "@loader_path/Frameworks");
-            info.project.SetBuildProperty(info.testTargetID,      "PRODUCT_MODULE_NAME",     "$(PRODUCT_NAME:c99extidentifier)Tests");
+            project.RemoveFileFromBuild(info.testTargetID, project.FindFileGuidByProjectPath(unityTestFilePath));
+            project.SetBuildProperty(info.GetAllTargetIds(), swiftVersionKey,      "3.0");
+            project.SetBuildProperty(info.unityTargetID,     runpathSearchKey,     "@executable_path/Frameworks");
+            project.SetBuildProperty(info.testTargetID,      runpathSearchKey,     "@loader_path/Frameworks");
+            project.SetBuildProperty(info.testTargetID,      projectModuleNameKey, "$(PRODUCT_NAME:c99extidentifier)Tests");
             info.Save();
         }
     }
