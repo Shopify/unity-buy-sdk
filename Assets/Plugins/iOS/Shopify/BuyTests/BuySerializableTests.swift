@@ -39,7 +39,6 @@ class BuySerializableTests: XCTestCase {
     let edgeAddress1 = "420\\nWellington"
     let edgeAddress2 = "80\\nSpadina\\nAve"
     let city         = "Toronto"
-    let company      = "Shopify"
     let country      = "Canada"
     let province     = "ON"
     let zip          = "A1B 2C3"
@@ -108,20 +107,20 @@ class BuySerializableTests: XCTestCase {
     //  MARK: - PKContact -
     //
     func testPKContactSerializable() {
-        let billingContact = createContact()
-        assertPKContactSerializable(billingContact)
+        let contact = createContact()
+        assertPKContactSerializable(contact)
     }
     
     func testPKContactMultiAddressSerializable() {
-        let billingContact           = createContact()
-        billingContact.postalAddress = createMultiPostalAddress()
-        assertPKContactSerializable(billingContact)
+        let contact           = createContact()
+        contact.postalAddress = createMultiPostalAddress()
+        assertPKContactSerializable(contact)
     }
     
     func testPKContactMultiAddressSerializableEdgeCase() {
-        let billingContact           = createContact()
-        billingContact.postalAddress = createMultiPostalAddressEdgeCase()
-        assertPKContactSerializable(billingContact)
+        let contact           = createContact()
+        contact.postalAddress = createMultiPostalAddressEdgeCase()
+        assertPKContactSerializable(contact)
     }
     
     // ----------------------------------
