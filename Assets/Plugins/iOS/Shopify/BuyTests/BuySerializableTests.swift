@@ -124,10 +124,21 @@ class BuySerializableTests: XCTestCase {
     }
     
     // ----------------------------------
+    //  MARK: - BuySerializable -
+    //
+    func testSerializationCorrectness() {
+        let contact     = createContact()
+        let jsonData    = contact.asJSONString().data(using: .utf8)!
+        let jsonObject  = try! JSONSerialization.jsonObject(with: jsonData)
+        let contactDict = jsonObject as! [String: Any]
+        assertEqualContact(contactDict, contact: contact)
+    }
+    
+    // ----------------------------------
     //  MARK: - Conveniences -
     //
     func createPersonName() -> PersonNameComponents {
-        var personName = PersonNameComponents.init()
+        var personName        = PersonNameComponents.init()
         personName.givenName  = firstName
         personName.familyName = lastName
         return personName
