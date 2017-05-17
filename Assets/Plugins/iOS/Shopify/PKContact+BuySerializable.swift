@@ -29,6 +29,7 @@ import PassKit
 
 public enum PKContactSerializedField: String {
     case address1
+    case address2
     case city
     case company
     case country
@@ -43,20 +44,32 @@ public enum PKContactSerializedField: String {
 extension PKContact: BuySerializable {
     public func asDictionary() -> Dictionary<String, Any> {
         var dictionary = [String: Any]()
-        add(.firstName, withValue: self.name?.givenName,          to: &dictionary)
-        add(.lastName, withValue: self.name?.familyName,          to: &dictionary)
-        add(.address1, withValue: self.postalAddress?.street,     to: &dictionary)
-        add(.city,     withValue: self.postalAddress?.city,       to: &dictionary)
-        add(.country,  withValue: self.postalAddress?.country,    to: &dictionary)
-        add(.province, withValue: self.postalAddress?.state,      to: &dictionary)
-        add(.zip,      withValue: self.postalAddress?.postalCode, to: &dictionary)
-        add(.email,    withValue: self.emailAddress,              to: &dictionary)
+        add(.firstName, withValue: self.name?.givenName,           to: &dictionary)
+        add(.lastName,  withValue: self.name?.familyName,          to: &dictionary)
+        add(.city,      withValue: self.postalAddress?.city,       to: &dictionary)
+        add(.country,   withValue: self.postalAddress?.country,    to: &dictionary)
+        add(.province,  withValue: self.postalAddress?.state,      to: &dictionary)
+        add(.zip,       withValue: self.postalAddress?.postalCode, to: &dictionary)
+        add(.email,     withValue: self.emailAddress,              to: &dictionary)
+        
+        if let street = self.postalAddress?.street {
+            let addresses = addressComponents(inStreet: street)
+            
+            add(.address1, withValue: addresses[0], to: &dictionary)
+            
+            if addresses.count > 1 {
+                add(.address2, withValue: addresses[1], to: &dictionary)
+            }
+        }
+        
         return dictionary
     }
     
     private func add(_ key: PKContactSerializedField, withValue value: Any?, to dictionary: inout Dictionary<String, Any>) {
         insert(key, withValue: value, to: &dictionary)
     }
+    
+    private func addressComponents(inStreet street: String) -> [String] {
+        return street.components(separatedBy: "\n")
+    }
 }
-
-
