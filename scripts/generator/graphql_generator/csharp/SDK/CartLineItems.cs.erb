@@ -112,6 +112,9 @@ namespace <%= namespace %>.SDK {
     /// </summary>
     public class CartLineItems {
         private List<CartLineItem> LineItems = new List<CartLineItem>();
+        private List<CartLineItem> LineItemsNew = new List<CartLineItem>();
+        private List<CartLineItem> LineItemsModified = new List<CartLineItem>();
+        private List<CartLineItem> LineItemsDeleted = new List<CartLineItem>();
 
         /// <summary>
         /// Adds or updates an existing line item using a variant id.
@@ -127,28 +130,38 @@ namespace <%= namespace %>.SDK {
         /// cart.LineItems.AddOrUpdate(variantId, 3);
         /// \endcode
         public void AddOrUpdate(string variantId, long? quantity = null, Dictionary<string, string> customAttributes = null) {
-            CartLineItem input = Get(variantId);
+            CartLineItem modifiedLineItem = Get(variantId);
 
-            if (input != null) {
+            if (modifiedLineItem != null) {
+                bool didModify = false;
+
                 if (quantity != null) {
-                    input.Quantity = (long) quantity;
+                    modifiedLineItem.Quantity = (long) quantity;
+                    didModify = true;
                 }
 
                 if (customAttributes != null) {
-                    input.CustomAttributes = customAttributes;
+                    modifiedLineItem.CustomAttributes = customAttributes;
+                    didModify = false;
+                }
+
+                // if it's a new line item we don't want to add to the modified list but keep it in new
+                if (didModify && !LineItemsNew.Contains(modifiedLineItem)) {
+                    LineItemsModified.Add(modifiedLineItem);
                 }
             } else {
                 if (quantity == null) {
                     quantity = 1;
                 }
 
-                LineItems.Add(
-                    new CartLineItem(
-                        variantId: variantId,
-                        quantity: (long) quantity,
-                        customAttributes: customAttributes
-                    )
+                CartLineItem newLineItem = new CartLineItem(
+                    variantId: variantId,
+                    quantity: (long) quantity,
+                    customAttributes: customAttributes
                 );
+
+                LineItemsNew.Add(newLineItem);
+                LineItems.Add(newLineItem);
             }
         }
 
@@ -211,6 +224,30 @@ namespace <%= namespace %>.SDK {
         /// \endcode
         public List<CartLineItem> All() {
             return LineItems;
+        }
+
+        public List<CartLineItem> New() {
+            return LineItemsNew;
+        }
+
+        public void ClearNew() {
+            LineItemsNew.Clear();
+        }
+
+        public List<CartLineItem> Modified() {
+            return LineItemsModified;
+        }
+
+        public void ClearModified() {
+            LineItemsModified.Clear();
+        }
+
+        public List<CartLineItem> Deleted() {
+            return LineItemsDeleted;
+        }
+
+        public void ClearDeleted() {
+            LineItemsDeleted.Clear();
         }
 
         /// <summary>
@@ -282,12 +319,19 @@ namespace <%= namespace %>.SDK {
         /// Debug.Log("Did delete? " + cart.LineItems.Delete(variantId));
         /// \endcode
         public bool Delete(string variantId) {
-            int idxToDelete = LineItems.FindIndex(lineItem => lineItem.VariantId == variantId);
+            CartLineItem lineItemToDelete = LineItems.Find(lineItem => lineItem.VariantId == variantId);
 
-            if (idxToDelete == -1) {
+            if (lineItemToDelete == null) {
                 return false;
             } else {
-                LineItems.RemoveAt(idxToDelete);
+                bool wasInNew = LineItemsNew.Remove(lineItemToDelete);
+                LineItemsModified.Remove(lineItemToDelete);
+
+                if (!wasInNew) {
+                    LineItemsDeleted.Add(lineItemToDelete);
+                }
+
+                LineItems.Remove(lineItemToDelete);
 
                 return true;
             }

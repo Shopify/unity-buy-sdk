@@ -272,5 +272,81 @@ namespace Shopify.Tests
 
             Assert.AreEqual(null, cart.LineItems.Get(product, selectedOptions1), "Get retuned null after attempting access deleted line item");
         }
+
+        [Test]
+        public void TestNewLineItems() {
+            ShopifyBuy.Init(new MockLoader());
+
+            Cart cart = ShopifyBuy.Client().Cart();
+
+            cart.LineItems.AddOrUpdate("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTE1NQ==", 33);
+            cart.LineItems.AddOrUpdate("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTM0Nw==", 2);
+
+            Assert.AreEqual(2, cart.LineItems.New().Count, "Added 2 new line items");
+
+            cart.LineItems.AddOrUpdate("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTE1NQ==", 3);
+
+            Assert.AreEqual(0, cart.LineItems.Modified().Count, "0 modified until new are cleared");
+            Assert.AreEqual(2, cart.LineItems.New().Count, "Still have 2 new after update");
+
+            cart.LineItems.ClearNew();
+            Assert.AreEqual(0, cart.LineItems.New().Count, "After clear new is 0");
+            Assert.AreEqual(2, cart.LineItems.All().Count, "Has 2 line item at end");
+        }
+
+        [Test]
+        public void TestModifyingLineItems() {
+            ShopifyBuy.Init(new MockLoader());
+
+            Cart cart = ShopifyBuy.Client().Cart();
+
+            cart.LineItems.AddOrUpdate("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTE1NQ==", 33);
+            cart.LineItems.AddOrUpdate("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTM0Nw==", 2);
+
+            cart.LineItems.ClearNew();
+
+            cart.LineItems.AddOrUpdate("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTE1NQ==", 3);
+
+            Assert.AreEqual(1, cart.LineItems.Modified().Count, "Has 1 modified line item");  
+
+            cart.LineItems.ClearModified();
+
+            Assert.AreEqual(0, cart.LineItems.Modified().Count, "After clear modified is 0");
+            Assert.AreEqual(2, cart.LineItems.All().Count, "Has 2 line item at end");
+        } 
+
+        [Test]
+        public void TestDeletingLineItems() {
+            ShopifyBuy.Init(new MockLoader());
+
+            Cart cart = ShopifyBuy.Client().Cart();
+
+            string variantId1 = "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTE1NQ==";
+            string variantId2 = "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTM0Nw==";
+            string variantId3 = "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTMTTT==";
+
+            cart.LineItems.AddOrUpdate(variantId1, 33);
+            cart.LineItems.AddOrUpdate(variantId2, 2);
+        
+            cart.LineItems.ClearNew();
+
+            cart.LineItems.AddOrUpdate(variantId2, 333);
+            cart.LineItems.AddOrUpdate(variantId3, 5);
+
+            Assert.AreEqual(1, cart.LineItems.New().Count, "Has one new line item");
+            Assert.AreEqual(1, cart.LineItems.Modified().Count, "Has one modified line item");
+
+            cart.LineItems.Delete(variantId2);
+            cart.LineItems.Delete(variantId3);
+
+            Assert.AreEqual(0, cart.LineItems.New().Count, "No new line items");
+            Assert.AreEqual(0, cart.LineItems.Modified().Count, "No modified line items");
+            Assert.AreEqual(1, cart.LineItems.Deleted().Count, "Has one deleted line item");
+
+            cart.LineItems.ClearDeleted();
+
+            Assert.AreEqual(0, cart.LineItems.Deleted().Count, "Has 0 deleted line item after clear");
+            Assert.AreEqual(1, cart.LineItems.All().Count, "Has 1 line item at end");
+        } 
     }
 }
