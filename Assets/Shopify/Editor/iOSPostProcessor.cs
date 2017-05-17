@@ -8,6 +8,7 @@
         const string iOSTestsPath = "Libraries/Plugins/iOS/Shopify/BuyTests/";
 
         private struct ProjectInfo {
+
             public PBXProject project;
             public string buildPath;
             public string testTargetID;
@@ -38,6 +39,10 @@
                 }
             }
 
+            public string[] GetAllTargetIds() {
+                return new string[] {testTargetID, unityTargetID};
+            }
+
             public void Save() {
                 project.WriteToFile(PBXProject.GetPBXProjectPath(buildPath));
             }
@@ -46,9 +51,13 @@
         public static void Process(string buildPath) {
             string testPath   = Path.Combine(buildPath, iOSTestsPath);
             var testDirectory = new DirectoryInfo(testPath);
-            var projectInfo   = new ProjectInfo(buildPath);    
-            projectInfo.SetFilesInDirectoryToTestTarget(testDirectory);
-            projectInfo.Save();
+            var info          = new ProjectInfo(buildPath);    
+            info.SetFilesInDirectoryToTestTarget(testDirectory);
+            info.project.SetBuildProperty(info.GetAllTargetIds(), "SWIFT_VERSION",           "3.0");
+            info.project.SetBuildProperty(info.unityTargetID,     "LD_RUNPATH_SEARCH_PATHS", "@executable_path/Frameworks");
+            info.project.SetBuildProperty(info.testTargetID,      "LD_RUNPATH_SEARCH_PATHS", "@loader_path/Frameworks");
+            info.project.SetBuildProperty(info.testTargetID,      "PRODUCT_MODULE_NAME",     "$(PRODUCT_NAME:c99extidentifier)Tests");
+            info.Save();
         }
     }
 }
