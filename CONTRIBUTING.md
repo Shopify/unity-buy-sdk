@@ -27,6 +27,8 @@ Add some tests and make your change. Re-run the tests with:
 $ scripts/build.sh
 $ scripts/test_unity.sh
 ```
+## Creating your Pull Requests
+We use the [beta](https://github.com/shopify/unity-buy-sdk/tree/beta) branch to hold new features and bug fixes before they are seen on [master](https://github.com/Shopify/unity-buy-sdk/tree/master). Please make your pull request to the [beta](https://github.com/shopify/unity-buy-sdk/tree/beta) branch.
 
 ## Documentation
 If your change affects how people use the project (i.e. adding or changing arguments to a function, adding a new function, 
