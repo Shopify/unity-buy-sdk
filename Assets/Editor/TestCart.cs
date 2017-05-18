@@ -313,7 +313,49 @@ namespace Shopify.Tests
 
             Assert.AreEqual(0, cart.LineItems.Modified().Count, "After clear modified is 0");
             Assert.AreEqual(2, cart.LineItems.All().Count, "Has 2 line item at end");
-        } 
+        }
+
+        [Test]
+        public void TestModifyingLineItemsDirectly() {
+            ShopifyBuy.Init(new MockLoader());
+
+            Cart cart = ShopifyBuy.Client().Cart();
+
+            cart.LineItems.AddOrUpdate("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTE1NQ==", 33);
+            cart.LineItems.AddOrUpdate("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTM0Nw==", 2);
+
+            var lineItem1 = cart.LineItems.Get("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTE1NQ==");
+            var lineItem2 = cart.LineItems.Get("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTM0Nw==");
+
+            Assert.AreEqual(2, cart.LineItems.New().Count, "Has 2 new line items");
+
+            cart.LineItems.ClearNew();
+
+            Assert.AreEqual(0, cart.LineItems.New().Count, "Has 0 new line items");
+
+            Dictionary<string, string> newAttributes = new Dictionary<string, string>() {
+                {"zoo", "lion"}   
+            };
+
+            lineItem1.Quantity = 333333333333;
+
+            Assert.AreEqual(1, cart.LineItems.Modified().Count, "Has 1 modified line item");
+            Assert.AreEqual(lineItem1, cart.LineItems.Modified()[0], "lineItem1 is in modified list");
+
+            lineItem2.CustomAttributes = newAttributes;
+            
+            Assert.AreEqual(2, cart.LineItems.Modified().Count, "Has 2 modified line item");
+            Assert.AreEqual(lineItem2, cart.LineItems.Modified()[1], "lineItem2 is in modified list");
+
+            cart.LineItems.ClearModified();
+
+            Assert.AreEqual(0, cart.LineItems.Modified().Count, "Has 0 modified line items");
+
+            lineItem2.CustomAttributes["zoo"] = "zebra";
+
+            Assert.AreEqual(1, cart.LineItems.Modified().Count, "Has 1 modified line item after direct custom attribute change");
+            Assert.AreEqual(lineItem2, cart.LineItems.Modified()[0], "lineItem1 is in modified list after direct custom attribute change");
+        }
 
         [Test]
         public void TestDeletingLineItems() {

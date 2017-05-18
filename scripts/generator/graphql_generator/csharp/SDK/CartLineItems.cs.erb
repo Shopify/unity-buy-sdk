@@ -30,8 +30,9 @@ namespace <%= namespace %>.SDK {
             }
 
             set {
-                _IsSaved = false;
                 _Quantity = value;
+
+                OnAttributesChange();
             }
         }
 
@@ -41,11 +42,11 @@ namespace <%= namespace %>.SDK {
             }
 
             set {
-                _IsSaved = false;
-
                 if (value != null) {
-                    _CustomAttributes = new ObservableDictionary<string, string>(value, OnCustomAttributesChange);
+                    _CustomAttributes = new ObservableDictionary<string, string>(value, OnAttributesChange);
                 }
+
+                OnAttributesChange();
             }
         }
 
@@ -54,13 +55,15 @@ namespace <%= namespace %>.SDK {
         private string _VariantId;
         private long _Quantity;
         private ObservableDictionary<string, string> _CustomAttributes;
+        private Action<CartLineItem> OnChange;
         
-        public CartLineItem(string variantId, long quantity = 1, IDictionary<string, string> customAttributes = null) {
+        public CartLineItem(string variantId, Action<CartLineItem> onChange, long quantity = 1, IDictionary<string, string> customAttributes = null) {
             _VariantId = variantId;
             _Quantity = quantity;
+            OnChange = onChange;
 
             if (customAttributes != null) {
-                CustomAttributes = new ObservableDictionary<string, string>(customAttributes, OnCustomAttributesChange);
+                CustomAttributes = new ObservableDictionary<string, string>(customAttributes, OnAttributesChange);
             }
         }
 
@@ -102,8 +105,10 @@ namespace <%= namespace %>.SDK {
             return attributes;
         }
 
-        private void OnCustomAttributesChange() {
+        private void OnAttributesChange() {
             _IsSaved = false;
+
+            OnChange(this);
         }
     }
 
@@ -133,21 +138,12 @@ namespace <%= namespace %>.SDK {
             CartLineItem modifiedLineItem = Get(variantId);
 
             if (modifiedLineItem != null) {
-                bool didModify = false;
-
                 if (quantity != null) {
                     modifiedLineItem.Quantity = (long) quantity;
-                    didModify = true;
                 }
 
                 if (customAttributes != null) {
                     modifiedLineItem.CustomAttributes = customAttributes;
-                    didModify = true;
-                }
-
-                // if it's a new line item we don't want to add to the modified list but keep it in new
-                if (didModify && !LineItemsNew.Contains(modifiedLineItem)) {
-                    LineItemsModified.Add(modifiedLineItem);
                 }
             } else {
                 if (quantity == null) {
@@ -156,6 +152,7 @@ namespace <%= namespace %>.SDK {
 
                 CartLineItem newLineItem = new CartLineItem(
                     variantId: variantId,
+                    onChange: OnCartLineItemChange,
                     quantity: (long) quantity,
                     customAttributes: customAttributes
                 );
@@ -377,6 +374,12 @@ namespace <%= namespace %>.SDK {
             }
 
             return Delete(variantId);
+        }
+
+        private void OnCartLineItemChange(CartLineItem modifiedLineItem) {
+            if (!LineItemsNew.Contains(modifiedLineItem) && !LineItemsModified.Contains(modifiedLineItem)) {
+                LineItemsModified.Add(modifiedLineItem);
+            }
         }
 
         private string VariantIdFromSelectedOptions(Product product, Dictionary<string, string> selectedOptions) {
