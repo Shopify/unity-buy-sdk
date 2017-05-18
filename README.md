@@ -6,8 +6,8 @@ The Unity Buy SDK allows Unity developers to query and sell products from Shopif
 
 - [Features](#features)
 - [Documentation](#documentation)
-- [Examples](#examples)
 - [Using the Unity Buy SDK in Unity](#using-the-unity-buy-sdk-in-unity)
+- [Examples](#examples)
 - [Getting set up for contributing](#getting-set-up-for-contributing)
 - [Build the GraphQL client](#build-the-unity-buy-sdk)
 - [Testing](#testing)
@@ -29,6 +29,7 @@ Coming Soon:
 ## Documentation
 
 - [Information about the Unity SDK](https://help.shopify.com/api/sdks/custom-storefront/unity-buy-sdk)
+- [How to Contribute](https://github.com/Shopify/unity-buy-sdk/blob/master/CONTRIBUTING.md)
 - [How to obtain a storefront access token](https://help.shopify.com/api/storefront-api/getting-started#obtaining-a-storefront-access-token)
 - [SDK API Documentation](https://shopify.github.io/unity-buy-sdk/)
 - [Example code snippets](EXAMPLES.md)
@@ -43,12 +44,17 @@ By following the steps below you'll install the Unity Buy SDK into your Unity pr
 
 Alternatively, you can clone this repo and build the Unity Buy SDK by following the documentation below. After building the SDK, you can copy `Assets/Shopify/` to your project. `Assets/Shopify/` contains all the source files that you need to run the Unity Buy SDK.
 
+## Examples
+Checkout our [Example Guide](https://github.com/Shopify/unity-buy-sdk/blob/master/EXAMPLES.md).
+
 ## Getting set up for contributing
 
 Before contributing to the Unity Buy SDK, make sure that you have the required dependencies installed on your computer. Run the following command to check that you have all required applications:
 ```bash
 $ scripts/check_setup.sh
 ```
+
+Then read [How to Contribute](https://github.com/Shopify/unity-buy-sdk/blob/master/CONTRIBUTING.md) to get started.
 
 ## Build the Unity Buy SDK
 
