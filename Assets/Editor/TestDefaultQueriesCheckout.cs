@@ -43,7 +43,7 @@ namespace Shopify.Tests
             DefaultQueries.checkout.LineItemsAdd(query, checkoutId, lineItems);
 
             Assert.AreEqual(
-                "mutation{checkoutLineItemsAdd (checkoutId:\"an-id\",lineItems:[]){checkout {id webUrl ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}userErrors {field message }}}", 
+                "mutation{checkoutLineItemsAdd (lineItems:[],checkoutId:\"an-id\"){checkout {id webUrl ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}userErrors {field message }}}", 
                 query.ToString()
             );
         }
