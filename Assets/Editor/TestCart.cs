@@ -369,6 +369,8 @@ namespace Shopify.Tests
 
             cart.LineItems.AddOrUpdate(variantId1, 33);
             cart.LineItems.AddOrUpdate(variantId2, 2);
+
+            var lineItem1 = cart.LineItems.Get(variantId1);
         
             cart.LineItems.ClearNew();
 
@@ -389,6 +391,7 @@ namespace Shopify.Tests
 
             Assert.AreEqual(0, cart.LineItems.Deleted().Count, "Has 0 deleted line item after clear");
             Assert.AreEqual(1, cart.LineItems.All().Count, "Has 1 line item at end");
+            Assert.AreEqual(lineItem1, cart.LineItems.All()[0], "lineItem1 is the last remaining line item");
         } 
     }
 }
