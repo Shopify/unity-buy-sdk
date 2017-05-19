@@ -32,15 +32,17 @@ public enum PKPaymentTokenSerializedField: String {
     case transactionIdentifier
 }
 
-extension PKPaymentToken: BuySerializable {
-    public func asDictionary() -> Dictionary<String, Any> {
-        var dictionary = [String: Any]()
-        add(.paymentData,           withValue: try! JSONSerialization.jsonObject(with: self.paymentData), to: &dictionary)
-        add(.transactionIdentifier, withValue: self.transactionIdentifier,                                to: &dictionary)
-        return dictionary
+extension PKPaymentToken: Serializable {
+    
+    func serializedJSON() -> JSON {
+        var json = [String: Any]()
+        add(.paymentData,           withValue: try! JSONSerialization.jsonObject(with: self.paymentData), to: &json)
+        add(.transactionIdentifier, withValue: self.transactionIdentifier,                                to: &json)
+        return json
     }
     
-    private func add(_ key: PKPaymentTokenSerializedField, withValue value: Any?, to dictionary: inout Dictionary<String, Any>) {
-        insert(key, withValue: value, to: &dictionary)
+    private func add(_ key: PKPaymentTokenSerializedField, withValue value: Any?, to json: inout JSON) {
+        json.insertIfNotNull(value, forKey: key)
     }
 }
+
