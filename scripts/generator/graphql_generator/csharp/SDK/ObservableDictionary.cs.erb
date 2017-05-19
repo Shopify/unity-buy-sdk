@@ -5,8 +5,8 @@ namespace <%= namespace %>.SDK {
 
     public delegate void DictionaryChangeHandler();
 
-    public class ObservableDictionary<TKey, TValue> : IDictionary<TKey, TValue> {
-        private IDictionary<TKey, TValue> Data;
+    public class ObservableDictionary<TKey, TValue> : IDictionary<TKey, TValue> {
+        private IDictionary<TKey, TValue> Data;
         private DictionaryChangeHandler OnDictionaryChange;
 
         public ObservableDictionary(DictionaryChangeHandler onDictionaryChange) {
@@ -14,7 +14,7 @@ namespace <%= namespace %>.SDK {
             OnDictionaryChange = onDictionaryChange;
         }
 
-        public ObservableDictionary(IDictionary<TKey, TValue> data, DictionaryChangeHandler onDictionaryChange) {
+        public ObservableDictionary(IDictionary<TKey, TValue> data, DictionaryChangeHandler onDictionaryChange) {
             Data = data;
             OnDictionaryChange = onDictionaryChange;
         }

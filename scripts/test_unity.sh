@@ -14,16 +14,17 @@ convertNUnitToJUnit() {
     fi
 }
 
+UNITY_VERSION=$(ls $UNITY_PACKAGE_MANAGER_PATH)
+echo "Testing with Unity Version: $UNITY_VERSION"
+
 $UNITY_PATH \
     -batchmode \
     -nographics \
     -silent-crashes \
     -logFile $UNITY_LOG_PATH \
     -projectPath $PROJECT_ROOT \
-    -editorTestsResultFile EditorTestResults.xml \
-    -runEditorTests \
-    -buildTarget osx \
-    -quit
+    -editorTestsResultFile ./EditorTestResults.xml \
+    -runEditorTests
 
 if [ $? = 0 ] ; then
     echo "Tests passed"
