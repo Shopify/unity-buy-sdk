@@ -14,6 +14,9 @@ convertNUnitToJUnit() {
     fi
 }
 
+UNITY_VERSION=$(ls $UNITY_PACKAGE_MANAGER_PATH)
+echo "Testing with Unity Version: $UNITY_VERSION"
+
 $UNITY_PATH \
     -batchmode \
     -nographics \
