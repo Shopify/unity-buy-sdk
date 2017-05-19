@@ -109,7 +109,27 @@ namespace <%= namespace %> {
         }
 
         private void CheckoutUpdate(Action<List<string>, string> callback) {
+            MutationQuery query = new MutationQuery();
 
+            if (LineItems.New().Count > 0) {
+                DefaultQueries.checkout.LineItemsAdd(query, CheckoutId, CartLineItems.ConvertToCheckoutLineItemInput(LineItems.New()));
+            }
+
+            if (LineItems.Modified().Count > 0) {
+                DefaultQueries.checkout.LineItemsUpdate(query, CheckoutId, CartLineItems.ConvertToCheckoutLineItemUpdateInput(LineItems.New()));
+            }
+
+            if (LineItems.Deleted().Count > 0) {
+                DefaultQueries.checkout.LineItemsRemove(query, CheckoutId, CartLineItems.ConvertToCheckoutIds(LineItems.New()));
+            }
+
+            Client.Mutation(query, (Mutation response, List<string> errors, string httpError) => {
+                if (errors != null || httpError != null) {
+                    callback(errors, httpError);
+                } else {
+                    CheckoutPoll(callback);
+                }
+            });
         }
 
         private void CheckoutPoll(Action<List<string>, string> callback) {
