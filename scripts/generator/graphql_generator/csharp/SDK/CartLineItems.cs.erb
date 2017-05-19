@@ -161,11 +161,6 @@ namespace <%= namespace %>.SDK {
                 if (customAttributes != null) {
                     modifiedLineItem.CustomAttributes = customAttributes;
                 }
-
-                // if it's a new line item we don't want to add to the modified list but keep it in new
-                if (didModify && !LineItemsNew.Contains(modifiedLineItem)) {
-                    LineItemsModified.Add(modifiedLineItem);
-                }
             } else {
                 if (quantity == null) {
                     quantity = 1;
