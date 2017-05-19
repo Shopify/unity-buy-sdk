@@ -26,9 +26,9 @@
 
 import XCTest
 import PassKit
-import ProductName
+@testable import ProductName
 
-class BuySerializableTests: XCTestCase {
+class PassKitSerializableTests: XCTestCase {
     
     let emailAddress = "test_email@shopify.com"
     let firstName    = "first name"
@@ -61,7 +61,7 @@ class BuySerializableTests: XCTestCase {
                                              shippingMethod: shippingMethod)
         
         // Serialize and record data from result
-        let paymentDict         = payment.asDictionary()
+        let paymentDict         = payment.serializedJSON()
         let billingContactDict  = paymentDict[PKPaymentSerializedField.billingContact.rawValue]     as! [String: Any]
         let shippingContactDict = paymentDict[PKPaymentSerializedField.shippingContact.rawValue]    as! [String: Any]
         let tokenDict           = paymentDict[PKPaymentSerializedField.tokenData.rawValue]          as! [String: Any]
@@ -77,9 +77,6 @@ class BuySerializableTests: XCTestCase {
         XCTAssertEqual(shippingIdentifier,         shippingMethod.identifier)
         XCTAssertEqual(tokenData,                  token.paymentData)
         XCTAssertEqual(tokenTransactionIdentifier, token.transactionIdentifier)
-        
-        XCTAssertNotNil(payment.asJSONString())
-        XCTAssertNoThrow(try JSONSerialization.jsonObject(with: payment.asJSONString().data(using: .utf8)!))
     }
     
     // ----------------------------------
@@ -91,16 +88,13 @@ class BuySerializableTests: XCTestCase {
         let token         = MockPaymentToken.init(paymentMethod: paymentMethod)
         
         // Serialize and record data from result
-        let tokenDict     = token.asDictionary()
+        let tokenDict     = token.serializedJSON()
         let tokenDataDict = tokenDict[PKPaymentTokenSerializedField.paymentData.rawValue] as Any
         let tokenData     = try! JSONSerialization.data(withJSONObject: tokenDataDict)
         let tokenTransactionIdentifier = tokenDict[PKPaymentTokenSerializedField.transactionIdentifier.rawValue] as! String
         
         XCTAssertEqual(tokenData,                  token.paymentData)
         XCTAssertEqual(tokenTransactionIdentifier, token.transactionIdentifier)
-        
-        XCTAssertNotNil(token.asJSONString())
-        XCTAssertNoThrow(try JSONSerialization.jsonObject(with: token.asJSONString().data(using: .utf8)!))
     }
     
     // ----------------------------------
@@ -128,7 +122,7 @@ class BuySerializableTests: XCTestCase {
     //
     func testSerializationCorrectness() {
         let contact     = createContact()
-        let jsonData    = contact.asJSONString().data(using: .utf8)!
+        let jsonData    = try! contact.serializedString().data(using: .utf8)!
         let jsonObject  = try! JSONSerialization.jsonObject(with: jsonData)
         let contactDict = jsonObject as! [String: Any]
         assertEqualContact(contactDict, contact: contact)
@@ -199,9 +193,7 @@ class BuySerializableTests: XCTestCase {
     }
     
     func assertPKContactSerializable(_ contact: PKContact) {
-        let contactDict = contact.asDictionary()
+        let contactDict = contact.serializedJSON()
         assertEqualContact(contactDict, contact: contact)
-        XCTAssertNotNil(contact.asJSONString())
-        XCTAssertNoThrow(try JSONSerialization.jsonObject(with: contact.asJSONString().data(using: .utf8)!))
     }
 }
