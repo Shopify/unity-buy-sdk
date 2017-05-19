@@ -41,35 +41,37 @@ public enum PKContactSerializedField: String {
     case email
 }
 
-extension PKContact: BuySerializable {
-    public func asDictionary() -> Dictionary<String, Any> {
-        var dictionary = [String: Any]()
-        add(.firstName, withValue: self.name?.givenName,           to: &dictionary)
-        add(.lastName,  withValue: self.name?.familyName,          to: &dictionary)
-        add(.city,      withValue: self.postalAddress?.city,       to: &dictionary)
-        add(.country,   withValue: self.postalAddress?.country,    to: &dictionary)
-        add(.province,  withValue: self.postalAddress?.state,      to: &dictionary)
-        add(.zip,       withValue: self.postalAddress?.postalCode, to: &dictionary)
-        add(.email,     withValue: self.emailAddress,              to: &dictionary)
+extension PKContact: Serializable {
+    func serializedJSON() -> JSON {
+        var json = [String: Any]()
+        add(.firstName, withValue: self.name?.givenName,           to: &json)
+        add(.lastName,  withValue: self.name?.familyName,          to: &json)
+        add(.city,      withValue: self.postalAddress?.city,       to: &json)
+        add(.country,   withValue: self.postalAddress?.country,    to: &json)
+        add(.province,  withValue: self.postalAddress?.state,      to: &json)
+        add(.zip,       withValue: self.postalAddress?.postalCode, to: &json)
+        add(.email,     withValue: self.emailAddress,              to: &json)
         
         if let street = self.postalAddress?.street {
             let addresses = addressComponents(inStreet: street)
             
-            add(.address1, withValue: addresses[0], to: &dictionary)
+            add(.address1, withValue: addresses[0], to: &json)
             
             if addresses.count > 1 {
-                add(.address2, withValue: addresses[1], to: &dictionary)
+                add(.address2, withValue: addresses[1], to: &json)
             }
         }
         
-        return dictionary
+        return json
     }
     
-    private func add(_ key: PKContactSerializedField, withValue value: Any?, to dictionary: inout Dictionary<String, Any>) {
-        insert(key, withValue: value, to: &dictionary)
+    private func add(_ key: PKContactSerializedField, withValue value: Any?, to json: inout JSON) {
+        json.insertIfNotNull(value, forKey: key)
     }
     
     private func addressComponents(inStreet street: String) -> [String] {
         return street.components(separatedBy: "\n")
     }
 }
+
+

@@ -1,9 +1,9 @@
 //
-//  BuySerializable.swift
-//  UnityBuySDK
+//  Dictionary+RawRepresentable.swift
+//  Unity-iPhone
 //
 //  Created by Shopify.
-//  Copyright © 2017 Shopify Inc. All rights reserved.
+//
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -26,22 +26,10 @@
 
 import Foundation
 
-public protocol BuySerializable {
-    func asJSONString() -> String
-    func asDictionary() -> Dictionary<String, Any>
-}
-
-extension BuySerializable {
-    public func asJSONString() -> String {
-        let dictionary = asDictionary()
-        let jsonData = try! JSONSerialization.data(withJSONObject: dictionary, options: .prettyPrinted)
-        return String(data: jsonData, encoding: .utf8)!
-    }
-}
-
-public func insert<T: RawRepresentable>(_ key: T, withValue value: Any?, to dictionary: inout Dictionary<String, Any>)
-    where T.RawValue == String {
-    if let value = value {
-        dictionary[key.rawValue] = value
+extension Dictionary  {
+    public mutating func insertIfNotNull<T: RawRepresentable>(_ value: Dictionary.Value?, forKey key: T) where T.RawValue == Dictionary.Key {
+        if let value = value {
+            self.updateValue(value, forKey: key.rawValue)
+        }
     }
 }
