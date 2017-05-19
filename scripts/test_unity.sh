@@ -20,10 +20,8 @@ $UNITY_PATH \
     -silent-crashes \
     -logFile $UNITY_LOG_PATH \
     -projectPath $PROJECT_ROOT \
-    -editorTestsResultFile EditorTestResults.xml \
-    -runEditorTests \
-    -buildTarget osx \
-    -quit
+    -editorTestsResultFile ./EditorTestResults.xml \
+    -runEditorTests
 
 if [ $? = 0 ] ; then
     echo "Tests passed"
