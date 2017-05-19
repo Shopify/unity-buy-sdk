@@ -132,6 +132,14 @@ namespace <%= namespace %>.SDK {
             return lineItems.ConvertAll(converter);
         }
 
+        public static List<string> ConvertToCheckoutIds(List<CartLineItem> lineItems) {
+            var converter = new Converter<CartLineItem, string>((lineItem) => {
+                return lineItem.ID;
+            });
+
+            return lineItems.ConvertAll(converter);
+        }
+
         private List<CartLineItem> LineItems = new List<CartLineItem>();
         private List<CartLineItem> LineItemsNew = new List<CartLineItem>();
         private List<CartLineItem> LineItemsModified = new List<CartLineItem>();
