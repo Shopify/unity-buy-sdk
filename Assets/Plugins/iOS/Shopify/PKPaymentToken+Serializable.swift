@@ -1,5 +1,5 @@
 //
-//  PKPaymentToken+BuySerializable.swift
+//  PKPaymentToken+Serializable.swift
 //  UnityBuySDK
 //
 //  Created by Shopify.
