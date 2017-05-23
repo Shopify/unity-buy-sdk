@@ -211,6 +211,7 @@ class SerializableTests: XCTestCase {
         }
         else {
             XCTAssertEqual(firstAddress, contact.postalAddress?.street);
+            XCTAssertNil(secondAddress)
         }
     }
     
