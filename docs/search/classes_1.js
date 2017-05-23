@@ -1,7 +1,8 @@
 var searchData=
 [
   ['cart',['Cart',['../class_shopify_1_1_unity_1_1_cart.html',1,'Shopify::Unity']]],
-  ['cartlineitems',['CartLineItems',['../class_shopify_1_1_unity_1_1_cart_line_items.html',1,'Shopify::Unity']]],
+  ['cartlineitem',['CartLineItem',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html',1,'Shopify::Unity::SDK']]],
+  ['cartlineitems',['CartLineItems',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_items.html',1,'Shopify::Unity::SDK']]],
   ['castutils',['CastUtils',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_cast_utils.html',1,'Shopify::Unity::SDK']]],
   ['checkout',['Checkout',['../class_shopify_1_1_unity_1_1_checkout.html',1,'Shopify::Unity']]],
   ['checkoutattributesupdateinput',['CheckoutAttributesUpdateInput',['../class_shopify_1_1_unity_1_1_checkout_attributes_update_input.html',1,'Shopify::Unity']]],
@@ -51,7 +52,6 @@ var searchData=
   ['collectionedge',['CollectionEdge',['../class_shopify_1_1_unity_1_1_collection_edge.html',1,'Shopify::Unity']]],
   ['collectionedgequery',['CollectionEdgeQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_collection_edge_query.html',1,'Shopify::Unity::GraphQL']]],
   ['collectionquery',['CollectionQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_collection_query.html',1,'Shopify::Unity::GraphQL']]],
-  ['collectionsqueries',['CollectionsQueries',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_collections_queries.html',1,'Shopify::Unity::SDK']]],
   ['connectionloader',['ConnectionLoader',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_connection_loader.html',1,'Shopify::Unity::SDK']]],
   ['connectionqueryinfo',['ConnectionQueryInfo',['../struct_shopify_1_1_unity_1_1_s_d_k_1_1_connection_query_info.html',1,'Shopify::Unity::SDK']]],
   ['creditcard',['CreditCard',['../class_shopify_1_1_unity_1_1_credit_card.html',1,'Shopify::Unity']]],

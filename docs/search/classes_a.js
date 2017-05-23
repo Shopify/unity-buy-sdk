@@ -1,6 +1,7 @@
 var searchData=
 [
   ['selectedoption',['SelectedOption',['../class_shopify_1_1_unity_1_1_selected_option.html',1,'Shopify::Unity']]],
+  ['selectedoptioninput',['SelectedOptionInput',['../class_shopify_1_1_unity_1_1_selected_option_input.html',1,'Shopify::Unity']]],
   ['selectedoptionquery',['SelectedOptionQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_selected_option_query.html',1,'Shopify::Unity::GraphQL']]],
   ['shippingrate',['ShippingRate',['../class_shopify_1_1_unity_1_1_shipping_rate.html',1,'Shopify::Unity']]],
   ['shippingratequery',['ShippingRateQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_shipping_rate_query.html',1,'Shopify::Unity::GraphQL']]],

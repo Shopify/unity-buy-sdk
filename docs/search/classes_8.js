@@ -12,7 +12,6 @@ var searchData=
   ['productoption',['ProductOption',['../class_shopify_1_1_unity_1_1_product_option.html',1,'Shopify::Unity']]],
   ['productoptionquery',['ProductOptionQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_product_option_query.html',1,'Shopify::Unity::GraphQL']]],
   ['productquery',['ProductQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_product_query.html',1,'Shopify::Unity::GraphQL']]],
-  ['productsqueries',['ProductsQueries',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_products_queries.html',1,'Shopify::Unity::SDK']]],
   ['productvariant',['ProductVariant',['../class_shopify_1_1_unity_1_1_product_variant.html',1,'Shopify::Unity']]],
   ['productvariantconnection',['ProductVariantConnection',['../class_shopify_1_1_unity_1_1_product_variant_connection.html',1,'Shopify::Unity']]],
   ['productvariantconnectionquery',['ProductVariantConnectionQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_product_variant_connection_query.html',1,'Shopify::Unity::GraphQL']]],

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['shippingaddress',['shippingAddress',['../class_shopify_1_1_unity_1_1_checkout_create_input.html#a70874b8c36003381f91c314636ad1593',1,'Shopify::Unity::CheckoutCreateInput']]]
+  ['resettoken',['resetToken',['../class_shopify_1_1_unity_1_1_customer_reset_input.html#aaa3aab55de11c1f9ad76fa1592a6f6b5',1,'Shopify::Unity::CustomerResetInput']]]
 ];

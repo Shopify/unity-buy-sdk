@@ -117,6 +117,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a654150ef0eac012ccef9fc8e36af7b7c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_product_query.html">ProductQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_product_query.html#a654150ef0eac012ccef9fc8e36af7b7c">updatedAt</a> ()</td></tr>
 <tr class="memdesc:a654150ef0eac012ccef9fc8e36af7b7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The date and time when the product was last modified.  <a href="#a654150ef0eac012ccef9fc8e36af7b7c">More...</a><br /></td></tr>
 <tr class="separator:a654150ef0eac012ccef9fc8e36af7b7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab582e0c959db170f9e02aeb5f9f4adf0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_product_query.html">ProductQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_product_query.html#ab582e0c959db170f9e02aeb5f9f4adf0">variantBySelectedOptions</a> (ProductVariantDelegate buildQuery, List&lt; <a class="el" href="class_shopify_1_1_unity_1_1_selected_option_input.html">SelectedOptionInput</a> &gt; selectedOptions, string alias=null)</td></tr>
+<tr class="memdesc:ab582e0c959db170f9e02aeb5f9f4adf0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find a product’s variant based on its selected options. This is useful for converting a user’s selection of product options into a single matching variant. If there is not a variant for the selected options, <code>null</code> will be returned.  <a href="#ab582e0c959db170f9e02aeb5f9f4adf0">More...</a><br /></td></tr>
+<tr class="separator:ab582e0c959db170f9e02aeb5f9f4adf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62491995f013e29e3df2b1a48e554a41"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_product_query.html">ProductQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_product_query.html#a62491995f013e29e3df2b1a48e554a41">variants</a> (ProductVariantConnectionDelegate buildQuery, long first, string after=null, bool? reverse=null, string alias=null)</td></tr>
 <tr class="memdesc:a62491995f013e29e3df2b1a48e554a41"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of the product’s variants.  <a href="#a62491995f013e29e3df2b1a48e554a41">More...</a><br /></td></tr>
 <tr class="separator:a62491995f013e29e3df2b1a48e554a41"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -608,6 +611,50 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>The date and time when the product was last modified. </p>
+
+</div>
+</div>
+<a id="ab582e0c959db170f9e02aeb5f9f4adf0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab582e0c959db170f9e02aeb5f9f4adf0">&#9670;&nbsp;</a></span>variantBySelectedOptions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_product_query.html">ProductQuery</a> Shopify.Unity.GraphQL.ProductQuery.variantBySelectedOptions </td>
+          <td>(</td>
+          <td class="paramtype">ProductVariantDelegate&#160;</td>
+          <td class="paramname"><em>buildQuery</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">List&lt; <a class="el" href="class_shopify_1_1_unity_1_1_selected_option_input.html">SelectedOptionInput</a> &gt;&#160;</td>
+          <td class="paramname"><em>selectedOptions</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>alias</em> = <code>null</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Find a product’s variant based on its selected options. This is useful for converting a user’s selection of product options into a single matching variant. If there is not a variant for the selected options, <code>null</code> will be returned. </p>
 
 </div>
 </div>
