@@ -36,9 +36,9 @@ namespace <%= namespace %> {
         /// \code
         /// // Example usage querying all products using `Client`
         /// ShopifyBuy.Client().products((products, errors, httpError) => {
-        /// 	Debug.Log(products[0].title()); // "Snare Boot"
-        /// 	Debug.Log(products[1].title()); // "Neptune Boot"
-        /// 	Debug.Log(products.Count); // 38 products returned
+        /// 	Debug.Log(products[0].title());
+        /// 	Debug.Log(products[1].title());
+        /// 	Debug.Log(products.Count);
         /// });
         /// \endcode
         public static ShopifyClient Client() {
@@ -54,9 +54,9 @@ namespace <%= namespace %> {
         /// \code
         /// // Example usage querying all products using `Client` and a domain
         /// ShopifyBuy.Client("unity-buy-sdk.myshopify.com").products((products, errors, httpError) => {
-        /// 	Debug.Log(products[0].title()); // "Snare Boot"
-        /// 	Debug.Log(products[1].title()); // "Neptune Boot"
-        /// 	Debug.Log(products.Count); // 38 products returned
+        /// 	Debug.Log(products[0].title());
+        /// 	Debug.Log(products[1].title());
+        /// 	Debug.Log(products.Count);
         /// });
         /// \endcode
         public static ShopifyClient Client(string domain) {
@@ -208,8 +208,8 @@ namespace <%= namespace %> {
         /// ShopifyClient client = new ShopifyClient(accessToken, shopDomain);
         ///
         /// client.products((products, errors, httpError) => {
-        ///     Debug.Log(products[0].title()); // "Snare Boot"
-        ///     Debug.Log(products[1].title()); // "Neptune Boot"
+        ///     Debug.Log(products[0].title());
+        ///     Debug.Log(products[1].title());
         /// });
         /// \endcode
         public ShopifyClient(string accessToken, string domain) {
@@ -239,8 +239,8 @@ namespace <%= namespace %> {
         /// ShopifyClient client = new ShopifyClient(loader);
         ///
         /// client.products((products, errors, httpError) => {
-        ///     Debug.Log(products[0].title()); // "Snare Boot"
-        ///     Debug.Log(products[1].title()); // "Neptune Boot"
+        ///     Debug.Log(products[0].title());
+        ///     Debug.Log(products[1].title());
         /// });
         /// \endcode
         public ShopifyClient(ILoader loader) {
@@ -294,9 +294,9 @@ namespace <%= namespace %> {
         /// \code
         /// // Example usage querying all products
         /// ShopifyBuy.Client().products((products, errors, httpError) => {
-        /// 	Debug.Log(products[0].title()); // "Snare Boot"
-        /// 	Debug.Log(products[1].title()); // "Neptune Boot"
-        /// 	Debug.Log(products.Count); // 38 products returned
+        /// 	Debug.Log(products[0].title());
+        /// 	Debug.Log(products[1].title());
+        /// 	Debug.Log(products.Count);
         /// });
         /// \endcode
         public void products(ResponseProductsHandler callback, int? first = null, string after = null) {
@@ -351,8 +351,8 @@ namespace <%= namespace %> {
         /// \code
         /// // Example usage querying two product ids
         /// ShopifyBuy.Client().products((products, errors, httpError) => {
-        ///     Debug.Log(products[0].title()); // "Snare Boot"
-        ///     Debug.Log(products[1].title()); // "Neptune Boot"
+        ///     Debug.Log(products[0].title());
+        ///     Debug.Log(products[1].title());
         /// }, "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyNzYwOTk=", "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyNzkwNDM=");
         /// \endcode
         public void products(ResponseProductsHandler callback, string firstProductId, params string[] otherProductIds) {
@@ -405,8 +405,8 @@ namespace <%= namespace %> {
         /// };
         ///
         /// ShopifyBuy.Client().products((products, errors, httpError) => {
-        ///     Debug.Log(products[0].title()); // "Snare Boot"
-        ///     Debug.Log(products[1].title()); // "Neptune Boot"
+        ///     Debug.Log(products[0].title());
+        ///     Debug.Log(products[1].title());
         /// }, productIds);
         /// \endcode
         public void products(ResponseProductsHandler callback, List<string> productIds) {
@@ -468,8 +468,8 @@ namespace <%= namespace %> {
         /// \code
         /// // Example that queries all collections on a shop
         /// ShopifyBuy.Client().collections((collections, errors, httpError) => {
-        /// 	Debug.Log(collections[0].title()); // "Home page"
-        /// 	Debug.Log(collections.Count); // 1 collection
+        /// 	Debug.Log(collections[0].title());
+        /// 	Debug.Log(collections.Count);
         /// });
         /// \endcode
         public void collections(ResponseCollectionsHandler callback, int? first = null, string after = null) {
