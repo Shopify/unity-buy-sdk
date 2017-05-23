@@ -26,9 +26,9 @@
 
 import Foundation
 
+typealias JSON = [String: Any]
 
 protocol Serializable {
-    typealias JSON = [String: Any]
     func serializedJSON() -> JSON
 }
 
@@ -42,4 +42,3 @@ extension Serializable {
         return String(data: data, encoding: .utf8)!
     }
 }
-
