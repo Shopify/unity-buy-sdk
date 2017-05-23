@@ -43,7 +43,7 @@ public enum PKContactSerializedField: String {
 
 extension PKContact: Serializable {
     func serializedJSON() -> JSON {
-        var json = [String: Any]()
+        var json = JSON()
         add(.firstName, withValue: self.name?.givenName,           to: &json)
         add(.lastName,  withValue: self.name?.familyName,          to: &json)
         add(.city,      withValue: self.postalAddress?.city,       to: &json)
@@ -66,12 +66,10 @@ extension PKContact: Serializable {
     }
     
     private func add(_ key: PKContactSerializedField, withValue value: Any?, to json: inout JSON) {
-        json.insertIfNotNull(value, forKey: key)
+        json.insert(nullable: value, forKey: key)
     }
     
     private func addressComponents(inStreet street: String) -> [String] {
         return street.components(separatedBy: "\n")
     }
 }
-
-

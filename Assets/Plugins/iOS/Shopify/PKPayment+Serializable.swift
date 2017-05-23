@@ -36,7 +36,7 @@ public enum PKPaymentSerializedField: String {
 
 extension PKPayment: Serializable {
     func serializedJSON() -> JSON {
-        var json = [String: Any]()
+        var json = JSON()
         add(.billingContact,     withValue: billingContact?.serializedJSON(),       to: &json)
         add(.shippingContact,    withValue: self.shippingContact?.serializedJSON(), to: &json)
         add(.shippingIdentifier, withValue: self.shippingMethod?.identifier,        to: &json)
@@ -45,6 +45,6 @@ extension PKPayment: Serializable {
     }
     
     private func add(_ key: PKPaymentSerializedField, withValue value: Any?, to json: inout JSON) {
-        json.insertIfNotNull(value, forKey: key)
+        json.insert(nullable: value, forKey: key)
     }
 }

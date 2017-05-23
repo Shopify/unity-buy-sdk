@@ -27,7 +27,7 @@
 import Foundation
 
 extension Dictionary  {
-    public mutating func insertIfNotNull<T: RawRepresentable>(_ value: Dictionary.Value?, forKey key: T) where T.RawValue == Dictionary.Key {
+    public mutating func insert<T: RawRepresentable>(nullable value: Dictionary.Value?, forKey key: T) where T.RawValue == Dictionary.Key {
         if let value = value {
             self.updateValue(value, forKey: key.rawValue)
         }

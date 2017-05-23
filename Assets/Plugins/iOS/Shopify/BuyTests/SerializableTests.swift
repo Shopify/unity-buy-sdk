@@ -63,9 +63,9 @@ class SerializableTests: XCTestCase {
         
         // Serialize and record data from result
         let paymentDict         = payment.serializedJSON()
-        let billingContactDict  = paymentDict[PKPaymentSerializedField.billingContact.rawValue]     as! [String: Any]
-        let shippingContactDict = paymentDict[PKPaymentSerializedField.shippingContact.rawValue]    as! [String: Any]
-        let tokenDict           = paymentDict[PKPaymentSerializedField.tokenData.rawValue]          as! [String: Any]
+        let billingContactDict  = paymentDict[PKPaymentSerializedField.billingContact.rawValue]     as! JSON
+        let shippingContactDict = paymentDict[PKPaymentSerializedField.shippingContact.rawValue]    as! JSON
+        let tokenDict           = paymentDict[PKPaymentSerializedField.tokenData.rawValue]          as! JSON
         let shippingIdentifier  = paymentDict[PKPaymentSerializedField.shippingIdentifier.rawValue] as! String
         
         let tokenDataDict              = tokenDict[PKPaymentTokenSerializedField.paymentData.rawValue] as Any
@@ -134,7 +134,7 @@ class SerializableTests: XCTestCase {
         let postalAddress = createPostalAddress()
         let contact       = createContact(with: postalAddress)
         let jsonData      = try! contact.serializedData()
-        let json          = try! JSONSerialization.jsonObject(with: jsonData) as! [String: Any]
+        let json          = try! JSONSerialization.jsonObject(with: jsonData) as! JSON
         
         assertEqual(serializedContact: json, to: contact, havingMultiAddress: false)
     }
@@ -144,7 +144,7 @@ class SerializableTests: XCTestCase {
         let contact       = createContact(with: postalAddress)
         let jsonString    = try! contact.serializedString()
         let jsonData      = jsonString.data(using: .utf8)!
-        let json          = try! JSONSerialization.jsonObject(with: jsonData) as! [String: Any]
+        let json          = try! JSONSerialization.jsonObject(with: jsonData) as! JSON
         
         assertEqual(serializedContact: json, to: contact, havingMultiAddress: false)
     }
