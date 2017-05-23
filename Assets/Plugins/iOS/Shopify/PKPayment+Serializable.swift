@@ -1,5 +1,5 @@
 //
-//  PKPayment+BuySerializable.swift
+//  PKPayment+Serializable.swift
 //  UnityBuySDK
 //
 //  Created by Shopify.
@@ -35,6 +35,7 @@ enum PaymentField: String {
 }
 
 extension PKPayment: Serializable {
+    
     func serializedJSON() -> JSON {
         var json = JSON()
         json.insert(nullable: billingContact?.serializedJSON(),       forKey: PaymentField.billingContact)

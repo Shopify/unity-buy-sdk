@@ -33,6 +33,7 @@ protocol Serializable {
 }
 
 extension Serializable {
+    
     func serializedData() throws -> Data {
         return try JSONSerialization.data(withJSONObject: self.serializedJSON(), options: .prettyPrinted)
     }
