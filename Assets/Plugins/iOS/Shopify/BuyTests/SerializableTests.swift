@@ -63,14 +63,14 @@ class SerializableTests: XCTestCase {
         
         // Serialize and record data from result
         let paymentDict         = payment.serializedJSON()
-        let billingContactDict  = paymentDict[PKPaymentSerializedField.billingContact.rawValue]     as! JSON
-        let shippingContactDict = paymentDict[PKPaymentSerializedField.shippingContact.rawValue]    as! JSON
-        let tokenDict           = paymentDict[PKPaymentSerializedField.tokenData.rawValue]          as! JSON
-        let shippingIdentifier  = paymentDict[PKPaymentSerializedField.shippingIdentifier.rawValue] as! String
+        let billingContactDict  = paymentDict[PaymentField.billingContact.rawValue]     as! JSON
+        let shippingContactDict = paymentDict[PaymentField.shippingContact.rawValue]    as! JSON
+        let tokenDict           = paymentDict[PaymentField.tokenData.rawValue]          as! JSON
+        let shippingIdentifier  = paymentDict[PaymentField.shippingIdentifier.rawValue] as! String
         
-        let tokenDataDict              = tokenDict[PKPaymentTokenSerializedField.paymentData.rawValue] as Any
+        let tokenDataDict              = tokenDict[PaymentTokenField.paymentData.rawValue] as Any
         let tokenData                  = try! JSONSerialization.data(withJSONObject: tokenDataDict)
-        let tokenTransactionIdentifier = tokenDict[PKPaymentTokenSerializedField.transactionIdentifier.rawValue] as! String
+        let tokenTransactionIdentifier = tokenDict[PaymentTokenField.transactionIdentifier.rawValue] as! String
         
         assertEqual(serializedContact: billingContactDict, to: billingContact, havingMultiAddress: false)
         assertEqual(serializedContact: shippingContactDict, to: shippingContact, havingMultiAddress: false)
@@ -90,9 +90,9 @@ class SerializableTests: XCTestCase {
         
         // Serialize and record data from result
         let tokenDict     = token.serializedJSON()
-        let tokenDataDict = tokenDict[PKPaymentTokenSerializedField.paymentData.rawValue] as Any
+        let tokenDataDict = tokenDict[PaymentTokenField.paymentData.rawValue] as Any
         let tokenData     = try! JSONSerialization.data(withJSONObject: tokenDataDict)
-        let tokenTransactionIdentifier = tokenDict[PKPaymentTokenSerializedField.transactionIdentifier.rawValue] as! String
+        let tokenTransactionIdentifier = tokenDict[PaymentTokenField.transactionIdentifier.rawValue] as! String
         
         XCTAssertEqual(tokenData,                  token.paymentData)
         XCTAssertEqual(tokenTransactionIdentifier, token.transactionIdentifier)
@@ -194,17 +194,17 @@ class SerializableTests: XCTestCase {
     //  MARK: - Convenience Asserts -
     //
     func assertEqual(serializedContact: JSON, to contact: PKContact, havingMultiAddress: Bool) {
-        XCTAssertEqual(serializedContact[PKContactSerializedField.firstName.rawValue] as? String, contact.name?.givenName);
-        XCTAssertEqual(serializedContact[PKContactSerializedField.lastName.rawValue]  as? String, contact.name?.familyName);
-        XCTAssertEqual(serializedContact[PKContactSerializedField.city.rawValue]      as? String, contact.postalAddress?.city);
-        XCTAssertEqual(serializedContact[PKContactSerializedField.country.rawValue]   as? String, contact.postalAddress?.country);
-        XCTAssertEqual(serializedContact[PKContactSerializedField.province.rawValue]  as? String, contact.postalAddress?.state);
-        XCTAssertEqual(serializedContact[PKContactSerializedField.zip.rawValue]       as? String, contact.postalAddress?.postalCode);
-        XCTAssertEqual(serializedContact[PKContactSerializedField.email.rawValue]     as? String, contact.emailAddress);
+        XCTAssertEqual(serializedContact[ContactField.firstName.rawValue] as? String, contact.name?.givenName);
+        XCTAssertEqual(serializedContact[ContactField.lastName.rawValue]  as? String, contact.name?.familyName);
+        XCTAssertEqual(serializedContact[ContactField.city.rawValue]      as? String, contact.postalAddress?.city);
+        XCTAssertEqual(serializedContact[ContactField.country.rawValue]   as? String, contact.postalAddress?.country);
+        XCTAssertEqual(serializedContact[ContactField.province.rawValue]  as? String, contact.postalAddress?.state);
+        XCTAssertEqual(serializedContact[ContactField.zip.rawValue]       as? String, contact.postalAddress?.postalCode);
+        XCTAssertEqual(serializedContact[ContactField.email.rawValue]     as? String, contact.emailAddress);
+        XCTAssertEqual(serializedContact[ContactField.phone.rawValue]     as? String, contact.phoneNumber?.stringValue);
         
-        
-        let firstAddress  = serializedContact[PKContactSerializedField.address1.rawValue] as? String
-        let secondAddress = serializedContact[PKContactSerializedField.address2.rawValue] as? String
+        let firstAddress  = serializedContact[ContactField.address1.rawValue] as? String
+        let secondAddress = serializedContact[ContactField.address2.rawValue] as? String
 
         if havingMultiAddress {
             XCTAssertEqual(firstAddress! + "\n" + secondAddress!, contact.postalAddress!.street);

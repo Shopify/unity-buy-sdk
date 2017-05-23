@@ -27,46 +27,42 @@
 import Foundation
 import PassKit
 
-public enum PKContactSerializedField: String {
+enum ContactField: String {
+    case firstName
+    case lastName
     case address1
     case address2
     case city
-    case company
     case country
-    case firstName
-    case lastName
-    case phone
     case province
     case zip
     case email
+    case phone
 }
 
 extension PKContact: Serializable {
     func serializedJSON() -> JSON {
         var json = JSON()
-        add(.firstName, withValue: self.name?.givenName,           to: &json)
-        add(.lastName,  withValue: self.name?.familyName,          to: &json)
-        add(.city,      withValue: self.postalAddress?.city,       to: &json)
-        add(.country,   withValue: self.postalAddress?.country,    to: &json)
-        add(.province,  withValue: self.postalAddress?.state,      to: &json)
-        add(.zip,       withValue: self.postalAddress?.postalCode, to: &json)
-        add(.email,     withValue: self.emailAddress,              to: &json)
+        json.insert(nullable: self.name?.givenName,           forKey: ContactField.firstName)
+        json.insert(nullable: self.name?.familyName,          forKey: ContactField.lastName)
+        json.insert(nullable: self.postalAddress?.city,       forKey: ContactField.city)
+        json.insert(nullable: self.postalAddress?.country,    forKey: ContactField.country)
+        json.insert(nullable: self.postalAddress?.state,      forKey: ContactField.province)
+        json.insert(nullable: self.postalAddress?.postalCode, forKey: ContactField.zip)
+        json.insert(nullable: self.emailAddress,              forKey: ContactField.email)
+        json.insert(nullable: self.phoneNumber?.stringValue,  forKey: ContactField.phone)
         
         if let street = self.postalAddress?.street {
             let addresses = addressComponents(inStreet: street)
             
-            add(.address1, withValue: addresses[0], to: &json)
-            
+            json.insert(nullable: addresses[0], forKey: ContactField.address1)
+
             if addresses.count > 1 {
-                add(.address2, withValue: addresses[1], to: &json)
+                json.insert(nullable: addresses[1], forKey: ContactField.address2)
             }
         }
         
         return json
-    }
-    
-    private func add(_ key: PKContactSerializedField, withValue value: Any?, to json: inout JSON) {
-        json.insert(nullable: value, forKey: key)
     }
     
     private func addressComponents(inStreet street: String) -> [String] {
