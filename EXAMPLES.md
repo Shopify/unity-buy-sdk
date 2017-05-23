@@ -17,8 +17,8 @@ Before you can start using the Unity Buy SDK, you need:
 This code example initializes the SDK. The `ShopifyBuy.Init` method takes two arguments. The first is a storefront access token to communicate with the Storefront API. The second is the domain name of your shop.
 
 ```cs
-string accessToken = "351c122017d0f2a957d32ae728ad749c";
-string shopDomain = "graphql.myshopify.com";
+string accessToken = "b8d417759a62f7b342f3735dbe86b322";
+string shopDomain = "unity-buy-sdk.myshopify.com";
 
 ShopifyBuy.Init(accessToken, shopDomain);
 ```
@@ -33,8 +33,8 @@ The following example shows how to query all products in your Shopify store:
 using Shopify.Unity;
 
 void Start () {
-    string accessToken = "351c122017d0f2a957d32ae728ad749c";
-    string shopDomain = "graphql.myshopify.com";
+    string accessToken = "b8d417759a62f7b342f3735dbe86b322";
+    string shopDomain = "unity-buy-sdk.myshopify.com";
 
     // Init only needs to be called once
     ShopifyBuy.Init(accessToken, shopDomain);
@@ -72,8 +72,8 @@ The following example shows how to query all collections in your Shopify store:
 using Shopify.Unity;
 
 void Start () {
-    string accessToken = "351c122017d0f2a957d32ae728ad749c";
-    string shopDomain = "graphql.myshopify.com";
+    string accessToken = "b8d417759a62f7b342f3735dbe86b322";
+    string shopDomain = "unity-buy-sdk.myshopify.com";
 
     ShopifyBuy.Init(accessToken, shopDomain);
 
@@ -117,8 +117,8 @@ The following example shows how to create a cart, add line items to the cart usi
 using Shopify.Unity;
 
 void Start () {
-    string accessToken = "351c122017d0f2a957d32ae728ad749c";
-    string shopDomain = "graphql.myshopify.com";
+    string accessToken = "b8d417759a62f7b342f3735dbe86b322";
+    string shopDomain = "unity-buy-sdk.myshopify.com";
 
     ShopifyBuy.Init(accessToken, shopDomain);
 
@@ -169,8 +169,8 @@ In Shopify, a product can have many options. These options map to **variants** o
 using Shopify.Unity;
 
 void Start () {
-    string accessToken = "351c122017d0f2a957d32ae728ad749c";
-    string shopDomain = "graphql.myshopify.com";
+    string accessToken = "b8d417759a62f7b342f3735dbe86b322";
+    string shopDomain = "unity-buy-sdk.myshopify.com";
 
     ShopifyBuy.Init(accessToken, shopDomain);
 
@@ -266,8 +266,8 @@ The following example shows how to build a custom query in C# that matches the G
 using Shopify.Unity;
 
 void Start () {
-    string accessToken = "351c122017d0f2a957d32ae728ad749c";
-    string shopDomain = "graphql.myshopify.com";
+    string accessToken = "b8d417759a62f7b342f3735dbe86b322";
+    string shopDomain = "unity-buy-sdk.myshopify.com";
 
     ShopifyBuy.Init(accessToken, shopDomain);
 
