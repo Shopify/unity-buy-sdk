@@ -35,14 +35,13 @@ public enum PKPaymentTokenSerializedField: String {
 extension PKPaymentToken: Serializable {
     
     func serializedJSON() -> JSON {
-        var json = [String: Any]()
+        var json = JSON()
         add(.paymentData,           withValue: try! JSONSerialization.jsonObject(with: self.paymentData), to: &json)
         add(.transactionIdentifier, withValue: self.transactionIdentifier,                                to: &json)
         return json
     }
     
     private func add(_ key: PKPaymentTokenSerializedField, withValue value: Any?, to json: inout JSON) {
-        json.insertIfNotNull(value, forKey: key)
+        json.insert(nullable: value, forKey: key)
     }
 }
-
