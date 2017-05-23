@@ -41,6 +41,7 @@ enum ContactField: String {
 }
 
 extension PKContact: Serializable {
+    
     func serializedJSON() -> JSON {
         var json = JSON()
         json.insert(nullable: self.name?.givenName,           forKey: ContactField.firstName)
@@ -53,19 +54,15 @@ extension PKContact: Serializable {
         json.insert(nullable: self.phoneNumber?.stringValue,  forKey: ContactField.phone)
         
         if let street = self.postalAddress?.street {
-            let addresses = addressComponents(inStreet: street)
             
+            let addresses = street.lines
             json.insert(nullable: addresses[0], forKey: ContactField.address1)
-
+            
             if addresses.count > 1 {
                 json.insert(nullable: addresses[1], forKey: ContactField.address2)
             }
         }
         
         return json
-    }
-    
-    private func addressComponents(inStreet street: String) -> [String] {
-        return street.components(separatedBy: "\n")
     }
 }
