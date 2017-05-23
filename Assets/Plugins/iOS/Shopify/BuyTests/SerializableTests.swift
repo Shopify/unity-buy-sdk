@@ -1,5 +1,5 @@
 //
-//  BuySerializableTests.swift
+//  SerializableTests.swift
 //  UnityBuySDK
 //
 //  Created by Shopify.
@@ -28,7 +28,7 @@ import XCTest
 import PassKit
 @testable import ProductName
 
-class PassKitSerializableTests: XCTestCase {
+class SerializableTests: XCTestCase {
     
     let emailAddress = "test_email@shopify.com"
     let firstName    = "first name"
@@ -46,9 +46,10 @@ class PassKitSerializableTests: XCTestCase {
     // ----------------------------------
     //  MARK: - PKPayment -
     //
-    func testPKPaymentSerializable() {
+    func testPaymentSerializable() {
         
-        let billingContact        = createContact()
+        let postalAddress         = createPostalAddress()
+        let billingContact        = createContact(with: postalAddress)
         let shippingContact       = billingContact
         let shippingMethod        = PKShippingMethod.init(label: "Free Shipping", amount: 0)
         shippingMethod.identifier = "unique_id"
@@ -71,8 +72,8 @@ class PassKitSerializableTests: XCTestCase {
         let tokenData                  = try! JSONSerialization.data(withJSONObject: tokenDataDict)
         let tokenTransactionIdentifier = tokenDict[PKPaymentTokenSerializedField.transactionIdentifier.rawValue] as! String
         
-        assertEqualContact(billingContactDict,  contact: billingContact)
-        assertEqualContact(shippingContactDict, contact: shippingContact)
+        assertEqual(serializedContact: billingContactDict, to: billingContact, havingMultiAddress: false)
+        assertEqual(serializedContact: shippingContactDict, to: shippingContact, havingMultiAddress: false)
         
         XCTAssertEqual(shippingIdentifier,         shippingMethod.identifier)
         XCTAssertEqual(tokenData,                  token.paymentData)
@@ -82,7 +83,7 @@ class PassKitSerializableTests: XCTestCase {
     // ----------------------------------
     //  MARK: - PKPaymentToken -
     //
-    func testPKPaymentTokenSerializable() {
+    func testPaymentTokenSerializable() {
         
         let paymentMethod = MockPaymentMethod.init(displayName: "AMEX", network: .amex, type: .credit)
         let token         = MockPaymentToken.init(paymentMethod: paymentMethod)
@@ -100,32 +101,52 @@ class PassKitSerializableTests: XCTestCase {
     // ----------------------------------
     //  MARK: - PKContact -
     //
-    func testPKContactSerializable() {
-        let contact = createContact()
-        assertPKContactSerializable(contact)
+    func testContactSerializable() {
+        let postalAddress = createPostalAddress()
+        let contact = createContact(with: postalAddress)
+        assertContactSerializable(contact, havingMultiAddress: false)
     }
     
-    func testPKContactMultiAddressSerializable() {
-        let contact           = createContact()
-        contact.postalAddress = createMultiPostalAddress()
-        assertPKContactSerializable(contact)
+    func testContactMultiAddressSerializable() {
+        let postalAddress = createMultiPostalAddress()
+        let contact       = createContact(with: postalAddress)
+        assertContactSerializable(contact, havingMultiAddress: true)
     }
     
-    func testPKContactMultiAddressSerializableEdgeCase() {
-        let contact           = createContact()
-        contact.postalAddress = createMultiPostalAddressEdgeCase()
-        assertPKContactSerializable(contact)
+    func testContactMultiAddressSerializableEdgeCase() {
+        let postalAddress = createMultiPostalAddressEdgeCase()
+        let contact       = createContact(with: postalAddress)
+        assertContactSerializable(contact, havingMultiAddress: true)
     }
     
     // ----------------------------------
-    //  MARK: - BuySerializable -
+    //  MARK: - Serializable -
     //
-    func testSerializationCorrectness() {
-        let contact     = createContact()
-        let jsonData    = try! contact.serializedString().data(using: .utf8)!
-        let jsonObject  = try! JSONSerialization.jsonObject(with: jsonData)
-        let contactDict = jsonObject as! [String: Any]
-        assertEqualContact(contactDict, contact: contact)
+    func testSerializedJSONCorrectness() {
+        let postalAddress = createPostalAddress()
+        let contact       = createContact(with: postalAddress)
+        let json          = contact.serializedJSON();
+        
+        assertEqual(serializedContact: json, to: contact, havingMultiAddress: false)
+    }
+    
+    func testSerializedDataCorrectness() {
+        let postalAddress = createPostalAddress()
+        let contact       = createContact(with: postalAddress)
+        let jsonData      = try! contact.serializedData()
+        let json          = try! JSONSerialization.jsonObject(with: jsonData) as! [String: Any]
+        
+        assertEqual(serializedContact: json, to: contact, havingMultiAddress: false)
+    }
+    
+    func testSerializedStringCorrectness() {
+        let postalAddress = createPostalAddress()
+        let contact       = createContact(with: postalAddress)
+        let jsonString    = try! contact.serializedString()
+        let jsonData      = jsonString.data(using: .utf8)!
+        let json          = try! JSONSerialization.jsonObject(with: jsonData) as! [String: Any]
+        
+        assertEqual(serializedContact: json, to: contact, havingMultiAddress: false)
     }
     
     // ----------------------------------
@@ -160,40 +181,41 @@ class PassKitSerializableTests: XCTestCase {
         return postalAddress
     }
     
-    func createContact() -> PKContact {
+    func createContact(with postalAddress: CNPostalAddress) -> PKContact {
         let contact           = PKContact.init()
         contact.name          = createPersonName()
         contact.emailAddress  = emailAddress
         contact.phoneNumber   = CNPhoneNumber.init(stringValue: phone)
-        contact.postalAddress = createPostalAddress()
+        contact.postalAddress = postalAddress
         return contact
     }
     
     // ----------------------------------
     //  MARK: - Convenience Asserts -
     //
-    func assertEqualContact(_ contactDict: Dictionary<String, Any>, contact: PKContact) {
-        XCTAssertEqual(contactDict[PKContactSerializedField.firstName.rawValue] as? String, contact.name?.givenName);
-        XCTAssertEqual(contactDict[PKContactSerializedField.lastName.rawValue]  as? String, contact.name?.familyName);
-        XCTAssertEqual(contactDict[PKContactSerializedField.city.rawValue]      as? String, contact.postalAddress?.city);
-        XCTAssertEqual(contactDict[PKContactSerializedField.country.rawValue]   as? String, contact.postalAddress?.country);
-        XCTAssertEqual(contactDict[PKContactSerializedField.province.rawValue]  as? String, contact.postalAddress?.state);
-        XCTAssertEqual(contactDict[PKContactSerializedField.zip.rawValue]       as? String, contact.postalAddress?.postalCode);
-        XCTAssertEqual(contactDict[PKContactSerializedField.email.rawValue]     as? String, contact.emailAddress);
+    func assertEqual(serializedContact: JSON, to contact: PKContact, havingMultiAddress: Bool) {
+        XCTAssertEqual(serializedContact[PKContactSerializedField.firstName.rawValue] as? String, contact.name?.givenName);
+        XCTAssertEqual(serializedContact[PKContactSerializedField.lastName.rawValue]  as? String, contact.name?.familyName);
+        XCTAssertEqual(serializedContact[PKContactSerializedField.city.rawValue]      as? String, contact.postalAddress?.city);
+        XCTAssertEqual(serializedContact[PKContactSerializedField.country.rawValue]   as? String, contact.postalAddress?.country);
+        XCTAssertEqual(serializedContact[PKContactSerializedField.province.rawValue]  as? String, contact.postalAddress?.state);
+        XCTAssertEqual(serializedContact[PKContactSerializedField.zip.rawValue]       as? String, contact.postalAddress?.postalCode);
+        XCTAssertEqual(serializedContact[PKContactSerializedField.email.rawValue]     as? String, contact.emailAddress);
         
-        if let firstAddress = contactDict[PKContactSerializedField.address1.rawValue] as? String {
-            if let secondAddress = contactDict[PKContactSerializedField.address2.rawValue] as? String {
-                XCTAssertEqual(firstAddress + "\n" + secondAddress, contact.postalAddress?.street);
-            }
-            else
-            {
-                XCTAssertEqual(firstAddress, contact.postalAddress?.street);
-            }
+        
+        let firstAddress  = serializedContact[PKContactSerializedField.address1.rawValue] as? String
+        let secondAddress = serializedContact[PKContactSerializedField.address2.rawValue] as? String
+
+        if havingMultiAddress {
+            XCTAssertEqual(firstAddress! + "\n" + secondAddress!, contact.postalAddress!.street);
+        }
+        else {
+            XCTAssertEqual(firstAddress, contact.postalAddress?.street);
         }
     }
     
-    func assertPKContactSerializable(_ contact: PKContact) {
+    func assertContactSerializable(_ contact: PKContact, havingMultiAddress: Bool) {
         let contactDict = contact.serializedJSON()
-        assertEqualContact(contactDict, contact: contact)
+        assertEqual(serializedContact:contactDict, to: contact, havingMultiAddress: havingMultiAddress)
     }
 }
