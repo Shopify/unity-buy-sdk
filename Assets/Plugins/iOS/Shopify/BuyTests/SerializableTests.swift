@@ -72,8 +72,8 @@ class SerializableTests: XCTestCase {
         let tokenData                  = try! JSONSerialization.data(withJSONObject: tokenDataDict)
         let tokenTransactionIdentifier = tokenDict[PaymentTokenField.transactionIdentifier.rawValue] as! String
         
-        assertEqual(serializedContact: billingContactDict, to: billingContact, havingMultiAddress: false)
-        assertEqual(serializedContact: shippingContactDict, to: shippingContact, havingMultiAddress: false)
+        assertEqual(serializedContact: billingContactDict, to: billingContact, havingMultipleAddresses: false)
+        assertEqual(serializedContact: shippingContactDict, to: shippingContact, havingMultipleAddresses: false)
         
         XCTAssertEqual(shippingIdentifier,         shippingMethod.identifier)
         XCTAssertEqual(tokenData,                  token.paymentData)
@@ -104,19 +104,19 @@ class SerializableTests: XCTestCase {
     func testContactSerializable() {
         let postalAddress = createPostalAddress()
         let contact = createContact(with: postalAddress)
-        assertContactSerializable(contact, havingMultiAddress: false)
+        assertContactSerializable(contact, havingMultipleAddresses: false)
     }
     
-    func testContactMultiAddressSerializable() {
-        let postalAddress = createMultiPostalAddress()
+    func testContactWithMultipleAddressesSerializable() {
+        let postalAddress = createMultiplePostalAddresses()
         let contact       = createContact(with: postalAddress)
-        assertContactSerializable(contact, havingMultiAddress: true)
+        assertContactSerializable(contact, havingMultipleAddresses: true)
     }
     
-    func testContactMultiAddressSerializableEdgeCase() {
-        let postalAddress = createMultiPostalAddressEdgeCase()
+    func testContactWithMultitipleAddressesSerializableEdgeCase() {
+        let postalAddress = createMultiplePostalAddressesEdgeCase()
         let contact       = createContact(with: postalAddress)
-        assertContactSerializable(contact, havingMultiAddress: true)
+        assertContactSerializable(contact, havingMultipleAddresses: true)
     }
     
     // ----------------------------------
@@ -127,7 +127,7 @@ class SerializableTests: XCTestCase {
         let contact       = createContact(with: postalAddress)
         let json          = contact.serializedJSON();
         
-        assertEqual(serializedContact: json, to: contact, havingMultiAddress: false)
+        assertEqual(serializedContact: json, to: contact, havingMultipleAddresses: false)
     }
     
     func testSerializedDataCorrectness() {
@@ -136,7 +136,7 @@ class SerializableTests: XCTestCase {
         let jsonData      = try! contact.serializedData()
         let json          = try! JSONSerialization.jsonObject(with: jsonData) as! JSON
         
-        assertEqual(serializedContact: json, to: contact, havingMultiAddress: false)
+        assertEqual(serializedContact: json, to: contact, havingMultipleAddresses: false)
     }
     
     func testSerializedStringCorrectness() {
@@ -146,7 +146,7 @@ class SerializableTests: XCTestCase {
         let jsonData      = jsonString.data(using: .utf8)!
         let json          = try! JSONSerialization.jsonObject(with: jsonData) as! JSON
         
-        assertEqual(serializedContact: json, to: contact, havingMultiAddress: false)
+        assertEqual(serializedContact: json, to: contact, havingMultipleAddresses: false)
     }
     
     // ----------------------------------
@@ -169,13 +169,13 @@ class SerializableTests: XCTestCase {
         return postalAddress
     }
     
-    func createMultiPostalAddress() -> CNPostalAddress {
+    func createMultiplePostalAddresses() -> CNPostalAddress {
         let postalAddress    = createPostalAddress() as! CNMutablePostalAddress
         postalAddress.street = address1 + "\n" + address2
         return postalAddress
     }
     
-    func createMultiPostalAddressEdgeCase() -> CNPostalAddress {
+    func createMultiplePostalAddressesEdgeCase() -> CNPostalAddress {
         let postalAddress    = createPostalAddress() as! CNMutablePostalAddress
         postalAddress.street = edgeAddress1 + "\n" + edgeAddress2
         return postalAddress
@@ -193,7 +193,7 @@ class SerializableTests: XCTestCase {
     // ----------------------------------
     //  MARK: - Convenience Asserts -
     //
-    func assertEqual(serializedContact: JSON, to contact: PKContact, havingMultiAddress: Bool) {
+    func assertEqual(serializedContact: JSON, to contact: PKContact, havingMultipleAddresses: Bool) {
         XCTAssertEqual(serializedContact[ContactField.firstName.rawValue] as? String, contact.name?.givenName);
         XCTAssertEqual(serializedContact[ContactField.lastName.rawValue]  as? String, contact.name?.familyName);
         XCTAssertEqual(serializedContact[ContactField.city.rawValue]      as? String, contact.postalAddress?.city);
@@ -206,7 +206,7 @@ class SerializableTests: XCTestCase {
         let firstAddress  = serializedContact[ContactField.address1.rawValue] as? String
         let secondAddress = serializedContact[ContactField.address2.rawValue] as? String
 
-        if havingMultiAddress {
+        if havingMultipleAddresses {
             XCTAssertEqual(firstAddress! + "\n" + secondAddress!, contact.postalAddress!.street);
         }
         else {
@@ -215,8 +215,8 @@ class SerializableTests: XCTestCase {
         }
     }
     
-    func assertContactSerializable(_ contact: PKContact, havingMultiAddress: Bool) {
+    func assertContactSerializable(_ contact: PKContact, havingMultipleAddresses: Bool) {
         let contactDict = contact.serializedJSON()
-        assertEqual(serializedContact:contactDict, to: contact, havingMultiAddress: havingMultiAddress)
+        assertEqual(serializedContact:contactDict, to: contact, havingMultipleAddresses: havingMultipleAddresses)
     }
 }
