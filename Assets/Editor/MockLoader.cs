@@ -25,56 +25,21 @@ namespace Shopify.Tests {
         public static int PageSize = DefaultQueries.MaxPageSize;
         public static Dictionary<string,string> ResponseNodes;
         public static Dictionary<string,string> ResponseCollections;
-        public static Dictionary<string,string> ResponseGeneric;
         private static List<IMockLoader> Loaders;
 
 
         private static void Initialize() {
             Loaders = new List<IMockLoader>() {
-                new MockLoaderProducts()
+                new MockLoaderProducts(),
+                new MockLoaderGeneric()
             };
 
             InitCollections();
 
             ResponseNodes = new Dictionary<string,string>();
-            InitGeneric();
             InitResponseOnNodeForCollection();
 
             Initialized = true;
-        }
-
-        private static void InitGeneric() {
-            ResponseGeneric = new Dictionary<string,string>();
-
-            QueryRootQuery query = new QueryRootQuery();
-            query.shop(s => s.name());
-
-            ResponseGeneric[query.ToString()] = @"{
-                ""data"": {
-                    ""shop"": {
-                        ""name"": ""this is the test shop yo""
-                    }
-                }
-            }";
-
-            MutationQuery mutation = new MutationQuery();
-
-            mutation.customerAccessTokenCreate((a) => a
-                .customerAccessToken(at => at
-                    .accessToken()
-                ),
-                input: new CustomerAccessTokenCreateInput("some@email.com", "password")
-            );
-
-            ResponseGeneric[mutation.ToString()] = @"{
-                ""data"": {
-                    ""customerAccessTokenCreate"": {
-                        ""customerAccessToken"": {
-                            ""accessToken"": ""i am a token""
-                        }
-                    }
-                }
-            }";
         }
 
         private static void InitCollections() {
@@ -231,10 +196,7 @@ namespace Shopify.Tests {
                 }
             }
 
-            if (ResponseGeneric.ContainsKey(query)) {
-                handledResponse = true;
-                callback(ResponseGeneric[query], null);
-            } else if (ResponseCollections.ContainsKey(query)) {
+            if (ResponseCollections.ContainsKey(query)) {
                 handledResponse = true;
                 callback(ResponseCollections[query], null);
             } else if (ResponseNodes.ContainsKey(query)) {
