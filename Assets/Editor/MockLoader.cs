@@ -24,9 +24,9 @@ namespace Shopify.Tests {
         public static int PageSize = DefaultQueries.MaxPageSize;
         private static List<IMockLoader> Loaders;
 
-
         private static void Initialize() {
             Loaders = new List<IMockLoader>() {
+                new MockLoaderErrors(),
                 new MockLoaderProducts(),
                 new MockLoaderGeneric(),
                 new MockLoaderCollections()
@@ -51,14 +51,6 @@ namespace Shopify.Tests {
 
                     break;
                 }
-            }
-
-            if (query.Contains(@"after:""404""")) {
-                handledResponse = true;
-                callback(null, "404 from mock loader");
-            } else if (query.Contains(@"after:""666""")) {
-                handledResponse = true;
-                callback(@"{""errors"": [{""message"": ""GraphQL error from mock loader""}]}", null);
             }
 
             if (!handledResponse) {
