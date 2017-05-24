@@ -58,8 +58,6 @@ namespace <%= namespace %>.SDK {
     /// Performs network communication to send GraphQL queries between Unity and a Shopify GraphQL endpoint.
     /// </summary>
     public class UnityLoader : ILoader {
-        static GameObject LoaderGameObject;
-
         /// <summary>
         /// Shopify store domain where the GraphQL endpoint lives.
         /// </summary>
@@ -94,11 +92,7 @@ namespace <%= namespace %>.SDK {
         /// <param name="query">Query that will be sent to the Storefront API</param>
         /// <param name="callback">callback that receives a response</param>
         public void Load(string query, LoaderResponseHandler callback) {
-            if (LoaderGameObject == null) {
-                LoaderGameObject = new GameObject();
-            }
-
-            LoaderGameObject.AddComponent<LoaderComponent>()
+            GlobalGameObject.AddComponent<LoaderComponent>()
             .SetURL("https://" + Domain + "/api/graphql.json")
             .SetAccessToken(AccessToken)
             .Load(query, callback);
