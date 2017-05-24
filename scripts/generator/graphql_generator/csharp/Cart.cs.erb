@@ -104,6 +104,8 @@ namespace <%= namespace %> {
                     IsCheckoutReady = checkout.ready();
                     CheckoutWebUrl = checkout.webUrl();
 
+                    UpdateLineItemIdsFromCheckout(checkout);
+
                     CheckoutPoll(callback);
                 }
             });
@@ -111,6 +113,7 @@ namespace <%= namespace %> {
 
         private void CheckoutUpdate(Action<List<string>, string> callback) {
             MutationQuery query = new MutationQuery();
+            bool didAdd = LineItems.New().Count > 0;
 
             if (LineItems.New().Count > 0) {
                 DefaultQueries.checkout.LineItemsAdd(query, CheckoutId, CartLineItems.ConvertToCheckoutLineItemInput(LineItems.New()));
@@ -128,9 +131,26 @@ namespace <%= namespace %> {
                 if (errors != null || httpError != null) {
                     callback(errors, httpError);
                 } else {
+                    if (didAdd) {
+                        UpdateLineItemIdsFromCheckout(response.checkoutLineItemsAdd().checkout());
+                    }
+
                     CheckoutPoll(callback);
                 }
             });
+        }
+
+        private void UpdateLineItemIdsFromCheckout(Checkout checkout) {
+            List<CheckoutLineItem> lineItems = (List<CheckoutLineItem>) checkout.lineItems();
+            List<CartLineItem> cartLineItems = LineItems.All();
+
+            foreach(CheckoutLineItem lineItem in lineItems) {
+                foreach(CartLineItem cartLineItem in cartLineItems) {
+                    if (cartLineItem.VariantId == lineItem.variant().id()) {
+                        cartLineItem.ID = lineItem.id();
+                    }
+                }
+            }
         }
 
         private void CheckoutPoll(Action<List<string>, string> callback) {
