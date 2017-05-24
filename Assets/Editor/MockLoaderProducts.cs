@@ -6,25 +6,13 @@ namespace Shopify.Tests {
     using Shopify.Unity.GraphQL;
     using Shopify.Unity.SDK;
 
-    public class MockLoaderProducts : IMockLoader {
+    public class MockLoaderProducts : BaseMockLoader {
         public static int CountProductsPages = 4;
 
-        private Dictionary<string, string> Responses;
-
         public MockLoaderProducts() {
-            Responses = new Dictionary<string, string>();
-
             SetupQueriesOnShopProducts();
             SetupQueriesOnNode();
             InitResponsesForQueriesByProductId();
-        }
-
-        public bool DoesHandleQueryResponse(string query) {
-            return Responses.ContainsKey(query);
-        }
-
-        public void HandleResponse(string query, LoaderResponseHandler callback) {
-            callback(Responses[query], null);
         }
 
         private void SetupQueriesOnShopProducts() {
@@ -38,7 +26,7 @@ namespace Shopify.Tests {
                     after: i > 0 ? (i * DefaultQueries.MaxPageSize - 1).ToString() : null
                 );
 
-                Responses[query.ToString()] = String.Format(@"{{
+                string response = String.Format(@"{{
                     ""data"": {{
                         ""shop"": {{
                             ""products"": {{
@@ -52,6 +40,8 @@ namespace Shopify.Tests {
                         }}
                     }}
                 }}", GetProductEdges(i), UtilsMockLoader.GetJSONBool(i < CountProductsPages - 1));
+
+                AddResponse(query, response);
             }
         }
         
@@ -170,7 +160,7 @@ namespace Shopify.Tests {
                 id: "2", alias: "a2"
             );
 
-            Responses[query.ToString()] = String.Format(@"{{
+            string response = String.Format(@"{{
                 ""data"": {{
                     ""node___a1"": {{
                         ""__typename"": ""Product"",
@@ -207,6 +197,8 @@ namespace Shopify.Tests {
                 }}
             }}", GetImageNodes(1, DefaultQueries.MaxPageSize), UtilsMockLoader.GetJSONBool(false), GetImageNodes(1, DefaultQueries.MaxPageSize), UtilsMockLoader.GetJSONBool(true), GetVariants(1, 2, DefaultQueries.MaxPageSize), UtilsMockLoader.GetJSONBool(false));
 
+            AddResponse(query, response);
+
             query = new QueryRootQuery();
             query.node(n => n
                 .onProduct(p => p
@@ -218,7 +210,7 @@ namespace Shopify.Tests {
                 id: "2", alias: "a2"
             );
 
-            Responses[query.ToString()] = String.Format(@"{{
+            response = String.Format(@"{{
                 ""data"": {{
                     ""node___a2"": {{
                         ""__typename"": ""Product"",
@@ -234,6 +226,8 @@ namespace Shopify.Tests {
                     }}
                 }}
             }}", GetImageNodes(2, DefaultQueries.MaxPageSize), UtilsMockLoader.GetJSONBool(false));
+
+            AddResponse(query, response);
         }
 
         public void InitResponsesForQueriesByProductId() {
@@ -249,7 +243,7 @@ namespace Shopify.Tests {
                 id: "productId444", alias: "a1"
             );
 
-            Responses[query.ToString()] = String.Format(@"{{
+            string response = String.Format(@"{{
                 ""data"": {{
                     ""node___a0"": {{
                         ""__typename"": ""Product"",
@@ -310,6 +304,8 @@ namespace Shopify.Tests {
                 }}
             }}", GetImagesConnection(0, DefaultQueries.MaxPageSize, true), GetImagesConnection(0, DefaultQueries.MaxPageSize, false), GetVariants(1, 2, DefaultQueries.MaxPageSize), UtilsMockLoader.GetJSONBool(false));
 
+            AddResponse(query, response);
+
             query = new QueryRootQuery();
 
             query.node(
@@ -339,7 +335,7 @@ namespace Shopify.Tests {
                 id: "productId333", alias: "a0"
             );
 
-            Responses[query.ToString()] = String.Format(@"{{
+            response = String.Format(@"{{
                 ""data"": {{
                     ""node___a0"": {{
                         ""__typename"": ""Product"",
@@ -348,6 +344,8 @@ namespace Shopify.Tests {
                     }}
                 }}
             }}", GetImagesConnection(1, DefaultQueries.MaxPageSize, false));
+
+            AddResponse(query, response);
         }
 
         private string GetVariants(int page, int product, int countVariants = 1) {
