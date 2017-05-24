@@ -11,8 +11,8 @@ namespace Shopify.Tests {
 
         public MockLoaderProducts() {
             SetupQueriesOnShopProducts();
-            SetupQueriesOnNode();
-            InitResponsesForQueriesByProductId();
+            SetupQueriesOnNodeForImageConnections();
+            SetupQueriesOnNodeForProducts();
         }
 
         private void SetupQueriesOnShopProducts() {
@@ -133,7 +133,7 @@ namespace Shopify.Tests {
             return edges.ToString();
         }
 
-        private void SetupQueriesOnNode() {
+        private void SetupQueriesOnNodeForImageConnections() {
             QueryRootQuery query = new QueryRootQuery();
             
             query.node(n => n
@@ -230,7 +230,7 @@ namespace Shopify.Tests {
             AddResponse(query, response);
         }
 
-        public void InitResponsesForQueriesByProductId() {
+        public void SetupQueriesOnNodeForProducts() {
             QueryRootQuery query = new QueryRootQuery();
             
             query.node(n => n
