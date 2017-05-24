@@ -106,7 +106,7 @@ namespace Shopify.Tests
                 Assert.IsNull(httpError);
             });
 
-            Assert.AreEqual(MockLoader.CountProductsPages * MockLoader.PageSize, products.Count);
+            Assert.AreEqual(MockLoaderProducts.CountProductsPages * MockLoader.PageSize, products.Count);
             Assert.AreEqual("Product0", products[0].title());
             Assert.AreEqual("Product1", products[1].title());
 
