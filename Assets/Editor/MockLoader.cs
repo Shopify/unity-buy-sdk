@@ -7,6 +7,22 @@ namespace Shopify.Tests {
     using Shopify.Unity.SDK;
 
     public class MockLoader : ILoader {
+        private static bool Initialized;
+
+        public static int PageSize = DefaultQueries.MaxPageSize;
+        private static List<IMockLoader> _Loaders;
+
+        private static void Initialize() {
+            _Loaders = new List<IMockLoader>() {
+                new MockLoaderErrors(),
+                new MockLoaderProducts(),
+                new MockLoaderGeneric(),
+                new MockLoaderCollections()
+            };
+
+            Initialized = true;
+        }
+
         public string Domain {
             get {
                 return "graphql.myshopify.com";
@@ -19,20 +35,10 @@ namespace Shopify.Tests {
             }
         }
 
-        private static bool Initialized;
-
-        public static int PageSize = DefaultQueries.MaxPageSize;
-        private static List<IMockLoader> Loaders;
-
-        private static void Initialize() {
-            Loaders = new List<IMockLoader>() {
-                new MockLoaderErrors(),
-                new MockLoaderProducts(),
-                new MockLoaderGeneric(),
-                new MockLoaderCollections()
-            };
-
-            Initialized = true;
+        public List<IMockLoader> Loaders {
+            get {
+                return _Loaders;
+            }
         }
 
         public MockLoader() {
@@ -44,7 +50,7 @@ namespace Shopify.Tests {
         public void Load(string query, LoaderResponseHandler callback) {
             bool handledResponse = false;
 
-            foreach(IMockLoader loader in Loaders) {
+            foreach(IMockLoader loader in _Loaders) {
                 if (loader.DoesHandleQueryResponse(query)) {
                     loader.HandleResponse(query, callback);                    
                     handledResponse = true;

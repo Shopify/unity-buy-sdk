@@ -1,5 +1,6 @@
 namespace Shopify.Tests {
     using Shopify.Unity.SDK;
+    using System.Collections.Generic;
 
     public class MockLoaderErrors : IMockLoader {
         public bool DoesHandleQueryResponse(string query) {
@@ -11,6 +12,10 @@ namespace Shopify.Tests {
             } else if (IsGraphQLErroQuery(query)) {
                 callback(@"{""errors"": [{""message"": ""GraphQL error from mock loader""}]}", null);
             }
+        }
+
+        public List<string> GetQueries() {
+            return new List<string>();
         }
 
         private bool Is404Query(string query) {

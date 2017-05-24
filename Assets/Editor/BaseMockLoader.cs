@@ -18,6 +18,16 @@ namespace Shopify.Tests {
             callback(Responses[query], null);
         }
 
+        public List<string> GetQueries() {
+            List<string> queries = new List<string>();
+
+            foreach(string query in Responses.Keys) {
+                queries.Add(query);
+            }
+
+            return queries;
+        }
+
         protected void AddResponse(string query, string response) {
             Responses[query] = response;
         }
