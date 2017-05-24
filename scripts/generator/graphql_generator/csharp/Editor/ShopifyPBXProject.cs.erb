@@ -34,7 +34,9 @@ namespace <%= namespace %>.SDK {
         /// Recursively adds all files starting at a directory to the Test Target, and removes them from the Unity Target
         /// </summary>
         /// <param name="directory">Directory where the files are located</param>
-        /// <exception cref="Exception">Throws an exception when directory is invalid, or there is insufficient permission</exception>
+        /// <exception cref="DirectoryNotFoundException">Given directory does not have a valid path</exception>
+        /// <exception cref="SecurityException">The caller does not have the required permission.</exception>
+        /// <exception cref="UnauthorizedAccessException">The caller does not have the required permission.</exception>
         public void SetFilesInDirectoryToTestTarget(DirectoryInfo directory) {
 
             try {
