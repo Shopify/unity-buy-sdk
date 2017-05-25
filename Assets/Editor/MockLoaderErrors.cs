@@ -4,12 +4,12 @@ namespace Shopify.Tests {
 
     public class MockLoaderErrors : IMockLoader {
         public bool DoesHandleQueryResponse(string query) {
-            return Is404Query(query) || IsGraphQLErroQuery(query);
+            return Is404Query(query) || IsGraphQLErrorQuery(query);
         }
         public void HandleResponse(string query, LoaderResponseHandler callback) {
             if (Is404Query(query)) {
                 callback(null, "404 from mock loader");
-            } else if (IsGraphQLErroQuery(query)) {
+            } else if (IsGraphQLErrorQuery(query)) {
                 callback(@"{""errors"": [{""message"": ""GraphQL error from mock loader""}]}", null);
             }
         }
@@ -22,7 +22,7 @@ namespace Shopify.Tests {
             return query.Contains(@"after:""404""");
         }
 
-        private bool IsGraphQLErroQuery(string query) {
+        private bool IsGraphQLErrorQuery(string query) {
             return query.Contains(@"after:""666""");
         }
     }
