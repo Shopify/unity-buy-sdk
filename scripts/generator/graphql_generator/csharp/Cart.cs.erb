@@ -94,6 +94,8 @@ namespace <%= namespace %> {
 
             DefaultQueries.checkout.Create(query, newLineItemInput);
 
+            LineItems.ClearNew();
+
             Client.Mutation(query, (Mutation response, List<string> errors, string httpError) => {
                 if (errors != null || httpError != null) {
                     callback(errors, httpError);
@@ -111,14 +113,17 @@ namespace <%= namespace %> {
 
             if (LineItems.New().Count > 0) {
                 DefaultQueries.checkout.LineItemsAdd(query, CheckoutId, CartLineItems.ConvertToCheckoutLineItemInput(LineItems.New()));
+                LineItems.ClearNew();
             }
 
             if (LineItems.Modified().Count > 0) {
-                DefaultQueries.checkout.LineItemsUpdate(query, CheckoutId, CartLineItems.ConvertToCheckoutLineItemUpdateInput(LineItems.New()));
+                DefaultQueries.checkout.LineItemsUpdate(query, CheckoutId, CartLineItems.ConvertToCheckoutLineItemUpdateInput(LineItems.Modified()));
+                LineItems.ClearModified();
             }
 
             if (LineItems.Deleted().Count > 0) {
-                DefaultQueries.checkout.LineItemsRemove(query, CheckoutId, CartLineItems.ConvertToCheckoutIds(LineItems.New()));
+                DefaultQueries.checkout.LineItemsRemove(query, CheckoutId, CartLineItems.ConvertToCheckoutIds(LineItems.Deleted()));
+                LineItems.ClearDeleted();
             }
 
             Client.Mutation(query, (Mutation response, List<string> errors, string httpError) => {
