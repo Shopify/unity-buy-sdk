@@ -111,7 +111,6 @@ namespace Shopify.Tests
             string responseHttpError = null;
             List<string> responseErrors = null;
 
-
             cart.LineItems.AddOrUpdate("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTE1NQ==", 33);
             cart.LineItems.AddOrUpdate("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTM0Nw==", 2);
 
@@ -125,9 +124,11 @@ namespace Shopify.Tests
                 }
             );
 
-            Assert.IsNotNull(responseURL);
             Assert.IsNull(responseHttpError);
             Assert.IsNull(responseErrors);
+            Assert.AreEqual("http://shopify.com/checkout-no-poll", responseURL, "weblink was correct");
+            Assert.AreEqual("line-item-id1", cart.LineItems.All()[0].ID, "Line item 1 has the correct ID set");
+            Assert.AreEqual("line-item-id2", cart.LineItems.All()[1].ID, "Line item 2 has the correct ID set");
         }
         
         [Test]

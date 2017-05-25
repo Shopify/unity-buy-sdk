@@ -17,7 +17,8 @@ namespace Shopify.Tests {
                 new MockLoaderErrors(),
                 new MockLoaderProducts(),
                 new MockLoaderGeneric(),
-                new MockLoaderCollections()
+                new MockLoaderCollections(),
+                new MockLoaderCheckouts()
             };
             
             Initialized = true;
