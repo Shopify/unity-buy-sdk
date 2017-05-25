@@ -106,7 +106,7 @@ namespace Shopify.Tests
                 Assert.IsNull(httpError);
             });
 
-            Assert.AreEqual(MockLoader.CountProductsPages * MockLoader.PageSize, products.Count);
+            Assert.AreEqual(MockLoaderProducts.CountProductsPages * MockLoader.PageSize, products.Count);
             Assert.AreEqual("Product0", products[0].title());
             Assert.AreEqual("Product1", products[1].title());
 
@@ -150,7 +150,7 @@ namespace Shopify.Tests
                 Assert.IsNull(httpError);
             });
 
-            Assert.AreEqual(MockLoader.CountCollectionsPages * MockLoader.PageSize, collections.Count);
+            Assert.AreEqual(MockLoaderCollections.CountPages * MockLoader.PageSize, collections.Count);
             Assert.AreEqual("I am collection 0", collections[0].title());
             Assert.AreEqual("I am collection 1", collections[1].title());
 
