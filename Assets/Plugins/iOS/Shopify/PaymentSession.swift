@@ -58,7 +58,7 @@ import PassKit
     
     /// The last status of the authorization received by passing the token data
     /// to the payment server
-    var lastAuthStatus: PKPaymentAuthorizationStatus!
+    var lastAuthStatus: PKPaymentAuthorizationStatus?
     
     var summaryItems: [PKPaymentSummaryItem]
     var shippingMethods: [PKShippingMethod]
@@ -215,7 +215,7 @@ extension PaymentSession: PKPaymentAuthorizationViewControllerDelegate {
         
         DispatchQueue.global(qos: .userInitiated).async {
             self.updateSemaphore.wait()
-            completion(self.lastAuthStatus);
+            completion(self.lastAuthStatus!);
         }
     }
 }
