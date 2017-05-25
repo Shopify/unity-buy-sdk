@@ -15,19 +15,19 @@ namespace <%= namespace %>.SDK {
         public static string ProjectModuleNameKey = "PRODUCT_MODULE_NAME";
         public static string EnableTestabilityKey = "ENABLE_TESTABILITY";
 
-        public readonly string buildPath;
-        public readonly string testTargetGuid;
-        public readonly string unityTargetGuid;
+        public readonly string BuildPath;
+        public readonly string TestTargetGuid;
+        public readonly string UnityTargetGuid;
 
         /// <summary>
         /// Creates a ShopifyPBXProject from .xcodeproj 
         /// </summary>
         /// <param name="buildPath">Unity Project build path</param>
         public ShopifyPBXProject(string buildPath) : base() {
-            this.buildPath = buildPath;
+            this.BuildPath = buildPath;
             ReadFromFile(PBXProject.GetPBXProjectPath(buildPath));
-            testTargetGuid = TargetGuidByName(PBXProject.GetUnityTestTargetName());
-            unityTargetGuid = TargetGuidByName(PBXProject.GetUnityTargetName());
+            TestTargetGuid = TargetGuidByName(PBXProject.GetUnityTestTargetName());
+            UnityTargetGuid = TargetGuidByName(PBXProject.GetUnityTargetName());
         }
 
         /// <summary>
@@ -42,10 +42,10 @@ namespace <%= namespace %>.SDK {
             try {
                 foreach (var file in directory.GetFiles()) {
                     // Removes the build path from the absolute path and removes the first backslash
-                    var localFilePath = file.ToString().Replace(buildPath, "").Substring(1);
+                    var localFilePath = file.ToString().Replace(BuildPath, "").Substring(1);
                     string fileGuid = FindFileGuidByProjectPath(localFilePath);
-                    AddFileToBuild(testTargetGuid, fileGuid);
-                    RemoveFileFromBuild(unityTargetGuid, fileGuid);
+                    AddFileToBuild(TestTargetGuid, fileGuid);
+                    RemoveFileFromBuild(UnityTargetGuid, fileGuid);
                 }
 
                 foreach (var otherDirectory in directory.GetDirectories()) {
@@ -61,7 +61,7 @@ namespace <%= namespace %>.SDK {
         /// Returns an array of all the Target GUIDs
         /// </summary>
         public string[] GetAllTargetGuids() {
-            return new string[] {testTargetGuid, unityTargetGuid};
+            return new string[] {TestTargetGuid, UnityTargetGuid};
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace <%= namespace %>.SDK {
         /// Overwrites current project on disk with modified configurations
         /// </summary>
         public void Save() {
-            WriteToFile(PBXProject.GetPBXProjectPath(buildPath));
+            WriteToFile(PBXProject.GetPBXProjectPath(BuildPath));
         }
     }
 }
