@@ -36,7 +36,7 @@ extension PKPaymentToken: Serializable {
     
     func serializedJSON() -> JSON {
         var json = JSON()
-        json.insert(nullable: try! JSONSerialization.jsonObject(with: self.paymentData), forKey: PaymentTokenField.paymentData)
+        json.insert(nullable: try? JSONSerialization.jsonObject(with: self.paymentData), forKey: PaymentTokenField.paymentData)
         json.insert(nullable: self.transactionIdentifier, forKey: PaymentTokenField.transactionIdentifier)
         return json
     }
