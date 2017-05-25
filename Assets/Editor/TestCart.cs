@@ -103,7 +103,7 @@ namespace Shopify.Tests
         }
         
         [Test]
-        public void TestPermalink() {
+        public void TestGetCheckoutLink() {
             ShopifyBuy.Init(new MockLoader());
             
             Cart cart = ShopifyBuy.Client().Cart();
@@ -127,6 +127,35 @@ namespace Shopify.Tests
             Assert.IsNull(responseHttpError);
             Assert.IsNull(responseErrors);
             Assert.AreEqual("http://shopify.com/checkout-no-poll", responseURL, "weblink was correct");
+            Assert.AreEqual("line-item-id1", cart.LineItems.All()[0].ID, "Line item 1 has the correct ID set");
+            Assert.AreEqual("line-item-id2", cart.LineItems.All()[1].ID, "Line item 2 has the correct ID set");
+        }
+
+        [Test]
+        public void TestGetCheckoutLinkWithPoll() {
+            ShopifyBuy.Init(new MockLoader());
+            
+            Cart cart = ShopifyBuy.Client().Cart();
+            string responseURL = null;
+            string responseHttpError = null;
+            List<string> responseErrors = null;
+
+            cart.LineItems.AddOrUpdate("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTPOLL==", 33);
+            cart.LineItems.AddOrUpdate("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTM0Nw==", 2);
+
+            cart.GetWebCheckoutLink(
+                success: (url) => {
+                    responseURL = url;
+                },
+                failure: (errors, httpError) => {
+                    responseHttpError = httpError;
+                    responseErrors = errors;
+                }
+            );
+
+            Assert.IsNull(responseHttpError);
+            Assert.IsNull(responseErrors);
+            Assert.AreEqual("http://shopify.com/checkout-with-poll-after-poll", responseURL, "weblink was correct");
             Assert.AreEqual("line-item-id1", cart.LineItems.All()[0].ID, "Line item 1 has the correct ID set");
             Assert.AreEqual("line-item-id2", cart.LineItems.All()[1].ID, "Line item 2 has the correct ID set");
         }
