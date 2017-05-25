@@ -98,14 +98,8 @@ namespace <%= namespace %> {
                 if (errors != null || httpError != null) {
                     callback(errors, httpError);
                 } else {
-                    Checkout checkout = response.checkoutCreate().checkout();
-
-                    CheckoutId = checkout.id();
-                    IsCheckoutReady = checkout.ready();
-                    CheckoutWebUrl = checkout.webUrl();
-
-                    UpdateLineItemIdsFromCheckout(checkout);
-
+                    UpdateCheckout(response.checkoutCreate().checkout());
+                    
                     CheckoutPoll(callback);
                 }
             });
@@ -132,12 +126,23 @@ namespace <%= namespace %> {
                     callback(errors, httpError);
                 } else {
                     if (didAdd) {
-                        UpdateLineItemIdsFromCheckout(response.checkoutLineItemsAdd().checkout());
+                        UpdateCheckout(response.checkoutLineItemsAdd().checkout());
                     }
 
                     CheckoutPoll(callback);
                 }
             });
+        }
+
+        private void UpdateCheckout(Checkout checkout) {
+            CheckoutId = checkout.id();
+            IsCheckoutReady = checkout.ready();
+            CheckoutWebUrl = checkout.webUrl();
+
+            // sometimes we may not query line items for instance when polling is being performed
+            try {
+                UpdateLineItemIdsFromCheckout(checkout);
+            } catch(NoQueryException exception) {}
         }
 
         private void UpdateLineItemIdsFromCheckout(Checkout checkout) {
@@ -167,7 +172,7 @@ namespace <%= namespace %> {
                     } else {
                         Checkout checkout = (Checkout) response.node();
 
-                        IsCheckoutReady = checkout.ready();
+                        UpdateCheckout(checkout);
 
                         if (IsCheckoutReady) {
                             callback(null, null);
