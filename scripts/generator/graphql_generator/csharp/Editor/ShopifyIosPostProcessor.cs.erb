@@ -5,12 +5,12 @@ namespace <%= namespace %>.SDK {
     using System.IO;
     using System;
 
-    public class iOSPostProcessor {
+    public class ShopifyIosPostProcessor {
 
         public static void Process(string buildPath) {
             string testPath = Path.Combine(buildPath, "Libraries/Plugins/iOS/Shopify/BuyTests/");
             var testDirectory = new DirectoryInfo(testPath);
-            var project = new ShopifyPBXProject(buildPath);
+            var project = new ExtendedPBXProject(buildPath);
             
             try {
                 project.SetFilesInDirectoryToTestTarget(testDirectory);
@@ -20,14 +20,14 @@ namespace <%= namespace %>.SDK {
 
             // Removes default Unity_iPhone_Tests from the Test Target
             project.RemoveFileFromBuild(project.TestTargetGuid, project.FindFileGuidByProjectPath("Unity-iPhone Tests/Unity_iPhone_Tests.m"));
-            project.SetBuildProperty(project.GetAllTargetGuids(), ShopifyPBXProject.SwiftVersionKey, "3.0");
-            project.SetBuildProperty(project.UnityTargetGuid, ShopifyPBXProject.RunpathSearchKey, "@executable_path/Frameworks");
-            project.SetBuildProperty(project.TestTargetGuid, ShopifyPBXProject.RunpathSearchKey, "@loader_path/Frameworks");
-            project.SetBuildProperty(project.TestTargetGuid, ShopifyPBXProject.ProjectModuleNameKey, "$(PRODUCT_NAME:c99extidentifier)Tests");
-            project.SetBuildPropertyForConfig(project.GetDebugConfig(project.UnityTargetGuid), ShopifyPBXProject.EnableTestabilityKey, "YES");
+            project.SetBuildProperty(project.GetAllTargetGuids(), ExtendedPBXProject.SwiftVersionKey, "3.0");
+            project.SetBuildProperty(project.UnityTargetGuid, ExtendedPBXProject.RunpathSearchKey, "@executable_path/Frameworks");
+            project.SetBuildProperty(project.TestTargetGuid, ExtendedPBXProject.RunpathSearchKey, "@loader_path/Frameworks");
+            project.SetBuildProperty(project.TestTargetGuid, ExtendedPBXProject.ProjectModuleNameKey, "$(PRODUCT_NAME:c99extidentifier)Tests");
+            project.SetBuildPropertyForConfig(project.GetDebugConfig(project.UnityTargetGuid), ExtendedPBXProject.EnableTestabilityKey, "YES");
 
             if (float.Parse(PlayerSettings.iOS.targetOSVersionString) < 9.0) {
-                project.SetBuildProperty(project.GetAllTargetGuids(), ShopifyPBXProject.DeploymentTarget, "9.0");
+                project.SetBuildProperty(project.GetAllTargetGuids(), ExtendedPBXProject.DeploymentTarget, "9.0");
             }
 
             project.Save();

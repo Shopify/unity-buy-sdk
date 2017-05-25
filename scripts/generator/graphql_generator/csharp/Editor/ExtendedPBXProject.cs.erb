@@ -7,7 +7,7 @@ namespace <%= namespace %>.SDK {
     /// <summary>
     /// A subclass on PBXProject providing convenience functions for configuring the project
     /// </summary>
-    public class ShopifyPBXProject: PBXProject {
+    public class ExtendedPBXProject: PBXProject {
 
         public static string SwiftVersionKey = "SWIFT_VERSION";
         public static string DeploymentTarget = "IPHONEOS_DEPLOYMENT_TARGET";
@@ -20,10 +20,10 @@ namespace <%= namespace %>.SDK {
         public readonly string UnityTargetGuid;
 
         /// <summary>
-        /// Creates a ShopifyPBXProject from .xcodeproj 
+        /// Creates a ExtendedPBXProject from .xcodeproj 
         /// </summary>
         /// <param name="buildPath">Unity Project build path</param>
-        public ShopifyPBXProject(string buildPath) : base() {
+        public ExtendedPBXProject(string buildPath) : base() {
             this.BuildPath = buildPath;
             ReadFromFile(PBXProject.GetPBXProjectPath(buildPath));
             TestTargetGuid = TargetGuidByName(PBXProject.GetUnityTestTargetName());
