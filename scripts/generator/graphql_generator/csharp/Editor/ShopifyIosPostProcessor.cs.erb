@@ -6,12 +6,11 @@ namespace <%= namespace %>.SDK {
     using System;
 
     public class ShopifyIosPostProcessor {
-
         public static void Process(string buildPath) {
             string testPath = Path.Combine(buildPath, "Libraries/Plugins/iOS/Shopify/BuyTests/");
             var testDirectory = new DirectoryInfo(testPath);
             var project = new ExtendedPBXProject(buildPath);
-            
+
             try {
                 project.SetFilesInDirectoryToTestTarget(testDirectory);
             } catch (Exception e) {
@@ -26,9 +25,17 @@ namespace <%= namespace %>.SDK {
             project.SetBuildProperty(project.TestTargetGuid, ExtendedPBXProject.ProjectModuleNameKey, "$(PRODUCT_NAME:c99extidentifier)Tests");
             project.SetBuildPropertyForConfig(project.GetDebugConfig(project.UnityTargetGuid), ExtendedPBXProject.EnableTestabilityKey, "YES");
 
-            if (float.Parse(PlayerSettings.iOS.targetOSVersionString) < 9.0) {
+            #if UNITY_5_5_OR_NEWER
+            if (float.Parse(UnityEditor.PlayerSettings.iOS.targetOSVersionString) < 9.0) {
                 project.SetBuildProperty(project.GetAllTargetGuids(), ExtendedPBXProject.DeploymentTarget, "9.0");
             }
+            #elif UNITY_5_4_OR_NEWER
+            if (UnityEditor.PlayerSettings.iOS.targetOSVersion < iOSTargetOSVersion.iOS_9_0) {
+                project.SetBuildProperty(project.GetAllTargetGuids(), ExtendedPBXProject.DeploymentTarget, "9.0");
+            }
+            #else
+                project.SetBuildProperty(project.GetAllTargetGuids(), ExtendedPBXProject.DeploymentTarget, "9.0");
+            #endif
 
             project.Save();
         }
