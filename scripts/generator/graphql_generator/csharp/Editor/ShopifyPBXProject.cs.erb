@@ -51,8 +51,7 @@ namespace <%= namespace %>.SDK {
                 foreach (var otherDirectory in directory.GetDirectories()) {
                     SetFilesInDirectoryToTestTarget(otherDirectory);
                 }
-            }
-            catch(Exception) {
+            } catch(Exception) {
                 throw;
             }
         }
