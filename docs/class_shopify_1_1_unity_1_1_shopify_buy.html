@@ -124,7 +124,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Returns the default <a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html" title="ShopifyClient  is the entry point to communicate with the Shopify Storefront API. ShopifyClient  also...">ShopifyClient</a> . The default client is the first client created after calling <a class="el" href="class_shopify_1_1_unity_1_1_shopify_buy.html#a72623b45a5034bf418db4107e08c6d58" title="Initializes a ShopifyClient that can be used to query the Storefront API. The default client which ca...">ShopifyBuy.Init</a> . Note that <a class="el" href="class_shopify_1_1_unity_1_1_shopify_buy.html#a72623b45a5034bf418db4107e08c6d58" title="Initializes a ShopifyClient that can be used to query the Storefront API. The default client which ca...">ShopifyBuy.Init</a> must be called before trying to call this function. </p>
-<div class="fragment"><div class="line"><span class="comment">// Example usage querying all products using `Client`</span></div><div class="line">ShopifyBuy.Client().products((products, errors, httpError) =&gt; {</div><div class="line">    Debug.Log(products[0].title()); <span class="comment">// &quot;Snare Boot&quot;</span></div><div class="line">    Debug.Log(products[1].title()); <span class="comment">// &quot;Neptune Boot&quot;</span></div><div class="line">    Debug.Log(products.Count); <span class="comment">// 38 products returned</span></div><div class="line">});</div></div><!-- fragment --> 
+<div class="fragment"><div class="line"><span class="comment">// Example usage querying all products using `Client`</span></div><div class="line">ShopifyBuy.Client().products((products, errors, httpError) =&gt; {</div><div class="line">    Debug.Log(products[0].title());</div><div class="line">    Debug.Log(products[1].title());</div><div class="line">    Debug.Log(products.Count);</div><div class="line">});</div></div><!-- fragment --> 
 </div>
 </div>
 <a id="ae89c44893224b84dfb470124db6c112a"></a>
@@ -158,7 +158,7 @@ Public Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
-<div class="fragment"><div class="line"><span class="comment">// Example usage querying all products using `Client` and a domain</span></div><div class="line">ShopifyBuy.Client(<span class="stringliteral">&quot;graphql.myshopify.com&quot;</span>).products((products, errors, httpError) =&gt; {</div><div class="line">    Debug.Log(products[0].title()); <span class="comment">// &quot;Snare Boot&quot;</span></div><div class="line">    Debug.Log(products[1].title()); <span class="comment">// &quot;Neptune Boot&quot;</span></div><div class="line">    Debug.Log(products.Count); <span class="comment">// 38 products returned</span></div><div class="line">});</div></div><!-- fragment --> 
+<div class="fragment"><div class="line"><span class="comment">// Example usage querying all products using `Client` and a domain</span></div><div class="line">ShopifyBuy.Client(<span class="stringliteral">&quot;unity-buy-sdk.myshopify.com&quot;</span>).products((products, errors, httpError) =&gt; {</div><div class="line">    Debug.Log(products[0].title());</div><div class="line">    Debug.Log(products[1].title());</div><div class="line">    Debug.Log(products.Count);</div><div class="line">});</div></div><!-- fragment --> 
 </div>
 </div>
 <a id="a72623b45a5034bf418db4107e08c6d58"></a>
@@ -203,7 +203,7 @@ Public Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
-<div class="fragment"><div class="line"><span class="comment">// Example that initializes the Unity Buy SDK</span></div><div class="line"><span class="keywordtype">string</span> accessToken = <span class="stringliteral">&quot;351c122017d0f2a957d32ae728ad749c&quot;</span>;</div><div class="line"><span class="keywordtype">string</span> shopDomain = <span class="stringliteral">&quot;graphql.myshopify.com&quot;</span>;</div><div class="line"></div><div class="line"><span class="comment">// Init only needs to be called once</span></div><div class="line">ShopifyBuy.Init(accessToken, shopDomain);</div></div><!-- fragment --> 
+<div class="fragment"><div class="line"><span class="comment">// Example that initializes the Unity Buy SDK</span></div><div class="line"><span class="keywordtype">string</span> accessToken = <span class="stringliteral">&quot;b8d417759a62f7b342f3735dbe86b322&quot;</span>;</div><div class="line"><span class="keywordtype">string</span> shopDomain = <span class="stringliteral">&quot;unity-buy-sdk.myshopify.com&quot;</span>;</div><div class="line"></div><div class="line"><span class="comment">// Init only needs to be called once</span></div><div class="line">ShopifyBuy.Init(accessToken, shopDomain);</div></div><!-- fragment --> 
 </div>
 </div>
 <a id="af6f6cce19706006b54a0955416dcd3f2"></a>
@@ -237,7 +237,7 @@ Public Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
-<div class="fragment"><div class="line"><span class="comment">// Mock example using a custom loader for another C# platform</span></div><div class="line"><span class="keywordtype">string</span> accessToken = <span class="stringliteral">&quot;351c122017d0f2a957d32ae728ad749c&quot;</span>;</div><div class="line"><span class="keywordtype">string</span> shopDomain = <span class="stringliteral">&quot;graphql.myshopify.com&quot;</span>;</div><div class="line"></div><div class="line">CustomLoaderForNonUnityPlatform loader = <span class="keyword">new</span> CustomLoaderForNonUnityPlatform(accessToken, shopDomain);</div><div class="line"></div><div class="line"><span class="comment">// Init only needs to be called once</span></div><div class="line">ShopifyBuy.Init(loader);</div></div><!-- fragment --> 
+<div class="fragment"><div class="line"><span class="comment">// Mock example using a custom loader for another C# platform</span></div><div class="line"><span class="keywordtype">string</span> accessToken = <span class="stringliteral">&quot;b8d417759a62f7b342f3735dbe86b322&quot;</span>;</div><div class="line"><span class="keywordtype">string</span> shopDomain = <span class="stringliteral">&quot;unity-buy-sdk.myshopify.com&quot;</span>;</div><div class="line"></div><div class="line">CustomLoaderForNonUnityPlatform loader = <span class="keyword">new</span> CustomLoaderForNonUnityPlatform(accessToken, shopDomain);</div><div class="line"></div><div class="line"><span class="comment">// Init only needs to be called once</span></div><div class="line">ShopifyBuy.Init(loader);</div></div><!-- fragment --> 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>

@@ -79,13 +79,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a83ee6e32d803d5c60f54af65c9c8139b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html#a83ee6e32d803d5c60f54af65c9c8139b">Cart</a> (<a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html">ShopifyClient</a> client)</td></tr>
 <tr class="memdesc:a83ee6e32d803d5c60f54af65c9c8139b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a new cart using a <a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html" title="ShopifyClient  is the entry point to communicate with the Shopify Storefront API. ShopifyClient  also...">ShopifyClient</a> . Typically, carts won't be instantiated directly, but will rather be instatiated using <a class="el" href="class_shopify_1_1_unity_1_1_shopify_buy.html#ac15beb2a8534e89ffe4f30d27e87740e" title="Returns the default ShopifyClient . The default client is the first client created after calling Shop...">ShopifyBuy.Client()</a>.<a class="el" href="class_shopify_1_1_unity_1_1_cart.html#a83ee6e32d803d5c60f54af65c9c8139b" title="Constructs a new cart using a ShopifyClient . Typically, carts won&#39;t be instantiated directly...">Cart()</a> .  <a href="#a83ee6e32d803d5c60f54af65c9c8139b">More...</a><br /></td></tr>
 <tr class="separator:a83ee6e32d803d5c60f54af65c9c8139b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06c03a97c3458cd1f9be58c3d69f3186"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html#a06c03a97c3458cd1f9be58c3d69f3186">GetWebCheckoutLink</a> (string note=null)</td></tr>
-<tr class="memdesc:a06c03a97c3458cd1f9be58c3d69f3186"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a link which can be used to check out this cart's line items via a web browser.  <a href="#a06c03a97c3458cd1f9be58c3d69f3186">More...</a><br /></td></tr>
-<tr class="separator:a06c03a97c3458cd1f9be58c3d69f3186"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd48532191c0a025bfbf5577411f4da6"><td class="memItemLeft" align="right" valign="top"><a id="acd48532191c0a025bfbf5577411f4da6"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>GetWebCheckoutLink</b> (Action&lt; string &gt; success, Action&lt; List&lt; string &gt;, string &gt; failure, string note=null)</td></tr>
+<tr class="separator:acd48532191c0a025bfbf5577411f4da6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:a1a0f29106f9c12d332ec256464db7a10"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_cart_line_items.html">CartLineItems</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html#a1a0f29106f9c12d332ec256464db7a10">LineItems</a><code> [get]</code></td></tr>
+<tr class="memitem:a1a0f29106f9c12d332ec256464db7a10"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_items.html">CartLineItems</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html#a1a0f29106f9c12d332ec256464db7a10">LineItems</a><code> [get]</code></td></tr>
 <tr class="memdesc:a1a0f29106f9c12d332ec256464db7a10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current line items for this <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a> .  <a href="#a1a0f29106f9c12d332ec256464db7a10">More...</a><br /></td></tr>
 <tr class="separator:a1a0f29106f9c12d332ec256464db7a10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -126,41 +126,6 @@ Properties</h2></td></tr>
 <div class="fragment"><div class="line"><span class="comment">// Example that creates a cart using a ShopifyClient and checks how many line items it has</span></div><div class="line"><span class="comment">// (spoiler: it has 0 line items since the cart was just created).</span></div><div class="line">ShopifyClient client = <span class="keyword">new</span> ShopifyClient(accessToken, shopDomain);</div><div class="line"></div><div class="line"><a class="code" href="class_shopify_1_1_unity_1_1_cart.html#a83ee6e32d803d5c60f54af65c9c8139b">Cart</a> cart = <span class="keyword">new</span> <a class="code" href="class_shopify_1_1_unity_1_1_cart.html#a83ee6e32d803d5c60f54af65c9c8139b">Cart</a>(client);</div><div class="line"></div><div class="line">Debug.Log(cart.LineItems.All().Count);</div></div><!-- fragment --> 
 </div>
 </div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="a06c03a97c3458cd1f9be58c3d69f3186"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a06c03a97c3458cd1f9be58c3d69f3186">&#9670;&nbsp;</a></span>GetWebCheckoutLink()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">string Shopify.Unity.Cart.GetWebCheckoutLink </td>
-          <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>note</em> = <code>null</code></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns a link which can be used to check out this cart's line items via a web browser. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">note</td><td>can be used to create a special note for the merchant for this order</td></tr>
-  </table>
-  </dd>
-</dl>
-<div class="fragment"><div class="line"><span class="comment">// Example that creates a checkout link and opens the url in the Browser</span></div><div class="line"><span class="keywordtype">string</span> linkToCheckout = ShopifyBuy.Client().Cart().GetWebCheckoutLink();</div><div class="line"></div><div class="line">Application.OpenURL(linkToCheckout);</div></div><!-- fragment --> 
-</div>
-</div>
 <h2 class="groupheader">Property Documentation</h2>
 <a id="a1a0f29106f9c12d332ec256464db7a10"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1a0f29106f9c12d332ec256464db7a10">&#9670;&nbsp;</a></span>LineItems</h2>
@@ -172,7 +137,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_shopify_1_1_unity_1_1_cart_line_items.html">CartLineItems</a> Shopify.Unity.Cart.LineItems</td>
+          <td class="memname"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_items.html">CartLineItems</a> Shopify.Unity.Cart.LineItems</td>
         </tr>
       </table>
   </td>
