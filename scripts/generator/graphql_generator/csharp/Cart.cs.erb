@@ -67,7 +67,7 @@ namespace <%= namespace %> {
             _LineItems = new CartLineItems();
         }
 
-        public void GetWebCheckoutLink(Action<string> success, Action<List<string>, string> failure, string note = null) {
+        public void GetWebCheckoutLink(Action<string> success, Action<List<string>, string> failure) {
             CheckoutSave((errors, httpError) => {
                 if (errors != null || httpError != null) {
                     failure(errors, httpError);
