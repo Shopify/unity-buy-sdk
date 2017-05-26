@@ -109,19 +109,21 @@ namespace <%= namespace %> {
 
         private void CheckoutUpdate(Action<List<string>, string> callback) {
             MutationQuery query = new MutationQuery();
-            bool didAdd = LineItems.New().Count > 0;
+            bool doAdd = LineItems.New().Count > 0;
+            bool doModify = LineItems.Modified().Count > 0;
+            bool doDelete = LineItems.Deleted().Count > 0;
 
-            if (LineItems.New().Count > 0) {
+            if (doAdd) {
                 DefaultQueries.checkout.LineItemsAdd(query, CheckoutId, CartLineItems.ConvertToCheckoutLineItemInput(LineItems.New()));
                 LineItems.ClearNew();
             }
 
-            if (LineItems.Modified().Count > 0) {
+            if (doModify) {
                 DefaultQueries.checkout.LineItemsUpdate(query, CheckoutId, CartLineItems.ConvertToCheckoutLineItemUpdateInput(LineItems.Modified()));
                 LineItems.ClearModified();
             }
 
-            if (LineItems.Deleted().Count > 0) {
+            if (doDelete) {
                 DefaultQueries.checkout.LineItemsRemove(query, CheckoutId, CartLineItems.ConvertToCheckoutIds(LineItems.Deleted()));
                 LineItems.ClearDeleted();
             }
@@ -130,8 +132,10 @@ namespace <%= namespace %> {
                 if (errors != null || httpError != null) {
                     callback(errors, httpError);
                 } else {
-                    if (didAdd) {
+                    if (doAdd) {
                         UpdateCheckout(response.checkoutLineItemsAdd().checkout());
+                    } else if (doModify) {
+                        UpdateCheckout(response.checkoutLineItemsUpdate().checkout());
                     }
 
                     CheckoutPoll(callback);
