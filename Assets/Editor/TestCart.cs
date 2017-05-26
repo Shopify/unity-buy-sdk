@@ -161,6 +161,66 @@ namespace Shopify.Tests
         }
         
         [Test]
+        public void TestGetCheckoutLinkAfterLineItemModifications() {
+            ShopifyBuy.Init(new MockLoader());
+            
+            Cart cart = ShopifyBuy.Client().Cart();
+            string firstResponseURL = null;
+            string firstResponseHttpError = null;
+            List<string> firstResponseErrors = null;
+            string secondResponseURL = null;
+            string secondResponseHttpError = null;
+            List<string> secondResponseErrors = null;
+
+            string variantId1 = "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyUpdate==";
+            string variantId2 = "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyDelete==";
+            string variantId3 = "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NTMNewItem==";
+
+            cart.LineItems.AddOrUpdate(variantId1, 33);
+            cart.LineItems.AddOrUpdate(variantId2, 2);
+
+            cart.GetWebCheckoutLink(
+                success: (url) => {
+                    firstResponseURL = url;
+                },
+                failure: (errors, httpError) => {
+                    firstResponseHttpError = httpError;
+                    firstResponseErrors = errors;
+                }
+            );
+
+            Assert.IsNull(firstResponseHttpError);
+            Assert.IsNull(firstResponseErrors);
+            Assert.AreEqual("http://shopify.com/checkout-create-before-update", firstResponseURL, "weblink was correct");
+            Assert.AreEqual("line-item-id1", cart.LineItems.All()[0].ID, "Line item 1 has the correct ID set");
+            Assert.AreEqual("line-item-id2", cart.LineItems.All()[1].ID, "Line item 2 has the correct ID set");
+
+            // update item
+            cart.LineItems.AddOrUpdate(variantId1, 10);
+            // delete item
+            cart.LineItems.Delete(variantId2);
+            // new item
+            cart.LineItems.AddOrUpdate(variantId3, 3);
+
+            cart.GetWebCheckoutLink(
+                success: (url) => {
+                    secondResponseURL = url;
+                },
+                failure: (errors, httpError) => {
+                    secondResponseHttpError = httpError;
+                    secondResponseErrors = errors;
+                }
+            );
+
+            Assert.IsNull(secondResponseHttpError);
+            Assert.IsNull(secondResponseErrors);
+            Assert.AreEqual("http://shopify.com/checkout-create-after-update", secondResponseURL, "weblink was correct after update");
+            Assert.AreEqual(2, cart.LineItems.All().Count, "Had two line items after update");
+            Assert.AreEqual("line-item-id1", cart.LineItems.All()[0].ID, "Line item 1 has the correct ID set after update");
+            Assert.AreEqual("line-item-id3", cart.LineItems.All()[1].ID, "Line item 2 has the correct ID set after update");
+        }
+
+        [Test]
         public void ModifyLineItems() {
             ShopifyBuy.Init(new MockLoader());
             
