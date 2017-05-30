@@ -16,9 +16,6 @@ machine:
   xcode:
     version: 8.0
 dependencies:
-  pre:
-    # The application is expecting xcode to be installed in its normal location
-    - sudo ln -s /Applications/Xcode-7.3.app /Applications/Xcode.app
   override:
     - ./scripts/install_unity.sh
   cache_directories:
