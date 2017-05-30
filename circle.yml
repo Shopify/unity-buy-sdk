@@ -14,7 +14,7 @@ machine:
     XCODE_WORKSPACE: symbolicator
   # Also not needed but Circle needs this
   xcode:
-    version: 7.3
+    version: 8.0
 dependencies:
   pre:
     # The application is expecting xcode to be installed in its normal location
