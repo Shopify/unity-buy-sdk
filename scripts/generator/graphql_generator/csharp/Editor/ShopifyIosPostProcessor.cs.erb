@@ -29,7 +29,7 @@ namespace <%= namespace %>.SDK {
             if (float.Parse(UnityEditor.PlayerSettings.iOS.targetOSVersionString) < 9.0) {
                 project.SetBuildProperty(project.GetAllTargetGuids(), ExtendedPBXProject.DeploymentTarget, "9.0");
             }
-            #elif UNITY_5_4_OR_NEWER
+            #elif UNITY_5_4_2_OR_NEWER
             if (UnityEditor.PlayerSettings.iOS.targetOSVersion < iOSTargetOSVersion.iOS_9_0) {
                 project.SetBuildProperty(project.GetAllTargetGuids(), ExtendedPBXProject.DeploymentTarget, "9.0");
             }
