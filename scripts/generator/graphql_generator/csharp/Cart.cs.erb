@@ -147,24 +147,23 @@ namespace <%= namespace %> {
             CheckoutId = checkout.id();
             IsCheckoutReady = checkout.ready();
             CheckoutWebUrl = checkout.webUrl();
-
-            // sometimes we may not query line items for instance when polling is being performed
-            try {
-                UpdateLineItemIdsFromCheckout(checkout);
-            } catch(NoQueryException exception) {}
+            UpdateLineItemIdsFromCheckout(checkout);
         }
 
         private void UpdateLineItemIdsFromCheckout(Checkout checkout) {
-            List<CheckoutLineItem> lineItems = (List<CheckoutLineItem>) checkout.lineItems();
-            List<CartLineItem> cartLineItems = LineItems.All();
+            // sometimes we may not query line items for instance when polling is being performed
+            try {
+                List<CheckoutLineItem> lineItems = (List<CheckoutLineItem>) checkout.lineItems();
+                List<CartLineItem> cartLineItems = LineItems.All();
 
-            foreach(CheckoutLineItem lineItem in lineItems) {
-                foreach(CartLineItem cartLineItem in cartLineItems) {
-                    if (cartLineItem.VariantId == lineItem.variant().id()) {
-                        cartLineItem.ID = lineItem.id();
+                foreach(CheckoutLineItem lineItem in lineItems) {
+                    foreach(CartLineItem cartLineItem in cartLineItems) {
+                        if (cartLineItem.VariantId == lineItem.variant().id()) {
+                            cartLineItem.ID = lineItem.id();
+                        }
                     }
                 }
-            }
+            } catch(NoQueryException exception) {}
         }
 
         private void CheckoutPoll(Action<List<string>, string> callback) {
