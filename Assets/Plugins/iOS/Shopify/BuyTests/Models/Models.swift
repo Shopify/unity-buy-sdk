@@ -26,7 +26,7 @@
 
 import Foundation
 import PassKit
-import ProductName
+@testable import ProductName
 
 struct Models {
     
@@ -42,6 +42,10 @@ struct Models {
     static let country      = "Canada"
     static let province     = "ON"
     static let zip          = "A1B 2C3"
+    
+    static let merchantId   = "com.merchant.id"
+    static let countryCode  = "US"
+    static let currencyCode = "USD"
     
     // ----------------------------------
     //  MARK: - PersonNameComponents -
@@ -109,5 +113,55 @@ struct Models {
                                 billingContact: createContact(with: createPostalAddress()),
                                 shippingContact: createContact(with: createPostalAddress()),
                                 shippingMethod: createShippingMethod())
+    }
+    
+    static func createSummaryItems() -> [PKPaymentSummaryItem] {
+        var summaryItems = [PKPaymentSummaryItem]()
+        summaryItems.append(PKPaymentSummaryItem.init(label: "SubTotal", amount: NSDecimalNumber.init(value: 1.00)))
+        summaryItems.append(PKPaymentSummaryItem.init(label: "Tax",      amount: NSDecimalNumber.init(value: 1.00)))
+        summaryItems.append(PKPaymentSummaryItem.init(label: "Shipping", amount: NSDecimalNumber.init(value: 1.00)))
+        summaryItems.append(PKPaymentSummaryItem.init(label: "Total",    amount: NSDecimalNumber.init(value: 3.00)))
+        return summaryItems
+    }
+    
+    static func createShippingMethods() -> [PKShippingMethod] {
+        var shippingMethods = [PKShippingMethod]()
+        shippingMethods.append(
+            PKShippingMethod.init(label: "Free",
+                                  amount: NSDecimalNumber.init(value: 0.0),
+                                  identifier: "Free",
+                                  detail: "10-15 Days"))
+        
+        shippingMethods.append(
+            PKShippingMethod.init(label: "Standard",
+                                  amount: NSDecimalNumber.init(value: 5.0),
+                                  identifier: "Standard",
+                                  detail: "10-15 Days"))
+        shippingMethods.append(
+            PKShippingMethod.init(label: "Express",
+                                  amount: NSDecimalNumber.init(value: 10.0),
+                                  identifier: "Express",
+                                  detail: "10-15 Days"))
+        return shippingMethods
+    }
+    
+    static func createPaymentSession(requiringShippingAddressFields: Bool, usingNonDefault controllerType: PaymentAuthorizationControlling.Type?) -> PaymentSession {
+        
+        if let controllerType = controllerType {
+            return PaymentSession.init(merchantId: merchantId,
+                                       countryCode: countryCode,
+                                       currencyCode: currencyCode,
+                                       requiringShippingAddressFields: requiringShippingAddressFields,
+                                       summaryItems: createSummaryItems(),
+                                       shippingMethods: createShippingMethods(),
+                                       controllerType: controllerType)
+        } else {
+            return PaymentSession.init(merchantId: merchantId,
+                                       countryCode: countryCode,
+                                       currencyCode: currencyCode,
+                                       requiringShippingAddressFields: requiringShippingAddressFields,
+                                       summaryItems: createSummaryItems(),
+                                       shippingMethods: createShippingMethods())
+        }
     }
 }

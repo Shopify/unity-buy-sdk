@@ -1,6 +1,6 @@
 //
 //  MockPaymentSessionDelegate.swift
-//  Unity-iPhone
+//  UnityBuySDK
 //
 //  Created by Shopify.
 //

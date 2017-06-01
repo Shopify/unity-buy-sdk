@@ -1,6 +1,6 @@
 //
-//  MockAuthorizationViewController.swift
-//  PayTests
+//  MockAuthorizationController.swift
+//  UnityBuySDK
 //
 //  Created by Shopify.
 //  Copyright (c) 2017 Shopify Inc. All rights reserved.
@@ -27,9 +27,10 @@
 import Foundation
 import PassKit
 
-final class MockAuthorizationViewController: PKPaymentAuthorizationViewController {
+@available(iOS 10.0, *)
+final class MockAuthorizationController: PKPaymentAuthorizationController {
     
-    static var instances: [MockAuthorizationViewController] = []
+    static var instances: [MockAuthorizationController] = []
     
     // ----------------------------------
     //  MARK: - Instance Management -
@@ -40,8 +41,15 @@ final class MockAuthorizationViewController: PKPaymentAuthorizationViewControlle
         type(of: self).instances.append(self)
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+    // ----------------------------------
+    //  MARK: - Disable Defaults -
+    //
+    override func present(completion: ((Bool) -> Void)? = nil) {
+        completion?(true)
+    }
+    
+    override func dismiss(completion: (() -> Void)? = nil) {
+        completion?()
     }
     
     // ----------------------------------
@@ -49,35 +57,35 @@ final class MockAuthorizationViewController: PKPaymentAuthorizationViewControlle
     //
     static func invokeDidSelectShippingContact(_ contact: PKContact, completion: @escaping (PKPaymentAuthorizationStatus, [PKShippingMethod], [PKPaymentSummaryItem]) -> Void) {
         
-        self.instances.forEach { authorizationViewController in
-            authorizationViewController.delegate?.paymentAuthorizationViewController?(authorizationViewController, didSelectShippingContact: contact, completion: completion)
+        self.instances.forEach { authorizationController in
+            authorizationController.delegate?.paymentAuthorizationController?(authorizationController, didSelectShippingContact: contact, completion: completion)
         }
     }
     
     static func invokeDidAuthorizePayment(_ payment: PKPayment, completion: @escaping (PKPaymentAuthorizationStatus) -> Void) {
         
-        self.instances.forEach { authorizationViewController in
-            authorizationViewController.delegate?.paymentAuthorizationViewController(authorizationViewController, didAuthorizePayment: payment, completion: completion)
+        self.instances.forEach { authorizationController in
+            authorizationController.delegate?.paymentAuthorizationController(authorizationController, didAuthorizePayment: payment, completion: completion)
         }
     }
     
     static func invokeDidFinish() {
-        self.instances.forEach { authorizationViewController in
-            authorizationViewController.delegate?.paymentAuthorizationViewControllerDidFinish(authorizationViewController)
+        self.instances.forEach { authorizationController in
+            authorizationController.delegate?.paymentAuthorizationControllerDidFinish(authorizationController)
         }
     }
     
     static func invokeDidSelectShippingMethod(_ shippingMethod: PKShippingMethod, completion: @escaping (PKPaymentAuthorizationStatus, [PKPaymentSummaryItem]) -> Void) {
         
-        self.instances.forEach { authorizationViewController in
-            authorizationViewController.delegate?.paymentAuthorizationViewController?(authorizationViewController, didSelect: shippingMethod, completion: completion)
+        self.instances.forEach { authorizationController in
+            authorizationController.delegate?.paymentAuthorizationController?(authorizationController, didSelectShippingMethod: shippingMethod, completion: completion)
         }
     }
     
     static func invokeDidSelectPaymentMethod(_ paymentMethod: PKPaymentMethod, completion: @escaping ([PKPaymentSummaryItem]) -> Void) {
         
-        self.instances.forEach { authorizationViewController in
-            authorizationViewController.delegate?.paymentAuthorizationViewController?(authorizationViewController, didSelect: paymentMethod, completion: completion)
+        self.instances.forEach { authorizationController in
+            authorizationController.delegate?.paymentAuthorizationController?(authorizationController, didSelectPaymentMethod: paymentMethod, completion: completion)
         }
     }
 }
