@@ -17,25 +17,26 @@ namespace <%= namespace %>.SDK {
                 Debug.Log(e.Message);
             }
 
-            // Removes default Unity_iPhone_Tests from the Test Target
-            project.RemoveFileFromBuild(project.TestTargetGuid, project.FindFileGuidByProjectPath("Unity-iPhone Tests/Unity_iPhone_Tests.m"));
             project.SetBuildProperty(project.GetAllTargetGuids(), ExtendedPBXProject.SwiftVersionKey, "3.0");
             project.SetBuildProperty(project.UnityTargetGuid, ExtendedPBXProject.RunpathSearchKey, "@executable_path/Frameworks");
             project.SetBuildProperty(project.TestTargetGuid, ExtendedPBXProject.RunpathSearchKey, "@loader_path/Frameworks");
             project.SetBuildProperty(project.TestTargetGuid, ExtendedPBXProject.ProjectModuleNameKey, "$(PRODUCT_NAME:c99extidentifier)Tests");
             project.SetBuildPropertyForConfig(project.GetDebugConfig(project.UnityTargetGuid), ExtendedPBXProject.EnableTestabilityKey, "YES");
 
+
+            bool isBelowMinimumTarget = false;
+
             #if UNITY_5_5_OR_NEWER
-            if (float.Parse(UnityEditor.PlayerSettings.iOS.targetOSVersionString) < 9.0) {
-                project.SetBuildProperty(project.GetAllTargetGuids(), ExtendedPBXProject.DeploymentTarget, "9.0");
-            }
+            isBelowMinimumTarget = float.Parse(UnityEditor.PlayerSettings.iOS.targetOSVersionString) < 9.0;
             #elif UNITY_5_4_2_OR_NEWER
-            if (UnityEditor.PlayerSettings.iOS.targetOSVersion < iOSTargetOSVersion.iOS_9_0) {
+            isBelowMinimumTarget = UnityEditor.PlayerSettings.iOS.targetOSVersion < iOSTargetOSVersion.iOS_9_0;
+            #else
+            isBelowMinimumTarget = true;
+            #endif
+
+            if (isBelowMinimumTarget) {
                 project.SetBuildProperty(project.GetAllTargetGuids(), ExtendedPBXProject.DeploymentTarget, "9.0");
             }
-            #else
-                project.SetBuildProperty(project.GetAllTargetGuids(), ExtendedPBXProject.DeploymentTarget, "9.0");
-            #endif
 
             project.Save();
         }
