@@ -21,6 +21,7 @@ dependencies:
     - sudo ln -s /Applications/Xcode-7.3.app /Applications/Xcode.app
   override:
     - ./scripts/install_unity.sh
+    - ./scripts/link_playback_engines.sh
   cache_directories:
     - "unity/"
 test:
