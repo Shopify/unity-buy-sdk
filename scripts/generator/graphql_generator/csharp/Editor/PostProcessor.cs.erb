@@ -2,13 +2,17 @@ namespace <%= namespace %>.SDK {
     using UnityEngine;
     using UnityEditor;
     using UnityEditor.Callbacks;
+    using System.IO;
 
     public class PostProcesser {
 
         [PostProcessBuildAttribute(0)]
         public static void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject) {
+
+            string absolutePath = Path.GetFullPath(pathToBuiltProject);
+
             if (target == BuildTarget.iOS) {
-                ShopifyIosPostProcessor.Process(pathToBuiltProject);
+                ShopifyIosPostProcessor.Process(absolutePath);
             }
         }
     }
