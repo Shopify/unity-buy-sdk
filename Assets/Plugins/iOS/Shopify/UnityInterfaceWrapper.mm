@@ -1,5 +1,5 @@
 //
-//  Unity-iPhone-Bridging-Header.h
+//  UnityInterfaceWrapper.m
 //  UnityBuySDK
 //
 //  Created by Shopify.
@@ -24,6 +24,13 @@
 //  THE SOFTWARE.
 //
 
-#import "UnityBuyAppController.h"
-#import "UnityAppController+ViewHandling.h"
+
 #import "UnityInterfaceWrapper.h"
+
+@implementation UnityInterfaceWrapper
+
++ (void)sendMessage:(NSString *)message toObject:(NSString *)objectName havingMethodName:(NSString *)methodName {
+    UnitySendMessage(objectName.UTF8String, methodName.UTF8String, message.UTF8String);
+}
+
+@end

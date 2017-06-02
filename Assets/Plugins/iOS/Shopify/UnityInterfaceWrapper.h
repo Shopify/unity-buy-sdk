@@ -1,9 +1,9 @@
 //
-//  Unity-iPhone-Bridging-Header.h
+//  UnityInterfaceWrapper.h
 //  UnityBuySDK
 //
 //  Created by Shopify.
-//  Copyright © 2017 Shopify Inc. All rights reserved.
+//  Copyright (c) 2017 Shopify Inc. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,11 @@
 //  THE SOFTWARE.
 //
 
-#import "UnityBuyAppController.h"
-#import "UnityAppController+ViewHandling.h"
-#import "UnityInterfaceWrapper.h"
+
+#import <Foundation/Foundation.h>
+
+@interface UnityInterfaceWrapper : NSObject
+
++ (void)sendMessage:(NSString *)message toObject:(NSString *)objectName havingMethodName:(NSString *)methodName;
+
+@end
