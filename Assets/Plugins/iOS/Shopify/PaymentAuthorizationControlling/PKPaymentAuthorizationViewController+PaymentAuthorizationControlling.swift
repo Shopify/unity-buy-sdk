@@ -34,16 +34,13 @@ extension PKPaymentAuthorizationViewController: PaymentAuthorizationControlling 
             return delegate
         }
         set {
-            if let delegate = newValue as? PKPaymentAuthorizationViewControllerDelegate {
-                self.delegate = delegate
-            } else {
-                self.delegate = nil
-            }
+            self.delegate = newValue as? PKPaymentAuthorizationViewControllerDelegate
         }
     }
     
     func present(completion: ((Bool) -> Void)?) {
-        if let rootViewController = UIApplication.shared.delegate?.window??.rootViewController {
+        if let window = UIApplication.shared.delegate?.window,
+            let rootViewController = window?.rootViewController {
             rootViewController.present(self, animated: true) {
                 completion?(true)
             };

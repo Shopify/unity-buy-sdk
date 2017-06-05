@@ -43,7 +43,12 @@ import PassKit
         }
     }
     
-    static func from(status: PKPaymentAuthorizationStatus) -> PaymentStatus{
+    static func from(status: PKPaymentAuthorizationStatus?) -> PaymentStatus {
+        
+        guard let status = status else {
+            return .Cancelled
+        }
+        
         switch status {
         case .failure:
             return .Failed
@@ -140,15 +145,9 @@ extension PaymentSession {
 extension PaymentSession {
     
     func paymentAuthorizationDidFinish() {
-        let paymentStatus: PaymentStatus;
+        let paymentStatus   = PaymentStatus.from(status: lastAuthStatus)
         let unityController = UIApplication.shared.delegate as! UnityBuyAppController
         unityController.shouldResignActive = true
-        
-        if let lastAuthStatus = lastAuthStatus {
-            paymentStatus = PaymentStatus.from(status: lastAuthStatus)
-        } else {
-            paymentStatus = .Cancelled
-        }
         
         self.controller.dismiss {
             self.delegate?.paymentSessionDidFinish(session: self, with: paymentStatus)
