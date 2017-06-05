@@ -1,9 +1,9 @@
 //
-//  MockToken.swift
+//  Unity-iPhone-Bridging-Header.h
 //  UnityBuySDK
 //
 //  Created by Shopify.
-//  Copyright (c) 2017 Shopify Inc. All rights reserved.
+//  Copyright © 2017 Shopify Inc. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,31 +24,5 @@
 //  THE SOFTWARE.
 //
 
-import Foundation
-import PassKit
-
-class MockPaymentToken: PKPaymentToken {
-    
-    override var paymentMethod: PKPaymentMethod {
-        return self._paymentMethod
-    }
-    
-    override var transactionIdentifier: String {
-        return self._transactionIdentifier
-    }
-    
-    override var paymentData: Data {
-        return self._paymentData
-    }
-    
-    private let _paymentMethod: MockPaymentMethod
-    private let _transactionIdentifier = UUID().uuidString
-    private let _paymentData           = try! JSONSerialization.data(withJSONObject: [String: Any]())
-    
-    // ----------------------------------
-    //  MARK: - Init -
-    //
-    init(paymentMethod: MockPaymentMethod) {
-        self._paymentMethod = paymentMethod
-    }
-}
+#import "UnityBuyAppController.h"
+#import "UnityAppController+ViewHandling.h"
