@@ -1,9 +1,9 @@
 //
-//  MockToken.swift
-//  UnityBuySDK
+//  PaymentAuthorizationControlling.swift
+//  Unity-iPhone
 //
 //  Created by Shopify.
-//  Copyright (c) 2017 Shopify Inc. All rights reserved.
+//
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -27,28 +27,11 @@
 import Foundation
 import PassKit
 
-class MockPaymentToken: PKPaymentToken {
+@objc protocol PaymentAuthorizationControlling {
     
-    override var paymentMethod: PKPaymentMethod {
-        return self._paymentMethod
-    }
+    var authorizationDelegate: NSObjectProtocol? { get set }
     
-    override var transactionIdentifier: String {
-        return self._transactionIdentifier
-    }
-    
-    override var paymentData: Data {
-        return self._paymentData
-    }
-    
-    private let _paymentMethod: MockPaymentMethod
-    private let _transactionIdentifier = UUID().uuidString
-    private let _paymentData           = try! JSONSerialization.data(withJSONObject: [String: Any]())
-    
-    // ----------------------------------
-    //  MARK: - Init -
-    //
-    init(paymentMethod: MockPaymentMethod) {
-        self._paymentMethod = paymentMethod
-    }
+    init(paymentRequest request: PKPaymentRequest)
+    func present(completion: ((Bool) -> Void)?)
+    func dismiss(completion: (() -> Void)?)
 }
