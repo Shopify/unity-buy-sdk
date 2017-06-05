@@ -36,18 +36,18 @@ extension PKShippingMethod {
     
     convenience init?(serializedShippingMethod json:JSON) {
         
-        guard let label = json[PaymentSummaryItemField.label.rawValue] as? String,
-            let amount = json[PaymentSummaryItemField.amount.rawValue] as? String else {
+        guard
+            let label = json[PaymentSummaryItemField.label.rawValue] as? String,
+            let amount = json[PaymentSummaryItemField.amount.rawValue] as? String
+        else {
             return nil
         }
            
-        if
-            let typeString = json[PaymentSummaryItemField.type.rawValue] as? String,
+        if let typeString = json[PaymentSummaryItemField.type.rawValue] as? String,
             let typeInt = UInt(typeString),
             let type = PKPaymentSummaryItemType.init(rawValue: typeInt) {
-                self.init(label: label, amount: NSDecimalNumber.init(string: amount), type: type)
-        }
-        else {
+            self.init(label: label, amount: NSDecimalNumber.init(string: amount), type: type)
+        } else {
             self.init(label: label, amount: NSDecimalNumber.init(string: amount))
         }
         

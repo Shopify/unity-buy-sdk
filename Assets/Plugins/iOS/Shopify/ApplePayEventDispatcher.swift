@@ -99,9 +99,10 @@ extension ApplePayEventDispatcher: PaymentSessionDelegate {
             guard
                 let response     = response,
                 let authStatus   = response.authorizationStatus,
-                let summaryItems = response.summaryItems else {
-                    completion(.failure, [PKPaymentSummaryItem]())
-                    return
+                let summaryItems = response.summaryItems
+            else {
+                completion(.failure, [PKPaymentSummaryItem]())
+                return
             }
             completion(authStatus, summaryItems)
         }
@@ -119,9 +120,10 @@ extension ApplePayEventDispatcher: PaymentSessionDelegate {
                 let response        = response,
                 let authStatus      = response.authorizationStatus,
                 let summaryItems    = response.summaryItems,
-                let shippingMethods = response.shippingMethods else {
-                    completion(.failure, [PKShippingMethod](), [PKPaymentSummaryItem]())
-                    return
+                let shippingMethods = response.shippingMethods
+            else {
+                completion(.failure, [PKShippingMethod](), [PKPaymentSummaryItem]())
+                return
             }
             completion(authStatus, shippingMethods, summaryItems)
         }

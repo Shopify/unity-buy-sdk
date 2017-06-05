@@ -27,7 +27,7 @@
 import Foundation
 
 enum UnityMessageField: String {
-    case message = "Message"
+    case message    = "Message"
     case identifier = "Identifier"
 }
 
@@ -37,7 +37,7 @@ class UnityMessage {
     let identifier: String
     
     init(message: String) {
-        self.message = message
+        self.message    = message
         self.identifier = UUID().uuidString
     }
 }
@@ -46,7 +46,7 @@ extension UnityMessage: Serializable {
     func serializedJSON() -> JSON {
         var json = JSON.init()
         json[UnityMessageField.identifier.rawValue] = identifier
-        json[UnityMessageField.message.rawValue] = message
+        json[UnityMessageField.message.rawValue]    = message
         return json
     }
 }

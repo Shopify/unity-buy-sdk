@@ -1,5 +1,5 @@
 //
-//  UnityInterfaceWrapper.m
+//  UnityInterfaceWrapper.mm
 //  UnityBuySDK
 //
 //  Created by Shopify.
