@@ -7,23 +7,34 @@ namespace <%= namespace %>.SDK {
     using System;
 
     public class ShopifyIosPostProcessor {
+        /// <summary>
+        /// Perform post processing on the build to allow it to run
+        /// </summary>
         public static void Process(string buildPath) {
-            string testPath = Path.Combine(buildPath, "Libraries/Plugins/iOS/Shopify/BuyTests/");
-            var testDirectory = new DirectoryInfo(testPath);
             var project = new ExtendedPBXProject(buildPath);
+            SetBuildProperties(project);
+            SetCorrectTestsTarget(project);
+            project.Save();
+        }
 
-            try {
-                project.SetFilesInDirectoryToTestTarget(testDirectory);
-            } catch (Exception e) {
-                Debug.Log(e.Message);
-            }
+        /// <summary>
+        /// Perform post processing on the build to only run Shopify Tests
+        /// </summary>
+        public static void ProcessForTests(string buildPath) {
+            var project = new ExtendedPBXProject(buildPath);
+            SetBuildProperties(project);
+            SetCorrectTestsTarget(project);
+            project.RemoveFileFromBuild(project.TestTargetGuid, project.FindFileGuidByProjectPath("Unity-iPhone Tests/Unity_iPhone_Tests.m"));
+            project.Save();
+        }
 
+        /// Sets the correct build properties to run
+        private static void SetBuildProperties(ExtendedPBXProject project) {
             project.SetBuildProperty(project.GetAllTargetGuids(), ExtendedPBXProject.SwiftVersionKey, "3.0");
             project.SetBuildProperty(project.UnityTargetGuid, ExtendedPBXProject.RunpathSearchKey, "@executable_path/Frameworks");
             project.SetBuildProperty(project.TestTargetGuid, ExtendedPBXProject.RunpathSearchKey, "@loader_path/Frameworks");
             project.SetBuildProperty(project.TestTargetGuid, ExtendedPBXProject.ProjectModuleNameKey, "$(PRODUCT_NAME:c99extidentifier)Tests");
             project.SetBuildPropertyForConfig(project.GetDebugConfig(project.UnityTargetGuid), ExtendedPBXProject.EnableTestabilityKey, "YES");
-
 
             bool isBelowMinimumTarget = false;
 
@@ -38,8 +49,18 @@ namespace <%= namespace %>.SDK {
             if (isBelowMinimumTarget) {
                 project.SetBuildProperty(project.GetAllTargetGuids(), ExtendedPBXProject.DeploymentTarget, "9.0");
             }
+        }
 
-            project.Save();
+        /// Sets the correct target for Shopify Tests
+        private static void SetCorrectTestsTarget(ExtendedPBXProject project) {
+            string testPath = Path.Combine(project.BuildPath, "Libraries/Plugins/iOS/Shopify/BuyTests/");
+            var testDirectory = new DirectoryInfo(testPath);
+
+            try {
+                project.SetFilesInDirectoryToTestTarget(testDirectory);
+            } catch (Exception e) {
+                Debug.Log(e.Message);
+            }
         }
     }
 }
