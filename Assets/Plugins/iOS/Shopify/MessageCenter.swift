@@ -1,5 +1,5 @@
 //
-//  UnityMessageResponse.swift
+//  MessageCenter.swift
 //  UnityBuySDK
 //
 //  Created by Shopify.
@@ -25,19 +25,25 @@
 //
 
 import Foundation
+import PassKit
 
-@objc class UnityMessageResponse: NSObject {
+@objc class MessageCenter: NSObject {
     
-    let identifier: String
-    let completion: DispatchSemaphore
-    var result: String?
+    static var messages = [String: UnityMessage]()
     
-    // ----------------------------------
-    //  MARK: - Init -
-    //
-    init(identifier: String, completion: DispatchSemaphore) {
-        self.identifier   = identifier
-        self.completion   = completion
-        super.init()
+    static func send(_ message: UnityMessage) {
+        UnityInterfaceWrapper.sendMessage(try! message.serializedString(), toObject: message.recipientObjectName, havingMethodName: message.recipientMethodName)
+    }
+    
+    static func send(_ message: UnityMessage, completionHandler: UnityMessage.MessageCompletion?) {
+        
+        messages[message.identifier] = message
+        
+        UnityInterfaceWrapper.sendMessage(try! message.serializedString(), toObject: message.recipientObjectName, havingMethodName: message.recipientMethodName)
+        
+        message.wait { result in
+            messages[message.identifier] = message
+            completionHandler?(result)
+        }
     }
 }

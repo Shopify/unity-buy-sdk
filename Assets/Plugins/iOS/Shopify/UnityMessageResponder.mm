@@ -28,13 +28,8 @@
 #import "ProductName-Swift.h"
 
 extern "C" {
-    void _UnityRespondToMessage(const char *identifier, const char *message) {
-        UnityMessageResponse *response = [UnityMessageSender.pendingMessageResponses objectForKey:[NSString stringWithUTF8String:identifier]];
-        
-        if (message != nil) {
-            response.result = [NSString stringWithUTF8String:message];
-        }
-        
-        dispatch_semaphore_signal(response.completion);
+    void _UnityRespondToMessage(const char *identifier, const char *response) {
+        UnityMessage *message = [MessageCenter.messages objectForKey:[NSString stringWithUTF8String:identifier]];
+        [message completeWithResult: [NSString stringWithUTF8String: response]];
     }
 }

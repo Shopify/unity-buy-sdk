@@ -31,14 +31,41 @@ enum UnityMessageField: String {
     case identifier = "Identifier"
 }
 
-class UnityMessage {
+@objc class UnityMessage: NSObject {
     
-    let message: String
+    public typealias MessageCompletion = (_ result: String?) -> Void
+
+    let recipientObjectName: String
+    let recipientMethodName: String
+    let content: String
     let identifier: String
     
-    init(message: String) {
-        self.message    = message
+    internal let semaphore: DispatchSemaphore
+    
+    var result: String?
+    
+    // ----------------------------------
+    //  MARK: - Init -
+    //
+    init(content: String, recipientObjectName: String, recipientMethodName: String) {
+        self.recipientObjectName = recipientObjectName
+        self.recipientMethodName = recipientMethodName
+        self.content    = content
         self.identifier = UUID().uuidString
+        self.semaphore  = DispatchSemaphore(value: 0)
+        super.init()
+    }
+    
+    func wait(withCompletion completion: MessageCompletion?) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.semaphore.wait()
+            completion?(self.result)
+        }
+    }
+    
+    func complete(withResult result: String? = nil) {
+        self.result = result;
+        semaphore.signal();
     }
 }
 
@@ -46,7 +73,7 @@ extension UnityMessage: Serializable {
     func serializedJSON() -> JSON {
         var json = JSON.init()
         json[UnityMessageField.identifier.rawValue] = identifier
-        json[UnityMessageField.message.rawValue]    = message
+        json[UnityMessageField.message.rawValue]    = content
         return json
     }
 }
