@@ -1,0 +1,44 @@
+namespace <%= namespace %>.SDK {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
+    public class ResponseMergeUtil {
+        public delegate void MergeFieldDelegate(string field, Dictionary<string, object> into, Dictionary<string, object> responseA, Dictionary<string, object> responseB);
+
+        public static void MergeOverwrite(string field, Dictionary<string, object> into, Dictionary<string, object> responseA, Dictionary<string, object> responseB) {
+            into[field] = responseB[field];
+        }
+
+        private Dictionary<string, MergeFieldDelegate> FieldMergers = new Dictionary<string, MergeFieldDelegate>();
+        private Dictionary<string, ResponseMergeUtil> ObjectMergers = new Dictionary<string, ResponseMergeUtil>();
+
+        public void AddFieldMerger(string field, MergeFieldDelegate merger) {
+            FieldMergers[field] = merger;
+        }
+
+        public void AddObjectMerger(string field, ResponseMergeUtil merger) {
+            ObjectMergers[field] = merger;
+        }
+
+        public Dictionary<string, object> Merge(Dictionary<string, object> responseA, Dictionary<string, object> responseB) {
+            Dictionary<string, object> MergedResponse = new Dictionary<string, object>();
+
+            foreach(string field in responseA.Keys) {
+                MergedResponse[field] = responseA[field];
+            }
+
+            foreach(string field in responseB.Keys) {
+                if (FieldMergers.ContainsKey(field)) {
+
+                } else if (ObjectMergers.ContainsKey(field)) {
+
+                } else {
+                    MergeOverwrite(field, MergedResponse, responseA, responseB);
+                }
+            }
+
+            return MergedResponse;
+        }
+    }
+}

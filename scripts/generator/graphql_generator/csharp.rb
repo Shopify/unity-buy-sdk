@@ -106,6 +106,7 @@ module GraphQLGenerator
         SDK/UnityLoader
         SDK/TopLevelResponse
         SDK/MutationResponse
+        SDK/ResponseMergeUtil
         SDK/QueryResponse
         SDK/ILoader
         SDK/Log
