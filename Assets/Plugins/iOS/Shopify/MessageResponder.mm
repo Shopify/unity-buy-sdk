@@ -1,5 +1,5 @@
 //
-//  UnityMessageResponder.mm
+//  MessageResponder.mm
 //  UnityBuySDK
 //
 //  Created by Shopify.
@@ -28,7 +28,7 @@
 #import "ProductName-Swift.h"
 
 extern "C" {
-    void _UnityRespondToMessage(const char *identifier, const char *response) {
+    void _RespondToNativeMessage(const char *identifier, const char *response) {
         UnityMessage *message = [MessageCenter messageForIdentifier:[NSString stringWithUTF8String: identifier]];
         [message completeWithResult: [NSString stringWithUTF8String: response]];
     }
