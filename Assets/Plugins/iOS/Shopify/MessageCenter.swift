@@ -41,9 +41,9 @@ import PassKit
         
         UnityInterfaceWrapper.sendMessage(try! message.serializedString(), toObject: message.recipientObjectName, havingMethodName: message.recipientMethodName)
         
-        message.wait { result in
+        message.wait { response in
             messages[message.identifier] = nil
-            completionHandler?(result)
+            completionHandler?(response)
         }
     }
     

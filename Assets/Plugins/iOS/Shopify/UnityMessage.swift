@@ -33,7 +33,7 @@ enum UnityMessageField: String {
 
 @objc class UnityMessage: NSObject {
     
-    public typealias MessageCompletion = (_ result: String?) -> Void
+    public typealias MessageCompletion = (_ response: String?) -> Void
 
     let recipientObjectName: String
     let recipientMethodName: String
@@ -42,7 +42,7 @@ enum UnityMessageField: String {
     
     internal let semaphore: DispatchSemaphore
     
-    var result: String?
+    var response: String?
     
     // ----------------------------------
     //  MARK: - Init -
@@ -59,12 +59,12 @@ enum UnityMessageField: String {
     func wait(withCompletion completion: MessageCompletion?) {
         DispatchQueue.global(qos: .userInitiated).async {
             self.semaphore.wait()
-            completion?(self.result)
+            completion?(self.response)
         }
     }
     
-    func complete(withResult result: String? = nil) {
-        self.result = result
+    func complete(withResponse response: String? = nil) {
+        self.response = response
         semaphore.signal()
     }
 }

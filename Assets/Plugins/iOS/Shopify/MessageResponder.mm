@@ -30,6 +30,6 @@
 extern "C" {
     void _RespondToNativeMessage(const char *identifier, const char *response) {
         UnityMessage *message = [MessageCenter messageForIdentifier:[NSString stringWithUTF8String: identifier]];
-        [message completeWithResult: [NSString stringWithUTF8String: response]];
+        [message completeWithResponse: [NSString stringWithUTF8String: response]];
     }
 }
