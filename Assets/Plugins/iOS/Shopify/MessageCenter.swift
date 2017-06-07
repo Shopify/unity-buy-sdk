@@ -29,7 +29,7 @@ import PassKit
 
 @objc class MessageCenter: NSObject {
     
-    static var messages = [String: UnityMessage]()
+    private static var messages = [String: UnityMessage]()
     
     static func send(_ message: UnityMessage) {
         UnityInterfaceWrapper.sendMessage(try! message.serializedString(), toObject: message.recipientObjectName, havingMethodName: message.recipientMethodName)
@@ -42,8 +42,12 @@ import PassKit
         UnityInterfaceWrapper.sendMessage(try! message.serializedString(), toObject: message.recipientObjectName, havingMethodName: message.recipientMethodName)
         
         message.wait { result in
-            messages[message.identifier] = message
+            messages[message.identifier] = nil
             completionHandler?(result)
         }
+    }
+    
+    static func message(forIdentifier identifier: String) -> UnityMessage? {
+        return messages[identifier]
     }
 }

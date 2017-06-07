@@ -64,8 +64,8 @@ enum UnityMessageField: String {
     }
     
     func complete(withResult result: String? = nil) {
-        self.result = result;
-        semaphore.signal();
+        self.result = result
+        semaphore.signal()
     }
 }
 

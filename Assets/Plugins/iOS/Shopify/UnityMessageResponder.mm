@@ -29,7 +29,7 @@
 
 extern "C" {
     void _UnityRespondToMessage(const char *identifier, const char *response) {
-        UnityMessage *message = [MessageCenter.messages objectForKey:[NSString stringWithUTF8String:identifier]];
+        UnityMessage *message = [MessageCenter messageForIdentifier:[NSString stringWithUTF8String: identifier]];
         [message completeWithResult: [NSString stringWithUTF8String: response]];
     }
 }
