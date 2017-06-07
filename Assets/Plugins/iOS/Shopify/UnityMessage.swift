@@ -27,16 +27,11 @@
 import Foundation
 
 enum UnityMessageField: String {
-    case message    = "Message"
+    case content    = "Content"
     case identifier = "Identifier"
 }
 
 @objc class UnityMessage: NSObject {
-    
-    enum Field: String {
-        case message    = "Message"
-        case identifier = "Identifier"
-    }
     
     typealias MessageCompletion = (_ response: String?) -> Void
 
@@ -77,7 +72,7 @@ extension UnityMessage: Serializable {
     func serializedJSON() -> JSON {
         var json = JSON.init()
         json[UnityMessageField.identifier.rawValue] = identifier
-        json[UnityMessageField.message.rawValue]    = content
+        json[UnityMessageField.content.rawValue]    = content
         return json
     }
 }
