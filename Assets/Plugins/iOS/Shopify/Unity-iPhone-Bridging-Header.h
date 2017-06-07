@@ -26,4 +26,4 @@
 
 #import "UnityBuyAppController.h"
 #import "UnityAppController+ViewHandling.h"
-#import "MessageSender.h"
+#import "UnityInterface.h"
