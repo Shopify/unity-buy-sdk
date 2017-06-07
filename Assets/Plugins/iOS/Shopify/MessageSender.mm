@@ -1,5 +1,5 @@
 //
-//  UnityInterfaceWrapper.mm
+//  MessageSender.mm
 //  UnityBuySDK
 //
 //  Created by Shopify.
@@ -25,12 +25,12 @@
 //
 
 
-#import "UnityInterfaceWrapper.h"
+#import "MessageSender.h"
 
-@implementation UnityInterfaceWrapper
+@implementation MessageSender
 
-+ (void)sendMessage:(NSString *)message toObject:(NSString *)objectName havingMethodName:(NSString *)methodName {
-    UnitySendMessage(objectName.UTF8String, methodName.UTF8String, message.UTF8String);
++ (void)sendMessage:(NSString *)message object:(NSString *)object method:(NSString *)method {
+    UnitySendMessage(object.UTF8String, method.UTF8String, message.UTF8String);
 }
 
 @end

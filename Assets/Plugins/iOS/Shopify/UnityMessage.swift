@@ -33,37 +33,41 @@ enum UnityMessageField: String {
 
 @objc class UnityMessage: NSObject {
     
-    public typealias MessageCompletion = (_ response: String?) -> Void
+    enum Field: String {
+        case message    = "Message"
+        case identifier = "Identifier"
+    }
+    
+    typealias MessageCompletion = (_ response: String?) -> Void
 
-    let recipientObjectName: String
-    let recipientMethodName: String
+    let object: String
+    let method: String
     let content: String
     let identifier: String
     
-    internal let semaphore: DispatchSemaphore
-    
-    var response: String?
+    private let semaphore: DispatchSemaphore
+    private(set) var response: String?
     
     // ----------------------------------
     //  MARK: - Init -
     //
-    init(content: String, recipientObjectName: String, recipientMethodName: String) {
-        self.recipientObjectName = recipientObjectName
-        self.recipientMethodName = recipientMethodName
+    init(content: String, object: String, method: String) {
+        self.object     = object
+        self.method     = method
         self.content    = content
         self.identifier = UUID().uuidString
         self.semaphore  = DispatchSemaphore(value: 0)
         super.init()
     }
     
-    func wait(withCompletion completion: MessageCompletion?) {
+    func wait(with completion: MessageCompletion?) {
         DispatchQueue.global(qos: .userInitiated).async {
             self.semaphore.wait()
             completion?(self.response)
         }
     }
     
-    func complete(withResponse response: String? = nil) {
+    func complete(with response: String? = nil) {
         self.response = response
         semaphore.signal()
     }

@@ -32,14 +32,14 @@ import PassKit
     private static var messages = [String: UnityMessage]()
     
     static func send(_ message: UnityMessage) {
-        UnityInterfaceWrapper.sendMessage(try! message.serializedString(), toObject: message.recipientObjectName, havingMethodName: message.recipientMethodName)
+        MessageSender.sendMessage(try! message.serializedString(), object: message.object, method: message.method)
     }
     
     static func send(_ message: UnityMessage, completionHandler: UnityMessage.MessageCompletion?) {
         
         messages[message.identifier] = message
         
-        UnityInterfaceWrapper.sendMessage(try! message.serializedString(), toObject: message.recipientObjectName, havingMethodName: message.recipientMethodName)
+        MessageSender.sendMessage(try! message.serializedString(), object: message.object, method: message.method)
         
         message.wait { response in
             messages[message.identifier] = nil

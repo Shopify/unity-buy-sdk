@@ -50,7 +50,7 @@ class ApplePayEventDispatcher: NSObject {
     
     func call(method: MethodName, withValue value: String, completionHandler: AppleEventCompletion?) {
         
-        let message = UnityMessage(content: value, recipientObjectName: receiverName, recipientMethodName: method.rawValue)
+        let message = UnityMessage(content: value, object: receiverName, method: method.rawValue)
         MessageCenter.send(message) { (serializedResponse: String?) in
             
             guard let completionHandler = completionHandler else {
