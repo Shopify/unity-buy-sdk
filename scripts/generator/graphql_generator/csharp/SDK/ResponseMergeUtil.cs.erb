@@ -4,9 +4,9 @@ namespace <%= namespace %>.SDK {
     using System.Collections.Generic;
 
     public class ResponseMergeUtil {
-        public delegate void MergeFieldDelegate(string field, Dictionary<string, object> into, Dictionary<string, object> responseA, Dictionary<string, object> responseB);
+        public delegate void MergeFieldDelegate(string field, IDictionary into, IDictionary responseA, IDictionary responseB);
 
-        public static void MergeOverwrite(string field, Dictionary<string, object> into, Dictionary<string, object> responseA, Dictionary<string, object> responseB) {
+        public static void MergeOverwrite(string field, IDictionary into, IDictionary responseA, IDictionary responseB) {
             into[field] = responseB[field];
         }
 
@@ -21,7 +21,7 @@ namespace <%= namespace %>.SDK {
             ObjectMergers[field] = merger;
         }
 
-        public Dictionary<string, object> Merge(Dictionary<string, object> responseA, Dictionary<string, object> responseB) {
+        public Dictionary<string, object> Merge(IDictionary responseA, IDictionary responseB) {
             Dictionary<string, object> MergedResponse = new Dictionary<string, object>();
 
             foreach(string field in responseA.Keys) {
@@ -32,7 +32,10 @@ namespace <%= namespace %>.SDK {
                 if (FieldMergers.ContainsKey(field)) {
 
                 } else if (ObjectMergers.ContainsKey(field)) {
-
+                    MergedResponse[field] = ObjectMergers[field].Merge(
+                        (IDictionary) responseA[field], 
+                        (IDictionary) responseB[field]
+                    );
                 } else {
                     MergeOverwrite(field, MergedResponse, responseA, responseB);
                 }
