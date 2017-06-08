@@ -39,7 +39,7 @@ import PassKit
         let method  = message.method.cString(using: .utf8)
         let content = try! message.serializedString().cString(using: .utf8)
         
-        UnitySendMessage(object, method, content);
+        UnitySendMessage(object, method, content)
         
         message.wait { response in
             messages[message.identifier] = nil

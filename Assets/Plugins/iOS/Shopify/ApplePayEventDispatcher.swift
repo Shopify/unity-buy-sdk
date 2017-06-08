@@ -51,7 +51,7 @@ class ApplePayEventDispatcher: NSObject {
     func call(method: MethodName, withValue value: String, completionHandler: AppleEventCompletion?) {
         
         let message = UnityMessage(content: value, object: receiverName, method: method.rawValue)
-        MessageCenter.send(message) { (serializedResponse: String?) in
+        MessageCenter.send(message) { serializedResponse in
             
             guard let completionHandler = completionHandler else {
                 return
@@ -80,7 +80,7 @@ extension ApplePayEventDispatcher: PaymentSessionDelegate {
         
         let paymentString = try! payment.serializedString()
         
-        call(method: .fetchCheckoutStatusForToken, withValue: paymentString) { (response: ApplePayEventResponse?) in
+        call(method: .fetchCheckoutStatusForToken, withValue: paymentString) { response in
             guard let response = response, let authStatus = response.authorizationStatus else {
                 completion(.failure)
                 return
@@ -97,7 +97,7 @@ extension ApplePayEventDispatcher: PaymentSessionDelegate {
             return
         }
         
-        call(method: .updateSummaryItemsForShippingIdentifier, withValue: identifier) { (response: ApplePayEventResponse?) in
+        call(method: .updateSummaryItemsForShippingIdentifier, withValue: identifier) { response in
             guard
                 let response     = response,
                 let authStatus   = response.authorizationStatus,
@@ -117,7 +117,7 @@ extension ApplePayEventDispatcher: PaymentSessionDelegate {
             return
         }
         
-        call(method: .updateSummaryItemsForShippingContact, withValue: contactString) { (response: ApplePayEventResponse?) in
+        call(method: .updateSummaryItemsForShippingContact, withValue: contactString) { response in
             guard
                 let response        = response,
                 let authStatus      = response.authorizationStatus,
