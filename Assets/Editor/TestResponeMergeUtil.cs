@@ -109,6 +109,38 @@ namespace Shopify.Tests
             Assert.AreNotEqual(responseB["fieldHasDictionary"], merged["fieldHasDictionary"]);
         }
 
+        [Test]
+        public void CustomFieldMerger() {
+            Dictionary<string, object> responseA = GetResponseA();
+            Dictionary<string, object> responseB = GetResponseB();
+
+            ResponseMergeUtil merger = new ResponseMergeUtil();
+
+            merger.AddFieldMerger("fieldInBoth", (string field, IDictionary into, IDictionary dataA, IDictionary dataB) => {
+                into[field] = (string) dataA[field] + (string) dataB[field];
+            });
+
+            Dictionary<string, object> merged = merger.Merge(responseA, responseB);
+
+            Assert.AreEqual("i am ai am b", merged["fieldInBoth"], "Custom merger worked");
+        }
+
+        [Test]
+        public void MergeListsConcat() {
+            Dictionary<string, object> responseA = GetResponseA();
+            Dictionary<string, object> responseB = GetResponseB();
+
+            ResponseMergeUtil merger = new ResponseMergeUtil();
+
+            merger.AddFieldMerger("fieldHasList", ResponseMergeUtil.MergeListsConcat);
+
+            Dictionary<string, object> merged = merger.Merge(responseA, responseB);
+
+            Assert.AreEqual(2, ((List<object>) merged["fieldHasList"]).Count, "Has two elements");
+            Assert.AreEqual(0, ((List<object>) merged["fieldHasList"])[0], "First value was correct");
+            Assert.AreEqual(1, ((List<object>) merged["fieldHasList"])[1], "Second value was correct");
+        }
+
         private Dictionary<string,object> GetResponseA() {
             return new Dictionary<string, object>() {
                 {"fieldOnlyInA", 3},
