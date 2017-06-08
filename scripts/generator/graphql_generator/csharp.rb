@@ -113,6 +113,7 @@ module GraphQLGenerator
         SDK/TopLevelResponse
         SDK/MutationResponse
         SDK/ResponseMergeUtil
+        SDK/MergeCheckout
         SDK/QueryResponse
         SDK/ILoader
         SDK/Log
