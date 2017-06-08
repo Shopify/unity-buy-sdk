@@ -141,6 +141,20 @@ namespace Shopify.Tests
             Assert.AreEqual(1, ((List<object>) merged["fieldHasList"])[1], "Second value was correct");
         }
 
+        [Test]
+        public void DoNotMerge() {
+            Dictionary<string, object> responseA = GetResponseA();
+            Dictionary<string, object> responseB = GetResponseB();
+
+            ResponseMergeUtil merger = new ResponseMergeUtil();
+
+            merger.AddFieldMerger("fieldInBoth", ResponseMergeUtil.DoNotMerge);
+
+            Dictionary<string, object> merged = merger.Merge(responseA, responseB);
+
+            Assert.AreEqual("i am a", merged["fieldInBoth"], "Custom merger worked");
+        }
+
         private Dictionary<string,object> GetResponseA() {
             return new Dictionary<string, object>() {
                 {"fieldOnlyInA", 3},
