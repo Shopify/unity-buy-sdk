@@ -6,7 +6,11 @@ namespace <%= namespace %>.SDK {
     public class ResponseMergeUtil {
         public delegate void MergeFieldDelegate(string field, IDictionary into, IDictionary responseA, IDictionary responseB);
 
-        public static void DoNotMerge(string field, IDictionary into, IDictionary responseA, IDictionary responseB) {}
+        public static void DoNotMergeIfExists(string field, IDictionary into, IDictionary responseA, IDictionary responseB) {
+            if (!responseA.Contains(field)) {
+                into[field] = responseB[field];
+            }
+        }
 
         public static void MergeOverwrite(string field, IDictionary into, IDictionary responseA, IDictionary responseB) {
             into[field] = responseB[field];

@@ -82,11 +82,12 @@ namespace Shopify.Tests
 
             ResponseMergeUtil merger = new ResponseMergeUtil();
 
-            merger.AddFieldMerger("fieldInBoth", ResponseMergeUtil.DoNotMerge);
+            merger.AddFieldMerger("fieldInBoth", ResponseMergeUtil.DoNotMergeIfExists);
 
             Dictionary<string, object> merged = merger.Merge(responseA, responseB);
 
-            Assert.AreEqual("i am a", merged["fieldInBoth"], "Custom merger worked");
+            Assert.AreEqual("i am a", merged["fieldInBoth"], "Did not merge when existed");
+            Assert.AreEqual(33, merged["fieldOnlyInB"], "Merged when did not exist");
         }
 
         private Dictionary<string,object> GetResponseA() {
@@ -103,6 +104,7 @@ namespace Shopify.Tests
 
         private Dictionary<string,object> GetResponseB() {
             return new Dictionary<string, object>() {
+                {"fieldOnlyInB", 33},
                 {"fieldInBoth", "i am b"},
                 {"fieldHasList", new List<int>() { 1 }},
                 {"fieldHasDictionary", new Dictionary<string, string>(){
