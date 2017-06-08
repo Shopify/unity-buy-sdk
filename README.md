@@ -8,6 +8,12 @@ The Unity Buy SDK allows Unity developers to query and sell products from Shopif
 - [Documentation](#documentation)
 - [Using the Unity Buy SDK in Unity](#using-the-unity-buy-sdk-in-unity)
 - [Examples](#examples)
+    + [Initialize the SDK](/EXAMPLES.md#initialize-the-sdk)
+    + [Query all products](/EXAMPLES.md#query-all-products)
+    + [Query all collections](/EXAMPLES.md#query-all-collections)
+    + [Cart and web checkout](/EXAMPLES.md#cart-and-web-checkout)
+    + [Cart line items based on selected options](/EXAMPLES.md#cart-line-items-based-on-selected-options)
+    + [Custom queries](/EXAMPLES.md#custom-queries)
 - [Getting set up for contributing](#getting-set-up-for-contributing)
 - [Build the GraphQL client](#build-the-unity-buy-sdk)
 - [Testing](#testing)
@@ -45,7 +51,14 @@ By following the steps below you'll install the Unity Buy SDK into your Unity pr
 Alternatively, you can clone this repo and build the Unity Buy SDK by following the documentation below. After building the SDK, you can copy `Assets/Shopify/` to your project. `Assets/Shopify/` contains all the source files that you need to run the Unity Buy SDK.
 
 ## Examples
-Checkout our [Example Guide](https://github.com/Shopify/unity-buy-sdk/blob/master/EXAMPLES.md).
+Checkout our [Example Guide](https://github.com/Shopify/unity-buy-sdk/blob/master/EXAMPLES.md). It covers the following topics:
+
+* [Initialize the SDK](/EXAMPLES.md#initialize-the-sdk)
+* [Query all products](/EXAMPLES.md#query-all-products)
+* [Query all collections](/EXAMPLES.md#query-all-collections)
+* [Cart and web checkout](/EXAMPLES.md#cart-and-web-checkout)
+* [Cart line items based on selected options](/EXAMPLES.md#cart-line-items-based-on-selected-options)
+* [Custom queries](/EXAMPLES.md#custom-queries)
 
 ## Getting set up for contributing
 
