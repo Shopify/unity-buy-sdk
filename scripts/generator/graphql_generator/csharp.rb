@@ -88,7 +88,7 @@ module GraphQLGenerator
         ShopifyBuy
         Cart
         Editor/ShopifyIosPostProcessor
-        Editor/PostProcessor
+        Editor/ShopifyBuildPipeline
         Editor/ExtendedPBXProject
         SDK/Arguments
         SDK/InputBase

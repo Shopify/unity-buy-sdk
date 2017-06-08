@@ -7,7 +7,6 @@ namespace <%= namespace %>.SDK {
     using UnityEditor;
 
     public class ShopifyBuildPipeline : MonoBehaviour {
-
         private static string PlayerPathArg = "-buildPlayerPath";
         private static string PlayerPath {
             get {
@@ -23,7 +22,7 @@ namespace <%= namespace %>.SDK {
         }
 
         /// <summary>
-        /// Build an iOS project that is ready to run Shopify tests
+        /// Build an iOS project that is ready to run Shopify tests on a Simulator
         /// </summary>
         [MenuItem("Build/Build Shopify iOS Tests")]
         public static void BuildIosForTests()
@@ -31,6 +30,7 @@ namespace <%= namespace %>.SDK {
             string path = PlayerPath;
             string[] scenes = new string[0];     
 
+            PlayerSettings.iOS.sdkVersion = iOSSdkVersion.SimulatorSDK;
             BuildPipeline.BuildPlayer(scenes, path, BuildTarget.iOS, BuildOptions.Development);
             ShopifyIosPostProcessor.ProcessForTests(path);
         }
