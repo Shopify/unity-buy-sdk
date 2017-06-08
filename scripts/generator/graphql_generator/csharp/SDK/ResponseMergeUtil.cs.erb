@@ -10,6 +10,22 @@ namespace <%= namespace %>.SDK {
             into[field] = responseB[field];
         }
 
+        public static void MergeListsConcat(string field, IDictionary into, IDictionary responseA, IDictionary responseB) {
+            List<object> newList = new List<object>();
+            IList listA = (IList) responseA[field];
+            IList listB = (IList) responseB[field];
+
+            foreach(object item in listA) {
+                newList.Add(item);
+            }
+
+            foreach(object item in listB) {
+                newList.Add(item);
+            }
+
+            into[field] = newList;
+        }
+
         private Dictionary<string, MergeFieldDelegate> FieldMergers = new Dictionary<string, MergeFieldDelegate>();
         private Dictionary<string, ResponseMergeUtil> ObjectMergers = new Dictionary<string, ResponseMergeUtil>();
 
@@ -30,7 +46,7 @@ namespace <%= namespace %>.SDK {
 
             foreach(string field in responseB.Keys) {
                 if (FieldMergers.ContainsKey(field)) {
-
+                    FieldMergers[field](field, MergedResponse, responseA, responseB);
                 } else if (ObjectMergers.ContainsKey(field)) {
                     MergedResponse[field] = ObjectMergers[field].Merge(
                         (IDictionary) responseA[field], 
