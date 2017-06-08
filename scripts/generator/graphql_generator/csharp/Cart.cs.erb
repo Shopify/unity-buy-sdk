@@ -37,16 +37,14 @@ namespace <%= namespace %> {
 
         private bool IsCreated {
             get {
-                return CheckoutId != null;
+                return CurrentCheckout != null;
             }
         }
 
         private const float POLL_DELAY = 0.5f;
         private CartLineItems _LineItems;
         private ShopifyClient Client;
-        private string CheckoutId = null;
-        private string CheckoutWebUrl = null;
-        private bool IsCheckoutReady = true;
+        private Checkout CurrentCheckout = null;
 
         /// <summary>
         /// Constructs a new cart using a <see ref="ShopifyClient">ShopifyClient </see>. Typically, carts won't be
@@ -72,7 +70,7 @@ namespace <%= namespace %> {
                 if (errors != null || httpError != null) {
                     failure(errors, httpError);
                 } else {
-                    success(CheckoutWebUrl);
+                    success(CurrentCheckout.webUrl());
                 }
             });
         }
@@ -114,17 +112,17 @@ namespace <%= namespace %> {
             bool doDelete = LineItems.Deleted().Count > 0;
 
             if (doAdd) {
-                DefaultQueries.checkout.LineItemsAdd(query, CheckoutId, CartLineItems.ConvertToCheckoutLineItemInput(LineItems.New()));
+                DefaultQueries.checkout.LineItemsAdd(query, CurrentCheckout.id(), CartLineItems.ConvertToCheckoutLineItemInput(LineItems.New()));
                 LineItems.ClearNew();
             }
 
             if (doModify) {
-                DefaultQueries.checkout.LineItemsUpdate(query, CheckoutId, CartLineItems.ConvertToCheckoutLineItemUpdateInput(LineItems.Modified()));
+                DefaultQueries.checkout.LineItemsUpdate(query, CurrentCheckout.id(), CartLineItems.ConvertToCheckoutLineItemUpdateInput(LineItems.Modified()));
                 LineItems.ClearModified();
             }
 
             if (doDelete) {
-                DefaultQueries.checkout.LineItemsRemove(query, CheckoutId, CartLineItems.ConvertToCheckoutIds(LineItems.Deleted()));
+                DefaultQueries.checkout.LineItemsRemove(query, CurrentCheckout.id(), CartLineItems.ConvertToCheckoutIds(LineItems.Deleted()));
                 LineItems.ClearDeleted();
             }
 
@@ -144,10 +142,15 @@ namespace <%= namespace %> {
         }
 
         private void UpdateCheckout(Checkout checkout) {
-            CheckoutId = checkout.id();
-            IsCheckoutReady = checkout.ready();
-            CheckoutWebUrl = checkout.webUrl();
-            UpdateLineItemIdsFromCheckout(checkout);
+            if (CurrentCheckout == null) {
+                CurrentCheckout = checkout;
+            } else {
+                MergeCheckout merger = new MergeCheckout();
+
+                CurrentCheckout = merger.Merge(CurrentCheckout, checkout);    
+            }
+
+            UpdateLineItemIdsFromCheckout(CurrentCheckout);
         }
 
         private void UpdateLineItemIdsFromCheckout(Checkout checkout) {
@@ -167,12 +170,12 @@ namespace <%= namespace %> {
         }
 
         private void CheckoutPoll(Action<List<string>, string> callback) {
-            if (IsCheckoutReady) {
+            if (CurrentCheckout.ready()) {
                 callback(null, null);
             } else {
                 QueryRootQuery query = new QueryRootQuery();
 
-                DefaultQueries.checkout.Poll(query, CheckoutId);
+                DefaultQueries.checkout.Poll(query, CurrentCheckout.id());
 
                 Client.Query(query, (QueryRoot response, List<string> errors, string httpError) => {
                     if (errors != null || httpError != null) {
@@ -182,7 +185,7 @@ namespace <%= namespace %> {
 
                         UpdateCheckout(checkout);
 
-                        if (IsCheckoutReady) {
+                        if (CurrentCheckout.ready()) {
                             callback(null, null);
                         } else {
                             #if !SHOPIFY_MONO_UNIT_TEST
