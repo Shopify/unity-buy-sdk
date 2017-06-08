@@ -92,6 +92,23 @@ namespace Shopify.Tests
             Assert.AreEqual(33, merged["fieldOnlyInB"], "Merged when did not exist");
         }
 
+        [Test]
+        public void TestNestedMerge() {
+            Dictionary<string, object> responseA = GetResponseA();
+            Dictionary<string, object> responseB = GetResponseB();
+
+            ResponseMergeUtil merger = new ResponseMergeUtil();
+
+            merger.AddObjectMerger("fieldHasDictionary", new ResponseMergeUtil());
+
+            Dictionary<string, object> merged = merger.Merge(responseA, responseB);
+
+            Assert.AreEqual(3, merged["fieldOnlyInA"], "Brought in field from A");
+            Assert.AreEqual("i am b", merged["fieldInBoth"], "Overwrote field in A from B");
+            Assert.AreNotEqual(responseA["fieldHasDictionary"], merged["fieldHasDictionary"]);
+            Assert.AreNotEqual(responseB["fieldHasDictionary"], merged["fieldHasDictionary"]);
+        }
+
         private Dictionary<string,object> GetResponseA() {
             return new Dictionary<string, object>() {
                 {"fieldOnlyInA", 3},
