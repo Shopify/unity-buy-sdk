@@ -4,9 +4,9 @@ namespace <%= namespace %>.SDK {
     using System.Collections.Generic;
 
     public abstract class AbstractResponse {
+        public Dictionary<string,object> DataJSON { get; protected set; }
         protected Dictionary<string,object> Data;
-        protected Dictionary<string,object> DataJSON;
-
+        
         protected T Get<T>(string field, string alias = null) {
             if (alias != null) {
                 ValidationUtils.ValidateAlias(alias);

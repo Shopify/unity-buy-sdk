@@ -112,6 +112,7 @@ module GraphQLGenerator
         SDK/UnityTimeout
         SDK/TopLevelResponse
         SDK/MutationResponse
+        SDK/ResponseMergeUtil
         SDK/QueryResponse
         SDK/ILoader
         SDK/Log
