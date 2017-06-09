@@ -17,8 +17,8 @@ namespace Shopify.Tests
 
             Dictionary<string, object> merged = merger.Merge(responseA, responseB);
 
-            Assert.IsTrue(!Object.ReferenceEquals(responseA, merged));
-            Assert.IsTrue(!Object.ReferenceEquals(responseB, merged));
+            Assert.IsFalse(Object.ReferenceEquals(responseA, merged));
+            Assert.IsFalse(Object.ReferenceEquals(responseB, merged));
             Assert.AreNotEqual(responseA, merged, "The merged dictionary is not responseA");
             Assert.AreNotEqual(responseB, merged, "The merged dictionary is not responseB");
             Assert.AreEqual(3, merged["fieldOnlyInA"], "Brought in field from A");
@@ -41,8 +41,8 @@ namespace Shopify.Tests
 
             Assert.AreEqual(3, merged["fieldOnlyInA"], "Brought in field from A");
             Assert.AreEqual("i am b", merged["fieldInBoth"], "Overwrote field in A from B");
-            Assert.IsTrue(!Object.ReferenceEquals(responseA["fieldHasDictionary"], merged["fieldHasDictionary"]), "Created a new nested object that was not responseA");
-            Assert.IsTrue(!Object.ReferenceEquals(responseB["fieldHasDictionary"], merged["fieldHasDictionary"]), "Created a new nested object that was not responseB");
+            Assert.IsFalse(Object.ReferenceEquals(responseA["fieldHasDictionary"], merged["fieldHasDictionary"]), "Created a new nested object that was not responseA");
+            Assert.IsFalse(Object.ReferenceEquals(responseB["fieldHasDictionary"], merged["fieldHasDictionary"]), "Created a new nested object that was not responseB");
         }
 
         [Test]
