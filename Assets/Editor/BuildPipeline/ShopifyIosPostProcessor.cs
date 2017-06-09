@@ -1,5 +1,5 @@
 #if UNITY_EDITOR
-namespace <%= namespace %>.SDK {
+namespace Shopify.BuildPipeline {
     using UnityEngine;
     using UnityEditor;
     using UnityEditor.iOS.Xcode;
@@ -7,16 +7,6 @@ namespace <%= namespace %>.SDK {
     using System;
 
     public class ShopifyIosPostProcessor {
-        /// <summary>
-        /// Perform post processing on the build to allow it to run
-        /// </summary>
-        public static void Process(string buildPath) {
-            var project = new ExtendedPBXProject(buildPath);
-            SetBuildProperties(project);
-            SetCorrectTestsTarget(project);
-            AddUiKitImportHeader(project);
-            project.Save();
-        }
 
         /// <summary>
         /// Perform post processing on the build to only run Shopify Tests

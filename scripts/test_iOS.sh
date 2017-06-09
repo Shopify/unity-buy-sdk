@@ -14,7 +14,7 @@ which "$UNITY_PATH" &> /dev/null || die "Unity does not exist at $UNITY_PATH"
     -silent-crashes \
     -logFile "$UNITY_IOS_LOG_PATH" \
     -projectPath "$PROJECT_ROOT" \
-    -executeMethod Shopify.Unity.SDK.ShopifyBuildPipeline.BuildIosForTests \
+    -executeMethod Shopify.BuildPipeline.ShopifyBuildPipeline.BuildIosForTests \
     -buildPlayerPath "$IOS_BUILD_PATH" \
     -quit
 

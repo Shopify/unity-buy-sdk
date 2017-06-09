@@ -1,4 +1,5 @@
-namespace <%= namespace %>.SDK {
+#if UNITY_EDITOR
+namespace Shopify.BuildPipeline {
     using System.Collections;
     using System.Collections.Generic;
     using System;
@@ -7,7 +8,7 @@ namespace <%= namespace %>.SDK {
     using UnityEditor;
 
     public class ShopifyBuildPipeline : MonoBehaviour {
-        private static string PlayerPathArg = "-buildPlayerPath";
+        private const string PlayerPathArg = "-buildPlayerPath";
         private static string PlayerPath {
             get {
                 string[] arguments = Environment.GetCommandLineArgs();
@@ -35,19 +36,6 @@ namespace <%= namespace %>.SDK {
             ShopifyIosPostProcessor.ProcessForTests(path);
         }
 
-        /// <summary>
-        /// Build an iOS project that is ready to run
-        /// </summary>
-        [MenuItem("Build/Build Shopify iOS Sample")]
-        public static void BuildIosSample()
-        {
-            string path = PlayerPath;
-            string[] scenes = new string[0];     
-
-            BuildPipeline.BuildPlayer(scenes, path, BuildTarget.iOS, BuildOptions.Development);
-            ShopifyIosPostProcessor.Process(path);
-        }
-
         private static string PlayerPathFromArguments(string[] arguments) {
             for (int i = 0; i < arguments.Length; i ++) {
                 string arg = arguments[i];
@@ -59,3 +47,4 @@ namespace <%= namespace %>.SDK {
         }
     }
 }
+#endif

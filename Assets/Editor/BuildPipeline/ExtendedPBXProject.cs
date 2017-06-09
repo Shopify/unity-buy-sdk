@@ -1,5 +1,5 @@
 #if UNITY_EDITOR
-namespace <%= namespace %>.SDK {
+namespace Shopify.BuildPipeline {
     using UnityEngine;
     using UnityEditor.iOS.Xcode;
     using System.IO;
