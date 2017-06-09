@@ -5,19 +5,19 @@ namespace <%= namespace %>.SDK {
     using System.Collections.Generic;
 
     public class ResponseMergeUtil {
-        public delegate void MergeFieldDelegate(string field, IDictionary into, IDictionary responseA, IDictionary responseB);
+        public delegate void MergeFieldDelegate(string field, Dictionary<string, object> into, Dictionary<string, object> responseA, Dictionary<string, object> responseB);
 
-        public static void DoNotMergeIfExists(string field, IDictionary into, IDictionary responseA, IDictionary responseB) {
-            if (!responseA.Contains(field)) {
+        public static void DoNotMergeIfExists(string field, Dictionary<string, object> into, Dictionary<string, object> responseA, Dictionary<string, object> responseB) {
+            if (!responseA.ContainsKey(field)) {
                 into[field] = responseB[field];
             }
         }
 
-        public static void MergeOverwrite(string field, IDictionary into, IDictionary responseA, IDictionary responseB) {
+        public static void MergeOverwrite(string field, Dictionary<string, object> into, Dictionary<string, object> responseA, Dictionary<string, object> responseB) {
             into[field] = responseB[field];
         }
 
-        public static void MergeListsConcat(string field, IDictionary into, IDictionary responseA, IDictionary responseB) {
+        public static void MergeListsConcat(string field, Dictionary<string, object> into, Dictionary<string, object> responseA, Dictionary<string, object> responseB) {
             List<object> newList = new List<object>();
             
             newList.AddRange(((IList) responseA[field]).Cast<object>());
@@ -37,8 +37,8 @@ namespace <%= namespace %>.SDK {
             ObjectMergers[field] = merger;
         }
 
-        public Dictionary<string, object> Merge(IDictionary responseA, IDictionary responseB) {
-            Dictionary<string, object> mergedResponse = new Dictionary<string, object>();
+        public Dictionary<string, object> Merge(Dictionary<string, object> responseA, Dictionary<string, object> responseB) {
+            Dictionary<string, object> mergedResponse = new Dictionary<string, object>(responseA);
 
             foreach(string field in responseA.Keys) {
                 mergedResponse[field] = responseA[field];
@@ -49,8 +49,8 @@ namespace <%= namespace %>.SDK {
                     FieldMergers[field](field, mergedResponse, responseA, responseB);
                 } else if (ObjectMergers.ContainsKey(field)) {
                     mergedResponse[field] = ObjectMergers[field].Merge(
-                        (IDictionary) responseA[field], 
-                        (IDictionary) responseB[field]
+                        (Dictionary<string, object>) responseA[field], 
+                        (Dictionary<string, object>) responseB[field]
                     );
                 } else {
                     MergeOverwrite(field, mergedResponse, responseA, responseB);

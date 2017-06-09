@@ -22,7 +22,7 @@ namespace Shopify.Tests
             Assert.AreEqual(3, merged["fieldOnlyInA"], "Brought in field from A");
             Assert.AreEqual("i am b", merged["fieldInBoth"], "Overwrote field in A from B");
             Assert.AreEqual(1, ((List<int>) merged["fieldHasList"])[0], "Overwrote field in A from B that is a list");
-            Assert.AreEqual("monkey", ((Dictionary<string, string>) merged["fieldHasDictionary"])["keyA"], "Overwrote field in A from B that is a list");
+            Assert.AreEqual("monkey", ((Dictionary<string, object>) merged["fieldHasDictionary"])["keyA"], "Overwrote field in A from B that is a list");
             Assert.IsTrue(Object.ReferenceEquals(responseB["fieldHasDictionary"], merged["fieldHasDictionary"]));
         }
 
@@ -50,7 +50,7 @@ namespace Shopify.Tests
 
             ResponseMergeUtil merger = new ResponseMergeUtil();
 
-            merger.AddFieldMerger("fieldInBoth", (string field, IDictionary into, IDictionary dataA, IDictionary dataB) => {
+            merger.AddFieldMerger("fieldInBoth", (string field, Dictionary<string, object> into, Dictionary<string, object> dataA, Dictionary<string, object> dataB) => {
                 into[field] = (string) dataA[field] + (string) dataB[field];
             });
 
@@ -95,7 +95,7 @@ namespace Shopify.Tests
                 {"fieldOnlyInA", 3},
                 {"fieldInBoth", "i am a"},
                 {"fieldHasList", new List<int>() { 0 }},
-                {"fieldHasDictionary", new Dictionary<string, string>(){
+                {"fieldHasDictionary", new Dictionary<string, object>(){
                     {"keyA", "valueA"},
                     {"keyB", "valueB"}
                 }}
@@ -107,7 +107,7 @@ namespace Shopify.Tests
                 {"fieldOnlyInB", 33},
                 {"fieldInBoth", "i am b"},
                 {"fieldHasList", new List<int>() { 1 }},
-                {"fieldHasDictionary", new Dictionary<string, string>(){
+                {"fieldHasDictionary", new Dictionary<string, object>(){
                     {"keyA", "monkey"},
                     {"keyB", "zebra"}
                 }}
