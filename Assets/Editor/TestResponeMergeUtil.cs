@@ -23,7 +23,7 @@ namespace Shopify.Tests
             Assert.AreEqual("i am b", merged["fieldInBoth"], "Overwrote field in A from B");
             Assert.AreEqual(1, ((List<int>) merged["fieldHasList"])[0], "Overwrote field in A from B that is a list");
             Assert.AreEqual("monkey", ((Dictionary<string, string>) merged["fieldHasDictionary"])["keyA"], "Overwrote field in A from B that is a list");
-            Assert.AreEqual(responseB["fieldHasDictionary"], merged["fieldHasDictionary"]);
+            Assert.IsTrue(Object.ReferenceEquals(responseB["fieldHasDictionary"], merged["fieldHasDictionary"]));
         }
 
         [Test]
