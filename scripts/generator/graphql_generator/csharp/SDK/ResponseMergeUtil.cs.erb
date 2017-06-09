@@ -40,10 +40,6 @@ namespace <%= namespace %>.SDK {
         public Dictionary<string, object> Merge(Dictionary<string, object> responseA, Dictionary<string, object> responseB) {
             Dictionary<string, object> mergedResponse = new Dictionary<string, object>(responseA);
 
-            foreach(string field in responseA.Keys) {
-                mergedResponse[field] = responseA[field];
-            }
-
             foreach(string field in responseB.Keys) {
                 if (FieldMergers.ContainsKey(field)) {
                     FieldMergers[field](field, mergedResponse, responseA, responseB);
