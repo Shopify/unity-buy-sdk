@@ -38,26 +38,26 @@ namespace <%= namespace %>.SDK {
         }
 
         public Dictionary<string, object> Merge(IDictionary responseA, IDictionary responseB) {
-            Dictionary<string, object> MergedResponse = new Dictionary<string, object>();
+            Dictionary<string, object> mergedResponse = new Dictionary<string, object>();
 
             foreach(string field in responseA.Keys) {
-                MergedResponse[field] = responseA[field];
+                mergedResponse[field] = responseA[field];
             }
 
             foreach(string field in responseB.Keys) {
                 if (FieldMergers.ContainsKey(field)) {
-                    FieldMergers[field](field, MergedResponse, responseA, responseB);
+                    FieldMergers[field](field, mergedResponse, responseA, responseB);
                 } else if (ObjectMergers.ContainsKey(field)) {
-                    MergedResponse[field] = ObjectMergers[field].Merge(
+                    mergedResponse[field] = ObjectMergers[field].Merge(
                         (IDictionary) responseA[field], 
                         (IDictionary) responseB[field]
                     );
                 } else {
-                    MergeOverwrite(field, MergedResponse, responseA, responseB);
+                    MergeOverwrite(field, mergedResponse, responseA, responseB);
                 }
             }
 
-            return MergedResponse;
+            return mergedResponse;
         }
     }
 }
