@@ -1,5 +1,6 @@
 namespace <%= namespace %>.SDK {
     using System;
+    using System.Linq;
     using System.Collections;
     using System.Collections.Generic;
 
@@ -18,16 +19,9 @@ namespace <%= namespace %>.SDK {
 
         public static void MergeListsConcat(string field, IDictionary into, IDictionary responseA, IDictionary responseB) {
             List<object> newList = new List<object>();
-            IList listA = (IList) responseA[field];
-            IList listB = (IList) responseB[field];
-
-            foreach(object item in listA) {
-                newList.Add(item);
-            }
-
-            foreach(object item in listB) {
-                newList.Add(item);
-            }
+            
+            newList.AddRange(((IList) responseA[field]).Cast<object>());
+            newList.AddRange(((IList) responseB[field]).Cast<object>());
 
             into[field] = newList;
         }
