@@ -39,8 +39,8 @@ namespace Shopify.Tests
 
             Assert.AreEqual(3, merged["fieldOnlyInA"], "Brought in field from A");
             Assert.AreEqual("i am b", merged["fieldInBoth"], "Overwrote field in A from B");
-            Assert.IsTrue(!Object.ReferenceEquals(responseA["fieldHasDictionary"], merged["fieldHasDictionary"]), "Creted a new nested object that was not responseA");
-            Assert.IsTrue(!Object.ReferenceEquals(responseB["fieldHasDictionary"], merged["fieldHasDictionary"]), "Creted a new nested object that was not responseB");
+            Assert.IsTrue(!Object.ReferenceEquals(responseA["fieldHasDictionary"], merged["fieldHasDictionary"]), "Created a new nested object that was not responseA");
+            Assert.IsTrue(!Object.ReferenceEquals(responseB["fieldHasDictionary"], merged["fieldHasDictionary"]), "Created a new nested object that was not responseB");
         }
 
         [Test]
