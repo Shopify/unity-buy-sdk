@@ -17,6 +17,8 @@ namespace Shopify.Tests
 
             Dictionary<string, object> merged = merger.Merge(responseA, responseB);
 
+            Assert.IsTrue(!Object.ReferenceEquals(responseA, merged));
+            Assert.IsTrue(!Object.ReferenceEquals(responseB, merged));
             Assert.AreNotEqual(responseA, merged, "The merged dictionary is not responseA");
             Assert.AreNotEqual(responseB, merged, "The merged dictionary is not responseB");
             Assert.AreEqual(3, merged["fieldOnlyInA"], "Brought in field from A");
