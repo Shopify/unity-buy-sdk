@@ -48,7 +48,7 @@ extension Deserializable {
             self.deserialize($0)
         }
         
-        if (items.count < jsonCollection.count) {
+        if items.count < jsonCollection.count {
             return nil
         } else {
             return items

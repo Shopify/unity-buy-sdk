@@ -1,5 +1,5 @@
 //
-//  PKPaymentAuthorizationStatus+String.swift
+//  PKPaymentSummaryItemType+String.swift
 //  UnityBuySDK
 //
 //  Created by Shopify.
@@ -27,33 +27,12 @@
 import Foundation
 import PassKit
 
-extension PKPaymentAuthorizationStatus {
+extension PKPaymentSummaryItemType {
     
-    static func from(string: String) -> PKPaymentAuthorizationStatus? {
+    static func from(_ string: String) -> PKPaymentSummaryItemType? {
         switch(string) {
-        case "Failure": return .failure
-        case "Success": return .success
-        case "InvalidBillingPostalAddress": return .invalidBillingPostalAddress
-        case "InvalidShippingPostalAddress": return .invalidShippingPostalAddress
-        case "InvalidShippingContact": return .invalidShippingContact
-        case "PinRequired":
-            if #available(iOS 9.2, *) {
-                return .pinRequired
-            } else {
-                return nil
-            }
-        case "PinIncorrect":
-            if #available(iOS 9.2, *) {
-                return .pinIncorrect
-            } else {
-                return nil
-            }
-        case "PinLockout":
-            if #available(iOS 9.2, *) {
-                return .pinLockout
-            } else {
-                return nil
-            }
+        case "Final": return .final
+        case "Pending": return .pending
         default:
             return nil
         }

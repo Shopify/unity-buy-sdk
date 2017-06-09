@@ -1,5 +1,5 @@
 //
-//  PKPaymentSummaryItem+Deserializable.swift
+//  PKPaymentAuthorizationStatus+String.swift
 //  UnityBuySDK
 //
 //  Created by Shopify.
@@ -27,33 +27,35 @@
 import Foundation
 import PassKit
 
-extension PKPaymentSummaryItem: Deserializable {
+extension PKPaymentAuthorizationStatus {
     
-    private enum Field: String {
-        case amount = "Amount"
-        case label  = "Label"
-        case type   = "Type"
-    }
-    
-    class func deserialize(_ json: JSON) -> Self? {
-        guard
-            let label  = json[Field.label.rawValue] as? String,
-            let amount = json[Field.amount.rawValue] as? String
-        else {
+    static func from(_ string: String) -> PKPaymentAuthorizationStatus? {
+        switch(string) {
+        case "Failure": return .failure
+        case "Success": return .success
+        case "InvalidBillingPostalAddress": return .invalidBillingPostalAddress
+        case "InvalidShippingPostalAddress": return .invalidShippingPostalAddress
+        case "InvalidShippingContact": return .invalidShippingContact
+        case "PinRequired":
+            if #available(iOS 9.2, *) {
+                return .pinRequired
+            } else {
+                return nil
+            }
+        case "PinIncorrect":
+            if #available(iOS 9.2, *) {
+                return .pinIncorrect
+            } else {
+                return nil
+            }
+        case "PinLockout":
+            if #available(iOS 9.2, *) {
+                return .pinLockout
+            } else {
+                return nil
+            }
+        default:
             return nil
         }
-        
-        if let typeString = json[Field.type.rawValue] as? String,
-            let type      = PKPaymentSummaryItemType.from(typeString) {
-            return self.init(label: label, amount: NSDecimalNumber(string: amount), type: type)
-        } else {
-            return self.init(label: label, amount: NSDecimalNumber(string: amount))
-        }
-    }
-    
-    /// Needed re-declaration of static func deserialized(_ jsonCollection: [JSON]) -> [Self]?
-    /// Since methods defined in protocol extensions are not bridged to ObjC
-    class func deserialize(summaryItems: [JSON]) -> [PKPaymentSummaryItem]? {
-        return PKPaymentSummaryItem.deserialize(summaryItems)
     }
 }
