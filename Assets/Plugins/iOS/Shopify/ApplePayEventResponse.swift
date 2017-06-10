@@ -27,7 +27,7 @@
 import Foundation
 import PassKit
 
-struct ApplePayEventResponse {
+struct ApplePayEventResponse: Deserializable {
     
     /// Expect the response from events to follow [String: Any] JSON format.
     /// These are the keys that they are expected to follow
@@ -47,43 +47,37 @@ struct ApplePayEventResponse {
     // ----------------------------------
     //  MARK: - Init -
     //
-    init?(serialized: String) {
-
-        guard
-            let data = serialized.data(using: .utf8),
-            let jsonObject = (try? JSONSerialization.jsonObject(with: data)) as? JSON else {
-                return nil
-        }
-
+    static func deserialize(_ json: JSON) -> ApplePayEventResponse? {
+        
+        var authorizationStatus: PKPaymentAuthorizationStatus? = nil
+        var summaryItems: [PKPaymentSummaryItem]? = nil
+        var shippingMethods: [PKShippingMethod]? = nil
+        
         /// Parse Authorization Status
-        if let authStatusString = jsonObject[ResponseKey.authorizationStatus.rawValue] as? String {
+        if let authStatusString = json[ResponseKey.authorizationStatus.rawValue] as? String {
             authorizationStatus = PKPaymentAuthorizationStatus.from(string: authStatusString)
-        } else {
-            authorizationStatus = nil
         }
-
+        
         /// Parse Summary Items
-        if let summaryItemsJsonObject = jsonObject[ResponseKey.summaryItems.rawValue] as? [JSON] {
-
-            guard let items = PKPaymentSummaryItem.items(forSerializedSummaryItems: summaryItemsJsonObject) else {
+        if let summaryItemsJsonObject = json[ResponseKey.summaryItems.rawValue] as? [JSON] {
+            
+            guard let items = PKPaymentSummaryItem.deserialize(summaryItemsJsonObject) else {
                 return nil
             }
-
+            
             summaryItems = items
-        } else {
-            summaryItems = nil
         }
         
         /// Parse Shipping Methods
-        if let shippingMethodsJsonObject = jsonObject[ResponseKey.shippingMethods.rawValue] as? [JSON] {
+        if let shippingMethodsJsonObject = json[ResponseKey.shippingMethods.rawValue] as? [JSON] {
             
-            guard let methods = PKShippingMethod.items(forSerializedShippingMethods: shippingMethodsJsonObject) else {
+            guard let methods = PKShippingMethod.deserialize(shippingMethodsJsonObject) else {
                 return nil
             }
             
             shippingMethods = methods
-        } else {
-            shippingMethods = nil
         }
+        
+        return self.init(authorizationStatus: authorizationStatus, summaryItems: summaryItems, shippingMethods: shippingMethods)
     }
 }

@@ -27,43 +27,18 @@
 import UIKit
 import PassKit
 
-typealias AppleEventCompletion = (_ response: ApplePayEventResponse?) -> Void
-
 class ApplePayEventDispatcher: NSObject {
     
-    let receiverName: String
+    typealias AppleEventCompletion = (_ response: ApplePayEventResponse?) -> Void
     
-    enum MethodName: String {
-        case updateSummaryItemsForShippingIdentifier = "UpdateSummaryItemsForShippingIdentifier"
-        case updateSummaryItemsForShippingContact    = "UpdateSummaryItemsForShippingContact"
-        case fetchCheckoutStatusForToken             = "FetchApplePayCheckoutStatusForToken"
-        case didFinishCheckoutSession                = "DidFinishCheckoutSession"
-    }
+    let receiver: String
     
     // ----------------------------------
     //  MARK: - Init -
     //
-    init(recieverName: String) {
-        self.receiverName = recieverName
+    init(receiver: String) {
+        self.receiver = receiver
         super.init()
-    }
-    
-    func call(method: MethodName, withValue value: String, completionHandler: AppleEventCompletion?) {
-        
-        let message = UnityMessage(content: value, object: receiverName, method: method.rawValue)
-        MessageCenter.send(message) { serializedResponse in
-            
-            guard let completionHandler = completionHandler else {
-                return
-            }
-            
-            guard let serializedResponse = serializedResponse else {
-                completionHandler(nil)
-                return
-            }
-            
-            completionHandler(ApplePayEventResponse.init(serialized: serializedResponse))
-        }
     }
 }
 
@@ -71,16 +46,39 @@ class ApplePayEventDispatcher: NSObject {
 //  MARK: - PaymentSessionDelegate -
 //
 extension ApplePayEventDispatcher: PaymentSessionDelegate {
-
+    
+    private enum Method: String {
+        case updateSummaryItemsForShippingIdentifier = "UpdateSummaryItemsForShippingIdentifier"
+        case updateSummaryItemsForShippingContact    = "UpdateSummaryItemsForShippingContact"
+        case fetchCheckoutStatusForToken             = "FetchApplePayCheckoutStatusForToken"
+        case didFinishCheckoutSession                = "DidFinishCheckoutSession"
+    }
+    
+    private func call(method: Method, value: String, completionHandler: AppleEventCompletion? = nil) {
+        
+        let message = UnityMessage(content: value, object: receiver, method: method.rawValue)
+        
+        if let completionHandler = completionHandler {
+            
+            MessageCenter.send(message) { response in
+                if let response = response {
+                    completionHandler(ApplePayEventResponse.deserialize(response))
+                }
+            }
+        } else {
+            MessageCenter.send(message)
+        }
+    }
+    
     func paymentSessionDidFinish(session: PaymentSession, with status: PaymentStatus) {
-        call(method: .didFinishCheckoutSession, withValue: status.description, completionHandler: nil)
+        call(method: .didFinishCheckoutSession, value: status.description)
     }
     
     func paymentSession(_ session: PaymentSession, didAuthorize payment: PKPayment, completion: @escaping (PKPaymentAuthorizationStatus) -> Void) {
         
         let paymentString = try! payment.serializedString()
         
-        call(method: .fetchCheckoutStatusForToken, withValue: paymentString) { response in
+        call(method: .fetchCheckoutStatusForToken, value: paymentString) { response in
             guard let response = response, let authStatus = response.authorizationStatus else {
                 completion(.failure)
                 return
@@ -93,18 +91,18 @@ extension ApplePayEventDispatcher: PaymentSessionDelegate {
     func paymentSession(_ session: PaymentSession, didSelect shippingMethod: PKShippingMethod, completion: @escaping (PKPaymentAuthorizationStatus, [PKPaymentSummaryItem]) -> Void) {
         
         guard let identifier = shippingMethod.identifier else {
-            completion(.failure, [PKPaymentSummaryItem]())
+            completion(.failure, [])
             return
         }
         
-        call(method: .updateSummaryItemsForShippingIdentifier, withValue: identifier) { response in
+        call(method: .updateSummaryItemsForShippingIdentifier, value: identifier) { response in
             guard
                 let response     = response,
                 let authStatus   = response.authorizationStatus,
                 let summaryItems = response.summaryItems
-            else {
-                completion(.failure, [PKPaymentSummaryItem]())
-                return
+                else {
+                    completion(.failure, [])
+                    return
             }
             completion(authStatus, summaryItems)
         }
@@ -113,19 +111,19 @@ extension ApplePayEventDispatcher: PaymentSessionDelegate {
     func paymentSession(_ session: PaymentSession, didSelectShippingContact shippingContact: PKContact, completion: @escaping (PKPaymentAuthorizationStatus, [PKShippingMethod], [PKPaymentSummaryItem]) -> Void) {
         
         guard let contactString = try? shippingContact.serializedString() else {
-            completion(.failure, [PKShippingMethod](), [PKPaymentSummaryItem]())
+            completion(.failure, [], [])
             return
         }
         
-        call(method: .updateSummaryItemsForShippingContact, withValue: contactString) { response in
+        call(method: .updateSummaryItemsForShippingContact, value: contactString) { response in
             guard
                 let response        = response,
                 let authStatus      = response.authorizationStatus,
                 let summaryItems    = response.summaryItems,
                 let shippingMethods = response.shippingMethods
-            else {
-                completion(.failure, [PKShippingMethod](), [PKPaymentSummaryItem]())
-                return
+                else {
+                    completion(.failure, [], [])
+                    return
             }
             completion(authStatus, shippingMethods, summaryItems)
         }

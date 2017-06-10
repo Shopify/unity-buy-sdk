@@ -29,7 +29,7 @@
 
 extern "C" {
     void _RespondToNativeMessage(const char *identifier, const char *response) {
-        UnityMessage *message = [MessageCenter messageForIdentifier: [NSString stringWithUTF8String: identifier]];
-        [message completeWith: [NSString stringWithUTF8String: response]];
+        UnityMessage *message = [MessageCenter messageForIdentifier:[NSString stringWithUTF8String:identifier]];
+        [message completeWith:[NSString stringWithUTF8String:response]];
     }
 }

@@ -27,46 +27,40 @@
 import Foundation
 import PassKit
 
-enum ShippingMethodField: String {
-    case detail
-    case identifier
-}
-
 extension PKShippingMethod {
     
-    convenience init?(serializedShippingMethod json:JSON) {
-        
+    private enum Field: String {
+        case amount     = "Amount"
+        case label      = "Label"
+        case type       = "Type"
+        case detail     = "Detail"
+        case identifier = "Identifier"
+    }
+    
+    override class func deserialize(_ json: JSON) -> Self? {
         guard
-            let label = json[PaymentSummaryItemField.label.rawValue] as? String,
-            let amount = json[PaymentSummaryItemField.amount.rawValue] as? String
+            let label  = json[Field.label.rawValue] as? String,
+            let amount = json[Field.amount.rawValue] as? String
         else {
             return nil
         }
-           
-        if let typeString = json[PaymentSummaryItemField.type.rawValue] as? String,
-            let typeInt = UInt(typeString),
-            let type = PKPaymentSummaryItemType.init(rawValue: typeInt) {
-            self.init(label: label, amount: NSDecimalNumber.init(string: amount), type: type)
-        } else {
-            self.init(label: label, amount: NSDecimalNumber.init(string: amount))
+        
+        let shippingMethod = self.init(label: label, amount: NSDecimalNumber(string: amount))
+        
+        if let typeString = json[Field.type.rawValue] as? String,
+            let typeInt   = UInt(typeString),
+            let type      = PKPaymentSummaryItemType(rawValue: typeInt) {
+           shippingMethod.type = type
         }
         
-        detail = json[ShippingMethodField.detail.rawValue] as? String
-        identifier = json[ShippingMethodField.identifier.rawValue] as? String
+        shippingMethod.detail     = json[Field.detail.rawValue] as? String
+        shippingMethod.identifier = json[Field.identifier.rawValue] as? String
+        return shippingMethod
     }
     
-    static func items(forSerializedShippingMethods shippingMethodsJsonObject: [JSON]) -> [PKShippingMethod]? {
-        var methods = [PKShippingMethod]()
-        
-        for methodJson in shippingMethodsJsonObject {
-            
-            guard let shippingMethod = PKShippingMethod.init(serializedShippingMethod: methodJson) else {
-                return nil
-            }
-            
-            methods.append(shippingMethod)
-        }
-        
-        return methods
+    /// Needed re-declaration of static func deserialized(_ jsonCollection: [JSON]) -> [Self]?
+    /// Since methods defined in protocol extensions are not bridged to ObjC
+    class func deserialized(shippingMethods: [JSON]) -> [PKShippingMethod]? {
+        return PKShippingMethod.deserialize(shippingMethods)
     }
 }

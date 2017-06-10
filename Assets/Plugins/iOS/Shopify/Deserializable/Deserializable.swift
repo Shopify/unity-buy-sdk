@@ -1,5 +1,5 @@
 //
-//  PKPaymentSummaryItem+Deserializable.swift
+//  Deserializable.swift
 //  UnityBuySDK
 //
 //  Created by Shopify.
@@ -25,36 +25,34 @@
 //
 
 import Foundation
-import PassKit
 
-extension PKPaymentSummaryItem: Deserializable {
+protocol Deserializable {
+    static func deserialize(_ json: JSON) -> Self?
+}
+
+extension Deserializable {
     
-    private enum Field: String {
-        case amount = "Amount"
-        case label  = "Label"
-        case type   = "Type"
-    }
-    
-    class func deserialize(_ json: JSON) -> Self? {
+    static func deserialize(_ string: String) -> Self? {
         guard
-            let label  = json[Field.label.rawValue] as? String,
-            let amount = json[Field.amount.rawValue] as? String
+            let data = string.data(using: .utf8),
+            let jsonObject = (try? JSONSerialization.jsonObject(with: data)) as? JSON
         else {
             return nil
         }
+
+        return deserialize(jsonObject)
+    }
+    
+    static func deserialize(_ jsonCollection: [JSON]) -> [Self]? {
+        let items = jsonCollection.flatMap {
+            self.deserialize($0)
+        }
         
-        if let typeString = json[Field.type.rawValue] as? String,
-            let typeInt   = UInt(typeString),
-            let type      = PKPaymentSummaryItemType(rawValue: typeInt) {
-            return self.init(label: label, amount: NSDecimalNumber(string: amount), type: type)
+        if (items.count < jsonCollection.count) {
+            return nil
         } else {
-            return self.init(label: label, amount: NSDecimalNumber(string: amount))
+            return items
         }
     }
     
-    /// Needed re-declaration of static func deserialized(_ jsonCollection: [JSON]) -> [Self]?
-    /// Since methods defined in protocol extensions are not bridged to ObjC
-    class func deserialize(summaryItems: [JSON]) -> [PKPaymentSummaryItem]? {
-        return PKPaymentSummaryItem.deserialize(summaryItems)
-    }
 }
