@@ -48,7 +48,7 @@ extension PKShippingMethod {
         let shippingMethod = self.init(label: label, amount: NSDecimalNumber(string: amount))
         
         if let typeString = json[Field.type.rawValue] as? String,
-            let type      = PKPaymentSummaryItemType.from(typeString) {
+            let type      = PKPaymentSummaryItemType(rawValue: typeString) {
            shippingMethod.type = type
         }
         

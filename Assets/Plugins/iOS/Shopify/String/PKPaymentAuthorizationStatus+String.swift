@@ -27,9 +27,30 @@
 import Foundation
 import PassKit
 
-extension PKPaymentAuthorizationStatus: CustomStringConvertible {
+extension PKPaymentAuthorizationStatus: RawRepresentable {
     
-    public var description: String {
+    public init?(rawValue: String) {
+        switch rawValue {
+        case PKPaymentAuthorizationStatus.failure.rawValue: self = .failure
+        case PKPaymentAuthorizationStatus.success.rawValue: self = .success
+        case PKPaymentAuthorizationStatus.invalidShippingContact.rawValue:       self = .invalidShippingContact
+        case PKPaymentAuthorizationStatus.invalidBillingPostalAddress.rawValue:  self = .invalidBillingPostalAddress
+        case PKPaymentAuthorizationStatus.invalidShippingPostalAddress.rawValue: self = .invalidShippingPostalAddress
+        default:
+            if #available(iOS 9.2, *) {
+                switch rawValue {
+                case PKPaymentAuthorizationStatus.pinRequired.rawValue:  self = .pinRequired
+                case PKPaymentAuthorizationStatus.pinIncorrect.rawValue: self = .pinIncorrect
+                case PKPaymentAuthorizationStatus.pinLockout.rawValue:   self = .pinLockout
+                default: return nil
+                }
+            } else {
+                return nil
+            }
+        }
+    }
+    
+    public var rawValue: String {
         switch self {
         case .failure:
             return "Failure"
@@ -48,32 +69,5 @@ extension PKPaymentAuthorizationStatus: CustomStringConvertible {
         case .pinLockout:
             return "PinLockout"
         }
-    }
-}
-
-extension PKPaymentAuthorizationStatus {
-    
-    static var allItems: [PKPaymentAuthorizationStatus] {
-        var items: [PKPaymentAuthorizationStatus] = [
-            .failure,
-            .success,
-            .invalidBillingPostalAddress,
-            .invalidShippingPostalAddress,
-            .invalidShippingContact]
-        
-        if #available(iOS 9.2, *) {
-            items.append(contentsOf: [.pinRequired, .pinLockout, .pinIncorrect])
-        }
-        
-        return items
-    }
-    
-    static func from(_ string: String) -> PKPaymentAuthorizationStatus? {
-        for status in allItems {
-            if status.description == string {
-                return status
-            }
-        }
-        return nil
     }
 }

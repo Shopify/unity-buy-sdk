@@ -27,28 +27,22 @@
 import Foundation
 import PassKit
 
-extension PKPaymentSummaryItemType: CustomStringConvertible {
+extension PKPaymentSummaryItemType: RawRepresentable {
     
-    public var description: String {
+    public init?(rawValue: String) {
+        switch rawValue {
+        case PKPaymentSummaryItemType.final.rawValue:   self = .final
+        case PKPaymentSummaryItemType.pending.rawValue: self = .pending
+        default: return nil
+        }
+    }
+    
+    public var rawValue: String {
         switch self {
         case .final:
             return "Final"
         case .pending:
             return "Pending"
         }
-    }
-}
-
-extension PKPaymentSummaryItemType {
-    
-    static let allItems: [PKPaymentSummaryItemType] = [.final, .pending]
-
-    static func from(_ string: String) -> PKPaymentSummaryItemType? {
-        for type in allItems {
-            if type.description == string {
-                return type
-            }
-        }
-        return nil
     }
 }

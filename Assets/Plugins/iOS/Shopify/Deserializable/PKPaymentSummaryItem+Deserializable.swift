@@ -44,7 +44,7 @@ extension PKPaymentSummaryItem: Deserializable {
         }
         
         if let typeString = json[Field.type.rawValue] as? String,
-            let type      = PKPaymentSummaryItemType.from(typeString) {
+            let type      = PKPaymentSummaryItemType(rawValue: typeString) {
             return self.init(label: label, amount: NSDecimalNumber(string: amount), type: type)
         } else {
             return self.init(label: label, amount: NSDecimalNumber(string: amount))
