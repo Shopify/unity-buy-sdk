@@ -1,5 +1,5 @@
 #if UNITY_EDITOR
-namespace <%= namespace %>.SDK {
+namespace Shopify.BuildPipeline {
     using UnityEngine;
     using UnityEditor.iOS.Xcode;
     using System.IO;
@@ -9,12 +9,12 @@ namespace <%= namespace %>.SDK {
     /// A subclass on PBXProject providing convenience functions for configuring the project
     /// </summary>
     public class ExtendedPBXProject: PBXProject {
-
         public static string SwiftVersionKey = "SWIFT_VERSION";
         public static string DeploymentTarget = "IPHONEOS_DEPLOYMENT_TARGET";
         public static string RunpathSearchKey = "LD_RUNPATH_SEARCH_PATHS";
         public static string ProjectModuleNameKey = "PRODUCT_MODULE_NAME";
         public static string EnableTestabilityKey = "ENABLE_TESTABILITY";
+        public static string SwiftBridgingHeaderKey = "SWIFT_OBJC_BRIDGING_HEADER";
 
         public readonly string BuildPath;
         public readonly string TestTargetGuid;
@@ -39,7 +39,6 @@ namespace <%= namespace %>.SDK {
         /// <exception cref="SecurityException">The caller does not have the required permission.</exception>
         /// <exception cref="UnauthorizedAccessException">The caller does not have the required permission.</exception>
         public void SetFilesInDirectoryToTestTarget(DirectoryInfo directory) {
-
             try {
                 foreach (var file in directory.GetFiles()) {
                     // Removes the build path from the absolute path and removes the first backslash
