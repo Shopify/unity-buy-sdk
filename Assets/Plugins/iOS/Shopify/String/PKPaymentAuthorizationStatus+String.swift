@@ -62,7 +62,7 @@ extension PKPaymentAuthorizationStatus {
             .invalidShippingContact]
         
         if #available(iOS 9.2, *) {
-            items.append(contentsOf: [.pinRequired, .pinLockout, .pinRequired])
+            items.append(contentsOf: [.pinRequired, .pinLockout, .pinIncorrect])
         }
         
         return items
