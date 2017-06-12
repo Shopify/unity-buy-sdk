@@ -26,10 +26,6 @@
 
 import Foundation
 
-enum UnityMessageField: String {
-    case content    = "Content"
-    case identifier = "Identifier"
-}
 
 @objc class UnityMessage: NSObject {
     
@@ -68,11 +64,18 @@ enum UnityMessageField: String {
     }
 }
 
+extension UnityMessage {
+    enum Field: String {
+        case content    = "Content"
+        case identifier = "Identifier"
+    }
+}
+
 extension UnityMessage: Serializable {
     func serializedJSON() -> JSON {
         var json = JSON.init()
-        json[UnityMessageField.identifier.rawValue] = identifier
-        json[UnityMessageField.content.rawValue]    = content
+        json[Field.identifier.rawValue] = identifier
+        json[Field.content.rawValue]    = content
         return json
     }
 }

@@ -28,17 +28,6 @@ import Foundation
 import PassKit
 
 struct ApplePayEventResponse: Deserializable {
-    
-    /// Expect the response from events to follow [String: Any] JSON format.
-    /// These are the keys that they are expected to follow
-    enum ResponseKey: String {
-        /// The PKPaymentAuthorizationStatus for the request
-        case authorizationStatus = "AuthorizationStatus"
-        /// The update summary items for the request
-        case summaryItems = "SummaryItems"
-        /// The updated shipping methods for the request
-        case shippingMethods = "ShippingMethods"
-    }
 
     let authorizationStatus: PKPaymentAuthorizationStatus?
     let summaryItems: [PKPaymentSummaryItem]?
@@ -79,5 +68,19 @@ struct ApplePayEventResponse: Deserializable {
         }
         
         return self.init(authorizationStatus: authorizationStatus, summaryItems: summaryItems, shippingMethods: shippingMethods)
+    }
+}
+
+extension ApplePayEventResponse {
+    
+    /// Expect the response from events to follow [String: Any] JSON format.
+    /// These are the keys that they are expected to follow
+    enum ResponseKey: String {
+        /// The PKPaymentAuthorizationStatus for the request
+        case authorizationStatus = "AuthorizationStatus"
+        /// The update summary items for the request
+        case summaryItems = "SummaryItems"
+        /// The updated shipping methods for the request
+        case shippingMethods = "ShippingMethods"
     }
 }
