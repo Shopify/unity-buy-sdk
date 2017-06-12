@@ -224,7 +224,7 @@ class PaymentSessionTests: XCTestCase {
         let paymentSession   = Models.createPaymentSession(requiringShippingAddressFields: true, usingNonDefault: MockAuthorizationController.self)
         let completionStatus = PKPaymentAuthorizationStatus.success
         let expectedPayment  = Models.createPayment()
-        let paymentStatus    = PaymentStatus.Success
+        let paymentStatus    = PaymentStatus.success
 
         let authorizeExpectation = self.expectation(description: "MockAuthorizationController.invokeDidAuthorizePayment failed to complete")
         let finishExpectation    = self.expectation(description: "MockPaymentSessionDelegate.onSessionDidFinish failed to complete")
@@ -261,7 +261,7 @@ class PaymentSessionTests: XCTestCase {
         let paymentSession   = Models.createPaymentSession(requiringShippingAddressFields: true, usingNonDefault: MockAuthorizationController.self)
         let completionStatus = PKPaymentAuthorizationStatus.failure
         let expectedPayment  = Models.createPayment()
-        let paymentStatus    = PaymentStatus.Failed
+        let paymentStatus    = PaymentStatus.failed
 
         let authorizeExpectation = self.expectation(description: "MockAuthorizationController.invokeDidAuthorizePayment failed to complete")
         let finishExpectation    = self.expectation(description: "MockPaymentSessionDelegate.onSessionDidFinish failed to complete")
@@ -296,7 +296,7 @@ class PaymentSessionTests: XCTestCase {
     @available(iOS 10.0, *)
     func testPaymentFinishCancelled() {
         let paymentSession    = Models.createPaymentSession(requiringShippingAddressFields: true, usingNonDefault: MockAuthorizationController.self)
-        let paymentStatus     = PaymentStatus.Cancelled
+        let paymentStatus     = PaymentStatus.cancelled
         let finishExpectation = self.expectation(description: "MockPaymentSessionDelegate.onSessionDidFinish failed to complete")
         
         let delegate = MockPaymentSessionDelegate()
@@ -321,7 +321,7 @@ class PaymentSessionTests: XCTestCase {
     func testPaymentFinishAuthorizedCancelled() {
         let paymentSession    = Models.createPaymentSession(requiringShippingAddressFields: true, usingNonDefault: MockAuthorizationController.self)
         let expectedPayment   = Models.createPayment()
-        let paymentStatus     = PaymentStatus.Cancelled
+        let paymentStatus     = PaymentStatus.cancelled
         let completionStatus  = PKPaymentAuthorizationStatus.invalidShippingPostalAddress
         
         let authorizeExpectation = self.expectation(description: "MockAuthorizationController.invokeDidAuthorizePayment failed to complete")
