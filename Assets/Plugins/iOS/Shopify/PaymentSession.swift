@@ -28,17 +28,17 @@ import UIKit
 import PassKit
 
 @objc enum PaymentStatus: Int, CustomStringConvertible {
-    case Failed
-    case Cancelled
-    case Success
+    case failed
+    case cancelled
+    case success
     
     var description: String {
         switch self {
-        case .Cancelled:
+        case .cancelled:
             return "Cancelled"
-        case .Failed:
+        case .failed:
             return "Failed"
-        case .Success:
+        case .success:
             return "Success"
         }
     }
@@ -46,16 +46,16 @@ import PassKit
     static func from(status: PKPaymentAuthorizationStatus?) -> PaymentStatus {
         
         guard let status = status else {
-            return .Cancelled
+            return .cancelled
         }
         
         switch status {
         case .failure:
-            return .Failed
+            return .failed
         case .success:
-            return .Success
+            return .success
         default:
-            return .Cancelled
+            return .cancelled
         }
     }
 }
