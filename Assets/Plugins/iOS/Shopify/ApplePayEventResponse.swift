@@ -72,10 +72,9 @@ struct ApplePayEventResponse: Deserializable {
 }
 
 extension ApplePayEventResponse {
-    
     /// Expect the response from events to follow [String: Any] JSON format.
     /// These are the keys that they are expected to follow
-    enum ResponseKey: String {
+    fileprivate enum ResponseKey: String {
         /// The PKPaymentAuthorizationStatus for the request
         case authorizationStatus = "AuthorizationStatus"
         /// The update summary items for the request

@@ -65,7 +65,7 @@ import Foundation
 }
 
 extension UnityMessage {
-    enum Field: String {
+    fileprivate enum Field: String {
         case content    = "Content"
         case identifier = "Identifier"
     }
