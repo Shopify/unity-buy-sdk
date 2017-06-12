@@ -27,35 +27,53 @@
 import Foundation
 import PassKit
 
+extension PKPaymentAuthorizationStatus: CustomStringConvertible {
+    
+    public var description: String {
+        switch self {
+        case .failure:
+            return "Failure"
+        case .success:
+            return "Success"
+        case .invalidBillingPostalAddress:
+            return "InvalidBillingPostalAddress"
+        case .invalidShippingPostalAddress:
+            return "InvalidShippingPostalAddress"
+        case .invalidShippingContact:
+            return "InvalidShippingContact"
+        case .pinRequired:
+            return "PinRequired"
+        case .pinIncorrect:
+            return "PinIncorrect"
+        case .pinLockout:
+            return "PinLockout"
+        }
+    }
+}
+
 extension PKPaymentAuthorizationStatus {
     
-    static func from(_ string: String) -> PKPaymentAuthorizationStatus? {
-        switch(string) {
-        case "Failure": return .failure
-        case "Success": return .success
-        case "InvalidBillingPostalAddress": return .invalidBillingPostalAddress
-        case "InvalidShippingPostalAddress": return .invalidShippingPostalAddress
-        case "InvalidShippingContact": return .invalidShippingContact
-        case "PinRequired":
-            if #available(iOS 9.2, *) {
-                return .pinRequired
-            } else {
-                return nil
-            }
-        case "PinIncorrect":
-            if #available(iOS 9.2, *) {
-                return .pinIncorrect
-            } else {
-                return nil
-            }
-        case "PinLockout":
-            if #available(iOS 9.2, *) {
-                return .pinLockout
-            } else {
-                return nil
-            }
-        default:
-            return nil
+    static var allItems: [PKPaymentAuthorizationStatus] {
+        var items: [PKPaymentAuthorizationStatus] = [
+            .failure,
+            .success,
+            .invalidBillingPostalAddress,
+            .invalidShippingPostalAddress,
+            .invalidShippingContact]
+        
+        if #available(iOS 9.2, *) {
+            items.append(contentsOf: [.pinRequired, .pinLockout, .pinRequired])
         }
+        
+        return items
+    }
+    
+    static func from(_ string: String) -> PKPaymentAuthorizationStatus? {
+        for status in allItems {
+            if status.description == string {
+                return status
+            }
+        }
+        return nil
     }
 }

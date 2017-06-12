@@ -27,14 +27,28 @@
 import Foundation
 import PassKit
 
+extension PKPaymentSummaryItemType: CustomStringConvertible {
+    
+    public var description: String {
+        switch self {
+        case .final:
+            return "Final"
+        case .pending:
+            return "Pending"
+        }
+    }
+}
+
 extension PKPaymentSummaryItemType {
     
+    static let allItems: [PKPaymentSummaryItemType] = [.final, .pending]
+
     static func from(_ string: String) -> PKPaymentSummaryItemType? {
-        switch(string) {
-        case "Final": return .final
-        case "Pending": return .pending
-        default:
-            return nil
+        for type in allItems {
+            if type.description == string {
+                return type
+            }
         }
+        return nil
     }
 }
