@@ -92,12 +92,12 @@ namespace <%= namespace %> {
 
             DefaultQueries.checkout.Create(query, newLineItemInput);
 
-            LineItems.ClearNew();
-
             Client.Mutation(query, (Mutation response, List<string> errors, string httpError) => {
                 if (errors != null || httpError != null) {
                     callback(errors, httpError);
                 } else {
+                    LineItems.ClearNew();
+
                     UpdateCheckout(response.checkoutCreate().checkout());
                     
                     CheckoutPoll(callback);
@@ -113,23 +113,24 @@ namespace <%= namespace %> {
 
             if (doAdd) {
                 DefaultQueries.checkout.LineItemsAdd(query, CurrentCheckout.id(), CartLineItems.ConvertToCheckoutLineItemInput(LineItems.New()));
-                LineItems.ClearNew();
             }
 
             if (doModify) {
                 DefaultQueries.checkout.LineItemsUpdate(query, CurrentCheckout.id(), CartLineItems.ConvertToCheckoutLineItemUpdateInput(LineItems.Modified()));
-                LineItems.ClearModified();
             }
 
             if (doDelete) {
                 DefaultQueries.checkout.LineItemsRemove(query, CurrentCheckout.id(), CartLineItems.ConvertToCheckoutIds(LineItems.Deleted()));
-                LineItems.ClearDeleted();
             }
 
             Client.Mutation(query, (Mutation response, List<string> errors, string httpError) => {
                 if (errors != null || httpError != null) {
                     callback(errors, httpError);
                 } else {
+                    LineItems.ClearNew();
+                    LineItems.ClearModified();
+                    LineItems.ClearDeleted();
+
                     if (doAdd) {
                         UpdateCheckout(response.checkoutLineItemsAdd().checkout());
                     } else if (doModify) {
