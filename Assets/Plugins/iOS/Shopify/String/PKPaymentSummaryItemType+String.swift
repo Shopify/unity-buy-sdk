@@ -1,5 +1,5 @@
 //
-//  Unity-iPhone-Bridging-Header.h
+//  PKPaymentSummaryItemType+String.swift
 //  UnityBuySDK
 //
 //  Created by Shopify.
@@ -24,6 +24,25 @@
 //  THE SOFTWARE.
 //
 
-#import "UnityBuyAppController.h"
-#import "UnityAppController+ViewHandling.h"
-#import "UnityInterface.h"
+import Foundation
+import PassKit
+
+extension PKPaymentSummaryItemType: RawRepresentable {
+    
+    public init?(rawValue: String) {
+        switch rawValue {
+        case PKPaymentSummaryItemType.final.rawValue:   self = .final
+        case PKPaymentSummaryItemType.pending.rawValue: self = .pending
+        default: return nil
+        }
+    }
+    
+    public var rawValue: String {
+        switch self {
+        case .final:
+            return "Final"
+        case .pending:
+            return "Pending"
+        }
+    }
+}
