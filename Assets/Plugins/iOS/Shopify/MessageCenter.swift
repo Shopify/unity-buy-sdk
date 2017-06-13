@@ -1,5 +1,5 @@
 //
-//  Unity-iPhone-Bridging-Header.h
+//  MessageCenter.swift
 //  UnityBuySDK
 //
 //  Created by Shopify.
@@ -24,6 +24,34 @@
 //  THE SOFTWARE.
 //
 
-#import "UnityBuyAppController.h"
-#import "UnityAppController+ViewHandling.h"
-#import "UnityInterface.h"
+import Foundation
+import PassKit
+
+@objc class MessageCenter: NSObject {
+    
+    private static var messages = [String: UnityMessage]()
+    
+    static func send(_ message: UnityMessage, completionHandler: UnityMessage.MessageCompletion? = nil) {
+
+        if let completionHandler = completionHandler {
+            messages[message.identifier] = message
+            
+            defer {
+                message.wait { response in
+                    messages[message.identifier] = nil
+                    completionHandler(response)
+                }
+            }
+        }
+
+        let object  = message.object.cString(using: .utf8)
+        let method  = message.method.cString(using: .utf8)
+        let content = try! message.serializedString().cString(using: .utf8)
+
+        UnitySendMessage(object, method, content)
+    }
+    
+    static func message(forIdentifier identifier: String) -> UnityMessage? {
+        return messages[identifier]
+    }
+}

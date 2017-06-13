@@ -1,5 +1,5 @@
 //
-//  Unity-iPhone-Bridging-Header.h
+//  Deserializable.swift
 //  UnityBuySDK
 //
 //  Created by Shopify.
@@ -24,6 +24,35 @@
 //  THE SOFTWARE.
 //
 
-#import "UnityBuyAppController.h"
-#import "UnityAppController+ViewHandling.h"
-#import "UnityInterface.h"
+import Foundation
+
+protocol Deserializable {
+    static func deserialize(_ json: JSON) -> Self?
+}
+
+extension Deserializable {
+    
+    static func deserialize(_ string: String) -> Self? {
+        guard
+            let data = string.data(using: .utf8),
+            let jsonObject = (try? JSONSerialization.jsonObject(with: data)) as? JSON
+        else {
+            return nil
+        }
+
+        return deserialize(jsonObject)
+    }
+    
+    static func deserialize(_ jsonCollection: [JSON]) -> [Self]? {
+        let items = jsonCollection.flatMap {
+            self.deserialize($0)
+        }
+        
+        if items.count < jsonCollection.count {
+            return nil
+        } else {
+            return items
+        }
+    }
+    
+}
