@@ -32,7 +32,9 @@ namespace Shopify.BuildPipeline {
             bool isBelowMinimumTarget = false;
 
             #if UNITY_5_5_OR_NEWER
-            isBelowMinimumTarget = float.Parse(UnityEditor.PlayerSettings.iOS.targetOSVersionString) < 9.0;
+            if (UnityEditor.PlayerSettings.iOS.targetOSVersionString == null || float.Parse(UnityEditor.PlayerSettings.iOS.targetOSVersionString) < 9.0) {
+                isBelowMinimumTarget = true;
+            }
             #elif UNITY_5_4_2_OR_NEWER
             isBelowMinimumTarget = UnityEditor.PlayerSettings.iOS.targetOSVersion < iOSTargetOSVersion.iOS_9_0;
             #else

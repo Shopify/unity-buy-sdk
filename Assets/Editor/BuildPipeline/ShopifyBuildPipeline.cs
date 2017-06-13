@@ -29,7 +29,7 @@ namespace Shopify.BuildPipeline {
         public static void BuildIosForTests()
         {
             string path = PlayerPath;
-            string[] scenes = {"iOSTests"};
+            string[] scenes = {"Assets/iOSTestAssets/iOSTests.unity"};
 
             PlayerSettings.iOS.sdkVersion = iOSSdkVersion.SimulatorSDK;
             BuildPipeline.BuildPlayer(scenes, path, BuildTarget.iOS, BuildOptions.Development);
