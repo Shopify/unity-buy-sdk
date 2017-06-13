@@ -41,7 +41,7 @@ namespace <%= namespace %> {
             }
         }
 
-        private const float POLL_DELAY = 0.5f;
+        private const float POLL_DELAY_SECONDS = 0.5f;
         private CartLineItems _LineItems;
         private ShopifyClient Client;
         private Checkout CurrentCheckout = null;
@@ -190,7 +190,7 @@ namespace <%= namespace %> {
                             callback(null, null);
                         } else {
                             #if !SHOPIFY_MONO_UNIT_TEST
-                                UnityTimeout.Start(POLL_DELAY, () => {
+                                UnityTimeout.Start(POLL_DELAY_SECONDS, () => {
                                     CheckoutPoll(callback);    
                                 });
                             #else
