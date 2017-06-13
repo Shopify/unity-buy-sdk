@@ -1,5 +1,5 @@
 //
-//  Unity-iPhone-Bridging-Header.h
+//  MessageResponder.mm
 //  UnityBuySDK
 //
 //  Created by Shopify.
@@ -24,6 +24,12 @@
 //  THE SOFTWARE.
 //
 
-#import "UnityBuyAppController.h"
-#import "UnityAppController+ViewHandling.h"
-#import "UnityInterface.h"
+#import <PassKit/PassKit.h>
+#import "ProductName-Swift.h"
+
+extern "C" {
+    void _RespondToNativeMessage(const char *identifier, const char *response) {
+        UnityMessage *message = [MessageCenter messageForIdentifier:[NSString stringWithUTF8String:identifier]];
+        [message completeWith:[NSString stringWithUTF8String:response]];
+    }
+}
