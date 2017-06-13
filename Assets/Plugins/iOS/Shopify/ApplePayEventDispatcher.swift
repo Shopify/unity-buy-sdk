@@ -63,6 +63,8 @@ extension ApplePayEventDispatcher: PaymentSessionDelegate {
             MessageCenter.send(message) { response in
                 if let response = response {
                     completionHandler(ApplePayEventResponse.deserialize(response))
+                } else {
+                    completionHandler(nil)
                 }
             }
         } else {
