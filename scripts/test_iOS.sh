@@ -4,9 +4,13 @@
 
 IOS_BUILD_PATH="$PROJECT_ROOT"/Shopify-iOS-Tests
 IOS_PROJECT_PATH="$IOS_BUILD_PATH"/Unity-iPhone.xcodeproj
+IOS_TEST_ASSETS="$PROJECT_ROOT"/iOSTestAssets
+UNITY_ASSETS="$PROJECT_ROOT"/Assets
 UNITY_IOS_LOG_PATH="$PROJECT_ROOT"/buildIOS.log
 
 which "$UNITY_PATH" &> /dev/null || die "Unity does not exist at $UNITY_PATH" 
+
+cp -r "$IOS_TEST_ASSETS" "$UNITY_ASSETS"/iOSTestAssets
 
 "$UNITY_PATH" \
     -batchmode \
