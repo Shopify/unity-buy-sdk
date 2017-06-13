@@ -1,0 +1,22 @@
+namespace <%= namespace %>.SDK {
+    using System.Collections;
+    using System.Collections.Generic;
+    using UnityEngine;
+
+    public class NativeMessage {
+
+        private enum Field {
+            Identifier,
+            Content
+        }
+
+        public readonly string Identifier;
+        public readonly string Content;
+
+        public NativeMessage(string jsonString) {
+            var jsonObject = JsonUtility.FromJson<Dictionary<string, string>>(jsonString);
+            Identifier = jsonObject[Field.Identifier.ToString ("G")];
+            Content = jsonObject[Field.Content.ToString ("G")];
+        }
+    }
+}

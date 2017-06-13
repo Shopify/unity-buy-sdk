@@ -113,6 +113,8 @@ module GraphQLGenerator
         SDK/QueryResponse
         SDK/ILoader
         SDK/Log
+        SDK/NativeMessageResponder
+        SDK/NativeMessage
       ).each do |class_file_name|
         directory = "#{path}/#{File.dirname(class_file_name)}"
 
