@@ -52,10 +52,8 @@ static void (^_loadCompletion)();
 
 extern "C" {
     void _TesterObjectFinishedLoading() {
-        NSLog(@"Test Object has Loaded");
         Tester.hasLoaded = true;
         if (Tester.loadCompletion != nil) {
-            NSLog(@"Called completion");
             Tester.loadCompletion();
         }
     }

@@ -1,5 +1,5 @@
 //
-//  Tester+Method.swift
+//  Tester+Meta.swift
 //  UnityBuySDK
 //
 //  Created by Shopify.
@@ -27,8 +27,12 @@
 import Foundation
 
 extension Tester {
+
+    static var name: String {
+        return "Tester"
+    }
+    
     enum Method: String {
         case repeatMessage  = "RepeatMessage"
-        case getLastMessage = "GetLastMessage"
     }
 }

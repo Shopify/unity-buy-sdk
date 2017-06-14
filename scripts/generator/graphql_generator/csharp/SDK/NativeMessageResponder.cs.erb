@@ -1,9 +1,0 @@
-namespace <%= namespace %>.SDK {
-    using UnityEngine;
-    using System.Runtime.InteropServices;
-
-    public class NativeMessageResponder : MonoBehaviour {
-        [DllImport ("__Internal")]
-        protected static extern void _RespondToNativeMessage(string identifier, string message);
-    }
-}

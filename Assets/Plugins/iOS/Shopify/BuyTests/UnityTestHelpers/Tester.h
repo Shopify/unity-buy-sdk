@@ -31,5 +31,4 @@
 @property (class) BOOL hasLoaded;
 @property (class, nullable) void (^loadCompletion)();
 
-
 @end

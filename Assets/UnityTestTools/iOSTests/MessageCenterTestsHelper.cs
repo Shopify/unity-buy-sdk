@@ -1,16 +1,13 @@
 ﻿#if UNITY_IPHONE
 namespace Shopify.iOS.Tests {
-    using System.Collections;
-    using System.Collections.Generic;
     using UnityEngine;
     using System.Runtime.InteropServices;
     using Shopify.Unity.SDK;
 
-    public class MessageCenterTestsHelper : NativeMessageResponder {
+    public class MessageCenterTestsHelper : MonoBehaviour {
         void RepeatMessage(string serializedMessage) {
-            Debug.Log("received message");
-            var message = new NativeMessage(serializedMessage);
-            _RespondToNativeMessage(message.Identifier, message.Content);
+            var message = NativeMessage.CreateFromJSON(serializedMessage);
+            message.Respond(message.Content);
         }
     }
 }

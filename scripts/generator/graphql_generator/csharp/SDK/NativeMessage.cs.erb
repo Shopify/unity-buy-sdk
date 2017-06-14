@@ -1,22 +1,22 @@
 namespace <%= namespace %>.SDK {
-    using System.Collections;
-    using System.Collections.Generic;
     using UnityEngine;
+    using System.Runtime.InteropServices;
 
     public class NativeMessage {
 
-        private enum Field {
-            Identifier,
-            Content
-        }
+        [DllImport ("__Internal")]
+        private static extern void _RespondToNativeMessage(string identifier, string message);
 
         public readonly string Identifier;
         public readonly string Content;
 
-        public NativeMessage(string jsonString) {
-            var jsonObject = JsonUtility.FromJson<Dictionary<string, string>>(jsonString);
-            Identifier = jsonObject[Field.Identifier.ToString ("G")];
-            Content = jsonObject[Field.Content.ToString ("G")];
+        public static NativeMessage CreateFromJSON(string jsonString)
+        {
+            return JsonUtility.FromJson<NativeMessage>(jsonString);
+        }
+
+        public void Respond(string message) {
+            _RespondToNativeMessage(Identifier, message);
         }
     }
 }
