@@ -10,8 +10,6 @@ UNITY_IOS_LOG_PATH="$PROJECT_ROOT"/buildIOS.log
 
 which "$UNITY_PATH" &> /dev/null || die "Unity does not exist at $UNITY_PATH" 
 
-cp -r "$IOS_TEST_ASSETS" "$UNITY_ASSETS"
-
 "$UNITY_PATH" \
     -batchmode \
     -nographics \

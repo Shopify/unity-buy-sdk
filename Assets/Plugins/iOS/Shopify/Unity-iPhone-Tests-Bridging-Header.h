@@ -1,5 +1,5 @@
 //
-//  MessageTests.swift
+//  Unity-iPhone-Bridging-Header.h
 //  UnityBuySDK
 //
 //  Created by Shopify.
@@ -24,34 +24,7 @@
 //  THE SOFTWARE.
 //
 
-import XCTest
-@testable import ProductName
-
-class MessageTests: XCTestCase {
-    
-    override func setUp() {
-        let didLoad = expectation(description: "Waiting for the TesterObject to load")
-        if Tester.hasLoaded == false {
-            Tester.loadCompletion = {
-                didLoad.fulfill()
-            }
-        }
-        self.wait(for: [didLoad], timeout: 10.0)
-    }
-    
-    func testSendMessage() {
-        let unityObject = "Tester"
-        let content     = "Test String{/!#^3;'][>}"
-        let method      = Tester.Method.repeatMessage.rawValue
-        let message     = UnityMessage(content: content, object: unityObject, method: method)
-        let expectation = self.expectation(description: "MessageCenter.send failed to complete")
-        
-        MessageCenter.send(message) { response in
-            XCTAssertEqual(message.content, response)
-            expectation.fulfill()
-        }
-        
-        XCTAssertEqual(message, MessageCenter.message(forIdentifier: message.identifier))
-        self.wait(for: [expectation], timeout: 10.0)
-    }
-}
+#import "UnityBuyAppController.h"
+#import "UnityAppController+ViewHandling.h"
+#import "UnityInterface.h"
+#import "Tester.h"

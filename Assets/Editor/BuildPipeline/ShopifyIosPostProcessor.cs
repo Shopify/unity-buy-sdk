@@ -23,7 +23,8 @@ namespace Shopify.BuildPipeline {
         /// Sets the correct build properties to run
         private static void SetBuildProperties(ExtendedPBXProject project) {
             project.SetBuildProperty(project.GetAllTargetGuids(), ExtendedPBXProject.SwiftVersionKey, "3.0");
-            project.SetBuildProperty(project.GetAllTargetGuids(), ExtendedPBXProject.SwiftBridgingHeaderKey, "Libraries/Plugins/iOS/Shopify/Unity-iPhone-Bridging-Header.h");
+            project.SetBuildProperty(project.UnityTargetGuid, ExtendedPBXProject.SwiftBridgingHeaderKey, "Libraries/Plugins/iOS/Shopify/Unity-iPhone-Bridging-Header.h");
+            project.SetBuildProperty(project.TestTargetGuid, ExtendedPBXProject.SwiftBridgingHeaderKey, "Libraries/Plugins/iOS/Shopify/Unity-iPhone-Tests-Bridging-Header.h");
             project.SetBuildProperty(project.UnityTargetGuid, ExtendedPBXProject.RunpathSearchKey, "@executable_path/Frameworks");
             project.SetBuildProperty(project.TestTargetGuid, ExtendedPBXProject.RunpathSearchKey, "@loader_path/Frameworks");
             project.SetBuildProperty(project.TestTargetGuid, ExtendedPBXProject.ProjectModuleNameKey, "$(PRODUCT_NAME:c99extidentifier)Tests");

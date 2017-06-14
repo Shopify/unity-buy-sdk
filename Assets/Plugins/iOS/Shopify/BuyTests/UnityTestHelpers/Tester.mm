@@ -1,5 +1,5 @@
 //
-//  TesterMethod.swift
+//  TestCaseStart.mm
 //  UnityBuySDK
 //
 //  Created by Shopify.
@@ -24,9 +24,39 @@
 //  THE SOFTWARE.
 //
 
-import Foundation
+#include "Tester.h"
 
-public enum TesterMethod: String {
-    case repeatMessage  = "RepeatMessage"
-    case getLastMessage = "GetLastMessage"
+@implementation Tester
+
+static BOOL _hasLoaded;
+static void (^_loadCompletion)();
+
++ (void (^)())loadCompletion {
+    return _loadCompletion;
+}
+
++ (void)setLoadCompletion:(void (^)())loadCompletion {
+    _loadCompletion = loadCompletion;
+}
+
++ (BOOL)hasLoaded {
+    return _hasLoaded;
+}
+
++ (void)setHasLoaded:(BOOL)hasLoaded {
+    _hasLoaded = hasLoaded;
+}
+
+@end
+
+
+extern "C" {
+    void _TesterObjectFinishedLoading() {
+        NSLog(@"Test Object has Loaded");
+        Tester.hasLoaded = true;
+        if (Tester.loadCompletion != nil) {
+            NSLog(@"Called completion");
+            Tester.loadCompletion();
+        }
+    }
 }

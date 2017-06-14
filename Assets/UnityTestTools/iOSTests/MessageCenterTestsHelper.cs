@@ -8,6 +8,7 @@ namespace Shopify.iOS.Tests {
 
     public class MessageCenterTestsHelper : NativeMessageResponder {
         void RepeatMessage(string serializedMessage) {
+            Debug.Log("received message");
             var message = new NativeMessage(serializedMessage);
             _RespondToNativeMessage(message.Identifier, message.Content);
         }
