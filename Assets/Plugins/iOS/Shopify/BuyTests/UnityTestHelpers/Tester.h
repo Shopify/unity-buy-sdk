@@ -1,5 +1,5 @@
 //
-//  TestCaseStart.h
+//  Tester.h
 //  UnityBuySDK
 //
 //  Created by Shopify.

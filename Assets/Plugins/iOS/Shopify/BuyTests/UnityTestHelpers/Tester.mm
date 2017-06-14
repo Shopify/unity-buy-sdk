@@ -1,5 +1,5 @@
 //
-//  TestCaseStart.mm
+//  Tester.mm
 //  UnityBuySDK
 //
 //  Created by Shopify.

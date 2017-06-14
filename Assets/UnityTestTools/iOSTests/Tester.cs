@@ -11,9 +11,4 @@ public class Tester : MonoBehaviour {
     void Start () {
         _TesterObjectFinishedLoading();
     }
-    
-    // Update is called once per frame
-    void Update () {
-        
-    }
 }
