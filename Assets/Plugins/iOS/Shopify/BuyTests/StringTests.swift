@@ -29,37 +29,60 @@ import PassKit
 
 @testable import ProductName
 
+@available(iOS 10.0, *)
 class StringTests : XCTestCase {
 
     /// Test that all rawValues are unique
     func testPaymentAuthorizationStatusUnique() {
         
-        let rawValues: [String] = PKPaymentAuthorizationStatus.allItems.map {
-            $0.rawValue
-        }
+        let states: [String] = [
+            PKPaymentAuthorizationStatus.failure.rawValue,
+            PKPaymentAuthorizationStatus.success.rawValue,
+            PKPaymentAuthorizationStatus.invalidBillingPostalAddress.rawValue,
+            PKPaymentAuthorizationStatus.invalidShippingPostalAddress.rawValue,
+            PKPaymentAuthorizationStatus.invalidShippingContact.rawValue,
+            PKPaymentAuthorizationStatus.pinRequired.rawValue,
+            PKPaymentAuthorizationStatus.pinLockout.rawValue,
+            PKPaymentAuthorizationStatus.pinIncorrect.rawValue]
         
-        XCTAssertEqual(rawValues.count, Set(rawValues).count)
+        XCTAssertEqual(states.count, Set(states).count)
     }
     
     func testPaymentSummaryItemTypeUnique() {
-        
-        let rawValues: [String] = PKPaymentSummaryItemType.allItems.map {
-            $0.rawValue
-        }
-        
-        XCTAssertEqual(rawValues.count, Set(rawValues).count)
+        let types: [String] = [PKPaymentSummaryItemType.pending.rawValue, PKPaymentSummaryItemType.final.rawValue]
+        XCTAssertEqual(types.count, Set(types).count)
     }
     
     /// Test that rawValues correspond to the init
     func testPaymentAuthorizationStatusInit() {
-        for status in PKPaymentAuthorizationStatus.allItems {
-            XCTAssertEqual(status, PKPaymentAuthorizationStatus(rawValue: status.rawValue as String))
+        
+        let assertInitIdempotency = { (status: PKPaymentAuthorizationStatus) in
+            XCTAssertEqual(
+                status,
+                PKPaymentAuthorizationStatus.init(rawValue: status.rawValue as String),
+                status.rawValue as String)
         }
+        
+        assertInitIdempotency(.failure)
+        assertInitIdempotency(.success)
+        assertInitIdempotency(.invalidBillingPostalAddress)
+        assertInitIdempotency(.invalidShippingPostalAddress)
+        assertInitIdempotency(.invalidShippingContact)
+        assertInitIdempotency(.pinRequired)
+        assertInitIdempotency(.pinLockout)
+        assertInitIdempotency(.pinIncorrect)
     }
     
     func testPaymentSummaryItemTypeInit() {
-        for type in PKPaymentSummaryItemType.allItems {
-            XCTAssertEqual(type, PKPaymentSummaryItemType(rawValue: type.rawValue as String))
+        
+        let assertInitIdempotency = { (status: PKPaymentSummaryItemType) in
+            XCTAssertEqual(
+                status,
+                PKPaymentSummaryItemType.init(rawValue: status.rawValue as String),
+                status.rawValue as String)
         }
+
+        assertInitIdempotency(.pending)
+        assertInitIdempotency(.final)
     }
 }
