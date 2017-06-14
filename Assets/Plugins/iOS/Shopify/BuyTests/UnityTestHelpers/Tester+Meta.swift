@@ -33,6 +33,6 @@ extension Tester {
     }
     
     enum Method: String {
-        case repeatMessage  = "RepeatMessage"
+        case repeatMessage = "RepeatMessage"
     }
 }

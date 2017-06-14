@@ -28,7 +28,9 @@
 
 @interface Tester : NSObject
 
+typedef void (^TesterCompletion)();
+
 @property (class) BOOL hasLoaded;
-@property (class, nullable) void (^loadCompletion)();
+@property (class, nullable) TesterCompletion completion;
 
 @end

@@ -29,14 +29,14 @@
 @implementation Tester
 
 static BOOL _hasLoaded;
-static void (^_loadCompletion)();
+static TesterCompletion _completion;
 
-+ (void (^)())loadCompletion {
-    return _loadCompletion;
++ (TesterCompletion)completion {
+    return _completion;
 }
 
-+ (void)setLoadCompletion:(void (^)())loadCompletion {
-    _loadCompletion = loadCompletion;
++ (void)setCompletion:(TesterCompletion)completion {
+    _completion = completion;
 }
 
 + (BOOL)hasLoaded {
@@ -53,8 +53,8 @@ static void (^_loadCompletion)();
 extern "C" {
     void _TesterObjectFinishedLoading() {
         Tester.hasLoaded = true;
-        if (Tester.loadCompletion != nil) {
-            Tester.loadCompletion();
+        if (Tester.completion != nil) {
+            Tester.completion();
         }
     }
 }

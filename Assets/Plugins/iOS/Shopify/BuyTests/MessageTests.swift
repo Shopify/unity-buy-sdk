@@ -34,7 +34,7 @@ class MessageTests: XCTestCase {
     override func setUp() {
         if Tester.hasLoaded == false {
             let didLoad = expectation(description: "Tester failed to load")
-            Tester.loadCompletion = {
+            Tester.completion = {
                 didLoad.fulfill()
             }
             self.wait(for: [didLoad], timeout: timeout)
