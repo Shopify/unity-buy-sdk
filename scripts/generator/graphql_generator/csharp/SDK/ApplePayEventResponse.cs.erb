@@ -1,0 +1,20 @@
+#if UNITY_IPHONE
+namespace <%= namespace %>.SDK.iOS {
+    using System.Collections;
+    using System.Collections.Generic;
+    using System;
+    using UnityEngine;
+
+    public class ApplePayEventResponse: Serializable {
+        public string AuthorizationStatus;
+        public List<SummaryItem> SummaryItems;
+        public List<ShippingMethod> ShippingMethods;
+
+        public ApplePayEventResponse(ApplePayAuthorizationStatus authorizationStatus, List<SummaryItem> summaryItems = null, List<ShippingMethod> shippingMethods = null) {
+            AuthorizationStatus = authorizationStatus.ToString("G");
+            SummaryItems = summaryItems ?? new List<SummaryItem>();
+            ShippingMethods = shippingMethods ?? new List<ShippingMethod>();
+        }
+    }
+}
+#endif
