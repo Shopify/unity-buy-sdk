@@ -59,7 +59,7 @@ class StringTests : XCTestCase {
         let assertInitIdempotency = { (status: PKPaymentAuthorizationStatus) in
             XCTAssertEqual(
                 status,
-                PKPaymentAuthorizationStatus.init(rawValue: status.rawValue as String),
+                PKPaymentAuthorizationStatus(rawValue: status.rawValue as String),
                 status.rawValue as String)
         }
         
@@ -78,7 +78,7 @@ class StringTests : XCTestCase {
         let assertInitIdempotency = { (status: PKPaymentSummaryItemType) in
             XCTAssertEqual(
                 status,
-                PKPaymentSummaryItemType.init(rawValue: status.rawValue as String),
+                PKPaymentSummaryItemType(rawValue: status.rawValue as String),
                 status.rawValue as String)
         }
 
