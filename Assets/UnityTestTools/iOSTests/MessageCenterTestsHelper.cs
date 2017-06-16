@@ -1,5 +1,4 @@
-﻿#if UNITY_IPHONE
-namespace Shopify.iOS.Tests {
+﻿namespace Shopify.Tests {
     using UnityEngine;
     using System.Runtime.InteropServices;
     using Shopify.Unity.SDK;
@@ -11,4 +10,3 @@ namespace Shopify.iOS.Tests {
         }
     }
 }
-#endif
