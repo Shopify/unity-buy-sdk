@@ -1,14 +1,16 @@
 namespace <%= namespace %>.SDK {
+    using System;
     using UnityEngine;
     using System.Runtime.InteropServices;
 
+    [Serializable]
     public class NativeMessage {
 
         [DllImport ("__Internal")]
         private static extern void _RespondToNativeMessage(string identifier, string message);
 
-        public readonly string Identifier;
-        public readonly string Content;
+        public string Identifier;
+        public string Content;
 
         public static NativeMessage CreateFromJSON(string jsonString)
         {
