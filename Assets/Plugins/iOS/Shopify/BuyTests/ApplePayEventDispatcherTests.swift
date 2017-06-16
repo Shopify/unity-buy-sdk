@@ -1,9 +1,9 @@
 //
 //  ApplePayEventDispatcherTests.swift
-//  Unity-iPhone
+//  UnityBuySDK
 //
 //  Created by Shopify.
-// 
+//  Copyright © 2017 Shopify Inc. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -73,7 +73,7 @@ class ApplePayEventDispatcherTests: XCTestCase {
         // Check that the proper response was received from the delegate
         // The value we expect to receive is defined in the Unity Tester object
         let authExpectation = self.expectation(description: "MockAuthorizationController.invokeDidAuthorizePayment failed to complete")
-        MockAuthorizationController.invokeDidAuthorizePayment(payment) { (status) in
+        MockAuthorizationController.invokeDidAuthorizePayment(payment) { status in
             XCTAssertEqual(.success, status)
             authExpectation.fulfill()
         }
@@ -99,7 +99,7 @@ class ApplePayEventDispatcherTests: XCTestCase {
         let expectation     = self.expectation(description: "MockAuthorizationController.invokeDidSelectShippingMethod failed to complete")
         let expectedItem    = Models.createSummaryItem()
         
-        MockAuthorizationController.invokeDidSelectShippingMethod(selectedMethod) { (status, items) in
+        MockAuthorizationController.invokeDidSelectShippingMethod(selectedMethod) { status, items in
             XCTAssertEqual(.success, status)
             XCTAssertEqual(items.count, 1)
             XCTAssertEqual(expectedItem, items[0])
@@ -126,7 +126,7 @@ class ApplePayEventDispatcherTests: XCTestCase {
         let expectedMethod  = Models.createShippingMethod()
         let expectedItem    = Models.createSummaryItem()
         
-        MockAuthorizationController.invokeDidSelectShippingContact(selectedContact) { (status, methods, items) in
+        MockAuthorizationController.invokeDidSelectShippingContact(selectedContact) { status, methods, items in
             XCTAssertEqual(.success, status)
             XCTAssertEqual(items.count, 1)
             XCTAssertEqual(methods.count, 1)

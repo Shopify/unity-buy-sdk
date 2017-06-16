@@ -26,7 +26,7 @@ namespace Shopify.Tests.iOS {
              NativeMessageTester.CreateFromJSON(serializedMessage);
         }
 
-        private  List<SummaryItem> GetExpectedSummaryItems() {
+        private List<SummaryItem> GetExpectedSummaryItems() {
             var summaryItems = new List<SummaryItem>();
             summaryItems.Add(new SummaryItem("SubTotal", "1.00"));
             return summaryItems;
