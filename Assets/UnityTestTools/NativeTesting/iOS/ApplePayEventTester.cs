@@ -6,21 +6,25 @@ namespace Shopify.Tests.iOS {
     using Shopify.Unity.SDK.iOS;
 
     public class ApplePayEventTester : MonoBehaviour, ApplePayEventReceiver {
+
         public void UpdateSummaryItemsForShippingIdentifier(string serializedMessage) {
             var message = NativeMessageTester.CreateFromJSON(serializedMessage);
             var response = new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, GetExpectedSummaryItems());
             message.Respond(response.ToJsonString());
         }
+
         public void UpdateSummaryItemsForShippingContact(string serializedMessage) {
             var message = NativeMessageTester.CreateFromJSON(serializedMessage);
             var response = new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, GetExpectedSummaryItems(), GetExpectedShippingMethods());
             message.Respond(response.ToJsonString());
         }
+
         public void FetchApplePayCheckoutStatusForToken(string serializedMessage) {
             var message = NativeMessageTester.CreateFromJSON(serializedMessage);
             var response = new ApplePayEventResponse(ApplePayAuthorizationStatus.Success);
             message.Respond(response.ToJsonString());
         }
+
         public void DidFinishCheckoutSession(string serializedMessage) {
             // Create the message to record it as received
              NativeMessageTester.CreateFromJSON(serializedMessage);
