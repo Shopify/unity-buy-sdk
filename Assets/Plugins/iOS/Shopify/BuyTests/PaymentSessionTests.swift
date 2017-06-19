@@ -37,6 +37,7 @@ class PaymentSessionTests: XCTestCase {
         if #available(iOS 10.0, *) {
             MockAuthorizationController.instances.removeAll()
         }
+        super.tearDown()
     }
     
     // ----------------------------------
