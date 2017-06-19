@@ -35,6 +35,7 @@ class ApplePayEventDispatcherTests: XCTestCase {
     let timeout = 10.0
     
     override func setUp() {
+        super.setUp()
         if Tester.hasLoaded == false {
             let didLoad = expectation(description: "Tester failed to load")
             Tester.completion = {
@@ -46,6 +47,7 @@ class ApplePayEventDispatcherTests: XCTestCase {
     
     override func tearDown() {
         MockAuthorizationController.instances.removeAll()
+        super.tearDown()
     }
     
     /// Tests that the correct serialized message was sent to Unity
