@@ -174,3 +174,45 @@ struct Models {
         }
     }
 }
+
+// ----------------------------------
+//  MARK: - JSON models -
+//
+extension Models {
+    enum SummaryItemField: String {
+        case amount = "Amount"
+        case label  = "Label"
+        case type   = "Type"
+    }
+    
+    enum ShippingMethodField: String {
+        case detail     = "Detail"
+        case identifier = "Identifier"
+    }
+    
+    static func createSummaryItemJson(amount: String, label: String, type: PKPaymentSummaryItemType? = nil) -> JSON {
+        
+        var json = JSON.init()
+        json[SummaryItemField.amount.rawValue] = amount
+        json[SummaryItemField.label.rawValue]  = label
+        
+        if let type = type {
+            json[SummaryItemField.type.rawValue] = type.rawValue as String
+        }
+        
+        return json
+    }
+    
+    static func createShippingMethodJson(amount: String, label: String, identifier: String, detail: String, type: PKPaymentSummaryItemType? = nil) -> JSON {
+        
+        var json = createSummaryItemJson(amount: amount, label: label, type: type)
+        json[ShippingMethodField.detail.rawValue]      = detail
+        json[ShippingMethodField.identifier.rawValue]  = identifier
+        
+        if let type = type {
+            json[SummaryItemField.type.rawValue] = type.rawValue as String
+        }
+        
+        return json
+    }
+}
