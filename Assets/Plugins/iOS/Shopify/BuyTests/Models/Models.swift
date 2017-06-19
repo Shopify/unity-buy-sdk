@@ -51,7 +51,7 @@ struct Models {
     //  MARK: - PersonNameComponents -
     //
     static func createPersonName() -> PersonNameComponents {
-        var personName        = PersonNameComponents.init()
+        var personName        = PersonNameComponents()
         personName.givenName  = firstName
         personName.familyName = lastName
         return personName
@@ -61,7 +61,7 @@ struct Models {
     //  MARK: - CNPostalAddress -
     //
     static func createPostalAddress() -> CNPostalAddress {
-        let postalAddress        = CNMutablePostalAddress.init()
+        let postalAddress        = CNMutablePostalAddress()
         postalAddress.street     = address1
         postalAddress.postalCode = zip
         postalAddress.country    = country
@@ -86,82 +86,91 @@ struct Models {
     //  MARK: - PassKit -
     //
     static func createContact(with postalAddress: CNPostalAddress) -> PKContact {
-        let contact           = PKContact.init()
+        let contact           = PKContact()
         contact.name          = createPersonName()
         contact.emailAddress  = emailAddress
-        contact.phoneNumber   = CNPhoneNumber.init(stringValue: phone)
+        contact.phoneNumber   = CNPhoneNumber(stringValue: phone)
         contact.postalAddress = postalAddress
         return contact
     }
     
     static func createPaymentMethod() -> PKPaymentMethod {
-        return MockPaymentMethod.init(displayName: "AMEX", network: .amex, type: .credit)
+        return MockPaymentMethod(displayName: "AMEX", network: .amex, type: .credit)
     }
     
     static func createShippingMethod() -> PKShippingMethod {
-        let shippingMethod        = PKShippingMethod.init(label: "Free Shipping", amount: 0)
+        let shippingMethod        = PKShippingMethod(label: "Free Shipping", amount: 0)
         shippingMethod.identifier = "unique_id"
         return shippingMethod
     }
     
     static func createPaymentToken() -> PKPaymentToken {
-        return MockPaymentToken.init(paymentMethod: Models.createPaymentMethod() as! MockPaymentMethod)
+        return MockPaymentToken(paymentMethod: Models.createPaymentMethod() as! MockPaymentMethod)
     }
     
     static func createPayment() -> PKPayment {
-        return MockPayment.init(token: createPaymentToken() as! MockPaymentToken,
-                                billingContact: createContact(with: createPostalAddress()),
-                                shippingContact: createContact(with: createPostalAddress()),
-                                shippingMethod: createShippingMethod())
+        return MockPayment(
+            token: createPaymentToken() as! MockPaymentToken,
+            billingContact: createContact(with: createPostalAddress()),
+            shippingContact: createContact(with: createPostalAddress()),
+            shippingMethod: createShippingMethod())
     }
     
     static func createSummaryItems() -> [PKPaymentSummaryItem] {
         var summaryItems = [PKPaymentSummaryItem]()
-        summaryItems.append(PKPaymentSummaryItem.init(label: "SubTotal", amount: NSDecimalNumber.init(value: 1.00)))
-        summaryItems.append(PKPaymentSummaryItem.init(label: "Tax",      amount: NSDecimalNumber.init(value: 1.00)))
-        summaryItems.append(PKPaymentSummaryItem.init(label: "Shipping", amount: NSDecimalNumber.init(value: 1.00)))
-        summaryItems.append(PKPaymentSummaryItem.init(label: "Total",    amount: NSDecimalNumber.init(value: 3.00)))
+        summaryItems.append(PKPaymentSummaryItem(label: "SubTotal", amount: NSDecimalNumber(value: 1.00)))
+        summaryItems.append(PKPaymentSummaryItem(label: "Tax",      amount: NSDecimalNumber(value: 1.00)))
+        summaryItems.append(PKPaymentSummaryItem(label: "Shipping", amount: NSDecimalNumber(value: 1.00)))
+        summaryItems.append(PKPaymentSummaryItem(label: "Total",    amount: NSDecimalNumber(value: 3.00)))
         return summaryItems
     }
     
     static func createShippingMethods() -> [PKShippingMethod] {
         var shippingMethods = [PKShippingMethod]()
-        shippingMethods.append(
-            PKShippingMethod.init(label: "Free",
-                                  amount: NSDecimalNumber.init(value: 0.0),
-                                  identifier: "Free",
-                                  detail: "10-15 Days"))
         
         shippingMethods.append(
-            PKShippingMethod.init(label: "Standard",
-                                  amount: NSDecimalNumber.init(value: 5.0),
-                                  identifier: "Standard",
-                                  detail: "10-15 Days"))
+            PKShippingMethod(
+                label: "Free",
+                amount: NSDecimalNumber(value: 0.0),
+                identifier: "Free",
+                detail: "10-15 Days"))
+        
         shippingMethods.append(
-            PKShippingMethod.init(label: "Express",
-                                  amount: NSDecimalNumber.init(value: 10.0),
-                                  identifier: "Express",
-                                  detail: "10-15 Days"))
+            PKShippingMethod(
+                label: "Standard",
+                amount: NSDecimalNumber(value: 5.0),
+                identifier: "Standard",
+                detail: "10-15 Days"))
+        
+        shippingMethods.append(
+            PKShippingMethod(
+                label: "Express",
+                amount: NSDecimalNumber(value: 10.0),
+                identifier: "Express",
+                detail: "10-15 Days"))
+        
         return shippingMethods
     }
     
     static func createPaymentSession(requiringShippingAddressFields: Bool, usingNonDefault controllerType: PaymentAuthorizationControlling.Type?) -> PaymentSession {
         
         if let controllerType = controllerType {
-            return PaymentSession.init(merchantId: merchantId,
-                                       countryCode: countryCode,
-                                       currencyCode: currencyCode,
-                                       requiringShippingAddressFields: requiringShippingAddressFields,
-                                       summaryItems: createSummaryItems(),
-                                       shippingMethods: createShippingMethods(),
-                                       controllerType: controllerType)
+            return PaymentSession(
+                merchantId: merchantId,
+                countryCode: countryCode,
+                currencyCode: currencyCode,
+                requiringShippingAddressFields: requiringShippingAddressFields,
+                summaryItems: createSummaryItems(),
+                shippingMethods: createShippingMethods(),
+                controllerType: controllerType)
         } else {
-            return PaymentSession.init(merchantId: merchantId,
-                                       countryCode: countryCode,
-                                       currencyCode: currencyCode,
-                                       requiringShippingAddressFields: requiringShippingAddressFields,
-                                       summaryItems: createSummaryItems(),
-                                       shippingMethods: createShippingMethods())
+            return PaymentSession(
+                merchantId: merchantId,
+                countryCode: countryCode,
+                currencyCode: currencyCode,
+                requiringShippingAddressFields: requiringShippingAddressFields,
+                summaryItems: createSummaryItems(),
+                shippingMethods: createShippingMethods())
         }
     }
 }
