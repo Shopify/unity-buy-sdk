@@ -23,7 +23,8 @@ namespace Shopify.BuildPipeline {
         /// Sets the correct build properties to run
         private static void SetBuildProperties(ExtendedPBXProject project) {
             project.SetBuildProperty(project.GetAllTargetGuids(), ExtendedPBXProject.SwiftVersionKey, "3.0");
-            project.SetBuildProperty(project.GetAllTargetGuids(), ExtendedPBXProject.SwiftBridgingHeaderKey, "Libraries/Plugins/iOS/Shopify/Unity-iPhone-Bridging-Header.h");
+            project.SetBuildProperty(project.UnityTargetGuid, ExtendedPBXProject.SwiftBridgingHeaderKey, "Libraries/Plugins/iOS/Shopify/Unity-iPhone-Bridging-Header.h");
+            project.SetBuildProperty(project.TestTargetGuid, ExtendedPBXProject.SwiftBridgingHeaderKey, "Libraries/Plugins/iOS/Shopify/Unity-iPhone-Tests-Bridging-Header.h");
             project.SetBuildProperty(project.UnityTargetGuid, ExtendedPBXProject.RunpathSearchKey, "@executable_path/Frameworks");
             project.SetBuildProperty(project.TestTargetGuid, ExtendedPBXProject.RunpathSearchKey, "@loader_path/Frameworks");
             project.SetBuildProperty(project.TestTargetGuid, ExtendedPBXProject.ProjectModuleNameKey, "$(PRODUCT_NAME:c99extidentifier)Tests");
@@ -32,7 +33,11 @@ namespace Shopify.BuildPipeline {
             bool isBelowMinimumTarget = false;
 
             #if UNITY_5_5_OR_NEWER
-            isBelowMinimumTarget = float.Parse(UnityEditor.PlayerSettings.iOS.targetOSVersionString) < 9.0;
+            if (UnityEditor.PlayerSettings.iOS.targetOSVersionString == null ||
+                UnityEditor.PlayerSettings.iOS.targetOSVersionString.Length == 0 ||
+                float.Parse(UnityEditor.PlayerSettings.iOS.targetOSVersionString) < 9.0) {
+                isBelowMinimumTarget = true;
+            }
             #elif UNITY_5_4_2_OR_NEWER
             isBelowMinimumTarget = UnityEditor.PlayerSettings.iOS.targetOSVersion < iOSTargetOSVersion.iOS_9_0;
             #else
