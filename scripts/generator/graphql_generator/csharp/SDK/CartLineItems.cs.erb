@@ -2,7 +2,7 @@ namespace <%= namespace %>.SDK {
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    
+
     public class CartLineItem {
         public static explicit operator CheckoutLineItemInput(CartLineItem lineItem) {
             return lineItem.GetCheckoutLineItemInput();
