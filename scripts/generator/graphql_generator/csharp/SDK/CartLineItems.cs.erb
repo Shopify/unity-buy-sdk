@@ -376,6 +376,7 @@ namespace <%= namespace %>.SDK {
                     if (cartLineItem.VariantId == checkoutVariantId) {
                         cartLineItem.ID = checkoutLineItemId;
                         didUpdateID = true;
+                        break;
                     }
                 }
 
