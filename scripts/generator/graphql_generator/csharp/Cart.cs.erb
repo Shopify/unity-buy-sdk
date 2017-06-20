@@ -40,6 +40,7 @@ namespace <%= namespace %> {
 
         private const float POLL_DELAY_SECONDS = 0.5f;
         private CartLineItems _LineItems;
+        private List<String> DeletedLineItems = new List<string>();
         private ShopifyClient Client;
         private Checkout CurrentCheckout = null;
 
@@ -59,7 +60,7 @@ namespace <%= namespace %> {
         /// \endcode
         public Cart(ShopifyClient client) {
             Client = client;
-            _LineItems = new CartLineItems();
+            _LineItems = new CartLineItems(OnDeleteLineItem);
         }
 
         public delegate void GetWebCheckoutLinkSucess(string url);
@@ -108,7 +109,7 @@ namespace <%= namespace %> {
 
             // remove all line items them add them
             List<string> lineItemsToRemove = CartLineItems.ConvertToLineItemIds(LineItems.All());
-            lineItemsToRemove.AddRange(LineItems.DeletedLineItemIds);
+            lineItemsToRemove.AddRange(DeletedLineItems);
 
             List<CheckoutLineItemInput> lineItemsToAdd = CartLineItems.ConvertToCheckoutLineItemInput(LineItems.All());
 
@@ -119,6 +120,8 @@ namespace <%= namespace %> {
                 if (errors != null || httpError != null) {
                     callback(errors, httpError);
                 } else {
+                    DeletedLineItems.Clear();
+
                     UpdateCheckout(response.checkoutLineItemsAdd().checkout());
 
                     CheckoutPoll(callback);
@@ -177,6 +180,10 @@ namespace <%= namespace %> {
                     }
                 });
             }
+        }
+
+        private void OnDeleteLineItem(string lineItemId) {
+            DeletedLineItems.Add(lineItemId);
         }
     }
 }

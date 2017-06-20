@@ -126,15 +126,13 @@ namespace <%= namespace %>.SDK {
             }
         }
 
-        public List<String> DeletedLineItemIds {
-            get {
-                return _DeletedLineItemIds;
-            }
-        }
-
         private bool _IsSaved = false;
         private List<CartLineItem> LineItems = new List<CartLineItem>();
-        private List<String> _DeletedLineItemIds = new List<string>();
+        private Action<string> OnDeleteLineItem;
+
+        public CartLineItems(Action<string> onDeleteLineItem) {
+            OnDeleteLineItem = onDeleteLineItem;
+        }
 
         /// <summary>
         /// Adds or updates an existing line item using a variant id.
@@ -315,7 +313,7 @@ namespace <%= namespace %>.SDK {
                 LineItems.RemoveAt(idxToDelete);
 
                 if (lineItemRemoved.ID != null) {
-                    _DeletedLineItemIds.Add(lineItemRemoved.ID);
+                    OnDeleteLineItem(lineItemRemoved.ID);
                 }
                 
                 return true;
@@ -365,8 +363,6 @@ namespace <%= namespace %>.SDK {
         }
 
         public void UpdateLineItemsFromCheckoutLineItems(List<CheckoutLineItem> checkoutLineItems) {
-            _DeletedLineItemIds.Clear();
-            
             foreach(CheckoutLineItem checkoutLineItem in checkoutLineItems) {
                 bool didUpdateID = false;
                 string checkoutVariantId = checkoutLineItem.variant().id();
