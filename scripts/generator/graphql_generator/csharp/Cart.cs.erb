@@ -106,7 +106,14 @@ namespace <%= namespace %> {
         private void CheckoutUpdate(Action<List<string>, string> callback) {
             MutationQuery query = new MutationQuery();
 
-            DefaultQueries.checkout.LineItemsUpdate(query, CurrentCheckout.id(), LineItems.All());
+            // remove all line items them add them
+            List<string> lineItemsToRemove = CartLineItems.ConvertToLineItemIds(LineItems.All());
+            lineItemsToRemove.AddRange(LineItems.DeletedLineItemIds);
+
+            List<CheckoutLineItemInput> lineItemsToAdd = CartLineItems.ConvertToCheckoutLineItemInput(LineItems.All());
+
+            DefaultQueries.checkout.LineItemsRemove(query, CurrentCheckout.id(), lineItemsToRemove);
+            DefaultQueries.checkout.LineItemsAdd(query, CurrentCheckout.id(), lineItemsToAdd);
         
             Client.Mutation(query, (Mutation response, List<string> errors, string httpError) => {
                 if (errors != null || httpError != null) {

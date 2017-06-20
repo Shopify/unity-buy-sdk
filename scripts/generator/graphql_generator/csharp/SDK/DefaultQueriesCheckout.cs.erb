@@ -29,33 +29,32 @@ namespace <%= namespace %>.SDK {
             );
         }
 
-        public void LineItemsUpdate(MutationQuery query, string checkoutId, List<CartLineItem> cartLineItems) {
-            List<string> lineItemIds = CartLineItems.ConvertToCheckoutIds(cartLineItems);
-            List<CheckoutLineItemInput> lineItems = CartLineItems.ConvertToCheckoutLineItemInput(cartLineItems);
+        public void LineItemsRemove(MutationQuery query, string checkoutId, List<string> lineItemIds) {
+            query.checkoutLineItemsRemove(
+                buildQuery: lineItemRemove => lineItemRemove
+                    .userErrors(userErrors => userErrors
+                        .field()
+                        .message()
+                    ),
+                checkoutId: checkoutId,
+                lineItemIds: lineItemIds
+            );
+        }
 
-            query
-                .checkoutLineItemsRemove(
-                    buildQuery: lineItemRemove => lineItemRemove
-                        .userErrors(userErrors => userErrors
-                            .field()
-                            .message()
-                        ),
-                    checkoutId: checkoutId,
-                    lineItemIds: lineItemIds
-                )
-                .checkoutLineItemsAdd(
-                    buildQuery: lineItemAdd => lineItemAdd
-                        .checkout(checkout => {
-                            Checkout(checkout);
-                            CheckoutLineItems(checkout);
-                        })
-                        .userErrors(userErrors => userErrors
-                            .field()
-                            .message()
-                        ),
-                    checkoutId: checkoutId,
-                    lineItems: lineItems
-                );
+        public void LineItemsAdd(MutationQuery query, string checkoutId, List<CheckoutLineItemInput> lineItems) {
+            query.checkoutLineItemsAdd(
+                buildQuery: lineItemAdd => lineItemAdd
+                    .checkout(checkout => {
+                        Checkout(checkout);
+                        CheckoutLineItems(checkout);
+                    })
+                    .userErrors(userErrors => userErrors
+                        .field()
+                        .message()
+                    ),
+                checkoutId: checkoutId,
+                lineItems: lineItems
+            );    
         }
 
         public void CheckoutLineItemsPage(QueryRootQuery query, string checkoutId, int first = 250, string after = null) {

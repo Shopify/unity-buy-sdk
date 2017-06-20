@@ -108,16 +108,16 @@ namespace <%= namespace %>.SDK {
             return lineItems.ConvertAll(converter);
         }
 
-        public static List<string> ConvertToCheckoutIds(List<CartLineItem> lineItems) {
+        public static List<string> ConvertToLineItemIds(List<CartLineItem> lineItems) {
             var converter = new Converter<CartLineItem, string>((lineItem) => {
                 return lineItem.ID;
             });
 
-            List<string> CheckoutIds = lineItems.ConvertAll(converter);
+            List<string> lineItemIds = lineItems.ConvertAll(converter);
 
-            CheckoutIds.RemoveAll(id => id == null);
+            lineItemIds.RemoveAll(id => id == null);
 
-            return CheckoutIds;
+            return lineItemIds;
         }
 
         public bool IsSaved {
@@ -126,8 +126,15 @@ namespace <%= namespace %>.SDK {
             }
         }
 
+        public List<String> DeletedLineItemIds {
+            get {
+                return _DeletedLineItemIds;
+            }
+        }
+
         private bool _IsSaved = false;
         private List<CartLineItem> LineItems = new List<CartLineItem>();
+        private List<String> _DeletedLineItemIds = new List<string>();
 
         /// <summary>
         /// Adds or updates an existing line item using a variant id.
@@ -304,8 +311,13 @@ namespace <%= namespace %>.SDK {
             if (idxToDelete == -1) {
                 return false;
             } else {
+                CartLineItem lineItemRemoved = LineItems[idxToDelete];
                 LineItems.RemoveAt(idxToDelete);
 
+                if (lineItemRemoved.ID != null) {
+                    _DeletedLineItemIds.Add(lineItemRemoved.ID);
+                }
+                
                 return true;
             }
         }
@@ -353,18 +365,21 @@ namespace <%= namespace %>.SDK {
         }
 
         public void UpdateLineItemsFromCheckoutLineItems(List<CheckoutLineItem> checkoutLineItems) {
+            _DeletedLineItemIds.Clear();
+            
             foreach(CheckoutLineItem checkoutLineItem in checkoutLineItems) {
                 bool didUpdateID = false;
-
+                string checkoutVariantId = checkoutLineItem.variant().id();
+                string checkoutLineItemId = checkoutLineItem.id();
+                
                 foreach(CartLineItem cartLineItem in LineItems) {    
-                    if (cartLineItem.VariantId == checkoutLineItem.variant().id()) {
-                        cartLineItem.ID = checkoutLineItem.id();
+                    if (cartLineItem.VariantId == checkoutVariantId) {
+                        cartLineItem.ID = checkoutLineItemId;
                         didUpdateID = true;
                     }
                 }
 
                 if (!didUpdateID) {
-                    string variantId = checkoutLineItem.variant().id();
                     long quantity = checkoutLineItem.quantity();
                     Dictionary<string, string> customAttributes = null;
 
@@ -377,8 +392,8 @@ namespace <%= namespace %>.SDK {
                         }
                     } catch(NoQueryException error) {}
 
-                    AddOrUpdate(variantId, quantity, customAttributes);
-                    Get(variantId).ID = checkoutLineItem.id();
+                    AddOrUpdate(checkoutVariantId, quantity, customAttributes);
+                    Get(checkoutVariantId).ID = checkoutLineItemId;
                 }
             }
 
