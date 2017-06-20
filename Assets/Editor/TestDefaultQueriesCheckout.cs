@@ -35,6 +35,34 @@ namespace Shopify.Tests
         }
 
         [Test]
+        public void TestCheckoutLineItemsAdd() {
+            MutationQuery query = new MutationQuery();
+            string checkoutId = "an-id";
+            List<CheckoutLineItemInput> lineItems = new List<CheckoutLineItemInput>();
+
+            DefaultQueries.checkout.LineItemsAdd(query, checkoutId, lineItems);
+
+            Assert.AreEqual(
+                "mutation{checkoutLineItemsAdd (lineItems:[],checkoutId:\"an-id\"){checkout {id webUrl ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}userErrors {field message }}}", 
+                query.ToString()
+            );
+        }
+
+        [Test]
+        public void TestCheckoutLineItemsRemove() {
+            MutationQuery query = new MutationQuery();
+            string checkoutId = "an-id";
+            List<string> lineItemIds = new List<string>();
+
+            DefaultQueries.checkout.LineItemsRemove(query, checkoutId, lineItemIds);
+
+            Assert.AreEqual(
+                "mutation{checkoutLineItemsRemove (checkoutId:\"an-id\",lineItemIds:[]){userErrors {field message }}}", 
+                query.ToString()
+            );
+        }
+
+        [Test]
         public void TestCheckoutLineItemsPage() {
             QueryRootQuery query = new QueryRootQuery();
             string checkoutId = "an-id";
