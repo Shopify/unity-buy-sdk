@@ -28,6 +28,11 @@ import XCTest
 @testable import ProductName
 
 class CartTests: XCTestCase {
+    
+    override func tearDown() {
+        session = nil
+        super.tearDown()
+    }
         
     func testCreatePaymentSession() {
         
@@ -53,16 +58,18 @@ class CartTests: XCTestCase {
         let requiringShipping = true
         let unityObjectName   = "Tester".cString(using: .utf8)
 
+        XCTAssertNil(session)
+        
         _CreateApplePaySession(merchantID, countryCode, currencyCode, requiringShipping, unityObjectName, serializedSummaryItems, serializedShippingItems)
         
-        XCTAssertEqual(_Session.request.paymentSummaryItems.count, 1)
-        XCTAssertEqual(_Session.request.paymentSummaryItems.first!.label, itemLabel)
-        XCTAssertEqual(_Session.request.paymentSummaryItems.first!.amount, NSDecimalNumber(string: itemAmount))
+        XCTAssertEqual(session.request.paymentSummaryItems.count, 1)
+        XCTAssertEqual(session.request.paymentSummaryItems.first!.label, itemLabel)
+        XCTAssertEqual(session.request.paymentSummaryItems.first!.amount, NSDecimalNumber(string: itemAmount))
         
-        XCTAssertEqual(_Session.request.shippingMethods!.count, 1)
-        XCTAssertEqual(_Session.request.shippingMethods!.first!.label,      shippingLabel)
-        XCTAssertEqual(_Session.request.shippingMethods!.first!.amount,     NSDecimalNumber(string: shippingAmount))
-        XCTAssertEqual(_Session.request.shippingMethods!.first!.identifier, identifier)
-        XCTAssertEqual(_Session.request.shippingMethods!.first!.detail,     detail)
+        XCTAssertEqual(session.request.shippingMethods!.count, 1)
+        XCTAssertEqual(session.request.shippingMethods!.first!.label,      shippingLabel)
+        XCTAssertEqual(session.request.shippingMethods!.first!.amount,     NSDecimalNumber(string: shippingAmount))
+        XCTAssertEqual(session.request.shippingMethods!.first!.identifier, identifier)
+        XCTAssertEqual(session.request.shippingMethods!.first!.detail,     detail)
     }
 }

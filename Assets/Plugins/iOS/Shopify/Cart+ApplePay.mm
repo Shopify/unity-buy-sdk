@@ -29,6 +29,21 @@
 
 ApplePayEventDispatcher *dispatcher;
 
+NSArray *ItemsForString(NSString *jsonString) {
+    NSString *dataKey = @"Items";
+    NSError *error = nil;
+    NSDictionary *itemsJson = [NSJSONSerialization JSONObjectWithData:[jsonString dataUsingEncoding:NSUTF8StringEncoding]
+                                                              options:kNilOptions
+                                                                error:&error];
+    
+    if (error == nil && itemsJson != nil && [itemsJson objectForKey:dataKey] != nil) {
+        return itemsJson[dataKey];
+    } else {
+        return nil;
+    }
+}
+
+
 bool _CanCheckoutWithApplePay() {
     return [PaymentSession canMakePayments];
 }
@@ -43,43 +58,25 @@ void _ShowApplePaySetup() {
 
 bool _CreateApplePaySession(const char *merchantID, const char *countryCode, const char *currencyCode, bool requiringShipping, const char *unityDelegateObjectName, const char *serializedSummaryItems, const char *serializedShippingMethods) {
     
-    NSString *dataKey = @"Items";
     NSString *itemsString = [NSString stringWithUTF8String:serializedSummaryItems];
+    NSArray *itemJsons = ItemsForString(itemsString);
+    
     NSString *shippingString = [NSString stringWithUTF8String:serializedShippingMethods];
+    NSArray *shippingJsons = ItemsForString(shippingString);
     
-    /// Parse Summary Items
-    NSError *error = nil;
-    NSDictionary *summaryItemsJson = [NSJSONSerialization JSONObjectWithData:[itemsString dataUsingEncoding:NSUTF8StringEncoding]
-                                                                     options:kNilOptions
-                                                                       error:&error];
-    
-    NSArray *summaryItems;
-    if (error == nil && summaryItemsJson != nil && [summaryItemsJson objectForKey:dataKey] != nil) {
-        
-        NSArray *summaryItemsArray = summaryItemsJson[dataKey];
-        summaryItems = [PKPaymentSummaryItem deserializeWithSummaryItems:summaryItemsArray];
-        
-        if (summaryItems == nil) {
-            return false;
-        }
-    } else {
+    if (itemJsons == nil) {
         return false;
     }
-
-    /// Parse Shipping Items
-    NSDictionary *shippingItemsJson = [NSJSONSerialization JSONObjectWithData:[shippingString dataUsingEncoding:NSUTF8StringEncoding]
-                                                                      options:kNilOptions
-                                                                        error:&error];
     
+    NSArray *summaryItems = [PKPaymentSummaryItem deserializeWithSummaryItems:itemJsons];
     NSArray *shippingMethods;
-    if (error == nil && shippingItemsJson != nil && [shippingItemsJson objectForKey:dataKey] != nil) {
-        NSArray *shippingMethodsArray = shippingItemsJson[dataKey];
-        shippingMethods = [PKShippingMethod deserializedWithShippingMethods:shippingMethodsArray];
+    if (shippingJsons != nil) {
+        shippingMethods = [PKShippingMethod deserializedWithShippingMethods:shippingJsons];
     }
-
+    
     dispatcher = [[ApplePayEventDispatcher alloc] initWithReceiver:[NSString stringWithUTF8String:unityDelegateObjectName]];
     
-    _Session = [[PaymentSession alloc] initWithMerchantId:[NSString stringWithUTF8String:merchantID]
+    session = [[PaymentSession alloc] initWithMerchantId:[NSString stringWithUTF8String:merchantID]
                                               countryCode:[NSString stringWithUTF8String:countryCode]
                                              currencyCode:[NSString stringWithUTF8String:currencyCode]
                            requiringShippingAddressFields:requiringShipping
@@ -87,11 +84,11 @@ bool _CreateApplePaySession(const char *merchantID, const char *countryCode, con
                                           shippingMethods:shippingMethods
                                            controllerType:PKPaymentAuthorizationViewController.class];
     
-    _Session.delegate = dispatcher;
+    session.delegate = dispatcher;
     
     return true;
 }
 
 void _PresentApplePayAuthorization() {
-    [_Session presentAuthorizationController];
+    [session presentAuthorizationController];
 }
