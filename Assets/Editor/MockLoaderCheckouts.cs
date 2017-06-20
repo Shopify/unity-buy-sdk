@@ -10,7 +10,7 @@ namespace Shopify.Tests {
 
         // The following queries are used to test creating a checkout, then modififying line items and getting a new url
         private const string CREATE_QUERY_THAT_WILL_BE_UPDATED = @"mutation{checkoutCreate (input:{lineItems:[{quantity:33,variantId:""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyUpdate==""},{quantity:2,variantId:""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyDelete==""}]}){checkout {id webUrl ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}userErrors {field message }}}";
-        private const string ADD_UPDATE_DELETE_AFTER_CREATE = @"mutation{checkoutLineItemsAdd (lineItems:[{quantity:3,variantId:""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NTMNewItem==""}],checkoutId:""checkout-id-poll""){checkout {id webUrl ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}userErrors {field message }}checkoutLineItemsUpdate (checkoutId:""checkout-id-poll"",lineItems:[{id:""line-item-id1"",quantity:10,variantId:""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyUpdate==""}]){checkout {id webUrl ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}userErrors {field message }}checkoutLineItemsRemove (checkoutId:""checkout-id-poll"",lineItemIds:[""line-item-id2""]){checkout {id webUrl ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}userErrors {field message }}}";
+        private const string ADD_UPDATE_DELETE_AFTER_CREATE = @"mutation{checkoutLineItemsRemove (checkoutId:""checkout-id-poll"",lineItemIds:[""line-item-id1""]){userErrors {field message }}checkoutLineItemsAdd (lineItems:[{quantity:10,variantId:""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyUpdate==""},{quantity:3,variantId:""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NTMNewItem==""}],checkoutId:""checkout-id-poll""){checkout {id webUrl ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}userErrors {field message }}}";
 
         public MockLoaderCheckouts() {
             SetupCreateResponse();
@@ -164,97 +164,34 @@ namespace Shopify.Tests {
                 ADD_UPDATE_DELETE_AFTER_CREATE,
                 @"{
                     ""data"": {
+                        ""checkoutLineItemsRemove"": {
+                            ""userErrors"": []
+                        },
                         ""checkoutLineItemsAdd"": {
                             ""checkout"": {
-                                ""id"": ""checkout-id"", 
+                                ""id"": """",
                                 ""webUrl"": ""http://shopify.com/checkout-create-after-update"",
                                 ""ready"": true,
                                 ""lineItems"": {
                                     ""edges"": [
                                         {
                                             ""node"": {
-                                                ""id"": ""line-item-id1"", 
+                                                ""id"": ""line-item-id1"",
                                                 ""variant"": {
-                                                    ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyUpdate==""
+                                                    ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyUpdate=="" 
                                                 }
                                             },
                                             ""cursor"": ""line-item-1-cursor""
                                         },
                                         {
                                             ""node"": {
-                                                ""id"": ""line-item-id3"", 
+                                                ""id"": ""line-item-id3"",
                                                 ""variant"": {
-                                                    ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NTMNewItem==""
+                                                    ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NTMNewItem=="" 
                                                 }
                                             },
                                             ""cursor"": ""line-item-3-cursor""
-                                        } 
-                                    ],
-                                    ""pageInfo"": {
-                                        ""hasNextPage"": false 
-                                    }
-                                }
-                            },
-                            ""userErrors"": []
-                        },
-                        ""checkoutLineItemsUpdate"": {
-                            ""checkout"": {
-                                ""id"": ""checkout-id"", 
-                                ""webUrl"": ""http://shopify.com/checkout-create-after-update"",
-                                ""ready"": true,
-                                ""lineItems"": {
-                                    ""edges"": [
-                                        {
-                                            ""node"": {
-                                                ""id"": ""line-item-id1"", 
-                                                ""variant"": {
-                                                    ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyUpdate==""
-                                                }
-                                            },
-                                            ""cursor"": ""line-item-1-cursor""
-                                        },
-                                        {
-                                            ""node"": {
-                                                ""id"": ""line-item-id3"", 
-                                                ""variant"": {
-                                                    ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NTMNewItem==""
-                                                }
-                                            },
-                                            ""cursor"": ""line-item-3-cursor""
-                                        } 
-                                    ],
-                                    ""pageInfo"": {
-                                        ""hasNextPage"": false 
-                                    }
-                                }
-                            },
-                            ""userErrors"": []
-                        },
-                        ""checkoutLineItemsRemove"": {
-                            ""checkout"": {
-                                ""id"": ""checkout-id"", 
-                                ""webUrl"": ""http://shopify.com/checkout-create-after-update"",
-                                ""ready"": true,
-                                ""lineItems"": {
-                                    ""edges"": [
-                                        {
-                                            ""node"": {
-                                                ""id"": ""line-item-id1"", 
-                                                ""variant"": {
-                                                    ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyUpdate==""
-                                                }
-                                            },
-                                            ""cursor"": ""line-item-1-cursor""
-                                        },
-                                        {
-                                            ""node"": {
-                                                ""id"": ""line-item-id3"", 
-                                                ""variant"": {
-                                                    ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NTMNewItem==""
-                                                }
-                                            },
-                                            ""cursor"": ""line-item-3-cursor""
-                                        } 
+                                        }
                                     ],
                                     ""pageInfo"": {
                                         ""hasNextPage"": false 

@@ -28,10 +28,7 @@ namespace <%= namespace %> {
 
         private bool IsSaved {
             get {
-                return IsCreated && 
-                    LineItems.New().Count == 0 &&
-                    LineItems.Modified().Count == 0 &&
-                    LineItems.Deleted().Count == 0;
+                return IsCreated && LineItems.IsSaved;
             }
         }
 
@@ -90,17 +87,15 @@ namespace <%= namespace %> {
 
         private void CheckoutCreate(Action<List<string>, string> callback) {
             MutationQuery query = new MutationQuery();
-
-            List<CheckoutLineItemInput> newLineItemInput = CartLineItems.ConvertToCheckoutLineItemInput(LineItems.New());
-
+            
+            List<CheckoutLineItemInput> newLineItemInput = CartLineItems.ConvertToCheckoutLineItemInput(LineItems.All());
+            
             DefaultQueries.checkout.Create(query, newLineItemInput);
 
             Client.Mutation(query, (Mutation response, List<string> errors, string httpError) => {
                 if (errors != null || httpError != null) {
                     callback(errors, httpError);
                 } else {
-                    LineItems.ClearNew();
-
                     UpdateCheckout(response.checkoutCreate().checkout());
                     
                     CheckoutPoll(callback);
@@ -110,35 +105,14 @@ namespace <%= namespace %> {
 
         private void CheckoutUpdate(Action<List<string>, string> callback) {
             MutationQuery query = new MutationQuery();
-            bool doAdd = LineItems.New().Count > 0;
-            bool doModify = LineItems.Modified().Count > 0;
-            bool doDelete = LineItems.Deleted().Count > 0;
 
-            if (doAdd) {
-                DefaultQueries.checkout.LineItemsAdd(query, CurrentCheckout.id(), CartLineItems.ConvertToCheckoutLineItemInput(LineItems.New()));
-            }
-
-            if (doModify) {
-                DefaultQueries.checkout.LineItemsUpdate(query, CurrentCheckout.id(), CartLineItems.ConvertToCheckoutLineItemUpdateInput(LineItems.Modified()));
-            }
-
-            if (doDelete) {
-                DefaultQueries.checkout.LineItemsRemove(query, CurrentCheckout.id(), CartLineItems.ConvertToCheckoutIds(LineItems.Deleted()));
-            }
-
+            DefaultQueries.checkout.LineItemsUpdate(query, CurrentCheckout.id(), LineItems.All());
+        
             Client.Mutation(query, (Mutation response, List<string> errors, string httpError) => {
                 if (errors != null || httpError != null) {
                     callback(errors, httpError);
                 } else {
-                    LineItems.ClearNew();
-                    LineItems.ClearModified();
-                    LineItems.ClearDeleted();
-
-                    if (doAdd) {
-                        UpdateCheckout(response.checkoutLineItemsAdd().checkout());
-                    } else if (doModify) {
-                        UpdateCheckout(response.checkoutLineItemsUpdate().checkout());
-                    }
+                    UpdateCheckout(response.checkoutLineItemsAdd().checkout());
 
                     CheckoutPoll(callback);
                 }
@@ -154,22 +128,15 @@ namespace <%= namespace %> {
                 CurrentCheckout = merger.Merge(CurrentCheckout, checkout);    
             }
 
-            UpdateLineItemIdsFromCheckout(CurrentCheckout);
+            UpdateLineItemFromCheckout(CurrentCheckout);
         }
 
-        private void UpdateLineItemIdsFromCheckout(Checkout checkout) {
+        private void UpdateLineItemFromCheckout(Checkout checkout) {
             // sometimes we may not query line items for instance when polling is being performed
             try {
                 List<CheckoutLineItem> lineItems = (List<CheckoutLineItem>) checkout.lineItems();
-                List<CartLineItem> cartLineItems = LineItems.All();
 
-                foreach(CheckoutLineItem lineItem in lineItems) {
-                    foreach(CartLineItem cartLineItem in cartLineItems) {
-                        if (cartLineItem.VariantId == lineItem.variant().id()) {
-                            cartLineItem.ID = lineItem.id();
-                        }
-                    }
-                }
+                LineItems.UpdateLineItemsFromCheckoutLineItems(lineItems);
             } catch(NoQueryException exception) {}
         }
 
