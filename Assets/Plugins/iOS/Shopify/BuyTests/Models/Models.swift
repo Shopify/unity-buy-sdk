@@ -118,7 +118,7 @@ struct Models {
     }
     
     static func createSummaryItem() -> PKPaymentSummaryItem {
-        return PKPaymentSummaryItem(label: "SubTotal", amount: NSDecimalNumber.init(value: 1.00))
+        return PKPaymentSummaryItem(label: "SubTotal", amount: NSDecimalNumber(value: 1.00))
     }
     
     static func createSummaryItems() -> [PKPaymentSummaryItem] {
