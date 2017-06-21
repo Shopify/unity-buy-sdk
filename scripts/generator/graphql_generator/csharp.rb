@@ -109,6 +109,7 @@ module GraphQLGenerator
         SDK/UnityLoader
         SDK/UnityTimeout
         SDK/TopLevelResponse
+        SDK/ShopifyError
         SDK/MutationResponse
         SDK/ResponseMergeUtil
         SDK/MergeCheckout
