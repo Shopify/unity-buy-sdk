@@ -27,20 +27,14 @@
 #ifndef Cart_ApplePay_h
 #define Cart_ApplePay_h
 
-#import <PassKit/PassKit.h>
-#import "Cart+ApplePay.h"
-
-@class PaymentSession;
-PaymentSession *session;
-
 #ifdef __cplusplus
 extern "C" {
 #endif
-    bool _CreateApplePaySession(const char *merchantID, const char *countryCode, const char *currencyCode, bool requiringShipping, const char *unityDelegateObjectName, const char *serializedSummaryItems, const char *serializedShippingMethods);
+    bool _CreateApplePaySession(const char *unityDelegateObjectName, const char *merchantID, const char *countryCode, const char *currencyCode, const char *serializedSummaryItems, const char *serializedShippingMethods, bool requiringShipping);
     bool _CanCheckoutWithApplePay();
     bool _CanShowApplePaySetup();
     void _ShowApplePaySetup();
-    void _PresentApplePayAuthorization();
+    bool _PresentApplePayAuthorization();
 #ifdef __cplusplus
 }
 #endif

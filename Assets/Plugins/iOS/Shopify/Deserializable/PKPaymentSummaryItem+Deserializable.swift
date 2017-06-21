@@ -50,10 +50,4 @@ extension PKPaymentSummaryItem: Deserializable {
             return self.init(label: label, amount: NSDecimalNumber(string: amount))
         }
     }
-    
-    /// Needed re-declaration of static func deserialized(_ jsonCollection: [JSON]) -> [Self]?
-    /// Since methods defined in protocol extensions are not bridged to ObjC
-    class func deserialize(summaryItems: [JSON]) -> [PKPaymentSummaryItem]? {
-        return PKPaymentSummaryItem.deserialize(summaryItems)
-    }
 }

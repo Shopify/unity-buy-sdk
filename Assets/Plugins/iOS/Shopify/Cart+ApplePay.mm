@@ -25,24 +25,8 @@
 //
 
 #import "Cart+ApplePay.h"
+#import <PassKit/PassKit.h>
 #import "ProductName-Swift.h"
-
-ApplePayEventDispatcher *dispatcher;
-
-NSArray *ItemsForString(NSString *jsonString) {
-    NSString *dataKey = @"Items";
-    NSError *error = nil;
-    NSDictionary *itemsJson = [NSJSONSerialization JSONObjectWithData:[jsonString dataUsingEncoding:NSUTF8StringEncoding]
-                                                              options:kNilOptions
-                                                                error:&error];
-    
-    if (error == nil && itemsJson != nil && [itemsJson objectForKey:dataKey] != nil) {
-        return itemsJson[dataKey];
-    } else {
-        return nil;
-    }
-}
-
 
 bool _CanCheckoutWithApplePay() {
     return [PaymentSession canMakePayments];
@@ -56,39 +40,17 @@ void _ShowApplePaySetup() {
     [PaymentSession showSetup];
 }
 
-bool _CreateApplePaySession(const char *merchantID, const char *countryCode, const char *currencyCode, bool requiringShipping, const char *unityDelegateObjectName, const char *serializedSummaryItems, const char *serializedShippingMethods) {
-    
-    NSString *itemsString = [NSString stringWithUTF8String:serializedSummaryItems];
-    NSArray *itemJsons = ItemsForString(itemsString);
-    
-    NSString *shippingString = [NSString stringWithUTF8String:serializedShippingMethods];
-    NSArray *shippingJsons = ItemsForString(shippingString);
-    
-    if (itemJsons == nil) {
-        return false;
-    }
-    
-    NSArray *summaryItems = [PKPaymentSummaryItem deserializeWithSummaryItems:itemJsons];
-    NSArray *shippingMethods;
-    if (shippingJsons != nil) {
-        shippingMethods = [PKShippingMethod deserializedWithShippingMethods:shippingJsons];
-    }
-    
-    dispatcher = [[ApplePayEventDispatcher alloc] initWithReceiver:[NSString stringWithUTF8String:unityDelegateObjectName]];
-    
-    session = [[PaymentSession alloc] initWithMerchantId:[NSString stringWithUTF8String:merchantID]
-                                              countryCode:[NSString stringWithUTF8String:countryCode]
-                                             currencyCode:[NSString stringWithUTF8String:currencyCode]
-                           requiringShippingAddressFields:requiringShipping
-                                             summaryItems:summaryItems
-                                          shippingMethods:shippingMethods
-                                           controllerType:PKPaymentAuthorizationViewController.class];
-    
-    session.delegate = dispatcher;
-    
-    return true;
+bool _CreateApplePaySession(const char *unityDelegateObjectName, const char *merchantID, const char *countryCode, const char *currencyCode, const char *serializedSummaryItems, const char *serializedShippingMethods, bool requiringShipping) {
+
+    return [Cart createApplePaySessionWithUnityDelegateObjectName:[NSString stringWithUTF8String:unityDelegateObjectName]
+                                                       merchantID:[NSString stringWithUTF8String:merchantID]
+                                                      countryCode:[NSString stringWithUTF8String:countryCode]
+                                                     currencyCode:[NSString stringWithUTF8String:currencyCode]
+                                           serializedSummaryItems:[NSString stringWithUTF8String:serializedSummaryItems]
+                                        serializedShippingMethods:[NSString stringWithUTF8String:serializedShippingMethods]
+                                                requiringShipping:requiringShipping];
 }
 
-void _PresentApplePayAuthorization() {
-    [session presentAuthorizationController];
+bool _PresentApplePayAuthorization() {
+    return [Cart presentAuthorizationController];
 }

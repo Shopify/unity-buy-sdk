@@ -56,10 +56,4 @@ extension PKShippingMethod {
         shippingMethod.identifier = json[Field.identifier.rawValue] as? String
         return shippingMethod
     }
-    
-    /// Needed re-declaration of static func deserialized(_ jsonCollection: [JSON]) -> [Self]?
-    /// Since methods defined in protocol extensions are not bridged to ObjC
-    class func deserialized(shippingMethods: [JSON]) -> [PKShippingMethod]? {
-        return PKShippingMethod.deserialize(shippingMethods)
-    }
 }

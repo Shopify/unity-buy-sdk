@@ -28,11 +28,6 @@ import XCTest
 @testable import ProductName
 
 class CartTests: XCTestCase {
-    
-    override func tearDown() {
-        session = nil
-        super.tearDown()
-    }
         
     func testCreatePaymentSession() {
         
@@ -58,10 +53,11 @@ class CartTests: XCTestCase {
         let requiringShipping = true
         let unityObjectName   = "Tester".cString(using: .utf8)
 
-        XCTAssertNil(session)
+        XCTAssertNil(Cart.session)
+        _CreateApplePaySession(unityObjectName, merchantID, countryCode, currencyCode, serializedSummaryItems, serializedShippingItems, requiringShipping)
+        XCTAssertNotNil(Cart.session)
         
-        _CreateApplePaySession(merchantID, countryCode, currencyCode, requiringShipping, unityObjectName, serializedSummaryItems, serializedShippingItems)
-        
+        let session = Cart.session!
         XCTAssertEqual(session.request.paymentSummaryItems.count, 1)
         XCTAssertEqual(session.request.paymentSummaryItems.first!.label, itemLabel)
         XCTAssertEqual(session.request.paymentSummaryItems.first!.amount, NSDecimalNumber(string: itemAmount))
