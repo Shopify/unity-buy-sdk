@@ -295,11 +295,9 @@ namespace <%= namespace %> {
         /// });
         /// \endcode
         public void products(ResponseProductsHandler callback, int? first = null, string after = null) {
-            GetProductsList((products, errors, httpError) => {
-                if (httpError != null) {
-                    callback(null, null, httpError);
-                } else if (errors != null) {
-                    callback(null, errors, null);
+            GetProductsList((products, error) => {
+                if (error != null) {
+                    callback(null, error);
                 } else {
                     GetConnectionsForProducts(products, callback);
                 }
@@ -419,10 +417,8 @@ namespace <%= namespace %> {
             }
 
             Loader.Query(query, (response) => {
-                if (response.HTTPError != null) {
-                    callback(null, null, response.HTTPError);
-                } else if (response.errors != null) {
-                    callback(null, response.errors, null);
+                if (response.HasErrors) { 
+                    callback(null, ErrorFormatter.FormatErrorFromResponse(response));
                 } else {
                     List<Product> products = new List<Product>();
 
@@ -468,30 +464,30 @@ namespace <%= namespace %> {
         /// });
         /// \endcode
         public void collections(ResponseCollectionsHandler callback, int? first = null, string after = null) {
-            GetCollectionsList((collections, errors, httpError) => {
-                if (httpError != null) {
-                    callback(null, null, httpError);
-                } else if (errors != null) {
-                    callback(null, errors, null);
-                } else {
-                    List<ConnectionQueryInfo> connectionInfos = new List<ConnectionQueryInfo>() {
-                        new ConnectionQueryInfo(
-                            getConnection: (c) => ((Collection) c).products(),
-                            query: (c, productsAfter) => {
-                                ((CollectionQuery) c).products(pc => DefaultQueries.collections.ProductConnection(pc),
-                                    first: DefaultQueries.MaxPageSize, after: productsAfter
-                                );
-                            }
-                        )
-                    };
-
-                    ConnectionLoader loader = new ConnectionLoader(Loader);
-                    List<Node> nodes = collections.ConvertAll(p => (Node) p);
-
-                    loader.QueryConnectionsOnNodes(nodes, connectionInfos, BuildCollectionQueryOnNode, (nodesResult, errorsNode, httpErrorsNode) => {
-                        callback(nodesResult.ConvertAll(n => (Collection) n), errorsNode, httpErrorsNode);
-                    });
+            GetCollectionsList((collections, error) => {
+                // Short circuit if we have an error.
+                if (error != null) {
+                    callback(null, error);
+                    return;
                 }
+
+                List<ConnectionQueryInfo> connectionInfos = new List<ConnectionQueryInfo>() {
+                    new ConnectionQueryInfo(
+                        getConnection: (c) => ((Collection) c).products(),
+                        query: (c, productsAfter) => {
+                            ((CollectionQuery) c).products(pc => DefaultQueries.collections.ProductConnection(pc),
+                                first: DefaultQueries.MaxPageSize, after: productsAfter
+                            );
+                        }
+                    )
+                };
+
+                ConnectionLoader loader = new ConnectionLoader(Loader);
+                List<Node> nodes = collections.ConvertAll(p => (Node) p);
+
+                loader.QueryConnectionsOnNodes(nodes, connectionInfos, BuildCollectionQueryOnNode, (nodesResult, responseError) => {
+                    callback(nodesResult.ConvertAll(n => (Collection) n), responseError);
+                });
             }, first: first, after: after);
         }
 
@@ -525,7 +521,7 @@ namespace <%= namespace %> {
         /// \endcode
         public void Query(<%= schema.query_root_name %>Query query, ResponseQueryHandler callback) {
             Loader.Query(query, (response) => {
-                callback(response.data, response.errors, response.HTTPError);
+                callback(response.data, ErrorFormatter.FormatErrorFromResponse(response));
             });
         }
 
@@ -618,7 +614,7 @@ namespace <%= namespace %> {
         /// \endcode
         public void Mutation(<%= schema.mutation_root_name %>Query query, ResponseMutationHandler callback) {
             Loader.Mutation(query, (response) => {
-                callback(response.data, response.errors, response.HTTPError);
+                callback(response.data, ErrorFormatter.FormatErrorFromResponse(response));
             });
         }
 
@@ -760,8 +756,8 @@ namespace <%= namespace %> {
             ConnectionLoader loader = new ConnectionLoader(Loader);
             List<Node> nodes = products.ConvertAll(p => (Node) p);
 
-            loader.QueryConnectionsOnNodes(nodes, connectionInfos, BuildProductQueryOnNode, (nodesResult, errorsNode, httpErrorsNode) => {
-                callback(nodesResult.ConvertAll(n => (Product) n), errorsNode, httpErrorsNode);
+            loader.QueryConnectionsOnNodes(nodes, connectionInfos, BuildProductQueryOnNode, (nodesResult, error) => {
+                callback(nodesResult.ConvertAll(n => (Product) n), error);
             });
         }
 
@@ -823,12 +819,10 @@ namespace <%= namespace %> {
                     return ((QueryRoot) response).shop().products();
                 },
                 (response) => {
-                    if (response.HTTPError != null) {
-                        callback(null, null, response.HTTPError);
-                    } else if (response.errors != null) {
-                        callback(null, response.errors, null);
+                    if (response.HasErrors) {
+                        callback(null, ErrorFormatter.FormatErrorFromResponse(response));
                     } else {
-                        callback((List<Product>) response.data.shop().products(), null, null);
+                        callback((List<Product>) response.data.shop().products(), null);
                     }
                 }
             );
@@ -866,12 +860,10 @@ namespace <%= namespace %> {
                     return ((QueryRoot) response).shop().collections();
                 },
                 (response) => {
-                    if (response.HTTPError != null) {
-                        callback(null, null, response.HTTPError);
-                    } else if (response.errors != null) {
-                        callback(null, response.errors, null);
+                    if (response.HasErrors) {
+                        callback(null, ErrorFormatter.FormatErrorFromResponse(response));
                     } else {
-                        callback((List<Collection>) response.data.shop().collections(), null, null);
+                        callback((List<Collection>) response.data.shop().collections(), null);
                     }
                 }
             );

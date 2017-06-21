@@ -13,9 +13,8 @@ namespace Shopify.Unity.Tests
 
             ShopifyBuy.Client().products(
                 first: 3,
-                callback: (products, errors, httpErrors) => {
-                    IntegrationTest.Assert(null == errors, "No graphql errors");
-                    IntegrationTest.Assert(null == httpErrors, "No http errors");
+                callback: (products, error) => {
+                    IntegrationTest.Assert(null == error, "No errors");
                     IntegrationTest.Assert(products.Count == 3, "Loaded products");
                     IntegrationTest.Assert("Snare Boot" == products[0].title(), "Title product 0: Snare Boot");
                     IntegrationTest.Assert("Neptune Boot" == products[1].title(), "Title product 1: Neptune Boot");

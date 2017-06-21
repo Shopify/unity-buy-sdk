@@ -1,0 +1,17 @@
+namespace <%= namespace %>.SDK {
+    using System.Collections.Generic;
+
+    public class ShopifyError {
+        public enum ErrorType {
+            HTTP, GraphQL
+        }
+
+        public readonly ErrorType Error;
+        public readonly string Reason;
+
+        public ShopifyError(ErrorType error, string reason) {
+            this.Error = error;
+            this.Reason = reason;
+        }
+    }
+    }
