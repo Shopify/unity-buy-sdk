@@ -37,6 +37,15 @@ namespace <%= namespace %>.SDK {
             }
         }
 
+        /// <summary>
+        /// A check that tells us if the response contains any errors.
+        /// </summary>
+        public bool HasErrors {
+            get {
+                return _errors != null || _HTTPError != null;
+            }
+        }
+
         private string _HTTPError;
         private Dictionary<string,object> _DataJSON;
         private List<string> _errors;
