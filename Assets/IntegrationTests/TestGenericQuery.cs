@@ -13,9 +13,8 @@ namespace Shopify.Unity.Tests
                 (q) => q.shop(s => s
                     .name()
                 ), 
-                (data, errors, httpErrors) => {
-                    IntegrationTest.Assert(null == errors, "No graphql errors");
-                    IntegrationTest.Assert(null == httpErrors, "No http errors");
+                (data, error) => {
+                    IntegrationTest.Assert(null == error, "No errors");
                     IntegrationTest.Assert("graphql" == data.shop().name(), "Shop name was \"graphql\"");
 
                     IntegrationTest.Pass();
