@@ -5,6 +5,10 @@ namespace <%= namespace %> {
     using <%= namespace %>.SDK;
     using <%= namespace %>.GraphQL;
 
+    #if UNITY_IPHONE
+    using <%= namespace %>.SDK.iOS;
+    #endif
+
     /// <summary>
     /// This exception is thrown when interacting with a cart to add, update, or delete line items and no matching
     /// variant could be found.
@@ -12,7 +16,6 @@ namespace <%= namespace %> {
     public class NoMatchingVariantException : Exception {
         public NoMatchingVariantException(string message) : base(message) {}
     }
-
     /// <summary>
     /// Manages line items for an order. Can also be used to generate a web checkout link to check out in browser.
     /// </summary>
@@ -44,6 +47,8 @@ namespace <%= namespace %> {
         private ShopifyClient Client;
         private Checkout CurrentCheckout = null;
 
+        private IWebCheckout WebCheckout;
+
         /// <summary>
         /// Constructs a new cart using a <see ref="ShopifyClient">ShopifyClient </see>. Typically, carts won't be
         /// instantiated directly, but will rather be instatiated using <see ref="ShopifyClient.Cart">ShopifyBuy.Client().Cart() </see>.
@@ -61,6 +66,10 @@ namespace <%= namespace %> {
         public Cart(ShopifyClient client) {
             Client = client;
             _LineItems = new CartLineItems(OnDeleteLineItem);
+
+            #if UNITY_IOS
+            WebCheckout = new iOSWebCheckout();
+            #endif
         }
 
         public delegate void GetWebCheckoutLinkSuccess(string url);
@@ -74,6 +83,14 @@ namespace <%= namespace %> {
                 }
 
                 success(CurrentCheckout.webUrl());
+            });
+        }
+
+        public void CheckoutWithNativeWebView(CheckoutSuccessCallback success, CheckoutFailureCallback failure, CheckoutCancelCallback cancelled) {
+            GetWebCheckoutLink(url => {
+                WebCheckout.Checkout(url, success, failure, cancelled);
+            }, error => {
+                failure(error);
             });
         }
 
