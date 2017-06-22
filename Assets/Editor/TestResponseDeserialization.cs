@@ -73,7 +73,7 @@ namespace Shopify.Tests {
 
             Assert.IsNull(response.DataJSON);
             Assert.IsNotNull(response.errors);
-            Assert.AreEqual("Field 'doesntExist' doesn't exist on type 'Shop'", response.errors[0]);
+            Assert.AreEqual("[\"Field 'doesntExist' doesn't exist on type 'Shop'\"]", response.errors);
         }
 
         [Test]
