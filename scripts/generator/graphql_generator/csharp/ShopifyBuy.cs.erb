@@ -35,7 +35,7 @@ namespace <%= namespace %> {
         /// </summary>
         /// \code
         /// // Example usage querying all products using `Client`
-        /// ShopifyBuy.Client().products((products, errors, httpError) => {
+        /// ShopifyBuy.Client().products((products, error) => {
         /// 	Debug.Log(products[0].title());
         /// 	Debug.Log(products[1].title());
         /// 	Debug.Log(products.Count);
@@ -53,7 +53,7 @@ namespace <%= namespace %> {
         /// <param name="domain">the domain associated to a client</param>
         /// \code
         /// // Example usage querying all products using `Client` and a domain
-        /// ShopifyBuy.Client("unity-buy-sdk.myshopify.com").products((products, errors, httpError) => {
+        /// ShopifyBuy.Client("unity-buy-sdk.myshopify.com").products((products, error) => {
         /// 	Debug.Log(products[0].title());
         /// 	Debug.Log(products[1].title());
         /// 	Debug.Log(products.Count);
@@ -202,7 +202,7 @@ namespace <%= namespace %> {
         ///
         /// ShopifyClient client = new ShopifyClient(accessToken, shopDomain);
         ///
-        /// client.products((products, errors, httpError) => {
+        /// client.products((products, error) => {
         ///     Debug.Log(products[0].title());
         ///     Debug.Log(products[1].title());
         /// });
@@ -233,7 +233,7 @@ namespace <%= namespace %> {
         ///
         /// ShopifyClient client = new ShopifyClient(loader);
         ///
-        /// client.products((products, errors, httpError) => {
+        /// client.products((products, error) => {
         ///     Debug.Log(products[0].title());
         ///     Debug.Log(products[1].title());
         /// });
@@ -288,7 +288,7 @@ namespace <%= namespace %> {
         /// </param>
         /// \code
         /// // Example usage querying all products
-        /// ShopifyBuy.Client().products((products, errors, httpError) => {
+        /// ShopifyBuy.Client().products((products, error) => {
         /// 	Debug.Log(products[0].title());
         /// 	Debug.Log(products[1].title());
         /// 	Debug.Log(products.Count);
@@ -343,7 +343,7 @@ namespace <%= namespace %> {
         /// </param>
         /// \code
         /// // Example usage querying two product ids
-        /// ShopifyBuy.Client().products((products, errors, httpError) => {
+        /// ShopifyBuy.Client().products((products, error) => {
         ///     Debug.Log(products[0].title());
         ///     Debug.Log(products[1].title());
         /// }, "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyNzYwOTk=", "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyNzkwNDM=");
@@ -397,7 +397,7 @@ namespace <%= namespace %> {
         ///     "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyNzkwNDM="
         /// };
         ///
-        /// ShopifyBuy.Client().products((products, errors, httpError) => {
+        /// ShopifyBuy.Client().products((products, error) => {
         ///     Debug.Log(products[0].title());
         ///     Debug.Log(products[1].title());
         /// }, productIds);
@@ -458,7 +458,7 @@ namespace <%= namespace %> {
         /// </param>
         /// \code
         /// // Example that queries all collections on a shop
-        /// ShopifyBuy.Client().collections((collections, errors, httpError) => {
+        /// ShopifyBuy.Client().collections((collections, error) => {
         /// 	Debug.Log(collections[0].title());
         /// 	Debug.Log(collections.Count);
         /// });
@@ -508,11 +508,9 @@ namespace <%= namespace %> {
         ///
         /// ShopifyBuy.Client().Query(
         ///     query: query,
-        ///     callback: (data, errors, httpErrors) => {
-        ///         if (httpErrors != null) {
-        ///             Debug.Log("There was an error communicating with the Storefront API");
-        ///         } else if (errors != null) {
-        ///             Debug.Log("The GraphQL query was invalid");
+        ///     callback: (data, error) => {
+        ///         if (error != null) {
+        ///             Debug.Log("There was an error: " + error.Reason);
         ///         } else {
         ///             Debug.Log(data.shop().name());
         ///         }
@@ -542,11 +540,9 @@ namespace <%= namespace %> {
         ///         .shop(s => s
         ///             .name()
         ///         ),
-        ///     callback: (data, errors, httpErrors) => {
-        ///         if (httpErrors != null) {
-        ///             Debug.Log("There was an error communicating with the Storefront API");
-        ///         } else if (errors != null) {
-        ///             Debug.Log("The GraphQL query was invalid");
+        ///     callback: (data, error) => {
+        ///         if (error != null) {
+        ///             Debug.Log("There was an error: " + error.Reason);
         ///         } else {
         ///             Debug.Log(data.shop().name());
         ///         }
@@ -587,14 +583,9 @@ namespace <%= namespace %> {
         ///
         /// ShopifyBuy.Client().Mutation(
         /// 	query: mutation,
-        /// 	callback: (data, errors, httpErrors) => {
-        ///         if (httpErrors != null) {
-        ///             Debug.Log("There was an error communicating with the Storefront API");
-        ///         } else if (errors != null) {
-        ///         	// output any graphql errors
-        ///             foreach(string error in errors) {
-        ///                 Debug.Log(error);
-        ///         	}
+        /// 	callback: (data, error) => {
+        ///         if (error != null) {
+        ///             Debug.Log("There was an error: " + error.Reason);
         ///         } else {
         ///         	List<UserError> userErrors = data.customerCreate().userErrors();
         ///
@@ -642,14 +633,9 @@ namespace <%= namespace %> {
         ///             )
         ///         );
         ///     },
-        ///     callback: (data, errors, httpErrors) => {
-        ///         if (httpErrors != null) {
-        ///             Debug.Log("There was an error communicating with the Storefront API");
-        ///         } else if (errors != null) {
-        ///             // output any graphql errors
-        ///             foreach(string error in errors) {
-        ///                 Debug.Log(error);
-        ///             }
+        ///     callback: (data, error) => {
+        ///         if (error != null) {
+        ///             Debug.Log("There was an error: " + error.Reason);
         ///         } else {
         ///             List<UserError> userErrors = data.customerCreate().userErrors();
         ///
