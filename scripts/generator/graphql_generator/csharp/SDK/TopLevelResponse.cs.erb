@@ -1,6 +1,7 @@
 namespace <%= namespace %>.SDK {
     using System;
     using System.Collections.Generic;
+    using MiniJSON;
 
     /// <summary>
     /// Base class for <see ref="QueryResponse">QueryResponse </see> and <see ref="MutationResponse">MutationResponse </see>,
@@ -29,9 +30,9 @@ namespace <%= namespace %>.SDK {
         }
 
         /// <summary>
-        /// Contains a list of errors returned by the GraphQL end point. Is <c>null</c> if no errors were returned.
+        /// Contains a list of errors as a JSON string returned by the GraphQL end point. Is <c>null</c> if no errors were returned.
         /// </summary>
-        public List<string> errors {
+        public string errors {
             get {
                 return _errors;
             }
@@ -39,7 +40,7 @@ namespace <%= namespace %>.SDK {
 
         private string _HTTPError;
         private Dictionary<string,object> _DataJSON;
-        private List<string> _errors;
+        private string _errors;
 
         public TopLevelResponse(Dictionary<string,object> dataJSON) {
             if (dataJSON == null) {
@@ -73,7 +74,7 @@ namespace <%= namespace %>.SDK {
             _errors = null;
         }
 
-        private List<string> ParseErrors(Dictionary<string,object> dataJSON) {
+        private string ParseErrors(Dictionary<string,object> dataJSON) {
             List<string> errors = new List<string>();
 
             if (dataJSON[KEY_ERRORS] is List<object>) {
@@ -86,7 +87,7 @@ namespace <%= namespace %>.SDK {
                 throw new InvalidServerResponseException(String.Format("Response JSON at `{0}` did not contain an Array of Object's", KEY_ERRORS));
             }
 
-            return errors;
+            return Json.Serialize(errors);
         }
     }
 }
