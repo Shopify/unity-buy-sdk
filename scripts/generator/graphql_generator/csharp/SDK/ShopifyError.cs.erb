@@ -3,6 +3,18 @@ namespace <%= namespace %>.SDK {
     using MiniJSON;
 
     public class ShopifyError {
+        public static explicit operator ShopifyError(TopLevelResponse response) {
+            if (response.HTTPError != null) {
+                return new ShopifyError(ShopifyError.ErrorType.HTTP, response.HTTPError);
+            } 
+            
+            if (response.errors != null) {
+                return new ShopifyError(ShopifyError.ErrorType.GraphQL, response.errors);
+            }
+
+            return null;
+        }
+
         public enum ErrorType {
             HTTP, GraphQL
         }
@@ -13,19 +25,6 @@ namespace <%= namespace %>.SDK {
         public ShopifyError(ErrorType error, string description) {
             this.error = error;
             this.description = description;
-        }
-
-        public static explicit operator ShopifyError(TopLevelResponse response) {
-            if (response.HTTPError != null) {
-                return new ShopifyError(ShopifyError.ErrorType.HTTP, response.HTTPError);
-            } 
-            
-            if (response.errors != null && response.errors.Count > 0) {
-                string graphQLErrorsString = Json.Serialize(response.errors);
-                return new ShopifyError(ShopifyError.ErrorType.GraphQL, graphQLErrorsString);
-            }
-
-            return null;
         }
     }
     }
