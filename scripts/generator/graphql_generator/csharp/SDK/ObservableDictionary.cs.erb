@@ -3,8 +3,6 @@ namespace <%= namespace %>.SDK {
     using System.Collections;
     using System.Collections.Generic;
 
-    public delegate void DictionaryChangeHandler();
-
     public class ObservableDictionary<TKey, TValue> : IDictionary<TKey, TValue> {
         private IDictionary<TKey, TValue> Data;
         private DictionaryChangeHandler OnDictionaryChange;

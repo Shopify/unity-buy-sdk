@@ -131,11 +131,6 @@ namespace <%= namespace %> {
         private static Dictionary<string, ShopifyClient> ClientByDomain = new Dictionary<string, ShopifyClient>();
     }
 
-    public delegate void ResponseProductsHandler(List<Product> products, List<string> errors, string httpError);
-    public delegate void ResponseCollectionsHandler(List<Collection> collections, List<string> errors, string httpError);
-    public delegate void ResponseQueryHandler(<%= schema.query_root_name %> response, List<string> errors, string httpError);
-    public delegate void ResponseMutationHandler(<%= schema.mutation_root_name %> response, List<string> errors, string httpError);
-
     /// <summary>
     /// <see cref="ShopifyClient">ShopifyClient </see> is the entry point to communicate with the Shopify Storefront API.
     /// <see cref="ShopifyClient">ShopifyClient </see> also has functionality to easily generate and send queries to receive
