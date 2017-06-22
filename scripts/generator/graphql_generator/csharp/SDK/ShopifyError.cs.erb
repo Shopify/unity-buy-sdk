@@ -1,5 +1,6 @@
 namespace <%= namespace %>.SDK {
     using System.Collections.Generic;
+    using MiniJSON;
 
     public class ShopifyError {
         public enum ErrorType {
@@ -20,8 +21,8 @@ namespace <%= namespace %>.SDK {
             } 
             
             if (response.errors != null && response.errors.Count > 0) {
-                // Take the first error we received from GraphQL and bubble it up.
-                return new ShopifyError(ShopifyError.ErrorType.GraphQL, response.errors[0]);
+                string graphQLErrorsString = Json.Serialize(response.errors);
+                return new ShopifyError(ShopifyError.ErrorType.GraphQL, graphQLErrorsString);
             }
 
             return null;
