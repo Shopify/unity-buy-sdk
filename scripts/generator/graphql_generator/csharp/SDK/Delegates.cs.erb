@@ -25,4 +25,8 @@ namespace <%= namespace %>.SDK {
     public delegate void OnCartLineItemChange();
 
     public delegate bool PollUpdatedHandler(QueryRoot updatedQueryRoot);
+
+    public delegate void CheckoutSuccessCallback();
+    public delegate void CheckoutFailureCallback(ShopifyError error);
+    public delegate void CheckoutCancelCallback();
 }

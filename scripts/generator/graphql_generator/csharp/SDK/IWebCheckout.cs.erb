@@ -1,0 +1,7 @@
+namespace <%= namespace %>.SDK {
+    using System;
+    
+    interface IWebCheckout {
+        void Start(string checkoutURL, CheckoutSuccessCallback success, CheckoutFailureCallback failure, CheckoutCancelCallback cancelled);
+    }
+}

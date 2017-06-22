@@ -5,6 +5,16 @@ namespace <%= namespace %>.SDK {
     public class GlobalGameObject {
         private static GameObject GameObject;
 
+        public static string GameObjectName {
+            get {
+                if (GameObject != null) {
+                    return GameObject.name;
+                } else {
+                    return null;
+                }
+            }
+        }
+
         public static T AddComponent<T>() where T: Component {
             if (GameObject == null) {
                 GameObject = new GameObject("Shopify");
