@@ -6,12 +6,25 @@ namespace <%= namespace %>.SDK {
             HTTP, GraphQL
         }
 
-        public readonly ErrorType Error;
-        public readonly string Reason;
+        public readonly ErrorType error;
+        public readonly string description;
 
-        public ShopifyError(ErrorType error, string reason) {
-            this.Error = error;
-            this.Reason = reason;
+        public ShopifyError(ErrorType error, string description) {
+            this.error = error;
+            this.description = description;
+        }
+
+        public static explicit operator ShopifyError(TopLevelResponse response) {
+            if (response.HTTPError != null) {
+                return new ShopifyError(ShopifyError.ErrorType.HTTP, response.HTTPError);
+            } 
+            
+            if (response.errors != null && response.errors.Count > 0) {
+                // Take the first error we received from GraphQL and bubble it up.
+                return new ShopifyError(ShopifyError.ErrorType.GraphQL, response.errors[0]);
+            }
+
+            return null;
         }
     }
     }
