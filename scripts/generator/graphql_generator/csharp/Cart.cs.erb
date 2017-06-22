@@ -63,6 +63,7 @@ namespace <%= namespace %> {
             _LineItems = new CartLineItems(OnDeleteLineItem);
         }
 
+        public delegate bool IsReadyGivenCheckout(Checkout checkout);
         public delegate void GetWebCheckoutLinkSuccess(string url);
         public delegate void GetWebCheckoutLinkFailure(List<string> graphQLErrors, string httpError);
 
@@ -150,8 +151,53 @@ namespace <%= namespace %> {
             } catch(NoQueryException exception) {}
         }
 
-        private void CheckoutPoll(Action<List<string>, string> callback) {
-            if (CurrentCheckout.ready()) {
+        private void SetShippingAddress(MailingAddressInput mailingAddressInput, Action<List<string>, string> callback) {
+            MutationQuery query = new MutationQuery();
+
+            DefaultQueries.checkout.ShippingAddressUpdate(query, CurrentCheckout.id(), mailingAddressInput);
+
+            Client.Mutation(query, (Mutation response, List<string> errors, string httpError) => {
+                if (errors != null || httpError != null) {
+                    callback(errors, httpError);
+                } else {
+                    UpdateCheckout(response.checkoutShippingAddressUpdate().checkout());
+                    AvailableShippingRatesPoll(callback);
+                }
+            });
+        }
+
+        private void SetShippingLine(string shippingRateHandle, Action<List<string>, string> callback) {
+            MutationQuery query = new MutationQuery();
+
+            DefaultQueries.checkout.ShippingLineUpdate(query, CurrentCheckout.id(), shippingRateHandle);
+
+            Client.Mutation(query, (Mutation response, List<string> errors, string httpError) => {
+                if (errors != null || httpError != null) {
+                    callback(errors, httpError);
+                } else {
+                    UpdateCheckout(response.checkoutShippingLineUpdate().checkout());
+                    CheckoutPoll(callback);
+                }
+            });
+        }
+
+        private void SetEmail(string email, Action<List<string>, string> callback) {
+            MutationQuery query = new MutationQuery();
+
+            DefaultQueries.checkout.EmailUpdate(query, CurrentCheckout.id(), email);
+
+            Client.Mutation(query, (Mutation response, List<string> errors, string httpError) => {
+                if (errors != null || httpError != null) {
+                    callback(errors, httpError);
+                } else {
+                    UpdateCheckout(response.checkoutShippingLineUpdate().checkout());
+                    CheckoutPoll(callback);
+                }
+            });
+        }
+
+        private void PollTillReady(IsReadyGivenCheckout isReady, Action<List<string>, string> callback) {
+            if (isReady(CurrentCheckout)) {
                 callback(null, null);
             } else {
                 QueryRootQuery query = new QueryRootQuery();
@@ -166,20 +212,38 @@ namespace <%= namespace %> {
 
                         UpdateCheckout(checkout);
 
-                        if (CurrentCheckout.ready()) {
+                        if (isReady(CurrentCheckout)) {
                             callback(null, null);
                         } else {
                             #if !SHOPIFY_MONO_UNIT_TEST
                                 UnityTimeout.Start(POLL_DELAY_SECONDS, () => {
-                                    CheckoutPoll(callback);    
+                                    PollTillReady(isReady, callback);
                                 });
                             #else
-                                CheckoutPoll(callback);
+                                PollTillReady(isReady, callback);
                             #endif
                         }
                     }
                 });
             }
+        }
+
+        private void CheckoutPoll(Action<List<string>, string> callback) {
+            PollTillReady(
+                checkout => {
+                    return checkout.ready();
+                },
+                callback
+            );
+        }
+
+        private void AvailableShippingRatesPoll(Action<List<string>, string> callback) {
+            PollTillReady(
+                checkout => {
+                    return checkout.availableShippingRates().ready();
+                },
+                callback
+            );
         }
 
         private void OnDeleteLineItem(string lineItemId) {

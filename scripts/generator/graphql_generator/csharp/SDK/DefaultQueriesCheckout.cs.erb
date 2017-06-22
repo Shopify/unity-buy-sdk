@@ -64,10 +64,53 @@ namespace <%= namespace %>.SDK {
             );
         }
 
+        public void ShippingAddressUpdate(MutationQuery query, string checkoutId, MailingAddressInput shippingAddress) {
+            query.checkoutShippingAddressUpdate(
+                buildQuery: shippingAddressUpdate => shippingAddressUpdate
+                    .checkout(checkout => Checkout(checkout))
+                    .userErrors(userErrors => userErrors
+                        .field()
+                        .message()
+                    ),
+                shippingAddress: shippingAddress,
+                checkoutId: checkoutId
+            );
+        }
+
+        public void EmailUpdate(MutationQuery query, string checkoutId, String email) {
+            query.checkoutEmailUpdate(
+                buildQuery: emailUpdate => emailUpdate
+                    .userErrors(userErrors => userErrors
+                        .field()
+                        .message()
+                ),
+                checkoutId: checkoutId,
+                email: email
+            );
+        }
+
+        public void ShippingLineUpdate(MutationQuery query, string checkoutId, String shippingRateHandle) {
+            query.checkoutShippingLineUpdate(
+                buildQuery: emailUpdate => emailUpdate
+                    .checkout(checkout => Checkout(checkout))
+                    .userErrors(userErrors => userErrors
+                        .field()
+                        .message()
+                    ),
+                checkoutId: checkoutId,
+                shippingRateHandle: shippingRateHandle
+            );
+        }
+
         private CheckoutQuery Checkout(CheckoutQuery checkout) {
             return checkout
                 .id()
                 .webUrl()
+                .requiresShipping()
+                .availableShippingRates(availableShippingRates => AvailableShippingRates(availableShippingRates))
+                .subtotalPrice()
+                .totalTax()
+                .totalPrice()
                 .ready();
         }
 
@@ -89,6 +132,16 @@ namespace <%= namespace %>.SDK {
                 first: first,
                 after: after
             );
+        }
+
+        private AvailableShippingRatesQuery AvailableShippingRates(AvailableShippingRatesQuery availableShippingRates) {
+            return availableShippingRates.shippingRates(
+                buildQuery: shippingRates => shippingRates
+                    .handle()
+                    .price()
+                    .title()
+                )
+                .ready();
         }
     }
 }
