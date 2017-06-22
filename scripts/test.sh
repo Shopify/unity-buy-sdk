@@ -14,7 +14,8 @@ UNITY_MONO_DIR="/Applications/Unity/MonoDevelop.app/Contents/Frameworks/Mono.fra
     -recurse:'Assets/Editor/*.cs' \
     -reference:nunit.framework.dll \
     -reference:'/Applications/Unity/Unity.app/Contents/Managed/UnityEngine.dll' \
-    -target:library -out:test.dll
+    -target:library \
+    -out:test.dll
 
 if [ $? = 0 ] ; then
     nunit-console test.dll
