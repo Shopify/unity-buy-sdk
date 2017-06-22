@@ -1,5 +1,5 @@
 //
-//  PKPaymentSummaryItem+Deserializable.swift
+//  Cart+ApplePay.h
 //  UnityBuySDK
 //
 //  Created by Shopify.
@@ -24,30 +24,19 @@
 //  THE SOFTWARE.
 //
 
-import Foundation
-import PassKit
+#ifndef Cart_ApplePay_h
+#define Cart_ApplePay_h
 
-extension PKPaymentSummaryItem: Deserializable {
-    
-    private enum Field: String {
-        case amount = "Amount"
-        case label  = "Label"
-        case type   = "Type"
-    }
-    
-    class func deserialize(_ json: JSON) -> Self? {
-        guard
-            let label  = json[Field.label.rawValue] as? String,
-            let amount = json[Field.amount.rawValue] as? String
-        else {
-            return nil
-        }
-        
-        if let typeString = json[Field.type.rawValue] as? String,
-            let type      = PKPaymentSummaryItemType(rawValue: typeString) {
-            return self.init(label: label, amount: NSDecimalNumber(string: amount), type: type)
-        } else {
-            return self.init(label: label, amount: NSDecimalNumber(string: amount))
-        }
-    }
+#ifdef __cplusplus
+extern "C" {
+#endif
+    bool _CreateApplePaySession(const char *unityDelegateObjectName, const char *merchantID, const char *countryCode, const char *currencyCode, const char *serializedSummaryItems, const char *serializedShippingMethods, bool requiringShipping);
+    bool _CanCheckoutWithApplePay();
+    bool _CanShowApplePaySetup();
+    void _ShowApplePaySetup();
+    bool _PresentApplePayAuthorization();
+#ifdef __cplusplus
 }
+#endif
+
+#endif /* Cart_ApplePay_h */
