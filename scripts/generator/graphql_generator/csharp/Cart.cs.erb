@@ -196,7 +196,7 @@ namespace <%= namespace %> {
             });
         }
 
-        private void PollForReadyGivenCheckout(IsReadyGivenCheckout isReady, Action<List<string>, string> callback) {
+        private void PollTillReady(IsReadyGivenCheckout isReady, Action<List<string>, string> callback) {
             if (isReady(CurrentCheckout)) {
                 callback(null, null);
             } else {
@@ -217,10 +217,10 @@ namespace <%= namespace %> {
                         } else {
                             #if !SHOPIFY_MONO_UNIT_TEST
                                 UnityTimeout.Start(POLL_DELAY_SECONDS, () => {
-                                    PollForReadyGivenCheckout(isReady, callback);
+                                    PollTillReady(isReady, callback);
                                 });
                             #else
-                                PollForReadyGivenCheckout(isReady, callback);
+                                PollTillReady(isReady, callback);
                             #endif
                         }
                     }
@@ -229,7 +229,7 @@ namespace <%= namespace %> {
         }
 
         private void CheckoutPoll(Action<List<string>, string> callback) {
-            PollForReadyGivenCheckout(
+            PollTillReady(
                 checkout => {
                     return checkout.ready();
                 },
@@ -238,7 +238,7 @@ namespace <%= namespace %> {
         }
 
         private void AvailableShippingRatesPoll(Action<List<string>, string> callback) {
-            PollForReadyGivenCheckout(
+            PollTillReady(
                 checkout => {
                     return checkout.availableShippingRates().ready();
                 },
