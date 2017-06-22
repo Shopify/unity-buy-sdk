@@ -14,9 +14,8 @@ namespace Shopify.Tests
             List<CheckoutLineItemInput> lineItems = new List<CheckoutLineItemInput>();
 
             DefaultQueries.checkout.Create(query, lineItems);
-
             Assert.AreEqual(
-                "mutation{checkoutCreate (input:{lineItems:[]}){checkout {id webUrl ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}userErrors {field message }}}",
+                "mutation{checkoutCreate (input:{lineItems:[]}){checkout {id webUrl requiresShipping availableShippingRates {shippingRates {handle price title }ready }subtotalPrice totalTax totalPrice ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}userErrors {field message }}}",
                 query.ToString()
             );
         }
@@ -27,9 +26,8 @@ namespace Shopify.Tests
             string checkoutId = "an-id";
             
             DefaultQueries.checkout.Poll(query, checkoutId);
-
             Assert.AreEqual(
-                "{node (id:\"an-id\"){__typename ...on Checkout{id webUrl ready }}}",
+                "{node (id:\"an-id\"){__typename ...on Checkout{id webUrl requiresShipping availableShippingRates {shippingRates {handle price title }ready }subtotalPrice totalTax totalPrice ready }}}",
                 query.ToString()
             );
         }
@@ -41,9 +39,8 @@ namespace Shopify.Tests
             List<CheckoutLineItemInput> lineItems = new List<CheckoutLineItemInput>();
 
             DefaultQueries.checkout.LineItemsAdd(query, checkoutId, lineItems);
-
             Assert.AreEqual(
-                "mutation{checkoutLineItemsAdd (lineItems:[],checkoutId:\"an-id\"){checkout {id webUrl ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}userErrors {field message }}}",
+                "mutation{checkoutLineItemsAdd (lineItems:[],checkoutId:\"an-id\"){checkout {id webUrl requiresShipping availableShippingRates {shippingRates {handle price title }ready }subtotalPrice totalTax totalPrice ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}userErrors {field message }}}",
                 query.ToString()
             );
         }
@@ -55,7 +52,6 @@ namespace Shopify.Tests
             List<string> lineItemIds = new List<string>();
 
             DefaultQueries.checkout.LineItemsRemove(query, checkoutId, lineItemIds);
-
             Assert.AreEqual(
                 "mutation{checkoutLineItemsRemove (checkoutId:\"an-id\",lineItemIds:[]){userErrors {field message }}}",
                 query.ToString()
@@ -68,7 +64,6 @@ namespace Shopify.Tests
             string checkoutId = "an-id";
 
             DefaultQueries.checkout.CheckoutLineItemsPage(query, checkoutId, 210, "after-something");
-
             Assert.AreEqual(
                 "{node (id:\"an-id\"){__typename ...on Checkout{lineItems (first:210,after:\"after-something\"){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}}}",
                 query.ToString()
@@ -82,9 +77,8 @@ namespace Shopify.Tests
 
             var addressInput = new MailingAddressInput("123 Test Street", "456", "Toronto", "Shopify", "Canada", "First", "Last", "1234567890", "Ontario", "A1B2C3");
             DefaultQueries.checkout.ShippingAddressUpdate(query, checkoutId, addressInput);
-
             Assert.AreEqual(
-                "mutation{checkoutLineItemsRemove (checkoutId:\"an-id\",lineItemIds:[]){userErrors {field message }}}",
+                "mutation{checkoutShippingAddressUpdate (shippingAddress:{address1:\"123 Test Street\",address2:\"456\",city:\"Toronto\",company:\"Shopify\",country:\"Canada\",firstName:\"First\",lastName:\"Last\",phone:\"1234567890\",province:\"Ontario\",zip:\"A1B2C3\"},checkoutId:\"an-id\"){checkout {id webUrl requiresShipping availableShippingRates {shippingRates {handle price title }ready }subtotalPrice totalTax totalPrice ready }userErrors {field message }}}",
                 query.ToString()
             );
         }
@@ -95,9 +89,8 @@ namespace Shopify.Tests
             string checkoutId = "an-id";
 
             DefaultQueries.checkout.EmailUpdate(query, checkoutId, "test@shopify.com");
-
             Assert.AreEqual(
-                "mutation{checkoutLineItemsRemove (checkoutId:\"an-id\",lineItemIds:[]){userErrors {field message }}}",
+                "mutation{checkoutEmailUpdate (checkoutId:\"an-id\",email:\"test@shopify.com\"){userErrors {field message }}}",
                 query.ToString()
             );
         }
@@ -108,9 +101,8 @@ namespace Shopify.Tests
             string checkoutId = "an-id";
 
             DefaultQueries.checkout.ShippingLineUpdate(query, checkoutId, "handle");
-
             Assert.AreEqual(
-                "mutation{checkoutLineItemsRemove (checkoutId:\"an-id\",lineItemIds:[]){userErrors {field message }}}",
+                "mutation{checkoutShippingLineUpdate (checkoutId:\"an-id\",shippingRateHandle:\"handle\"){checkout {id webUrl requiresShipping availableShippingRates {shippingRates {handle price title }ready }subtotalPrice totalTax totalPrice ready }userErrors {field message }}}",
                 query.ToString()
             );
         }
