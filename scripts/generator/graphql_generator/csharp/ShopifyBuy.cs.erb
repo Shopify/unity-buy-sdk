@@ -417,8 +417,9 @@ namespace <%= namespace %> {
             }
 
             Loader.Query(query, (response) => {
-                if (response.HasErrors) { 
-                    callback(null, ErrorFormatter.FormatErrorFromResponse(response));
+                var error = (ShopifyError)response;
+                if (error != null) { 
+                    callback(null, error);
                 } else {
                     List<Product> products = new List<Product>();
 
@@ -519,7 +520,7 @@ namespace <%= namespace %> {
         /// \endcode
         public void Query(<%= schema.query_root_name %>Query query, ResponseQueryHandler callback) {
             Loader.Query(query, (response) => {
-                callback(response.data, ErrorFormatter.FormatErrorFromResponse(response));
+                callback(response.data, (ShopifyError)response);
             });
         }
 
@@ -605,7 +606,7 @@ namespace <%= namespace %> {
         /// \endcode
         public void Mutation(<%= schema.mutation_root_name %>Query query, ResponseMutationHandler callback) {
             Loader.Mutation(query, (response) => {
-                callback(response.data, ErrorFormatter.FormatErrorFromResponse(response));
+                callback(response.data, (ShopifyError)response);
             });
         }
 
@@ -805,8 +806,9 @@ namespace <%= namespace %> {
                     return ((QueryRoot) response).shop().products();
                 },
                 (response) => {
-                    if (response.HasErrors) {
-                        callback(null, ErrorFormatter.FormatErrorFromResponse(response));
+                    var error = (ShopifyError)response;
+                    if (error != null) {
+                        callback(null, error);
                     } else {
                         callback((List<Product>) response.data.shop().products(), null);
                     }
@@ -846,8 +848,9 @@ namespace <%= namespace %> {
                     return ((QueryRoot) response).shop().collections();
                 },
                 (response) => {
-                    if (response.HasErrors) {
-                        callback(null, ErrorFormatter.FormatErrorFromResponse(response));
+                    var error = (ShopifyError)response;
+                    if (error != null) {
+                        callback(null, error);
                     } else {
                         callback((List<Collection>) response.data.shop().collections(), null);
                     }
