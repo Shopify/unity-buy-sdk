@@ -3,6 +3,8 @@ namespace <%= namespace %> {
     using System.Collections.Generic;
     using System.Text;
     using <%= namespace %>.SDK;
+    using <%= namespace %>.SDK.iOS;
+    using <%= namespace %>.SDK.Android;
     using <%= namespace %>.GraphQL;
 
     /// <summary>
@@ -12,6 +14,9 @@ namespace <%= namespace %> {
     public class NoMatchingVariantException : Exception {
         public NoMatchingVariantException(string message) : base(message) {}
     }
+
+    public delegate void WebCheckoutSucceeded();
+    public delegate void WebCheckoutFailed(object error);
 
     /// <summary>
     /// Manages line items for an order. Can also be used to generate a web checkout link to check out in browser.
@@ -44,6 +49,8 @@ namespace <%= namespace %> {
         private ShopifyClient Client;
         private Checkout CurrentCheckout = null;
 
+        private ICartCheckout checkout;
+
         /// <summary>
         /// Constructs a new cart using a <see ref="ShopifyClient">ShopifyClient </see>. Typically, carts won't be
         /// instantiated directly, but will rather be instatiated using <see ref="ShopifyClient.Cart">ShopifyBuy.Client().Cart() </see>.
@@ -61,6 +68,13 @@ namespace <%= namespace %> {
         public Cart(ShopifyClient client) {
             Client = client;
             _LineItems = new CartLineItems(OnDeleteLineItem);
+
+            // TODO: When we add more platform we can move this into a factory.
+            #if UNITY_IOS
+            checkout = new iOSCartCheckout();
+            #elif UNITY_ANDROID
+            checkout = new AndroidCartCheckout(); 
+            #endif
         }
 
         public delegate bool IsReadyGivenCheckout(Checkout checkout);
@@ -235,6 +249,10 @@ namespace <%= namespace %> {
 
         private void OnDeleteLineItem(string lineItemId) {
             DeletedLineItems.Add(lineItemId);
+        }
+
+        public void StartWebCheckout(WebCheckoutSucceeded success, WebCheckoutFailed failure) {
+            checkout.StartWebCheckout(success, failure);
         }
     }
 }

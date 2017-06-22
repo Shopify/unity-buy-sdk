@@ -1,0 +1,47 @@
+namespace <%= namespace %>.SDK.iOS {
+    using UnityEngine;
+    using System.Runtime.InteropServices;
+    using <%= namespace %>.SDK;
+
+    partial class iOSCartCheckout {
+        private static iOSWebPayCheckout webComponent;
+
+        [DllImport ("__internal")]
+        private static extern void _StartWebCheckout(string unityDelegateObjectName);
+
+        public void StartWebCheckout(WebCheckoutSucceeded success, WebCheckoutFailed failure) {
+            if (webComponent != null) {
+                #if !SHOPIFY_MONO_UNIT_TEST
+                webComponent = GlobalGameObject.AddComponent<iOSWebPayCheckout>();
+                #else
+                webComponent = new iOSWebPayCheckout();
+                #endif
+            }
+            webComponent.success = success;
+            webComponent.failure = failure;
+
+            #if !SHOPIFY_MONO_UNIT_TEST
+            _StartWebCheckout(GlobalGameObject.gameObject.name.);
+            #else
+            _StartWebCheckout("test");
+            #endif
+        }
+    }
+
+    partial class iOSWebPayCheckout {
+        internal WebCheckoutSucceeded success;
+        internal WebCheckoutFailed failure;
+
+        void DidCompleteCheckout(bool didSucceed) {
+            if (didSucceed) {
+                success();
+            } else {
+                failure(null);
+            }
+        }
+    }
+
+    #if !SHOPIFY_MONO_UNIT_TEST
+    partial class iOSWebPayCheckout: MonoBehaviour {}
+    #endif
+}
