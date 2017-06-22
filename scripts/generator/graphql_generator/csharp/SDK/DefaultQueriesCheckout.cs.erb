@@ -29,29 +29,9 @@ namespace <%= namespace %>.SDK {
             );
         }
 
-        public void LineItemsAdd(MutationQuery query, string checkoutId, List<CheckoutLineItemInput> lineItems) {
-            query.checkoutLineItemsAdd(
-                buildQuery: lineItemAdd => lineItemAdd
-                    .checkout(checkout => {
-                        Checkout(checkout);
-                        CheckoutLineItems(checkout);
-                    })
-                    .userErrors(userErrors => userErrors
-                        .field()
-                        .message()
-                    ),
-                checkoutId: checkoutId,
-                lineItems: lineItems
-            );
-        }
-
         public void LineItemsRemove(MutationQuery query, string checkoutId, List<string> lineItemIds) {
             query.checkoutLineItemsRemove(
                 buildQuery: lineItemRemove => lineItemRemove
-                    .checkout(checkout => {
-                        Checkout(checkout);
-                        CheckoutLineItems(checkout);
-                    })
                     .userErrors(userErrors => userErrors
                         .field()
                         .message()
@@ -61,9 +41,9 @@ namespace <%= namespace %>.SDK {
             );
         }
 
-        public void LineItemsUpdate(MutationQuery query, string checkoutId, List<CheckoutLineItemUpdateInput> lineItems) {
-            query.checkoutLineItemsUpdate(
-                buildQuery: lineItemUpdate => lineItemUpdate
+        public void LineItemsAdd(MutationQuery query, string checkoutId, List<CheckoutLineItemInput> lineItems) {
+            query.checkoutLineItemsAdd(
+                buildQuery: lineItemAdd => lineItemAdd
                     .checkout(checkout => {
                         Checkout(checkout);
                         CheckoutLineItems(checkout);
