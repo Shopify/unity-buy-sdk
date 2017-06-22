@@ -191,7 +191,7 @@ namespace Shopify.Tests
             ShopifyBuy.Client().products(callback: (p, error) => {
                 Assert.IsNull(p);
                 Assert.IsNotNull(error);
-                Assert.AreEqual("GraphQL error from mock loader", error.Reason);
+                Assert.AreEqual("GraphQL error from mock loader", error.description);
             }, first: 250, after: "666");
         }
 
@@ -203,7 +203,7 @@ namespace Shopify.Tests
             ShopifyBuy.Client().products(callback: (p, error) => {
                 Assert.IsNull(p);
                 Assert.IsNotNull(error);
-                Assert.AreEqual("404 from mock loader", error.Reason);
+                Assert.AreEqual("404 from mock loader", error.description);
             }, first: 250, after: "404");
         }
 
