@@ -26,9 +26,23 @@ namespace <%= namespace %> {
             }
         }
 
-        private CartLineItems _LineItems;
+        private bool IsSaved {
+            get {
+                return IsCreated && LineItems.IsSaved;
+            }
+        }
 
+        private bool IsCreated {
+            get {
+                return CurrentCheckout != null;
+            }
+        }
+
+        private const float POLL_DELAY_SECONDS = 0.5f;
+        private CartLineItems _LineItems;
+        private List<String> DeletedLineItems = new List<string>();
         private ShopifyClient Client;
+        private Checkout CurrentCheckout = null;
 
         /// <summary>
         /// Constructs a new cart using a <see ref="ShopifyClient">ShopifyClient </see>. Typically, carts won't be
@@ -46,55 +60,130 @@ namespace <%= namespace %> {
         /// \endcode
         public Cart(ShopifyClient client) {
             Client = client;
-            _LineItems = new CartLineItems();
+            _LineItems = new CartLineItems(OnDeleteLineItem);
         }
 
-        /// <summary>
-        /// Returns a link which can be used to check out this cart's line items via a web browser.
-        /// </summary>
-        /// <param name="note">can be used to create a special note for the merchant for this order</param>
-        /// \code
-        /// // Example that creates a checkout link and opens the url in the Browser
-        /// string linkToCheckout = ShopifyBuy.Client().Cart().GetWebCheckoutLink();
-        ///
-        /// Application.OpenURL(linkToCheckout);
-        /// \endcode
-        public string GetWebCheckoutLink(string note = null) {
-            StringBuilder url = new StringBuilder();
-            bool hasLineItem = false;
+        public delegate void GetWebCheckoutLinkSuccess(string url);
+        public delegate void GetWebCheckoutLinkFailure(List<string> graphQLErrors, string httpError);
 
-            url.Append("http://");
-            url.Append(Client.Domain);
-            url.Append("/cart/");
-
-            foreach(CartLineItem lineItem in LineItems.All()) {
-                if (hasLineItem) {
-                    url.Append(",");
+        public void GetWebCheckoutLink(GetWebCheckoutLinkSuccess success, GetWebCheckoutLinkFailure failure) {
+            CheckoutSave((errors, httpError) => {
+                if (errors != null || httpError != null) {
+                    failure(errors, httpError);
+                } else {
+                    success(CurrentCheckout.webUrl());
                 }
+            });
+        }
 
-                hasLineItem = true;
+        private void CheckoutSave(Action<List<string>, string> callback) {
+            if (!IsCreated) {
+                CheckoutCreate(callback);
+            } else if(!IsSaved) {
+                CheckoutUpdate(callback);
+            } else {
+                callback(null, null);
+            }
+        }
 
-                string variantId = System.Text.Encoding.UTF8.GetString(
-                    Convert.FromBase64String(lineItem.VariantId)
-                );
+        private void CheckoutCreate(Action<List<string>, string> callback) {
+            MutationQuery query = new MutationQuery();
+            
+            List<CheckoutLineItemInput> newLineItemInput = CartLineItems.ConvertToCheckoutLineItemInput(LineItems.All());
+            
+            DefaultQueries.checkout.Create(query, newLineItemInput);
 
-                // convert from variant gid to variant id
-                string[] variandIdSplit = variantId.Split('/');
+            Client.Mutation(query, (Mutation response, List<string> errors, string httpError) => {
+                if (errors != null || httpError != null) {
+                    callback(errors, httpError);
+                } else {
+                    UpdateCheckout(response.checkoutCreate().checkout());
+                    
+                    CheckoutPoll(callback);
+                }
+            });
+        }
 
-                url.Append(variandIdSplit[variandIdSplit.Length - 1]);
-                url.Append(":");
-                url.Append(lineItem.Quantity);
+        private void CheckoutUpdate(Action<List<string>, string> callback) {
+            MutationQuery query = new MutationQuery();
+
+            // remove all line items them add them
+            List<string> lineItemsToRemove = CartLineItems.ConvertToLineItemIds(LineItems.All());
+            lineItemsToRemove.AddRange(DeletedLineItems);
+
+            List<CheckoutLineItemInput> lineItemsToAdd = CartLineItems.ConvertToCheckoutLineItemInput(LineItems.All());
+
+            DefaultQueries.checkout.LineItemsRemove(query, CurrentCheckout.id(), lineItemsToRemove);
+            DefaultQueries.checkout.LineItemsAdd(query, CurrentCheckout.id(), lineItemsToAdd);
+        
+            Client.Mutation(query, (Mutation response, List<string> errors, string httpError) => {
+                if (errors != null || httpError != null) {
+                    callback(errors, httpError);
+                } else {
+                    DeletedLineItems.Clear();
+
+                    UpdateCheckout(response.checkoutLineItemsAdd().checkout());
+
+                    CheckoutPoll(callback);
+                }
+            });
+        }
+
+        private void UpdateCheckout(Checkout checkout) {
+            if (CurrentCheckout == null) {
+                CurrentCheckout = checkout;
+            } else {
+                MergeCheckout merger = new MergeCheckout();
+
+                CurrentCheckout = merger.Merge(CurrentCheckout, checkout);    
             }
 
-            url.Append("?access_token=");
-            url.Append(Client.AccessToken);
+            UpdateLineItemFromCheckout(CurrentCheckout);
+        }
 
-            if (note != null) {
-                url.Append("&note=");
-                url.Append(note);
+        private void UpdateLineItemFromCheckout(Checkout checkout) {
+            // sometimes we may not query line items for instance when polling is being performed
+            try {
+                List<CheckoutLineItem> lineItems = (List<CheckoutLineItem>) checkout.lineItems();
+
+                LineItems.UpdateLineItemsFromCheckoutLineItems(lineItems);
+            } catch(NoQueryException exception) {}
+        }
+
+        private void CheckoutPoll(Action<List<string>, string> callback) {
+            if (CurrentCheckout.ready()) {
+                callback(null, null);
+            } else {
+                QueryRootQuery query = new QueryRootQuery();
+
+                DefaultQueries.checkout.Poll(query, CurrentCheckout.id());
+
+                Client.Query(query, (QueryRoot response, List<string> errors, string httpError) => {
+                    if (errors != null || httpError != null) {
+                        callback(errors, httpError);
+                    } else {
+                        Checkout checkout = (Checkout) response.node();
+
+                        UpdateCheckout(checkout);
+
+                        if (CurrentCheckout.ready()) {
+                            callback(null, null);
+                        } else {
+                            #if !SHOPIFY_MONO_UNIT_TEST
+                                UnityTimeout.Start(POLL_DELAY_SECONDS, () => {
+                                    CheckoutPoll(callback);    
+                                });
+                            #else
+                                CheckoutPoll(callback);
+                            #endif
+                        }
+                    }
+                });
             }
+        }
 
-            return url.ToString();
+        private void OnDeleteLineItem(string lineItemId) {
+            DeletedLineItems.Add(lineItemId);
         }
     }
 }

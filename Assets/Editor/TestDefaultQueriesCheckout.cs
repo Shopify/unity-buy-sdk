@@ -57,21 +57,7 @@ namespace Shopify.Tests
             DefaultQueries.checkout.LineItemsRemove(query, checkoutId, lineItemIds);
 
             Assert.AreEqual(
-                "mutation{checkoutLineItemsRemove (checkoutId:\"an-id\",lineItemIds:[]){checkout {id webUrl ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}userErrors {field message }}}", 
-                query.ToString()
-            );
-        }
-
-        [Test]
-        public void TestCheckoutLineItemsUpdate() {
-            MutationQuery query = new MutationQuery();
-            string checkoutId = "an-id";
-            List<CheckoutLineItemUpdateInput> lineItems = new List<CheckoutLineItemUpdateInput>();
-
-            DefaultQueries.checkout.LineItemsUpdate(query, checkoutId, lineItems);
-
-            Assert.AreEqual(
-                "mutation{checkoutLineItemsUpdate (checkoutId:\"an-id\",lineItems:[]){checkout {id webUrl ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}userErrors {field message }}}", 
+                "mutation{checkoutLineItemsRemove (checkoutId:\"an-id\",lineItemIds:[]){userErrors {field message }}}", 
                 query.ToString()
             );
         }
