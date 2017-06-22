@@ -27,5 +27,8 @@ namespace <%= namespace %>.SDK {
     public delegate void ResponseCollectionsHandler(List<Collection> collections, List<string> errors, string httpError);
     public delegate void ResponseQueryHandler(<%= schema.query_root_name %> response, List<string> errors, string httpError);
     public delegate void ResponseMutationHandler(<%= schema.mutation_root_name %> response, List<string> errors, string httpError);
+
+    // CartLineItems
+    public delegate void OnCartLineItemChange(CartLineItem item);
 }
 
