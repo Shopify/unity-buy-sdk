@@ -17,7 +17,8 @@ namespace Shopify.Tests {
                 new MockLoaderErrors(),
                 new MockLoaderProducts(),
                 new MockLoaderGeneric(),
-                new MockLoaderCollections()
+                new MockLoaderCollections(),
+                new MockLoaderCheckouts()
             };
 
             Initialized = true;
@@ -46,13 +47,13 @@ namespace Shopify.Tests {
                 Initialize();
             }
         }
-        
+
         public void Load(string query, LoaderResponseHandler callback) {
             bool handledResponse = false;
 
             foreach(IMockLoader loader in _Loaders) {
                 if (loader.DoesHandleQueryResponse(query)) {
-                    loader.HandleResponse(query, callback);                    
+                    loader.HandleResponse(query, callback);
                     handledResponse = true;
 
                     break;
