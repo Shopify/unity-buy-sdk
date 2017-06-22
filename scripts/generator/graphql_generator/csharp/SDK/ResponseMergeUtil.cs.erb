@@ -5,8 +5,6 @@ namespace <%= namespace %>.SDK {
     using System.Collections.Generic;
 
     public class ResponseMergeUtil {
-        public delegate void MergeFieldDelegate(string field, Dictionary<string, object> into, Dictionary<string, object> responseA, Dictionary<string, object> responseB);
-
         public static void DoNotMergeIfExists(string field, Dictionary<string, object> into, Dictionary<string, object> responseA, Dictionary<string, object> responseB) {
             if (!responseA.ContainsKey(field)) {
                 into[field] = responseB[field];
