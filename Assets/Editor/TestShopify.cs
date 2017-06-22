@@ -191,7 +191,7 @@ namespace Shopify.Tests
             ShopifyBuy.Client().products(callback: (p, error) => {
                 Assert.IsNull(p);
                 Assert.IsNotNull(error);
-                Assert.AreEqual("GraphQL error from mock loader", error.description);
+                Assert.AreEqual("[\"GraphQL error from mock loader\"]", error.description);
             }, first: 250, after: "666");
         }
 
