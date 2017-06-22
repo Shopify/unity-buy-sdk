@@ -1,6 +1,5 @@
 ﻿namespace Shopify.Tests {
     using UnityEngine;
-    using System.Runtime.InteropServices;
     using Shopify.Unity.SDK;
 
     public class MessageCenterTestsHelper : MonoBehaviour {
