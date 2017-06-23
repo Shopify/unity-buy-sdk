@@ -1,0 +1,19 @@
+#if UNITY_IPHONE
+namespace <%= namespace %>.SDK.iOS {
+    using System.Collections;
+    using System;
+
+    [Serializable]
+    public class SummaryItem: Serializable {
+        #pragma warning disable 0414
+        public string Label;
+        public string Amount;
+        #pragma warning restore 0414
+
+        public SummaryItem(string label, string amount) {
+            Label = label;
+            Amount = amount;
+        }
+    }
+}
+#endif

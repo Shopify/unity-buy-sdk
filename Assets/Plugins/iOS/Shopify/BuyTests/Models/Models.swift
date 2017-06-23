@@ -101,6 +101,7 @@ struct Models {
     static func createShippingMethod() -> PKShippingMethod {
         let shippingMethod        = PKShippingMethod(label: "Free Shipping", amount: 0)
         shippingMethod.identifier = "unique_id"
+        shippingMethod.detail     = "10-15 Days"
         return shippingMethod
     }
     
@@ -114,6 +115,10 @@ struct Models {
             billingContact: createContact(with: createPostalAddress()),
             shippingContact: createContact(with: createPostalAddress()),
             shippingMethod: createShippingMethod())
+    }
+    
+    static func createSummaryItem() -> PKPaymentSummaryItem {
+        return PKPaymentSummaryItem(label: "SubTotal", amount: NSDecimalNumber(value: 1.00))
     }
     
     static func createSummaryItems() -> [PKPaymentSummaryItem] {

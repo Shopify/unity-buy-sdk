@@ -115,6 +115,12 @@ module GraphQLGenerator
         SDK/ILoader
         SDK/Log
         SDK/NativeMessage
+        SDK/Serializable
+        SDK/iOS/ApplePayAuthorizationStatus
+        SDK/iOS/ApplePayEventReceiver
+        SDK/iOS/ApplePayEventResponse
+        SDK/iOS/ShippingMethod
+        SDK/iOS/SummaryItem
       ).each do |class_file_name|
         directory = "#{path}/#{File.dirname(class_file_name)}"
 
