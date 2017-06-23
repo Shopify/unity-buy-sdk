@@ -8,7 +8,6 @@
         [DllImport ("__Internal")]
         protected static extern void _TesterObjectFinishedLoading();
 
-        // Use this for initialization
         void Start () {
             _TesterObjectFinishedLoading();
         }

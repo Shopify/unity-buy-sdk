@@ -1,0 +1,14 @@
+#if UNITY_IPHONE
+namespace <%= namespace %>.SDK.iOS {
+    using System.Collections;
+    using System.Collections.Generic;
+    using UnityEngine;
+
+    public interface IApplePayEventReceiver {
+        void UpdateSummaryItemsForShippingIdentifier(string serializedMessage);
+        void UpdateSummaryItemsForShippingContact(string serializedMessage);
+        void FetchApplePayCheckoutStatusForToken(string serializedMessage);
+        void DidFinishCheckoutSession(string serializedMessage);
+    }
+}
+#endif
