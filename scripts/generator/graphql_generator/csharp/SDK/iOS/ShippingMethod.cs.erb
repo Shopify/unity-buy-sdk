@@ -1,0 +1,20 @@
+#if UNITY_IPHONE
+namespace <%= namespace %>.SDK.iOS {
+    using System.Collections;
+    using System;
+
+    [Serializable]
+    public class ShippingMethod : SummaryItem {
+
+        #pragma warning disable 0414
+        public string Identifier;
+        public string Detail;
+        #pragma warning restore 0414
+
+        public ShippingMethod(string label, string amount, string identifier, string detail) : base(label, amount) {
+            Identifier = identifier;
+            Detail = detail;
+        }
+    }
+}
+#endif

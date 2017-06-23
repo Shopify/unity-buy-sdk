@@ -34,5 +34,6 @@ extension Tester {
     
     enum Method: String {
         case repeatMessage = "RepeatMessage"
+        case getLastMessage = "GetLastMessage"
     }
 }
