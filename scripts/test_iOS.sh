@@ -8,15 +8,36 @@ UNITY_IOS_LOG_PATH="$PROJECT_ROOT"/buildIOS.log
 
 which "$UNITY_PATH" &> /dev/null || die "Unity does not exist at $UNITY_PATH" 
 
-"$UNITY_PATH" \
-    -batchmode \
-    -nographics \
-    -silent-crashes \
-    -logFile "$UNITY_IOS_LOG_PATH" \
-    -projectPath "$PROJECT_ROOT" \
-    -executeMethod Shopify.BuildPipeline.ShopifyBuildPipeline.BuildIosForTests \
-    -buildPlayerPath "$IOS_BUILD_PATH" \
-    -quit
+if [[ -z ${UNITY_USERNAME+x} && -z ${UNITY_PASSWORD+x} && -z ${UNITY_SERIAL+x} ]] ; then
+    "$UNITY_PATH" \
+        -batchmode \
+        -nographics \
+        -username "$UNITY_USERNAME" \
+        -password "$UNITY_PASSWORD" \
+        -serial "$UNITY_SERIAL" \
+        -silent-crashes \
+        -logFile "$UNITY_IOS_LOG_PATH" \
+        -projectPath "$PROJECT_ROOT" \
+        -executeMethod Shopify.BuildPipeline.ShopifyBuildPipeline.BuildIosForTests \
+        -buildPlayerPath "$IOS_BUILD_PATH" \
+        -quit
+
+    "$UNITY_PATH" \
+        -batchmode \
+        -nographics \
+        -returnlicense\
+        -quit
+else
+    "$UNITY_PATH" \
+        -batchmode \
+        -nographics \
+        -silent-crashes \
+        -logFile "$UNITY_IOS_LOG_PATH" \
+        -projectPath "$PROJECT_ROOT" \
+        -executeMethod Shopify.BuildPipeline.ShopifyBuildPipeline.BuildIosForTests \
+        -buildPlayerPath "$IOS_BUILD_PATH" \
+        -quit
+fi
 
 if [ $? = 0 ] ; then
     echo "Project Built"
