@@ -4,7 +4,7 @@ namespace <%= namespace %>.SDK.iOS {
     using System.Collections.Generic;
     using UnityEngine;
 
-    public interface ApplePayEventReceiver {
+    public interface IApplePayEventReceiver {
         void UpdateSummaryItemsForShippingIdentifier(string serializedMessage);
         void UpdateSummaryItemsForShippingContact(string serializedMessage);
         void FetchApplePayCheckoutStatusForToken(string serializedMessage);

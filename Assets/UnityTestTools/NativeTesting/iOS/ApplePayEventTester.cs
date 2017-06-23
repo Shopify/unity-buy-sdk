@@ -5,7 +5,7 @@ namespace Shopify.Tests.iOS {
     using UnityEngine;
     using Shopify.Unity.SDK.iOS;
 
-    public class ApplePayEventTester : MonoBehaviour, ApplePayEventReceiver {
+    public class ApplePayEventTester : MonoBehaviour, IApplePayEventReceiver {
 
         public void UpdateSummaryItemsForShippingIdentifier(string serializedMessage) {
             var message = NativeMessageTester.CreateFromJSON(serializedMessage);
