@@ -151,6 +151,51 @@ namespace <%= namespace %> {
             } catch(NoQueryException exception) {}
         }
 
+        private void SetShippingAddress(MailingAddressInput mailingAddressInput, Action<List<string>, string> callback) {
+            MutationQuery query = new MutationQuery();
+
+            DefaultQueries.checkout.ShippingAddressUpdate(query, CurrentCheckout.id(), mailingAddressInput);
+
+            Client.Mutation(query, (Mutation response, List<string> errors, string httpError) => {
+                if (errors != null || httpError != null) {
+                    callback(errors, httpError);
+                } else {
+                    UpdateCheckout(response.checkoutShippingAddressUpdate().checkout());
+                    AvailableShippingRatesPoll(callback);
+                }
+            });
+        }
+
+        private void SetShippingLine(string shippingRateHandle, Action<List<string>, string> callback) {
+            MutationQuery query = new MutationQuery();
+
+            DefaultQueries.checkout.ShippingLineUpdate(query, CurrentCheckout.id(), shippingRateHandle);
+
+            Client.Mutation(query, (Mutation response, List<string> errors, string httpError) => {
+                if (errors != null || httpError != null) {
+                    callback(errors, httpError);
+                } else {
+                    UpdateCheckout(response.checkoutShippingLineUpdate().checkout());
+                    CheckoutPoll(callback);
+                }
+            });
+        }
+
+        private void SetEmail(string email, Action<List<string>, string> callback) {
+            MutationQuery query = new MutationQuery();
+
+            DefaultQueries.checkout.EmailUpdate(query, CurrentCheckout.id(), email);
+
+            Client.Mutation(query, (Mutation response, List<string> errors, string httpError) => {
+                if (errors != null || httpError != null) {
+                    callback(errors, httpError);
+                } else {
+                    UpdateCheckout(response.checkoutEmailUpdate().checkout());
+                    CheckoutPoll(callback);
+                }
+            });
+        }
+
         private void PollTillReady(IsReadyGivenCheckout isReady, Action<List<string>, string> callback) {
             if (isReady(CurrentCheckout)) {
                 callback(null, null);
