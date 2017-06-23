@@ -192,6 +192,15 @@ namespace <%= namespace %> {
             );
         }
 
+        private void AvailableShippingRatesPoll(Action<List<string>, string> callback) {
+            PollTillReady(
+                checkout => {
+                    return checkout.availableShippingRates().ready();
+                },
+                callback
+            );
+        }
+
         private void OnDeleteLineItem(string lineItemId) {
             DeletedLineItems.Add(lineItemId);
         }
