@@ -26,6 +26,7 @@
 
 #import "Cart+ApplePay.h"
 #import <PassKit/PassKit.h>
+#import <WebKit/WebKit.h>
 #import "ProductName-Swift.h"
 
 bool _CanCheckoutWithApplePay() {

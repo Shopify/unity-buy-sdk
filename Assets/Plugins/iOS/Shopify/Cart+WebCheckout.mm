@@ -1,5 +1,5 @@
 //
-//  MessageResponder.mm
+//  Cart+WebCheckout.mm
 //  UnityBuySDK
 //
 //  Created by Shopify.
@@ -24,13 +24,18 @@
 //  THE SOFTWARE.
 //
 
+#import "Cart+WebCheckout.h"
+
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import <PassKit/PassKit.h>
 #import <WebKit/WebKit.h>
+
 #import "ProductName-Swift.h"
 
-extern "C" {
-    void _RespondToNativeMessage(const char *identifier, const char *response) {
-        UnityMessage *message = [MessageCenter messageForIdentifier:[NSString stringWithUTF8String:identifier]];
-        [message completeWith:[NSString stringWithUTF8String:response]];
-    }
+bool _StartWebCheckout(const char *unityDelegateObjectName, const char *checkoutURL) {
+    WebCheckoutSession * session = [WebCheckoutSession
+                                    createSessionWithUnityDelegateObjectName:[NSString stringWithUTF8String:unityDelegateObjectName]
+                                    url:[NSString stringWithUTF8String:checkoutURL]];
+    return [session startCheckout];
 }
