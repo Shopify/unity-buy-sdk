@@ -125,6 +125,7 @@ module GraphQLGenerator
         SDK/IWebCheckout
         SDK/iOS/ApplePayAuthorizationStatus
         SDK/iOS/ApplePayEventReceiver
+        SDK/iOS/ApplePayEventReceiverBridge
         SDK/iOS/ApplePayEventResponse
         SDK/iOS/ShippingMethod
         SDK/iOS/iOSWebCheckout
