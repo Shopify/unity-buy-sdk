@@ -1,0 +1,28 @@
+#if UNITY_IPHONE
+namespace <%= namespace %> {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using <%= namespace %>.SDK;
+    using <%= namespace %>.SDK.iOS;
+    using <%= namespace %>.MiniJSON;
+
+    public partial class Cart : IApplePayEventReceiver {
+        public void UpdateSummaryItemsForShippingIdentifier(string serializedMessage) {
+
+        }
+
+        public void UpdateSummaryItemsForShippingContact(string serializedMessage) {
+
+        }
+
+        public void FetchApplePayCheckoutStatusForToken(string serializedMessage) {
+
+        }
+
+        public void DidFinishCheckoutSession(string serializedMessage) {
+
+        }
+    }
+}
+#endif

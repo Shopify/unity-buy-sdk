@@ -123,6 +123,7 @@ module GraphQLGenerator
         SDK/iOS/ApplePayEventResponse
         SDK/iOS/ShippingMethod
         SDK/iOS/SummaryItem
+        SDK/iOS/CartApplePayEventReceiver
       ).each do |class_file_name|
         directory = "#{path}/#{File.dirname(class_file_name)}"
 
