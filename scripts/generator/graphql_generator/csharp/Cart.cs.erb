@@ -43,6 +43,7 @@ namespace <%= namespace %> {
         private List<String> DeletedLineItems = new List<string>();
         private ShopifyClient Client;
         private Checkout CurrentCheckout = null;
+        private List<UserError> CurrentUserErrors = null;
 
         /// <summary>
         /// Constructs a new cart using a <see ref="ShopifyClient">ShopifyClient </see>. Typically, carts won't be
@@ -100,12 +101,15 @@ namespace <%= namespace %> {
                     return;
                 }
 
-                UpdateCheckout(response.checkoutCreate().checkout());
-
-                if (CurrentCheckout.ready()) {
-                    callback(null);
+                if (UpdateState(response.checkoutCreate().checkout(), response.checkoutCreate().userErrors())) {
+                    if (CurrentCheckout.ready()) {
+                        callback(null);
+                    } else {
+                        PollCheckoutAndUpdate(PollCheckoutReady, callback);
+                    }
                 } else {
-                    PollCheckoutAndUpdate(PollCheckoutReady, callback);
+                    // HANDLE USER ERROR
+                    throw new NotImplementedException("Mikko implement handling user error");
                 }
             });
         }
@@ -129,17 +133,25 @@ namespace <%= namespace %> {
                 }
 
                 DeletedLineItems.Clear();
-                UpdateCheckout(response.checkoutLineItemsAdd().checkout());
 
-                if (CurrentCheckout.ready()) {
-                    callback(null);
+                if (UpdateState(response.checkoutLineItemsAdd().checkout(), response.checkoutLineItemsAdd().userErrors())) {
+                    if (CurrentCheckout.ready()) {
+                        callback(null);
+                    } else {
+                        PollCheckoutAndUpdate(PollCheckoutReady, callback);
+                    }
                 } else {
-                    PollCheckoutAndUpdate(PollCheckoutReady, callback);
+                    // HANDLE USER ERROR
+                    throw new NotImplementedException("Mikko implement handling user error");
                 }
             });
         }
 
-        private void UpdateCheckout(Checkout checkout) {
+        private bool UpdateState(Checkout checkout) {
+            return UpdateState(checkout, new List<UserError>());
+        }
+
+        private bool UpdateState(Checkout checkout, List<UserError> userErrors) {
             if (CurrentCheckout == null) {
                 CurrentCheckout = checkout;
             } else {
@@ -148,7 +160,15 @@ namespace <%= namespace %> {
                 CurrentCheckout = merger.Merge(CurrentCheckout, checkout);    
             }
 
+            if (userErrors.Count > 0) {
+                CurrentUserErrors = userErrors;
+            } else {
+                CurrentUserErrors = null;
+            }
+
             UpdateLineItemFromCheckout(CurrentCheckout);
+
+            return CurrentUserErrors == null;
         }
 
         private void UpdateLineItemFromCheckout(Checkout checkout) {
@@ -171,12 +191,15 @@ namespace <%= namespace %> {
                     return;
                 }
 
-                UpdateCheckout(response.checkoutShippingLineUpdate().checkout());
-
-                if (CurrentCheckout.ready()) {
-                    callback(null);
+                if (UpdateState(response.checkoutShippingLineUpdate().checkout(), response.checkoutShippingLineUpdate().userErrors())) {
+                    if (CurrentCheckout.ready()) {
+                        callback(null);
+                    } else {
+                        PollCheckoutAndUpdate(PollCheckoutReady, callback);
+                    }
                 } else {
-                    PollCheckoutAndUpdate(PollCheckoutReady, callback);
+                    // HANDLE USER ERROR
+                    throw new NotImplementedException("Mikko implement handling user error");
                 }
             });
         }
@@ -191,12 +214,15 @@ namespace <%= namespace %> {
                 if (error != null) {
                     callback(error);
                 } else {
-                    UpdateCheckout(response.checkoutEmailUpdate().checkout());
-
-                    if (CurrentCheckout.availableShippingRates().ready()) {
-                        callback(null);
+                    if (UpdateState(response.checkoutEmailUpdate().checkout(), response.checkoutEmailUpdate().userErrors())) {
+                        if (CurrentCheckout.availableShippingRates().ready()) {
+                            callback(null);
+                        } else {
+                            PollCheckoutAndUpdate(PollCheckoutAvailableShippingRatesReady, callback);
+                        }
                     } else {
-                        PollCheckoutAndUpdate(PollCheckoutAvailableShippingRatesReady, callback);
+                        // HANDLE USER ERROR
+                        throw new NotImplementedException("Mikko implement handling user error");
                     }
                 }
             });

@@ -50,7 +50,7 @@ namespace <%= namespace %> {
         private void PollCheckoutAndUpdate(CheckoutPoll poll, Action<ShopifyError> callback) {
             poll((Checkout checkout, ShopifyError error) => {
                 if (error == null && checkout != null) {
-                    UpdateCheckout(checkout);
+                    UpdateState(checkout);
                 }
                 callback(error);
             });
