@@ -64,11 +64,65 @@ namespace <%= namespace %>.SDK {
             );
         }
 
+        public void ShippingAddressUpdate(MutationQuery query, string checkoutId, MailingAddressInput shippingAddress) {
+            query.checkoutShippingAddressUpdate(
+                buildQuery: shippingAddressUpdate => shippingAddressUpdate
+                    .checkout(checkout => Checkout(checkout)
+                        .availableShippingRates(availableShippingRates => AvailableShippingRates(availableShippingRates))
+                    )
+                    .userErrors(userErrors => userErrors
+                        .field()
+                        .message()
+                    ),
+                shippingAddress: shippingAddress,
+                checkoutId: checkoutId
+            );
+        }
+
+        public void EmailUpdate(MutationQuery query, string checkoutId, String email) {
+            query.checkoutEmailUpdate(
+                buildQuery: emailUpdate => emailUpdate
+                    .checkout(checkout => checkout
+                        .email())
+                    .userErrors(userErrors => userErrors
+                        .field()
+                        .message()
+                ),
+                checkoutId: checkoutId,
+                email: email
+            );
+        }
+
+        public void ShippingLineUpdate(MutationQuery query, string checkoutId, String shippingRateHandle) {
+            query.checkoutShippingLineUpdate(
+                buildQuery: emailUpdate => emailUpdate
+                    .checkout(checkout => Checkout(checkout)
+                        .shippingLine(shippingLine => ShippingRate(shippingLine)))
+                    .userErrors(userErrors => userErrors
+                        .field()
+                        .message()
+                    ),
+                checkoutId: checkoutId,
+                shippingRateHandle: shippingRateHandle
+            );
+        }
+
         private CheckoutQuery Checkout(CheckoutQuery checkout) {
             return checkout
                 .id()
                 .webUrl()
+                .requiresShipping()
+                .subtotalPrice()
+                .totalTax()
+                .totalPrice()
                 .ready();
+        }
+
+        private ShippingRateQuery ShippingRate(ShippingRateQuery shippingRate) {
+            return shippingRate
+                .handle()
+                .title()
+                .price();
         }
 
         private CheckoutQuery CheckoutLineItems(CheckoutQuery checkout, int first = 250, string after = null) {
@@ -89,6 +143,14 @@ namespace <%= namespace %>.SDK {
                 first: first,
                 after: after
             );
+        }
+
+        private AvailableShippingRatesQuery AvailableShippingRates(AvailableShippingRatesQuery availableShippingRates) {
+            return availableShippingRates
+                .shippingRates(
+                    buildQuery: shippingRate => ShippingRate(shippingRate)
+                )
+                .ready();
         }
     }
 }
