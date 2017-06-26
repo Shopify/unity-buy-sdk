@@ -100,7 +100,7 @@ $ scripts/test_unity.sh
 
 ### Testing in Terminal using Mono
 There might be cases where you want to run tests fully outside of Unity.
-That's where using Mono to run tests is handy. We're using Mono as it's the development platform on which Unity is built.
+That's where using Mono to run tests is handy. We're using Mono as it's the development platform on which Unity is built. The tests uses the [NUnit framework](http://www.mono-project.com/archived/nunit/) which requires a version of [Mono 4.8.1](https://download.mono-project.com/archive/4.8.1/) and below.
 
 To run tests, run the following command:
 ```bash
