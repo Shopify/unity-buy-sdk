@@ -1,5 +1,5 @@
 //
-//  Unity-iPhone-Bridging-Header.h
+//  Unity-iPhone-Tests-Bridging-Header.h
 //  UnityBuySDK
 //
 //  Created by Shopify.
@@ -28,3 +28,4 @@
 #import "UnityAppController+ViewHandling.h"
 #import "UnityInterface.h"
 #import "Tester.h"
+#import "Cart+ApplePay.h"
