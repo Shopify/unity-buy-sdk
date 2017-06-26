@@ -28,11 +28,39 @@ namespace <%= namespace %> {
             var contentDictionary = (Dictionary<string, object>)Json.Deserialize(message.Content);
             var mailingAddressInput = new MailingAddressInput(contentDictionary);
 
-            SetShippingAddress(mailingAddressInput, (httpError, graphqlError) => {
+            List<SummaryItem> summaryItems = null;
+            List<ShippingMethod> shippingMethods = null;
+            var updateShippingAddressSuccess = false;
+            var updateEmailSuccess = false;
+
+            Action respondWithSuccess = () => {
+                message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, summaryItems, shippingMethods).ToJsonString());
+            };
+
+            SetEmail((String)contentDictionary["email"], (httpError, graphqlError) => {
                 if (httpError == null && graphqlError == null) {
-                    var summaryItems = GetSummaryItems();
-                    var shippingMethods = GetShippingMethods();
-                    message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, summaryItems, shippingMethods).ToJsonString());
+
+                    if (updateShippingAddressSuccess) {
+                        respondWithSuccess();
+                    } else {
+                        updateEmailSuccess = true;
+                    }
+                } else {
+                    message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure).ToJsonString());
+                }
+            });
+
+            SetShippingAddress(mailingAddressInput, (httpError, graphqlError) => {
+                if (httpError == null &&  graphqlError == null) {
+                    summaryItems = GetSummaryItems();
+                    shippingMethods = GetShippingMethods();
+
+                    if (updateEmailSuccess) {
+                        respondWithSuccess();
+                    } else {
+                        updateShippingAddressSuccess = true;
+                    }
+
                 } else {
                     message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure).ToJsonString());
                 }
