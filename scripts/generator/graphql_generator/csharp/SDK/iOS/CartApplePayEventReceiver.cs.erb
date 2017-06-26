@@ -8,20 +8,76 @@ namespace <%= namespace %> {
     using <%= namespace %>.MiniJSON;
 
     public partial class Cart : IApplePayEventReceiver {
-        public void UpdateSummaryItemsForShippingIdentifier(string serializedMessage) {
 
+        public void UpdateSummaryItemsForShippingIdentifier(string serializedMessage) {
+            var message = NativeMessage.CreateFromJSON(serializedMessage);
+
+            SetShippingLine(message.Content, (httpError, graphqlError) => {
+                 if (httpError == null && graphqlError == null) {
+                     var summaryItems = GetSummaryItems();
+                     message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, summaryItems).ToJsonString());
+                 } else {
+                     message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure).ToJsonString());
+                 }
+            });
         }
 
         public void UpdateSummaryItemsForShippingContact(string serializedMessage) {
 
+            var message = NativeMessage.CreateFromJSON(serializedMessage);
+            var contentDictionary = (Dictionary<string, object>)Json.Deserialize(message.Content);
+            var mailingAddressInput = new MailingAddressInput(contentDictionary);
+
+            SetShippingAddress(mailingAddressInput, (httpError, graphqlError) => {
+                if (httpError == null && graphqlError == null) {
+                    var summaryItems = GetSummaryItems();
+                    var shippingMethods = GetShippingMethods();
+                    message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, summaryItems, shippingMethods).ToJsonString());
+                } else {
+                    message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure).ToJsonString());
+                }
+            });
         }
 
         public void FetchApplePayCheckoutStatusForToken(string serializedMessage) {
-
+            //TODO
         }
 
         public void DidFinishCheckoutSession(string serializedMessage) {
+            //TODO
+        }
 
+        private List<SummaryItem> GetSummaryItems() {
+
+            var summaryItems = new List<SummaryItem>();
+            summaryItems.Add(new SummaryItem("SUBTOTAL", CurrentCheckout.subtotalPrice().ToString()));
+
+            if (CurrentCheckout.requiresShipping()) {
+                summaryItems.Add(new SummaryItem("SHIPPING", CurrentCheckout.subtotalPrice().ToString()));
+            }
+
+            summaryItems.Add(new SummaryItem("TAXES", CurrentCheckout.totalTax().ToString()));
+            summaryItems.Add(new SummaryItem("TOTAL", CurrentCheckout.totalPrice().ToString()));
+
+            return summaryItems;
+        }
+
+        private List<ShippingMethod> GetShippingMethods() {
+
+            var shippingMethods = new List<ShippingMethod>();
+
+            try {
+                var availableShippingRates = CurrentCheckout.availableShippingRates().shippingRates();
+
+                foreach (var shippingRate in availableShippingRates) {
+                    shippingMethods.Add(new ShippingMethod(shippingRate.title(), shippingRate.price().ToString(), shippingRate.handle()));
+                }
+
+            } catch {
+                throw;
+            }
+
+            return shippingMethods;
         }
     }
 }
