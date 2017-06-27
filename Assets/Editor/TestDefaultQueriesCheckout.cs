@@ -5,7 +5,6 @@ namespace Shopify.Tests
     using Shopify.Unity;
     using Shopify.Unity.SDK;
     using Shopify.Unity.GraphQL;
-    using UnityEngine;
 
     [TestFixture]
     public class TestDefaultQueries {
