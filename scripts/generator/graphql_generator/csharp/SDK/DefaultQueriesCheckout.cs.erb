@@ -21,10 +21,32 @@ namespace <%= namespace %>.SDK {
             );
         }
 
+        public void CheckoutCompleteWithTokenizedPayment(MutationQuery query, string checkoutId, TokenizedPaymentInput tokenizedPaymentInput) {
+            query.checkoutCompleteWithTokenizedPayment(
+                buildQuery: checkoutCompleteWithTokenizedPayment => checkoutCompleteWithTokenizedPayment
+                    .checkout(checkout => Checkout(checkout))
+                    .payment(payment => Payment(payment))
+                    .userErrors(userErrors => userErrors
+                        .field()
+                        .message()
+                    ),
+                checkoutId: checkoutId,
+                payment: tokenizedPaymentInput
+            );
+        }
+
         public void Poll(QueryRootQuery query, string checkoutId) {
             query.node(
                 buildQuery: node => node
                     .onCheckout(checkout => Checkout(checkout)),
+                id: checkoutId
+            );
+        }
+
+        public void PollPayment(QueryRootQuery query, string checkoutId) {
+            query.node(
+                buildQuery: node => node
+                .onPayment(payment => Payment(payment)),
                 id: checkoutId
             );
         }
@@ -115,6 +137,13 @@ namespace <%= namespace %>.SDK {
                 .subtotalPrice()
                 .totalTax()
                 .totalPrice()
+                .ready();
+        }
+
+        private PaymentQuery Payment(PaymentQuery payment) {
+            return payment
+                .errorMessage()
+                .id()
                 .ready();
         }
 
