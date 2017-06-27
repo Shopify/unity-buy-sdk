@@ -59,7 +59,7 @@ class WebCheckoutViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         webView.navigationDelegate = self
-        checkoutView.cancelButton.addTarget(self, action: #selector(didPressCancel), for: .touchUpInside)
+        checkoutView.actionButton.addTarget(self, action: #selector(didPressCancel), for: .touchUpInside)
         
         loadCheckoutURL()
     }
@@ -99,7 +99,7 @@ extension WebCheckoutViewController: WKNavigationDelegate {
             return
         }
         
-        if let url = webView.url, isThankYou(url: url) {
+        if let url = webView.url, isThankYouPage(url) {
             // Change the color and title of the button
             checkoutView.setButton(state: .finished)
             delegate?.didFinishCheckout()
@@ -116,7 +116,7 @@ extension WebCheckoutViewController: WKNavigationDelegate {
     
     public func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {}
     
-    func isThankYou(url: URL) -> Bool {
+    private func isThankYouPage(_ url: URL) -> Bool {
         return url.absoluteString.hasSuffix("/thank_you")
     }
 }
@@ -130,13 +130,19 @@ private class WebCheckoutView: UIView {
         case finished
     }
     
-    private let cornerRadius: CGFloat = 5
+    private let cornerRadius: CGFloat = 3
+    private let viewMargin: CGFloat = 10
+    private let buttonHeight: CGFloat = 46
+    
+    // Colors from https://polaris.shopify.com/visuals/colors#color-usage
+    private let cancelButtonColor = UIColor(hex: "ED6347")
+    private let finishedButtonColor = UIColor(hex: "50B83C")
     
     private(set) var webView: WKWebView!
-    private(set) var cancelButton: UIButton!
+    private(set) var actionButton: UIButton!
     private(set) var loadingView: LoadingView!
     
-    fileprivate var initialLoading: Bool = false
+    fileprivate var initialLoading = false
     
     override init(frame: CGRect) {
         webView = WKWebView()
@@ -144,11 +150,11 @@ private class WebCheckoutView: UIView {
         webView.layer.masksToBounds = true
         webView.layer.cornerRadius = cornerRadius
         
-        cancelButton = UIButton(type: .custom)
-        cancelButton.setTitleColor(.white, for: .normal)
-        cancelButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-        cancelButton.layer.cornerRadius = cornerRadius
-        cancelButton.translatesAutoresizingMaskIntoConstraints = false
+        actionButton = UIButton(type: .custom)
+        actionButton.setTitleColor(.white, for: .normal)
+        actionButton.layer.cornerRadius = cornerRadius
+        actionButton.translatesAutoresizingMaskIntoConstraints = false
+        actionButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         
         loadingView = LoadingView()
         loadingView.translatesAutoresizingMaskIntoConstraints = false
@@ -156,19 +162,22 @@ private class WebCheckoutView: UIView {
         
         super.init(frame: frame)
         
+        backgroundColor = .clear
+        
         addSubview(webView)
-        addSubview(cancelButton)
+        addSubview(actionButton)
         addSubview(loadingView)
         
         NSLayoutConstraint.activate([
             webView.topAnchor.constraint(equalTo: topAnchor, constant: 20),
-            webView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
-            webView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
+            webView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: viewMargin),
+            webView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -viewMargin),
             
-            cancelButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
-            cancelButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
-            cancelButton.topAnchor.constraint(equalTo: webView.bottomAnchor, constant: 10),
-            cancelButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
+            actionButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: viewMargin),
+            actionButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -viewMargin),
+            actionButton.topAnchor.constraint(equalTo: webView.bottomAnchor, constant: viewMargin),
+            actionButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -viewMargin),
+            actionButton.heightAnchor.constraint(equalToConstant: buttonHeight),
             
             loadingView.topAnchor.constraint(equalTo: webView.topAnchor),
             loadingView.bottomAnchor.constraint(equalTo: webView.bottomAnchor),
@@ -190,17 +199,17 @@ private class WebCheckoutView: UIView {
         assert(Thread.isMainThread, "Updating the button must be done on the main thread.")
         switch state {
         case .checkingOut:
-            self.cancelButton.backgroundColor = .red
-            self.cancelButton.setTitle("Cancel", for: .normal)
+            actionButton.backgroundColor = cancelButtonColor
+            actionButton.setTitle("Cancel", for: .normal)
         case .finished:
-            self.cancelButton.backgroundColor = .green
-            self.cancelButton.setTitle("Finished", for: .normal)
+            actionButton.backgroundColor = finishedButtonColor
+            actionButton.setTitle("Finished", for: .normal)
         }
     }
     
     func startInitialLoad() {
         loadingView.alpha = 1
-        loadingView.indicator.startAnimating()
+        loadingView.startLoadingAnimations()
         initialLoading = true
     }
     
@@ -208,13 +217,14 @@ private class WebCheckoutView: UIView {
         UIView.animate(withDuration: 0.3) {
             self.loadingView.alpha = 0
             self.initialLoading = false
+            self.loadingView.stopLoadingAnimation()
         }
     }
 }
 
 // Loading view overlay presented on top of the web view when its first loading.
 private class LoadingView: UIView {
-    private(set) var indicator: UIActivityIndicatorView!
+    private var indicator: UIActivityIndicatorView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -228,6 +238,14 @@ private class LoadingView: UIView {
             indicator.centerXAnchor.constraint(equalTo: centerXAnchor),
             indicator.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
+    }
+    
+    func startLoadingAnimations() {
+        indicator.startAnimating()
+    }
+    
+    func stopLoadingAnimation() {
+        indicator.stopAnimating()
     }
     
     required init?(coder aDecoder: NSCoder) {
