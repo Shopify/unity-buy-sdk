@@ -30,9 +30,13 @@ import WebKit
 private var activeWebPaySession: WebCheckoutSession?
 
 protocol WebCheckoutDelegate: class {
-    func didPresentUserWithWebCheckout()
-    func didCancelCheckout()
-    func didFinishCheckout()
+    func willPresentWebCheckout()
+    func didPresentWebCheckout()
+    
+    func didDismissWebCheckout()
+    func willDismissWebCheckout()
+    
+    func didCompletePurchase()
 }
 
 @objc class WebCheckoutSession: NSObject {
@@ -62,8 +66,10 @@ protocol WebCheckoutDelegate: class {
         }
         
         webViewController = WebCheckoutViewController(url: url, delegate: self)
+        
+        willPresentWebCheckout()
         unityController.rootViewController.present(webViewController!, animated: true) {
-            self.didPresentUserWithWebCheckout()
+            self.didPresentWebCheckout()
         }
         
         return true;
@@ -71,19 +77,23 @@ protocol WebCheckoutDelegate: class {
 }
 
 extension WebCheckoutSession: WebCheckoutDelegate {
-    func didPresentUserWithWebCheckout() {
-        print("Did Present User With Web Checkout.")
+    func willPresentWebCheckout() {
+        print("Will Present Web Checkout.")
     }
     
-    func didFinishCheckout() {
-        // TODO: Tell Unity that the web view is gone away.
-        print("Did Finish Checkout")
+    func didPresentWebCheckout() {
+        print("Did Present Web Checkout.")
     }
     
-    func didCancelCheckout() {
-        webViewController?.dismiss(animated: true) {
-            // TODO: Tell Unity that the web view is gone away.
-            print("Did Cancel Checkout.")
-        }
+    func willDismissWebCheckout() {
+        print("Will Dismiss Web Checkout.")
+    }
+    
+    func didDismissWebCheckout() {
+        print("Did Dismiss Web Checkout.")
+    }
+    
+    func didCompletePurchase() {
+        print("Did Complete Purchase.")
     }
 }

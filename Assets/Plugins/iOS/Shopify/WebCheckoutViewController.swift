@@ -75,13 +75,15 @@ extension WebCheckoutViewController {
     }
     
     func didPressCancel() {
-        self.delegate?.didCancelCheckout()
+        delegate?.willDismissWebCheckout()
+        self.dismiss(animated: true) {
+            self.delegate?.didDismissWebCheckout()
+        }
     }
 }
 
 // MARK: WKNavigationDelegate
 extension WebCheckoutViewController: WKNavigationDelegate {
-    
     public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {}
     
     public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {}
@@ -102,7 +104,7 @@ extension WebCheckoutViewController: WKNavigationDelegate {
         if let url = webView.url, isThankYouPage(url) {
             // Change the color and title of the button
             checkoutView.setButton(state: .finished)
-            delegate?.didFinishCheckout()
+            delegate?.didCompletePurchase()
             return
         }
     }
