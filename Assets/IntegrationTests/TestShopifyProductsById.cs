@@ -12,9 +12,8 @@ namespace Shopify.Unity.Tests
             ShopifyBuy.Init("351c122017d0f2a957d32ae728ad749c", "graphql.myshopify.com");
 
             ShopifyBuy.Client().products(
-                (products, errors, httpErrors) => {
-                    IntegrationTest.Assert(null == errors, "No graphql errors");
-                    IntegrationTest.Assert(null == httpErrors, "No http errors");
+                (products, error) => {
+                    IntegrationTest.Assert(null == error, "No errors");
                     IntegrationTest.Assert(products.Count == 2, "Loaded products");
                     IntegrationTest.Assert("Arena Zip Boot" == products[0].title(), "Title product 0: Arena Zip Boot");
                     IntegrationTest.Assert("Pin Boot" == products[1].title(), "Title product 1: Pin Boot");

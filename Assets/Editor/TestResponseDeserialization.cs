@@ -73,7 +73,42 @@ namespace Shopify.Tests {
 
             Assert.IsNull(response.DataJSON);
             Assert.IsNotNull(response.errors);
-            Assert.AreEqual("Field 'doesntExist' doesn't exist on type 'Shop'", response.errors[0]);
+            Assert.AreEqual("[\"Field 'doesntExist' doesn't exist on type 'Shop'\"]", response.errors);
+        }
+
+        [Test]
+        public void TopLevelCastableToShopifyError() {
+            string stringJSON = @"{
+                ""errors"": [
+                    {
+                        ""message"": ""Field 'doesntExist' doesn't exist on type 'Shop'"",
+                        ""locations"": [
+                            {
+                                ""line"": 3,
+                                ""column"": 5
+                            }
+                        ],
+                        ""fields"": [
+                            ""query"",
+                            ""shop"",
+                            ""doesntExist""
+                        ]
+                    }
+                ]
+            }";
+
+            Dictionary<string,object> dataJSON = (Dictionary<string,object>) Json.Deserialize(stringJSON);
+
+            TopLevelResponse response = new TopLevelResponse(dataJSON);
+
+            Assert.IsNull(response.DataJSON);
+            Assert.IsNotNull(response.errors);
+
+            ShopifyError error = (ShopifyError) response;
+            Assert.IsNotNull(error);
+            Assert.IsTrue(error is ShopifyError);
+            Assert.AreEqual(ShopifyError.ErrorType.GraphQL, error.error);
+            Assert.AreEqual("[\"Field 'doesntExist' doesn't exist on type 'Shop'\"]", error.description);
         }
 
         [Test]

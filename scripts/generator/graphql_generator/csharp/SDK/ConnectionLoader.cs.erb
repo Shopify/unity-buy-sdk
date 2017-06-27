@@ -32,9 +32,8 @@ namespace <%= namespace %>.SDK {
 
             QueryLoop queryLoop = (loop) => {
                 Loader.Query(query, (response) => {
-                    if (response.HTTPError != null) {
-                        callback(response);
-                    } else if(response.errors != null) {
+                    var error = (ShopifyError)response;
+                    if (error != null) {
                         callback(response);
                     } else {
                         if (mergedResponse == null) {
@@ -75,13 +74,12 @@ namespace <%= namespace %>.SDK {
             }
 
             if (indicesQueried.Count == 0) {
-                callback(nodes, null, null);
+                callback(nodes, null);
             } else {
                 Loader.Query(query, (response) => {
-                    if (response.HTTPError != null) {
-                        callback(null, null, response.HTTPError);
-                    } else if (response.errors != null) {
-                        callback(null, response.errors, null);
+                    var error = (ShopifyError)response;
+                    if (error != null) {
+                        callback(null, error);
                     } else {
                         for(int i = 0; i < indicesQueried.Count; i++) {
                             int idxQueried = indicesQueried[i];

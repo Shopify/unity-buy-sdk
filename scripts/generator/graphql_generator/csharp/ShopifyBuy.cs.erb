@@ -35,7 +35,7 @@ namespace <%= namespace %> {
         /// </summary>
         /// \code
         /// // Example usage querying all products using `Client`
-        /// ShopifyBuy.Client().products((products, errors, httpError) => {
+        /// ShopifyBuy.Client().products((products, error) => {
         /// 	Debug.Log(products[0].title());
         /// 	Debug.Log(products[1].title());
         /// 	Debug.Log(products.Count);
@@ -53,7 +53,7 @@ namespace <%= namespace %> {
         /// <param name="domain">the domain associated to a client</param>
         /// \code
         /// // Example usage querying all products using `Client` and a domain
-        /// ShopifyBuy.Client("unity-buy-sdk.myshopify.com").products((products, errors, httpError) => {
+        /// ShopifyBuy.Client("unity-buy-sdk.myshopify.com").products((products, error) => {
         /// 	Debug.Log(products[0].title());
         /// 	Debug.Log(products[1].title());
         /// 	Debug.Log(products.Count);
@@ -202,7 +202,7 @@ namespace <%= namespace %> {
         ///
         /// ShopifyClient client = new ShopifyClient(accessToken, shopDomain);
         ///
-        /// client.products((products, errors, httpError) => {
+        /// client.products((products, error) => {
         ///     Debug.Log(products[0].title());
         ///     Debug.Log(products[1].title());
         /// });
@@ -233,7 +233,7 @@ namespace <%= namespace %> {
         ///
         /// ShopifyClient client = new ShopifyClient(loader);
         ///
-        /// client.products((products, errors, httpError) => {
+        /// client.products((products, error) => {
         ///     Debug.Log(products[0].title());
         ///     Debug.Log(products[1].title());
         /// });
@@ -288,18 +288,16 @@ namespace <%= namespace %> {
         /// </param>
         /// \code
         /// // Example usage querying all products
-        /// ShopifyBuy.Client().products((products, errors, httpError) => {
+        /// ShopifyBuy.Client().products((products, error) => {
         /// 	Debug.Log(products[0].title());
         /// 	Debug.Log(products[1].title());
         /// 	Debug.Log(products.Count);
         /// });
         /// \endcode
         public void products(ResponseProductsHandler callback, int? first = null, string after = null) {
-            GetProductsList((products, errors, httpError) => {
-                if (httpError != null) {
-                    callback(null, null, httpError);
-                } else if (errors != null) {
-                    callback(null, errors, null);
+            GetProductsList((products, error) => {
+                if (error != null) {
+                    callback(null, error);
                 } else {
                     GetConnectionsForProducts(products, callback);
                 }
@@ -345,7 +343,7 @@ namespace <%= namespace %> {
         /// </param>
         /// \code
         /// // Example usage querying two product ids
-        /// ShopifyBuy.Client().products((products, errors, httpError) => {
+        /// ShopifyBuy.Client().products((products, error) => {
         ///     Debug.Log(products[0].title());
         ///     Debug.Log(products[1].title());
         /// }, "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyNzYwOTk=", "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyNzkwNDM=");
@@ -399,7 +397,7 @@ namespace <%= namespace %> {
         ///     "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyNzkwNDM="
         /// };
         ///
-        /// ShopifyBuy.Client().products((products, errors, httpError) => {
+        /// ShopifyBuy.Client().products((products, error) => {
         ///     Debug.Log(products[0].title());
         ///     Debug.Log(products[1].title());
         /// }, productIds);
@@ -419,10 +417,9 @@ namespace <%= namespace %> {
             }
 
             Loader.Query(query, (response) => {
-                if (response.HTTPError != null) {
-                    callback(null, null, response.HTTPError);
-                } else if (response.errors != null) {
-                    callback(null, response.errors, null);
+                var error = (ShopifyError)response;
+                if (error != null) { 
+                    callback(null, error);
                 } else {
                     List<Product> products = new List<Product>();
 
@@ -462,36 +459,36 @@ namespace <%= namespace %> {
         /// </param>
         /// \code
         /// // Example that queries all collections on a shop
-        /// ShopifyBuy.Client().collections((collections, errors, httpError) => {
+        /// ShopifyBuy.Client().collections((collections, error) => {
         /// 	Debug.Log(collections[0].title());
         /// 	Debug.Log(collections.Count);
         /// });
         /// \endcode
         public void collections(ResponseCollectionsHandler callback, int? first = null, string after = null) {
-            GetCollectionsList((collections, errors, httpError) => {
-                if (httpError != null) {
-                    callback(null, null, httpError);
-                } else if (errors != null) {
-                    callback(null, errors, null);
-                } else {
-                    List<ConnectionQueryInfo> connectionInfos = new List<ConnectionQueryInfo>() {
-                        new ConnectionQueryInfo(
-                            getConnection: (c) => ((Collection) c).products(),
-                            query: (c, productsAfter) => {
-                                ((CollectionQuery) c).products(pc => DefaultQueries.collections.ProductConnection(pc),
-                                    first: DefaultQueries.MaxPageSize, after: productsAfter
-                                );
-                            }
-                        )
-                    };
-
-                    ConnectionLoader loader = new ConnectionLoader(Loader);
-                    List<Node> nodes = collections.ConvertAll(p => (Node) p);
-
-                    loader.QueryConnectionsOnNodes(nodes, connectionInfos, BuildCollectionQueryOnNode, (nodesResult, errorsNode, httpErrorsNode) => {
-                        callback(nodesResult.ConvertAll(n => (Collection) n), errorsNode, httpErrorsNode);
-                    });
+            GetCollectionsList((collections, error) => {
+                // Short circuit if we have an error.
+                if (error != null) {
+                    callback(null, error);
+                    return;
                 }
+
+                List<ConnectionQueryInfo> connectionInfos = new List<ConnectionQueryInfo>() {
+                    new ConnectionQueryInfo(
+                        getConnection: (c) => ((Collection) c).products(),
+                        query: (c, productsAfter) => {
+                            ((CollectionQuery) c).products(pc => DefaultQueries.collections.ProductConnection(pc),
+                                first: DefaultQueries.MaxPageSize, after: productsAfter
+                            );
+                        }
+                    )
+                };
+
+                ConnectionLoader loader = new ConnectionLoader(Loader);
+                List<Node> nodes = collections.ConvertAll(p => (Node) p);
+
+                loader.QueryConnectionsOnNodes(nodes, connectionInfos, BuildCollectionQueryOnNode, (nodesResult, responseError) => {
+                    callback(nodesResult.ConvertAll(n => (Collection) n), responseError);
+                });
             }, first: first, after: after);
         }
 
@@ -512,11 +509,9 @@ namespace <%= namespace %> {
         ///
         /// ShopifyBuy.Client().Query(
         ///     query: query,
-        ///     callback: (data, errors, httpErrors) => {
-        ///         if (httpErrors != null) {
-        ///             Debug.Log("There was an error communicating with the Storefront API");
-        ///         } else if (errors != null) {
-        ///             Debug.Log("The GraphQL query was invalid");
+        ///     callback: (data, error) => {
+        ///         if (error != null) {
+        ///             Debug.Log("There was an error: " + error.Reason);
         ///         } else {
         ///             Debug.Log(data.shop().name());
         ///         }
@@ -525,7 +520,7 @@ namespace <%= namespace %> {
         /// \endcode
         public void Query(<%= schema.query_root_name %>Query query, ResponseQueryHandler callback) {
             Loader.Query(query, (response) => {
-                callback(response.data, response.errors, response.HTTPError);
+                callback(response.data, (ShopifyError)response);
             });
         }
 
@@ -546,11 +541,9 @@ namespace <%= namespace %> {
         ///         .shop(s => s
         ///             .name()
         ///         ),
-        ///     callback: (data, errors, httpErrors) => {
-        ///         if (httpErrors != null) {
-        ///             Debug.Log("There was an error communicating with the Storefront API");
-        ///         } else if (errors != null) {
-        ///             Debug.Log("The GraphQL query was invalid");
+        ///     callback: (data, error) => {
+        ///         if (error != null) {
+        ///             Debug.Log("There was an error: " + error.Reason);
         ///         } else {
         ///             Debug.Log(data.shop().name());
         ///         }
@@ -591,14 +584,9 @@ namespace <%= namespace %> {
         ///
         /// ShopifyBuy.Client().Mutation(
         /// 	query: mutation,
-        /// 	callback: (data, errors, httpErrors) => {
-        ///         if (httpErrors != null) {
-        ///             Debug.Log("There was an error communicating with the Storefront API");
-        ///         } else if (errors != null) {
-        ///         	// output any graphql errors
-        ///             foreach(string error in errors) {
-        ///                 Debug.Log(error);
-        ///         	}
+        /// 	callback: (data, error) => {
+        ///         if (error != null) {
+        ///             Debug.Log("There was an error: " + error.Reason);
         ///         } else {
         ///         	List<UserError> userErrors = data.customerCreate().userErrors();
         ///
@@ -618,7 +606,7 @@ namespace <%= namespace %> {
         /// \endcode
         public void Mutation(<%= schema.mutation_root_name %>Query query, ResponseMutationHandler callback) {
             Loader.Mutation(query, (response) => {
-                callback(response.data, response.errors, response.HTTPError);
+                callback(response.data, (ShopifyError)response);
             });
         }
 
@@ -646,14 +634,9 @@ namespace <%= namespace %> {
         ///             )
         ///         );
         ///     },
-        ///     callback: (data, errors, httpErrors) => {
-        ///         if (httpErrors != null) {
-        ///             Debug.Log("There was an error communicating with the Storefront API");
-        ///         } else if (errors != null) {
-        ///             // output any graphql errors
-        ///             foreach(string error in errors) {
-        ///                 Debug.Log(error);
-        ///             }
+        ///     callback: (data, error) => {
+        ///         if (error != null) {
+        ///             Debug.Log("There was an error: " + error.Reason);
         ///         } else {
         ///             List<UserError> userErrors = data.customerCreate().userErrors();
         ///
@@ -760,8 +743,8 @@ namespace <%= namespace %> {
             ConnectionLoader loader = new ConnectionLoader(Loader);
             List<Node> nodes = products.ConvertAll(p => (Node) p);
 
-            loader.QueryConnectionsOnNodes(nodes, connectionInfos, BuildProductQueryOnNode, (nodesResult, errorsNode, httpErrorsNode) => {
-                callback(nodesResult.ConvertAll(n => (Product) n), errorsNode, httpErrorsNode);
+            loader.QueryConnectionsOnNodes(nodes, connectionInfos, BuildProductQueryOnNode, (nodesResult, error) => {
+                callback(nodesResult.ConvertAll(n => (Product) n), error);
             });
         }
 
@@ -823,12 +806,11 @@ namespace <%= namespace %> {
                     return ((QueryRoot) response).shop().products();
                 },
                 (response) => {
-                    if (response.HTTPError != null) {
-                        callback(null, null, response.HTTPError);
-                    } else if (response.errors != null) {
-                        callback(null, response.errors, null);
+                    var error = (ShopifyError)response;
+                    if (error != null) {
+                        callback(null, error);
                     } else {
-                        callback((List<Product>) response.data.shop().products(), null, null);
+                        callback((List<Product>) response.data.shop().products(), null);
                     }
                 }
             );
@@ -866,12 +848,11 @@ namespace <%= namespace %> {
                     return ((QueryRoot) response).shop().collections();
                 },
                 (response) => {
-                    if (response.HTTPError != null) {
-                        callback(null, null, response.HTTPError);
-                    } else if (response.errors != null) {
-                        callback(null, response.errors, null);
+                    var error = (ShopifyError)response;
+                    if (error != null) {
+                        callback(null, error);
                     } else {
-                        callback((List<Collection>) response.data.shop().collections(), null, null);
+                        callback((List<Collection>) response.data.shop().collections(), null);
                     }
                 }
             );

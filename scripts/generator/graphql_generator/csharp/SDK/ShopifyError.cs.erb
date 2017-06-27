@@ -1,0 +1,30 @@
+namespace <%= namespace %>.SDK {
+    using System.Collections.Generic;
+    using MiniJSON;
+
+    public class ShopifyError {
+        public static explicit operator ShopifyError(TopLevelResponse response) {
+            if (response.HTTPError != null) {
+                return new ShopifyError(ShopifyError.ErrorType.HTTP, response.HTTPError);
+            } 
+            
+            if (response.errors != null) {
+                return new ShopifyError(ShopifyError.ErrorType.GraphQL, response.errors);
+            }
+
+            return null;
+        }
+
+        public enum ErrorType {
+            HTTP, GraphQL
+        }
+
+        public readonly ErrorType error;
+        public readonly string description;
+
+        public ShopifyError(ErrorType error, string description) {
+            this.error = error;
+            this.description = description;
+        }
+    }
+    }

@@ -62,10 +62,9 @@ namespace Shopify.Tests
                 (q) => q.shop(s => s
                     .name()
                 ), 
-                (data, errors, httpError) => {
+                (data, error) => {
                     response = data;
-                    Assert.IsNull(errors);
-                    Assert.IsNull(httpError);
+                    Assert.IsNull(error);
                 }
             );
 
@@ -84,10 +83,9 @@ namespace Shopify.Tests
                     ),
                     input: new CustomerAccessTokenCreateInput("some@email.com", "password")
                 ),
-                (data, errors, httpError) => {
+                (data, error) => {
                     response = data;
-                    Assert.IsNull(errors);
-                    Assert.IsNull(httpError);
+                    Assert.IsNull(error);
                 }
             );
 
@@ -100,10 +98,9 @@ namespace Shopify.Tests
 
             ShopifyBuy.Init(new MockLoader());
 
-            ShopifyBuy.Client().products(callback: (p, errors, httpError) => {
+            ShopifyBuy.Client().products(callback: (p, error) => {
                 products = p;
-                Assert.IsNull(errors);
-                Assert.IsNull(httpError);
+                Assert.IsNull(error);
             });
 
             Assert.AreEqual(MockLoaderProducts.CountProductsPages * MockLoader.PageSize, products.Count);
@@ -129,10 +126,9 @@ namespace Shopify.Tests
 
             ShopifyBuy.Init(new MockLoader());
 
-            ShopifyBuy.Client().products(callback: (p, errors, httpError) => {
+            ShopifyBuy.Client().products(callback: (p, error) => {
                 products = p;
-                Assert.IsNull(errors);
-                Assert.IsNull(null, httpError);
+                Assert.IsNull(error);
             }, first: 250);
 
             Assert.AreEqual(250, products.Count);
@@ -144,10 +140,9 @@ namespace Shopify.Tests
 
             ShopifyBuy.Init(new MockLoader());
 
-            ShopifyBuy.Client().collections(callback: (c, errors, httpError) => {
+            ShopifyBuy.Client().collections(callback: (c, error) => {
                 collections = c;
-                Assert.IsNull(errors);
-                Assert.IsNull(httpError);
+                Assert.IsNull(error);
             });
 
             Assert.AreEqual(MockLoaderCollections.CountPages * MockLoader.PageSize, collections.Count);
@@ -164,10 +159,9 @@ namespace Shopify.Tests
 
             ShopifyBuy.Init(new MockLoader());
 
-            ShopifyBuy.Client().products(callback: (p, errors, httpError) => {
+            ShopifyBuy.Client().products(callback: (p, error) => {
                 products = p;
-                Assert.IsNull(errors);
-                Assert.IsNull(null, httpError);
+                Assert.IsNull(error);
             }, first: 250);
 
             Assert.AreEqual(250, products.Count);
@@ -179,10 +173,9 @@ namespace Shopify.Tests
 
             ShopifyBuy.Init(new MockLoader());
 
-            ShopifyBuy.Client().products(callback: (p, errors, httpError) => {
+            ShopifyBuy.Client().products(callback: (p, error) => {
                 products = p;
-                Assert.IsNull(errors);
-                Assert.IsNull(httpError);
+                Assert.IsNull(error);
             }, first: 250, after: "249");
 
             Assert.AreEqual(250, products.Count);
@@ -195,11 +188,10 @@ namespace Shopify.Tests
             ShopifyBuy.Init(new MockLoader());
 
             // when after is set to 3 MockLoader will return a graphql error
-            ShopifyBuy.Client().products(callback: (p, errors, httpError) => {
+            ShopifyBuy.Client().products(callback: (p, error) => {
                 Assert.IsNull(p);
-                Assert.IsNotNull(errors);
-                Assert.AreEqual("GraphQL error from mock loader", errors[0]);
-                Assert.IsNull(httpError);
+                Assert.IsNotNull(error);
+                Assert.AreEqual("[\"GraphQL error from mock loader\"]", error.description);
             }, first: 250, after: "666");
         }
 
@@ -208,10 +200,10 @@ namespace Shopify.Tests
             ShopifyBuy.Init(new MockLoader());
 
             // when after is set to 404 MockLoader loader will return an httpError
-            ShopifyBuy.Client().products(callback: (p, errors, httpError) => {
+            ShopifyBuy.Client().products(callback: (p, error) => {
                 Assert.IsNull(p);
-                Assert.IsNull(errors);
-                Assert.AreEqual("404 from mock loader", httpError);
+                Assert.IsNotNull(error);
+                Assert.AreEqual("404 from mock loader", error.description);
             }, first: 250, after: "404");
         }
 
@@ -227,10 +219,9 @@ namespace Shopify.Tests
              ShopifyBuy.Init(new MockLoader());
              List<Product> products = null;
  
-             ShopifyBuy.Client().products((p, errors, httpError) => {
+             ShopifyBuy.Client().products((p, error) => {
                  products = p;
-                 Assert.IsNull(errors);
-                 Assert.IsNull(httpError);
+                 Assert.IsNull(error);
              }, "productId333", "productId444");
  
              Assert.AreEqual(2, products.Count);
