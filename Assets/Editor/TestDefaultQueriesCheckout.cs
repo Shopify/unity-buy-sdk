@@ -35,9 +35,9 @@ namespace Shopify.Tests
         [Test]
         public void TestPaymentPoll() {
             QueryRootQuery query = new QueryRootQuery();
-            string checkoutId = "an-id";
+            string paymentId = "an-id";
 
-            DefaultQueries.checkout.PollPayment(query, checkoutId);
+            DefaultQueries.checkout.PollPayment(query, paymentId);
             Assert.AreEqual(
                 "{node (id:\"an-id\"){__typename ...on Payment{errorMessage id ready }}}",
                 query.ToString()
