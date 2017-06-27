@@ -1,11 +1,21 @@
 namespace <%= namespace %>.SDK {
     using System;
     
-    interface ICartCheckout {
-        void StartWebCheckout(WebCheckoutSucceeded success, WebCheckoutFailed failure);
+    interface IWebCheckout {
+        void StartWebCheckout(string checkoutURL, WebCheckoutUIStateChanged uiStateChanged, WebCheckoutDidCompletePurchase completedPurchase);
+    }
+
+    interface INativeCheckout {
         bool CanShowNativePaySetup();
         void ShowNativePaySetup();
         void PrepareNativeCheckout();
         void CompleteNativeCheckout(Action success, string failure);
     }
+
+    public enum WebCheckoutUIState {
+        willPresent, presenting, willDismiss, dismissed, invalid
+    }
+
+    public delegate void WebCheckoutUIStateChanged(WebCheckoutUIState uiState);
+    public delegate void WebCheckoutDidCompletePurchase();
 }

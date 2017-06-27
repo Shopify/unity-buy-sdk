@@ -49,7 +49,7 @@ namespace <%= namespace %> {
         private ShopifyClient Client;
         private Checkout CurrentCheckout = null;
 
-        private ICartCheckout checkout;
+        private IWebCheckout webCheckout;
 
         /// <summary>
         /// Constructs a new cart using a <see ref="ShopifyClient">ShopifyClient </see>. Typically, carts won't be
@@ -71,9 +71,7 @@ namespace <%= namespace %> {
 
             // TODO: When we add more platform we can move this into a factory.
             #if UNITY_IOS
-            checkout = new iOSCartCheckout();
-            #elif UNITY_ANDROID
-            checkout = new AndroidCartCheckout(); 
+            webCheckout = new iOSWebCheckout();
             #endif
         }
 
@@ -251,8 +249,12 @@ namespace <%= namespace %> {
             DeletedLineItems.Add(lineItemId);
         }
 
-        public void StartWebCheckout(WebCheckoutSucceeded success, WebCheckoutFailed failure) {
-            checkout.StartWebCheckout(success, failure);
+        public void StartWebCheckout(WebCheckoutUIStateChanged uiStateChanged, WebCheckoutDidCompletePurchase completedPurchase) {
+            GetWebCheckoutLink(url => {
+                webCheckout.StartWebCheckout(url, uiStateChanged, completedPurchase);
+            }, (graphQLError, httpError) => {
+                throw new NotImplementedException("Need to handle start web checkout errors");
+            });
         }
     }
 }

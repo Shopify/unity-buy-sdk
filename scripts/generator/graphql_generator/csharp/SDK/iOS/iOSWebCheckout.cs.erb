@@ -1,0 +1,53 @@
+namespace <%= namespace %>.SDK.iOS {
+#if !SHOPIFY_MONO_UNIT_TEST
+    using UnityEngine;
+    using UnityEngine.Assertions;
+    using System.Runtime.InteropServices;
+    using <%= namespace %>.SDK;
+
+    class iOSWebCheckout: IWebCheckout {
+        private static iOSWebPayCheckout webComponent;
+
+        [DllImport ("__Internal")]
+        private static extern void _StartWebCheckout(string unityDelegateObjectName, string checkoutURL);
+
+        public void StartWebCheckout(string checkoutURL, WebCheckoutUIStateChanged uiStateChanged, WebCheckoutDidCompletePurchase completedPurchase) {
+            if (webComponent == null) {
+                webComponent = GlobalGameObject.AddComponent<iOSWebPayCheckout>();
+            }
+            webComponent.uiStateChanged = uiStateChanged;
+            webComponent.completedPurchase = completedPurchase;
+            _StartWebCheckout(GlobalGameObject.GameObjectName, checkoutURL);
+        }
+    }
+
+    internal class iOSWebPayCheckout: MonoBehaviour {
+        internal WebCheckoutUIStateChanged uiStateChanged;
+        internal WebCheckoutDidCompletePurchase completedPurchase;
+    
+        public void OnUIStateChanged(string uiState) {
+            var state = StateFromString(uiState);
+            Assert.AreNotEqual(state, WebCheckoutUIState.invalid);
+            uiStateChanged(state);
+        }
+
+        public void DidCompletePurchase() {
+            completedPurchase();
+        }
+
+        private static WebCheckoutUIState StateFromString(string state) {
+            if (state == "willPresent") {
+                return WebCheckoutUIState.willPresent;
+            } else if (state == "presenting") {
+                return WebCheckoutUIState.presenting;
+            } else if (state == "willDismiss") {
+                return WebCheckoutUIState.willDismiss;
+            } else if (state == "dismissed") {
+                return WebCheckoutUIState.dismissed;
+            }
+
+            return WebCheckoutUIState.invalid;
+        }
+    }
+#endif
+}

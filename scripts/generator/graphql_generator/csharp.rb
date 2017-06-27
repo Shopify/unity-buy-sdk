@@ -123,7 +123,7 @@ module GraphQLGenerator
         SDK/iOS/ApplePayEventReceiver
         SDK/iOS/ApplePayEventResponse
         SDK/iOS/ShippingMethod
-        SDK/iOS/iOSCartCheckout.Web
+        SDK/iOS/iOSWebCheckout
         SDK/iOS/SummaryItem
         SDK/iOS/Cart.ApplePayEventReceiver
         SDK/Android/AndroidCartCheckout.Web
