@@ -146,6 +146,27 @@ namespace <%= namespace %>.GraphQL {
                     }
                 <% end %>
             }
+
+            <%= params_doc(type.input_fields) %>
+            public <%= type.classify_name %>(Dictionary<string, object> dataJSON) {
+                <%# handle adding required fields %>
+                <% if type.required_input_fields.length > 0 %>
+                try {
+                    <% type.required_input_fields.each do |field| %>
+                        Set("<%= field.name %>", dataJSON["<%= escape_reserved_word(field.name) %>"]);
+                    <% end %>
+                } catch {
+                    throw;
+                }
+                <% end %>
+
+                <%# handle adding optional fields %>
+                <% type.optional_input_fields.each do |field| %>
+                    if (dataJSON.ContainsKey("<%= escape_reserved_word(field.name) %>")) {
+                        Set("<%= field.name %>", dataJSON["<%= escape_reserved_word(field.name) %>"]);
+                    }
+                <% end %>
+            }
         }
     <% when 'ENUM' %>
         <%= docs_enum(type) %>
