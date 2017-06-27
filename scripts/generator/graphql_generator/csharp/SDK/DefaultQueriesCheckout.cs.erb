@@ -43,7 +43,7 @@ namespace <%= namespace %>.SDK {
             );
         }
 
-        public void PollPayment(QueryRootQuery query, string paymentId) {
+        public void PaymentPoll(QueryRootQuery query, string paymentId) {
             query.node(
                 buildQuery: node => node
                 .onPayment(payment => Payment(payment)),
