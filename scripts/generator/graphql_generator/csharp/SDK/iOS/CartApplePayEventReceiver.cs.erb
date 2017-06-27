@@ -10,6 +10,7 @@ namespace <%= namespace %> {
     public partial class Cart : IApplePayEventReceiver {
 
         public void UpdateSummaryItemsForShippingIdentifier(string serializedMessage) {
+
             var message = NativeMessage.CreateFromJSON(serializedMessage);
 
             SetShippingLine(message.Content, (httpError, graphQLError) => {
@@ -23,6 +24,7 @@ namespace <%= namespace %> {
         }
 
         public void UpdateSummaryItemsForShippingContact(string serializedMessage) {
+
             var message = NativeMessage.CreateFromJSON(serializedMessage);
             var contentDictionary = (Dictionary<string, object>)Json.Deserialize(message.Content);
             var mailingAddressInput = new MailingAddressInput(contentDictionary);
@@ -74,9 +76,8 @@ namespace <%= namespace %> {
                 foreach (var shippingRate in availableShippingRates) {
                     shippingMethods.Add(new ShippingMethod(shippingRate.title(), shippingRate.price().ToString(), shippingRate.handle()));
                 }
-
-            } catch {
-                throw;
+            } catch (Exception e) {
+                throw new Exception("Attempted to access AvailableShippingRates when CurrentCheckout has no property named AvailableShippingRates", e);
             }
 
             return shippingMethods;
