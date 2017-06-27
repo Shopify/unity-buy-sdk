@@ -1,0 +1,27 @@
+namespace <%= namespace %>.SDK {
+    using <%= namespace %>.GraphQL;
+    using System.Collections.Generic;
+
+    public delegate <%= schema.query_root_name %>Query BuildQueryOnConnectionLoopDelegate(QueryResponse response = null);
+    public delegate object GetConnectionFromResponseDelegate(object response);
+    public delegate void BuildQueryOnNodeDelegate(QueryRootQuery query, List<ConnectionQueryInfo> connectionInfosToBuildQuery, string nodeId, string alias);
+    public delegate void BuildQueryOnEdgesNodeDelegate(object node, string after);
+    public delegate void ResponseNodeHandler(List<Node> nodes, List<string> errors, string httpError);
+
+    public delegate void LoaderResponseHandler(string response, string error);
+
+    public delegate void DictionaryChangeHandler();
+
+    public delegate void QueryResponseHandler(QueryResponse response);
+    public delegate void MutationResponseHandler(MutationResponse response);
+
+    public delegate void MergeFieldDelegate(string field, Dictionary<string, object> into, Dictionary<string, object> responseA, Dictionary<string, object> responseB);
+
+    public delegate void ResponseProductsHandler(List<Product> products, List<string> errors, string httpError);
+    public delegate void ResponseCollectionsHandler(List<Collection> collections, List<string> errors, string httpError);
+    public delegate void ResponseQueryHandler(<%= schema.query_root_name %> response, List<string> errors, string httpError);
+    public delegate void ResponseMutationHandler(<%= schema.mutation_root_name %> response, List<string> errors, string httpError);
+
+    public delegate void OnCartLineItemChange();
+}
+

@@ -5,12 +5,6 @@ namespace <%= namespace %>.SDK {
     using System.Collections.Generic;
     using <%= namespace %>.GraphQL;
 
-    public delegate <%= schema.query_root_name %>Query BuildQueryOnConnectionLoopDelegate(QueryResponse response = null);
-    public delegate object GetConnectionFromResponseDelegate(object response);
-    public delegate void BuildQueryOnNodeDelegate(QueryRootQuery query, List<ConnectionQueryInfo> connectionInfosToBuildQuery, string nodeId, string alias);
-    public delegate void BuildQueryOnEdgesNodeDelegate(object node, string after);
-    public delegate void ResponseNodeHandler(List<Node> nodes, List<string> errors, string httpError);
-    
     public struct ConnectionQueryInfo {
         public ConnectionQueryInfo(GetConnectionFromResponseDelegate getConnection, BuildQueryOnEdgesNodeDelegate query, string after = null) {
             GetConnection = getConnection;

@@ -49,9 +49,9 @@ namespace <%= namespace %>.SDK {
         private string _VariantId;
         private long _Quantity;
         private ObservableDictionary<string, string> _CustomAttributes;
-        private Action OnChange;
+        private OnCartLineItemChange OnChange;
         
-        public CartLineItem(string variantId, Action onChange, long quantity = 1, IDictionary<string, string> customAttributes = null) {
+        public CartLineItem(string variantId, OnCartLineItemChange onChange, long quantity = 1, IDictionary<string, string> customAttributes = null) {
             _VariantId = variantId;
             _Quantity = quantity;
             OnChange = onChange;
