@@ -49,7 +49,7 @@ namespace <%= namespace %> {
         private ShopifyClient Client;
         private Checkout CurrentCheckout = null;
 
-        private IWebCheckout webCheckout;
+        private IWebPayable webPayable;
 
         /// <summary>
         /// Constructs a new cart using a <see ref="ShopifyClient">ShopifyClient </see>. Typically, carts won't be
@@ -71,7 +71,7 @@ namespace <%= namespace %> {
 
             // TODO: When we add more platform we can move this into a factory.
             #if UNITY_IOS
-            webCheckout = new iOSWebCheckout();
+            webPayable = new iOSWebPayable();
             #endif
         }
 
@@ -251,7 +251,7 @@ namespace <%= namespace %> {
 
         public void StartWebCheckout(WebCheckoutUIStateChanged uiStateChanged, WebCheckoutDidCompletePurchase completedPurchase) {
             GetWebCheckoutLink(url => {
-                webCheckout.StartWebCheckout(url, uiStateChanged, completedPurchase);
+                webPayable.StartWebCheckout(url, uiStateChanged, completedPurchase);
             }, (graphQLError, httpError) => {
                 throw new NotImplementedException("Need to handle start web checkout errors");
             });

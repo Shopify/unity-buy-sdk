@@ -118,12 +118,13 @@ module GraphQLGenerator
         SDK/Log
         SDK/NativeMessage
         SDK/Serializable
-        SDK/ICartCheckout
+        SDK/IWebPayable
+        SDK/INativePayable
         SDK/iOS/ApplePayAuthorizationStatus
         SDK/iOS/ApplePayEventReceiver
         SDK/iOS/ApplePayEventResponse
         SDK/iOS/ShippingMethod
-        SDK/iOS/iOSWebCheckout
+        SDK/iOS/iOSWebPayable
         SDK/iOS/SummaryItem
         SDK/iOS/Cart.ApplePayEventReceiver
         SDK/Android/AndroidCartCheckout.Web

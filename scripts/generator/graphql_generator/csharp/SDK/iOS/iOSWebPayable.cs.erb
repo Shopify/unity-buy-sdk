@@ -5,15 +5,15 @@ namespace <%= namespace %>.SDK.iOS {
     using System.Runtime.InteropServices;
     using <%= namespace %>.SDK;
 
-    class iOSWebCheckout: IWebCheckout {
-        private static iOSWebPayCheckout webComponent;
+    class iOSWebPayable: IWebPayable {
+        private static iOSWebPayBehaviour webComponent;
 
         [DllImport ("__Internal")]
         private static extern void _StartWebCheckout(string unityDelegateObjectName, string checkoutURL);
 
         public void StartWebCheckout(string checkoutURL, WebCheckoutUIStateChanged uiStateChanged, WebCheckoutDidCompletePurchase completedPurchase) {
             if (webComponent == null) {
-                webComponent = GlobalGameObject.AddComponent<iOSWebPayCheckout>();
+                webComponent = GlobalGameObject.AddComponent<iOSWebPayBehaviour>();
             }
             webComponent.uiStateChanged = uiStateChanged;
             webComponent.completedPurchase = completedPurchase;
@@ -21,12 +21,13 @@ namespace <%= namespace %>.SDK.iOS {
         }
     }
 
-    internal class iOSWebPayCheckout: MonoBehaviour {
+    internal class iOSWebPayBehaviour: MonoBehaviour {
         internal WebCheckoutUIStateChanged uiStateChanged;
         internal WebCheckoutDidCompletePurchase completedPurchase;
     
-        public void OnUIStateChanged(string uiState) {
-            var state = StateFromString(uiState);
+        public void OnUIStateChanged(string jsonMessage) {
+            var message = NativeMessage.CreateFromJSON(jsonMessage);
+            var state = StateFromString(message.Content);
             Assert.AreNotEqual(state, WebCheckoutUIState.invalid);
             uiStateChanged(state);
         }

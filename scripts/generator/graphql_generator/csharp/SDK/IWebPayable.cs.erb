@@ -1,15 +1,8 @@
 namespace <%= namespace %>.SDK {
     using System;
     
-    interface IWebCheckout {
+    interface IWebPayable {
         void StartWebCheckout(string checkoutURL, WebCheckoutUIStateChanged uiStateChanged, WebCheckoutDidCompletePurchase completedPurchase);
-    }
-
-    interface INativeCheckout {
-        bool CanShowNativePaySetup();
-        void ShowNativePaySetup();
-        void PrepareNativeCheckout();
-        void CompleteNativeCheckout(Action success, string failure);
     }
 
     public enum WebCheckoutUIState {

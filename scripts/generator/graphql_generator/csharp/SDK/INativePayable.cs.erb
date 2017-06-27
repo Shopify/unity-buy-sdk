@@ -1,0 +1,11 @@
+namespace <%= namespace %>.SDK {
+    using System;
+    
+    interface INativePayable {
+        bool CanShowNativePaySetup();
+        void ShowNativePaySetup();
+        void PrepareNativeCheckout();
+        void CompleteNativeCheckout(Action success, string failure);
+    }
+}
+
