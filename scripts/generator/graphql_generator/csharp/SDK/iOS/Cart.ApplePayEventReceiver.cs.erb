@@ -33,7 +33,7 @@ namespace <%= namespace %> {
             List<ShippingMethod> shippingMethods = null;
 
             SetShippingAddressAndEmail(mailingAddressInput, (String)contentDictionary["email"], (httpError, graphQLError) => {
-                if (httpError == null &&  graphQLError == null) {
+                if (httpError == null && graphQLError == null) {
                     summaryItems = GetSummaryItems();
                     shippingMethods = GetShippingMethods();
                     message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, summaryItems, shippingMethods).ToJsonString());
