@@ -78,22 +78,27 @@ protocol WebCheckoutDelegate: class {
 
 extension WebCheckoutSession: WebCheckoutDelegate {
     func willPresentWebCheckout() {
-        print("Will Present Web Checkout.")
+        let message = UnityMessage(content: "willPresent", object: unityDelegateObjectName, method: "OnUIStateChanged")
+        MessageCenter.send(message)
     }
-    
+        
     func didPresentWebCheckout() {
-        print("Did Present Web Checkout.")
+        let message = UnityMessage(content: "presenting", object: unityDelegateObjectName, method: "OnUIStateChanged")
+        MessageCenter.send(message)
     }
-    
+        
     func willDismissWebCheckout() {
-        print("Will Dismiss Web Checkout.")
+        let message = UnityMessage(content: "willDismiss", object: unityDelegateObjectName, method: "OnUIStateChanged")
+        MessageCenter.send(message)
     }
-    
+        
     func didDismissWebCheckout() {
-        print("Did Dismiss Web Checkout.")
+        let message = UnityMessage(content: "dismissed", object: unityDelegateObjectName, method: "OnUIStateChanged")
+        MessageCenter.send(message)
     }
-    
+        
     func didCompletePurchase() {
-        print("Did Complete Purchase.")
+        let message = UnityMessage(content: "", object: unityDelegateObjectName, method: "DidCompletePurchase")
+        MessageCenter.send(message)
     }
 }
