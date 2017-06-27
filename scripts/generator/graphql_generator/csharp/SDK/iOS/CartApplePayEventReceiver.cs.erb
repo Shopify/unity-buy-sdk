@@ -12,55 +12,29 @@ namespace <%= namespace %> {
         public void UpdateSummaryItemsForShippingIdentifier(string serializedMessage) {
             var message = NativeMessage.CreateFromJSON(serializedMessage);
 
-            SetShippingLine(message.Content, (httpError, graphqlError) => {
-                 if (httpError == null && graphqlError == null) {
-                     var summaryItems = GetSummaryItems();
-                     message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, summaryItems).ToJsonString());
-                 } else {
-                     message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure).ToJsonString());
-                 }
+            SetShippingLine(message.Content, (httpError, graphQLError) => {
+                if (httpError == null && graphQLError == null) {
+                    var summaryItems = GetSummaryItems();
+                    message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, summaryItems).ToJsonString());
+                } else {
+                    message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure).ToJsonString());
+                }
             });
         }
 
         public void UpdateSummaryItemsForShippingContact(string serializedMessage) {
-
             var message = NativeMessage.CreateFromJSON(serializedMessage);
             var contentDictionary = (Dictionary<string, object>)Json.Deserialize(message.Content);
             var mailingAddressInput = new MailingAddressInput(contentDictionary);
 
             List<SummaryItem> summaryItems = null;
             List<ShippingMethod> shippingMethods = null;
-            var updateShippingAddressSuccess = false;
-            var updateEmailSuccess = false;
 
-            Action respondWithSuccess = () => {
-                message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, summaryItems, shippingMethods).ToJsonString());
-            };
-
-            SetEmail((String)contentDictionary["email"], (httpError, graphqlError) => {
-                if (httpError == null && graphqlError == null) {
-
-                    if (updateShippingAddressSuccess) {
-                        respondWithSuccess();
-                    } else {
-                        updateEmailSuccess = true;
-                    }
-                } else {
-                    message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure).ToJsonString());
-                }
-            });
-
-            SetShippingAddress(mailingAddressInput, (httpError, graphqlError) => {
-                if (httpError == null &&  graphqlError == null) {
+            SetShippingAddressAndEmail(mailingAddressInput, (String)contentDictionary["email"], (httpError, graphQLError) => {
+                if (httpError == null &&  graphQLError == null) {
                     summaryItems = GetSummaryItems();
                     shippingMethods = GetShippingMethods();
-
-                    if (updateEmailSuccess) {
-                        respondWithSuccess();
-                    } else {
-                        updateShippingAddressSuccess = true;
-                    }
-
+                    message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, summaryItems, shippingMethods).ToJsonString());
                 } else {
                     message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure).ToJsonString());
                 }
