@@ -6,6 +6,7 @@ namespace Shopify.Tests
     using Shopify.Unity;
     using Shopify.Unity.MiniJSON;
     using Shopify.Unity.GraphQL;
+    using Shopify.Unity.SDK;
     using System.Text.RegularExpressions;
     
     [TestFixture]
@@ -121,8 +122,7 @@ namespace Shopify.Tests
             
             Cart cart = ShopifyBuy.Client().Cart();
             string responseURL = null;
-            string responseHttpError = null;
-            List<string> responseErrors = null;
+            ShopifyError error = null;
 
             cart.LineItems.AddOrUpdate("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTE1NQ==", 33);
             cart.LineItems.AddOrUpdate("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTM0Nw==", 2);
@@ -131,14 +131,12 @@ namespace Shopify.Tests
                 success: (url) => {
                     responseURL = url;
                 },
-                failure: (errors, httpError) => {
-                    responseHttpError = httpError;
-                    responseErrors = errors;
+                failure: (shopError) => {
+                    error = shopError;
                 }
             );
 
-            Assert.IsNull(responseHttpError);
-            Assert.IsNull(responseErrors);
+            Assert.IsNull(error);
             Assert.AreEqual("http://shopify.com/checkout-no-poll", responseURL, "weblink was correct");
             Assert.AreEqual("line-item-id1", cart.LineItems.All()[0].ID, "Line item 1 has the correct ID set");
             Assert.AreEqual("line-item-id2", cart.LineItems.All()[1].ID, "Line item 2 has the correct ID set");
@@ -308,8 +306,7 @@ namespace Shopify.Tests
             
             Cart cart = ShopifyBuy.Client().Cart();
             string responseURL = null;
-            string responseHttpError = null;
-            List<string> responseErrors = null;
+            ShopifyError error = null;
 
             cart.LineItems.AddOrUpdate("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTPOLL==", 33);
             cart.LineItems.AddOrUpdate("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTM0Nw==", 2);
@@ -318,14 +315,12 @@ namespace Shopify.Tests
                 success: (url) => {
                     responseURL = url;
                 },
-                failure: (errors, httpError) => {
-                    responseHttpError = httpError;
-                    responseErrors = errors;
+                failure: (shopError) => {
+                    error = shopError;
                 }
             );
 
-            Assert.IsNull(responseHttpError);
-            Assert.IsNull(responseErrors);
+            Assert.IsNull(error);
             Assert.AreEqual("http://shopify.com/checkout-with-poll-after-poll", responseURL, "weblink was correct");
             Assert.AreEqual("line-item-id1", cart.LineItems.All()[0].ID, "Line item 1 has the correct ID set");
             Assert.AreEqual("line-item-id2", cart.LineItems.All()[1].ID, "Line item 2 has the correct ID set");
@@ -337,11 +332,9 @@ namespace Shopify.Tests
             
             Cart cart = ShopifyBuy.Client().Cart();
             string firstResponseURL = null;
-            string firstResponseHttpError = null;
-            List<string> firstResponseErrors = null;
+            ShopifyError firstError = null;
             string secondResponseURL = null;
-            string secondResponseHttpError = null;
-            List<string> secondResponseErrors = null;
+            ShopifyError secondError = null;
 
             string variantId1 = "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyUpdate==";
             string variantId2 = "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyDelete==";
@@ -354,14 +347,12 @@ namespace Shopify.Tests
                 success: (url) => {
                     firstResponseURL = url;
                 },
-                failure: (errors, httpError) => {
-                    firstResponseHttpError = httpError;
-                    firstResponseErrors = errors;
+                failure: (shopError) => {
+                    firstError = shopError;
                 }
             );
 
-            Assert.IsNull(firstResponseHttpError);
-            Assert.IsNull(firstResponseErrors);
+            Assert.IsNull(firstError);
             Assert.AreEqual("http://shopify.com/checkout-create-before-update", firstResponseURL, "weblink was correct");
             Assert.AreEqual("line-item-id1", cart.LineItems.All()[0].ID, "Line item 1 has the correct ID set");
             Assert.AreEqual("line-item-id2", cart.LineItems.All()[1].ID, "Line item 2 has the correct ID set");
@@ -377,14 +368,12 @@ namespace Shopify.Tests
                 success: (url) => {
                     secondResponseURL = url;
                 },
-                failure: (errors, httpError) => {
-                    secondResponseHttpError = httpError;
-                    secondResponseErrors = errors;
+                failure: (shopError) => {
+                    secondError = shopError;
                 }
             );
 
-            Assert.IsNull(secondResponseHttpError);
-            Assert.IsNull(secondResponseErrors);
+            Assert.IsNull(secondError);
             Assert.AreEqual("http://shopify.com/checkout-create-after-update", secondResponseURL, "weblink was correct after update");
             Assert.AreEqual(2, cart.LineItems.All().Count, "Had two line items after update");
             Assert.AreEqual("line-item-id1", cart.LineItems.All()[0].ID, "Line item 1 has the correct ID set after update");
