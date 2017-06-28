@@ -115,8 +115,7 @@ namespace <%= namespace %> {
                         PollCheckoutAndUpdate(PollCheckoutReady, callback);
                     }
                 } else {
-                    // HANDLE USER ERROR
-                    throw new NotImplementedException("Mikko implement handling user error");
+                    HandleUserError(response.checkoutCreate().userErrors(), callback);
                 }
             });
         }
@@ -148,8 +147,7 @@ namespace <%= namespace %> {
                         PollCheckoutAndUpdate(PollCheckoutReady, callback);
                     }
                 } else {
-                    // HANDLE USER ERROR
-                    throw new NotImplementedException("Mikko implement handling user error");
+                    HandleUserError(response.checkoutLineItemsAdd().userErrors(), callback);
                 }
             });
         }
@@ -179,12 +177,23 @@ namespace <%= namespace %> {
         }
 
         private void UpdateLineItemFromCheckout(Checkout checkout) {
-            // sometimes we may not query line items for instance when polling is being performed
-            try {
-                List<CheckoutLineItem> lineItems = (List<CheckoutLineItem>) checkout.lineItems();
+            if (checkout != null) {
+                // sometimes we may not query line items for instance when polling is being performed
+                try {
+                    List<CheckoutLineItem> lineItems = (List<CheckoutLineItem>) checkout.lineItems();
 
-                LineItems.UpdateLineItemsFromCheckoutLineItems(lineItems);
-            } catch(NoQueryException exception) {}
+                    LineItems.UpdateLineItemsFromCheckoutLineItems(lineItems);
+                } catch(NoQueryException exception) {}
+            }
+        }
+
+        private void HandleUserError(List<UserError> userErrors, Action<ShopifyError> callback) {
+            ShopifyError error = new ShopifyError(
+                ShopifyError.ErrorType.UserError,
+                "There were issues with some of the fields sent. Checkout `cart.UserErrors`"
+            );
+
+            callback(error);
         }
 
         private void SetShippingLine(string shippingRateHandle, Action<ShopifyError> callback) {
@@ -205,8 +214,7 @@ namespace <%= namespace %> {
                         PollCheckoutAndUpdate(PollCheckoutReady, callback);
                     }
                 } else {
-                    // HANDLE USER ERROR
-                    throw new NotImplementedException("Mikko implement handling user error");
+                    HandleUserError(response.checkoutShippingLineUpdate().userErrors(), callback);
                 }
             });
         }
@@ -228,8 +236,7 @@ namespace <%= namespace %> {
                             PollCheckoutAndUpdate(PollCheckoutAvailableShippingRatesReady, callback);
                         }
                     } else {
-                        // HANDLE USER ERROR
-                        throw new NotImplementedException("Mikko implement handling user error");
+                        HandleUserError(response.checkoutEmailUpdate().userErrors(), callback);
                     }
                 }
             });

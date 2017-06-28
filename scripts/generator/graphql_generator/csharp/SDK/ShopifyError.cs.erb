@@ -16,7 +16,7 @@ namespace <%= namespace %>.SDK {
         }
 
         public enum ErrorType {
-            HTTP, GraphQL
+            HTTP, GraphQL, UserError
         }
 
         public readonly ErrorType error;
@@ -27,4 +27,4 @@ namespace <%= namespace %>.SDK {
             this.description = description;
         }
     }
-    }
+}

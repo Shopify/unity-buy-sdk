@@ -379,5 +379,33 @@ namespace Shopify.Tests
             Assert.AreEqual("line-item-id1", cart.LineItems.All()[0].ID, "Line item 1 has the correct ID set after update");
             Assert.AreEqual("line-item-id3", cart.LineItems.All()[1].ID, "Line item 2 has the correct ID set after update");
         }
+
+        [Test]
+        public void TestUserError() {
+            ShopifyBuy.Init(new MockLoader());
+
+            Cart cart = ShopifyBuy.Client().Cart();
+            string resultUrl = null;
+            ShopifyError resultError = null;
+
+            cart.LineItems.AddOrUpdate("Z2lkOi8vc2hvcGlmeS9Qcm9kdWNFyaWFudC8yMDc1NjEyUserError==", 1);
+            
+            cart.GetWebCheckoutLink(
+                success: (url) => {
+                    resultUrl = url;
+                },
+                failure: (shopError) => {
+                    resultError = shopError;
+                }
+            );
+
+            Assert.IsNull(resultUrl, "no url was returned");
+            Assert.IsNotNull(resultError, "returned an errror");
+            Assert.AreEqual(ShopifyError.ErrorType.UserError, resultError.error);
+            Assert.AreEqual("There were issues with some of the fields sent. Checkout `cart.UserErrors`", resultError.description);
+            Assert.AreEqual(1, cart.UserErrors.Count);
+            Assert.AreEqual("someField", cart.UserErrors[0].field()[0], "fields was correct");
+            Assert.AreEqual("bad things happened", cart.UserErrors[0].message(), "messaged was correct");
+        }
     }
 }
