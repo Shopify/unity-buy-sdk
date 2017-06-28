@@ -13,8 +13,8 @@ namespace <%= namespace %> {
 
             var message = NativeMessage.CreateFromJSON(serializedMessage);
 
-            SetShippingLine(message.Content, (httpError, graphQLError) => {
-                if (httpError == null && graphQLError == null) {
+            SetShippingLine(message.Content, (ShopifyError error) => {
+                if (error == null) {
                     var summaryItems = GetSummaryItems();
                     message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, summaryItems).ToJsonString());
                 } else {
@@ -32,8 +32,8 @@ namespace <%= namespace %> {
             List<SummaryItem> summaryItems = null;
             List<ShippingMethod> shippingMethods = null;
 
-            SetShippingAddressAndEmail(mailingAddressInput, (String)contentDictionary["email"], (httpError, graphQLError) => {
-                if (httpError == null && graphQLError == null) {
+            SetShippingAddressAndEmail(mailingAddressInput, (String)contentDictionary["email"], (ShopifyError error) => {
+                if (error == null) {
                     summaryItems = GetSummaryItems();
                     shippingMethods = GetShippingMethods();
                     message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, summaryItems, shippingMethods).ToJsonString());
