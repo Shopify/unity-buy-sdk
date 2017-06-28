@@ -1,0 +1,87 @@
+#if UNITY_IPHONE
+namespace <%= namespace %> {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using <%= namespace %>.SDK;
+    using <%= namespace %>.SDK.iOS;
+    using <%= namespace %>.MiniJSON;
+
+    public partial class Cart : IApplePayEventReceiver {
+
+        public void UpdateSummaryItemsForShippingIdentifier(string serializedMessage) {
+
+            var message = NativeMessage.CreateFromJSON(serializedMessage);
+
+            SetShippingLine(message.Content, (ShopifyError error) => {
+                if (error == null) {
+                    var summaryItems = GetSummaryItems();
+                    message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, summaryItems).ToJsonString());
+                } else {
+                    message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure).ToJsonString());
+                }
+            });
+        }
+
+        public void UpdateSummaryItemsForShippingContact(string serializedMessage) {
+
+            var message = NativeMessage.CreateFromJSON(serializedMessage);
+            var contentDictionary = (Dictionary<string, object>)Json.Deserialize(message.Content);
+            var mailingAddressInput = new MailingAddressInput(contentDictionary);
+
+            List<SummaryItem> summaryItems = null;
+            List<ShippingMethod> shippingMethods = null;
+
+            SetShippingAddressAndEmail(mailingAddressInput, (String)contentDictionary["email"], (ShopifyError error) => {
+                if (error == null) {
+                    summaryItems = GetSummaryItems();
+                    shippingMethods = GetShippingMethods();
+                    message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, summaryItems, shippingMethods).ToJsonString());
+                } else {
+                    message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure).ToJsonString());
+                }
+            });
+        }
+
+        public void FetchApplePayCheckoutStatusForToken(string serializedMessage) {
+            //TODO
+        }
+
+        public void DidFinishCheckoutSession(string serializedMessage) {
+            //TODO
+        }
+
+        private List<SummaryItem> GetSummaryItems() {
+
+            var summaryItems = new List<SummaryItem>();
+            summaryItems.Add(new SummaryItem("SUBTOTAL", CurrentCheckout.subtotalPrice().ToString()));
+
+            if (CurrentCheckout.requiresShipping()) {
+                summaryItems.Add(new SummaryItem("SHIPPING", CurrentCheckout.subtotalPrice().ToString()));
+            }
+
+            summaryItems.Add(new SummaryItem("TAXES", CurrentCheckout.totalTax().ToString()));
+            summaryItems.Add(new SummaryItem("TOTAL", CurrentCheckout.totalPrice().ToString()));
+
+            return summaryItems;
+        }
+
+        private List<ShippingMethod> GetShippingMethods() {
+
+            var shippingMethods = new List<ShippingMethod>();
+
+            try {
+                var availableShippingRates = CurrentCheckout.availableShippingRates().shippingRates();
+
+                foreach (var shippingRate in availableShippingRates) {
+                    shippingMethods.Add(new ShippingMethod(shippingRate.title(), shippingRate.price().ToString(), shippingRate.handle()));
+                }
+            } catch (Exception e) {
+                throw new Exception("Attempted to access AvailableShippingRates when CurrentCheckout has no property named AvailableShippingRates", e);
+            }
+
+            return shippingMethods;
+        }
+    }
+}
+#endif

@@ -16,7 +16,7 @@ namespace <%= namespace %> {
     /// <summary>
     /// Manages line items for an order. Can also be used to generate a web checkout link to check out in browser.
     /// </summary>
-    public class Cart {
+    public partial class Cart {
         /// <summary>
         /// Current <see ref="CartLineItems">line items </see> for this <see ref="Cart">Cart </see>.
         /// </summary>
@@ -151,22 +151,6 @@ namespace <%= namespace %> {
             } catch(NoQueryException exception) {}
         }
 
-        private void SetShippingAddress(MailingAddressInput mailingAddressInput, Action<ShopifyError> callback) {
-            MutationQuery query = new MutationQuery();
-
-            DefaultQueries.checkout.ShippingAddressUpdate(query, CurrentCheckout.id(), mailingAddressInput);
-
-            Client.Mutation(query, (Mutation response, ShopifyError error) => {
-                if (error != null) {
-                    callback(error);
-                    return;
-                }
-
-                UpdateCheckout(response.checkoutShippingAddressUpdate().checkout());
-                AvailableShippingRatesPoll(callback);
-            });
-        }
-
         private void SetShippingLine(string shippingRateHandle, Action<ShopifyError> callback) {
             MutationQuery query = new MutationQuery();
 
@@ -183,19 +167,19 @@ namespace <%= namespace %> {
             });
         }
 
-        private void SetEmail(string email, Action<ShopifyError> callback) {
+        private void SetShippingAddressAndEmail(MailingAddressInput mailingAddressInput, string email, Action<ShopifyError> callback) {
             MutationQuery query = new MutationQuery();
 
             DefaultQueries.checkout.EmailUpdate(query, CurrentCheckout.id(), email);
+            DefaultQueries.checkout.ShippingAddressUpdate(query, CurrentCheckout.id(), mailingAddressInput);
 
             Client.Mutation(query, (Mutation response, ShopifyError error) => {
                 if (error != null) {
                     callback(error);
-                    return;
+                } else {
+                    UpdateCheckout(response.checkoutEmailUpdate().checkout());
+                    AvailableShippingRatesPoll(callback);
                 }
-
-                UpdateCheckout(response.checkoutEmailUpdate().checkout());
-                CheckoutPoll(callback);
             });
         }
 
