@@ -48,6 +48,7 @@ protocol WebCheckoutDelegate: class {
     }
     
     fileprivate var webViewController: WebCheckoutViewController?
+    fileprivate var overlay: UIView?
     
     private(set) var checkoutURL: String
     private(set) var unityDelegateObjectName: String
@@ -55,24 +56,55 @@ protocol WebCheckoutDelegate: class {
     init(unityDelegateObjectName: String, checkoutURL: String) {
         self.unityDelegateObjectName = unityDelegateObjectName
         self.checkoutURL = checkoutURL
+        self.overlay = {
+            let view = UIView(frame: UIScreen.main.bounds)
+            view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+            view.backgroundColor = .black
+            view.alpha = 0
+            return view
+        }()
+        
         super.init()
     }
     
     func startCheckout() -> Bool {
-        let unityController = UIApplication.shared.delegate as! UnityAppController
-        
+        let root = UnityAppController.root
         guard let url = URL(string: checkoutURL) else {
             return false;
         }
         
         webViewController = WebCheckoutViewController(url: url, delegate: self)
+        webViewController!.modalPresentationStyle = .overFullScreen
+        
+        toggleOverlay(show: true, onVC: root)
         
         willPresentWebCheckout()
-        unityController.rootViewController.present(webViewController!, animated: true) {
+        toggleOverlay(show: true, onVC: root)
+        root.present(webViewController!, animated: true) {
             self.didPresentWebCheckout()
         }
         
         return true;
+    }
+    
+    fileprivate func toggleOverlay(show: Bool, onVC vc: UIViewController) {
+        guard let overlay = overlay else {
+            return
+        }
+        
+        if show {
+            vc.view.addSubview(overlay)
+            vc.view.bringSubview(toFront: overlay)
+        }
+        
+        UIView.animate(withDuration: 0.4, animations: { 
+            self.overlay?.alpha = show ? 0.3 : 0
+        }) { _ in
+            if !show {
+                self.overlay?.removeFromSuperview()
+                self.overlay = nil
+            }
+        }
     }
 }
 
@@ -88,10 +120,11 @@ extension WebCheckoutSession: WebCheckoutDelegate {
     }
         
     func willDismissWebCheckout() {
+        toggleOverlay(show: false, onVC: UnityAppController.root)
         let message = UnityMessage(content: "willDismiss", object: unityDelegateObjectName, method: "OnUIStateChanged")
         MessageCenter.send(message)
     }
-        
+    
     func didDismissWebCheckout() {
         let message = UnityMessage(content: "dismissed", object: unityDelegateObjectName, method: "OnUIStateChanged")
         MessageCenter.send(message)
@@ -100,5 +133,13 @@ extension WebCheckoutSession: WebCheckoutDelegate {
     func didCompletePurchase() {
         let message = UnityMessage(content: "", object: unityDelegateObjectName, method: "DidCompletePurchase")
         MessageCenter.send(message)
+    }
+}
+
+private extension UnityAppController {
+    // A small helper variable for getting a handle to the root view controller.
+    static var root: UIViewController {
+        let unityController = UIApplication.shared.delegate as! UnityAppController
+        return unityController.rootViewController
     }
 }

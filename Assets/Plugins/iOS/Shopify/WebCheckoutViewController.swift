@@ -103,7 +103,7 @@ extension WebCheckoutViewController: WKNavigationDelegate {
         
         if let url = webView.url, isThankYouPage(url) {
             // Change the color and title of the button
-            checkoutView.setButton(state: .finished)
+            checkoutView.isFinished = true
             delegate?.didCompletePurchase()
             return
         }
@@ -127,9 +127,10 @@ extension WebCheckoutViewController: WKNavigationDelegate {
 
 // View contents of the checkout view controller.
 private class WebCheckoutView: UIView {
-    enum CheckoutButtonState {
-        case checkingOut
-        case finished
+    var isFinished = false {
+        didSet {
+            actionButton.checkoutState = isFinished ? .finished : .checkingOut
+        }
     }
     
     private let cornerRadius: CGFloat = 3
@@ -137,11 +138,9 @@ private class WebCheckoutView: UIView {
     private let buttonHeight: CGFloat = 46
     
     // Colors from https://polaris.shopify.com/visuals/colors#color-usage
-    private let cancelButtonColor = UIColor(hex: "ED6347")
-    private let finishedButtonColor = UIColor(hex: "50B83C")
     
     private(set) var webView: WKWebView!
-    private(set) var actionButton: UIButton!
+    private(set) var actionButton: CheckoutButton!
     private(set) var loadingView: LoadingView!
     
     fileprivate var initialLoading = false
@@ -152,11 +151,7 @@ private class WebCheckoutView: UIView {
         webView.layer.masksToBounds = true
         webView.layer.cornerRadius = cornerRadius
         
-        actionButton = UIButton(type: .custom)
-        actionButton.setTitleColor(.white, for: .normal)
-        actionButton.layer.cornerRadius = cornerRadius
-        actionButton.translatesAutoresizingMaskIntoConstraints = false
-        actionButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        actionButton = CheckoutButton(cornerRadius: cornerRadius)
         
         loadingView = LoadingView()
         loadingView.translatesAutoresizingMaskIntoConstraints = false
@@ -188,25 +183,8 @@ private class WebCheckoutView: UIView {
         ])
     }
     
-    override func didMoveToWindow() {
-        super.didMoveToWindow()
-        setButton(state: .checkingOut)
-    }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    func setButton(state: CheckoutButtonState) {
-        assert(Thread.isMainThread, "Updating the button must be done on the main thread.")
-        switch state {
-        case .checkingOut:
-            actionButton.backgroundColor = cancelButtonColor
-            actionButton.setTitle("Cancel", for: .normal)
-        case .finished:
-            actionButton.backgroundColor = finishedButtonColor
-            actionButton.setTitle("Finished", for: .normal)
-        }
     }
     
     func startInitialLoad() {
@@ -223,6 +201,72 @@ private class WebCheckoutView: UIView {
         }
     }
 }
+
+private enum CheckoutState {
+    case checkingOut
+    case finished
+    
+    var highlightColor: UIColor {
+        switch self {
+        case .checkingOut: return UIColor(hex: "FEAF9A")
+        case .finished: return UIColor(hex: "BBE5B3")
+        }
+    }
+    
+    var normalColor: UIColor {
+        switch self {
+        case .checkingOut: return UIColor(hex: "ED6347")
+        case .finished: return UIColor(hex: "50B83C")
+        }
+    }
+    
+    var title: String {
+        switch self {
+        case .checkingOut: return "Cancel"
+        case .finished: return "Finish"
+        }
+    }
+}
+
+// Encapsulates the changing of the colors and state of the bottom button.
+private class CheckoutButton: UIButton {
+    var checkoutState: CheckoutState {
+        didSet {
+            updateButton()
+        }
+    }
+    
+    override var isHighlighted: Bool {
+        get {
+            return super.isHighlighted
+        }
+        set (value) {
+            super.isHighlighted = value
+            updateButton()
+        }
+    }
+    
+    init(cornerRadius: CGFloat) {
+        checkoutState = .checkingOut
+        super.init(frame: CGRect.zero)
+        setTitleColor(.white, for: .normal)
+        layer.cornerRadius = cornerRadius
+        translatesAutoresizingMaskIntoConstraints = false
+        titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        
+        updateButton()
+    }
+    
+    private func updateButton() {
+        setTitle(checkoutState.title, for: .normal)
+        backgroundColor = isHighlighted ? checkoutState.highlightColor : checkoutState.normalColor
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
 
 // Loading view overlay presented on top of the web view when its first loading.
 private class LoadingView: UIView {
