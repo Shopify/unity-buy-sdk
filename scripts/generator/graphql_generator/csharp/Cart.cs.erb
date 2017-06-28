@@ -115,7 +115,7 @@ namespace <%= namespace %> {
                         PollCheckoutAndUpdate(PollCheckoutReady, callback);
                     }
                 } else {
-                    HandleUserError(response.checkoutCreate().userErrors(), callback);
+                    HandleUserError(callback);
                 }
             });
         }
@@ -147,7 +147,7 @@ namespace <%= namespace %> {
                         PollCheckoutAndUpdate(PollCheckoutReady, callback);
                     }
                 } else {
-                    HandleUserError(response.checkoutLineItemsAdd().userErrors(), callback);
+                    HandleUserError(callback);
                 }
             });
         }
@@ -187,7 +187,7 @@ namespace <%= namespace %> {
             }
         }
 
-        private void HandleUserError(List<UserError> userErrors, Action<ShopifyError> callback) {
+        private void HandleUserError(Action<ShopifyError> callback) {
             ShopifyError error = new ShopifyError(
                 ShopifyError.ErrorType.UserError,
                 "There were issues with some of the fields sent. Checkout `cart.UserErrors`"
@@ -214,7 +214,7 @@ namespace <%= namespace %> {
                         PollCheckoutAndUpdate(PollCheckoutReady, callback);
                     }
                 } else {
-                    HandleUserError(response.checkoutShippingLineUpdate().userErrors(), callback);
+                    HandleUserError(callback);
                 }
             });
         }
@@ -236,7 +236,7 @@ namespace <%= namespace %> {
                             PollCheckoutAndUpdate(PollCheckoutAvailableShippingRatesReady, callback);
                         }
                     } else {
-                        HandleUserError(response.checkoutEmailUpdate().userErrors(), callback);
+                        HandleUserError(callback);
                     }
                 }
             });
