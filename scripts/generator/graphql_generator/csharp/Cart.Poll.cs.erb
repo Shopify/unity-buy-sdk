@@ -9,6 +9,7 @@ namespace <%= namespace %> {
         private delegate void CheckoutPoll(CheckoutPollFinishedHandler callback);
         private delegate void CheckoutPollFinishedHandler(Checkout checkout, ShopifyError error);
 
+        // Polls a Checkout node, till isReady returns True.
         private void PollCheckoutNode(PollUpdatedHandler isReady, CheckoutPollFinishedHandler callback) {
             QueryRootQuery query = new QueryRootQuery();
             DefaultQueries.checkout.Poll(query, CurrentCheckout.id());
@@ -24,6 +25,7 @@ namespace <%= namespace %> {
             });
         }
 
+        // Convenience method to poll a Checkout node till its ready property is True
         private void PollCheckoutReady(CheckoutPollFinishedHandler callback) {
 
             PollUpdatedHandler isReady = (updatedQueryRoot) => {
@@ -34,6 +36,7 @@ namespace <%= namespace %> {
             PollCheckoutNode(isReady, callback);
         }
 
+        // Convenience method to poll a Checkout node till its available shipping rates' ready property is True
         private void PollCheckoutAvailableShippingRatesReady(CheckoutPollFinishedHandler callback) {
             PollUpdatedHandler isReady = (updatedQueryRoot) => {
                 var checkout = (Checkout)updatedQueryRoot.node();
@@ -43,6 +46,7 @@ namespace <%= namespace %> {
             PollCheckoutNode(isReady, callback);
         }
 
+        // Convenience method to perform some polling on Checkout and update the Current Checkout when completed
         private void PollCheckoutAndUpdate(CheckoutPoll poll, Action<ShopifyError> callback) {
             poll((Checkout checkout, ShopifyError error) => {
                 if (error == null && checkout != null) {

@@ -559,7 +559,7 @@ namespace <%= namespace %> {
         }
 
         /// <summary>
-        /// Allows you to continuously send a root query, till the response is deemed ready.
+        /// Allows you to continuously make a root query, till the response is deemed ready.
         /// </summary>
         /// <param name="isReady">A <see cref="Delegates.PollUpdatedHandler"/> that determines if polling should stop by returning true</param>
         /// <param name="query">The query to be queried continuously</param>
@@ -578,8 +578,11 @@ namespace <%= namespace %> {
         ///     return expectedNode.ready();
         /// };
         ///
-        /// PollQuery(isReadyHandler, query, (response, errors, httpError) => {
-        /// Todo
+        /// PollQuery(isReadyHandler, query, (response, error) => {
+        ///     if (error == null) {
+        ///         var checkout = (Checkout) response.node();
+        ///         // checkout.ready() is true
+        ///     }
         ///})
         public void PollQuery(PollUpdatedHandler isReady, QueryRootQuery query, ResponseQueryHandler callback) {
             const float POLL_DELAY_SECONDS = 0.5f;
