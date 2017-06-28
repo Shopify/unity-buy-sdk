@@ -26,6 +26,12 @@ namespace <%= namespace %> {
             }
         }
 
+        public List<UserError> UserErrors {
+            get {
+                return _UserErrors;
+            }
+        }
+
         private bool IsSaved {
             get {
                 return IsCreated && LineItems.IsSaved;
@@ -40,10 +46,11 @@ namespace <%= namespace %> {
 
         private const float POLL_DELAY_SECONDS = 0.5f;
         private CartLineItems _LineItems;
+        private List<UserError> _UserErrors = null;
         private List<String> DeletedLineItems = new List<string>();
         private ShopifyClient Client;
         private Checkout CurrentCheckout = null;
-        private List<UserError> CurrentUserErrors = null;
+        
 
         /// <summary>
         /// Constructs a new cart using a <see ref="ShopifyClient">ShopifyClient </see>. Typically, carts won't be
@@ -161,14 +168,14 @@ namespace <%= namespace %> {
             }
 
             if (userErrors.Count > 0) {
-                CurrentUserErrors = userErrors;
+                _UserErrors = userErrors;
             } else {
-                CurrentUserErrors = null;
+                _UserErrors = null;
             }
 
             UpdateLineItemFromCheckout(CurrentCheckout);
 
-            return CurrentUserErrors == null;
+            return _UserErrors == null;
         }
 
         private void UpdateLineItemFromCheckout(Checkout checkout) {
