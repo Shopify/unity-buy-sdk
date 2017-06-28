@@ -6,6 +6,7 @@ namespace <%= namespace %> {
     using <%= namespace %>.GraphQL;
 
     public partial class Cart {
+        private delegate void CheckoutPoll(CheckoutPollFinishedHandler callback);
         private delegate void CheckoutPollFinishedHandler(Checkout checkout, ShopifyError error);
 
         private void PollCheckoutNode(PollUpdatedHandler isReady, CheckoutPollFinishedHandler callback) {
@@ -40,6 +41,15 @@ namespace <%= namespace %> {
             };
 
             PollCheckoutNode(isReady, callback);
+        }
+
+        private void PollCheckoutAndUpdate(CheckoutPoll poll, Action<ShopifyError> callback) {
+            poll((Checkout checkout, ShopifyError error) => {
+                if (error == null && checkout != null) {
+                    UpdateCheckout(checkout);
+                }
+                callback(error);
+            });
         }
     }
 }

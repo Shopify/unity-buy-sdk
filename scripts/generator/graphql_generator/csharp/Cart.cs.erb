@@ -101,12 +101,12 @@ namespace <%= namespace %> {
                 }
 
                 UpdateCheckout(response.checkoutCreate().checkout());
-                PollCheckoutReady((Checkout checkout, ShopifyError pollError) => {
-                    if (pollError == null && checkout != null) {
-                        UpdateCheckout(checkout);
-                    }
-                    callback(pollError);
-                });
+
+                if (CurrentCheckout.ready()) {
+                    callback(null);
+                } else {
+                    PollCheckoutAndUpdate(PollCheckoutReady, callback);
+                }
             });
         }
 
@@ -130,12 +130,12 @@ namespace <%= namespace %> {
 
                 DeletedLineItems.Clear();
                 UpdateCheckout(response.checkoutLineItemsAdd().checkout());
-                PollCheckoutReady((Checkout checkout, ShopifyError pollError) => {
-                    if (pollError == null && checkout != null) {
-                        UpdateCheckout(checkout);
-                    }
-                    callback(pollError);
-                });
+
+                if (CurrentCheckout.ready()) {
+                    callback(null);
+                } else {
+                    PollCheckoutAndUpdate(PollCheckoutReady, callback);
+                }
             });
         }
 
@@ -172,12 +172,12 @@ namespace <%= namespace %> {
                 }
 
                 UpdateCheckout(response.checkoutShippingLineUpdate().checkout());
-                PollCheckoutReady((Checkout checkout, ShopifyError pollError) => {
-                    if (pollError == null && checkout != null) {
-                        UpdateCheckout(checkout);
-                    }
-                    callback(pollError);
-                });
+
+                if (CurrentCheckout.ready()) {
+                    callback(null);
+                } else {
+                    PollCheckoutAndUpdate(PollCheckoutReady, callback);
+                }
             });
         }
 
@@ -193,12 +193,11 @@ namespace <%= namespace %> {
                 } else {
                     UpdateCheckout(response.checkoutEmailUpdate().checkout());
 
-                    PollCheckoutAvailableShippingRatesReady((Checkout checkout, ShopifyError pollError) => {
-                        if (pollError == null && checkout != null) {
-                            UpdateCheckout(checkout);
-                        }
-                        callback(pollError);
-                    });
+                    if (CurrentCheckout.availableShippingRates().ready()) {
+                        callback(null);
+                    } else {
+                        PollCheckoutAndUpdate(PollCheckoutAvailableShippingRatesReady, callback);
+                    }
                 }
             });
         }
