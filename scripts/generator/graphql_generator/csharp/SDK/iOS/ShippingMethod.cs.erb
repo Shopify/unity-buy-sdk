@@ -11,7 +11,7 @@ namespace <%= namespace %>.SDK.iOS {
         public string Detail;
         #pragma warning restore 0414
 
-        public ShippingMethod(string label, string amount, string identifier, string detail) : base(label, amount) {
+        public ShippingMethod(string label, string amount, string identifier, string detail = null) : base(label, amount) {
             Identifier = identifier;
             Detail = detail;
         }
