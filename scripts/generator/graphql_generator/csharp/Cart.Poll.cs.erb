@@ -1,0 +1,45 @@
+namespace <%= namespace %> {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using <%= namespace %>.SDK;
+    using <%= namespace %>.GraphQL;
+
+    public partial class Cart {
+        private delegate void CheckoutPollFinishedHandler(Checkout checkout, ShopifyError error);
+
+        private void PollCheckoutNode(PollUpdatedHandler isReady, CheckoutPollFinishedHandler callback) {
+            QueryRootQuery query = new QueryRootQuery();
+            DefaultQueries.checkout.Poll(query, CurrentCheckout.id());
+
+            Client.PollQuery(isReady, query, (response, error) => {
+
+                if (error != null) {
+                    callback(null, error);
+                } else {
+                    Checkout checkout = (Checkout) response.node();
+                    callback(checkout, null);
+                }
+            });
+        }
+
+        private void CheckoutReadyPoll(CheckoutPollFinishedHandler callback) {
+
+            PollUpdatedHandler isReady = (updatedQueryRoot) => {
+                var checkout = (Checkout)updatedQueryRoot.node();
+                return checkout.ready();
+            };
+
+            PollCheckoutNode(isReady, callback);
+        }
+
+        private void CheckoutAvailableShippingRatesPoll(CheckoutPollFinishedHandler callback) {
+            PollUpdatedHandler isReady = (updatedQueryRoot) => {
+                var checkout = (Checkout)updatedQueryRoot.node();
+                return checkout.availableShippingRates().ready();
+            };
+
+            PollCheckoutNode(isReady, callback);
+        }
+    }
+}

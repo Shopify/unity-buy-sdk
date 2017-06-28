@@ -87,6 +87,7 @@ module GraphQLGenerator
       %w(
         ShopifyBuy
         Cart
+        Cart.Poll
         SDK/Arguments
         SDK/InputBase
         SDK/InputValueToString

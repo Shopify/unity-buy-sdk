@@ -66,8 +66,6 @@ namespace <%= namespace %> {
         public delegate void GetWebCheckoutLinkSuccess(string url);
         public delegate void GetWebCheckoutLinkFailure(ShopifyError error);
 
-        private delegate void CheckoutPollFinishedHandler(Checkout checkout, ShopifyError error);
-
         public void GetWebCheckoutLink(GetWebCheckoutLinkSuccess success, GetWebCheckoutLinkFailure failure) {
             CheckoutSave(error => {
                 if (error != null) {
@@ -203,40 +201,6 @@ namespace <%= namespace %> {
                     });
                 }
             });
-        }
-
-        private void PollCheckoutNode(PollUpdatedHandler isReady, CheckoutPollFinishedHandler callback) {
-            QueryRootQuery query = new QueryRootQuery();
-            DefaultQueries.checkout.Poll(query, CurrentCheckout.id());
-
-            Client.PollQuery(isReady, query, (response, error) => {
-
-                if (error != null) {
-                    callback(null, error);
-                } else {
-                    Checkout checkout = (Checkout) response.node();
-                    callback(checkout, null);
-                }
-            });
-        }
-
-        private void CheckoutReadyPoll(CheckoutPollFinishedHandler callback) {
-
-            PollUpdatedHandler isReady = (updatedQueryRoot) => {
-                var checkout = (Checkout)updatedQueryRoot.node();
-                return checkout.ready();
-            };
-
-            PollCheckoutNode(isReady, callback);
-        }
-
-        private void CheckoutAvailableShippingRatesPoll(CheckoutPollFinishedHandler callback) {
-            PollUpdatedHandler isReady = (updatedQueryRoot) => {
-                var checkout = (Checkout)updatedQueryRoot.node();
-                return checkout.availableShippingRates().ready();
-            };
-
-            PollCheckoutNode(isReady, callback);
         }
 
         private void OnDeleteLineItem(string lineItemId) {
