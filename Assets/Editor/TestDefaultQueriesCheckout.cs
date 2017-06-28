@@ -33,6 +33,18 @@ namespace Shopify.Tests
         }
 
         [Test]
+        public void TestPaymentPoll() {
+            QueryRootQuery query = new QueryRootQuery();
+            string paymentId = "an-id";
+
+            DefaultQueries.checkout.PaymentPoll(query, paymentId);
+            Assert.AreEqual(
+                "{node (id:\"an-id\"){__typename ...on Payment{errorMessage id ready }}}",
+                query.ToString()
+            );
+        }
+
+        [Test]
         public void TestCheckoutLineItemsAdd() {
             MutationQuery query = new MutationQuery();
             string checkoutId = "an-id";
@@ -103,6 +115,21 @@ namespace Shopify.Tests
             DefaultQueries.checkout.ShippingLineUpdate(query, checkoutId, "handle");
             Assert.AreEqual(
                 "mutation{checkoutShippingLineUpdate (checkoutId:\"an-id\",shippingRateHandle:\"handle\"){checkout {id webUrl requiresShipping subtotalPrice totalTax totalPrice ready shippingLine {handle title price }}userErrors {field message }}}",
+                query.ToString()
+            );
+        }
+
+        [Test]
+        public void TestCheckoutCompleteWithTokenizedPayment() {
+            MutationQuery query = new MutationQuery();
+            string checkoutId = "an-id";
+
+            var billingAddress = new MailingAddressInput("123 Test Street", "456", "Toronto", "Shopify", "Canada", "First", "Last", "1234567890", "Ontario", "A1B2C3");
+            var tokenizedPaymentInput = new TokenizedPaymentInput(new decimal(1), billingAddress, "unique_id", "some_utf8_data_string", "apple_pay");
+
+            DefaultQueries.checkout.CheckoutCompleteWithTokenizedPayment(query, checkoutId, tokenizedPaymentInput);
+            Assert.AreEqual(
+                "mutation{checkoutCompleteWithTokenizedPayment (checkoutId:\"an-id\",payment:{amount:1,billingAddress:{address1:\"123 Test Street\",address2:\"456\",city:\"Toronto\",company:\"Shopify\",country:\"Canada\",firstName:\"First\",lastName:\"Last\",phone:\"1234567890\",province:\"Ontario\",zip:\"A1B2C3\"},idempotencyKey:\"unique_id\",paymentData:\"some_utf8_data_string\",type:\"apple_pay\"}){checkout {id webUrl requiresShipping subtotalPrice totalTax totalPrice ready }payment {errorMessage id ready }userErrors {field message }}}",
                 query.ToString()
             );
         }
