@@ -63,9 +63,10 @@ namespace <%= namespace %> {
             _LineItems = new CartLineItems(OnDeleteLineItem);
         }
 
-        public delegate bool IsReadyGivenCheckout(Checkout checkout);
         public delegate void GetWebCheckoutLinkSuccess(string url);
         public delegate void GetWebCheckoutLinkFailure(ShopifyError error);
+
+        private delegate void CheckoutPollFinishedHandler(Checkout checkout, ShopifyError error);
 
         public void GetWebCheckoutLink(GetWebCheckoutLinkSuccess success, GetWebCheckoutLinkFailure failure) {
             CheckoutSave(error => {
@@ -102,7 +103,12 @@ namespace <%= namespace %> {
                 }
 
                 UpdateCheckout(response.checkoutCreate().checkout());
-                CheckoutPoll(callback);
+                CheckoutReadyPoll((Checkout checkout, ShopifyError pollError) => {
+                    if (pollError == null && checkout != null) {
+                        UpdateCheckout(checkout);
+                    }
+                    callback(pollError);
+                });
             });
         }
 
@@ -126,7 +132,12 @@ namespace <%= namespace %> {
 
                 DeletedLineItems.Clear();
                 UpdateCheckout(response.checkoutLineItemsAdd().checkout());
-                CheckoutPoll(callback);
+                CheckoutReadyPoll((Checkout checkout, ShopifyError pollError) => {
+                    if (pollError == null && checkout != null) {
+                        UpdateCheckout(checkout);
+                    }
+                    callback(pollError);
+                });
             });
         }
 
@@ -163,7 +174,12 @@ namespace <%= namespace %> {
                 }
 
                 UpdateCheckout(response.checkoutShippingLineUpdate().checkout());
-                CheckoutPoll(callback);
+                CheckoutReadyPoll((Checkout checkout, ShopifyError pollError) => {
+                    if (pollError == null && checkout != null) {
+                        UpdateCheckout(checkout);
+                    }
+                    callback(pollError);
+                });
             });
         }
 
@@ -178,59 +194,49 @@ namespace <%= namespace %> {
                     callback(error);
                 } else {
                     UpdateCheckout(response.checkoutEmailUpdate().checkout());
-                    AvailableShippingRatesPoll(callback);
+
+                    CheckoutAvailableShippingRatesPoll((Checkout checkout, ShopifyError pollError) => {
+                        if (pollError == null && checkout != null) {
+                            UpdateCheckout(checkout);
+                        }
+                        callback(pollError);
+                    });
                 }
             });
         }
 
-        private void PollTillReady(IsReadyGivenCheckout isReady, Action<ShopifyError> callback) {
-            if (isReady(CurrentCheckout)) {
-                callback(null);
-            } else {
-                QueryRootQuery query = new QueryRootQuery();
+        private void PollCheckoutNode(PollUpdatedHandler isReady, CheckoutPollFinishedHandler callback) {
+            QueryRootQuery query = new QueryRootQuery();
+            DefaultQueries.checkout.Poll(query, CurrentCheckout.id());
 
-                DefaultQueries.checkout.Poll(query, CurrentCheckout.id());
+            Client.PollQuery(isReady, query, (response, error) => {
 
-                Client.Query(query, (QueryRoot response, ShopifyError error) => {
-                    if (error != null) {
-                        callback(error);
-                        return;
-                    }
-
+                if (error != null) {
+                    callback(null, error);
+                } else {
                     Checkout checkout = (Checkout) response.node();
-                    UpdateCheckout(checkout);
-
-                    if (isReady(CurrentCheckout)) {
-                        callback(null);
-                    } else {
-                        #if !SHOPIFY_MONO_UNIT_TEST
-                            UnityTimeout.Start(POLL_DELAY_SECONDS, () => {
-                                PollTillReady(isReady, callback);
-                            });
-                        #else
-                            PollTillReady(isReady, callback);
-                        #endif
-                    }
-                });
-            }
+                    callback(checkout, null);
+                }
+            });
         }
 
-        private void CheckoutPoll(Action<ShopifyError> callback) {
-            PollTillReady(
-                checkout => {
-                    return checkout.ready();
-                },
-                callback
-            );
+        private void CheckoutReadyPoll(CheckoutPollFinishedHandler callback) {
+
+            PollUpdatedHandler isReady = (updatedQueryRoot) => {
+                var checkout = (Checkout)updatedQueryRoot.node();
+                return checkout.ready();
+            };
+
+            PollCheckoutNode(isReady, callback);
         }
 
-        private void AvailableShippingRatesPoll(Action<ShopifyError> callback) {
-            PollTillReady(
-                checkout => {
-                    return checkout.availableShippingRates().ready();
-                },
-                callback
-            );
+        private void CheckoutAvailableShippingRatesPoll(CheckoutPollFinishedHandler callback) {
+            PollUpdatedHandler isReady = (updatedQueryRoot) => {
+                var checkout = (Checkout)updatedQueryRoot.node();
+                return checkout.availableShippingRates().ready();
+            };
+
+            PollCheckoutNode(isReady, callback);
         }
 
         private void OnDeleteLineItem(string lineItemId) {
