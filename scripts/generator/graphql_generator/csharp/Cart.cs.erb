@@ -120,6 +120,48 @@ namespace <%= namespace %> {
             });
         }
 
+        private void CheckoutWithTokenizedPayment(TokenizedPaymentInput tokenizedPaymentInput, Action<ShopifyError> callback) {
+
+            Action<Payment> pollPayment = (payment) => {
+                PollPaymentReady(payment.id(), (Payment newPayment, ShopifyError pollError) => {
+                    if (pollError == null) {
+                        UpdateCheckout(payment.checkout());
+                    }
+                    callback(pollError);
+                });
+            };
+
+            Action checkoutWithTokenizedPayment = () => {
+                MutationQuery query = new MutationQuery();
+                DefaultQueries.checkout.CheckoutCompleteWithTokenizedPayment(query, CurrentCheckout.id(), tokenizedPaymentInput);
+
+                Client.Mutation(query, (Mutation response, ShopifyError error) => {
+                    if (error != null) {
+                        callback(error);
+                        return;
+                    } else {
+                        var responseNode = response.checkoutCompleteWithTokenizedPayment();
+                        var payment = responseNode.payment();
+                        UpdateCheckout(responseNode.checkout());
+                        pollPayment(payment);
+                    }
+                });
+            };
+
+            // Ensure we can checkout first
+            if (CurrentCheckout.ready()){
+                checkoutWithTokenizedPayment();
+            } else {
+                PollCheckoutReady((Checkout checkout, ShopifyError error) => {
+                    if (error != null) {
+                        callback(error);
+                    } else {
+                        checkoutWithTokenizedPayment();
+                    }
+                });
+            }
+        }
+
         private void CheckoutUpdate(Action<ShopifyError> callback) {
             MutationQuery query = new MutationQuery();
 
