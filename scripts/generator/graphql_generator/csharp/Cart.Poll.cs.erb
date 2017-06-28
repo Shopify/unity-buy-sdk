@@ -23,7 +23,7 @@ namespace <%= namespace %> {
             });
         }
 
-        private void CheckoutReadyPoll(CheckoutPollFinishedHandler callback) {
+        private void PollCheckoutReady(CheckoutPollFinishedHandler callback) {
 
             PollUpdatedHandler isReady = (updatedQueryRoot) => {
                 var checkout = (Checkout)updatedQueryRoot.node();
@@ -33,7 +33,7 @@ namespace <%= namespace %> {
             PollCheckoutNode(isReady, callback);
         }
 
-        private void CheckoutAvailableShippingRatesPoll(CheckoutPollFinishedHandler callback) {
+        private void PollCheckoutAvailableShippingRatesReady(CheckoutPollFinishedHandler callback) {
             PollUpdatedHandler isReady = (updatedQueryRoot) => {
                 var checkout = (Checkout)updatedQueryRoot.node();
                 return checkout.availableShippingRates().ready();

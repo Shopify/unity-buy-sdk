@@ -101,7 +101,7 @@ namespace <%= namespace %> {
                 }
 
                 UpdateCheckout(response.checkoutCreate().checkout());
-                CheckoutReadyPoll((Checkout checkout, ShopifyError pollError) => {
+                PollCheckoutReady((Checkout checkout, ShopifyError pollError) => {
                     if (pollError == null && checkout != null) {
                         UpdateCheckout(checkout);
                     }
@@ -130,7 +130,7 @@ namespace <%= namespace %> {
 
                 DeletedLineItems.Clear();
                 UpdateCheckout(response.checkoutLineItemsAdd().checkout());
-                CheckoutReadyPoll((Checkout checkout, ShopifyError pollError) => {
+                PollCheckoutReady((Checkout checkout, ShopifyError pollError) => {
                     if (pollError == null && checkout != null) {
                         UpdateCheckout(checkout);
                     }
@@ -172,7 +172,7 @@ namespace <%= namespace %> {
                 }
 
                 UpdateCheckout(response.checkoutShippingLineUpdate().checkout());
-                CheckoutReadyPoll((Checkout checkout, ShopifyError pollError) => {
+                PollCheckoutReady((Checkout checkout, ShopifyError pollError) => {
                     if (pollError == null && checkout != null) {
                         UpdateCheckout(checkout);
                     }
@@ -193,7 +193,7 @@ namespace <%= namespace %> {
                 } else {
                     UpdateCheckout(response.checkoutEmailUpdate().checkout());
 
-                    CheckoutAvailableShippingRatesPoll((Checkout checkout, ShopifyError pollError) => {
+                    PollCheckoutAvailableShippingRatesReady((Checkout checkout, ShopifyError pollError) => {
                         if (pollError == null && checkout != null) {
                             UpdateCheckout(checkout);
                         }
