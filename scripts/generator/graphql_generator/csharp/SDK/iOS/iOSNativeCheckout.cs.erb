@@ -1,0 +1,66 @@
+#if UNITY_IOS
+namespace <%= namespace %>.SDK.iOS {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Runtime.InteropServices;
+    using <%= namespace %>.SDK;
+
+    class iOSNativeCheckout : INativeCheckout {
+        [DllImport ("__Internal")]
+        private static extern bool _CanCheckoutWithApplePay();
+
+        [DllImport ("__Internal")]
+        private static extern bool _CanShowApplePaySetup();
+
+        [DllImport ("__Internal")]
+        private static extern void _ShowApplePaySetup();
+
+        [DllImport ("__Internal")]
+        private static extern bool _CreateApplePaySession(string merchantID, string countryCode, string currencyCode, string unityDelegateObjectName, string serializedSummaryItems, string serializedShippingMethods, bool requiringShipping);
+
+        [DllImport ("__Internal")]
+        private static extern void _PresentApplePayAuthorization();
+
+        private Cart CurrentCart;
+
+        public iOSNativePayable(Cart cart) {
+            CurrentCart = cart;
+        }
+
+        /// <summary>
+        /// Checks if the device is capable of paying with Apple Pay
+        /// </summary>
+        /// <returns>True if the device is capable of paying with Apple Pay</returns>
+        public bool CanStart() {
+            return _CanCheckoutWithApplePay();
+        }
+
+        /// <summary>
+        /// Checks if the device is capable of setting up Apple Pay
+        /// </summary>
+        /// <returns>True if the device is capable of setting up Apple Pay </returns>
+        public bool CanShowPaymentSetup() {
+            return _CanShowApplePaySetup();
+        }
+
+        /// <summary>
+        /// Launches the iOS Wallet App, for the user to sign up with Apple Pay
+        /// </summary>
+        public void ShowPaymentSetup() {
+            _ShowApplePaySetup();
+        }
+
+        /// <summary>
+        /// Starts the process of making a payment through Apple Pay.
+        /// </summary>
+        /// <remarks>
+        ///  Displays a payment interface to the user based on the contents of the Cart
+        /// </remarks>
+        /// <param name="key">Merchant ID for Apple Pay from the Apple Developer Portal</param>
+        public void Start(string key) {
+            // TODO
+        }
+    }
+}
+#endif
