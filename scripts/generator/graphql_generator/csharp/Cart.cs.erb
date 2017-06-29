@@ -26,6 +26,12 @@ namespace <%= namespace %> {
             }
         }
 
+        public List<UserError> UserErrors {
+            get {
+                return _UserErrors;
+            }
+        }
+
         private bool IsSaved {
             get {
                 return IsCreated && LineItems.IsSaved;
@@ -40,9 +46,11 @@ namespace <%= namespace %> {
 
         private const float POLL_DELAY_SECONDS = 0.5f;
         private CartLineItems _LineItems;
+        private List<UserError> _UserErrors = null;
         private List<String> DeletedLineItems = new List<string>();
         private ShopifyClient Client;
         private Checkout CurrentCheckout = null;
+        
 
         /// <summary>
         /// Constructs a new cart using a <see ref="ShopifyClient">ShopifyClient </see>. Typically, carts won't be
@@ -100,12 +108,14 @@ namespace <%= namespace %> {
                     return;
                 }
 
-                UpdateCheckout(response.checkoutCreate().checkout());
-
-                if (CurrentCheckout.ready()) {
-                    callback(null);
+                if (UpdateState(response.checkoutCreate().checkout(), response.checkoutCreate().userErrors())) {
+                    if (CurrentCheckout.ready()) {
+                        callback(null);
+                    } else {
+                        PollCheckoutAndUpdate(PollCheckoutReady, callback);
+                    }
                 } else {
-                    PollCheckoutAndUpdate(PollCheckoutReady, callback);
+                    HandleUserError(callback);
                 }
             });
         }
@@ -129,17 +139,24 @@ namespace <%= namespace %> {
                 }
 
                 DeletedLineItems.Clear();
-                UpdateCheckout(response.checkoutLineItemsAdd().checkout());
 
-                if (CurrentCheckout.ready()) {
-                    callback(null);
+                if (UpdateState(response.checkoutLineItemsAdd().checkout(), response.checkoutLineItemsAdd().userErrors())) {
+                    if (CurrentCheckout.ready()) {
+                        callback(null);
+                    } else {
+                        PollCheckoutAndUpdate(PollCheckoutReady, callback);
+                    }
                 } else {
-                    PollCheckoutAndUpdate(PollCheckoutReady, callback);
+                    HandleUserError(callback);
                 }
             });
         }
 
-        private void UpdateCheckout(Checkout checkout) {
+        private bool UpdateState(Checkout checkout) {
+            return UpdateState(checkout, new List<UserError>());
+        }
+
+        private bool UpdateState(Checkout checkout, List<UserError> userErrors) {
             if (CurrentCheckout == null) {
                 CurrentCheckout = checkout;
             } else {
@@ -148,16 +165,37 @@ namespace <%= namespace %> {
                 CurrentCheckout = merger.Merge(CurrentCheckout, checkout);    
             }
 
+            if (userErrors.Count > 0) {
+                _UserErrors = userErrors;
+            } else {
+                _UserErrors = null;
+            }
+
             UpdateLineItemFromCheckout(CurrentCheckout);
+
+            return _UserErrors == null;
         }
 
         private void UpdateLineItemFromCheckout(Checkout checkout) {
+            if (checkout == null) {
+                return;
+            }
+
             // sometimes we may not query line items for instance when polling is being performed
             try {
                 List<CheckoutLineItem> lineItems = (List<CheckoutLineItem>) checkout.lineItems();
 
                 LineItems.UpdateLineItemsFromCheckoutLineItems(lineItems);
             } catch(NoQueryException exception) {}
+        }
+
+        private void HandleUserError(Action<ShopifyError> callback) {
+            ShopifyError error = new ShopifyError(
+                ShopifyError.ErrorType.UserError,
+                "There were issues with some of the fields sent. See `cart.UserErrors`"
+            );
+
+            callback(error);
         }
 
         private void SetShippingLine(string shippingRateHandle, Action<ShopifyError> callback) {
@@ -171,12 +209,14 @@ namespace <%= namespace %> {
                     return;
                 }
 
-                UpdateCheckout(response.checkoutShippingLineUpdate().checkout());
-
-                if (CurrentCheckout.ready()) {
-                    callback(null);
+                if (UpdateState(response.checkoutShippingLineUpdate().checkout(), response.checkoutShippingLineUpdate().userErrors())) {
+                    if (CurrentCheckout.ready()) {
+                        callback(null);
+                    } else {
+                        PollCheckoutAndUpdate(PollCheckoutReady, callback);
+                    }
                 } else {
-                    PollCheckoutAndUpdate(PollCheckoutReady, callback);
+                    HandleUserError(callback);
                 }
             });
         }
@@ -191,12 +231,14 @@ namespace <%= namespace %> {
                 if (error != null) {
                     callback(error);
                 } else {
-                    UpdateCheckout(response.checkoutEmailUpdate().checkout());
-
-                    if (CurrentCheckout.availableShippingRates().ready()) {
-                        callback(null);
+                    if (UpdateState(response.checkoutEmailUpdate().checkout(), response.checkoutEmailUpdate().userErrors())) {
+                        if (CurrentCheckout.availableShippingRates().ready()) {
+                            callback(null);
+                        } else {
+                            PollCheckoutAndUpdate(PollCheckoutAvailableShippingRatesReady, callback);
+                        }
                     } else {
-                        PollCheckoutAndUpdate(PollCheckoutAvailableShippingRatesReady, callback);
+                        HandleUserError(callback);
                     }
                 }
             });

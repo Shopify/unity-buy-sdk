@@ -12,10 +12,14 @@ namespace Shopify.Tests {
         private const string CREATE_QUERY_THAT_WILL_BE_UPDATED = @"mutation{checkoutCreate (input:{lineItems:[{quantity:33,variantId:""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyUpdate==""},{quantity:2,variantId:""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyDelete==""}]}){checkout {id webUrl requiresShipping subtotalPrice totalTax totalPrice ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}userErrors {field message }}}";
         private const string ADD_UPDATE_DELETE_AFTER_CREATE = @"mutation{checkoutLineItemsRemove (checkoutId:""checkout-id-poll"",lineItemIds:[""line-item-id1"",""line-item-id2""]){userErrors {field message }}checkoutLineItemsAdd (lineItems:[{quantity:10,variantId:""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyUpdate==""},{quantity:3,variantId:""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NTMNewItem==""}],checkoutId:""checkout-id-poll""){checkout {id webUrl requiresShipping subtotalPrice totalTax totalPrice ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}userErrors {field message }}}";
 
+        // The following query will return a user error
+        private const string CREATE_QUERY_SENDS_USERERROR = @"mutation{checkoutCreate (input:{lineItems:[{quantity:1,variantId:""Z2lkOi8vc2hvcGlmeS9Qcm9kdWNFyaWFudC8yMDc1NjEyUserError==""}]}){checkout {id webUrl requiresShipping subtotalPrice totalTax totalPrice ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}userErrors {field message }}}";
+
         public MockLoaderCheckouts() {
             SetupCreateResponse();
             SetupCreateResponsesForPolling();
             SetupCreateThenUpdateResponse();
+            SetupUserErrorResponses();
         }
 
         private void SetupCreateResponse() {
@@ -215,6 +219,25 @@ namespace Shopify.Tests {
                                 }
                             },
                             ""userErrors"": []
+                        }
+                    }
+                }"
+            );
+        }
+
+        private void SetupUserErrorResponses() {
+            AddResponse(
+                CREATE_QUERY_SENDS_USERERROR,
+                @"{
+                    ""data"": {
+                        ""checkoutCreate"": {
+                            ""checkout"": null,
+                            ""userErrors"": [
+                                {
+                                    ""field"": [ ""someField"" ],
+                                    ""message"": ""bad things happened""
+                                }
+                            ]
                         }
                     }
                 }"
