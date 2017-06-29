@@ -1,6 +1,5 @@
 #if !SHOPIFY_MONO_UNIT_TEST
 namespace <%= namespace %>.SDK {
-#if !SHOPIFY_MONO_UNIT_TEST
     using System;
     using UnityEngine;
     using System.Runtime.InteropServices;
@@ -23,6 +22,5 @@ namespace <%= namespace %>.SDK {
             _RespondToNativeMessage(Identifier, message);
         }
     }
-#endif
 }
 #endif
