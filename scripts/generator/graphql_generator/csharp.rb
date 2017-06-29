@@ -119,6 +119,7 @@ module GraphQLGenerator
         SDK/Log
         SDK/NativeMessage
         SDK/Serializable
+        SDK/INativeCheckout
         SDK/iOS/ApplePayAuthorizationStatus
         SDK/iOS/ApplePayEventReceiver
         SDK/iOS/ApplePayEventResponse
