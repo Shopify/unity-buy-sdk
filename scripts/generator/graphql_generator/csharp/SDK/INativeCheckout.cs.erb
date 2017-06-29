@@ -1,0 +1,10 @@
+namespace <%= namespace %>.SDK {
+
+    interface INativeCheckout {
+        bool CanShowPaymentSetup();
+        void ShowPaymentSetup();
+        bool CanStart();
+        /// Key is the public key that is used for encrypting a native payment's token data
+        void Start(string key);
+    }
+}
