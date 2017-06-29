@@ -177,14 +177,16 @@ namespace <%= namespace %> {
         }
 
         private void UpdateLineItemFromCheckout(Checkout checkout) {
-            if (checkout != null) {
-                // sometimes we may not query line items for instance when polling is being performed
-                try {
-                    List<CheckoutLineItem> lineItems = (List<CheckoutLineItem>) checkout.lineItems();
-
-                    LineItems.UpdateLineItemsFromCheckoutLineItems(lineItems);
-                } catch(NoQueryException exception) {}
+            if (checkout == null) {
+                return;
             }
+            
+            // sometimes we may not query line items for instance when polling is being performed
+            try {
+                List<CheckoutLineItem> lineItems = (List<CheckoutLineItem>) checkout.lineItems();
+
+                LineItems.UpdateLineItemsFromCheckoutLineItems(lineItems);
+            } catch(NoQueryException exception) {}
         }
 
         private void HandleUserError(Action<ShopifyError> callback) {
