@@ -559,6 +559,54 @@ namespace <%= namespace %> {
         }
 
         /// <summary>
+        /// Allows you to continuously make a root query, till the response is deemed ready.
+        /// </summary>
+        /// <param name="isReady">A <see cref="Delegates.PollUpdatedHandler"/> that determines if polling should stop by returning true</param>
+        /// <param name="query">The query to be queried continuously</param>
+        /// \code
+        /// // Example that uses polling
+        /// QueryRootQuery query = new QueryRootQuery();
+        ///
+        /// query.node(
+        ///     buildQuery: node => node
+        ///         .onCheckout(checkout => checkout.ready()),
+        ///     id: "someCheckoutID""
+        /// );
+        ///
+        /// PollUpdatedHandler isReadyHandler = (updatedQueryRoot) => {
+        ///     var expectedNode = (Checkout) updatedQueryRoot.node();
+        ///     return expectedNode.ready();
+        /// };
+        ///
+        /// PollQuery(isReadyHandler, query, (response, error) => {
+        ///     if (error == null) {
+        ///         var checkout = (Checkout) response.node();
+        ///         // checkout.ready() is true
+        ///     }
+        ///})
+        public void PollQuery(PollUpdatedHandler isReady, QueryRootQuery query, ResponseQueryHandler callback) {
+            const float POLL_DELAY_SECONDS = 0.5f;
+
+            Query(query, (QueryRoot response, ShopifyError error) => {
+                if (error != null) {
+                    callback(response, error);
+                } else {
+                    if (isReady(response)) {
+                        callback(response, null);
+                    } else {
+                        #if !SHOPIFY_MONO_UNIT_TEST
+                        UnityTimeout.Start(POLL_DELAY_SECONDS, () => {
+                            PollQuery(isReady, query, callback);
+                        });
+                        #else
+                        PollQuery(isReady, query, callback);
+                        #endif
+                    }
+                }
+            });
+        }
+
+        /// <summary>
         /// Allows you to send custom prebuilt GraphQL mutation queries to the Storefront API.
         /// </summary>
         /// <param name="query">a query to be sent to the Storefront API</param>
