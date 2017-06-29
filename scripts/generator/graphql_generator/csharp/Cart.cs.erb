@@ -180,7 +180,7 @@ namespace <%= namespace %> {
             if (checkout == null) {
                 return;
             }
-            
+
             // sometimes we may not query line items for instance when polling is being performed
             try {
                 List<CheckoutLineItem> lineItems = (List<CheckoutLineItem>) checkout.lineItems();
@@ -192,7 +192,7 @@ namespace <%= namespace %> {
         private void HandleUserError(Action<ShopifyError> callback) {
             ShopifyError error = new ShopifyError(
                 ShopifyError.ErrorType.UserError,
-                "There were issues with some of the fields sent. Checkout `cart.UserErrors`"
+                "There were issues with some of the fields sent. See `cart.UserErrors`"
             );
 
             callback(error);
