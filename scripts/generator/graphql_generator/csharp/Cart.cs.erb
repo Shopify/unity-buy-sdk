@@ -56,6 +56,7 @@ namespace <%= namespace %> {
         
 
         private IWebCheckout WebCheckout;
+        private INativeCheckout NativeCheckout;
 
         /// <summary>
         /// Constructs a new cart using a <see ref="ShopifyClient">ShopifyClient </see>. Typically, carts won't be
@@ -77,6 +78,7 @@ namespace <%= namespace %> {
 
             #if UNITY_IOS
             WebCheckout = new iOSWebCheckout();
+            NativeCheckout = new iOSNativeCheckout(this);
             #endif
         }
 
@@ -99,6 +101,17 @@ namespace <%= namespace %> {
                 WebCheckout.Checkout(url, success, failure, cancelled);
             }, error => {
                 failure(error);
+            });
+        }
+
+        public void CheckoutWithNativePay(string key, CheckoutSuccessCallback success, CheckoutFailureCallback failure, CheckoutCancelCallback cancelled) {
+            CheckoutSave(error => {
+                if (error != null) {
+                    failure(error);
+                }
+                else {
+                    NativeCheckout.Checkout(key, success, failure, cancelled);
+                }
             });
         }
 
