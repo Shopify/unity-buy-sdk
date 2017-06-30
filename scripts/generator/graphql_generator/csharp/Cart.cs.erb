@@ -96,6 +96,7 @@ namespace <%= namespace %> {
             });
         }
 
+
         public void CheckoutWithNativeWebView(CheckoutSuccessCallback success, CheckoutFailureCallback failure, CheckoutCancelCallback cancelled) {
             if (WebCheckout == null) {
                 // TODO use custom exception
@@ -124,6 +125,29 @@ namespace <%= namespace %> {
             });
         }
 
+        public void SetShippingLine(string shippingRateHandle, Action<ShopifyError> callback) {
+            MutationQuery query = new MutationQuery();
+
+            DefaultQueries.checkout.ShippingLineUpdate(query, CurrentCheckout.id(), shippingRateHandle);
+
+            Client.Mutation(query, (Mutation response, ShopifyError error) => {
+                if (error != null) {
+                    callback(error);
+                    return;
+                }
+
+                if (UpdateState(response.checkoutShippingLineUpdate().checkout(), response.checkoutShippingLineUpdate().userErrors())) {
+                    if (CurrentCheckout.ready()) {
+                        callback(null);
+                    } else {
+                        PollCheckoutAndUpdate(PollCheckoutReady, callback);
+                    }
+                } else {
+                    HandleUserError(callback);
+                }
+            });
+        }
+
         public bool CanShowNativePaySetup() {
             if (NativeCheckout != null) {
                return  NativeCheckout.CanShowPaymentSetup();
@@ -146,6 +170,29 @@ namespace <%= namespace %> {
             } else {
                 return false;
             }
+        }
+
+        public void SetShippingAddressAndEmail(MailingAddressInput mailingAddressInput, string email, Action<ShopifyError> callback) {
+            MutationQuery query = new MutationQuery();
+
+            DefaultQueries.checkout.EmailUpdate(query, CurrentCheckout.id(), email);
+            DefaultQueries.checkout.ShippingAddressUpdate(query, CurrentCheckout.id(), mailingAddressInput);
+
+            Client.Mutation(query, (Mutation response, ShopifyError error) => {
+                if (error != null) {
+                    callback(error);
+                } else {
+                    if (UpdateState(response.checkoutEmailUpdate().checkout(), response.checkoutEmailUpdate().userErrors())) {
+                        if (CurrentCheckout.availableShippingRates().ready()) {
+                            callback(null);
+                        } else {
+                            PollCheckoutAndUpdate(PollCheckoutAvailableShippingRatesReady, callback);
+                        }
+                    } else {
+                        HandleUserError(callback);
+                    }
+                }
+            });
         }
 
         private void CheckoutSave(Action<ShopifyError> callback) {
@@ -313,52 +360,6 @@ namespace <%= namespace %> {
             );
 
             callback(error);
-        }
-
-        private void SetShippingLine(string shippingRateHandle, Action<ShopifyError> callback) {
-            MutationQuery query = new MutationQuery();
-
-            DefaultQueries.checkout.ShippingLineUpdate(query, CurrentCheckout.id(), shippingRateHandle);
-
-            Client.Mutation(query, (Mutation response, ShopifyError error) => {
-                if (error != null) {
-                    callback(error);
-                    return;
-                }
-
-                if (UpdateState(response.checkoutShippingLineUpdate().checkout(), response.checkoutShippingLineUpdate().userErrors())) {
-                    if (CurrentCheckout.ready()) {
-                        callback(null);
-                    } else {
-                        PollCheckoutAndUpdate(PollCheckoutReady, callback);
-                    }
-                } else {
-                    HandleUserError(callback);
-                }
-            });
-        }
-
-        private void SetShippingAddressAndEmail(MailingAddressInput mailingAddressInput, string email, Action<ShopifyError> callback) {
-            MutationQuery query = new MutationQuery();
-
-            DefaultQueries.checkout.EmailUpdate(query, CurrentCheckout.id(), email);
-            DefaultQueries.checkout.ShippingAddressUpdate(query, CurrentCheckout.id(), mailingAddressInput);
-
-            Client.Mutation(query, (Mutation response, ShopifyError error) => {
-                if (error != null) {
-                    callback(error);
-                } else {
-                    if (UpdateState(response.checkoutEmailUpdate().checkout(), response.checkoutEmailUpdate().userErrors())) {
-                        if (CurrentCheckout.availableShippingRates().ready()) {
-                            callback(null);
-                        } else {
-                            PollCheckoutAndUpdate(PollCheckoutAvailableShippingRatesReady, callback);
-                        }
-                    } else {
-                        HandleUserError(callback);
-                    }
-                }
-            });
         }
 
         private void OnDeleteLineItem(string lineItemId) {

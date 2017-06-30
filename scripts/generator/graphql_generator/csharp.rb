@@ -88,6 +88,7 @@ module GraphQLGenerator
         ShopifyBuy
         Cart
         Cart.Poll
+        Cart.CheckoutAccessors
         SDK/Arguments
         SDK/InputBase
         SDK/InputValueToString
@@ -96,6 +97,7 @@ module GraphQLGenerator
         SDK/ValidationUtils
         SDK/AbstractResponse
         SDK/NoQueryException
+        SDK/NoCheckoutException
         SDK/ObservableDictionary
         SDK/AliasException
         SDK/InvalidServerResponseException
@@ -127,8 +129,8 @@ module GraphQLGenerator
         SDK/iOS/ShippingMethod
         SDK/iOS/iOSWebCheckout
         SDK/iOS/SummaryItem
-        SDK/iOS/Cart.ApplePayEventReceiver
         SDK/iOS/iOSNativeCheckout
+        SDK/iOS/iOSNativeCheckout.ApplePayEventReceiver
       ).each do |class_file_name|
         directory = "#{path}/#{File.dirname(class_file_name)}"
 

@@ -6,5 +6,6 @@ namespace <%= namespace %>.SDK {
     /// </summary>
     public class NoQueryException : Exception {
         public NoQueryException(string message) : base(message) {}
+        public NoQueryException(string message, Exception innerException) : base(message, innerException) {}
     }
 }
