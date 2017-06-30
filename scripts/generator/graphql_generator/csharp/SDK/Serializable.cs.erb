@@ -6,7 +6,7 @@ namespace <%= namespace %>.SDK {
     using UnityEngine;
 
     public class Serializable {
-        public string ToJsonString() {
+        override public string ToString() {
             return JsonUtility.ToJson(this);
         }
     }

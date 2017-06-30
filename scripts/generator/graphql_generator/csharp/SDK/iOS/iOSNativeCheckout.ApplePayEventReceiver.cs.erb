@@ -13,9 +13,9 @@ namespace <%= namespace %>.SDK.iOS {
             CurrentCart.SetShippingLine(message.Content, (ShopifyError error) => {
                 if (error == null) {
                     var summaryItems = GetSummaryItems();
-                    message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, summaryItems).ToJsonString());
+                    message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, summaryItems).ToString());
                 } else {
-                    message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure).ToJsonString());
+                    message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure).ToString());
                 }
             });
         }
@@ -32,9 +32,9 @@ namespace <%= namespace %>.SDK.iOS {
                 if (error == null) {
                     summaryItems = GetSummaryItems();
                     shippingMethods = GetShippingMethods();
-                    message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, summaryItems, shippingMethods).ToJsonString());
+                    message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, summaryItems, shippingMethods).ToString());
                 } else {
-                    message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure).ToJsonString());
+                    message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure).ToString());
                 }
             });
         }
@@ -45,36 +45,6 @@ namespace <%= namespace %>.SDK.iOS {
 
         public void DidFinishCheckoutSession(string serializedMessage) {
             //TODO
-        }
-
-        private List<SummaryItem> GetSummaryItems() {
-            var summaryItems = new List<SummaryItem>();
-            summaryItems.Add(new SummaryItem("SUBTOTAL", CurrentCart.GetSubtotal().ToString()));
-
-            if (CurrentCart.GetRequiresShipping()) {
-                summaryItems.Add(new SummaryItem("SHIPPING", CurrentCart.GetShippingTotal().ToString()));
-            }
-
-            summaryItems.Add(new SummaryItem("TAXES", CurrentCart.GetTotalTax().ToString()));
-            summaryItems.Add(new SummaryItem("TOTAL", CurrentCart.GetTotal().ToString()));
-
-            return summaryItems;
-        }
-
-        private List<ShippingMethod> GetShippingMethods() {
-            var shippingMethods = new List<ShippingMethod>();
-
-            try {
-                var availableShippingRates = CurrentCart.GetShippingRates();
-
-                foreach (var shippingRate in availableShippingRates) {
-                    shippingMethods.Add(new ShippingMethod(shippingRate.title(), shippingRate.price().ToString(), shippingRate.handle()));
-                }
-            } catch (Exception e) {
-                throw new Exception("Attempted to access AvailableShippingRates when CurrentCheckout has no property named AvailableShippingRates", e);
-            }
-
-            return shippingMethods;
         }
     }
 }
