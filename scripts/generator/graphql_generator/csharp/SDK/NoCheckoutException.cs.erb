@@ -1,0 +1,10 @@
+namespace <%= namespace %>.SDK {
+    using System;
+
+    /// <summary>
+    /// This exception is thrown when accessor methods on Cart are used without having creating a Checkout first.
+    /// </summary>
+    public class NoCheckoutException : Exception {
+        public NoCheckoutException(string message) : base(message) {}
+    }
+}
