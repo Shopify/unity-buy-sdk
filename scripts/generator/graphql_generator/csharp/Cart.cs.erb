@@ -97,22 +97,30 @@ namespace <%= namespace %> {
         }
 
         public void CheckoutWithNativeWebView(CheckoutSuccessCallback success, CheckoutFailureCallback failure, CheckoutCancelCallback cancelled) {
-            GetWebCheckoutLink(url => {
-                WebCheckout.Checkout(url, success, failure, cancelled);
-            }, error => {
-                failure(error);
-            });
+            if (WebCheckout != null) {
+                GetWebCheckoutLink(url => {
+                    WebCheckout.Checkout(url, success, failure, cancelled);
+                }, error => {
+                    failure(error);
+                });
+            } else {
+                // TODO throw an exception
+            }
         }
 
         public void CheckoutWithNativePay(string key, CheckoutSuccessCallback success, CheckoutFailureCallback failure, CheckoutCancelCallback cancelled) {
-            CheckoutSave(error => {
-                if (error != null) {
-                    failure(error);
-                }
-                else {
-                    NativeCheckout.Checkout(key, success, failure, cancelled);
-                }
-            });
+            if (NativeCheckout != null) {
+                CheckoutSave(error => {
+                    if (error != null) {
+                        failure(error);
+                    }
+                    else {
+                        NativeCheckout.Checkout(key, success, failure, cancelled);
+                    }
+                });
+            } else {
+                // TODO throw an exception
+            }
         }
 
         private void CheckoutSave(Action<ShopifyError> callback) {
