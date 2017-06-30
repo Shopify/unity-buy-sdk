@@ -73,7 +73,7 @@ protocol WebCheckoutDelegate: class {
         webViewController.modalPresentationStyle = .overFullScreen
         
         showOverlay()
-        root.present(self.webViewController, animated: true, completion: nil)
+        root.present(webViewController, animated: true, completion: nil)
         
         return true;
     }
