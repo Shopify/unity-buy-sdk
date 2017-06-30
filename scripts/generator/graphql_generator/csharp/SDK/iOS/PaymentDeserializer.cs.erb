@@ -1,0 +1,52 @@
+#if UNITY_iPHONE
+namespace <%= namespace %>.SDK.iOS {
+    using System.Collections;
+    using System.Collections.Generic;
+    using <%= namespace %>;
+    using <%= namespace %>.MiniJSON;
+
+    public class PaymentDeserializer {
+
+        private enum PaymentField {
+            BillingContact,
+            ShippingContact,
+            ShippingIdentifier,
+            TokenData
+        }
+
+        private enum TokenField {
+            PaymentData,
+            TransactionIdentifier
+        }
+
+        public MailingAddressInput billingAddress { get; }
+        public MailingAddressInput shippingAddress { get; }
+        public string shippingIdentifier;
+        public string transactionIdentifier;
+        public string paymentData;
+
+        public PaymentDeserializer(string stringJson) {
+            var dictionary = (Dictionary<string, object>)Json.Deserialize(stringJson);
+
+            // Billing Address
+            var billingContactDictionary = (Dictionary<string, object>)dictionary[PaymentField.BillingContact.ToString("G")];
+            billingAddress = new MailingAddressInput(billingContactDictionary);
+
+            // Shipping Address
+            var shippingContactDictionary = (Dictionary<string, object>)dictionary[PaymentField.ShippingContact.ToString("G")];
+            shippingAddress = new MailingAddressInput(shippingContactDictionary);
+
+            // Shipping Identifier
+            shippingIdentifier = (string)dictionary[PaymentField.ShippingIdentifier.ToString("G")];
+
+            // Transaction Identifier
+            var tokenDictionary = (Dictionary<string, object>)dictionary[PaymentField.TokenData.ToString("G")];
+            transactionIdentifier = (string)tokenDictionary[TokenField.TransactionIdentifier.ToString("G")];
+
+            // Payment Data
+            var paymentDictionary = tokenDictionary[TokenField.PaymentData.ToString("G")];
+            paymentData = Json.Serialize(paymentDictionary);
+        }
+    }
+}
+#endif
