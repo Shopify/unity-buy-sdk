@@ -42,12 +42,17 @@ void _ShowApplePaySetup() {
 
 bool _CreateApplePaySession(const char *unityDelegateObjectName, const char *merchantID, const char *countryCode, const char *currencyCode, const char *serializedSummaryItems, const char *serializedShippingMethods, bool requiringShipping) {
 
+    NSString *shippingMethodsString;
+    if (serializedShippingMethods != nil) {
+        shippingMethodsString = [NSString stringWithUTF8String:serializedShippingMethods];
+    }
+
     return [Cart createApplePaySessionWithUnityDelegateObjectName:[NSString stringWithUTF8String:unityDelegateObjectName]
                                                        merchantID:[NSString stringWithUTF8String:merchantID]
                                                       countryCode:[NSString stringWithUTF8String:countryCode]
                                                      currencyCode:[NSString stringWithUTF8String:currencyCode]
                                            serializedSummaryItems:[NSString stringWithUTF8String:serializedSummaryItems]
-                                        serializedShippingMethods:[NSString stringWithUTF8String:serializedShippingMethods]
+                                        serializedShippingMethods:shippingMethodsString
                                                 requiringShipping:requiringShipping];
 }
 
