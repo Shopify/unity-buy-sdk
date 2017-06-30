@@ -1,0 +1,46 @@
+#if UNITY_IPHONE
+namespace <%= namespace %>.SDK.iOS {
+    using UnityEngine;
+    using System.Runtime.InteropServices;
+    using <%= namespace %>.SDK;
+
+    class iOSWebCheckout: IWebCheckout {
+        private static iOSWebViewMessageReceiver _messageReceiver;
+
+        [DllImport ("__Internal")]
+        private static extern void _CheckoutWithWebView(string unityDelegateObjectName, string checkoutURL);
+
+        public void Checkout(string checkoutURL, CheckoutSuccessCallback success, CheckoutFailureCallback failure, CheckoutCancelCallback cancelled) {
+            SetupNativeMessageReceiver(success, failure, cancelled);
+            _CheckoutWithWebView(GlobalGameObject.Name, checkoutURL);
+        }
+
+        private static void SetupNativeMessageReceiver(CheckoutSuccessCallback success, CheckoutFailureCallback failure, CheckoutCancelCallback cancelled) {
+            if (_messageReceiver == null) {
+                _messageReceiver = GlobalGameObject.AddComponent<iOSWebViewMessageReceiver>();
+            }
+        
+            _messageReceiver.OnSuccess = success;
+            _messageReceiver.OnFailure = failure;
+            _messageReceiver.OnCancelled = cancelled;
+        }
+    }
+
+    class iOSWebViewMessageReceiver: MonoBehaviour {
+        internal CheckoutSuccessCallback OnSuccess;
+        internal CheckoutFailureCallback OnFailure;
+        internal CheckoutCancelCallback OnCancelled;
+
+        void OnNativeMessage(string jsonMessage) {
+            var message = NativeMessage.CreateFromJSON(jsonMessage);
+            if (message.Content == "loadedThankYou") {
+                // Do a round trip to the server to see if the purchase is solid.
+                // Invoke callbacks on cart to pass to Unity
+                OnSuccess();
+            } else if (message.Content == "cancelled") {
+                OnCancelled();
+            }
+        }
+    }
+}
+#endif
