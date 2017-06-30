@@ -63,7 +63,7 @@ namespace <%= namespace %> {
         }
 
         // Convenience method to perform some polling on Checkout and update the Current Checkout when completed
-        private void PollCheckoutAndUpdate(CheckoutPoll poll, Action<ShopifyError> callback) {
+        private void PollCheckoutAndUpdate(CheckoutPoll poll, CompletionCallback callback) {
             poll((Checkout checkout, ShopifyError error) => {
                 if (error == null && checkout != null) {
                     UpdateState(checkout);

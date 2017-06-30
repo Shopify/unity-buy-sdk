@@ -6,7 +6,7 @@ namespace <%= namespace %>.SDK.iOS {
     using System.Runtime.InteropServices;
     using <%= namespace %>.SDK;
 
-    class iOSNativeCheckout : INativeCheckout {
+    partial class iOSNativeCheckout : INativeCheckout {
         [DllImport ("__Internal")]
         private static extern bool _CanCheckoutWithApplePay();
 
