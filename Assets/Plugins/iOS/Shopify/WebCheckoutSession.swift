@@ -31,7 +31,7 @@ private var activeWebPaySession: WebCheckoutSession?
 
 protocol WebCheckoutDelegate: class {
     func didLoadThankYouPage()
-    func willDismiss()
+    func willDismiss(completionHandler: UnityMessage.MessageCompletion?)
 }
 
 @objc class WebCheckoutSession: NSObject {
@@ -112,10 +112,10 @@ extension WebCheckoutSession: WebCheckoutDelegate {
         MessageCenter.send(message)
     }
     
-    func willDismiss() {
+    func willDismiss(completionHandler: UnityMessage.MessageCompletion?) {
         hideOverlay()
         let message = UnityMessage(content: "cancelled", object: unityDelegateObjectName, method: "OnNativeMessage")
-        MessageCenter.send(message)
+        MessageCenter.send(message, completionHandler: completionHandler)
     }
 }
 

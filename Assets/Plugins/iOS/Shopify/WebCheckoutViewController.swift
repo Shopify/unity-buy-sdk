@@ -73,8 +73,9 @@ extension WebCheckoutViewController {
     }
     
     func didPressCancel() {
-        delegate?.willDismiss()
-        self.dismiss(animated: true)
+        delegate?.willDismiss { _ in
+            self.dismiss(animated: true)
+        }
     }
 }
 
