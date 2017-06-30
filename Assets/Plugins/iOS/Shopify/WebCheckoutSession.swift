@@ -42,7 +42,7 @@ protocol WebCheckoutDelegate: class {
         return session;
     }
     
-    fileprivate var webViewController: WebCheckoutViewController!
+    fileprivate var webViewController: Checkout.WebViewController!
     fileprivate var overlay: UIView?
     
     private let checkoutURL: String
@@ -69,7 +69,7 @@ protocol WebCheckoutDelegate: class {
             return false;
         }
         
-        webViewController = WebCheckoutViewController(url: url, delegate: self)
+        webViewController = Checkout.WebViewController(url: url, delegate: self)
         webViewController.modalPresentationStyle = .overFullScreen
         
         showOverlay()
