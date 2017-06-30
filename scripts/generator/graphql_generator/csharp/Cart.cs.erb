@@ -56,6 +56,7 @@ namespace <%= namespace %> {
         
 
         private IWebCheckout WebCheckout;
+        private INativeCheckout NativeCheckout;
 
         /// <summary>
         /// Constructs a new cart using a <see ref="ShopifyClient">ShopifyClient </see>. Typically, carts won't be
@@ -77,6 +78,7 @@ namespace <%= namespace %> {
 
             #if UNITY_IOS
             WebCheckout = new iOSWebCheckout();
+            NativeCheckout = new iOSNativeCheckout(this);
             #endif
         }
 
@@ -95,11 +97,55 @@ namespace <%= namespace %> {
         }
 
         public void CheckoutWithNativeWebView(CheckoutSuccessCallback success, CheckoutFailureCallback failure, CheckoutCancelCallback cancelled) {
+            if (WebCheckout == null) {
+                // TODO use custom exception
+                throw new Exception("This platform does not support checkout with web pay");
+            }
+
             GetWebCheckoutLink(url => {
                 WebCheckout.Checkout(url, success, failure, cancelled);
             }, error => {
                 failure(error);
             });
+        }
+
+        public void CheckoutWithNativePay(string key, CheckoutSuccessCallback success, CheckoutFailureCallback failure, CheckoutCancelCallback cancelled) {
+            if (NativeCheckout == null) {
+                // TODO use custom exception
+                throw new Exception("This platform does not support checkout with native pay");
+            }
+
+            CheckoutSave(error => {
+                if (error != null) {
+                    failure(error);
+                } else {
+                    NativeCheckout.Checkout(key, success, failure, cancelled);
+                }
+            });
+        }
+
+        public bool CanShowNativePaySetup() {
+            if (NativeCheckout != null) {
+               return  NativeCheckout.CanShowPaymentSetup();
+            } else {
+                return false;
+            }
+        }
+
+        public void ShowNativePaySetup() {
+            if (NativeCheckout != null) {
+                NativeCheckout.ShowPaymentSetup();
+            } else {
+                // TODO throw an exception, this platform does not support showing a native payment setup
+            }
+        }
+
+        public bool CanCheckoutWithNativePay() {
+            if (NativeCheckout != null) {
+                return NativeCheckout.CanCheckout();
+            } else {
+                return false;
+            }
         }
 
         private void CheckoutSave(Action<ShopifyError> callback) {
