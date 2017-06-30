@@ -33,7 +33,7 @@
 
 #import "ProductName-Swift.h"
 
-bool _StartWebCheckout(const char *unityDelegateObjectName, const char *checkoutURL) {
+bool _CheckoutWithWebView(const char *unityDelegateObjectName, const char *checkoutURL) {
     WebCheckoutSession * session = [WebCheckoutSession
                                     createSessionWithUnityDelegateObjectName:[NSString stringWithUTF8String:unityDelegateObjectName]
                                     url:[NSString stringWithUTF8String:checkoutURL]];

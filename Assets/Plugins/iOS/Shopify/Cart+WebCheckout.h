@@ -30,7 +30,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-    bool _StartWebCheckout(const char *unityDelegateObjectName, const char *checkoutURL);
+    bool _CheckoutWithWebView(const char *unityDelegateObjectName, const char *checkoutURL);
 #ifdef __cplusplus
 }
 #endif
