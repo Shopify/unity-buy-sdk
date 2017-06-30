@@ -42,7 +42,7 @@ protocol WebCheckoutDelegate: class {
         return session;
     }
     
-    fileprivate var webViewController: WebCheckoutViewController?
+    fileprivate var webViewController: WebCheckoutViewController!
     fileprivate var overlay: UIView?
     
     private let checkoutURL: String
@@ -70,10 +70,10 @@ protocol WebCheckoutDelegate: class {
         }
         
         webViewController = WebCheckoutViewController(url: url, delegate: self)
-        webViewController!.modalPresentationStyle = .overFullScreen
+        webViewController.modalPresentationStyle = .overFullScreen
         
         showOverlay()
-        root.present(self.webViewController!, animated: true, completion: nil)
+        root.present(self.webViewController, animated: true, completion: nil)
         
         return true;
     }
@@ -89,7 +89,7 @@ protocol WebCheckoutDelegate: class {
         root.view.bringSubview(toFront: overlay)
         UIView.animate(withDuration: overlayAnimationDuration, animations: {
             overlay.alpha = 0.3
-        }) { _ in }
+        })
     }
     
     fileprivate func hideOverlay() {

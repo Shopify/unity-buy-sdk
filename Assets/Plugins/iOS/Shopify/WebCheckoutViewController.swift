@@ -90,7 +90,7 @@ extension WebCheckoutViewController: WKNavigationDelegate {
     public func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
         if let url = webView.url, isThankYouPage(url) {
             delegate?.didLoadThankYouPage()
-            self.checkoutView.isFinished = true
+            checkoutView.isFinished = true
             return
         }
     }
@@ -129,10 +129,10 @@ private class WebCheckoutView: UIView {
     private let loadingIndicatorOffset: CGFloat = 5
     private let loadingIndicatorTiming: TimeInterval = 0.3
     
-    private(set) var containerView: UIView!
-    private(set) var webView: WKWebView!
-    private(set) var actionButton: CheckoutButton!
-    private(set) var progressIndicator: WebPageProgressIndicator!
+    private(set) var containerView: UIView
+    private(set) var webView: WKWebView
+    private(set) var actionButton: CheckoutButton
+    private(set) var progressIndicator: WebPageProgressIndicator
     private var progressTopConstraint: NSLayoutConstraint!
     
     override init(frame: CGRect) {
