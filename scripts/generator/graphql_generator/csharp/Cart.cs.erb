@@ -53,7 +53,6 @@ namespace <%= namespace %> {
         private List<String> DeletedLineItems = new List<string>();
         private ShopifyClient Client;
         private Checkout CurrentCheckout = null;
-        
 
         private IWebCheckout WebCheckout;
         private INativeCheckout NativeCheckout;
@@ -96,7 +95,6 @@ namespace <%= namespace %> {
             });
         }
 
-
         public void CheckoutWithNativeWebView(CheckoutSuccessCallback success, CheckoutFailureCallback failure, CheckoutCancelCallback cancelled) {
             if (WebCheckout == null) {
                 // TODO use custom exception
@@ -125,7 +123,7 @@ namespace <%= namespace %> {
             });
         }
 
-        public void SetShippingLine(string shippingRateHandle, Action<ShopifyError> callback) {
+        public void SetShippingLine(string shippingRateHandle, CompletionCallback callback) {
             MutationQuery query = new MutationQuery();
 
             DefaultQueries.checkout.ShippingLineUpdate(query, CurrentCheckout.id(), shippingRateHandle);
@@ -172,7 +170,7 @@ namespace <%= namespace %> {
             }
         }
 
-        public void SetShippingAddressAndEmail(MailingAddressInput mailingAddressInput, string email, Action<ShopifyError> callback) {
+        public void SetShippingAddressAndEmail(MailingAddressInput mailingAddressInput, string email, CompletionCallback callback) {
             MutationQuery query = new MutationQuery();
 
             DefaultQueries.checkout.EmailUpdate(query, CurrentCheckout.id(), email);
@@ -195,7 +193,7 @@ namespace <%= namespace %> {
             });
         }
 
-        private void CheckoutSave(Action<ShopifyError> callback) {
+        private void CheckoutSave(CompletionCallback callback) {
             if (!IsCreated) {
                 CheckoutCreate(callback);
             } else if(!IsSaved) {
@@ -205,11 +203,11 @@ namespace <%= namespace %> {
             }
         }
 
-        private void CheckoutCreate(Action<ShopifyError> callback) {
+        private void CheckoutCreate(CompletionCallback callback) {
             MutationQuery query = new MutationQuery();
-            
+
             List<CheckoutLineItemInput> newLineItemInput = CartLineItems.ConvertToCheckoutLineItemInput(LineItems.All());
-            
+
             DefaultQueries.checkout.Create(query, newLineItemInput);
 
             Client.Mutation(query, (Mutation response, ShopifyError error) => {
@@ -230,7 +228,7 @@ namespace <%= namespace %> {
             });
         }
 
-        private void CheckoutWithTokenizedPayment(TokenizedPaymentInput tokenizedPaymentInput, Action<ShopifyError> callback) {
+        private void CheckoutWithTokenizedPayment(TokenizedPaymentInput tokenizedPaymentInput, CompletionCallback callback) {
             Action<Payment> pollPayment = (payment) => {
                 PollPaymentReady(payment.id(), (Payment newPayment, ShopifyError error) => {
                     if (error != null) {
@@ -284,7 +282,7 @@ namespace <%= namespace %> {
             }
         }
 
-        private void CheckoutUpdate(Action<ShopifyError> callback) {
+        private void CheckoutUpdate(CompletionCallback callback) {
             MutationQuery query = new MutationQuery();
 
             // remove all line items them add them
@@ -295,7 +293,7 @@ namespace <%= namespace %> {
 
             DefaultQueries.checkout.LineItemsRemove(query, CurrentCheckout.id(), lineItemsToRemove);
             DefaultQueries.checkout.LineItemsAdd(query, CurrentCheckout.id(), lineItemsToAdd);
-        
+
             Client.Mutation(query, (Mutation response, ShopifyError error) => {
                 if (error != null) {
                     callback(error);
@@ -326,7 +324,7 @@ namespace <%= namespace %> {
             } else {
                 MergeCheckout merger = new MergeCheckout();
 
-                CurrentCheckout = merger.Merge(CurrentCheckout, checkout);    
+                CurrentCheckout = merger.Merge(CurrentCheckout, checkout);
             }
 
             if (userErrors.Count > 0) {
@@ -353,7 +351,7 @@ namespace <%= namespace %> {
             } catch(NoQueryException exception) {}
         }
 
-        private void HandleUserError(Action<ShopifyError> callback) {
+        private void HandleUserError(CompletionCallback callback) {
             ShopifyError error = new ShopifyError(
                 ShopifyError.ErrorType.UserError,
                 "There were issues with some of the fields sent. See `cart.UserErrors`"
