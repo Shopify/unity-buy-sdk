@@ -32,7 +32,7 @@ namespace <%= namespace %>.SDK.iOS {
         /// Checks if the device is capable of paying with Apple Pay
         /// </summary>
         /// <returns>True if the device is capable of paying with Apple Pay</returns>
-        public bool CanStart() {
+        public bool CanCheckout() {
             return _CanCheckoutWithApplePay();
         }
 
@@ -58,7 +58,10 @@ namespace <%= namespace %>.SDK.iOS {
         ///  Displays a payment interface to the user based on the contents of the Cart
         /// </remarks>
         /// <param name="key">Merchant ID for Apple Pay from the Apple Developer Portal</param>
-        public void Start(string key) {
+        /// <param name="success">Delegate method that will be notified upon a successful payment</param>
+        /// <param name="failure">Delegate method that will be notified upon a failure during the checkout process</param>
+        /// <param name="cancelled">Delegate method that will be notified upon a cancellation during the checkout process</param>
+        public void Checkout(string key, CheckoutSuccessCallback success, CheckoutFailureCallback failure, CheckoutCancelCallback cancelled) {
             // TODO
         }
     }
