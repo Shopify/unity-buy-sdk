@@ -121,13 +121,17 @@ namespace <%= namespace %> {
         }
 
         private void CheckoutWithTokenizedPayment(TokenizedPaymentInput tokenizedPaymentInput, Action<ShopifyError> callback) {
-
             Action<Payment> pollPayment = (payment) => {
-                PollPaymentReady(payment.id(), (Payment newPayment, ShopifyError pollError) => {
-                    if (pollError == null) {
-                        UpdateCheckout(payment.checkout());
+                PollPaymentReady(payment.id(), (Payment newPayment, ShopifyError error) => {
+                    if (error != null) {
+                        callback(error);
+                    } else {
+                        if (UpdateState(payment.checkout())) {
+                            callback(null);
+                        } else {
+                            HandleUserError(callback);
+                        }
                     }
-                    callback(pollError);
                 });
             };
 
@@ -142,8 +146,16 @@ namespace <%= namespace %> {
                     } else {
                         var responseNode = response.checkoutCompleteWithTokenizedPayment();
                         var payment = responseNode.payment();
-                        UpdateCheckout(responseNode.checkout());
-                        pollPayment(payment);
+
+                        if (UpdateState(responseNode.checkout(), responseNode.userErrors())) {
+                            if (payment.ready()) {
+                                callback(null);
+                            } else {
+                                pollPayment(payment);
+                            }
+                        } else {
+                            HandleUserError(callback);
+                        }
                     }
                 });
             };
