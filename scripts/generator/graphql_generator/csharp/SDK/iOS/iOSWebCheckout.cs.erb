@@ -10,26 +10,26 @@ namespace <%= namespace %>.SDK.iOS {
         [DllImport ("__Internal")]
         private static extern void _CheckoutWithWebView(string unityDelegateObjectName, string checkoutURL);
 
-        public void Checkout(string checkoutURL, CheckoutSuccessCallback success, CheckoutFailureCallback failure, CheckoutCancelCallback cancelled) {
-            SetupNativeMessageReceiver(success, failure, cancelled);
+        public void Checkout(string checkoutURL, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
+            SetupNativeMessageReceiver(success, cancelled, failure);
             _CheckoutWithWebView(GlobalGameObject.Name, checkoutURL);
         }
 
-        private static void SetupNativeMessageReceiver(CheckoutSuccessCallback success, CheckoutFailureCallback failure, CheckoutCancelCallback cancelled) {
+        private static void SetupNativeMessageReceiver(CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
             if (_messageReceiver == null) {
                 _messageReceiver = GlobalGameObject.AddComponent<iOSWebViewMessageReceiver>();
             }
         
             _messageReceiver.OnSuccess = success;
-            _messageReceiver.OnFailure = failure;
             _messageReceiver.OnCancelled = cancelled;
+            _messageReceiver.OnFailure = failure;
         }
     }
 
     class iOSWebViewMessageReceiver: MonoBehaviour {
         internal CheckoutSuccessCallback OnSuccess;
-        internal CheckoutFailureCallback OnFailure;
         internal CheckoutCancelCallback OnCancelled;
+        internal CheckoutFailureCallback OnFailure;
 
         void OnNativeMessage(string jsonMessage) {
             var message = NativeMessage.CreateFromJSON(jsonMessage);
