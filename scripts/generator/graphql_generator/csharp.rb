@@ -74,7 +74,7 @@ module GraphQLGenerator
 
     def save(path)
       path_graphql = "#{path}/GraphQL"
-    
+
       begin
         Dir.mkdir(path_graphql)
       rescue Errno::EEXIST
