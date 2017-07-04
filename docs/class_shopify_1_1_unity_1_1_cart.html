@@ -76,18 +76,66 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:ae9d25629525846240a85fd514be2993b"><td class="memItemLeft" align="right" valign="top">decimal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html#ae9d25629525846240a85fd514be2993b">GetShippingTotal</a> ()</td></tr>
+<tr class="memdesc:ae9d25629525846240a85fd514be2993b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the shipping total for the current checkout.  <a href="#ae9d25629525846240a85fd514be2993b">More...</a><br /></td></tr>
+<tr class="separator:ae9d25629525846240a85fd514be2993b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a971b49b5afeaf51d07b1b1e49e105334"><td class="memItemLeft" align="right" valign="top">decimal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html#a971b49b5afeaf51d07b1b1e49e105334">GetTotalTax</a> ()</td></tr>
+<tr class="memdesc:a971b49b5afeaf51d07b1b1e49e105334"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the total tax for the current checkout.  <a href="#a971b49b5afeaf51d07b1b1e49e105334">More...</a><br /></td></tr>
+<tr class="separator:a971b49b5afeaf51d07b1b1e49e105334"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74c9f977aeac9156b355271d0ef2c8a2"><td class="memItemLeft" align="right" valign="top">decimal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html#a74c9f977aeac9156b355271d0ef2c8a2">GetSubtotal</a> ()</td></tr>
+<tr class="memdesc:a74c9f977aeac9156b355271d0ef2c8a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the price of the current checkout before shipping and taxes.  <a href="#a74c9f977aeac9156b355271d0ef2c8a2">More...</a><br /></td></tr>
+<tr class="separator:a74c9f977aeac9156b355271d0ef2c8a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb7ec7d8c996cf37192f38ebf3e7f676"><td class="memItemLeft" align="right" valign="top">decimal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html#adb7ec7d8c996cf37192f38ebf3e7f676">GetTotal</a> ()</td></tr>
+<tr class="memdesc:adb7ec7d8c996cf37192f38ebf3e7f676"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the total price of the current checkout.  <a href="#adb7ec7d8c996cf37192f38ebf3e7f676">More...</a><br /></td></tr>
+<tr class="separator:adb7ec7d8c996cf37192f38ebf3e7f676"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02dc6adb665428ea945a3fe86b42820f"><td class="memItemLeft" align="right" valign="top">List&lt; <a class="el" href="class_shopify_1_1_unity_1_1_shipping_rate.html">ShippingRate</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html#a02dc6adb665428ea945a3fe86b42820f">GetShippingRates</a> ()</td></tr>
+<tr class="memdesc:a02dc6adb665428ea945a3fe86b42820f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the available shipping rates for the current checkout based on the set shipping address.  <a href="#a02dc6adb665428ea945a3fe86b42820f">More...</a><br /></td></tr>
+<tr class="separator:a02dc6adb665428ea945a3fe86b42820f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31d86101d553d99688cddf375116aa07"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html#a31d86101d553d99688cddf375116aa07">GetRequiresShipping</a> ()</td></tr>
+<tr class="memdesc:a31d86101d553d99688cddf375116aa07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve whether or not the fulfillment requires shipping.  <a href="#a31d86101d553d99688cddf375116aa07">More...</a><br /></td></tr>
+<tr class="separator:a31d86101d553d99688cddf375116aa07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83ee6e32d803d5c60f54af65c9c8139b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html#a83ee6e32d803d5c60f54af65c9c8139b">Cart</a> (<a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html">ShopifyClient</a> client)</td></tr>
 <tr class="memdesc:a83ee6e32d803d5c60f54af65c9c8139b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a new cart using a <a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html" title="ShopifyClient  is the entry point to communicate with the Shopify Storefront API. ShopifyClient  also...">ShopifyClient</a> . Typically, carts won't be instantiated directly, but will rather be instatiated using <a class="el" href="class_shopify_1_1_unity_1_1_shopify_buy.html#ac15beb2a8534e89ffe4f30d27e87740e" title="Returns the default ShopifyClient . The default client is the first client created after calling Shop...">ShopifyBuy.Client()</a>.<a class="el" href="class_shopify_1_1_unity_1_1_cart.html#a83ee6e32d803d5c60f54af65c9c8139b" title="Constructs a new cart using a ShopifyClient . Typically, carts won&#39;t be instantiated directly...">Cart()</a> .  <a href="#a83ee6e32d803d5c60f54af65c9c8139b">More...</a><br /></td></tr>
 <tr class="separator:a83ee6e32d803d5c60f54af65c9c8139b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd48532191c0a025bfbf5577411f4da6"><td class="memItemLeft" align="right" valign="top"><a id="acd48532191c0a025bfbf5577411f4da6"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>GetWebCheckoutLink</b> (Action&lt; string &gt; success, Action&lt; List&lt; string &gt;, string &gt; failure, string note=null)</td></tr>
-<tr class="separator:acd48532191c0a025bfbf5577411f4da6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2844ec25a3f786ebfdd81f2044953f27"><td class="memItemLeft" align="right" valign="top"><a id="a2844ec25a3f786ebfdd81f2044953f27"></a>
+delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>GetWebCheckoutLinkSuccess</b> (string url)</td></tr>
+<tr class="separator:a2844ec25a3f786ebfdd81f2044953f27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d6f587487b0628bb0c7a09923468c64"><td class="memItemLeft" align="right" valign="top"><a id="a2d6f587487b0628bb0c7a09923468c64"></a>
+delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>GetWebCheckoutLinkFailure</b> (<a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_shopify_error.html">ShopifyError</a> error)</td></tr>
+<tr class="separator:a2d6f587487b0628bb0c7a09923468c64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae38723cb3b2b3db505f2e98ab2033782"><td class="memItemLeft" align="right" valign="top"><a id="ae38723cb3b2b3db505f2e98ab2033782"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>GetWebCheckoutLink</b> (GetWebCheckoutLinkSuccess success, GetWebCheckoutLinkFailure failure)</td></tr>
+<tr class="separator:ae38723cb3b2b3db505f2e98ab2033782"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9def142eb55aca6a4c4fe284391b8fb4"><td class="memItemLeft" align="right" valign="top"><a id="a9def142eb55aca6a4c4fe284391b8fb4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>CheckoutWithNativeWebView</b> (CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure)</td></tr>
+<tr class="separator:a9def142eb55aca6a4c4fe284391b8fb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9df57cf27df2d789df7fcc3cdf4564c"><td class="memItemLeft" align="right" valign="top"><a id="af9df57cf27df2d789df7fcc3cdf4564c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>CheckoutWithNativePay</b> (string key, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure)</td></tr>
+<tr class="separator:af9df57cf27df2d789df7fcc3cdf4564c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71f23eb2ac9de6839c52e9adeb93edcb"><td class="memItemLeft" align="right" valign="top"><a id="a71f23eb2ac9de6839c52e9adeb93edcb"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetShippingLine</b> (string shippingRateHandle, CompletionCallback callback)</td></tr>
+<tr class="separator:a71f23eb2ac9de6839c52e9adeb93edcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4d767d10f8e14f275c1380b25ca585d"><td class="memItemLeft" align="right" valign="top"><a id="aa4d767d10f8e14f275c1380b25ca585d"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanShowNativePaySetup</b> ()</td></tr>
+<tr class="separator:aa4d767d10f8e14f275c1380b25ca585d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a820bed32a127c7272100a36531a9ae35"><td class="memItemLeft" align="right" valign="top"><a id="a820bed32a127c7272100a36531a9ae35"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ShowNativePaySetup</b> ()</td></tr>
+<tr class="separator:a820bed32a127c7272100a36531a9ae35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf09e597b1e78d98eb5ee0ff50ccc1dd"><td class="memItemLeft" align="right" valign="top"><a id="adf09e597b1e78d98eb5ee0ff50ccc1dd"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanCheckoutWithNativePay</b> ()</td></tr>
+<tr class="separator:adf09e597b1e78d98eb5ee0ff50ccc1dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8483dbac218d36732cc6e8d02aba1f27"><td class="memItemLeft" align="right" valign="top"><a id="a8483dbac218d36732cc6e8d02aba1f27"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetShippingAddressAndEmail</b> (<a class="el" href="class_shopify_1_1_unity_1_1_mailing_address_input.html">MailingAddressInput</a> mailingAddressInput, string email, CompletionCallback callback)</td></tr>
+<tr class="separator:a8483dbac218d36732cc6e8d02aba1f27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a1a0f29106f9c12d332ec256464db7a10"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_items.html">CartLineItems</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html#a1a0f29106f9c12d332ec256464db7a10">LineItems</a><code> [get]</code></td></tr>
 <tr class="memdesc:a1a0f29106f9c12d332ec256464db7a10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current line items for this <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a> .  <a href="#a1a0f29106f9c12d332ec256464db7a10">More...</a><br /></td></tr>
 <tr class="separator:a1a0f29106f9c12d332ec256464db7a10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a121532d836129b43005e6c3903a8dfec"><td class="memItemLeft" align="right" valign="top"><a id="a121532d836129b43005e6c3903a8dfec"></a>
+List&lt; <a class="el" href="class_shopify_1_1_unity_1_1_user_error.html">UserError</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>UserErrors</b><code> [get]</code></td></tr>
+<tr class="separator:a121532d836129b43005e6c3903a8dfec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Manages line items for an order. Can also be used to generate a web checkout link to check out in browser. </p>
@@ -126,6 +174,208 @@ Properties</h2></td></tr>
 <div class="fragment"><div class="line"><span class="comment">// Example that creates a cart using a ShopifyClient and checks how many line items it has</span></div><div class="line"><span class="comment">// (spoiler: it has 0 line items since the cart was just created).</span></div><div class="line">ShopifyClient client = <span class="keyword">new</span> ShopifyClient(accessToken, shopDomain);</div><div class="line"></div><div class="line"><a class="code" href="class_shopify_1_1_unity_1_1_cart.html#a83ee6e32d803d5c60f54af65c9c8139b">Cart</a> cart = <span class="keyword">new</span> <a class="code" href="class_shopify_1_1_unity_1_1_cart.html#a83ee6e32d803d5c60f54af65c9c8139b">Cart</a>(client);</div><div class="line"></div><div class="line">Debug.Log(cart.LineItems.All().Count);</div></div><!-- fragment --> 
 </div>
 </div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a31d86101d553d99688cddf375116aa07"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31d86101d553d99688cddf375116aa07">&#9670;&nbsp;</a></span>GetRequiresShipping()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Shopify.Unity.Cart.GetRequiresShipping </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Retrieve whether or not the fulfillment requires shipping. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">NoCheckoutException</td><td>Calling this accessor before a checkout was created for the <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a>. See Cart.GetWebCheckoutLink</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a02dc6adb665428ea945a3fe86b42820f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02dc6adb665428ea945a3fe86b42820f">&#9670;&nbsp;</a></span>GetShippingRates()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">List&lt;<a class="el" href="class_shopify_1_1_unity_1_1_shipping_rate.html">ShippingRate</a>&gt; Shopify.Unity.Cart.GetShippingRates </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Retrieve the available shipping rates for the current checkout based on the set shipping address. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">NoCheckoutException</td><td>Calling this accessor before a checkout was created for the <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a>. See Cart.GetWebCheckoutLink</td></tr>
+    <tr><td class="paramname">NoQueryException</td><td>Calling this accessor before a shipping address and email was set. See Cart.SetShippingAddressAndEmail</td></tr>
+    <tr><td class="paramname">NoQueryException</td><td>Calling this accessor when a checkout does not require shipping. See <a class="el" href="class_shopify_1_1_unity_1_1_cart.html#a31d86101d553d99688cddf375116aa07" title="Retrieve whether or not the fulfillment requires shipping. ">Cart.GetRequiresShipping</a></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ae9d25629525846240a85fd514be2993b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9d25629525846240a85fd514be2993b">&#9670;&nbsp;</a></span>GetShippingTotal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">decimal Shopify.Unity.Cart.GetShippingTotal </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Retrieve the shipping total for the current checkout. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">NoCheckoutException</td><td>Calling this accessor before a checkout was created for the <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a>. See Cart.GetWebCheckoutLink</td></tr>
+    <tr><td class="paramname">NoQueryException</td><td>Calling this accessor before a shipping line was set. See Cart.SetShippingLine</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a74c9f977aeac9156b355271d0ef2c8a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74c9f977aeac9156b355271d0ef2c8a2">&#9670;&nbsp;</a></span>GetSubtotal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">decimal Shopify.Unity.Cart.GetSubtotal </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Retrieve the price of the current checkout before shipping and taxes. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">NoCheckoutException</td><td>Calling this accessor before a checkout was created for the <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a>. See Cart.GetWebCheckoutLink</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="adb7ec7d8c996cf37192f38ebf3e7f676"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb7ec7d8c996cf37192f38ebf3e7f676">&#9670;&nbsp;</a></span>GetTotal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">decimal Shopify.Unity.Cart.GetTotal </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Retrieve the total price of the current checkout. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">NoCheckoutException</td><td>Calling this accessor before a checkout was created for the <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a>. See Cart.GetWebCheckoutLink</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a971b49b5afeaf51d07b1b1e49e105334"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a971b49b5afeaf51d07b1b1e49e105334">&#9670;&nbsp;</a></span>GetTotalTax()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">decimal Shopify.Unity.Cart.GetTotalTax </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Retrieve the total tax for the current checkout. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">NoCheckoutException</td><td>Calling this accessor before a checkout was created for the <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a>. See Cart.GetWebCheckoutLink</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <h2 class="groupheader">Property Documentation</h2>
 <a id="a1a0f29106f9c12d332ec256464db7a10"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1a0f29106f9c12d332ec256464db7a10">&#9670;&nbsp;</a></span>LineItems</h2>
@@ -151,8 +401,10 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>Assets/Shopify/Unity/Cart.CheckoutAccessors.cs</li>
 <li>Assets/Shopify/Unity/Cart.cs</li>
+<li>Assets/Shopify/Unity/Cart.Poll.cs</li>
 </ul>
 </div><!-- contents -->
 <address class="footer"><small>

@@ -1,17 +1,14 @@
 var searchData=
 [
-  ['observabledictionary',['ObservableDictionary',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_observable_dictionary.html',1,'Shopify::Unity::SDK']]],
-  ['observabledictionary_3c_20string_2c_20string_20_3e',['ObservableDictionary&lt; string, string &gt;',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_observable_dictionary.html',1,'Shopify::Unity::SDK']]],
-  ['order',['Order',['../class_shopify_1_1_unity_1_1_order.html',1,'Shopify::Unity']]],
-  ['orderconnection',['OrderConnection',['../class_shopify_1_1_unity_1_1_order_connection.html',1,'Shopify::Unity']]],
-  ['orderconnectionquery',['OrderConnectionQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_order_connection_query.html',1,'Shopify::Unity::GraphQL']]],
-  ['orderedge',['OrderEdge',['../class_shopify_1_1_unity_1_1_order_edge.html',1,'Shopify::Unity']]],
-  ['orderedgequery',['OrderEdgeQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_order_edge_query.html',1,'Shopify::Unity::GraphQL']]],
-  ['orderlineitem',['OrderLineItem',['../class_shopify_1_1_unity_1_1_order_line_item.html',1,'Shopify::Unity']]],
-  ['orderlineitemconnection',['OrderLineItemConnection',['../class_shopify_1_1_unity_1_1_order_line_item_connection.html',1,'Shopify::Unity']]],
-  ['orderlineitemconnectionquery',['OrderLineItemConnectionQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_order_line_item_connection_query.html',1,'Shopify::Unity::GraphQL']]],
-  ['orderlineitemedge',['OrderLineItemEdge',['../class_shopify_1_1_unity_1_1_order_line_item_edge.html',1,'Shopify::Unity']]],
-  ['orderlineitemedgequery',['OrderLineItemEdgeQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_order_line_item_edge_query.html',1,'Shopify::Unity::GraphQL']]],
-  ['orderlineitemquery',['OrderLineItemQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_order_line_item_query.html',1,'Shopify::Unity::GraphQL']]],
-  ['orderquery',['OrderQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_order_query.html',1,'Shopify::Unity::GraphQL']]]
+  ['mailingaddress',['MailingAddress',['../class_shopify_1_1_unity_1_1_mailing_address.html',1,'Shopify::Unity']]],
+  ['mailingaddressconnection',['MailingAddressConnection',['../class_shopify_1_1_unity_1_1_mailing_address_connection.html',1,'Shopify::Unity']]],
+  ['mailingaddressconnectionquery',['MailingAddressConnectionQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_mailing_address_connection_query.html',1,'Shopify::Unity::GraphQL']]],
+  ['mailingaddressedge',['MailingAddressEdge',['../class_shopify_1_1_unity_1_1_mailing_address_edge.html',1,'Shopify::Unity']]],
+  ['mailingaddressedgequery',['MailingAddressEdgeQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_mailing_address_edge_query.html',1,'Shopify::Unity::GraphQL']]],
+  ['mailingaddressinput',['MailingAddressInput',['../class_shopify_1_1_unity_1_1_mailing_address_input.html',1,'Shopify::Unity']]],
+  ['mailingaddressquery',['MailingAddressQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_mailing_address_query.html',1,'Shopify::Unity::GraphQL']]],
+  ['mergecheckout',['MergeCheckout',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_merge_checkout.html',1,'Shopify::Unity::SDK']]],
+  ['mutation',['Mutation',['../class_shopify_1_1_unity_1_1_mutation.html',1,'Shopify::Unity']]],
+  ['mutationquery',['MutationQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_mutation_query.html',1,'Shopify::Unity::GraphQL']]],
+  ['mutationresponse',['MutationResponse',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_mutation_response.html',1,'Shopify::Unity::SDK']]]
 ];
