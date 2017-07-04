@@ -401,8 +401,8 @@ namespace Shopify.Tests
 
             Assert.IsNull(resultUrl, "no url was returned");
             Assert.IsNotNull(resultError, "returned an errror");
-            Assert.AreEqual(ShopifyError.ErrorType.UserError, resultError.error);
-            Assert.AreEqual("There were issues with some of the fields sent. See `cart.UserErrors`", resultError.description);
+            Assert.AreEqual(ShopifyError.ErrorType.UserError, resultError.Type);
+            Assert.AreEqual("There were issues with some of the fields sent. See `cart.UserErrors`", resultError.Description);
             Assert.AreEqual(1, cart.UserErrors.Count);
             Assert.AreEqual("someField", cart.UserErrors[0].field()[0], "fields was correct");
             Assert.AreEqual("bad things happened", cart.UserErrors[0].message(), "messaged was correct");
