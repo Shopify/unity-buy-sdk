@@ -7,6 +7,10 @@ namespace <%= namespace %>.SDK.iOS {
     using <%= namespace %>.MiniJSON;
 
     public partial class iOSNativeCheckout : IApplePayEventReceiver {
+        private enum NativePaymentStatus {
+            Success, Cancelled, Failed
+        }
+
         public void UpdateSummaryItemsForShippingIdentifier(string serializedMessage) {
             var message = NativeMessage.CreateFromJSON(serializedMessage);
 
@@ -44,7 +48,22 @@ namespace <%= namespace %>.SDK.iOS {
         }
 
         public void DidFinishCheckoutSession(string serializedMessage) {
-            //TODO
+            var message = NativeMessage.CreateFromJSON(serializedMessage);
+            var paymentStatus = (NativePaymentStatus) Enum.Parse(typeof(NativePaymentStatus), (string) message.Content);
+            switch (paymentStatus) {
+            case NativePaymentStatus.Success:
+                OnSuccess();
+                return;
+            case NativePaymentStatus.Cancelled:
+                OnCancelled();
+                return;
+            case NativePaymentStatus.Failed:
+                var error = new ShopifyError(ShopifyError.ErrorType.CheckoutError, "Unable to retrieve a payment from the user's payment provider. Fallback to web checkout.");
+                OnFailure(error);
+                return;
+            default:
+                throw new NotImplementedException(string.Format("Unable to handle PaymentStatus: {0}", message.Content));
+            }
         }
 
         private List<SummaryItem> GetSummaryItems() {
