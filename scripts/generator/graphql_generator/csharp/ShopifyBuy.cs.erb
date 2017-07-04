@@ -405,31 +405,25 @@ namespace <%= namespace %> {
         public void products(ResponseProductsHandler callback, List<string> productIds) {
             QueryRootQuery query = new QueryRootQuery();
 
-            for (int i = 0; i < productIds.Count; i++) {
-                string productId = productIds[i];
-
-                query.node(n => n
-                    .onProduct((p) => {
-                        DefaultQueries.products.Product(p, DefaultImageResolutions);
-                    }),
-                    id: productId, alias: DefaultQueries.GetAliasFromIndex(i)
-                );
-            }
+            query.nodes(n => n
+                .onProduct((p) => {
+                    DefaultQueries.products.Product(p, DefaultImageResolutions);
+                }),
+                ids: productIds
+            );
 
             Loader.Query(query, (response) => {
                 var error = (ShopifyError)response;
-                if (error != null) { 
+                if (error != null) {
                     callback(null, error);
                 } else {
                     List<Product> products = new List<Product>();
 
-                    for (int i = 0; i < productIds.Count; i++) {
-                        Product product = (Product) response.data.node(DefaultQueries.GetAliasFromIndex(i));
-
+                    foreach (Shopify.Unity.Product product in response.data.nodes()) {
                         products.Add(product);
                     }
 
-                    GetConnectionsForProducts(products, callback);
+                    callback(products, error);
                 }
             });
         }
