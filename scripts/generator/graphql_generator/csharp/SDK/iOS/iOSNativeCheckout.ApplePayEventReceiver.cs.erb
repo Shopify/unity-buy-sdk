@@ -7,6 +7,9 @@ namespace <%= namespace %>.SDK.iOS {
     using <%= namespace %>.MiniJSON;
 
     public partial class iOSNativeCheckout : IApplePayEventReceiver {
+
+        private delegate ApplePayAuthorizationStatus StatusForUserError(UserError error);
+
         public void UpdateSummaryItemsForShippingIdentifier(string serializedMessage) {
             var message = NativeMessage.CreateFromJSON(serializedMessage);
 
@@ -25,16 +28,46 @@ namespace <%= namespace %>.SDK.iOS {
             var contentDictionary = (Dictionary<string, object>)Json.Deserialize(message.Content);
             var mailingAddressInput = new MailingAddressInput(contentDictionary);
 
-            List<SummaryItem> summaryItems = null;
-            List<ShippingMethod> shippingMethods = null;
+            Action respondWithSuccess = () => {
+                message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, GetSummaryItems(), GetShippingMethods()).ToString());
+            };
 
-            CurrentCart.SetShippingAddressAndEmail(mailingAddressInput, (String)contentDictionary["email"], (ShopifyError error) => {
-                if (error == null) {
-                    summaryItems = GetSummaryItems();
-                    shippingMethods = GetShippingMethods();
-                    message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, summaryItems, shippingMethods).ToString());
-                } else {
+            Action<ShopifyError, StatusForUserError> respondToError = (ShopifyError error, StatusForUserError statusForUserError) => {
+                switch(error.error) {
+                case ShopifyError.ErrorType.GraphQL:
+                case ShopifyError.ErrorType.HTTP:
                     message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure).ToString());
+                    break;
+                case ShopifyError.ErrorType.UserError:
+                    var userErrors = CurrentCart.UserErrors;
+
+                    if (userErrors.Count > 0) {
+                        var firstUserError = userErrors[0];
+                        var status = statusForUserError(firstUserError);
+                        message.Respond(new ApplePayEventResponse(status).ToString());
+                    } else {
+                        message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure).ToString());
+                    }
+                    break;
+                }
+            };
+
+            CurrentCart.SetShippingAddress(mailingAddressInput, (ShopifyError error) => {
+                if (error == null) {
+
+                    if (contentDictionary.ContainsKey("email")) {
+                        CurrentCart.SetEmailAddress((String)contentDictionary["email"], (ShopifyError emailError) => {
+                            if (error == null) {
+                                respondWithSuccess();
+                            } else {
+                                respondToError(error, AuthorizationStatusForEmailUserError);
+                            }
+                        });
+                    } else {
+                        respondWithSuccess();
+                    }
+                } else {
+                    respondToError(error, AuthorizationStatusForShippingUserError);
                 }
             });
         }
@@ -45,6 +78,43 @@ namespace <%= namespace %>.SDK.iOS {
 
         public void DidFinishCheckoutSession(string serializedMessage) {
             //TODO
+        }
+
+        private ApplePayAuthorizationStatus AuthorizationStatusForShippingUserError(UserError error) {
+            var fields = error.field();
+            var lastIndex = fields.Count - 1;
+
+            if (lastIndex >= 0) {
+                var lastField = fields[lastIndex];
+
+                if (lastField.Equals("firstName") ||
+                    lastField.Equals("lastName") ||
+                    lastField.Equals("phone")) {
+                        return ApplePayAuthorizationStatus.InvalidShippingContact;
+                } else if (
+                    lastField.Equals("address1") ||
+                    lastField.Equals("address2") ||
+                    lastField.Equals("city") ||
+                    lastField.Equals("company") ||
+                    lastField.Equals("country") ||
+                    lastField.Equals("province") ||
+                    lastField.Equals("zip")) {
+                        return ApplePayAuthorizationStatus.InvalidShippingPostalAddress;
+                }
+            }
+
+            return ApplePayAuthorizationStatus.Failure;
+        }
+
+        private ApplePayAuthorizationStatus AuthorizationStatusForEmailUserError(UserError error) {
+            var fields = error.field();
+            var lastIndex = fields.Count - 1;
+
+            if (lastIndex >= 0 && fields[lastIndex].Equals("email")) {
+                return ApplePayAuthorizationStatus.InvalidShippingContact;
+            }
+
+            return ApplePayAuthorizationStatus.Failure;
         }
     }
 }
