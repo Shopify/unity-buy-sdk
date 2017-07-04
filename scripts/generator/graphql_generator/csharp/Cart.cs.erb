@@ -203,11 +203,7 @@ namespace <%= namespace %> {
                     callback(error);
                 } else {
                     if (UpdateState(response.checkoutShippingAddressUpdate().checkout(), response.checkoutShippingAddressUpdate().userErrors())) {
-                        if (CurrentCheckout.availableShippingRates().ready()) {
-                            callback(null);
-                        } else {
-                            PollCheckoutAndUpdate(PollCheckoutAvailableShippingRatesReady, callback);
-                        }
+                        PollCheckoutAndUpdate(PollCheckoutAvailableShippingRatesReady, callback);
                     } else {
                         HandleUserError(callback);
                     }
