@@ -107,8 +107,8 @@ namespace Shopify.Tests {
             ShopifyError error = (ShopifyError) response;
             Assert.IsNotNull(error);
             Assert.IsTrue(error is ShopifyError);
-            Assert.AreEqual(ShopifyError.ErrorType.GraphQL, error.error);
-            Assert.AreEqual("[\"Field 'doesntExist' doesn't exist on type 'Shop'\"]", error.description);
+            Assert.AreEqual(ShopifyError.ErrorType.GraphQL, error.Type);
+            Assert.AreEqual("[\"Field 'doesntExist' doesn't exist on type 'Shop'\"]", error.Description);
         }
 
         [Test]
