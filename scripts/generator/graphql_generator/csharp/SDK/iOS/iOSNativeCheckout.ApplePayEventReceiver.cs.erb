@@ -33,7 +33,7 @@ namespace <%= namespace %>.SDK.iOS {
             };
 
             Action<ShopifyError, StatusForUserError> respondToError = (ShopifyError error, StatusForUserError statusForUserError) => {
-                switch(error.error) {
+                switch(error.Type) {
                 case ShopifyError.ErrorType.GraphQL:
                 case ShopifyError.ErrorType.HTTP:
                     message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure).ToString());
@@ -89,9 +89,7 @@ namespace <%= namespace %>.SDK.iOS {
 
                 if (lastField.Equals("firstName") ||
                     lastField.Equals("lastName") ||
-                    lastField.Equals("phone")) {
-                        return ApplePayAuthorizationStatus.InvalidShippingContact;
-                } else if (
+                    lastField.Equals("phone") ||
                     lastField.Equals("address1") ||
                     lastField.Equals("address2") ||
                     lastField.Equals("city") ||
