@@ -222,18 +222,17 @@ start a native modal overlay on top of your game with a web view containing the 
 `CheckoutWithNativeWebView` which takes in 3 callback parameters:
 
 * `CheckoutDidSucceed` is called when the user has completed a checkout successfully.
-
 * `CheckoutDidCancel` is called when the user cancels out of the checkout.
-
 * `CheckoutDidFail` is called when an error was encountered during the web checkout. The callback will be passed an instance of `ShopifyError` describing the issue.
 
 ```cs
 // Sample code for adding some product variants to your cart.
 var cart = ShopifyBuy.Client().Cart();
-var secondProductVariants = (List<ProductVariant>) products[1].variants();
-ProductVariant secondProductFirstVariant = secondProductVariants[0];
+var secondProduct = products[1];
+var secondProductVariants = (List<ProductVariant>) secondProduct.variants();
+ProductVariant productVariantToCheckout = secondProductVariants[0];
 
-cart.LineItems.AddOrUpdate(secondProductFirstVariant.id(), 1);
+cart.LineItems.AddOrUpdate(productVariantToCheckout, 1);
 
 // Launches the native web checkout experience overlayed on top of your game.
 cart.CheckoutWithNativeWebView(
@@ -254,9 +253,7 @@ cart.CheckoutWithNativeWebView(
 There are a few things we're still working out for the web checkout experience:
 
 1. Handling HTTP errors gracefully. When the user loses their internet connection there is currently no way to recover.
-2. Validating the web checkout purchase with results from the API. The completion callback is invoked when we detect that the user has navigated to the
-   thank\_you page. This is the page that is shown when a checkout is completed but we don't validate the completion of the checkout with the server yet. Due to spoofing concern I wouldn't rely on this as 
-   knowledge of a completely validated purchase _yet_.
+2. Validating the web checkout purchase with results from the API. The completion callback is invoked when we detect that the user has navigated to the `thank you page`. This is the page that is shown when a checkout is completed but we don't validate the completion of the checkout with the server yet. Due to spoofing concern I wouldn't rely on this as knowledge of a completely validated purchase _yet_.
 
 ### Custom queries
 
