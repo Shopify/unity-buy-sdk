@@ -22,9 +22,9 @@ namespace <%= namespace %>.SDK {
         public readonly ErrorType Type;
         public readonly string Description;
 
-        public ShopifyError(ErrorType error, string description) {
-            this.error = error;
-            this.description = description;
+        public ShopifyError(ErrorType type, string description) {
+            this.Type = type;
+            this.Description = description;
         }
     }
 }
