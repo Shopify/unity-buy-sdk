@@ -109,9 +109,9 @@ In this example, if you called `product.title()` then an exception would be thro
 
 You can also make more complex requests using custom queries (see below).
 
-### Cart and web checkout
+### Building a cart
 
-The following example shows how to create a cart, add line items to the cart using product variants, and then create a web checkout link that will open in the player's browser.
+The following example shows how to create a cart and add line items to the cart using product variants.
 
 ```cs
 using Shopify.Unity;
@@ -138,9 +138,6 @@ void Start () {
         // alternately you can use a product variant id string to create line items
         // this example adds 1 item to the cart
         cart.LineItems.AddOrUpdate(secondProductFirstVariant.id(), 1);
-
-        // the following line will get a checkout url using the above line items and open the url in browser
-        Application.OpenURL(cart.GetWebCheckoutLink());
     });
 }
 ```
@@ -216,6 +213,47 @@ If you want to `Delete` or `Get` a line item, then use the following:
 cart.LineItems.Get(firstProduct, selectedOptions);
 cart.LineItems.Delete(firstProduct, selectedOptions);
 ```
+
+### Native web view checkout
+
+After creating an instance of `Cart` and adding items to it, you can use the `CheckoutWithNativeWebView` method to 
+start a native modal overlay on top of your game with a web view containing the checkout for the cart.
+
+`CheckoutWithNativeWebView` which takes in 3 callback parameters:
+
+* `CheckoutDidSucceed` is called when the user has completed a checkout successfully.
+* `CheckoutDidCancel` is called when the user cancels out of the checkout.
+* `CheckoutDidFail` is called when an error was encountered during the web checkout. The callback will be passed an instance of `ShopifyError` describing the issue.
+
+```cs
+// Sample code for adding some product variants to your cart.
+var cart = ShopifyBuy.Client().Cart();
+var secondProduct = products[1];
+var secondProductVariants = (List<ProductVariant>) secondProduct.variants();
+ProductVariant productVariantToCheckout = secondProductVariants[0];
+
+cart.LineItems.AddOrUpdate(productVariantToCheckout, 1);
+
+// Launches the native web checkout experience overlayed on top of your game.
+cart.CheckoutWithNativeWebView(
+    success: () => {
+        Debug.Log("User finished purchase/checkout!");
+    },
+    cancelled: () => {
+        Debug.Log("User cancelled out of the web checkout.");
+    },
+    failure: (e) => {
+        Debug.Log("Something bad happened - Error: " + e);
+    },
+ );
+```
+
+**Caveats**
+
+There are a few things we're still working out for the web checkout experience:
+
+1. Handling HTTP errors gracefully. When the user loses their internet connection there is currently no way to recover.
+2. Validating the web checkout purchase with results from the API. The completion callback is invoked when we detect that the user has navigated to the `thank you page`. This is the page that is shown when a checkout is completed but we don't validate the completion of the checkout with the server yet. Due to spoofing concern I wouldn't rely on this as knowledge of a completely validated purchase _yet_.
 
 ### Custom queries
 
