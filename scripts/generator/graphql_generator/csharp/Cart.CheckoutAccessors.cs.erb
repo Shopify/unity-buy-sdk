@@ -5,6 +5,19 @@ namespace <%= namespace %> {
     using <%= namespace %>.GraphQL;
 
     public partial class Cart {
+
+        /// <summary>
+        /// Retrieve the currency code for the current checkout.
+        /// </summary>
+        /// <exception cref="NoCheckoutException">Calling this accessor before a checkout was created for the Cart. See Cart.GetWebCheckoutLink</exception>
+        public CurrencyCode GetCurrencyCode() {
+            if (CurrentCheckout == null) {
+                throw new NoCheckoutException("There is no Checkout created from this Cart. See Cart.GetWebCheckoutLink");
+            } else {
+                return CurrentCheckout.currencyCode();
+            }
+        }
+
         /// <summary>
         /// Retrieve the shipping total for the current checkout.
         /// </summary>
