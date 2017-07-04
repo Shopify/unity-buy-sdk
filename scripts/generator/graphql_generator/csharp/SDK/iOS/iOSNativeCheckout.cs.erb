@@ -18,7 +18,7 @@ namespace <%= namespace %>.SDK.iOS {
         private static extern void _ShowApplePaySetup();
 
         [DllImport ("__Internal")]
-        private static extern bool _CreateApplePaySession(string merchantID, string countryCode, string currencyCode, string unityDelegateObjectName, string serializedSummaryItems, string serializedShippingMethods, bool requiringShipping);
+        private static extern bool _CreateApplePaySession(string unityDelegateObjectName, string merchantID, string countryCode, string currencyCode, string serializedSummaryItems, string serializedShippingMethods, bool requiringShipping);
 
         [DllImport ("__Internal")]
         private static extern void _PresentApplePayAuthorization();
@@ -82,7 +82,11 @@ namespace <%= namespace %>.SDK.iOS {
                 ApplePayReceiver.Receiver = this;
             }
 
-            _CreateApplePaySession(key, "CA", CurrentCart.GetCurrencyCode().ToString("G"), GlobalGameObject.Name, summaryString, null, CurrentCart.GetRequiresShipping());
+            if (_CreateApplePaySession(GlobalGameObject.Name, key, "CA", CurrentCart.GetCurrencyCode().ToString("G"), summaryString, null, CurrentCart.GetRequiresShipping())) {
+                _PresentApplePayAuthorization();
+            } else {
+                //TODO call checkout failure
+            }
         }
 
         private List<SummaryItem> GetSummaryItems() {
