@@ -80,6 +80,14 @@ $(function() {
 <li><a href="https://help.shopify.com/api/storefront-api/getting-started#obtaining-a-storefront-access-token">a storefront access token for your app</a></li>
 <li><a href="https://github.com/shopify/unity-buy-sdk#using-the-unity-buy-sdk-in-unity">to install the Unity Buy SDK into your Unity project</a></li>
 </ul>
+<h3>Using the SDK on iOS</h3>
+<ul>
+<li>Note that the Unity Buy SDK is largely implemented in Swift so it uses a <a href="https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html">Swift to Objective C bridging header</a><ul>
+<li>You will need to set the <code>Objective-C Bridging Header</code> property in the Build Settings for the <code>Unity-iPhone</code> target to <code>Libraries/Plugins/iOS/Shopify/Unity-iPhone-Bridging-Header.h</code></li>
+<li>If you already have a bridging header file you can simply add <code>#import "Unity-iPhone-Bridging-Header.h</code> to your own bridging header. Feel free to rename the header as well if it conflicts with an existing header.</li>
+</ul>
+</li>
+</ul>
 <h3>Initialize the SDK</h3>
 <p>This code example initializes the SDK. The <code>ShopifyBuy.Init</code> method takes two arguments. The first is a storefront access token to communicate with the Storefront API. The second is the domain name of your shop.</p>
 <div class="fragment"><div class="line"><span class="keywordtype">string</span> accessToken = <span class="stringliteral">&quot;b8d417759a62f7b342f3735dbe86b322&quot;</span>;</div><div class="line"><span class="keywordtype">string</span> shopDomain = <span class="stringliteral">&quot;unity-buy-sdk.myshopify.com&quot;</span>;</div><div class="line"></div><div class="line">ShopifyBuy.Init(accessToken, shopDomain);</div></div><!-- fragment --><p>After you initialize the SDK, you can use <code>ShopifyBuy.Client()</code> to query <a class="el" href="namespace_shopify.html">Shopify</a>. You need to initialize the SDK only once.</p>
