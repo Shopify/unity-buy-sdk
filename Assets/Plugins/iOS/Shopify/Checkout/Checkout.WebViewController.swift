@@ -55,13 +55,14 @@ class WebViewController: UIViewController {
     }
     
     override func loadView() {
-        self.view = WebContentView(frame: UIScreen.main.bounds)
+        super.loadView()
+        self.view = WebContentView(frame: view.frame)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         webView.navigationDelegate = self
-        contentView.actionButton.addTarget(self, action: #selector(didPressCancel), for: .touchUpInside)
+        contentView.setActionButton(target: self, selector: #selector(didPressCancel))
         
         loadCheckoutURL()
     }

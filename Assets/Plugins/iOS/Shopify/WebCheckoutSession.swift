@@ -39,7 +39,7 @@ protocol WebCheckoutDelegate: class {
         let session = WebCheckoutSession(unityDelegateObjectName: unityDelegateObjectName,
                                          checkoutURL: url)
         activeWebPaySession = session
-        return session;
+        return session
     }
     
     fileprivate var webViewController: Checkout.WebViewController!
@@ -64,18 +64,17 @@ protocol WebCheckoutDelegate: class {
     }
     
     func startCheckout() -> Bool {
-        let root = UnityAppController.root
         guard let url = URL(string: checkoutURL) else {
-            return false;
+            return false
         }
         
         webViewController = Checkout.WebViewController(url: url, delegate: self)
         webViewController.modalPresentationStyle = .overFullScreen
         
         showOverlay()
-        root.present(webViewController, animated: true, completion: nil)
+        UnityAppController.root.present(webViewController, animated: true, completion: nil)
         
-        return true;
+        return true
     }
     
     
@@ -99,10 +98,10 @@ protocol WebCheckoutDelegate: class {
         
         UIView.animate(withDuration: overlayAnimationDuration, animations: {
             overlay.alpha = 0
-        }) { _ in
+        }, completion: { _ in
             overlay.removeFromSuperview()
             self.overlay = nil
-        }
+        })
     }
 }
 

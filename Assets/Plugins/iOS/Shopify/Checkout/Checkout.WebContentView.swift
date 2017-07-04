@@ -37,17 +37,20 @@ class WebContentView: UIView {
         }
     }
     
+    let webView: WKWebView
+    
     private let cornerRadius: CGFloat = 3
     private let viewMargin: CGFloat = 10
     private let buttonHeight: CGFloat = 46
     private let loadingIndicatorOffset: CGFloat = 5
     private let loadingIndicatorTiming: TimeInterval = 0.3
     
-    private(set) var containerView: UIView
-    private(set) var webView: WKWebView
-    private(set) var actionButton: Button
-    private(set) var progressIndicator: WebPageProgressIndicator
+    private let containerView: UIView
+    private let actionButton: Button
+    private let progressIndicator: WebPageProgressIndicator
     private var progressTopConstraint: NSLayoutConstraint!
+    
+    private var kvoContext = 0
     
     override init(frame: CGRect) {
         containerView = UIView()
@@ -68,7 +71,7 @@ class WebContentView: UIView {
         
         super.init(frame: frame)
         
-        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
+        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: &kvoContext)
         backgroundColor = .clear
         
         containerView.addSubview(webView)
@@ -108,6 +111,10 @@ class WebContentView: UIView {
         webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress))
     }
     
+    func setActionButton(target: Any?, selector: Selector) {
+        actionButton.addTarget(target, action: selector, for: .touchUpInside)
+    }
+    
     func showProgressIndicator() {
         layoutIfNeeded()
         UIView.animate(withDuration: loadingIndicatorTiming) {
@@ -131,7 +138,7 @@ class WebContentView: UIView {
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == "estimatedProgress" {
+        if keyPath == "estimatedProgress" && context == &kvoContext {
             progressIndicator.progress = CGFloat(webView.estimatedProgress)
         } else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)

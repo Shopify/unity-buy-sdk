@@ -32,9 +32,7 @@ extension Checkout {
 class WebPageProgressIndicator: UIView {
     var progress: CGFloat = 0 {
         didSet {
-            DispatchQueue.main.async {
-                self.updateProgress()
-            }
+            self.updateProgress()
         }
     }
     
