@@ -12,6 +12,11 @@ Before you can start using the Unity Buy SDK, you need:
 - [a storefront access token for your app](https://help.shopify.com/api/storefront-api/getting-started#obtaining-a-storefront-access-token)
 - [to install the Unity Buy SDK into your Unity project](https://github.com/shopify/unity-buy-sdk#using-the-unity-buy-sdk-in-unity)
 
+### Using the SDK on iOS
+- Note that the Unity Buy SDK is largely implemented in Swift so it uses a [Swift to Objective C bridging header](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html)
+    + You will need to set the `Objective-C Bridging Header` property in the Build Settings for the `Unity-iPhone` target to `Libraries/Plugins/iOS/Shopify/Unity-iPhone-Bridging-Header.h`
+    + If you already have a bridging header file you can simply add `#import "Unity-iPhone-Bridging-Header.h` to your own bridging header. Feel free to rename the header as well if it conflicts with an existing header.
+
 ### Initialize the SDK
 
 This code example initializes the SDK. The `ShopifyBuy.Init` method takes two arguments. The first is a storefront access token to communicate with the Storefront API. The second is the domain name of your shop.
