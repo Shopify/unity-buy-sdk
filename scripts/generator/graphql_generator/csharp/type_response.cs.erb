@@ -84,7 +84,11 @@ namespace <%= namespace %> {
                                 <% when "INTERFACE" %>
                                     <%= response_init_interface(field) %>
                                 <% when "LIST" %>
-                                    <%= response_init_list(field) %>
+                                    <% if field.name == 'nodes' %>
+                                        DataToNodeList(dataJSON[key])
+                                    <% else %>
+                                        <%= response_init_list(field) %>
+                                    <% end %>
                                 <% when "ENUM" %>
                                     <%= response_init_enum(field) %>
                                 <% when "SCALAR" %>
@@ -171,5 +175,16 @@ namespace <%= namespace %> {
             }
         }
         <% end %>
+
+        private static List<Node> DataToNodeList(object data) {
+            var objects = (List<object>)data;
+            var nodes = new List<Node>();
+
+            foreach (var obj in objects) {
+                nodes.Add(UnknownNode.Create((Dictionary<string,object>) obj));
+            }
+
+            return nodes;
+        }
     }
 }
