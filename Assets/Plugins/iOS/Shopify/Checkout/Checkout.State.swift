@@ -1,5 +1,5 @@
 //
-//  MessageResponder.mm
+//  Checkout.State.swift
 //  UnityBuySDK
 //
 //  Created by Shopify.
@@ -24,13 +24,35 @@
 //  THE SOFTWARE.
 //
 
-#import <PassKit/PassKit.h>
-#import <WebKit/WebKit.h>
-#import "ProductName-Swift.h"
+import UIKit
 
-extern "C" {
-    void _RespondToNativeMessage(const char *identifier, const char *response) {
-        UnityMessage *message = [MessageCenter messageForIdentifier:[NSString stringWithUTF8String:identifier]];
-        [message completeWith:[NSString stringWithUTF8String:response]];
+extension Checkout {
+    
+enum State {
+    case checkingOut
+    case finished
+    
+    // Colors from https://polaris.shopify.com/visuals/colors#color-usage
+    var highlightColor: UIColor {
+        switch self {
+        case .checkingOut: return UIColor(hex: "FEAF9A")!
+        case .finished: return UIColor(hex: "BBE5B3")!
+        }
     }
+    
+    var normalColor: UIColor {
+        switch self {
+        case .checkingOut: return UIColor(hex: "ED6347")!
+        case .finished: return UIColor(hex: "50B83C")!
+        }
+    }
+    
+    var title: String {
+        switch self {
+        case .checkingOut: return "Cancel"
+        case .finished: return "Finish"
+        }
+    }
+}
+    
 }
