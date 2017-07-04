@@ -80,12 +80,26 @@ import PassKit
     private static func extractItems(from jsonString: String) -> [JSON]? {
         
         guard
-            let data  = jsonString.data(using: .utf8),
-            let items = try? JSONSerialization.jsonObject(with: data) as? [JSON]
-        else {
-            return nil
+            let data = jsonString.data(using: .utf8),
+            let object = try? JSONSerialization.jsonObject(with: data),
+            let stringCollection = object as? [String]
+            else {
+                return nil
         }
         
-        return items
+        var itemCollection = [JSON]()
+        for string in stringCollection {
+            
+            if let stringData  = string.data(using: .utf8),
+                let itemObject = try? JSONSerialization.jsonObject(with: stringData),
+                let itemJson   = itemObject as? JSON {
+                
+                itemCollection.append(itemJson)
+            } else {
+                return nil
+            }
+        }
+        
+        return itemCollection
     }
 }
