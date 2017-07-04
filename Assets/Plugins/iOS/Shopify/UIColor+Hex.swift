@@ -1,5 +1,5 @@
 //
-//  MessageResponder.mm
+//  UIColor+Hex.swift
 //  UnityBuySDK
 //
 //  Created by Shopify.
@@ -24,13 +24,28 @@
 //  THE SOFTWARE.
 //
 
-#import <PassKit/PassKit.h>
-#import <WebKit/WebKit.h>
-#import "ProductName-Swift.h"
+import UIKit
 
-extern "C" {
-    void _RespondToNativeMessage(const char *identifier, const char *response) {
-        UnityMessage *message = [MessageCenter messageForIdentifier:[NSString stringWithUTF8String:identifier]];
-        [message completeWith:[NSString stringWithUTF8String:response]];
+extension UIColor {
+    convenience init?(hex: String) {
+        let scanner = Scanner(string: hex)
+        scanner.scanLocation = 0
+        
+        var rgbValue: UInt64 = 0
+        
+        guard scanner.scanHexInt64(&rgbValue) else {
+            return nil
+        }
+        
+        let r = (rgbValue & 0xff0000) >> 16
+        let g = (rgbValue & 0xff00) >> 8
+        let b = rgbValue & 0xff
+        
+        self.init(
+            red: CGFloat(r) / 0xff,
+            green: CGFloat(g) / 0xff,
+            blue: CGFloat(b) / 0xff,
+            alpha: 1
+        )
     }
 }
