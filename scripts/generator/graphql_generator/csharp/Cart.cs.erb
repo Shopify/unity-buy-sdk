@@ -95,20 +95,20 @@ namespace <%= namespace %> {
             });
         }
 
-        public void CheckoutWithNativeWebView(CheckoutSuccessCallback success, CheckoutFailureCallback failure, CheckoutCancelCallback cancelled) {
+        public void CheckoutWithNativeWebView(CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
             if (WebCheckout == null) {
                 // TODO use custom exception
                 throw new Exception("This platform does not support checkout with web pay");
             }
 
             GetWebCheckoutLink(url => {
-                WebCheckout.Checkout(url, success, failure, cancelled);
+                WebCheckout.Checkout(url, success, cancelled, failure);
             }, error => {
                 failure(error);
             });
         }
 
-        public void CheckoutWithNativePay(string key, CheckoutSuccessCallback success, CheckoutFailureCallback failure, CheckoutCancelCallback cancelled) {
+        public void CheckoutWithNativePay(string key, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
             if (NativeCheckout == null) {
                 // TODO use custom exception
                 throw new Exception("This platform does not support checkout with native pay");
@@ -118,7 +118,7 @@ namespace <%= namespace %> {
                 if (error != null) {
                     failure(error);
                 } else {
-                    NativeCheckout.Checkout(key, success, failure, cancelled);
+                    NativeCheckout.Checkout(key, success, cancelled, failure);
                 }
             });
         }
