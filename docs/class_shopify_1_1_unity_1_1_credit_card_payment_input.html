@@ -87,6 +87,8 @@ Inheritance diagram for Shopify.Unity.CreditCardPaymentInput:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a02b05f1317d23575e89b1abaa5669d8f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_credit_card_payment_input.html#a02b05f1317d23575e89b1abaa5669d8f">CreditCardPaymentInput</a> (decimal <a class="el" href="class_shopify_1_1_unity_1_1_credit_card_payment_input.html#aa49a0cb7e20fe3538a2d378b31bbcb1e">amount</a>, <a class="el" href="class_shopify_1_1_unity_1_1_mailing_address_input.html">MailingAddressInput</a> <a class="el" href="class_shopify_1_1_unity_1_1_credit_card_payment_input.html#a8fea9f6e1e8062479857e6e391f2805a">billingAddress</a>, string <a class="el" href="class_shopify_1_1_unity_1_1_credit_card_payment_input.html#a6c7cde1623447efb6ec48f92e49e3d26">idempotencyKey</a>, string <a class="el" href="class_shopify_1_1_unity_1_1_credit_card_payment_input.html#a0e94602aeb39fe25fb96957902ea2be9">vaultId</a>, bool? <a class="el" href="class_shopify_1_1_unity_1_1_credit_card_payment_input.html#aceedaa1b33685474ce169a13c3df0eee">test</a>=null)</td></tr>
 <tr class="separator:a02b05f1317d23575e89b1abaa5669d8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7692e8db85e9344017ae1f3e0395d2b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_credit_card_payment_input.html#af7692e8db85e9344017ae1f3e0395d2b">CreditCardPaymentInput</a> (Dictionary&lt; string, object &gt; dataJSON)</td></tr>
+<tr class="separator:af7692e8db85e9344017ae1f3e0395d2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_shopify_1_1_unity_1_1_s_d_k_1_1_input_base"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_shopify_1_1_unity_1_1_s_d_k_1_1_input_base')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_input_base.html">Shopify.Unity.SDK.InputBase</a></td></tr>
 <tr class="memitem:a3df7c9b5c7d72df14e4f680680d02385 inherit pub_methods_class_shopify_1_1_unity_1_1_s_d_k_1_1_input_base"><td class="memItemLeft" align="right" valign="top">override string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_input_base.html#a3df7c9b5c7d72df14e4f680680d02385">ToString</a> ()</td></tr>
 <tr class="memdesc:a3df7c9b5c7d72df14e4f680680d02385 inherit pub_methods_class_shopify_1_1_unity_1_1_s_d_k_1_1_input_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a string representing a <a class="el" href="namespace_shopify_1_1_unity_1_1_graph_q_l.html">GraphQL</a> input object.  <a href="class_shopify_1_1_unity_1_1_s_d_k_1_1_input_base.html#a3df7c9b5c7d72df14e4f680680d02385">More...</a><br /></td></tr>
@@ -124,7 +126,7 @@ object&#160;</td><td class="memItemRight" valign="bottom"><b>Get</b> (string key
 <div class="textblock"><p>Specifies the fields required to complete a checkout with a <a class="el" href="namespace_shopify.html">Shopify</a> vaulted credit card payment. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a02b05f1317d23575e89b1abaa5669d8f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a02b05f1317d23575e89b1abaa5669d8f">&#9670;&nbsp;</a></span>CreditCardPaymentInput()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a02b05f1317d23575e89b1abaa5669d8f">&#9670;&nbsp;</a></span>CreditCardPaymentInput() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -166,6 +168,42 @@ object&#160;</td><td class="memItemRight" valign="bottom"><b>Get</b> (string key
           <td></td>
           <td>)</td>
           <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">amount</td><td>The amount of the payment. </td></tr>
+    <tr><td class="paramname">billingAddress</td><td>The billing address for the payment. </td></tr>
+    <tr><td class="paramname">idempotencyKey</td><td>A unique client generated key used to avoid duplicate charges. When a duplicate payment is found, the original is returned instead of creating a new one. </td></tr>
+    <tr><td class="paramname">test</td><td>Executes the payment in test mode if possible. Defaults to <code>false</code>. </td></tr>
+    <tr><td class="paramname">vaultId</td><td>The ID returned by <a class="el" href="namespace_shopify.html">Shopify</a>'s Card Vault. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af7692e8db85e9344017ae1f3e0395d2b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7692e8db85e9344017ae1f3e0395d2b">&#9670;&nbsp;</a></span>CreditCardPaymentInput() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Shopify.Unity.CreditCardPaymentInput.CreditCardPaymentInput </td>
+          <td>(</td>
+          <td class="paramtype">Dictionary&lt; string, object &gt;&#160;</td>
+          <td class="paramname"><em>dataJSON</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
   </td>
