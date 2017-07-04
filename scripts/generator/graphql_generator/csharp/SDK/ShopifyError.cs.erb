@@ -19,8 +19,8 @@ namespace <%= namespace %>.SDK {
             HTTP, GraphQL, UserError
         }
 
-        public readonly ErrorType error;
-        public readonly string description;
+        public readonly ErrorType Type;
+        public readonly string Description;
 
         public ShopifyError(ErrorType error, string description) {
             this.error = error;
