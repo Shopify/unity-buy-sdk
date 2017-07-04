@@ -107,7 +107,7 @@ protocol WebCheckoutDelegate: class {
 
 extension WebCheckoutSession: WebCheckoutDelegate {
     func didLoadThankYouPage() {
-        let message = UnityMessage(content: "loadedThankYouPage", object: unityDelegateObjectName, method: "OnNativeMesage")
+        let message = UnityMessage(content: "loadedThankYouPage", object: unityDelegateObjectName, method: "OnNativeMessage")
         MessageCenter.send(message)
     }
     
