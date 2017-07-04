@@ -87,6 +87,8 @@ Inheritance diagram for Shopify.Unity.CheckoutAttributesUpdateInput:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a3e917790885f3844a6493c7f2d432c79"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_checkout_attributes_update_input.html#a3e917790885f3844a6493c7f2d432c79">CheckoutAttributesUpdateInput</a> (bool? <a class="el" href="class_shopify_1_1_unity_1_1_checkout_attributes_update_input.html#aef51c86b66c51b47ad8faeea401057d9">allowPartialAddresses</a>=null, List&lt; <a class="el" href="class_shopify_1_1_unity_1_1_attribute_input.html">AttributeInput</a> &gt; <a class="el" href="class_shopify_1_1_unity_1_1_checkout_attributes_update_input.html#a7397a0aec591b5b3d48e44e1347f2789">customAttributes</a>=null, string <a class="el" href="class_shopify_1_1_unity_1_1_checkout_attributes_update_input.html#a95613dc1d8fed4af86da1863c91d1a48">note</a>=null)</td></tr>
 <tr class="separator:a3e917790885f3844a6493c7f2d432c79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d2595a3b63ff4df0aa8e59e9d0a6c6a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_checkout_attributes_update_input.html#a0d2595a3b63ff4df0aa8e59e9d0a6c6a">CheckoutAttributesUpdateInput</a> (Dictionary&lt; string, object &gt; dataJSON)</td></tr>
+<tr class="separator:a0d2595a3b63ff4df0aa8e59e9d0a6c6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_shopify_1_1_unity_1_1_s_d_k_1_1_input_base"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_shopify_1_1_unity_1_1_s_d_k_1_1_input_base')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_input_base.html">Shopify.Unity.SDK.InputBase</a></td></tr>
 <tr class="memitem:a3df7c9b5c7d72df14e4f680680d02385 inherit pub_methods_class_shopify_1_1_unity_1_1_s_d_k_1_1_input_base"><td class="memItemLeft" align="right" valign="top">override string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_input_base.html#a3df7c9b5c7d72df14e4f680680d02385">ToString</a> ()</td></tr>
 <tr class="memdesc:a3df7c9b5c7d72df14e4f680680d02385 inherit pub_methods_class_shopify_1_1_unity_1_1_s_d_k_1_1_input_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a string representing a <a class="el" href="namespace_shopify_1_1_unity_1_1_graph_q_l.html">GraphQL</a> input object.  <a href="class_shopify_1_1_unity_1_1_s_d_k_1_1_input_base.html#a3df7c9b5c7d72df14e4f680680d02385">More...</a><br /></td></tr>
@@ -118,7 +120,7 @@ object&#160;</td><td class="memItemRight" valign="bottom"><b>Get</b> (string key
 <div class="textblock"><p>Specifies the fields required to update a checkout's attributes. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a3e917790885f3844a6493c7f2d432c79"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3e917790885f3844a6493c7f2d432c79">&#9670;&nbsp;</a></span>CheckoutAttributesUpdateInput()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e917790885f3844a6493c7f2d432c79">&#9670;&nbsp;</a></span>CheckoutAttributesUpdateInput() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -148,6 +150,40 @@ object&#160;</td><td class="memItemRight" valign="bottom"><b>Get</b> (string key
           <td></td>
           <td>)</td>
           <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">allowPartialAddresses</td><td>Allows setting partial addresses on a <a class="el" href="class_shopify_1_1_unity_1_1_checkout.html" title="A container for all the information required to checkout items and pay. ">Checkout</a>, skipping the full validation of attributes. The required attributes are city, province, and country. Full validation of the addresses is still done at complete time. </td></tr>
+    <tr><td class="paramname">customAttributes</td><td>A list of extra information that is added to the checkout. </td></tr>
+    <tr><td class="paramname">note</td><td>The text of an optional note that a shop owner can attach to the checkout. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a0d2595a3b63ff4df0aa8e59e9d0a6c6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d2595a3b63ff4df0aa8e59e9d0a6c6a">&#9670;&nbsp;</a></span>CheckoutAttributesUpdateInput() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Shopify.Unity.CheckoutAttributesUpdateInput.CheckoutAttributesUpdateInput </td>
+          <td>(</td>
+          <td class="paramtype">Dictionary&lt; string, object &gt;&#160;</td>
+          <td class="paramname"><em>dataJSON</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
   </td>

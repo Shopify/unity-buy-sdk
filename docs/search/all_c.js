@@ -10,6 +10,7 @@ var searchData=
   ['mailingaddressquery',['MailingAddressQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_mailing_address_query.html',1,'Shopify.Unity.GraphQL.MailingAddressQuery'],['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_mailing_address_query.html#a22bcd4c5ebd5c114f967eb5e344a9f34',1,'Shopify.Unity.GraphQL.MailingAddressQuery.MailingAddressQuery()']]],
   ['maskednumber',['maskedNumber',['../class_shopify_1_1_unity_1_1_credit_card.html#a169f89e811a45d77ce2d16dbf2fbfcd1',1,'Shopify.Unity.CreditCard.maskedNumber()'],['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_credit_card_query.html#a7fb3692f81dcbfcca8ae39ab490f4857',1,'Shopify.Unity.GraphQL.CreditCardQuery.maskedNumber()']]],
   ['mdl',['MDL',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba348d31a82fa0f420fc0cde4a1d0d845d',1,'Shopify::Unity']]],
+  ['mergecheckout',['MergeCheckout',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_merge_checkout.html',1,'Shopify::Unity::SDK']]],
   ['message',['message',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_user_error_query.html#aae180a21ecce7083568e7311e6ca5145',1,'Shopify.Unity.GraphQL.UserErrorQuery.message()'],['../class_shopify_1_1_unity_1_1_user_error.html#a89672573bce60f1902bc44f8fe2a1068',1,'Shopify.Unity.UserError.message()']]],
   ['mga',['MGA',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbae4e393f29af8aac8d614354c3d5f3f4b',1,'Shopify::Unity']]],
   ['mkd',['MKD',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba0548a9028acd6263c147e79e4f88cba9',1,'Shopify::Unity']]],

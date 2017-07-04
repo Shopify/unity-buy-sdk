@@ -8,5 +8,6 @@ var searchData=
   ['cny',['CNY',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba889ee9331f891492f89b1e578fa377e0',1,'Shopify::Unity']]],
   ['cop',['COP',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba97afc5c19a02014cfde1c064281437c5',1,'Shopify::Unity']]],
   ['crc',['CRC',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba1a4b5d84a0328c4a33bd669c608a34c3',1,'Shopify::Unity']]],
+  ['cve',['CVE',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba6ee17bdf4a7da206068fe02847a4aed5',1,'Shopify::Unity']]],
   ['czk',['CZK',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbaf7798e50e553b23427e7df0a7a2652f5',1,'Shopify::Unity']]]
 ];

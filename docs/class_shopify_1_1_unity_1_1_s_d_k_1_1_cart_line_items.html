@@ -64,6 +64,8 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_items-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Shopify.Unity.SDK.CartLineItems Class Reference</div>  </div>
@@ -75,6 +77,9 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a334095ebda12550ce9947813b1d41fb1"><td class="memItemLeft" align="right" valign="top"><a id="a334095ebda12550ce9947813b1d41fb1"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>CartLineItems</b> (Action&lt; string &gt; onDeleteLineItem)</td></tr>
+<tr class="separator:a334095ebda12550ce9947813b1d41fb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07c9d25c2d997bfdf8cc5df579126e05"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_items.html#a07c9d25c2d997bfdf8cc5df579126e05">AddOrUpdate</a> (string variantId, long? quantity=null, Dictionary&lt; string, string &gt; customAttributes=null)</td></tr>
 <tr class="memdesc:a07c9d25c2d997bfdf8cc5df579126e05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds or updates an existing line item using a variant id.  <a href="#a07c9d25c2d997bfdf8cc5df579126e05">More...</a><br /></td></tr>
 <tr class="separator:a07c9d25c2d997bfdf8cc5df579126e05"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -105,6 +110,24 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac185b209f71eeb77745637e03a319533"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_items.html#ac185b209f71eeb77745637e03a319533">Delete</a> (<a class="el" href="class_shopify_1_1_unity_1_1_product.html">Product</a> product, Dictionary&lt; string, string &gt; selectedOptions)</td></tr>
 <tr class="memdesc:ac185b209f71eeb77745637e03a319533"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes one Line Item based on a <a class="el" href="class_shopify_1_1_unity_1_1_product.html" title="A product represents an individual item for sale in a Shopify store. Products are often physical...">Product</a> and selected options. If a line item was deleted, <code>true</code> will be returned. If no line item was deleted, <code>false</code> will be returned.  <a href="#ac185b209f71eeb77745637e03a319533">More...</a><br /></td></tr>
 <tr class="separator:ac185b209f71eeb77745637e03a319533"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab13078d07df4cc4e3ebf42c35421394a"><td class="memItemLeft" align="right" valign="top"><a id="ab13078d07df4cc4e3ebf42c35421394a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateLineItemsFromCheckoutLineItems</b> (List&lt; <a class="el" href="class_shopify_1_1_unity_1_1_checkout_line_item.html">CheckoutLineItem</a> &gt; checkoutLineItems)</td></tr>
+<tr class="separator:ab13078d07df4cc4e3ebf42c35421394a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a7946adc94e9f13299343a29a4e70023b"><td class="memItemLeft" align="right" valign="top"><a id="a7946adc94e9f13299343a29a4e70023b"></a>
+static List&lt; <a class="el" href="class_shopify_1_1_unity_1_1_checkout_line_item_input.html">CheckoutLineItemInput</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ConvertToCheckoutLineItemInput</b> (List&lt; <a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html">CartLineItem</a> &gt; lineItems)</td></tr>
+<tr class="separator:a7946adc94e9f13299343a29a4e70023b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcfb53d02ccbc8a1008a03bf6329221c"><td class="memItemLeft" align="right" valign="top"><a id="afcfb53d02ccbc8a1008a03bf6329221c"></a>
+static List&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ConvertToLineItemIds</b> (List&lt; <a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html">CartLineItem</a> &gt; lineItems)</td></tr>
+<tr class="separator:afcfb53d02ccbc8a1008a03bf6329221c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:afd9be0fba50b7981cb8d6088e44cadc1"><td class="memItemLeft" align="right" valign="top"><a id="afd9be0fba50b7981cb8d6088e44cadc1"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsSaved</b><code> [get]</code></td></tr>
+<tr class="separator:afd9be0fba50b7981cb8d6088e44cadc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Is used to add, update, or delete line items in a <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a> </p>

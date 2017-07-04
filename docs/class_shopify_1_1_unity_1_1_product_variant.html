@@ -91,6 +91,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afb366b628d709fecdba056944d590b72"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_product_variant.html#afb366b628d709fecdba056944d590b72">available</a> ()</td></tr>
 <tr class="memdesc:afb366b628d709fecdba056944d590b72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates if the product variant is in stock.  <a href="#afb366b628d709fecdba056944d590b72">More...</a><br /></td></tr>
 <tr class="separator:afb366b628d709fecdba056944d590b72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbb7d691bffe65541829ee78fe9d9fea"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_product_variant.html#afbb7d691bffe65541829ee78fe9d9fea">availableForSale</a> ()</td></tr>
+<tr class="memdesc:afbb7d691bffe65541829ee78fe9d9fea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates if the product variant is available for sale.  <a href="#afbb7d691bffe65541829ee78fe9d9fea">More...</a><br /></td></tr>
+<tr class="separator:afbb7d691bffe65541829ee78fe9d9fea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6263f6adb76bf929f9eafa32173045c3"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_product_variant.html#a6263f6adb76bf929f9eafa32173045c3">id</a> ()</td></tr>
 <tr class="memdesc:a6263f6adb76bf929f9eafa32173045c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Globally unique identifier.  <a href="#a6263f6adb76bf929f9eafa32173045c3">More...</a><br /></td></tr>
 <tr class="separator:a6263f6adb76bf929f9eafa32173045c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -129,9 +132,10 @@ T&#160;</td><td class="memItemRight" valign="bottom"><b>Get&lt; T &gt;</b> (stri
 <tr class="memitem:aa6be3715067dd251c1ec6d9ad9002f87 inherit pro_attribs_class_shopify_1_1_unity_1_1_s_d_k_1_1_abstract_response"><td class="memItemLeft" align="right" valign="top"><a id="aa6be3715067dd251c1ec6d9ad9002f87"></a>
 Dictionary&lt; string, object &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Data</b></td></tr>
 <tr class="separator:aa6be3715067dd251c1ec6d9ad9002f87 inherit pro_attribs_class_shopify_1_1_unity_1_1_s_d_k_1_1_abstract_response"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66e2154cd24270ceaa872166c386edf4 inherit pro_attribs_class_shopify_1_1_unity_1_1_s_d_k_1_1_abstract_response"><td class="memItemLeft" align="right" valign="top"><a id="a66e2154cd24270ceaa872166c386edf4"></a>
-Dictionary&lt; string, object &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>DataJSON</b></td></tr>
-<tr class="separator:a66e2154cd24270ceaa872166c386edf4 inherit pro_attribs_class_shopify_1_1_unity_1_1_s_d_k_1_1_abstract_response"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_class_shopify_1_1_unity_1_1_s_d_k_1_1_abstract_response"><td colspan="2" onclick="javascript:toggleInherit('properties_class_shopify_1_1_unity_1_1_s_d_k_1_1_abstract_response')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_abstract_response.html">Shopify.Unity.SDK.AbstractResponse</a></td></tr>
+<tr class="memitem:a66e2154cd24270ceaa872166c386edf4 inherit properties_class_shopify_1_1_unity_1_1_s_d_k_1_1_abstract_response"><td class="memItemLeft" align="right" valign="top"><a id="a66e2154cd24270ceaa872166c386edf4"></a>
+Dictionary&lt; string, object &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>DataJSON</b><code> [get, protected set]</code></td></tr>
+<tr class="separator:a66e2154cd24270ceaa872166c386edf4 inherit properties_class_shopify_1_1_unity_1_1_s_d_k_1_1_abstract_response"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A product variant represents a different version of a product, such as differing sizes or differing colors. </p>
@@ -195,6 +199,34 @@ Dictionary&lt; string, object &gt;&#160;</td><td class="memItemRight" valign="bo
 </div><div class="memdoc">
 
 <p>Indicates if the product variant is in stock. </p>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000002">Deprecated:</a></b></dt><dd>Use <code>availableForSale</code> instead </dd></dl>
+
+</div>
+</div>
+<a id="afbb7d691bffe65541829ee78fe9d9fea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afbb7d691bffe65541829ee78fe9d9fea">&#9670;&nbsp;</a></span>availableForSale()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Shopify.Unity.ProductVariant.availableForSale </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Indicates if the product variant is available for sale. </p>
 
 </div>
 </div>
