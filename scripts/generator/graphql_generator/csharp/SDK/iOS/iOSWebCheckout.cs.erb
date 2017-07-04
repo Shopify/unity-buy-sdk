@@ -39,6 +39,7 @@ namespace <%= namespace %>.SDK.iOS {
                 OnSuccess();
             } else if (message.Content == "cancelled") {
                 OnCancelled();
+                message.Respond("");
             }
         }
     }

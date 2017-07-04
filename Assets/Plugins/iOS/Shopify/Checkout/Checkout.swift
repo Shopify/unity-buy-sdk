@@ -1,5 +1,5 @@
 //
-//  MessageResponder.mm
+//  Checkout.swift
 //  UnityBuySDK
 //
 //  Created by Shopify.
@@ -24,13 +24,6 @@
 //  THE SOFTWARE.
 //
 
-#import <PassKit/PassKit.h>
-#import <WebKit/WebKit.h>
-#import "ProductName-Swift.h"
+import Foundation
 
-extern "C" {
-    void _RespondToNativeMessage(const char *identifier, const char *response) {
-        UnityMessage *message = [MessageCenter messageForIdentifier:[NSString stringWithUTF8String:identifier]];
-        [message completeWith:[NSString stringWithUTF8String:response]];
-    }
-}
+enum Checkout {}

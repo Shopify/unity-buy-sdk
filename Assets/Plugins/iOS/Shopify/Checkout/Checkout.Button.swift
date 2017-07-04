@@ -1,5 +1,5 @@
 //
-//  MessageResponder.mm
+//  Checkout.Button.swift
 //  UnityBuySDK
 //
 //  Created by Shopify.
@@ -24,13 +24,47 @@
 //  THE SOFTWARE.
 //
 
-#import <PassKit/PassKit.h>
-#import <WebKit/WebKit.h>
-#import "ProductName-Swift.h"
+import UIKit
 
-extern "C" {
-    void _RespondToNativeMessage(const char *identifier, const char *response) {
-        UnityMessage *message = [MessageCenter messageForIdentifier:[NSString stringWithUTF8String:identifier]];
-        [message completeWith:[NSString stringWithUTF8String:response]];
+extension Checkout {
+
+// Encapsulates the changing of the colors and state of the bottom button.
+class Button: UIButton {
+    var checkoutState: Checkout.State {
+        didSet {
+            updateButton()
+        }
     }
+    
+    override var isHighlighted: Bool {
+        get {
+            return super.isHighlighted
+        }
+        set (value) {
+            super.isHighlighted = value
+            updateButton()
+        }
+    }
+    
+    init(cornerRadius: CGFloat) {
+        checkoutState = .checkingOut
+        super.init(frame: CGRect.zero)
+        setTitleColor(.white, for: .normal)
+        layer.cornerRadius = cornerRadius
+        translatesAutoresizingMaskIntoConstraints = false
+        titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        
+        updateButton()
+    }
+    
+    private func updateButton() {
+        setTitle(checkoutState.title, for: .normal)
+        backgroundColor = isHighlighted ? checkoutState.highlightColor : checkoutState.normalColor
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
 }
