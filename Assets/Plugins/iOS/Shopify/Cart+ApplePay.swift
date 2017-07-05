@@ -91,7 +91,6 @@ import PassKit
             if let stringData  = string.data(using: .utf8),
                 let itemObject = try? JSONSerialization.jsonObject(with: stringData),
                 let itemJson   = itemObject as? JSON {
-                
                 return itemJson
             } else {
                 return nil
