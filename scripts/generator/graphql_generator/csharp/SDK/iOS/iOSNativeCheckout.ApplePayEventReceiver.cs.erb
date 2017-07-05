@@ -12,9 +12,6 @@ namespace <%= namespace %>.SDK.iOS {
             Success, Cancelled, Failed
         }
 
-
-        private delegate ApplePayAuthorizationStatus StatusForUserError(UserError error);
-
         public void UpdateSummaryItemsForShippingIdentifier(string serializedMessage) {
             var message = NativeMessage.CreateFromJSON(serializedMessage);
 
@@ -37,7 +34,7 @@ namespace <%= namespace %>.SDK.iOS {
                 message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, GetSummaryItems(), GetShippingMethods()).ToJsonString());
             };
 
-            Action<ShopifyError, StatusForUserError> respondToError = (ShopifyError error, StatusForUserError statusForUserError) => {
+            Action<ShopifyError> respondToError = (ShopifyError error) => {
                 switch(error.Type) {
                 case ShopifyError.ErrorType.GraphQL:
                 case ShopifyError.ErrorType.HTTP:
@@ -48,10 +45,8 @@ namespace <%= namespace %>.SDK.iOS {
 
                     if (userErrors.Count > 0) {
                         var firstUserError = userErrors[0];
-                        var status = statusForUserError(firstUserError);
-
-                        message.Respond(new ApplePayEventResponse(status).ToJsonString(), GetShippingMethods());
-
+                        var status = AuthorizationStatusForPreliminaryShippingUserError(firstUserError);
+                        message.Respond(new ApplePayEventResponse(status, GetSummaryItems()).ToJsonString());
                     } else {
                         message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure).ToJsonString());
                     }
@@ -63,7 +58,7 @@ namespace <%= namespace %>.SDK.iOS {
                 if (error == null) {
                     respondWithSuccess();
                 } else {
-                    respondToError(error, AuthorizationStatusForShippingUserError);
+                    respondToError(error);
                 }
             });
         }
