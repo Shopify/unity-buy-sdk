@@ -35,29 +35,16 @@ namespace <%= namespace %>.SDK.iOS {
             };
 
             Action<ShopifyError> respondToError = (ShopifyError error) => {
-                ApplePayEventResponse response;
+                ApplePayEventResponse response = new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure);
 
-                switch(error.Type) {
-                case ShopifyError.ErrorType.UserError:
+                // Check to see if this is a recoverable user error
+                if (error.Type == ShopifyError.ErrorType.UserError) {
                     var userErrors = CurrentCart.UserErrors;
+                    var status = GetAuthorizationStatusFromPreliminaryShippingUserErrors(userErrors);
 
-                    if (userErrors.Count > 0) {
-                        ApplePayAuthorizationStatus statusToReturn = ApplePayAuthorizationStatus.Failure;
-                        foreach (var userError in userErrors) {
-                            statusToReturn = AuthorizationStatusForPreliminaryShippingUserError(userError);
-
-                            if (statusToReturn == ApplePayAuthorizationStatus.Failure) {
-                                break;
-                            }
-                        }
-                        response = new ApplePayEventResponse(statusToReturn, GetSummaryItems());
-                    } else {
-                        response = new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure);
+                    if (status == ApplePayAuthorizationStatus.InvalidShippingPostalAddress) {
+                        response = new ApplePayEventResponse(status, GetSummaryItems());
                     }
-                    break;
-                default:
-                    response = new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure);
-                    break;
                 }
 
                 message.Respond(response.ToJsonString());
@@ -96,21 +83,20 @@ namespace <%= namespace %>.SDK.iOS {
         // We only receive a partial shipping address before the user has authenticated
         // City, State, Zip, Country
         // So we will receive user errors from our GraphQL query, even though it was a success
-        private ApplePayAuthorizationStatus AuthorizationStatusForPreliminaryShippingUserError(UserError error) {
-            var fields = error.field();
-            var lastIndex = fields.Count - 1;
+        private ApplePayAuthorizationStatus GetAuthorizationStatusFromPreliminaryShippingUserErrors(List<UserError> errors) {
 
-            if (lastIndex >= 0) {
-                var lastField = fields[lastIndex];
-                if (lastField.Equals("city") ||
-                    lastField.Equals("country") ||
-                    lastField.Equals("province") ||
-                    lastField.Equals("zip")) {
-                        return ApplePayAuthorizationStatus.InvalidShippingPostalAddress;
+            foreach (var error in errors) {
+                var fields = error.field();
+                var lastField = fields[fields.Count - 1];
+                var isInvalidShippingAddressError =
+                    lastField.Equals("city") || lastField.Equals("country") || lastField.Equals("province") || lastField.Equals("zip");
+
+                if (!isInvalidShippingAddressError) {
+                    return ApplePayAuthorizationStatus.Failure;
                 }
             }
 
-            return ApplePayAuthorizationStatus.Failure;
+            return ApplePayAuthorizationStatus.InvalidShippingPostalAddress;
         }
     }
 }
