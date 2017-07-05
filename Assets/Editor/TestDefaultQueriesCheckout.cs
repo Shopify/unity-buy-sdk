@@ -15,7 +15,7 @@ namespace Shopify.Tests
 
             DefaultQueries.checkout.Create(query, lineItems);
             Assert.AreEqual(
-                "mutation{checkoutCreate (input:{lineItems:[]}){checkout {id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}userErrors {field message }}}",
+                "mutation{checkoutCreate (input:{allowPartialAddresses:true,lineItems:[]}){checkout {id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}userErrors {field message }}}",
                 query.ToString()
             );
         }

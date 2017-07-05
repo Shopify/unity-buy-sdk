@@ -16,7 +16,8 @@ namespace <%= namespace %>.SDK {
                         .message()
                     ),
                 input: new CheckoutCreateInput(
-                    lineItems: lineItems
+                    lineItems: lineItems,
+                    allowPartialAddresses: true
                 )
             );
         }
