@@ -1,0 +1,52 @@
+#if UNITY_iPHONE
+namespace <%= namespace %>.SDK.iOS {
+    using System.Collections;
+    using System.Collections.Generic;
+    using <%= namespace %>;
+    using <%= namespace %>.MiniJSON;
+
+    public class PaymentDeserializer {
+
+        private enum PaymentField {
+            BillingContact,
+            ShippingContact,
+            ShippingIdentifier,
+            TokenData
+        }
+
+        private enum TokenField {
+            PaymentData,
+            TransactionIdentifier
+        }
+
+        readonly public MailingAddressInput BillingAddress;
+        readonly public MailingAddressInput ShippingAddress;
+        readonly public string ShippingIdentifier;
+        readonly public string TransactionIdentifier;
+        readonly public string PaymentData;
+
+        public PaymentDeserializer(string stringJson) {
+            var dictionary = (Dictionary<string, object>)Json.Deserialize(stringJson);
+
+            // Billing Address
+            var billingContactDictionary = (Dictionary<string, object>)dictionary[PaymentField.BillingContact.ToString("G")];
+            BillingAddress = new MailingAddressInput(billingContactDictionary);
+
+            // Shipping Address
+            var shippingContactDictionary = (Dictionary<string, object>)dictionary[PaymentField.ShippingContact.ToString("G")];
+            ShippingAddress = new MailingAddressInput(shippingContactDictionary);
+
+            // Shipping Identifier
+            ShippingIdentifier = (string)dictionary[PaymentField.ShippingIdentifier.ToString("G")];
+
+            // Transaction Identifier
+            var tokenDictionary = (Dictionary<string, object>)dictionary[PaymentField.TokenData.ToString("G")];
+            TransactionIdentifier = (string)tokenDictionary[TokenField.TransactionIdentifier.ToString("G")];
+
+            // Payment Data
+            var paymentDictionary = tokenDictionary[TokenField.PaymentData.ToString("G")];
+            PaymentData = Json.Serialize(paymentDictionary);
+        }
+    }
+}
+#endif
