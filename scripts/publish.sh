@@ -73,6 +73,9 @@ $UNITY_PATH \
     -exportPackage Assets/Shopify Assets/Plugins shopify-buy.unitypackage \
     -quit
 
+# restore files used for native extensions
+restore_native_tests
+
 if [ $? = 0 ] ; then
     # clean up examples.txt
     rm $PROJECT_ROOT/Assets/Shopify/examples.txt
