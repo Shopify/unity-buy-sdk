@@ -27,21 +27,23 @@
 import Foundation
 import PassKit
 
-enum PaymentField: String {
-    case billingContact
-    case shippingContact
-    case shippingIdentifier
-    case tokenData
-}
-
 extension PKPayment: Serializable {
-    
+
     func serializedJSON() -> JSON {
         var json = JSON()
-        json.insert(nullable: billingContact?.serializedJSON(),       forKey: PaymentField.billingContact)
-        json.insert(nullable: self.shippingContact?.serializedJSON(), forKey: PaymentField.shippingContact)
-        json.insert(nullable: self.shippingMethod?.identifier,        forKey: PaymentField.shippingIdentifier)
-        json.insert(nullable: self.token.serializedJSON(),            forKey: PaymentField.tokenData)
+        json.insert(nullable: billingContact?.serializedJSON(),       forKey: Field.billingContact)
+        json.insert(nullable: self.shippingContact?.serializedJSON(), forKey: Field.shippingContact)
+        json.insert(nullable: self.shippingMethod?.identifier,        forKey: Field.shippingIdentifier)
+        json.insert(nullable: self.token.serializedJSON(),            forKey: Field.tokenData)
         return json
+    }
+}
+
+extension PKPayment {
+    enum Field: String {
+        case billingContact     = "BillingContact"
+        case shippingContact    = "ShippingContact"
+        case shippingIdentifier = "ShippingIdentifier"
+        case tokenData          = "TokenData"
     }
 }
