@@ -111,40 +111,6 @@ namespace <%= namespace %>.SDK.iOS {
 
             return ApplePayAuthorizationStatus.Failure;
         }
-
-        private ApplePayAuthorizationStatus AuthorizationStatusForShippingUserError(UserError error) {
-            var fields = error.field();
-            var lastIndex = fields.Count - 1;
-
-            if (lastIndex >= 0) {
-                var lastField = fields[lastIndex];
-                if (lastField.Equals("firstName") ||
-                    lastField.Equals("lastName") ||
-                    lastField.Equals("phone") ||
-                    lastField.Equals("address1") ||
-                    lastField.Equals("address2") ||
-                    lastField.Equals("city") ||
-                    lastField.Equals("company") ||
-                    lastField.Equals("country") ||
-                    lastField.Equals("province") ||
-                    lastField.Equals("zip")) {
-                        return ApplePayAuthorizationStatus.InvalidShippingPostalAddress;
-                }
-            }
-
-            return ApplePayAuthorizationStatus.Failure;
-        }
-
-        private ApplePayAuthorizationStatus AuthorizationStatusForEmailUserError(UserError error) {
-            var fields = error.field();
-            var lastIndex = fields.Count - 1;
-
-            if (lastIndex >= 0 && fields[lastIndex].Equals("email")) {
-                return ApplePayAuthorizationStatus.InvalidShippingContact;
-            }
-
-            return ApplePayAuthorizationStatus.Failure;
-        }
     }
 }
 #endif
