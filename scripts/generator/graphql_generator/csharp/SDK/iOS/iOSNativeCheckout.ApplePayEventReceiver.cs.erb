@@ -49,7 +49,9 @@ namespace <%= namespace %>.SDK.iOS {
                     if (userErrors.Count > 0) {
                         var firstUserError = userErrors[0];
                         var status = statusForUserError(firstUserError);
-                        message.Respond(new ApplePayEventResponse(status).ToJsonString());
+
+                        message.Respond(new ApplePayEventResponse(status).ToJsonString(), GetShippingMethods());
+
                     } else {
                         message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure).ToJsonString());
                     }
@@ -59,17 +61,7 @@ namespace <%= namespace %>.SDK.iOS {
 
             CurrentCart.SetShippingAddress(mailingAddressInput, (ShopifyError error) => {
                 if (error == null) {
-                    if (contentDictionary.ContainsKey("email")) {
-                        CurrentCart.SetEmailAddress((String)contentDictionary["email"], (ShopifyError emailError) => {
-                            if (error == null) {
-                                respondWithSuccess();
-                            } else {
-                                respondToError(error, AuthorizationStatusForEmailUserError);
-                            }
-                        });
-                    } else {
-                        respondWithSuccess();
-                    }
+                    respondWithSuccess();
                 } else {
                     respondToError(error, AuthorizationStatusForShippingUserError);
                 }
@@ -97,13 +89,35 @@ namespace <%= namespace %>.SDK.iOS {
             }
         }
 
+        // We only receive a partial shipping address before the user has authenticated
+        // City, State, Zip, Country
+        // So we will receive user errors from our GraphQL query, even though it was a success
+        private ApplePayAuthorizationStatus AuthorizationStatusForPreliminaryShippingUserError(UserError error) {
+            var fields = error.field();
+            var lastIndex = fields.Count - 1;
+
+            if (lastIndex >= 0) {
+                var lastField = fields[lastIndex];
+                if (lastField.Equals("city") ||
+                    lastField.Equals("country") ||
+                    lastField.Equals("province") ||
+                    lastField.Equals("zip")) {
+                        return ApplePayAuthorizationStatus.InvalidShippingPostalAddress;
+                }
+                else {
+                    return ApplePayAuthorizationStatus.Success;
+                }
+            }
+
+            return ApplePayAuthorizationStatus.Failure;
+        }
+
         private ApplePayAuthorizationStatus AuthorizationStatusForShippingUserError(UserError error) {
             var fields = error.field();
             var lastIndex = fields.Count - 1;
 
             if (lastIndex >= 0) {
                 var lastField = fields[lastIndex];
-
                 if (lastField.Equals("firstName") ||
                     lastField.Equals("lastName") ||
                     lastField.Equals("phone") ||
