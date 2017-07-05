@@ -1,5 +1,6 @@
 #if UNITY_IPHONE
 namespace <%= namespace %>.SDK.iOS {
+    using System.Collections.Generic;
     using System.Collections;
     using System;
 
@@ -13,6 +14,13 @@ namespace <%= namespace %>.SDK.iOS {
         public SummaryItem(string label, string amount) {
             Label = label;
             Amount = amount;
+        }
+
+        public override object ToJson() {
+            var dict = new Dictionary<string, object>();
+            dict["Label"] = Label;
+            dict["Amount"] = Amount;
+            return dict;
         }
     }
 }

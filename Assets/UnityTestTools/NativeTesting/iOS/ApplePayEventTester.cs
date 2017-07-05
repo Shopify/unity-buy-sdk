@@ -1,4 +1,4 @@
-﻿#if UNITY_IPHONE 
+﻿#if UNITY_IOS
 namespace Shopify.Tests.iOS {
     using System.Collections;
     using System.Collections.Generic;
