@@ -1,0 +1,28 @@
+#if UNITY_IOS
+namespace <%= namespace %>.SDK.iOS {
+    using System.Collections;
+    using System.Collections.Generic;
+    using UnityEngine;
+
+    public class ApplePayEventReceiverBridge : MonoBehaviour, IApplePayEventReceiver {
+
+        public IApplePayEventReceiver Receiver;
+
+        public void UpdateSummaryItemsForShippingIdentifier(string serializedMessage) {
+            Receiver.UpdateSummaryItemsForShippingIdentifier(serializedMessage);
+        }
+
+        public void UpdateSummaryItemsForShippingContact(string serializedMessage) {
+            Receiver.UpdateSummaryItemsForShippingContact(serializedMessage);
+        }
+
+        public void FetchApplePayCheckoutStatusForToken(string serializedMessage) {
+            Receiver.FetchApplePayCheckoutStatusForToken(serializedMessage);
+        }
+
+        public void DidFinishCheckoutSession(string serializedMessage) {
+            Receiver.DidFinishCheckoutSession(serializedMessage);
+        }
+    }
+}
+#endif

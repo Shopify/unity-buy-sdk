@@ -31,7 +31,6 @@ class CartTests: XCTestCase {
         
     func testCreatePaymentSession() {
         
-        let dataKey        = "Items"
         let itemLabel      = "SubTotal"
         let itemAmount     = "1.00"
         let shippingLabel  = "Free Shipping"
@@ -41,8 +40,8 @@ class CartTests: XCTestCase {
         
         let summaryItems        = [Models.createSummaryItemJson(amount: itemAmount, label: itemLabel)]
         let shippingMethods     = [Models.createShippingMethodJson(amount: shippingAmount, label: shippingLabel, identifier: identifier, detail: detail)]
-        let summaryItemData     = try! JSONSerialization.data(withJSONObject: [dataKey: summaryItems])
-        let shippingMethodData  = try! JSONSerialization.data(withJSONObject: [dataKey: shippingMethods])
+        let summaryItemData     = try! JSONSerialization.data(withJSONObject: summaryItems)
+        let shippingMethodData  = try! JSONSerialization.data(withJSONObject: shippingMethods)
         
         let serializedSummaryItems  = String.init(data: summaryItemData,    encoding: .utf8)!.cString(using: .utf8)
         let serializedShippingItems = String.init(data: shippingMethodData, encoding: .utf8)!.cString(using: .utf8)

@@ -47,12 +47,13 @@ namespace <%= namespace %> {
             }
         }
 
+        public Checkout CurrentCheckout { get; private set; }
+
         private const float POLL_DELAY_SECONDS = 0.5f;
         private CartLineItems _LineItems;
         private List<UserError> _UserErrors = null;
         private List<String> DeletedLineItems = new List<string>();
         private ShopifyClient Client;
-        private Checkout CurrentCheckout = null;
 
         private IWebCheckout WebCheckout;
         private INativeCheckout NativeCheckout;
@@ -170,17 +171,38 @@ namespace <%= namespace %> {
             }
         }
 
-        public void SetShippingAddressAndEmail(MailingAddressInput mailingAddressInput, string email, CompletionCallback callback) {
+        public void SetEmailAddress(string email, CompletionCallback callback) {
             MutationQuery query = new MutationQuery();
 
             DefaultQueries.checkout.EmailUpdate(query, CurrentCheckout.id(), email);
-            DefaultQueries.checkout.ShippingAddressUpdate(query, CurrentCheckout.id(), mailingAddressInput);
 
             Client.Mutation(query, (Mutation response, ShopifyError error) => {
                 if (error != null) {
                     callback(error);
                 } else {
                     if (UpdateState(response.checkoutEmailUpdate().checkout(), response.checkoutEmailUpdate().userErrors())) {
+                        if (CurrentCheckout.ready()) {
+                            callback(null);
+                        } else {
+                            PollCheckoutAndUpdate(PollCheckoutAvailableShippingRatesReady, callback);
+                        }
+                    } else {
+                        HandleUserError(callback);
+                    }
+                }
+            });
+        }
+
+        public void SetShippingAddress(MailingAddressInput mailingAddressInput, CompletionCallback callback) {
+            MutationQuery query = new MutationQuery();
+
+            DefaultQueries.checkout.ShippingAddressUpdate(query, CurrentCheckout.id(), mailingAddressInput);
+
+            Client.Mutation(query, (Mutation response, ShopifyError error) => {
+                if (error != null) {
+                    callback(error);
+                } else {
+                    if (UpdateState(response.checkoutShippingAddressUpdate().checkout(), response.checkoutShippingAddressUpdate().userErrors())) {
                         if (CurrentCheckout.availableShippingRates().ready()) {
                             callback(null);
                         } else {
