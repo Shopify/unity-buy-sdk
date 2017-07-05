@@ -120,7 +120,7 @@ namespace <%= namespace %>.SDK.iOS {
                     shippingMethods.Add(new ShippingMethod(shippingRate.title(), shippingRate.price().ToString(), shippingRate.handle()));
                 }
             } catch (Exception e) {
-                throw new Exception("Attempted to access AvailableShippingRates when CurrentCheckout has no property named AvailableShippingRates", e);
+                throw new Exception("Attempted to gather information on available shipping rates on CurrentCheckout, but CurrentCheckout do not have those properties queried", e);
             }
 
             return shippingMethods;
