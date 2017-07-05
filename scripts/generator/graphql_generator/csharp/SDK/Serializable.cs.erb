@@ -1,14 +1,14 @@
-#if !SHOPIFY_MONO_UNIT_TEST
 namespace <%= namespace %>.SDK {
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using UnityEngine;
+    using <%= namespace %>.MiniJSON;
 
-    public class Serializable {
+    public abstract class Serializable {
         public string ToJsonString() {
-            return JsonUtility.ToJson(this);
+            return Json.Serialize(ToJson());
         }
+
+        public abstract object ToJson();
     }
 }
-#endif

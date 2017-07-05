@@ -1,10 +1,11 @@
 #if !SHOPIFY_MONO_UNIT_TEST
 namespace <%= namespace %>.SDK {
     using System;
-    using UnityEngine;
+    using System.Collections.Generic;
     using System.Runtime.InteropServices;
+    using UnityEngine;
+    using <%= namespace %>.MiniJSON;
 
-    [Serializable]
     public class NativeMessage {
 
         [DllImport ("__Internal")]
@@ -13,9 +14,14 @@ namespace <%= namespace %>.SDK {
         public string Identifier;
         public string Content;
 
-        public static NativeMessage CreateFromJSON(string jsonString)
-        {
-            return JsonUtility.FromJson<NativeMessage>(jsonString);
+        public static NativeMessage CreateFromJSON(string jsonString) {
+            var dict = (Dictionary<string, object>) Json.Deserialize(jsonString);
+            return new NativeMessage((string) dict["Identifier"], (string) dict["Content"]);
+        }
+
+        public NativeMessage(string identifier, string content) {
+            Identifier = identifier;
+            Content = content;
         }
 
         public void Respond(string message) {

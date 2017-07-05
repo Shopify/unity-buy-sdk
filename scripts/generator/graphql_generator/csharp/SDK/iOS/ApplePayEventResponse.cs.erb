@@ -1,9 +1,8 @@
 #if UNITY_IPHONE
 namespace <%= namespace %>.SDK.iOS {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System;
-    using UnityEngine;
 
     public class ApplePayEventResponse: Serializable {
         public string AuthorizationStatus;
@@ -14,6 +13,25 @@ namespace <%= namespace %>.SDK.iOS {
             AuthorizationStatus = authorizationStatus.ToString("G");
             SummaryItems = summaryItems ?? new List<SummaryItem>();
             ShippingMethods = shippingMethods ?? new List<ShippingMethod>();
+        }
+
+        public override object ToJson() {
+            var dict = new Dictionary<string, object>();
+            dict["AuthorizationStatus"] = AuthorizationStatus;
+
+            var summaryItemsJSON = new List<Dictionary<string, object>>();
+            foreach (var item in SummaryItems) {
+                summaryItemsJSON.Add((Dictionary<string, object>) item.ToJson());
+            }
+            dict["SummaryItems"] = summaryItemsJSON;
+
+            var shippingMethodsJSON = new List<Dictionary<string, object>>();
+            foreach (var method in ShippingMethods) {
+                shippingMethodsJSON.Add((Dictionary<string, object>) method.ToJson());
+            }
+            dict["ShippingMethods"] = shippingMethodsJSON;
+
+            return dict;
         }
     }
 }
