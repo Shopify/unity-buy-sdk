@@ -35,32 +35,32 @@ namespace <%= namespace %>.SDK.iOS {
             };
 
             Action<ShopifyError> respondToError = (ShopifyError error) => {
+                ApplePayEventResponse response;
+
                 switch(error.Type) {
-                case ShopifyError.ErrorType.GraphQL:
-                case ShopifyError.ErrorType.HTTP:
-                    message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure).ToJsonString());
-                    break;
                 case ShopifyError.ErrorType.UserError:
                     var userErrors = CurrentCart.UserErrors;
 
                     if (userErrors.Count > 0) {
                         ApplePayAuthorizationStatus statusToReturn = ApplePayAuthorizationStatus.Failure;
                         foreach (var userError in userErrors) {
-                            var status = AuthorizationStatusForPreliminaryShippingUserError(userError);
+                            statusToReturn = AuthorizationStatusForPreliminaryShippingUserError(userError);
 
-                            if (status == ApplePayAuthorizationStatus.Failure) {
-                                message.Respond(new ApplePayEventResponse(status).ToJsonString());
-                                return;
+                            if (statusToReturn == ApplePayAuthorizationStatus.Failure) {
+                                break;
                             }
-
-                            statusToReturn = status;
                         }
-                        message.Respond(new ApplePayEventResponse(statusToReturn, GetSummaryItems()).ToJsonString());
+                        response = new ApplePayEventResponse(statusToReturn, GetSummaryItems());
                     } else {
-                        message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure).ToJsonString());
+                        response = new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure);
                     }
                     break;
+                default:
+                    response = new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure);
+                    break;
                 }
+
+                message.Respond(response.ToJsonString());
             };
 
             CurrentCart.SetShippingAddress(mailingAddressInput, (ShopifyError error) => {
