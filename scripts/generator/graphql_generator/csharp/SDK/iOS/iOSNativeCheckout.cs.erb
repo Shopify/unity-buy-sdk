@@ -24,6 +24,10 @@ namespace <%= namespace %>.SDK.iOS {
 
         private Cart CurrentCart;
 
+        private CheckoutSuccessCallback OnSuccess;
+        private CheckoutCancelCallback OnCancelled;
+        private CheckoutFailureCallback OnFailure;
+
         public iOSNativeCheckout(Cart cart) {
             CurrentCart = cart;
         }
@@ -62,6 +66,10 @@ namespace <%= namespace %>.SDK.iOS {
         /// <param name="failure">Delegate method that will be notified upon a failure during the checkout process</param>
         /// <param name="cancelled">Delegate method that will be notified upon a cancellation during the checkout process</param>
         public void Checkout(string key, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
+            OnSuccess = success;
+            OnCancelled = cancelled;
+            OnFailure = failure;
+
             throw new NotImplementedException("Native checkout (Apple Pay) not implemented yet for iOS.");
         }
     }
