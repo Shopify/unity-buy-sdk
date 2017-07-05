@@ -19,33 +19,33 @@ namespace <%= namespace %>.SDK.iOS {
             TransactionIdentifier
         }
 
-        public MailingAddressInput billingAddress { get; }
-        public MailingAddressInput shippingAddress { get; }
-        public string shippingIdentifier;
-        public string transactionIdentifier;
-        public string paymentData;
+        readonly public MailingAddressInput BillingAddress;
+        readonly public MailingAddressInput ShippingAddress;
+        readonly public string ShippingIdentifier;
+        readonly public string TransactionIdentifier;
+        readonly public string PaymentData;
 
         public PaymentDeserializer(string stringJson) {
             var dictionary = (Dictionary<string, object>)Json.Deserialize(stringJson);
 
             // Billing Address
             var billingContactDictionary = (Dictionary<string, object>)dictionary[PaymentField.BillingContact.ToString("G")];
-            billingAddress = new MailingAddressInput(billingContactDictionary);
+            BillingAddress = new MailingAddressInput(billingContactDictionary);
 
             // Shipping Address
             var shippingContactDictionary = (Dictionary<string, object>)dictionary[PaymentField.ShippingContact.ToString("G")];
-            shippingAddress = new MailingAddressInput(shippingContactDictionary);
+            ShippingAddress = new MailingAddressInput(shippingContactDictionary);
 
             // Shipping Identifier
-            shippingIdentifier = (string)dictionary[PaymentField.ShippingIdentifier.ToString("G")];
+            ShippingIdentifier = (string)dictionary[PaymentField.ShippingIdentifier.ToString("G")];
 
             // Transaction Identifier
             var tokenDictionary = (Dictionary<string, object>)dictionary[PaymentField.TokenData.ToString("G")];
-            transactionIdentifier = (string)tokenDictionary[TokenField.TransactionIdentifier.ToString("G")];
+            TransactionIdentifier = (string)tokenDictionary[TokenField.TransactionIdentifier.ToString("G")];
 
             // Payment Data
             var paymentDictionary = tokenDictionary[TokenField.PaymentData.ToString("G")];
-            paymentData = Json.Serialize(paymentDictionary);
+            PaymentData = Json.Serialize(paymentDictionary);
         }
     }
 }
