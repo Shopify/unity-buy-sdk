@@ -83,8 +83,8 @@ import PassKit
             let data = jsonString.data(using: .utf8),
             let object = try? JSONSerialization.jsonObject(with: data),
             let stringCollection = object as? [String]
-            else {
-                return nil
+        else {
+            return nil
         }
         
         return stringCollection.flatMap { string in
