@@ -10,5 +10,9 @@ namespace <%= namespace %>.SDK {
         }
 
         public abstract object ToJson();
+
+        public override string ToString() {
+            return ToJsonString();
+        }
     }
 }
