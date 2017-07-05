@@ -1,8 +1,8 @@
 #if UNITY_IPHONE
 namespace <%= namespace %>.SDK.iOS {
+    using System.Collections.Generic;
     using System.Collections;
     using System;
-
     [Serializable]
     public class ShippingMethod : SummaryItem {
 
@@ -14,6 +14,13 @@ namespace <%= namespace %>.SDK.iOS {
         public ShippingMethod(string label, string amount, string identifier, string detail = null) : base(label, amount) {
             Identifier = identifier;
             Detail = detail;
+        }
+
+        public override object ToJson() {
+            var dict = (Dictionary<string, object>) base.ToJson();
+            dict["Identifier"] = Identifier;
+            dict["Detail"] = Detail;
+            return dict;
         }
     }
 }
