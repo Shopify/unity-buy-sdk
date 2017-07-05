@@ -87,19 +87,15 @@ import PassKit
                 return nil
         }
         
-        var itemCollection = [JSON]()
-        for string in stringCollection {
-            
+        return stringCollection.flatMap { string in
             if let stringData  = string.data(using: .utf8),
                 let itemObject = try? JSONSerialization.jsonObject(with: stringData),
                 let itemJson   = itemObject as? JSON {
                 
-                itemCollection.append(itemJson)
+                return itemJson
             } else {
                 return nil
             }
         }
-        
-        return itemCollection
     }
 }

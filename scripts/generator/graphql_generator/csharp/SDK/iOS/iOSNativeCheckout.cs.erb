@@ -24,7 +24,7 @@ namespace <%= namespace %>.SDK.iOS {
         private static extern void _PresentApplePayAuthorization();
 
         private Cart CurrentCart;
-        private ApplePayEventReceiverBridge ApplePayReceiver;
+        private ApplePayEventReceiverBridge ApplePayEventBridge;
 
         private CheckoutSuccessCallback OnSuccess;
         private CheckoutCancelCallback OnCancelled;
@@ -77,9 +77,9 @@ namespace <%= namespace %>.SDK.iOS {
             var summaryString = Json.Serialize(summaryItems);
             var currencyCodeString = CurrentCart.GetCurrencyCode().ToString("G");
 
-            if (ApplePayReceiver == null) {
-                ApplePayReceiver = GlobalGameObject.AddComponent<ApplePayEventReceiverBridge>();
-                ApplePayReceiver.Receiver = this;
+            if (ApplePayEventBridge == null) {
+                ApplePayEventBridge = GlobalGameObject.AddComponent<ApplePayEventReceiverBridge>();
+                ApplePayEventBridge.Receiver = this;
             }
 
             if (_CreateApplePaySession(GlobalGameObject.Name, key, "CA", CurrentCart.GetCurrencyCode().ToString("G"), summaryString, null, CurrentCart.GetRequiresShipping())) {

@@ -1,4 +1,4 @@
-#if UNITY_IPHONE
+#if UNITY_IOS
 namespace <%= namespace %>.SDK.iOS {
     using System.Collections;
     using System.Collections.Generic;
@@ -7,10 +7,6 @@ namespace <%= namespace %>.SDK.iOS {
     public class ApplePayEventReceiverBridge : MonoBehaviour, IApplePayEventReceiver {
 
         public IApplePayEventReceiver Receiver;
-
-        public ApplePayEventReceiverBridge(IApplePayEventReceiver receiver) {
-            Receiver = receiver;
-        }
 
         public void UpdateSummaryItemsForShippingIdentifier(string serializedMessage) {
             Receiver.UpdateSummaryItemsForShippingIdentifier(serializedMessage);
