@@ -7,6 +7,7 @@ namespace <%= namespace %>.SDK.iOS {
     using <%= namespace %>.MiniJSON;
 
     public partial class iOSNativeCheckout : IApplePayEventReceiver {
+
         private enum NativePaymentStatus {
             Success, Cancelled, Failed
         }
@@ -29,16 +30,31 @@ namespace <%= namespace %>.SDK.iOS {
             var contentDictionary = (Dictionary<string, object>)Json.Deserialize(message.Content);
             var mailingAddressInput = new MailingAddressInput(contentDictionary);
 
-            List<SummaryItem> summaryItems = null;
-            List<ShippingMethod> shippingMethods = null;
+            Action respondWithSuccess = () => {
+                message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, GetSummaryItems(), GetShippingMethods()).ToJsonString());
+            };
 
-            CurrentCart.SetShippingAddressAndEmail(mailingAddressInput, (String)contentDictionary["email"], (ShopifyError error) => {
+            Action<ShopifyError> respondToError = (ShopifyError error) => {
+                ApplePayEventResponse response = new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure);
+
+                // Check to see if this is a recoverable user error
+                if (error.Type == ShopifyError.ErrorType.UserError) {
+                    var userErrors = CurrentCart.UserErrors;
+                    var status = GetAuthorizationStatusFromPreliminaryShippingUserErrors(userErrors);
+
+                    if (status == ApplePayAuthorizationStatus.InvalidShippingPostalAddress) {
+                        response = new ApplePayEventResponse(status, GetSummaryItems());
+                    }
+                }
+
+                message.Respond(response.ToJsonString());
+            };
+
+            CurrentCart.SetShippingAddress(mailingAddressInput, (ShopifyError error) => {
                 if (error == null) {
-                    summaryItems = GetSummaryItems();
-                    shippingMethods = GetShippingMethods();
-                    message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, summaryItems, shippingMethods).ToJsonString());
+                    respondWithSuccess();
                 } else {
-                    message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure).ToJsonString());
+                    respondToError(error);
                 }
             });
         }
@@ -64,34 +80,23 @@ namespace <%= namespace %>.SDK.iOS {
             }
         }
 
-        private List<SummaryItem> GetSummaryItems() {
-            var summaryItems = new List<SummaryItem>();
-            summaryItems.Add(new SummaryItem("SUBTOTAL", CurrentCart.GetSubtotal().ToString()));
+        // We only receive a partial shipping address before the user has authenticated
+        // City, State, Zip, Country
+        // So we will receive user errors from our GraphQL query, even though it was a success
+        private ApplePayAuthorizationStatus GetAuthorizationStatusFromPreliminaryShippingUserErrors(List<UserError> errors) {
 
-            if (CurrentCart.GetRequiresShipping()) {
-                summaryItems.Add(new SummaryItem("SHIPPING", CurrentCart.GetShippingTotal().ToString()));
-            }
+            foreach (var error in errors) {
+                var fields = error.field();
+                var lastField = fields[fields.Count - 1];
+                var isInvalidShippingAddressError =
+                    lastField.Equals("city") || lastField.Equals("country") || lastField.Equals("province") || lastField.Equals("zip");
 
-            summaryItems.Add(new SummaryItem("TAXES", CurrentCart.GetTotalTax().ToString()));
-            summaryItems.Add(new SummaryItem("TOTAL", CurrentCart.GetTotal().ToString()));
-
-            return summaryItems;
-        }
-
-        private List<ShippingMethod> GetShippingMethods() {
-            var shippingMethods = new List<ShippingMethod>();
-
-            try {
-                var availableShippingRates = CurrentCart.GetShippingRates();
-
-                foreach (var shippingRate in availableShippingRates) {
-                    shippingMethods.Add(new ShippingMethod(shippingRate.title(), shippingRate.price().ToString(), shippingRate.handle()));
+                if (!isInvalidShippingAddressError) {
+                    return ApplePayAuthorizationStatus.Failure;
                 }
-            } catch (Exception e) {
-                throw new Exception("Attempted to access AvailableShippingRates when CurrentCheckout has no property named AvailableShippingRates", e);
             }
 
-            return shippingMethods;
+            return ApplePayAuthorizationStatus.InvalidShippingPostalAddress;
         }
     }
 }
