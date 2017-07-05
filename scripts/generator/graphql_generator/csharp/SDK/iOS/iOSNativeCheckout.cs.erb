@@ -5,6 +5,7 @@ namespace <%= namespace %>.SDK.iOS {
     using System.Collections.Generic;
     using System.Runtime.InteropServices;
     using <%= namespace %>.SDK;
+    using <%= namespace %>.MiniJSON;
 
     partial class iOSNativeCheckout : INativeCheckout {
         [DllImport ("__Internal")]
@@ -23,6 +24,7 @@ namespace <%= namespace %>.SDK.iOS {
         private static extern void _PresentApplePayAuthorization();
 
         private Cart CurrentCart;
+        private ApplePayEventReceiverBridge ApplePayReceiver;
 
         private CheckoutSuccessCallback OnSuccess;
         private CheckoutCancelCallback OnCancelled;
@@ -66,11 +68,53 @@ namespace <%= namespace %>.SDK.iOS {
         /// <param name="failure">Delegate method that will be notified upon a failure during the checkout process</param>
         /// <param name="cancelled">Delegate method that will be notified upon a cancellation during the checkout process</param>
         public void Checkout(string key, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
+
             OnSuccess = success;
             OnCancelled = cancelled;
             OnFailure = failure;
 
-            throw new NotImplementedException("Native checkout (Apple Pay) not implemented yet for iOS.");
+            var summaryItems = GetSummaryItems();
+            var summaryString = Json.Serialize(summaryItems);
+            var currencyCodeString = CurrentCart.GetCurrencyCode().ToString("G");
+
+            if (ApplePayReceiver == null) {
+                ApplePayReceiver = GlobalGameObject.AddComponent<ApplePayEventReceiverBridge>();
+                ApplePayReceiver.Receiver = this;
+            }
+
+            _CreateApplePaySession(key, "CA", CurrentCart.GetCurrencyCode().ToString("G"), GlobalGameObject.Name, summaryString, null, CurrentCart.GetRequiresShipping());
+        }
+
+        private List<SummaryItem> GetSummaryItems() {
+            var summaryItems = new List<SummaryItem>();
+            summaryItems.Add(new SummaryItem("SUBTOTAL", CurrentCart.GetSubtotal().ToString()));
+
+            if (CurrentCart.GetRequiresShipping()) {
+                try {
+                    summaryItems.Add(new SummaryItem("SHIPPING", CurrentCart.GetShippingTotal().ToString()));
+                } catch {}
+            }
+
+            summaryItems.Add(new SummaryItem("TAXES", CurrentCart.GetTotalTax().ToString()));
+            summaryItems.Add(new SummaryItem("TOTAL", CurrentCart.GetTotal().ToString()));
+
+            return summaryItems;
+        }
+
+        private List<ShippingMethod> GetShippingMethods() {
+            var shippingMethods = new List<ShippingMethod>();
+
+            try {
+                var availableShippingRates = CurrentCart.GetShippingRates();
+
+                foreach (var shippingRate in availableShippingRates) {
+                    shippingMethods.Add(new ShippingMethod(shippingRate.title(), shippingRate.price().ToString(), shippingRate.handle()));
+                }
+            } catch (Exception e) {
+                throw new Exception("Attempted to access AvailableShippingRates when CurrentCheckout has no property named AvailableShippingRates", e);
+            }
+
+            return shippingMethods;
         }
     }
 }
