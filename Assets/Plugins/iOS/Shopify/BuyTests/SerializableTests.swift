@@ -39,14 +39,14 @@ class SerializableTests: XCTestCase {
         
         // Serialize and record data from result
         let paymentDict         = payment.serializedJSON()
-        let billingContactDict  = paymentDict[PaymentField.billingContact.rawValue]     as! JSON
-        let shippingContactDict = paymentDict[PaymentField.shippingContact.rawValue]    as! JSON
-        let tokenDict           = paymentDict[PaymentField.tokenData.rawValue]          as! JSON
-        let shippingIdentifier  = paymentDict[PaymentField.shippingIdentifier.rawValue] as! String
+        let billingContactDict  = paymentDict[PKPayment.Field.billingContact.rawValue]     as! JSON
+        let shippingContactDict = paymentDict[PKPayment.Field.shippingContact.rawValue]    as! JSON
+        let tokenDict           = paymentDict[PKPayment.Field.tokenData.rawValue]          as! JSON
+        let shippingIdentifier  = paymentDict[PKPayment.Field.shippingIdentifier.rawValue] as! String
         
-        let tokenDataDict              = tokenDict[PaymentTokenField.paymentData.rawValue] as Any
+        let tokenDataDict              = tokenDict[PKPaymentToken.Field.paymentData.rawValue] as Any
         let tokenData                  = try! JSONSerialization.data(withJSONObject: tokenDataDict)
-        let tokenTransactionIdentifier = tokenDict[PaymentTokenField.transactionIdentifier.rawValue] as! String
+        let tokenTransactionIdentifier = tokenDict[PKPaymentToken.Field.transactionIdentifier.rawValue] as! String
         
         assertEqual(serializedContact: billingContactDict,  to: payment.billingContact!,  havingMultipleAddresses: false)
         assertEqual(serializedContact: shippingContactDict, to: payment.shippingContact!, havingMultipleAddresses: false)
@@ -65,9 +65,9 @@ class SerializableTests: XCTestCase {
         
         // Serialize and record data from result
         let tokenDict     = token.serializedJSON()
-        let tokenDataDict = tokenDict[PaymentTokenField.paymentData.rawValue] as Any
+        let tokenDataDict = tokenDict[PKPaymentToken.Field.paymentData.rawValue] as Any
         let tokenData     = try! JSONSerialization.data(withJSONObject: tokenDataDict)
-        let tokenTransactionIdentifier = tokenDict[PaymentTokenField.transactionIdentifier.rawValue] as! String
+        let tokenTransactionIdentifier = tokenDict[PKPaymentToken.Field.transactionIdentifier.rawValue] as! String
         
         XCTAssertEqual(tokenData,                  token.paymentData)
         XCTAssertEqual(tokenTransactionIdentifier, token.transactionIdentifier)
