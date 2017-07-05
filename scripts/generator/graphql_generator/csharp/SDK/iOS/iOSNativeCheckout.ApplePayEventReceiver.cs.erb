@@ -58,11 +58,9 @@ namespace <%= namespace %>.SDK.iOS {
                 OnCancelled();
                 return;
             case NativePaymentStatus.Failed:
-                var error = new ShopifyError(ShopifyError.ErrorType.CheckoutError, "Unable to retrieve a payment from the user's payment provider. Fallback to web checkout.");
+                var error = new ShopifyError(ShopifyError.ErrorType.NativePaymentProcessingError, "Unable to retrieve a payment from the user's payment provider. Fallback to web checkout.");
                 OnFailure(error);
                 return;
-            default:
-                throw new NotImplementedException(string.Format("Unable to handle PaymentStatus: {0}", message.Content));
             }
         }
 
