@@ -5,6 +5,7 @@ namespace <%= namespace %>.SDK.iOS {
     using System.Collections.Generic;
     using System.Runtime.InteropServices;
     using <%= namespace %>.SDK;
+    using <%= namespace %>.MiniJSON;
 
     partial class iOSNativeCheckout : INativeCheckout {
         [DllImport ("__Internal")]
@@ -17,12 +18,13 @@ namespace <%= namespace %>.SDK.iOS {
         private static extern void _ShowApplePaySetup();
 
         [DllImport ("__Internal")]
-        private static extern bool _CreateApplePaySession(string merchantID, string countryCode, string currencyCode, string unityDelegateObjectName, string serializedSummaryItems, string serializedShippingMethods, bool requiringShipping);
+        private static extern bool _CreateApplePaySession(string unityDelegateObjectName, string merchantID, string countryCode, string currencyCode, string serializedSummaryItems, string serializedShippingMethods, bool requiringShipping);
 
         [DllImport ("__Internal")]
         private static extern void _PresentApplePayAuthorization();
 
         private Cart CurrentCart;
+        private ApplePayEventReceiverBridge ApplePayEventBridge;
 
         private CheckoutSuccessCallback OnSuccess;
         private CheckoutCancelCallback OnCancelled;
@@ -66,11 +68,62 @@ namespace <%= namespace %>.SDK.iOS {
         /// <param name="failure">Delegate method that will be notified upon a failure during the checkout process</param>
         /// <param name="cancelled">Delegate method that will be notified upon a cancellation during the checkout process</param>
         public void Checkout(string key, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
+
             OnSuccess = success;
             OnCancelled = cancelled;
             OnFailure = failure;
 
-            throw new NotImplementedException("Native checkout (Apple Pay) not implemented yet for iOS.");
+            var checkout = CurrentCart.CurrentCheckout;
+
+            var summaryItems = GetSummaryItems();
+            var summaryString = Json.Serialize(summaryItems);
+            var currencyCodeString = checkout.currencyCode().ToString("G");
+            var requiresShipping = checkout.requiresShipping();
+
+            if (ApplePayEventBridge == null) {
+                ApplePayEventBridge = GlobalGameObject.AddComponent<ApplePayEventReceiverBridge>();
+                ApplePayEventBridge.Receiver = this;
+            }
+
+            if (_CreateApplePaySession(GlobalGameObject.Name, key, "CA", currencyCodeString, summaryString, null, requiresShipping)) {
+                _PresentApplePayAuthorization();
+            } else {
+                //TODO call checkout failure
+            }
+        }
+
+        private List<SummaryItem> GetSummaryItems() {
+            var checkout = CurrentCart.CurrentCheckout;
+            var summaryItems = new List<SummaryItem>();
+            summaryItems.Add(new SummaryItem("SUBTOTAL", checkout.subtotalPrice().ToString()));
+
+            if (checkout.requiresShipping()) {
+                try {
+                    summaryItems.Add(new SummaryItem("SHIPPING", checkout.shippingLine().price().ToString()));
+                } catch {}
+            }
+
+            summaryItems.Add(new SummaryItem("TAXES", checkout.totalTax().ToString()));
+            summaryItems.Add(new SummaryItem("TOTAL", checkout.totalPrice().ToString()));
+
+            return summaryItems;
+        }
+
+        private List<ShippingMethod> GetShippingMethods() {
+            var checkout = CurrentCart.CurrentCheckout;
+            var shippingMethods = new List<ShippingMethod>();
+
+            try {
+                var availableShippingRates = checkout.availableShippingRates().shippingRates();
+
+                foreach (var shippingRate in availableShippingRates) {
+                    shippingMethods.Add(new ShippingMethod(shippingRate.title(), shippingRate.price().ToString(), shippingRate.handle()));
+                }
+            } catch (Exception e) {
+                throw new Exception("Attempted to gather information on available shipping rates on CurrentCheckout, but CurrentCheckout do not have those properties queried", e);
+            }
+
+            return shippingMethods;
         }
     }
 }

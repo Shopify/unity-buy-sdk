@@ -16,6 +16,7 @@ namespace <%= namespace %>.SDK {
                         .message()
                     ),
                 input: new CheckoutCreateInput(
+                    allowPartialAddresses: true,
                     lineItems: lineItems
                 )
             );
@@ -133,6 +134,7 @@ namespace <%= namespace %>.SDK {
             return checkout
                 .id()
                 .webUrl()
+                .currencyCode()
                 .requiresShipping()
                 .subtotalPrice()
                 .totalTax()
