@@ -73,16 +73,19 @@ namespace <%= namespace %>.SDK.iOS {
             OnCancelled = cancelled;
             OnFailure = failure;
 
+            var checkout = CurrentCart.CurrentCheckout;
+
             var summaryItems = GetSummaryItems();
             var summaryString = Json.Serialize(summaryItems);
-            var currencyCodeString = CurrentCart.GetCurrencyCode().ToString("G");
+            var currencyCodeString = checkout.currencyCode().ToString("G");
+            var requiresShipping = checkout.requiresShipping();
 
             if (ApplePayEventBridge == null) {
                 ApplePayEventBridge = GlobalGameObject.AddComponent<ApplePayEventReceiverBridge>();
                 ApplePayEventBridge.Receiver = this;
             }
 
-            if (_CreateApplePaySession(GlobalGameObject.Name, key, "CA", CurrentCart.GetCurrencyCode().ToString("G"), summaryString, null, CurrentCart.GetRequiresShipping())) {
+            if (_CreateApplePaySession(GlobalGameObject.Name, key, "CA", currencyCodeString, summaryString, null, requiresShipping)) {
                 _PresentApplePayAuthorization();
             } else {
                 //TODO call checkout failure
@@ -90,26 +93,28 @@ namespace <%= namespace %>.SDK.iOS {
         }
 
         private List<SummaryItem> GetSummaryItems() {
+            var checkout = CurrentCart.CurrentCheckout;
             var summaryItems = new List<SummaryItem>();
-            summaryItems.Add(new SummaryItem("SUBTOTAL", CurrentCart.GetSubtotal().ToString()));
+            summaryItems.Add(new SummaryItem("SUBTOTAL", checkout.subtotalPrice().ToString()));
 
-            if (CurrentCart.GetRequiresShipping()) {
+            if (checkout.requiresShipping()) {
                 try {
-                    summaryItems.Add(new SummaryItem("SHIPPING", CurrentCart.GetShippingTotal().ToString()));
+                    summaryItems.Add(new SummaryItem("SHIPPING", checkout.shippingLine().price().ToString()));
                 } catch {}
             }
 
-            summaryItems.Add(new SummaryItem("TAXES", CurrentCart.GetTotalTax().ToString()));
-            summaryItems.Add(new SummaryItem("TOTAL", CurrentCart.GetTotal().ToString()));
+            summaryItems.Add(new SummaryItem("TAXES", checkout.totalTax().ToString()));
+            summaryItems.Add(new SummaryItem("TOTAL", checkout.totalPrice().ToString()));
 
             return summaryItems;
         }
 
         private List<ShippingMethod> GetShippingMethods() {
+            var checkout = CurrentCart.CurrentCheckout;
             var shippingMethods = new List<ShippingMethod>();
 
             try {
-                var availableShippingRates = CurrentCart.GetShippingRates();
+                var availableShippingRates = checkout.availableShippingRates().shippingRates();
 
                 foreach (var shippingRate in availableShippingRates) {
                     shippingMethods.Add(new ShippingMethod(shippingRate.title(), shippingRate.price().ToString(), shippingRate.handle()));

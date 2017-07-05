@@ -44,9 +44,18 @@ namespace <%= namespace %>.SDK.iOS {
                     var userErrors = CurrentCart.UserErrors;
 
                     if (userErrors.Count > 0) {
-                        var firstUserError = userErrors[0];
-                        var status = AuthorizationStatusForPreliminaryShippingUserError(firstUserError);
-                        message.Respond(new ApplePayEventResponse(status, GetSummaryItems()).ToJsonString());
+                        ApplePayAuthorizationStatus statusToReturn = ApplePayAuthorizationStatus.Failure;
+                        foreach (var userError in userErrors) {
+                            var status = AuthorizationStatusForPreliminaryShippingUserError(userError);
+
+                            if (status == ApplePayAuthorizationStatus.Failure) {
+                                message.Respond(new ApplePayEventResponse(status).ToJsonString());
+                                return;
+                            }
+
+                            statusToReturn = status;
+                        }
+                        message.Respond(new ApplePayEventResponse(statusToReturn, GetSummaryItems()).ToJsonString());
                     } else {
                         message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure).ToJsonString());
                     }
@@ -98,9 +107,6 @@ namespace <%= namespace %>.SDK.iOS {
                     lastField.Equals("province") ||
                     lastField.Equals("zip")) {
                         return ApplePayAuthorizationStatus.InvalidShippingPostalAddress;
-                }
-                else {
-                    return ApplePayAuthorizationStatus.Success;
                 }
             }
 

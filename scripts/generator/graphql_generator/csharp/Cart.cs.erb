@@ -47,12 +47,13 @@ namespace <%= namespace %> {
             }
         }
 
+        public Checkout CurrentCheckout { get; private set; }
+
         private const float POLL_DELAY_SECONDS = 0.5f;
         private CartLineItems _LineItems;
         private List<UserError> _UserErrors = null;
         private List<String> DeletedLineItems = new List<string>();
         private ShopifyClient Client;
-        private Checkout CurrentCheckout = null;
 
         private IWebCheckout WebCheckout;
         private INativeCheckout NativeCheckout;

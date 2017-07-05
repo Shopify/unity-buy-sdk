@@ -88,7 +88,6 @@ module GraphQLGenerator
         ShopifyBuy
         Cart
         Cart.Poll
-        Cart.CheckoutAccessors
         SDK/Arguments
         SDK/InputBase
         SDK/InputValueToString
@@ -97,7 +96,6 @@ module GraphQLGenerator
         SDK/ValidationUtils
         SDK/AbstractResponse
         SDK/NoQueryException
-        SDK/NoCheckoutException
         SDK/ObservableDictionary
         SDK/AliasException
         SDK/InvalidServerResponseException
