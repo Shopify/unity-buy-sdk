@@ -1,6 +1,7 @@
 #!/bin/bash
 
 . $(dirname $0)/common.sh
+. $(dirname $0)/native_tests.sh
 
 check() {
     if [ $? = 0 ] ; then
@@ -13,6 +14,9 @@ check() {
         exit 1
     fi
 }
+
+# delete all files required for native testing
+delete_native_tests
 
 # check if we need to do a major, minor, patch update
 VERSION=`cat $SCRIPTS_ROOT/version`
