@@ -71,7 +71,7 @@ namespace <%= namespace %>.SDK.iOS {
             if (payment.PaymentData == null) {
                 message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure).ToJsonString());
             } else {
-                var tokenizedPaymentInput = new TokenizedPaymentInput(amount, payment.BillingAddress, payment.TransactionIdentifier, payment.PaymentData, "apple_pay");
+                var tokenizedPaymentInput = new TokenizedPaymentInput(amount: amount, billingAddress: payment.BillingAddress, idempotencyKey: payment.TransactionIdentifier, paymentData: payment.PaymentData, type: "apple_pay");
 
                 Action performCheckout = () => {
                     CheckoutWithTokenizedPayment(tokenizedPaymentInput, checkout, (ApplePayEventResponse errorResponse) => {
