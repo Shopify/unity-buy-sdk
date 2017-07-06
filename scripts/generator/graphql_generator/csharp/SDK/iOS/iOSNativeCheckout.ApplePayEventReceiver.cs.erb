@@ -104,28 +104,6 @@ namespace <%= namespace %>.SDK.iOS {
             }
         }
 
-        private ApplePayAuthorizationStatus GetAuthorizationStatusFromCheckoutUserErrors(List<UserError> errors) {
-            // Check to see if any of the user errors are not billing address errors
-            // If it is not a billing address error return a failure
-            foreach (var error in errors) {
-                var fields = error.field();
-                var isBillingAddressError = false;
-
-                foreach(var field in fields) {
-                    if (field.Equals("billingAddress")) {
-                        isBillingAddressError = true;
-                        break;
-                    }
-                }
-
-                if (!isBillingAddressError) {
-                    return ApplePayAuthorizationStatus.Failure;
-                }
-            }
-
-            return ApplePayAuthorizationStatus.InvalidBillingPostalAddress;
-        }
-
         private void SetFinalCheckoutFieldsForPayment(ApplePayPayment payment, Checkout checkout, ApplePayEventHandlerCompletion callback) {
 
             ShippingFields? shippingFields = null;
@@ -179,6 +157,28 @@ namespace <%= namespace %>.SDK.iOS {
                     callback(response);
                 }
             });
+        }
+
+        private ApplePayAuthorizationStatus GetAuthorizationStatusFromCheckoutUserErrors(List<UserError> errors) {
+            // Check to see if any of the user errors are not billing address errors
+            // If it is not a billing address error return a failure
+            foreach (var error in errors) {
+                var fields = error.field();
+                var isBillingAddressError = false;
+
+                foreach(var field in fields) {
+                    if (field.Equals("billingAddress")) {
+                        isBillingAddressError = true;
+                        break;
+                    }
+                }
+
+                if (!isBillingAddressError) {
+                    return ApplePayAuthorizationStatus.Failure;
+                }
+            }
+
+            return ApplePayAuthorizationStatus.InvalidBillingPostalAddress;
         }
 
         private ApplePayAuthorizationStatus GetAuthorizationStatusFromShippingUserErrors(List<UserError> errors) {
