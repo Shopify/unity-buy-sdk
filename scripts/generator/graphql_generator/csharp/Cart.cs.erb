@@ -21,8 +21,8 @@ namespace <%= namespace %> {
     /// Wraps around a shipping address and shipping identifier. Used for sending the final checkout fields in one GraphQL query.
     /// </summary>
     public struct ShippingFields {
-        MailingAddressInput ShippingAddress;
-        string ShippingIdentifier; 
+        public MailingAddressInput ShippingAddress;
+        public string ShippingIdentifier; 
     }
     
     /// <summary>
@@ -221,7 +221,32 @@ namespace <%= namespace %> {
         }
 
         public void SetFinalCheckoutFields(string email, ShippingFields? shippingFields, CompletionCallback callback) {
-            throw new NotImplementedException("Implement Me.");
+            MutationQuery query = new MutationQuery();
+
+            DefaultQueries.checkout.EmailUpdate(query, CurrentCheckout.id(), email);
+
+            if (shippingFields.HasValue) {
+                DefaultQueries.checkout.ShippingAddressUpdate(query, CurrentCheckout.id(), shippingFields.Value.ShippingAddress);
+                DefaultQueries.checkout.ShippingLineUpdate(query, CurrentCheckout.id(), shippingFields.Value.ShippingIdentifier);
+            }
+
+            Client.Mutation(query, (Mutation response, ShopifyError error) => {
+                if (error != null) {
+                    callback(error);
+                } else {
+                    var userErrors = response.checkoutShippingAddressUpdate().userErrors();
+                    if (shippingFields.HasValue) {
+                        userErrors.AddRange(response.checkoutShippingLineUpdate().userErrors());
+                        userErrors.AddRange(response.checkoutEmailUpdate().userErrors());
+                    }
+
+                    if (UpdateState(response.checkoutEmailUpdate().checkout(), userErrors)) {
+                        PollCheckoutAndUpdate(PollCheckoutAvailableShippingRatesReady, callback);
+                    } else {
+                        HandleUserError(callback);
+                    }
+                }
+            });
         }
 
         private void CheckoutSave(CompletionCallback callback) {
