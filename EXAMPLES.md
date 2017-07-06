@@ -267,7 +267,7 @@ find out if the user's is able to make a payment with Apple Pay. If the user has
 
 `CheckoutWithNativePay` takes in 4  parameters:
 
-1. `key` is the Merchant ID of your application found on your Apple Developer Portal
+1. `key` is the Merchant ID of your application found on your [Apple Developer Portal](https://developer.apple.com/library/content/ApplePay_Guide/Configuration.html)
 2. `CheckoutSuccessCallback` is called when the user has completed a checkout successfully.
 3. `CheckoutCancelCallback` is called when the user cancels out of the checkout.
 4. `CheckoutFailureCallback` is called when an error was encountered during the checkout. The callback will be passed an instance of `ShopifyError` describing the issue.
@@ -276,10 +276,11 @@ find out if the user's is able to make a payment with Apple Pay. If the user has
 ```csharp
 // Sample code for adding some product variants to your cart.
 var cart = ShopifyBuy.Client().Cart();
-var secondProductVariants = (List<ProductVariant>) products[1].variants();
-ProductVariant secondProductFirstVariant = secondProductVariants[0];
+var secondProduct = products[1];
+var secondProductVariants = (List<ProductVariant>) secondProduct.variants();
+ProductVariant productVariantToCheckout = secondProductVariants[0];
 
-cart.LineItems.AddOrUpdate(secondProductFirstVariant.id(), 1);
+cart.LineItems.AddOrUpdate(productVariantToCheckout, 1);
 
 // Check to see if the user can make a payment through Apple Pay
 if (cart.CanCheckoutWithNativePay()) {
@@ -306,11 +307,11 @@ if (cart.CanCheckoutWithNativePay()) {
 
 **Errors**
 
-On failure, you will receive a `ShopifyError`. The types of `ShopifyError` you will have to handle are `HTTP Error`, `NativePaymentProcessingError`, and `GraphQL Error`.
+On failure, you will receive a `ShopifyError`. The types of `ShopifyError` you will have to handle are `HTTP`, `NativePaymentProcessingError`, and `GraphQL`.
 
 `NativePaymentProcessingError` will be thrown when Apple Pay fails to generate a token while trying to authenticate the user's card. This error is unrecoverable and you should fall back to a different payment method, or allow the user to try going through the process again.
 
-`GraphQL Error` will be thrown when there is something wrong with the SDK. This error is unrecoverable and you should fall back to a different payment method.
+`GraphQL` error will be thrown when there is something wrong with the SDK. This error is unrecoverable and you should fall back to a different payment method.
 
 ```csharp
 cart.CheckoutWithNativePay(
