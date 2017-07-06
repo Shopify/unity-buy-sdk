@@ -60,7 +60,71 @@ namespace <%= namespace %>.SDK.iOS {
         }
 
         public void FetchApplePayCheckoutStatusForToken(string serializedMessage) {
-            //TODO
+            var checkout = CurrentCart.CurrentCheckout;
+            var message = NativeMessage.CreateFromJSON(serializedMessage);
+            var amount  = checkout.totalPrice();
+            var payment = new PaymentDeserializer(message.Content);
+            var tokenizedPaymentInput = new TokenizedPaymentInput(amount, payment.BillingAddress, payment.TransactionIdentifier, payment.PaymentData, "apple_pay");
+
+
+            Action<ShopifyError> respondToSetFinalCheckoutFieldsError = (ShopifyError error) => {
+                ApplePayEventResponse response = new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure);
+
+                // Check to see if this is a recoverable user error
+                if (error.Type == ShopifyError.ErrorType.UserError) {
+                    var userErrors = CurrentCart.UserErrors;
+                    var status = GetAuthorizationStatusFromShippingUserErrors(userErrors);
+
+                    if (status == ApplePayAuthorizationStatus.InvalidShippingPostalAddress) {
+                        response = new ApplePayEventResponse(status, GetSummaryItems());
+                    } else if (status == ApplePayAuthorizationStatus.InvalidShippingContact) {
+                        response = new ApplePayEventResponse(status, GetSummaryItems(), GetShippingMethods());
+                    }
+                }
+
+                message.Respond(response.ToJsonString());
+            };
+
+            Action<ShopifyError> respondToCheckoutError = (ShopifyError error) => {
+                ApplePayEventResponse response = new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure);
+
+                // Check to see if this is a recoverable user error
+                if (error.Type == ShopifyError.ErrorType.UserError) {
+                    var userErrors = CurrentCart.UserErrors;
+                    var status = GetAuthorizationStatusFromCheckoutUserErrors(userErrors);
+
+                    if (status != ApplePayAuthorizationStatus.Failure) {
+                        response = new ApplePayEventResponse(status, GetSummaryItems(), GetShippingMethods());
+                    } else {
+                        response = new ApplePayEventResponse(status);
+                    }
+                }
+
+                message.Respond(response.ToJsonString());
+            };
+
+            Action performCheckout = () => {
+                CurrentCart.CheckoutWithTokenizedPayment(tokenizedPaymentInput, (ShopifyError error) => {
+                    if (error == null) {
+                        message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success).ToJsonString());
+                    } else {
+                        respondToCheckoutError(error);
+                    }
+                });
+            };
+
+            ShippingFields? shippingFields = null;
+            if (checkout.requiresShipping()) {
+                shippingFields = new ShippingFields(payment.ShippingAddress, payment.ShippingIdentifier);
+            }
+
+            CurrentCart.SetFinalCheckoutFields(payment.Email, shippingFields, (ShopifyError error) => {
+                if (error == null) {
+                    performCheckout();
+                } else {
+                    respondToSetFinalCheckoutFieldsError(error);
+                }
+            });
         }
 
         public void DidFinishCheckoutSession(string serializedMessage) {
@@ -80,16 +144,67 @@ namespace <%= namespace %>.SDK.iOS {
             }
         }
 
+         private ApplePayAuthorizationStatus GetAuthorizationStatusFromCheckoutUserErrors(List<UserError> errors) {
+
+            ApplePayAuthorizationStatus statusToReturn = ApplePayAuthorizationStatus.Failure;
+
+            foreach (var error in errors) {
+                var fields = error.field();
+
+                // If there exists a UserErrorPath that is atleast 2 Fields long, and the second last field is `billingAddress`
+                if (fields.Count > 2 && fields[fields.Count - 2].Equals("billingAddress")) {
+                    statusToReturn = ApplePayAuthorizationStatus.InvalidBillingPostalAddress;
+                } else {
+                    statusToReturn = ApplePayAuthorizationStatus.Failure;
+                    break;
+                }
+            }
+
+            return statusToReturn;
+        }
+
+        private ApplePayAuthorizationStatus GetAuthorizationStatusFromShippingUserErrors(List<UserError> errors) {
+
+            string[] shippingAddressFields = {"address1", "address2", "city", "country", "province", "zip"};
+            var shippingAddressFieldsSet = new HashSet<string>(shippingAddressFields);
+
+            string[] shippingContactFields = {"firstName", "lastName", "phone", "email"};
+            var shippingContactFieldsSet = new HashSet<string>(shippingContactFields);
+
+            ApplePayAuthorizationStatus statusToReturn = ApplePayAuthorizationStatus.Failure;
+
+            foreach (var error in errors) {
+                var fields = error.field();
+                var lastField = fields[fields.Count - 1];
+
+                var isInvalidShippingAddressError =  shippingAddressFieldsSet.Contains(lastField);
+                var isInvalidShippingContactError =  shippingContactFieldsSet.Contains(lastField);
+
+                if (isInvalidShippingAddressError) {
+                    statusToReturn = ApplePayAuthorizationStatus.InvalidShippingPostalAddress;
+                } else if (isInvalidShippingContactError) {
+                    statusToReturn = ApplePayAuthorizationStatus.InvalidShippingContact;
+                } else {
+                    statusToReturn = ApplePayAuthorizationStatus.Failure;
+                    break;
+                }
+            }
+
+            return statusToReturn;
+        }
+
         // We only receive a partial shipping address before the user has authenticated
         // City, State, Zip, Country
         // So we will receive user errors from our GraphQL query, even though it was a success
         private ApplePayAuthorizationStatus GetAuthorizationStatusFromPreliminaryShippingUserErrors(List<UserError> errors) {
 
+            string[] shippingAddressFields = {"city", "country", "province", "zip"};
+            var shippingAddressFieldsSet = new HashSet<string>(shippingAddressFields);
+
             foreach (var error in errors) {
                 var fields = error.field();
                 var lastField = fields[fields.Count - 1];
-                var isInvalidShippingAddressError =
-                    lastField.Equals("city") || lastField.Equals("country") || lastField.Equals("province") || lastField.Equals("zip");
+                var isInvalidShippingAddressError = shippingAddressFieldsSet.Contains(lastField);
 
                 if (!isInvalidShippingAddressError) {
                     return ApplePayAuthorizationStatus.Failure;
