@@ -52,6 +52,16 @@ namespace <%= namespace %>.SDK {
             );
         }
 
+        public void AvailableShippingRatesPoll(QueryRootQuery query, string checkoutId) {
+            query.node(
+                buildQuery: node => node
+                    .onCheckout(checkout => Checkout(checkout)
+                        .availableShippingRates(availableShippingRates => AvailableShippingRates(availableShippingRates))
+                    ),
+                id: checkoutId
+            );
+        }
+
         public void LineItemsRemove(MutationQuery query, string checkoutId, List<string> lineItemIds) {
             query.checkoutLineItemsRemove(
                 buildQuery: lineItemRemove => lineItemRemove
@@ -90,9 +100,7 @@ namespace <%= namespace %>.SDK {
         public void ShippingAddressUpdate(MutationQuery query, string checkoutId, MailingAddressInput shippingAddress) {
             query.checkoutShippingAddressUpdate(
                 buildQuery: shippingAddressUpdate => shippingAddressUpdate
-                    .checkout(checkout => Checkout(checkout)
-                        .availableShippingRates(availableShippingRates => AvailableShippingRates(availableShippingRates))
-                    )
+                    .checkout(checkout => Checkout(checkout))
                     .userErrors(userErrors => userErrors
                         .field()
                         .message()

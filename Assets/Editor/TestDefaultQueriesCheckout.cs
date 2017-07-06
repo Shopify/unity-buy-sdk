@@ -45,6 +45,18 @@ namespace Shopify.Tests
         }
 
         [Test]
+        public void TestAvailableShippingRatesPoll() {
+            QueryRootQuery query = new QueryRootQuery();
+            string checkoutId = "an-id";
+
+            DefaultQueries.checkout.AvailableShippingRatesPoll(query, checkoutId);
+            Assert.AreEqual(
+                "{node (id:\"an-id\"){__typename ...on Checkout{id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready availableShippingRates {shippingRates {handle title price }ready }}}}",
+                query.ToString()
+            );
+        }
+
+        [Test]
         public void TestCheckoutLineItemsAdd() {
             MutationQuery query = new MutationQuery();
             string checkoutId = "an-id";
@@ -89,8 +101,9 @@ namespace Shopify.Tests
 
             var addressInput = new MailingAddressInput("123 Test Street", "456", "Toronto", "Shopify", "Canada", "First", "Last", "1234567890", "Ontario", "A1B2C3");
             DefaultQueries.checkout.ShippingAddressUpdate(query, checkoutId, addressInput);
+
             Assert.AreEqual(
-                "mutation{checkoutShippingAddressUpdate (shippingAddress:{address1:\"123 Test Street\",address2:\"456\",city:\"Toronto\",company:\"Shopify\",country:\"Canada\",firstName:\"First\",lastName:\"Last\",phone:\"1234567890\",province:\"Ontario\",zip:\"A1B2C3\"},checkoutId:\"an-id\"){checkout {id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready availableShippingRates {shippingRates {handle title price }ready }}userErrors {field message }}}",
+                "mutation{checkoutShippingAddressUpdate (shippingAddress:{address1:\"123 Test Street\",address2:\"456\",city:\"Toronto\",company:\"Shopify\",country:\"Canada\",firstName:\"First\",lastName:\"Last\",phone:\"1234567890\",province:\"Ontario\",zip:\"A1B2C3\"},checkoutId:\"an-id\"){checkout {id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready }userErrors {field message }}}",
                 query.ToString()
             );
         }
