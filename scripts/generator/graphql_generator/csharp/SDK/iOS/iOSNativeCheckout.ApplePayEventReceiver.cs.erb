@@ -152,7 +152,7 @@ namespace <%= namespace %>.SDK.iOS {
                 var fields = error.field();
 
                 // If there exists a UserErrorPath that is atleast 2 Fields long, and the second last field is `billingAddress`
-                if (fields.Count > 2 && fields[fields.Count - 2].Equals("billingAddress")) {
+                if (fields.Count >= 2 && fields[fields.Count - 2].Equals("billingAddress")) {
                     statusToReturn = ApplePayAuthorizationStatus.InvalidBillingPostalAddress;
                 } else {
                     statusToReturn = ApplePayAuthorizationStatus.Failure;
