@@ -226,9 +226,9 @@ start a native modal overlay on top of your game with a web view containing the 
 
 `CheckoutWithNativeWebView` which takes in 3 callback parameters:
 
-* `CheckoutDidSucceed` is called when the user has completed a checkout successfully.
-* `CheckoutDidCancel` is called when the user cancels out of the checkout.
-* `CheckoutDidFail` is called when an error was encountered during the web checkout. The callback will be passed an instance of `ShopifyError` describing the issue.
+* `CheckoutSuccessCallback` is called when the user has completed a checkout successfully.
+* `CheckoutCancelCallback` is called when the user cancels out of the checkout.
+* `CheckoutFailureCallback` is called when an error was encountered during the web checkout. The callback will be passed an instance of `ShopifyError` describing the issue.
 
 ```cs
 // Sample code for adding some product variants to your cart.
@@ -259,6 +259,86 @@ There are a few things we're still working out for the web checkout experience:
 
 1. Handling HTTP errors gracefully. When the user loses their internet connection there is currently no way to recover.
 2. Validating the web checkout purchase with results from the API. The completion callback is invoked when we detect that the user has navigated to the `thank you page`. This is the page that is shown when a checkout is completed but we don't validate the completion of the checkout with the server yet. Due to spoofing concern I wouldn't rely on this as knowledge of a completely validated purchase _yet_.
+
+### Apple Pay Checkout - In progress
+
+After creating an instance of `Cart` and adding items to it, you can use the `CanCheckoutWithNativePay` method to 
+find out if the user's is able to make a payment with Apple Pay. If the user has this capability, you can use `CheckoutWithNativePay` to present the Apple Pay authentication interface to the user.
+
+`CheckoutWithNativePay` takes in 4  parameters:
+
+1. `key` is the Merchant ID of your application found on your [Apple Developer Portal](https://developer.apple.com/library/content/ApplePay_Guide/Configuration.html)
+2. `CheckoutSuccessCallback` is called when the user has completed a checkout successfully.
+3. `CheckoutCancelCallback` is called when the user cancels out of the checkout.
+4. `CheckoutFailureCallback` is called when an error was encountered during the checkout. The callback will be passed an instance of `ShopifyError` describing the issue.
+
+
+```csharp
+// Sample code for adding some product variants to your cart.
+var cart = ShopifyBuy.Client().Cart();
+var secondProduct = products[1];
+var secondProductVariants = (List<ProductVariant>) secondProduct.variants();
+ProductVariant productVariantToCheckout = secondProductVariants[0];
+
+cart.LineItems.AddOrUpdate(productVariantToCheckout, 1);
+
+// Check to see if the user can make a payment through Apple Pay
+if (cart.CanCheckoutWithNativePay()) {
+
+    cart.CheckoutWithNativePay(
+        "com.merchant.id",
+        success: () => {
+            Debug.Log("User finished purchase/checkout!");
+        },
+        cancelled: () => {
+            Debug.Log("User cancelled out of the native checkout.");
+        },
+        failure: (e) => {
+            Debug.Log("Something bad happened - Error: " + e);
+        }
+    );
+}
+
+```
+
+**Notes**
+
+`CheckoutWithNativePay` will throw an exception if the device is unable to make a payment through Apple Pay. So it is essential that `CanCheckoutWithNativePay` is used.
+
+**Errors**
+
+On failure, you will receive a `ShopifyError`. The types of `ShopifyError` you will have to handle are `HTTP`, `NativePaymentProcessingError`, and `GraphQL`.
+
+`NativePaymentProcessingError` will be thrown when Apple Pay fails to generate a token while trying to authenticate the user's card. This error is unrecoverable and you should fall back to a different payment method, or allow the user to try going through the process again.
+
+`GraphQL` error will be thrown when there is something wrong with the SDK. This error is unrecoverable and you should fall back to a different payment method.
+
+```csharp
+cart.CheckoutWithNativePay(
+    "com.merchant.id",
+    success: () => {
+       Debug.Log("User finished purchase/checkout!");
+    },
+    cancelled: () => {
+        Debug.Log("User cancelled out of the native checkout.");
+    },
+    failure: (e) => {
+        switch(e.Type) {
+        case ShopifyError.ErrorType.HTTP:
+		     // Let the user know there is no internet connection 
+        default: 
+            // Let the user know checkout could not be completed
+            // Fallback to Web Checkout
+        }
+    },
+);
+```
+
+**Caveats**
+
+There are a few things we're still working on for making payments with Apple Pay:
+
+1. Currently, you will be able to display the interface but you will be unable to authenticate and process a payment.
 
 ### Custom queries
 
