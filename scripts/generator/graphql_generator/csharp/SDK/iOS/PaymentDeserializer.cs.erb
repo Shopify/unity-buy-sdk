@@ -54,6 +54,8 @@ namespace <%= namespace %>.SDK.iOS {
             if (tokenDictionary.ContainsKey(TokenField.PaymentData.ToString("G"))) {
                 var paymentDictionary = tokenDictionary[TokenField.PaymentData.ToString("G")];
                 PaymentData = Json.Serialize(paymentDictionary);
+            } else {
+                PaymentData = "";
             }
         }
     }
