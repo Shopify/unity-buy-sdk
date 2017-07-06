@@ -41,15 +41,20 @@ namespace <%= namespace %>.SDK.iOS {
             Email = (string)shippingContactDictionary["email"];
 
             // Shipping Identifier
-            ShippingIdentifier = (string)dictionary[PaymentField.ShippingIdentifier.ToString("G")];
+            if (dictionary.ContainsKey(PaymentField.ShippingIdentifier.ToString("G"))) {
+                ShippingIdentifier = (string)dictionary[PaymentField.ShippingIdentifier.ToString("G")];
+            }
 
             // Transaction Identifier
             var tokenDictionary = (Dictionary<string, object>)dictionary[PaymentField.TokenData.ToString("G")];
             TransactionIdentifier = (string)tokenDictionary[TokenField.TransactionIdentifier.ToString("G")];
 
             // Payment Data
-            var paymentDictionary = tokenDictionary[TokenField.PaymentData.ToString("G")];
-            PaymentData = Json.Serialize(paymentDictionary);
+            // Payment Data can be null when running on a simulator
+            if (tokenDictionary.ContainsKey(TokenField.PaymentData.ToString("G"))) {
+                var paymentDictionary = tokenDictionary[TokenField.PaymentData.ToString("G")];
+                PaymentData = Json.Serialize(paymentDictionary);
+            }
         }
     }
 }
