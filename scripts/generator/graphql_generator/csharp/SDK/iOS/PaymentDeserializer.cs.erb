@@ -1,4 +1,4 @@
-#if UNITY_iPHONE
+#if UNITY_IOS
 namespace <%= namespace %>.SDK.iOS {
     using System.Collections;
     using System.Collections.Generic;
@@ -21,6 +21,7 @@ namespace <%= namespace %>.SDK.iOS {
 
         readonly public MailingAddressInput BillingAddress;
         readonly public MailingAddressInput ShippingAddress;
+        readonly public string Email;
         readonly public string ShippingIdentifier;
         readonly public string TransactionIdentifier;
         readonly public string PaymentData;
@@ -35,6 +36,9 @@ namespace <%= namespace %>.SDK.iOS {
             // Shipping Address
             var shippingContactDictionary = (Dictionary<string, object>)dictionary[PaymentField.ShippingContact.ToString("G")];
             ShippingAddress = new MailingAddressInput(shippingContactDictionary);
+
+            // Email
+            Email = (string)shippingContactDictionary["email"];
 
             // Shipping Identifier
             ShippingIdentifier = (string)dictionary[PaymentField.ShippingIdentifier.ToString("G")];
