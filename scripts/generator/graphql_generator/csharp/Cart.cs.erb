@@ -23,6 +23,11 @@ namespace <%= namespace %> {
     public struct ShippingFields {
         public MailingAddressInput ShippingAddress;
         public string ShippingIdentifier; 
+
+        public ShippingFields(MailingAddressInput shippingAddress, string shippingIdentifier) {
+            ShippingIdentifier = shippingIdentifier;
+            ShippingAddress = shippingAddress;
+        }
     }
     
     /// <summary>
