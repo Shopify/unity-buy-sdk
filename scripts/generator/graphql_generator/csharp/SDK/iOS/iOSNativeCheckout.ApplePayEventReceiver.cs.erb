@@ -63,7 +63,7 @@ namespace <%= namespace %>.SDK.iOS {
             var checkout = CurrentCart.CurrentCheckout;
             var message = NativeMessage.CreateFromJSON(serializedMessage);
             var amount  = checkout.totalPrice();
-            var payment = new PaymentDeserializer(message.Content);
+            var payment = new ApplePayPayment(message.Content);
             var tokenizedPaymentInput = new TokenizedPaymentInput(amount, payment.BillingAddress, payment.TransactionIdentifier, payment.PaymentData, "apple_pay");
 
 

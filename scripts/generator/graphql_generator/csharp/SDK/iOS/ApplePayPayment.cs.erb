@@ -5,7 +5,7 @@ namespace <%= namespace %>.SDK.iOS {
     using <%= namespace %>;
     using <%= namespace %>.MiniJSON;
 
-    public class PaymentDeserializer {
+    public class ApplePayPayment {
 
         private enum PaymentField {
             BillingContact,
@@ -26,7 +26,7 @@ namespace <%= namespace %>.SDK.iOS {
         readonly public string TransactionIdentifier;
         readonly public string PaymentData;
 
-        public PaymentDeserializer(string stringJson) {
+        public ApplePayPayment(string stringJson) {
             var dictionary = (Dictionary<string, object>)Json.Deserialize(stringJson);
 
             // Billing Address
