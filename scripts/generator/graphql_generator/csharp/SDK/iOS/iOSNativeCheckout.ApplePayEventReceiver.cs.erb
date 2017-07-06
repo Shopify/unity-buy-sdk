@@ -144,23 +144,27 @@ namespace <%= namespace %>.SDK.iOS {
             }
         }
 
-         private ApplePayAuthorizationStatus GetAuthorizationStatusFromCheckoutUserErrors(List<UserError> errors) {
+        private ApplePayAuthorizationStatus GetAuthorizationStatusFromCheckoutUserErrors(List<UserError> errors) {
 
-            ApplePayAuthorizationStatus statusToReturn = ApplePayAuthorizationStatus.Failure;
-
+            // Check to see if any of the user errors are not billing address errors
+            // If it is not a billing address error return a failure
             foreach (var error in errors) {
                 var fields = error.field();
+                var isBillingAddressError = false;
 
-                // If there exists a UserErrorPath that is atleast 2 Fields long, and the second last field is `billingAddress`
-                if (fields.Count >= 2 && fields[fields.Count - 2].Equals("billingAddress")) {
-                    statusToReturn = ApplePayAuthorizationStatus.InvalidBillingPostalAddress;
-                } else {
-                    statusToReturn = ApplePayAuthorizationStatus.Failure;
-                    break;
+                foreach(var field in fields) {
+                    if (field.Equals("billingAddress")) {
+                        isBillingAddressError = true;
+                        break;
+                    }
+                }
+
+                if (!isBillingAddressError) {
+                    return ApplePayAuthorizationStatus.Failure;
                 }
             }
 
-            return statusToReturn;
+            return ApplePayAuthorizationStatus.InvalidBillingPostalAddress;
         }
 
         private ApplePayAuthorizationStatus GetAuthorizationStatusFromShippingUserErrors(List<UserError> errors) {
