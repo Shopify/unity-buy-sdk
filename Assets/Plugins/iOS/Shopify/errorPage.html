@@ -38,7 +38,7 @@ html, body {
 </head>
 <body>
     <div class="centered-layout">
-        <p class="padded text-centered">A network error has occurred. <br>Please try again.</p>
+        <p class="padded text-centered"><%= message %></p>
         <!-- retry_url is replaced at runtime when the WKWebView fails to load a page. -->
         <button class="Polaris-Button wide-button" onclick="window.location.href = '<%= retry_url %>';">Reload</button>
     </div>
