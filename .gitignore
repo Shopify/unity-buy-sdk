@@ -16,8 +16,6 @@ test.dll.mdb
 TestResult.xml
 /unity/
 scripts/test_watch.sh
-Assets/Plugins/iOS/Shopify/BuyTests/
-Assets/Plugins/iOS/Shopify/Unity-iPhone-Tests-Bridging-Header.h
 
 ####### Unity test files
 EditorTestResults.xml
