@@ -55,7 +55,9 @@ namespace <%= namespace %>.SDK.iOS {
                 var paymentDictionary = tokenDictionary[TokenField.PaymentData.ToString("G")];
                 PaymentData = Json.Serialize(paymentDictionary);
             } else {
+                #if IOS_SIMULATOR_SDK
                 PaymentData = "";
+                #endif
             }
         }
     }
