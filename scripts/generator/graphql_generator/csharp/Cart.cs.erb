@@ -16,6 +16,15 @@ namespace <%= namespace %> {
     public class NoMatchingVariantException : Exception {
         public NoMatchingVariantException(string message) : base(message) {}
     }
+
+    /// <summary>
+    /// Wraps around a shipping address and shipping identifier. Used for sending the final checkout fields in one GraphQL query.
+    /// </summary>
+    public struct ShippingFields {
+        MailingAddressInput ShippingAddress;
+        string ShippingIdentifier; 
+    }
+    
     /// <summary>
     /// Manages line items for an order. Can also be used to generate a web checkout link to check out in browser.
     /// </summary>
@@ -209,6 +218,10 @@ namespace <%= namespace %> {
                     }
                 }
             });
+        }
+
+        public void SetFinalCheckoutFields(string email, ShippingFields? shippingFields, CompletionCallback callback) {
+            throw new NotImplementedException("Implement Me.");
         }
 
         private void CheckoutSave(CompletionCallback callback) {
