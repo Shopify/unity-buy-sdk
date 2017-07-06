@@ -6,14 +6,16 @@ namespace <%= namespace %> {
     using <%= namespace %>.GraphQL;
 
     public partial class Cart {
+
+        private delegate void CheckoutPollQuery(QueryRootQuery query, string checkoutId);
         private delegate void CheckoutPoll(CheckoutPollFinishedHandler callback);
         private delegate void CheckoutPollFinishedHandler(Checkout checkout, ShopifyError error);
         private delegate void PaymentPollFinishedHandler(Payment payment, ShopifyError error);
 
-        // Polls a Checkout node, till isReady returns True.
-        private void PollCheckoutNode(PollUpdatedHandler isReady, CheckoutPollFinishedHandler callback) {
+        // Polls a Checkout, till isReady returns True.
+        private void PollCheckoutNode(CheckoutPollQuery checkoutQuery, PollUpdatedHandler isReady, CheckoutPollFinishedHandler callback) {
             QueryRootQuery query = new QueryRootQuery();
-            DefaultQueries.checkout.Poll(query, CurrentCheckout.id());
+            checkoutQuery(query, CurrentCheckout.id());
 
             Client.PollQuery(isReady, query, (response, error) => {
 
@@ -49,7 +51,7 @@ namespace <%= namespace %> {
                 return checkout.ready();
             };
 
-            PollCheckoutNode(isReady, callback);
+            PollCheckoutNode(DefaultQueries.checkout.Poll, isReady, callback);
         }
 
         // Convenience method to poll a Checkout node till its available shipping rates' ready property is True
@@ -59,7 +61,7 @@ namespace <%= namespace %> {
                 return checkout.availableShippingRates().ready();
             };
 
-            PollCheckoutNode(isReady, callback);
+            PollCheckoutNode(DefaultQueries.checkout.AvailableShippingRatesPoll, isReady, callback);
         }
 
         // Convenience method to perform some polling on Checkout and update the Current Checkout when completed
