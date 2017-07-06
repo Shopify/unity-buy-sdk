@@ -66,31 +66,25 @@ namespace <%= namespace %>.SDK.iOS {
             var message = NativeMessage.CreateFromJSON(serializedMessage);
             var amount  = checkout.totalPrice();
             var payment = new ApplePayPayment(message.Content);
+            var tokenizedPaymentInput = new TokenizedPaymentInput(amount: amount, billingAddress: payment.BillingAddress, idempotencyKey: payment.TransactionIdentifier, paymentData: payment.PaymentData, type: "apple_pay");
 
-            // Apple Pay could return null payment data, or our serializer and deserializer fails
-            if (payment.PaymentData == null) {
-                message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure).ToJsonString());
-            } else {
-                var tokenizedPaymentInput = new TokenizedPaymentInput(amount: amount, billingAddress: payment.BillingAddress, idempotencyKey: payment.TransactionIdentifier, paymentData: payment.PaymentData, type: "apple_pay");
-
-                Action performCheckout = () => {
-                    CheckoutWithTokenizedPayment(tokenizedPaymentInput, checkout, (ApplePayEventResponse errorResponse) => {
-                        if (errorResponse == null) {
-                            message.Respond((new ApplePayEventResponse(ApplePayAuthorizationStatus.Success)).ToJsonString());
-                        } else {
-                            message.Respond(errorResponse.ToJsonString());
-                        }
-                    });
-                };
-
-                SetFinalCheckoutFieldsForPayment(payment, checkout, (ApplePayEventResponse errorResponse) => {
+            Action performCheckout = () => {
+                CheckoutWithTokenizedPayment(tokenizedPaymentInput, checkout, (ApplePayEventResponse errorResponse) => {
                     if (errorResponse == null) {
-                        performCheckout();
+                        message.Respond((new ApplePayEventResponse(ApplePayAuthorizationStatus.Success)).ToJsonString());
                     } else {
                         message.Respond(errorResponse.ToJsonString());
                     }
                 });
-            }
+            };
+
+            SetFinalCheckoutFieldsForPayment(payment, checkout, (ApplePayEventResponse errorResponse) => {
+                if (errorResponse == null) {
+                    performCheckout();
+                } else {
+                    message.Respond(errorResponse.ToJsonString());
+                }
+            });
         }
 
         public void DidFinishCheckoutSession(string serializedMessage) {
