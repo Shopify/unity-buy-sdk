@@ -60,7 +60,7 @@ GraphQLGenerator::CSharp.new(schema,
   custom_scalars: [
     GraphQLGenerator::CSharp::Scalar.new(
       graph_type: 'DateTime',
-      csharp_type: 'DateTime',
+      csharp_type: 'DateTime?',
       custom_cast: ->(value) { "Convert.ToDateTime(#{value})" },
     ),
     GraphQLGenerator::CSharp::Scalar.new(
