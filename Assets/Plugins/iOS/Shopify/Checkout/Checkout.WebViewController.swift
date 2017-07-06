@@ -33,7 +33,10 @@ extension Checkout {
 class WebViewController: UIViewController {
     weak var delegate: WebCheckoutDelegate?
     
-    fileprivate(set) var startURL: URL
+    fileprivate let startURL: URL
+    fileprivate let errorPageString: String
+    fileprivate let polarisCSSString: String
+
     fileprivate var lastGoodURL: URL
     
     fileprivate var contentView: WebContentView {
@@ -48,7 +51,12 @@ class WebViewController: UIViewController {
         self.startURL = url
         self.lastGoodURL = url
         self.delegate = delegate
-        
+
+        let errorPageFileURL = Bundle.main.url(forResource: "errorPage", withExtension: "html")!
+        let polarisCSSFileURL = Bundle.main.url(forResource: "polaris-1.0.2", withExtension: "css")!
+        self.errorPageString = try! String(contentsOf: errorPageFileURL)
+        self.polarisCSSString = try! String(contentsOf: polarisCSSFileURL)
+
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -84,12 +92,6 @@ extension Checkout.WebViewController {
         // we can use webView.loadFileURL which allows us differentiate between an error page and a 
         // web page. Using webView.loadHTMLString will set the url to about:blank which isn't strong enough
         // to tell us that it's not an error page.
-        let errorPageFileURL = Bundle.main.url(forResource: "errorPage", withExtension: "html")!
-        let polarisCSSFileURL = Bundle.main.url(forResource: "polaris-1.0.2", withExtension: "css")!
-        
-        let errorPageString = try! String(contentsOf: errorPageFileURL)
-        let polarisCSSString = try! String(contentsOf: polarisCSSFileURL)
-        
         var errorHTMLString = errorPageString.replacingOccurrences(of: "<%= polaris_css %>", with: polarisCSSString)
         errorHTMLString = errorHTMLString.replacingOccurrences(of: "<%= retry_url %>", with: lastGoodURL.absoluteString)
         errorHTMLString = errorHTMLString.replacingOccurrences(of: "<%= message %>", with: message)
@@ -151,16 +153,15 @@ extension Checkout.WebViewController: WKNavigationDelegate {
     }
     
     private func handleLoadError(_ error: NSError) {
-        let errorPageURL: URL
+        let message: String
         switch error.code {
         case NSURLErrorNotConnectedToInternet:
-            errorPageURL = generateErrorPage(message: "Looks like you don't have an internet connection. You won't be able to continue checking out until you do. Tap 'Reload' to try loading the page again.",
-                                             retryURL: lastGoodURL)
+            message = "Looks like you don't have an internet connection. You won't be able to continue checking out until you do. Tap 'Reload' to try loading the page again."
         default:
-            errorPageURL =  generateErrorPage(message: "We've run into an unknown issue. Tap 'Reload' to try loading the page again.",
-                                              retryURL: lastGoodURL)
+            message = "We've run into an unknown issue. Tap 'Reload' to try loading the page again."
         }
-        
+
+        let errorPageURL = generateErrorPage(message: message, retryURL: lastGoodURL)
         webView.loadFileURL(errorPageURL, allowingReadAccessTo: errorPageURL)
     }
 }
