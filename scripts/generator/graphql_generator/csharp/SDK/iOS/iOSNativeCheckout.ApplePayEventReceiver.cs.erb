@@ -8,6 +8,8 @@ namespace <%= namespace %>.SDK.iOS {
 
     public partial class iOSNativeCheckout : IApplePayEventReceiver {
 
+        private delegate void ApplePayEventHandlerCompletion(ApplePayEventResponse errorResponse);
+
         private enum NativePaymentStatus {
             Success, Cancelled, Failed
         }
@@ -66,63 +68,21 @@ namespace <%= namespace %>.SDK.iOS {
             var payment = new ApplePayPayment(message.Content);
             var tokenizedPaymentInput = new TokenizedPaymentInput(amount, payment.BillingAddress, payment.TransactionIdentifier, payment.PaymentData, "apple_pay");
 
-
-            Action<ShopifyError> respondToSetFinalCheckoutFieldsError = (ShopifyError error) => {
-                ApplePayEventResponse response = new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure);
-
-                // Check to see if this is a recoverable user error
-                if (error.Type == ShopifyError.ErrorType.UserError) {
-                    var userErrors = CurrentCart.UserErrors;
-                    var status = GetAuthorizationStatusFromShippingUserErrors(userErrors);
-
-                    if (status == ApplePayAuthorizationStatus.InvalidShippingPostalAddress) {
-                        response = new ApplePayEventResponse(status, GetSummaryItems());
-                    } else if (status == ApplePayAuthorizationStatus.InvalidShippingContact) {
-                        response = new ApplePayEventResponse(status, GetSummaryItems(), GetShippingMethods());
-                    }
-                }
-
-                message.Respond(response.ToJsonString());
-            };
-
-            Action<ShopifyError> respondToCheckoutError = (ShopifyError error) => {
-                ApplePayEventResponse response = new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure);
-
-                // Check to see if this is a recoverable user error
-                if (error.Type == ShopifyError.ErrorType.UserError) {
-                    var userErrors = CurrentCart.UserErrors;
-                    var status = GetAuthorizationStatusFromCheckoutUserErrors(userErrors);
-
-                    if (status != ApplePayAuthorizationStatus.Failure) {
-                        response = new ApplePayEventResponse(status, GetSummaryItems(), GetShippingMethods());
-                    } else {
-                        response = new ApplePayEventResponse(status);
-                    }
-                }
-
-                message.Respond(response.ToJsonString());
-            };
-
             Action performCheckout = () => {
-                CurrentCart.CheckoutWithTokenizedPayment(tokenizedPaymentInput, (ShopifyError error) => {
-                    if (error == null) {
-                        message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success).ToJsonString());
+                CheckoutWithTokenizedPayment(tokenizedPaymentInput, checkout, (ApplePayEventResponse errorResponse) => {
+                    if (errorResponse == null) {
+                        message.Respond((new ApplePayEventResponse(ApplePayAuthorizationStatus.Success)).ToJsonString());
                     } else {
-                        respondToCheckoutError(error);
+                        message.Respond(errorResponse.ToJsonString());
                     }
                 });
             };
 
-            ShippingFields? shippingFields = null;
-            if (checkout.requiresShipping()) {
-                shippingFields = new ShippingFields(payment.ShippingAddress, payment.ShippingIdentifier);
-            }
-
-            CurrentCart.SetFinalCheckoutFields(payment.Email, shippingFields, (ShopifyError error) => {
-                if (error == null) {
+            SetFinalCheckoutFieldsForPayment(payment, checkout, (ApplePayEventResponse errorResponse) => {
+                if (errorResponse == null) {
                     performCheckout();
                 } else {
-                    respondToSetFinalCheckoutFieldsError(error);
+                    message.Respond(errorResponse.ToJsonString());
                 }
             });
         }
@@ -145,7 +105,6 @@ namespace <%= namespace %>.SDK.iOS {
         }
 
         private ApplePayAuthorizationStatus GetAuthorizationStatusFromCheckoutUserErrors(List<UserError> errors) {
-
             // Check to see if any of the user errors are not billing address errors
             // If it is not a billing address error return a failure
             foreach (var error in errors) {
@@ -165,6 +124,61 @@ namespace <%= namespace %>.SDK.iOS {
             }
 
             return ApplePayAuthorizationStatus.InvalidBillingPostalAddress;
+        }
+
+        private void SetFinalCheckoutFieldsForPayment(ApplePayPayment payment, Checkout checkout, ApplePayEventHandlerCompletion callback) {
+
+            ShippingFields? shippingFields = null;
+            if (checkout.requiresShipping()) {
+                shippingFields = new ShippingFields(payment.ShippingAddress, payment.ShippingIdentifier);
+            }
+
+            CurrentCart.SetFinalCheckoutFields(payment.Email, shippingFields, (ShopifyError error) => {
+                if (error == null) {
+                    callback(null);
+                } else {
+                    ApplePayEventResponse response = new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure);
+
+                    // Check to see if this is a recoverable user error
+                    if (error.Type == ShopifyError.ErrorType.UserError) {
+                        var userErrors = CurrentCart.UserErrors;
+                        var status = GetAuthorizationStatusFromShippingUserErrors(userErrors);
+
+                        if (status == ApplePayAuthorizationStatus.InvalidShippingPostalAddress) {
+                            response = new ApplePayEventResponse(status, GetSummaryItems());
+                        } else if (status == ApplePayAuthorizationStatus.InvalidShippingContact) {
+                            response = new ApplePayEventResponse(status, GetSummaryItems(), GetShippingMethods());
+                        }
+                    }
+
+                    callback(response);
+                }
+            });
+        }
+
+        private void CheckoutWithTokenizedPayment(TokenizedPaymentInput tokenizedPaymentInput, Checkout checkout, ApplePayEventHandlerCompletion callback) {
+
+            CurrentCart.CheckoutWithTokenizedPayment(tokenizedPaymentInput, (ShopifyError error) => {
+                if (error == null) {
+                    callback(null);
+                } else {
+                    ApplePayEventResponse response = new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure);
+
+                    // Check to see if this is a recoverable user error
+                    if (error.Type == ShopifyError.ErrorType.UserError) {
+                        var userErrors = CurrentCart.UserErrors;
+                        var status = GetAuthorizationStatusFromCheckoutUserErrors(userErrors);
+
+                        if (status != ApplePayAuthorizationStatus.Failure) {
+                            response = new ApplePayEventResponse(status, GetSummaryItems(), GetShippingMethods());
+                        } else {
+                            response = new ApplePayEventResponse(status);
+                        }
+                    }
+
+                    callback(response);
+                }
+            });
         }
 
         private ApplePayAuthorizationStatus GetAuthorizationStatusFromShippingUserErrors(List<UserError> errors) {
