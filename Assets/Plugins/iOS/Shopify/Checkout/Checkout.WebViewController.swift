@@ -33,7 +33,9 @@ extension Checkout {
 class WebViewController: UIViewController {
     weak var delegate: WebCheckoutDelegate?
     
-    fileprivate(set) var url: URL
+    fileprivate(set) var startURL: URL
+    fileprivate var errorHTMLString: String
+    fileprivate var lastGoodURL: URL
     
     fileprivate var contentView: WebContentView {
         return view as! WebContentView
@@ -44,8 +46,17 @@ class WebViewController: UIViewController {
     }
     
     init(url: URL, delegate: WebCheckoutDelegate) {
-        self.url = url
+        self.startURL = url
+        self.lastGoodURL = url
         self.delegate = delegate
+        
+        let errorPageFileURL = Bundle.main.url(forResource: "errorPage", withExtension: "html")!
+        let polarisCSSFileURL = Bundle.main.url(forResource: "polaris-1.0.2", withExtension: "css")!
+        
+        let errorPageString = try! String(contentsOf: errorPageFileURL)
+        let polarisCSSString = try! String(contentsOf: polarisCSSFileURL)
+        
+        errorHTMLString = errorPageString.replacingOccurrences(of: "<%= polaris_css %>", with: polarisCSSString)
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -73,7 +84,7 @@ class WebViewController: UIViewController {
 // MARK: Actions
 extension Checkout.WebViewController {
     func loadCheckoutURL() {
-        let request = URLRequest(url: url)
+        let request = URLRequest(url: startURL)
         webView.load(request)
     }
     
@@ -90,7 +101,11 @@ extension Checkout.WebViewController: WKNavigationDelegate {
         contentView.showProgressIndicator()
     }
     
-    public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {}
+    public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        if (error as NSError).code == NSURLErrorNotConnectedToInternet {
+            loadErrorPage()
+        }
+    }
     
     public func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
         if let url = webView.url, isThankYouPage(url) {
@@ -101,10 +116,18 @@ extension Checkout.WebViewController: WKNavigationDelegate {
     }
     
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        if webView.url?.absoluteString != "about:blank" {
+            lastGoodURL = webView.url ?? URL(string: "about:blank")!
+        }
+        
         contentView.hideProgressIndicator()
     }
     
-    public func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {}
+    public func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        if (error as NSError).code == NSURLErrorNotConnectedToInternet {
+            loadErrorPage()
+        }
+    }
     
     public func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge,
                         completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Swift.Void) {
@@ -115,5 +138,10 @@ extension Checkout.WebViewController: WKNavigationDelegate {
     
     private func isThankYouPage(_ url: URL) -> Bool {
         return url.absoluteString.hasSuffix("/thank_you")
+    }
+    
+    private func loadErrorPage() {
+        let errorPage = errorHTMLString.replacingOccurrences(of: "<%= retry_url %>", with: lastGoodURL.absoluteString)
+        webView.loadHTMLString(errorPage, baseURL: nil)
     }
 }
