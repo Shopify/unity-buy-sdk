@@ -246,7 +246,7 @@ namespace <%= namespace %> {
                     }
 
                     if (UpdateState(response.checkoutEmailUpdate().checkout(), userErrors)) {
-                        PollCheckoutAndUpdate(PollCheckoutAvailableShippingRatesReady, callback);
+                        PollCheckoutAndUpdate(PollCheckoutReady, callback);
                     } else {
                         HandleUserError(callback);
                     }
