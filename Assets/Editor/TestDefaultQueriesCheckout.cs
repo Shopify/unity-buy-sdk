@@ -39,7 +39,7 @@ namespace Shopify.Tests
 
             DefaultQueries.checkout.PaymentPoll(query, paymentId);
             Assert.AreEqual(
-                "{node (id:\"an-id\"){__typename ...on Payment{errorMessage id ready }}}",
+                "{node (id:\"an-id\"){__typename ...on Payment{checkout {id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready completedAt }errorMessage id ready }}}",
                 query.ToString()
             );
         }
@@ -142,7 +142,7 @@ namespace Shopify.Tests
 
             DefaultQueries.checkout.CheckoutCompleteWithTokenizedPayment(query, checkoutId, tokenizedPaymentInput);
             Assert.AreEqual(
-                "mutation{checkoutCompleteWithTokenizedPayment (checkoutId:\"an-id\",payment:{amount:1,billingAddress:{address1:\"123 Test Street\",address2:\"456\",city:\"Toronto\",company:\"Shopify\",country:\"Canada\",firstName:\"First\",lastName:\"Last\",phone:\"1234567890\",province:\"Ontario\",zip:\"A1B2C3\"},idempotencyKey:\"unique_id\",paymentData:\"some_utf8_data_string\",type:\"apple_pay\"}){checkout {id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready }payment {errorMessage id ready }userErrors {field message }}}",
+                "mutation{checkoutCompleteWithTokenizedPayment (checkoutId:\"an-id\",payment:{amount:1,billingAddress:{address1:\"123 Test Street\",address2:\"456\",city:\"Toronto\",company:\"Shopify\",country:\"Canada\",firstName:\"First\",lastName:\"Last\",phone:\"1234567890\",province:\"Ontario\",zip:\"A1B2C3\"},idempotencyKey:\"unique_id\",paymentData:\"some_utf8_data_string\",type:\"apple_pay\"}){checkout {id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready }payment {checkout {id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready completedAt }errorMessage id ready }userErrors {field message }}}",
                 query.ToString()
             );
         }
