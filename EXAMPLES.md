@@ -260,10 +260,11 @@ There are a few things we're still working out for the web checkout experience:
 1. Handling HTTP errors gracefully. When the user loses their internet connection there is currently no way to recover.
 2. Validating the web checkout purchase with results from the API. The completion callback is invoked when we detect that the user has navigated to the `thank you page`. This is the page that is shown when a checkout is completed but we don't validate the completion of the checkout with the server yet. Due to spoofing concern I wouldn't rely on this as knowledge of a completely validated purchase _yet_.
 
-### Apple Pay Checkout - In progress
+### Apple Pay checkout
 
-After creating an instance of `Cart` and adding items to it, you can use the `CanCheckoutWithNativePay` method to 
-find out if the user's is able to make a payment with Apple Pay. If the user has this capability, you can use `CheckoutWithNativePay` to present the Apple Pay authentication interface to the user.
+You can allow users to pay with Apple Pay, providing a seamless checkout experience.
+
+To determine whether the user is able to make a payment with Apple Pay you can use the `CanCheckoutWithNativePay` method. If the user has this capability, you can use `CheckoutWithNativePay` to present the Apple Pay authentication interface to the user. If not you can have them pay using [Native Web Checkout](#native-web-view-checkout).
 
 `CheckoutWithNativePay` takes in 4  parameters:
 
@@ -334,11 +335,10 @@ cart.CheckoutWithNativePay(
 );
 ```
 
-**Caveats**
+**Extras**
 
-There are a few things we're still working on for making payments with Apple Pay:
+You may want to optionally drive users to setup their payment cards with Apple Pay. You can do so by using `CanShowNativePaySetup` and `ShowNativePaySetup`. `CanShowNativePaySetup` lets you know whether the device supports this, and `ShowNativePaySetup` launches the native `Wallet` app prompting the user to set up his or her card.
 
-1. Currently, you will be able to display the interface but you will be unable to authenticate and process a payment.
 
 ### Custom queries
 
