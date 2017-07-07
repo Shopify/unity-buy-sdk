@@ -16,6 +16,20 @@ namespace <%= namespace %> {
     public class NoMatchingVariantException : Exception {
         public NoMatchingVariantException(string message) : base(message) {}
     }
+
+    /// <summary>
+    /// Wraps around a shipping address and shipping identifier. Used for sending the final checkout fields in one GraphQL query.
+    /// </summary>
+    public struct ShippingFields {
+        public MailingAddressInput ShippingAddress;
+        public string ShippingIdentifier; 
+
+        public ShippingFields(MailingAddressInput shippingAddress, string shippingIdentifier) {
+            ShippingIdentifier = shippingIdentifier;
+            ShippingAddress = shippingAddress;
+        }
+    }
+    
     /// <summary>
     /// Manages line items for an order. Can also be used to generate a web checkout link to check out in browser.
     /// </summary>
@@ -204,6 +218,35 @@ namespace <%= namespace %> {
                 } else {
                     if (UpdateState(response.checkoutShippingAddressUpdate().checkout(), response.checkoutShippingAddressUpdate().userErrors())) {
                         PollCheckoutAndUpdate(PollCheckoutAvailableShippingRatesReady, callback);
+                    } else {
+                        HandleUserError(callback);
+                    }
+                }
+            });
+        }
+
+        public void SetFinalCheckoutFields(string email, ShippingFields? shippingFields, CompletionCallback callback) {
+            MutationQuery query = new MutationQuery();
+
+            DefaultQueries.checkout.EmailUpdate(query, CurrentCheckout.id(), email);
+
+            if (shippingFields.HasValue) {
+                DefaultQueries.checkout.ShippingAddressUpdate(query, CurrentCheckout.id(), shippingFields.Value.ShippingAddress);
+                DefaultQueries.checkout.ShippingLineUpdate(query, CurrentCheckout.id(), shippingFields.Value.ShippingIdentifier);
+            }
+
+            Client.Mutation(query, (Mutation response, ShopifyError error) => {
+                if (error != null) {
+                    callback(error);
+                } else {
+                    var userErrors = response.checkoutShippingAddressUpdate().userErrors();
+                    if (shippingFields.HasValue) {
+                        userErrors.AddRange(response.checkoutShippingLineUpdate().userErrors());
+                        userErrors.AddRange(response.checkoutEmailUpdate().userErrors());
+                    }
+
+                    if (UpdateState(response.checkoutEmailUpdate().checkout(), userErrors)) {
+                        PollCheckoutAndUpdate(PollCheckoutReady, callback);
                     } else {
                         HandleUserError(callback);
                     }
