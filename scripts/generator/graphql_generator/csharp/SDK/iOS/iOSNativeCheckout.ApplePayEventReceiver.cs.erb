@@ -8,6 +8,8 @@ namespace <%= namespace %>.SDK.iOS {
 
     public partial class iOSNativeCheckout : IApplePayEventReceiver {
 
+        private delegate void ApplePayEventHandlerCompletion(ApplePayEventResponse errorResponse);
+
         private enum NativePaymentStatus {
             Success, Cancelled, Failed
         }
@@ -60,7 +62,29 @@ namespace <%= namespace %>.SDK.iOS {
         }
 
         public void FetchApplePayCheckoutStatusForToken(string serializedMessage) {
-            //TODO
+            var checkout = CurrentCart.CurrentCheckout;
+            var message = NativeMessage.CreateFromJSON(serializedMessage);
+            var amount  = checkout.totalPrice();
+            var payment = new ApplePayPayment(message.Content);
+            var tokenizedPaymentInput = new TokenizedPaymentInput(amount: amount, billingAddress: payment.BillingAddress, idempotencyKey: payment.TransactionIdentifier, paymentData: payment.PaymentData, type: "apple_pay");
+
+            Action performCheckout = () => {
+                CheckoutWithTokenizedPayment(tokenizedPaymentInput, checkout, (ApplePayEventResponse errorResponse) => {
+                    if (errorResponse == null) {
+                        message.Respond((new ApplePayEventResponse(ApplePayAuthorizationStatus.Success)).ToJsonString());
+                    } else {
+                        message.Respond(errorResponse.ToJsonString());
+                    }
+                });
+            };
+
+            SetFinalCheckoutFieldsForPayment(payment, checkout, (ApplePayEventResponse errorResponse) => {
+                if (errorResponse == null) {
+                    performCheckout();
+                } else {
+                    message.Respond(errorResponse.ToJsonString());
+                }
+            });
         }
 
         public void DidFinishCheckoutSession(string serializedMessage) {
@@ -80,16 +104,125 @@ namespace <%= namespace %>.SDK.iOS {
             }
         }
 
+        private void SetFinalCheckoutFieldsForPayment(ApplePayPayment payment, Checkout checkout, ApplePayEventHandlerCompletion callback) {
+
+            ShippingFields? shippingFields = null;
+            if (checkout.requiresShipping()) {
+                shippingFields = new ShippingFields(payment.ShippingAddress, payment.ShippingIdentifier);
+            }
+
+            CurrentCart.SetFinalCheckoutFields(payment.Email, shippingFields, (ShopifyError error) => {
+                if (error == null) {
+                    callback(null);
+                } else {
+                    ApplePayEventResponse response = new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure);
+
+                    // Check to see if this is a recoverable user error
+                    if (error.Type == ShopifyError.ErrorType.UserError) {
+                        var userErrors = CurrentCart.UserErrors;
+                        var status = GetAuthorizationStatusFromShippingUserErrors(userErrors);
+
+                        if (status == ApplePayAuthorizationStatus.InvalidShippingPostalAddress) {
+                            response = new ApplePayEventResponse(status, GetSummaryItems());
+                        } else if (status == ApplePayAuthorizationStatus.InvalidShippingContact) {
+                            response = new ApplePayEventResponse(status, GetSummaryItems(), GetShippingMethods());
+                        }
+                    }
+
+                    callback(response);
+                }
+            });
+        }
+
+        private void CheckoutWithTokenizedPayment(TokenizedPaymentInput tokenizedPaymentInput, Checkout checkout, ApplePayEventHandlerCompletion callback) {
+
+            CurrentCart.CheckoutWithTokenizedPayment(tokenizedPaymentInput, (ShopifyError error) => {
+                if (error == null) {
+                    callback(null);
+                } else {
+                    ApplePayEventResponse response = new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure);
+
+                    // Check to see if this is a recoverable user error
+                    if (error.Type == ShopifyError.ErrorType.UserError) {
+                        var userErrors = CurrentCart.UserErrors;
+                        var status = GetAuthorizationStatusFromCheckoutUserErrors(userErrors);
+
+                        if (status != ApplePayAuthorizationStatus.Failure) {
+                            response = new ApplePayEventResponse(status, GetSummaryItems(), GetShippingMethods());
+                        } else {
+                            response = new ApplePayEventResponse(status);
+                        }
+                    }
+
+                    callback(response);
+                }
+            });
+        }
+
+        private ApplePayAuthorizationStatus GetAuthorizationStatusFromCheckoutUserErrors(List<UserError> errors) {
+            // Check to see if any of the user errors are not billing address errors
+            // If it is not a billing address error return a failure
+            foreach (var error in errors) {
+                var fields = error.field();
+                var isBillingAddressError = false;
+
+                foreach(var field in fields) {
+                    if (field.Equals("billingAddress")) {
+                        isBillingAddressError = true;
+                        break;
+                    }
+                }
+
+                if (!isBillingAddressError) {
+                    return ApplePayAuthorizationStatus.Failure;
+                }
+            }
+
+            return ApplePayAuthorizationStatus.InvalidBillingPostalAddress;
+        }
+
+        private ApplePayAuthorizationStatus GetAuthorizationStatusFromShippingUserErrors(List<UserError> errors) {
+
+            string[] shippingAddressFields = {"address1", "address2", "city", "country", "province", "zip"};
+            var shippingAddressFieldsSet = new HashSet<string>(shippingAddressFields);
+
+            string[] shippingContactFields = {"firstName", "lastName", "phone", "email"};
+            var shippingContactFieldsSet = new HashSet<string>(shippingContactFields);
+
+            ApplePayAuthorizationStatus statusToReturn = ApplePayAuthorizationStatus.Failure;
+
+            foreach (var error in errors) {
+                var fields = error.field();
+                var lastField = fields[fields.Count - 1];
+
+                var isInvalidShippingAddressError =  shippingAddressFieldsSet.Contains(lastField);
+                var isInvalidShippingContactError =  shippingContactFieldsSet.Contains(lastField);
+
+                if (isInvalidShippingAddressError) {
+                    statusToReturn = ApplePayAuthorizationStatus.InvalidShippingPostalAddress;
+                } else if (isInvalidShippingContactError) {
+                    statusToReturn = ApplePayAuthorizationStatus.InvalidShippingContact;
+                } else {
+                    statusToReturn = ApplePayAuthorizationStatus.Failure;
+                    break;
+                }
+            }
+
+            return statusToReturn;
+        }
+
         // We only receive a partial shipping address before the user has authenticated
         // City, State, Zip, Country
         // So we will receive user errors from our GraphQL query, even though it was a success
         private ApplePayAuthorizationStatus GetAuthorizationStatusFromPreliminaryShippingUserErrors(List<UserError> errors) {
 
+            string[] shippingAddressFields = {"city", "country", "province", "zip"};
+            var shippingAddressFieldsSet = new HashSet<string>(shippingAddressFields);
+
             foreach (var error in errors) {
                 var fields = error.field();
                 var lastField = fields[fields.Count - 1];
-                var isInvalidShippingAddressError =
-                    lastField.Equals("city") || lastField.Equals("country") || lastField.Equals("province") || lastField.Equals("zip");
+                var isInvalidShippingAddressError = shippingAddressFieldsSet.Contains(lastField);
 
                 if (!isInvalidShippingAddressError) {
                     return ApplePayAuthorizationStatus.Failure;

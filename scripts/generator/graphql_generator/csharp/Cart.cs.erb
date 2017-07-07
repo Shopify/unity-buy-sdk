@@ -289,7 +289,7 @@ namespace <%= namespace %> {
             });
         }
 
-        private void CheckoutWithTokenizedPayment(TokenizedPaymentInput tokenizedPaymentInput, CompletionCallback callback) {
+        public void CheckoutWithTokenizedPayment(TokenizedPaymentInput tokenizedPaymentInput, CompletionCallback callback) {
             Action<Payment> pollPayment = (payment) => {
                 PollPaymentReady(payment.id(), (Payment newPayment, ShopifyError error) => {
                     if (error != null) {
