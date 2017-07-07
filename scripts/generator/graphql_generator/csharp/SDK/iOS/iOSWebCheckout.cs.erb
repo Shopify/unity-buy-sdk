@@ -33,7 +33,7 @@ namespace <%= namespace %>.SDK.iOS {
 
         void OnNativeMessage(string jsonMessage) {
             var message = NativeMessage.CreateFromJSON(jsonMessage);
-            if (message.Content == "loadedThankYou") {
+            if (message.Content == "loadedThankYouPage") {
                 // Do a round trip to the server to see if the purchase is solid.
                 // Invoke callbacks on cart to pass to Unity
                 OnSuccess();
