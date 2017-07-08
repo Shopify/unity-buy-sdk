@@ -33,14 +33,15 @@ extension Checkout {
 class WebViewController: UIViewController {
     weak var delegate: WebCheckoutDelegate?
     
-    fileprivate(set) var url: URL
+    fileprivate var url: URL
+    fileprivate var progressBar: WebPageProgressIndicator!
+    fileprivate var actionButton: UIBarButtonItem!
+    fileprivate var checkoutLabelItem: UIBarButtonItem!
     
-    fileprivate var contentView: WebContentView {
-        return view as! WebContentView
-    }
+    private var kvoContext = 0
     
     fileprivate var webView: WKWebView {
-        return contentView.webView
+        return view as! WKWebView
     }
     
     init(url: URL, delegate: WebCheckoutDelegate) {
@@ -56,15 +57,32 @@ class WebViewController: UIViewController {
     
     override func loadView() {
         super.loadView()
-        self.view = WebContentView(frame: view.frame)
+        self.view = WKWebView(frame: view.frame)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         webView.navigationDelegate = self
-        contentView.setActionButton(target: self, selector: #selector(didPressCancel))
-        
+        setupNavigationBar()
         loadCheckoutURL()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: &kvoContext)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress))
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == "estimatedProgress" && context == &kvoContext {
+            progressBar.progress = CGFloat(webView.estimatedProgress)
+        } else {
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+        }
     }
 }
     
@@ -72,12 +90,40 @@ class WebViewController: UIViewController {
 
 // MARK: Actions
 extension Checkout.WebViewController {
+    func setupNavigationBar() {
+        actionButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(didTapCancel))
+        navigationItem.rightBarButtonItem = actionButton
+        
+        let titleView = Checkout.TitleView()
+        navigationItem.titleView = titleView
+        
+        progressBar = Checkout.WebPageProgressIndicator(fillColor: view.tintColor)
+        progressBar.translatesAutoresizingMaskIntoConstraints = false
+        
+        if let navBar = self.navigationController?.navigationBar {
+            navBar.addSubview(progressBar)
+            NSLayoutConstraint.activate([
+                progressBar.trailingAnchor.constraint(equalTo: navBar.trailingAnchor),
+                progressBar.leadingAnchor.constraint(equalTo: navBar.leadingAnchor),
+                progressBar.bottomAnchor.constraint(equalTo: navBar.bottomAnchor),
+                progressBar.heightAnchor.constraint(equalToConstant: 2)
+            ])
+        }
+    }
+    
     func loadCheckoutURL() {
         let request = URLRequest(url: url)
         webView.load(request)
     }
     
-    func didPressCancel() {
+    func didTapCancel() {
+        delegate?.willDismiss { _ in
+            self.dismiss(animated: true)
+        }
+    }
+    
+    func didTapDone() {
+        // TODO: Will include more logic around done vs cancelled.
         delegate?.willDismiss { _ in
             self.dismiss(animated: true)
         }
@@ -87,7 +133,8 @@ extension Checkout.WebViewController {
 // MARK: WKNavigationDelegate
 extension Checkout.WebViewController: WKNavigationDelegate {
     public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        contentView.showProgressIndicator()
+        progressBar.progress = 0
+        progressBar.alpha = 1
     }
     
     public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {}
@@ -95,13 +142,14 @@ extension Checkout.WebViewController: WKNavigationDelegate {
     public func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
         if let url = webView.url, isThankYouPage(url) {
             delegate?.didLoadThankYouPage()
-            contentView.isFinished = true
+            actionButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didTapDone))
+            navigationItem.rightBarButtonItem = actionButton
             return
         }
     }
     
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        contentView.hideProgressIndicator()
+        progressBar.alpha = 0
     }
     
     public func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {}
