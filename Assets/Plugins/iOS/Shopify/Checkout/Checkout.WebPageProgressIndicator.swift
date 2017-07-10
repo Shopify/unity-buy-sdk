@@ -39,29 +39,24 @@ class WebPageProgressIndicator: UIView {
     private var fillView: UIView!
     private var trailingFillConstraint: NSLayoutConstraint!
     
-    // Colors from https://polaris.shopify.com/visuals/colors#color-usage
-    init(cornerRadius: CGFloat) {
+    init(fillColor: UIColor) {
         super.init(frame: CGRect.zero)
-        backgroundColor = UIColor(hex: "B4E1FA")!
-        layer.masksToBounds = true
         
         fillView = UIView()
         fillView.translatesAutoresizingMaskIntoConstraints = false
-        fillView.backgroundColor = UIColor(hex: "007ACE")!
+        fillView.backgroundColor = fillColor
         
         addSubview(fillView)
         
         var constraints = [
             fillView.topAnchor.constraint(equalTo: topAnchor),
             fillView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            fillView.leadingAnchor.constraint(equalTo: leadingAnchor)
+            fillView.leadingAnchor.constraint(equalTo: leadingAnchor),
         ]
         
         trailingFillConstraint = fillView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0)
         constraints.append(trailingFillConstraint)
         NSLayoutConstraint.activate(constraints)
-        
-        layer.cornerRadius = cornerRadius
     }
     
     required init?(coder aDecoder: NSCoder) {
