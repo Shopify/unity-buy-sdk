@@ -26,13 +26,9 @@
 
 import Foundation
 import WebKit
+import SafariServices
 
 private var activeWebPaySession: WebCheckoutSession?
-
-protocol WebCheckoutDelegate: class {
-    func didLoadThankYouPage()
-    func willDismiss(completionHandler: UnityMessage.MessageCompletion?)
-}
 
 @objc class WebCheckoutSession: NSObject {
     static func createSession(unityDelegateObjectName: String, url: String) -> WebCheckoutSession {
@@ -42,23 +38,12 @@ protocol WebCheckoutDelegate: class {
         return session
     }
     
-    fileprivate var webViewController: Checkout.WebViewController!
-    fileprivate var overlay: UIView?
-    
     private let checkoutURL: String
-    private let overlayAnimationDuration: TimeInterval = 0.4
     fileprivate let unityDelegateObjectName: String
     
     init(unityDelegateObjectName: String, checkoutURL: String) {
         self.unityDelegateObjectName = unityDelegateObjectName
         self.checkoutURL = checkoutURL
-        self.overlay = {
-            let view = UIView(frame: UIScreen.main.bounds)
-            view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-            view.backgroundColor = .black
-            view.alpha = 0
-            return view
-        }()
         
         super.init()
     }
@@ -68,53 +53,17 @@ protocol WebCheckoutDelegate: class {
             return false
         }
         
-        webViewController = Checkout.WebViewController(url: url, delegate: self)
-        webViewController.modalPresentationStyle = .overFullScreen
-        
-        showOverlay()
+        let webViewController = SFSafariViewController(url: url)
+        webViewController.delegate = self
         UnityAppController.root.present(webViewController, animated: true, completion: nil)
-        
         return true
-    }
-    
-    
-    fileprivate func showOverlay() {
-        guard let overlay = overlay else {
-            return
-        }
-        
-        let root = UnityAppController.root
-        root.view.addSubview(overlay)
-        root.view.bringSubview(toFront: overlay)
-        UIView.animate(withDuration: overlayAnimationDuration, animations: {
-            overlay.alpha = 0.3
-        })
-    }
-    
-    fileprivate func hideOverlay() {
-        guard let overlay = overlay else {
-            return
-        }
-        
-        UIView.animate(withDuration: overlayAnimationDuration, animations: {
-            overlay.alpha = 0
-        }, completion: { _ in
-            overlay.removeFromSuperview()
-            self.overlay = nil
-        })
     }
 }
 
-extension WebCheckoutSession: WebCheckoutDelegate {
-    func didLoadThankYouPage() {
-        let message = UnityMessage(content: "loadedThankYouPage", object: unityDelegateObjectName, method: "OnNativeMessage")
+extension WebCheckoutSession: SFSafariViewControllerDelegate {
+    public func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        let message = UnityMessage(content: "dismissed", object: unityDelegateObjectName, method: "OnNativeMessage")
         MessageCenter.send(message)
-    }
-    
-    func willDismiss(completionHandler: UnityMessage.MessageCompletion?) {
-        hideOverlay()
-        let message = UnityMessage(content: "cancelled", object: unityDelegateObjectName, method: "OnNativeMessage")
-        MessageCenter.send(message, completionHandler: completionHandler)
     }
 }
 
