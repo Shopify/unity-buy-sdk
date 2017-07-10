@@ -1,17 +1,21 @@
-#if UNITY_IOS
 namespace Shopify.Tests.iOS {
     using System.Collections;
     using System.Collections.Generic;
     using UnityEngine;
+
+    #if UNITY_IOS
     using Shopify.Unity.SDK.iOS;
+    #endif
 
-    public class ApplePayEventTester : MonoBehaviour, IApplePayEventReceiver {
+    public partial class ApplePayEventTester : MonoBehaviour {}
 
+    #if UNITY_IOS
+    public partial class ApplePayEventTester : IApplePayEventReceiver {
         public void UpdateSummaryItemsForShippingIdentifier(string serializedMessage) {
             var message = NativeMessageTester.CreateFromJSON(serializedMessage);
             var response = new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, GetExpectedSummaryItems());
             message.Respond(response.ToJsonString());
-        }
+         }
 
         public void UpdateSummaryItemsForShippingContact(string serializedMessage) {
             var message = NativeMessageTester.CreateFromJSON(serializedMessage);
@@ -42,5 +46,5 @@ namespace Shopify.Tests.iOS {
             return shippingMethods;
         }
     }
+    #endif
 }
-#endif
