@@ -30,6 +30,7 @@
 #import <UIKit/UIKit.h>
 #import <PassKit/PassKit.h>
 #import <WebKit/WebKit.h>
+#import <SafariServices/SafariServices.h>
 
 #import "ProductName-Swift.h"
 
