@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" /> 
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<style>
+
+/* CSS will be injected at run time when the app pulls in this file */
+<%= polaris_css %>
+
+html, body {
+    height: 100%;
+}
+
+.centered-layout {
+    display: flex;
+    height: 100%;
+    flex-grow: 1;
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+}     
+
+.padded {
+    padding: 20px;
+}
+
+.wide-button {
+    min-width: 200px;
+}
+
+.text-centered {
+    text-align: center;
+}
+
+</style>
+</head>
+<body>
+    <div class="centered-layout">
+        <p class="padded text-centered"><%= message %></p>
+        <!-- retry_url is replaced at runtime when the WKWebView fails to load a page. -->
+        <button class="Polaris-Button wide-button" onclick="window.location.href = '<%= retry_url %>';">Reload</button>
+    </div>
+</body>
+</html>
