@@ -8,7 +8,10 @@ UNITY_IOS_LOG_PATH="$PROJECT_ROOT"/buildIOS.log
 
 which "$UNITY_PATH" &> /dev/null || die "Unity does not exist at $UNITY_PATH" 
 
-if [[ -z ${UNITY_USERNAME+x} && -z ${UNITY_PASSWORD+x} && -z ${UNITY_SERIAL+x} ]] ; then
+# Activate license
+if [[ -n "$UNITY_USERNAME" && -n "$UNITY_PASSWORD" && -n "$UNITY_SERIAL"  ]] ; then
+    echo "Unity building with user $UNITY_USERNAME"
+
     "$UNITY_PATH" \
         -batchmode \
         -nographics \
@@ -17,25 +20,33 @@ if [[ -z ${UNITY_USERNAME+x} && -z ${UNITY_PASSWORD+x} && -z ${UNITY_SERIAL+x} ]
         -serial "$UNITY_SERIAL" \
         -silent-crashes \
         -logFile "$UNITY_IOS_LOG_PATH" \
-        -projectPath "$PROJECT_ROOT" \
-        -executeMethod Shopify.BuildPipeline.ShopifyBuildPipeline.BuildIosForTests \
-        -buildPlayerPath "$IOS_BUILD_PATH" \
         -quit
+
+    # Here https://docs.unity3d.com/Manual/CommandLineArguments.html
+    # it states that activating the license might take a bit of time :(
+    sleep 5
+else
+    echo "Unity building without user"   
+fi
+
+"$UNITY_PATH" \
+    -batchmode \
+    -nographics \
+    -silent-crashes \
+    -logFile "$UNITY_IOS_LOG_PATH" \
+    -projectPath "$PROJECT_ROOT" \
+    -executeMethod Shopify.BuildPipeline.ShopifyBuildPipeline.BuildIosForTests \
+    -buildPlayerPath "$IOS_BUILD_PATH" \
+    -quit
+
+# Deactivate license
+if [[ -n "$UNITY_USERNAME" && -n "$UNITY_PASSWORD" && -n "$UNITY_SERIAL"  ]] ; then
+    echo "Deactivate license"
 
     "$UNITY_PATH" \
         -batchmode \
         -nographics \
         -returnlicense\
-        -quit
-else
-    "$UNITY_PATH" \
-        -batchmode \
-        -nographics \
-        -silent-crashes \
-        -logFile "$UNITY_IOS_LOG_PATH" \
-        -projectPath "$PROJECT_ROOT" \
-        -executeMethod Shopify.BuildPipeline.ShopifyBuildPipeline.BuildIosForTests \
-        -buildPlayerPath "$IOS_BUILD_PATH" \
         -quit
 fi
 
