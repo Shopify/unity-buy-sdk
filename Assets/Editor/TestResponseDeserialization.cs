@@ -266,7 +266,7 @@ namespace Shopify.Tests {
             }";
 
             Collection collection = new Collection((Dictionary<string,object>) Json.Deserialize(json));
-            DateTimeOffset date = new DateTimeOffset(collection.updatedAt());
+            DateTimeOffset date = new DateTimeOffset(collection.updatedAt().Value);
             date = date.ToUniversalTime();
 
             Assert.AreEqual(2016, date.Year);
