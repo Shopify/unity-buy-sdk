@@ -63,7 +63,7 @@ private var activeWebPaySession: WebCheckoutSession?
 extension WebCheckoutSession: SFSafariViewControllerDelegate {
     public func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
         let message = UnityMessage(content: "dismissed", object: unityDelegateObjectName, method: "OnNativeMessage")
-        MessageCenter.send(message, completionHandler: nil)
+        MessageCenter.send(message)
     }
 }
 
