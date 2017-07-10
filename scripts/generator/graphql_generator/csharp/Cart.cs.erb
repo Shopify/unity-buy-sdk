@@ -91,7 +91,7 @@ namespace <%= namespace %> {
             _LineItems = new CartLineItems(OnDeleteLineItem);
 
             #if UNITY_IOS
-            WebCheckout = new iOSWebCheckout();
+            WebCheckout = new iOSWebCheckout(this, Client);
             NativeCheckout = new iOSNativeCheckout(this);
             #endif
         }
