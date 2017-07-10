@@ -78,9 +78,11 @@ extension Checkout.WebViewController {
     }
     
     func didPressCancel() {
-        delegate?.willDismiss { _ in
+        delegate?.willDismiss(
+            finished: contentView.isFinished,
+            completionHandler: { _ in
             self.dismiss(animated: true)
-        }
+        })
     }
 }
 
