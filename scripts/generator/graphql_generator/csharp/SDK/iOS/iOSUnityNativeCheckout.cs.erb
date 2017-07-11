@@ -1,0 +1,83 @@
+#if UNITY_IOS && !SHOPIFY_MONO_UNIT_TEST
+namespace <%= namespace %>.SDK.iOS {
+    using System;
+    using System.Runtime.InteropServices;
+    using <%= namespace %>.SDK;
+
+    using UnityEngine;
+
+    [DllImport ("__Internal")]
+    private static extern bool _CanCheckoutWithApplePay();
+
+    [DllImport ("__Internal")]
+    private static extern bool _CanShowApplePaySetup();
+
+    [DllImport ("__Internal")]
+    private static extern void _ShowApplePaySetup();
+
+    [DllImport ("__Internal")]
+    private static extern bool _CreateApplePaySession(string unityDelegateObjectName, string merchantID, string countryCode, string currencyCode, string serializedSummaryItems, string serializedShippingMethods, bool requiringShipping);
+
+    [DllImport ("__Internal")]
+    private static extern void _PresentApplePayAuthorization();
+
+    class iOSUnityNativeCheckout : iOSNativeCheckout {
+        /// <summary>
+        /// Checks if the device is capable of paying with Apple Pay
+        /// </summary>
+        /// <returns>True if the device is capable of paying with Apple Pay</returns>
+        public bool CanCheckout() {
+            return _CanCheckoutWithApplePay();
+        }
+
+        /// <summary>
+        /// Checks if the device is capable of setting up Apple Pay
+        /// </summary>
+        /// <returns>True if the device is capable of setting up Apple Pay </returns>
+        public bool CanShowPaymentSetup() {
+            return _CanShowApplePaySetup();
+        }
+
+        /// <summary>
+        /// Launches the iOS Wallet App, for the user to sign up with Apple Pay
+        /// </summary>
+        public void ShowPaymentSetup() {
+            _ShowApplePaySetup();
+        }
+
+        /// <summary>
+        /// Starts the process of making a payment through Apple Pay.
+        /// </summary>
+        /// <remarks>
+        ///  Displays a payment interface to the user based on the contents of the Cart
+        /// </remarks>
+        /// <param name="key">Merchant ID for Apple Pay from the Apple Developer Portal</param>
+        /// <param name="success">Delegate method that will be notified upon a successful payment</param>
+        /// <param name="failure">Delegate method that will be notified upon a failure during the checkout process</param>
+        /// <param name="cancelled">Delegate method that will be notified upon a cancellation during the checkout process</param>
+        public void Checkout(string key, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
+            OnSuccess = success;
+            OnCancelled = cancelled;
+            OnFailure = failure;
+
+            var checkout = CurrentCart.CurrentCheckout;
+
+            var summaryItems = GetSummaryItems();
+            var summaryString = Json.Serialize(summaryItems);
+            var currencyCodeString = checkout.currencyCode().ToString("G");
+            var requiresShipping = checkout.requiresShipping();
+
+            if (ApplePayEventBridge == null) {
+                ApplePayEventBridge = GlobalGameObject.AddComponent<ApplePayEventReceiverBridge>();
+                ApplePayEventBridge.Receiver = this;
+            }
+
+            if (_CreateApplePaySession(GlobalGameObject.Name, key, "CA", currencyCodeString, summaryString, null, requiresShipping)) {
+                _PresentApplePayAuthorization();
+            } else {
+                //TODO call checkout failure
+            }
+        }
+    }
+}
+#endif

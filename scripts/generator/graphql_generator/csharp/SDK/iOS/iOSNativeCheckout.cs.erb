@@ -9,12 +9,12 @@ namespace <%= namespace %>.SDK.iOS {
 
     abstract class iOSNativeCheckout : INativeCheckout, IApplePayEventReceiver {
 
-        private Cart CurrentCart;
-        private ApplePayEventReceiverBridge ApplePayEventBridge;
+        protected Cart CurrentCart;
+        protected ApplePayEventReceiverBridge ApplePayEventBridge;
 
-        private CheckoutSuccessCallback OnSuccess;
-        private CheckoutCancelCallback OnCancelled;
-        private CheckoutFailureCallback OnFailure;
+        protected CheckoutSuccessCallback OnSuccess;
+        protected CheckoutCancelCallback OnCancelled;
+        protected CheckoutFailureCallback OnFailure;
 
         public iOSNativeCheckout(Cart cart) {
             CurrentCart = cart;
