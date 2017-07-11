@@ -127,9 +127,10 @@ module GraphQLGenerator
         SDK/iOS/ApplePayEventResponse
         SDK/iOS/ShippingMethod
         SDK/iOS/iOSWebCheckout
+        SDK/iOS/iOSWebViewMessageReceiver
         SDK/iOS/SummaryItem
         SDK/iOS/iOSNativeCheckout
-        SDK/iOS/iOSNativeCheckout.ApplePayEventReceiver
+        SDK/iOS/iOSUnityNativeCheckout
         SDK/iOS/ApplePayPayment
       ).each do |class_file_name|
         directory = "#{path}/#{File.dirname(class_file_name)}"

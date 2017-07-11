@@ -1,0 +1,62 @@
+#if UNITY_IOS
+namespace <%= namespace %>.SDK.iOS {
+    using System;
+    using System.Runtime.InteropServices;
+    using <%= namespace %>.SDK;
+    using <%= namespace %>.GraphQL;
+
+    #if !SHOPIFY_MONO_UNIT_TEST
+    using UnityEngine;
+    partial class iOSWebViewMessageReceiver: MonoBehaviour {}
+    #endif
+
+    partial class iOSWebViewMessageReceiver {
+        internal ShopifyClient Client;
+        internal Checkout CurrentCheckout;
+
+        internal CheckoutSuccessCallback OnSuccess;
+        internal CheckoutCancelCallback OnCancelled;
+        internal CheckoutFailureCallback OnFailure;
+
+        void OnNativeMessage(string jsonMessage) {
+            var message = NativeMessage.CreateFromJSON(jsonMessage);
+            if (message.Content == "dismissed") {
+                // Do a round trip to the server to see if the purchase is solid.
+                // Invoke callbacks on cart to pass to Unity
+                DidCheckoutCompleteSuccessfully(CurrentCheckout.id(), (didSucceed) => {
+                    if (didSucceed) {
+                        OnSuccess();
+                        return;
+                    } 
+
+                    var error = new ShopifyError(
+                        ShopifyError.ErrorType.NativePaymentProcessingError, 
+                        "User navigated to end of checkout without successfully checking out."
+                    );
+
+                    OnFailure(error);
+                });
+            }
+        }
+
+        private delegate void VerifyCheckoutComplete(bool didSucceed);
+        private void DidCheckoutCompleteSuccessfully(string checkoutId, VerifyCheckoutComplete callback) {
+            var query = new QueryRootQuery();
+            query.node(
+                buildQuery: n => n
+                    .onCheckout(c => c.completedAt()),
+                id: CurrentCheckout.id()
+            );
+            
+            Client.Query(query, (response, error) => {
+                if (error != null) {
+                    callback(false);
+                } else {
+                    var checkout = (Checkout) response.node();
+                    callback(checkout.completedAt() != null);
+                } 
+            });
+        }
+    }
+}
+#endif

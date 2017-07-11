@@ -1,9 +1,7 @@
-#if !SHOPIFY_MONO_UNIT_TEST
 namespace <%= namespace %>.SDK {
     using System;
     using System.Collections.Generic;
     using System.Runtime.InteropServices;
-    using UnityEngine;
     using <%= namespace %>.MiniJSON;
 
     public class NativeMessage {
@@ -25,8 +23,9 @@ namespace <%= namespace %>.SDK {
         }
 
         public void Respond(string message) {
+            #if UNITY_IOS
             _RespondToNativeMessage(Identifier, message);
+            #endif
         }
     }
 }
-#endif

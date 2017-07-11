@@ -3,25 +3,11 @@ namespace <%= namespace %>.SDK.iOS {
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Runtime.InteropServices;
+    using <%= namespace %>.SDK.iOS;
     using <%= namespace %>.SDK;
     using <%= namespace %>.MiniJSON;
 
-    partial class iOSNativeCheckout : INativeCheckout {
-        [DllImport ("__Internal")]
-        private static extern bool _CanCheckoutWithApplePay();
-
-        [DllImport ("__Internal")]
-        private static extern bool _CanShowApplePaySetup();
-
-        [DllImport ("__Internal")]
-        private static extern void _ShowApplePaySetup();
-
-        [DllImport ("__Internal")]
-        private static extern bool _CreateApplePaySession(string unityDelegateObjectName, string merchantID, string countryCode, string currencyCode, string serializedSummaryItems, string serializedShippingMethods, bool requiringShipping);
-
-        [DllImport ("__Internal")]
-        private static extern void _PresentApplePayAuthorization();
+    abstract class iOSNativeCheckout : INativeCheckout, IApplePayEventReceiver {
 
         private Cart CurrentCart;
         private ApplePayEventReceiverBridge ApplePayEventBridge;
@@ -38,24 +24,18 @@ namespace <%= namespace %>.SDK.iOS {
         /// Checks if the device is capable of paying with Apple Pay
         /// </summary>
         /// <returns>True if the device is capable of paying with Apple Pay</returns>
-        public bool CanCheckout() {
-            return _CanCheckoutWithApplePay();
-        }
+        public abstract bool CanCheckout();
 
         /// <summary>
         /// Checks if the device is capable of setting up Apple Pay
         /// </summary>
         /// <returns>True if the device is capable of setting up Apple Pay </returns>
-        public bool CanShowPaymentSetup() {
-            return _CanShowApplePaySetup();
-        }
+        public abstract bool CanShowPaymentSetup();
 
         /// <summary>
         /// Launches the iOS Wallet App, for the user to sign up with Apple Pay
         /// </summary>
-        public void ShowPaymentSetup() {
-            _ShowApplePaySetup();
-        }
+        public abstract void ShowPaymentSetup();
 
         /// <summary>
         /// Starts the process of making a payment through Apple Pay.
@@ -67,32 +47,99 @@ namespace <%= namespace %>.SDK.iOS {
         /// <param name="success">Delegate method that will be notified upon a successful payment</param>
         /// <param name="failure">Delegate method that will be notified upon a failure during the checkout process</param>
         /// <param name="cancelled">Delegate method that will be notified upon a cancellation during the checkout process</param>
-        public void Checkout(string key, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
+        public abstract void Checkout(string key, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure);
 
-            OnSuccess = success;
-            OnCancelled = cancelled;
-            OnFailure = failure;
+        public void UpdateSummaryItemsForShippingIdentifier(string serializedMessage) {
+            var message = NativeMessage.CreateFromJSON(serializedMessage);
 
+            CurrentCart.SetShippingLine(message.Content, (ShopifyError error) => {
+                if (error == null) {
+                    var summaryItems = GetSummaryItems();
+                    message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, summaryItems).ToJsonString());
+                } else {
+                    message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure).ToJsonString());
+                }
+            });
+        }
+
+        public void UpdateSummaryItemsForShippingContact(string serializedMessage) {
+            var message = NativeMessage.CreateFromJSON(serializedMessage);
+            var contentDictionary = (Dictionary<string, object>)Json.Deserialize(message.Content);
+            var mailingAddressInput = new MailingAddressInput(contentDictionary);
+
+            Action respondWithSuccess = () => {
+                message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, GetSummaryItems(), GetShippingMethods()).ToJsonString());
+            };
+
+            Action<ShopifyError> respondToError = (ShopifyError error) => {
+                ApplePayEventResponse response = new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure);
+
+                // Check to see if this is a recoverable user error
+                if (error.Type == ShopifyError.ErrorType.UserError) {
+                    var userErrors = CurrentCart.UserErrors;
+                    var status = GetAuthorizationStatusFromPreliminaryShippingUserErrors(userErrors);
+
+                    if (status == ApplePayAuthorizationStatus.InvalidShippingPostalAddress) {
+                        response = new ApplePayEventResponse(status, GetSummaryItems());
+                    }
+                }
+
+                message.Respond(response.ToJsonString());
+            };
+
+            CurrentCart.SetShippingAddress(mailingAddressInput, (ShopifyError error) => {
+                if (error == null) {
+                    respondWithSuccess();
+                } else {
+                    respondToError(error);
+                }
+            });
+        }
+
+        public void FetchApplePayCheckoutStatusForToken(string serializedMessage) {
             var checkout = CurrentCart.CurrentCheckout;
+            var message = NativeMessage.CreateFromJSON(serializedMessage);
+            var amount  = checkout.totalPrice();
+            var payment = new ApplePayPayment(message.Content);
+            var tokenizedPaymentInput = new TokenizedPaymentInput(amount: amount, billingAddress: payment.BillingAddress, idempotencyKey: payment.TransactionIdentifier, paymentData: payment.PaymentData, type: "apple_pay");
 
-            var summaryItems = GetSummaryItems();
-            var summaryString = Json.Serialize(summaryItems);
-            var currencyCodeString = checkout.currencyCode().ToString("G");
-            var requiresShipping = checkout.requiresShipping();
+            Action performCheckout = () => {
+                CheckoutWithTokenizedPayment(tokenizedPaymentInput, checkout, (ApplePayEventResponse errorResponse) => {
+                    if (errorResponse == null) {
+                        message.Respond((new ApplePayEventResponse(ApplePayAuthorizationStatus.Success)).ToJsonString());
+                    } else {
+                        message.Respond(errorResponse.ToJsonString());
+                    }
+                });
+            };
 
-            if (ApplePayEventBridge == null) {
-                ApplePayEventBridge = GlobalGameObject.AddComponent<ApplePayEventReceiverBridge>();
-                ApplePayEventBridge.Receiver = this;
-            }
+            SetFinalCheckoutFieldsForPayment(payment, checkout, (ApplePayEventResponse errorResponse) => {
+                if (errorResponse == null) {
+                    performCheckout();
+                } else {
+                    message.Respond(errorResponse.ToJsonString());
+                }
+            });
+        }
 
-            if (_CreateApplePaySession(GlobalGameObject.Name, key, "CA", currencyCodeString, summaryString, null, requiresShipping)) {
-                _PresentApplePayAuthorization();
-            } else {
-                //TODO call checkout failure
+        public void DidFinishCheckoutSession(string serializedMessage) {
+            var message = NativeMessage.CreateFromJSON(serializedMessage);
+            var paymentStatus = (NativePaymentStatus) Enum.Parse(typeof(NativePaymentStatus), (string) message.Content);
+            switch (paymentStatus) {
+            case NativePaymentStatus.Success:
+                OnSuccess();
+                return;
+            case NativePaymentStatus.Cancelled:
+                OnCancelled();
+                return;
+            case NativePaymentStatus.Failed:
+                var error = new ShopifyError(ShopifyError.ErrorType.NativePaymentProcessingError, "Unable to retrieve a payment from the user's payment provider. Fallback to web checkout.");
+                OnFailure(error);
+                return;
             }
         }
 
-        private List<SummaryItem> GetSummaryItems() {
+        protected List<SummaryItem> GetSummaryItems() {
             var checkout = CurrentCart.CurrentCheckout;
             var summaryItems = new List<SummaryItem>();
             summaryItems.Add(new SummaryItem("SUBTOTAL", checkout.subtotalPrice().ToString()));
@@ -109,7 +156,7 @@ namespace <%= namespace %>.SDK.iOS {
             return summaryItems;
         }
 
-        private List<ShippingMethod> GetShippingMethods() {
+        protected List<ShippingMethod> GetShippingMethods() {
             var checkout = CurrentCart.CurrentCheckout;
             var shippingMethods = new List<ShippingMethod>();
 
@@ -124,6 +171,140 @@ namespace <%= namespace %>.SDK.iOS {
             }
 
             return shippingMethods;
+        }
+
+        protected delegate void ApplePayEventHandlerCompletion(ApplePayEventResponse errorResponse);
+
+        protected enum NativePaymentStatus {
+            Success, Cancelled, Failed
+        }
+
+        protected void SetFinalCheckoutFieldsForPayment(ApplePayPayment payment, Checkout checkout, ApplePayEventHandlerCompletion callback) {
+
+            ShippingFields? shippingFields = null;
+            if (checkout.requiresShipping()) {
+                shippingFields = new ShippingFields(payment.ShippingAddress, payment.ShippingIdentifier);
+            }
+
+            CurrentCart.SetFinalCheckoutFields(payment.Email, shippingFields, (ShopifyError error) => {
+                if (error == null) {
+                    callback(null);
+                } else {
+                    ApplePayEventResponse response = new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure);
+
+                    // Check to see if this is a recoverable user error
+                    if (error.Type == ShopifyError.ErrorType.UserError) {
+                        var userErrors = CurrentCart.UserErrors;
+                        var status = GetAuthorizationStatusFromShippingUserErrors(userErrors);
+
+                        if (status == ApplePayAuthorizationStatus.InvalidShippingPostalAddress) {
+                            response = new ApplePayEventResponse(status, GetSummaryItems());
+                        } else if (status == ApplePayAuthorizationStatus.InvalidShippingContact) {
+                            response = new ApplePayEventResponse(status, GetSummaryItems(), GetShippingMethods());
+                        }
+                    }
+
+                    callback(response);
+                }
+            });
+        }
+
+        protected void CheckoutWithTokenizedPayment(TokenizedPaymentInput tokenizedPaymentInput, Checkout checkout, ApplePayEventHandlerCompletion callback) {
+
+            CurrentCart.CheckoutWithTokenizedPayment(tokenizedPaymentInput, (ShopifyError error) => {
+                if (error == null) {
+                    callback(null);
+                } else {
+                    ApplePayEventResponse response = new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure);
+
+                    // Check to see if this is a recoverable user error
+                    if (error.Type == ShopifyError.ErrorType.UserError) {
+                        var userErrors = CurrentCart.UserErrors;
+                        var status = GetAuthorizationStatusFromCheckoutUserErrors(userErrors);
+
+                        if (status != ApplePayAuthorizationStatus.Failure) {
+                            response = new ApplePayEventResponse(status, GetSummaryItems(), GetShippingMethods());
+                        } else {
+                            response = new ApplePayEventResponse(status);
+                        }
+                    }
+
+                    callback(response);
+                }
+            });
+        }
+
+        protected ApplePayAuthorizationStatus GetAuthorizationStatusFromCheckoutUserErrors(List<UserError> errors) {
+            // Check to see if any of the user errors are not billing address errors
+            // If it is not a billing address error return a failure
+            foreach (var error in errors) {
+                var fields = error.field();
+                var isBillingAddressError = false;
+
+                foreach(var field in fields) {
+                    if (field.Equals("billingAddress")) {
+                        isBillingAddressError = true;
+                        break;
+                    }
+                }
+
+                if (!isBillingAddressError) {
+                    return ApplePayAuthorizationStatus.Failure;
+                }
+            }
+
+            return ApplePayAuthorizationStatus.InvalidBillingPostalAddress;
+        }
+
+        protected ApplePayAuthorizationStatus GetAuthorizationStatusFromShippingUserErrors(List<UserError> errors) {
+
+            string[] shippingAddressFields = {"address1", "address2", "city", "country", "province", "zip"};
+            var shippingAddressFieldsSet = new HashSet<string>(shippingAddressFields);
+
+            string[] shippingContactFields = {"firstName", "lastName", "phone", "email"};
+            var shippingContactFieldsSet = new HashSet<string>(shippingContactFields);
+
+            ApplePayAuthorizationStatus statusToReturn = ApplePayAuthorizationStatus.Failure;
+
+            foreach (var error in errors) {
+                var fields = error.field();
+                var lastField = fields[fields.Count - 1];
+
+                var isInvalidShippingAddressError =  shippingAddressFieldsSet.Contains(lastField);
+                var isInvalidShippingContactError =  shippingContactFieldsSet.Contains(lastField);
+
+                if (isInvalidShippingAddressError) {
+                    statusToReturn = ApplePayAuthorizationStatus.InvalidShippingPostalAddress;
+                } else if (isInvalidShippingContactError) {
+                    statusToReturn = ApplePayAuthorizationStatus.InvalidShippingContact;
+                } else {
+                    statusToReturn = ApplePayAuthorizationStatus.Failure;
+                    break;
+                }
+            }
+
+            return statusToReturn;
+        }
+
+        // We only receive a partial shipping address before the user has authenticated
+        // City, State, Zip, Country
+        // So we will receive user errors from our GraphQL query, even though it was a success
+        protected ApplePayAuthorizationStatus GetAuthorizationStatusFromPreliminaryShippingUserErrors(List<UserError> errors) {
+
+            string[] shippingAddressFields = {"city", "country", "province", "zip"};
+            var shippingAddressFieldsSet = new HashSet<string>(shippingAddressFields);
+
+            foreach (var error in errors) {
+                var fields = error.field();
+                var lastField = fields[fields.Count - 1];
+                var isInvalidShippingAddressError = shippingAddressFieldsSet.Contains(lastField);
+
+                if (!isInvalidShippingAddressError) {
+                    return ApplePayAuthorizationStatus.Failure;
+                }
+            }
+
+            return ApplePayAuthorizationStatus.InvalidShippingPostalAddress;
         }
     }
 }
