@@ -10,7 +10,6 @@ namespace <%= namespace %>.SDK.iOS {
     abstract class iOSNativeCheckout : INativeCheckout, IApplePayEventReceiver {
 
         protected Cart CurrentCart;
-        protected ApplePayEventReceiverBridge ApplePayEventBridge;
 
         protected CheckoutSuccessCallback OnSuccess;
         protected CheckoutCancelCallback OnCancelled;
@@ -137,6 +136,12 @@ namespace <%= namespace %>.SDK.iOS {
                 OnFailure(error);
                 return;
             }
+        }
+
+        protected void StoreCallbacks(CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
+            OnSuccess = success;
+            OnCancelled = cancelled;
+            OnFailure = failure;
         }
 
         protected List<SummaryItem> GetSummaryItems() {
