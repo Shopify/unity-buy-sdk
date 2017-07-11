@@ -15,7 +15,7 @@ namespace Shopify.Tests.iOS {
             var message = NativeMessageTester.CreateFromJSON(serializedMessage);
             var response = new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, GetExpectedSummaryItems());
             message.Respond(response.ToJsonString());
-         }
+        }
 
         public void UpdateSummaryItemsForShippingContact(string serializedMessage) {
             var message = NativeMessageTester.CreateFromJSON(serializedMessage);
