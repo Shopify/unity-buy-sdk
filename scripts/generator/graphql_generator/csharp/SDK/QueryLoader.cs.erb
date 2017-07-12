@@ -38,7 +38,16 @@ namespace <%= namespace %>.SDK {
         /// <param name="query">query to be sent to the GraphQL endpoint</param>
         /// <param name="callback">callback that receives the query response</param>
         public void Query(<%= schema.query_root_name %>Query query, QueryResponseHandler callback) {
+
+            #if SHOPIFY_VERBOSE_DEBUG
+            Console.WriteLine("Sending Query: " + query.ToString());
+            #endif
+
             Loader.Load(query.ToString(), (string response, string error) => {
+                #if SHOPIFY_VERBOSE_DEBUG
+                Console.WriteLine("Response: " + response);
+                Console.WriteLine("Error: " + error);
+                #endif
                 if (error != null) {
                     callback(new QueryResponse(error));
                 } else {
@@ -66,7 +75,17 @@ namespace <%= namespace %>.SDK {
         /// <param name="query">mutation to be sent to GraphQL endpoint</param>
         /// <param name="callback">callback that receives the mutation response</param>
         public void Mutation(<%= schema.mutation_root_name %>Query query, MutationResponseHandler callback) {
+
+            #if SHOPIFY_VERBOSE_DEBUG
+            Console.WriteLine("Sending Mutation: " + query.ToString());
+            #endif
+
             Loader.Load(query.ToString(), (string response, string error) => {
+                #if SHOPIFY_VERBOSE_DEBUG
+                Console.WriteLine("Response: " + response);
+                Console.WriteLine("Error: " + error);
+                #endif
+
                 if (error != null) {
                     callback(new MutationResponse(error));
                 } else {
