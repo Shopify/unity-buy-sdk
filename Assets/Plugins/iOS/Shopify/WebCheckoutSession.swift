@@ -55,7 +55,11 @@ private var activeWebPaySession: WebCheckoutSession?
         
         let webViewController = SFSafariViewController(url: url)
         webViewController.delegate = self
-        UnityAppController.root.present(webViewController, animated: true, completion: nil)
+
+        let navController = UnityModalNavigationController(rootViewController: webViewController)
+        navController.isNavigationBarHidden = true
+        UnityAppController.root.present(navController, animated: true, completion: nil)
+
         return true
     }
 }
@@ -72,5 +76,20 @@ private extension UnityAppController {
     static var root: UIViewController {
         let unityController = UIApplication.shared.delegate as! UnityAppController
         return unityController.rootViewController
+    }
+}
+
+// Helper subclass that matches the Unity controller's configuration.
+private class UnityModalNavigationController: UINavigationController {
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return UnityAppController.root.supportedInterfaceOrientations
+    }
+
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return UnityAppController.root.preferredStatusBarStyle
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        return UnityAppController.root.prefersStatusBarHidden
     }
 }
