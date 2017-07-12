@@ -55,7 +55,11 @@ private var activeWebPaySession: WebCheckoutSession?
         
         let webViewController = SFSafariViewController(url: url)
         webViewController.delegate = self
-        UnityAppController.root.present(webViewController, animated: true, completion: nil)
+
+        let navController = WebCheckoutNavigationController(rootViewController: webViewController)
+        navController.isNavigationBarHidden = true
+        UnityAppController.root.present(navController, animated: true, completion: nil)
+
         return true
     }
 }
@@ -72,5 +76,14 @@ private extension UnityAppController {
     static var root: UIViewController {
         let unityController = UIApplication.shared.delegate as! UnityAppController
         return unityController.rootViewController
+    }
+}
+
+// Small helper class for presenting the SFSafariViewController
+private class WebCheckoutNavigationController: UINavigationController {
+        
+    // Only allow the same rotations the underlying game allows.
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return UnityAppController.root.supportedInterfaceOrientations
     }
 }
