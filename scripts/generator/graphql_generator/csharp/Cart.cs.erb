@@ -112,8 +112,7 @@ namespace <%= namespace %> {
 
         public void CheckoutWithNativeWebView(CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
             if (WebCheckout == null) {
-                // TODO use custom exception
-                throw new Exception("This platform does not support checkout with web pay");
+                throw new PlatformNotSupportedException("This platform does not support checkout with web pay");
             }
 
             GetWebCheckoutLink(url => {
@@ -125,8 +124,7 @@ namespace <%= namespace %> {
 
         public void CheckoutWithNativePay(string key, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
             if (NativeCheckout == null) {
-                // TODO use custom exception
-                throw new Exception("This platform does not support checkout with native pay");
+                throw new PlatformNotSupportedException("This platform does not support checkout with native pay");
             }
 
             CheckoutSave(error => {
@@ -173,7 +171,7 @@ namespace <%= namespace %> {
             if (NativeCheckout != null) {
                 NativeCheckout.ShowPaymentSetup();
             } else {
-                // TODO throw an exception, this platform does not support showing a native payment setup
+                throw new PlatformNotSupportedException("This platform does not support showing a native payment setup");
             }
         }
 
