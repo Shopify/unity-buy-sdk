@@ -2,9 +2,13 @@
 namespace <%= namespace %>.SDK.iOS {
     using System.Collections;
     using System.Collections.Generic;
-    using UnityEngine;
 
-    public class ApplePayEventReceiverBridge : MonoBehaviour, IApplePayEventReceiver {
+    #if !SHOPIFY_MONO_UNIT_TEST
+    using UnityEngine;
+    public partial class ApplePayEventReceiverBridge : MonoBehaviour {}
+    #endif
+
+    public partial class ApplePayEventReceiverBridge : IApplePayEventReceiver {
 
         public IApplePayEventReceiver Receiver;
 
