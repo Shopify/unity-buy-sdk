@@ -8,7 +8,7 @@ namespace <%= namespace %>.SDK.iOS {
     #endif
 
     #if UNITY_IOS
-    public class ApplePayEventReceiverBridge : IApplePayEventReceiver {
+    public partial class ApplePayEventReceiverBridge : IApplePayEventReceiver {
         public IApplePayEventReceiver Receiver;
 
         public void UpdateSummaryItemsForShippingIdentifier(string serializedMessage) {
