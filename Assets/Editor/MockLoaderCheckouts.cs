@@ -15,11 +15,17 @@ namespace Shopify.Tests {
         // The following query will return a user error
         private const string CREATE_QUERY_SENDS_USERERROR = @"mutation{checkoutCreate (input:{allowPartialAddresses:true,lineItems:[{quantity:1,variantId:""Z2lkOi8vc2hvcGlmeS9Qcm9kdWNFyaWFudC8yMDc1NjEyUserError==""}]}){checkout {id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}userErrors {field message }}}";
 
+        // The following queries will return the completedAt date for a checkout for validation tesitng
+        private const string QUERY_COMPLETED_AT_WITH_DATE = @"{node (id:""checkout-id""){__typename ...on Checkout{completedAt }}}";
+        private const string QUERY_COMPLETED_AT_WITH_NULL_DATE = @"{node (id:""checkout-id-failed""){__typename ...on Checkout{completedAt }}}";
+
         public MockLoaderCheckouts() {
             SetupCreateResponse();
             SetupCreateResponsesForPolling();
             SetupCreateThenUpdateResponse();
             SetupUserErrorResponses();
+            SetupCompletedAtWithDateResponse();
+            SetupCompletedAtWithNullDateResponse();
         }
 
         private void SetupCreateResponse() {
@@ -242,6 +248,34 @@ namespace Shopify.Tests {
                                     ""message"": ""bad things happened""
                                 }
                             ]
+                        }
+                    }
+                }"
+            );
+        }
+
+        private void SetupCompletedAtWithDateResponse() {
+            AddResponse(
+                QUERY_COMPLETED_AT_WITH_DATE,
+                @"{
+                    ""data"": {
+                        ""node"": {
+                            ""__typename"": ""Checkout"",
+                            ""completedAt"": ""2017-07-11T16:42:34+00:00""
+                        }
+                    }
+                }"
+            );
+        }
+
+        private void SetupCompletedAtWithNullDateResponse() {
+            AddResponse(
+                QUERY_COMPLETED_AT_WITH_NULL_DATE,
+                @"{
+                    ""data"": {
+                        ""node"": {
+                            ""__typename"": ""Checkout"",
+                            ""completedAt"": null
                         }
                     }
                 }"
