@@ -79,7 +79,7 @@ private extension UnityAppController {
     }
 }
 
-// Small helper class for presenting the SFSafariViewController
+// Helper subclass that matches the Unity controller's configuration.
 private class UnityModalNavigationController: UINavigationController {
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return UnityAppController.root.supportedInterfaceOrientations
