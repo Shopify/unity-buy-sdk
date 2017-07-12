@@ -38,13 +38,13 @@ namespace <%= namespace %>.SDK.iOS {
         }
     }
 
-    class iOSWebViewMessageReceiver: MonoBehaviour {
-        internal ShopifyClient Client;
-        internal Checkout CurrentCheckout;
+    public class iOSWebViewMessageReceiver: MonoBehaviour {
+        public ShopifyClient Client;
+        public Checkout CurrentCheckout;
 
-        internal CheckoutSuccessCallback OnSuccess;
-        internal CheckoutCancelCallback OnCancelled;
-        internal CheckoutFailureCallback OnFailure;
+        public CheckoutSuccessCallback OnSuccess;
+        public CheckoutCancelCallback OnCancelled;
+        public CheckoutFailureCallback OnFailure;
 
         public void OnNativeMessage(string jsonMessage) {
             var message = NativeMessage.CreateFromJSON(jsonMessage);
