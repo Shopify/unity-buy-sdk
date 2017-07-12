@@ -44,7 +44,6 @@ class ApplePayEventDispatcherTests: XCTestCase {
             self.wait(for: [didLoad], timeout: timeout)
         }
         
-        
         let setupMessage = UnityMessage(content: "", object: Tester.name, method: Tester.Method.setupApplePayEventTest.rawValue)
         let messageExpectation = self.expectation(description: "MessageCenter.send(setupApplePayEventTest) failed to complete")
         MessageCenter.send(setupMessage) { response in
