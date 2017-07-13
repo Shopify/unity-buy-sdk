@@ -13,14 +13,12 @@ if [[ -n "$UNITY_USERNAME" && -n "$UNITY_PASSWORD" && -n "$UNITY_SERIAL"  ]] ; t
     echo "Unity building with user $UNITY_USERNAME"
 
     "$UNITY_PATH" \
+        -quit \
         -batchmode \
-        -nographics \
+        -serial "$UNITY_SERIAL" \
         -username "$UNITY_USERNAME" \
         -password "$UNITY_PASSWORD" \
-        -serial "$UNITY_SERIAL" \
-        -silent-crashes \
-        -logFile "$UNITY_IOS_LOG_PATH" \
-        -quit
+        -logFile "$UNITY_IOS_LOG_PATH"
 
     # Here https://docs.unity3d.com/Manual/CommandLineArguments.html
     # it states that activating the license might take a bit of time :(
