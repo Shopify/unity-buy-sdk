@@ -17,7 +17,8 @@ namespace Shopify.Tests {
 
         // The following queries will return the completedAt date for a checkout for validation tesitng
         private const string QUERY_COMPLETED_AT_WITH_DATE = @"{node (id:""checkout-id""){__typename ...on Checkout{completedAt }}}";
-        private const string QUERY_COMPLETED_AT_WITH_NULL_DATE = @"{node (id:""checkout-id-failed""){__typename ...on Checkout{completedAt }}}";
+        private const string QUERY_COMPLETED_AT_WITH_NULL_DATE = @"{node (id:""checkout-id-cancelled""){__typename ...on Checkout{completedAt }}}";
+        private const string QUERY_COMPLETED_AT_ERROR = @"{node (id:""checkout-id-failed""){__typename ...on Checkout{completedAt }}}";
 
         public MockLoaderCheckouts() {
             SetupCreateResponse();
@@ -26,6 +27,7 @@ namespace Shopify.Tests {
             SetupUserErrorResponses();
             SetupCompletedAtWithDateResponse();
             SetupCompletedAtWithNullDateResponse();
+            SetupCompletedAtWithError();
         }
 
         private void SetupCreateResponse() {
@@ -278,6 +280,17 @@ namespace Shopify.Tests {
                             ""completedAt"": null
                         }
                     }
+                }"
+            );
+        }
+
+        private void SetupCompletedAtWithError() {
+            AddResponse(
+                QUERY_COMPLETED_AT_ERROR,
+                @"{
+                    ""errors"": [
+                        {""message"": ""GraphQL error from mock loader""}
+                    ]
                 }"
             );
         }
