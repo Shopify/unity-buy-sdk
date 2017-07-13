@@ -49,41 +49,26 @@ namespace <%= namespace %>.SDK.iOS {
         public void OnNativeMessage(string jsonMessage) {
             var message = NativeMessage.CreateFromJSON(jsonMessage);
             if (message.Content == "dismissed") {
-                // Do a round trip to the server to see if the purchase is solid.
-                // Invoke callbacks on cart to pass to Unity
-                DidCheckoutCompleteSuccessfully(CurrentCheckout.id(), (didSucceed) => {
-                    if (didSucceed) {
-                        OnSuccess();
-                        return;
+                var query = new QueryRootQuery();
+                query.node(
+                    buildQuery: n => n
+                        .onCheckout(c => c.completedAt()),
+                    id: CurrentCheckout.id()
+                );
+                
+                Client.Query(query, (response, error) => {
+                    if (error != null) {
+                        OnFailure(error);
+                    } else {
+                        var checkout = (Checkout) response.node();
+                        if (checkout.completedAt() != null) {
+                            OnSuccess();
+                        } else {
+                            OnCancelled();
+                        }
                     } 
-
-                    var error = new ShopifyError(
-                        ShopifyError.ErrorType.NativePaymentProcessingError, 
-                        "User navigated to end of checkout without successfully checking out."
-                    );
-
-                    OnFailure(error);
                 });
             }
-        }
-
-        private delegate void VerifyCheckoutComplete(bool didSucceed);
-        private void DidCheckoutCompleteSuccessfully(string checkoutId, VerifyCheckoutComplete callback) {
-            var query = new QueryRootQuery();
-            query.node(
-                buildQuery: n => n
-                    .onCheckout(c => c.completedAt()),
-                id: CurrentCheckout.id()
-            );
-            
-            Client.Query(query, (response, error) => {
-                if (error != null) {
-                    callback(false);
-                } else {
-                    var checkout = (Checkout) response.node();
-                    callback(checkout.completedAt() != null);
-                } 
-            });
         }
     }
 }
