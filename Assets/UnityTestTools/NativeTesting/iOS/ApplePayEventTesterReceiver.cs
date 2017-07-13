@@ -1,4 +1,4 @@
-
+#if UNITY_IOS
 namespace Shopify.Tests.iOS {
     using System.Collections;
     using System.Collections.Generic;
@@ -42,3 +42,4 @@ namespace Shopify.Tests.iOS {
         }
     }
 }
+#endif

@@ -111,8 +111,10 @@
         }
 
         private void CreateNativeCheckout() {
+            #if UNITY_IOS
             var bridge = GetComponent<ApplePayEventReceiverBridge>();
-            bridge.Receiver = new iOSNativeCheckout(CurrentCart);;
+            bridge.Receiver = new iOSNativeCheckout(CurrentCart);
+            #endif
         }
     }
 }

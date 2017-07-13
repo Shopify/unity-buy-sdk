@@ -5,10 +5,13 @@
     using Shopify.Unity.SDK.iOS;
 
     public class ApplePayEventTester : MonoBehaviour {
+
+        #if UNITY_IOS
         public void SetupApplePayEventTest(string serializedMessage) {
             var message = NativeMessageTester.CreateFromJSON(serializedMessage);
             GetComponent<ApplePayEventReceiverBridge>().Receiver = new ApplePayEventTesterReceiver();
             message.Respond("");
         }
+        #endif
     }
 }
