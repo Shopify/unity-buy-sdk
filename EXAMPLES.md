@@ -36,6 +36,7 @@ The following example shows how to query all products in your Shopify store:
 
 ```cs
 using Shopify.Unity;
+using Shopify.Unity.SDK;
 
 void Start () {
     string accessToken = "b8d417759a62f7b342f3735dbe86b322";
@@ -45,25 +46,29 @@ void Start () {
     ShopifyBuy.Init(accessToken, shopDomain);
 
     // the following will query the shop for all products
-    ShopifyBuy.Client().products((products, errors, httpError) => {
-        // httpError is actually Unity's WWW.error
-        if (httpError != null) {
-            Debug.Log("There was an HTTP problem communicating with the API");
-            return;
-        // it's unlikely but if an invalid GraphQL query was sent a List of errors will be returned
-        } else if(errors != null) {
-            Debug.Log("There was an error with the graphql query sent");
-            return;
-        }
+    ShopifyBuy.Client().products((products, error) => {
+        if (error != null) {
+            Debug.Log(error.Description);
 
-        // products is a List<Product>
-        Debug.Log("Your shop has " + products.Count + " products");
-        Debug.Log("==================================================");
+            switch(error.Type) {
+            // An HTTP error is actually Unity's WWW.error
+            case ShopifyError.ErrorType.HTTP:
+                break;
+            // It's unlikely but it may be that an invalid GraphQL query was sent.
+            // Report an issue to https://github.com/shopify/unity-buy-sdk/issues
+            case ShopifyError.ErrorType.GraphQL:
+                break;
+            };
+        } else {
+            // products is a List<Product>
+            Debug.Log("Your shop has " + products.Count + " products");
+            Debug.Log("==================================================");
 
-        foreach(Product product in products) {
-            Debug.Log("Product Title: " + product.title());
-            Debug.Log("Product Description: " + product.descriptionHtml());
-            Debug.Log("--------");
+            foreach(Product product in products) {
+                Debug.Log("Product Title: " + product.title());
+                Debug.Log("Product Description: " + product.descriptionHtml());
+                Debug.Log("--------");
+            }
         }
     });
 }
@@ -75,6 +80,7 @@ The following example shows how to query all collections in your Shopify store:
 
 ```cs
 using Shopify.Unity;
+using Shopify.Unity.SDK;
 
 void Start () {
     string accessToken = "b8d417759a62f7b342f3735dbe86b322";
@@ -83,27 +89,34 @@ void Start () {
     ShopifyBuy.Init(accessToken, shopDomain);
 
     // will query all collections on shop
-    ShopifyBuy.Client().collections((collections, errors, httpError) => {
-        if (httpError != null) {
-            Debug.Log("There was an HTTP problem communicating with the API");
-            return;
-        } else if(errors != null) {
-            Debug.Log("There was an error with the graphql query sent");
-            return;
-        }
+    ShopifyBuy.Client().collections((collections, error) => {
+        if (error != null) {
+            Debug.Log(error.Description);
 
-        // collections is a List<Collection>
-        Debug.Log("Your shop has " + collections.Count + " collections");
-        Debug.Log("==================================================");
+            switch(error.Type) {
+            // An HTTP error is actually Unity's WWW.error
+            case ShopifyError.ErrorType.HTTP:
+                break;
+            // It's unlikely but it may be that an invalid GraphQL query was sent.
+            // Report an issue to https://github.com/shopify/unity-buy-sdk/issues
+            case ShopifyError.ErrorType.GraphQL:
+                break;
+            };
 
-        foreach(Collection collection in collections) {
-            Debug.Log("Collection title: " + collection.title());
-            Debug.Log("Collection updated at: " + collection.updatedAt());
+        } else {
+            // collections is a List<Collection>
+            Debug.Log("Your shop has " + collections.Count + " collections");
+            Debug.Log("==================================================");
 
-            List<Product> products = (List<Product>) collection.products();
+            foreach(Collection collection in collections) {
+                Debug.Log("Collection title: " + collection.title());
+                Debug.Log("Collection updated at: " + collection.updatedAt());
 
-            foreach(Product product in products) {
-                Debug.Log("Collection contains a product with the following id: " + product.id());
+                List<Product> products = (List<Product>) collection.products();
+
+                foreach(Product product in products) {
+                    Debug.Log("Collection contains a product with the following id: " + product.id());
+                }
             }
         }
     });
@@ -120,6 +133,7 @@ The following example shows how to create a cart and add line items to the cart 
 
 ```cs
 using Shopify.Unity;
+using Shopify.Unity.SDK;
 
 void Start () {
     string accessToken = "b8d417759a62f7b342f3735dbe86b322";
@@ -127,7 +141,7 @@ void Start () {
 
     ShopifyBuy.Init(accessToken, shopDomain);
 
-    ShopifyBuy.Client().products((products, errors, httpError) => {
+    ShopifyBuy.Client().products((products, error) => {
         Cart cart = ShopifyBuy.Client().Cart();
 
         List<ProductVariant> firstProductVariants = (List<ProductVariant>) products[0].variants();
@@ -169,6 +183,7 @@ In Shopify, a product can have many options. These options map to **variants** o
 
 ```cs
 using Shopify.Unity;
+using Shopify.Unity.SDK;
 
 void Start () {
     string accessToken = "b8d417759a62f7b342f3735dbe86b322";
@@ -176,7 +191,7 @@ void Start () {
 
     ShopifyBuy.Init(accessToken, shopDomain);
 
-    ShopifyBuy.Client().products((products, errors, httpError) => {
+    ShopifyBuy.Client().products((products, error) => {
         Cart cart = ShopifyBuy.Client().Cart();
 
         Product firstProduct = products[0];
@@ -207,7 +222,14 @@ void Start () {
         cart.LineItems.AddOrUpdate(firstProduct, selectedOptions, 1);
 
         // checkout the selected product
-        Application.OpenURL(cart.GetWebCheckoutLink());
+        cart.GetWebCheckoutLink(
+            success: (link) => {
+                Application.OpenURL(link);
+            },
+            failure: (checkoutError) => {
+                Debug.Log(checkoutError.Description);
+            }
+        );
     });
 }
 ```
@@ -232,25 +254,30 @@ start a native modal overlay on top of your game with a web view containing the 
 
 ```cs
 // Sample code for adding some product variants to your cart.
-var cart = ShopifyBuy.Client().Cart();
-var secondProduct = products[1];
-var secondProductVariants = (List<ProductVariant>) secondProduct.variants();
-ProductVariant productVariantToCheckout = secondProductVariants[0];
 
-cart.LineItems.AddOrUpdate(productVariantToCheckout, 1);
+...
 
-// Launches the native web checkout experience overlayed on top of your game.
-cart.CheckoutWithNativeWebView(
-    success: () => {
-        Debug.Log("User finished purchase/checkout!");
-    },
-    cancelled: () => {
-        Debug.Log("User cancelled out of the web checkout.");
-    },
-    failure: (e) => {
-        Debug.Log("Something bad happened - Error: " + e);
-    },
- );
+ShopifyBuy.Client().products((products, error) => {
+    var cart = ShopifyBuy.Client().Cart();
+    var secondProduct = products[1];
+    var secondProductVariants = (List<ProductVariant>) secondProduct.variants();
+    ProductVariant productVariantToCheckout = secondProductVariants[0];
+
+    cart.LineItems.AddOrUpdate(productVariantToCheckout, 1);
+
+    // Launches the native web checkout experience overlayed on top of your game.
+    cart.CheckoutWithNativeWebView(
+        success: () => {
+            Debug.Log("User finished purchase/checkout!");
+        },
+        cancelled: () => {
+            Debug.Log("User cancelled out of the web checkout.");
+        },
+        failure: (e) => {
+            Debug.Log("Something bad happened - Error: " + e);
+        }
+    );
+});
 ```
 
 **Caveats**
@@ -276,29 +303,34 @@ To determine whether the user is able to make a payment with Apple Pay you can u
 
 ```csharp
 // Sample code for adding some product variants to your cart.
-var cart = ShopifyBuy.Client().Cart();
-var secondProduct = products[1];
-var secondProductVariants = (List<ProductVariant>) secondProduct.variants();
-ProductVariant productVariantToCheckout = secondProductVariants[0];
 
-cart.LineItems.AddOrUpdate(productVariantToCheckout, 1);
+...
 
-// Check to see if the user can make a payment through Apple Pay
-if (cart.CanCheckoutWithNativePay()) {
+ShopifyBuy.Client().products((products, error) => {
+    var cart = ShopifyBuy.Client().Cart();
+    var secondProduct = products[1];
+    var secondProductVariants = (List<ProductVariant>) secondProduct.variants();
+    ProductVariant productVariantToCheckout = secondProductVariants[0];
 
-    cart.CheckoutWithNativePay(
-        "com.merchant.id",
-        success: () => {
-            Debug.Log("User finished purchase/checkout!");
-        },
-        cancelled: () => {
-            Debug.Log("User cancelled out of the native checkout.");
-        },
-        failure: (e) => {
-            Debug.Log("Something bad happened - Error: " + e);
-        }
-    );
-}
+    cart.LineItems.AddOrUpdate(productVariantToCheckout, 1);
+
+    // Check to see if the user can make a payment through Apple Pay
+    if (cart.CanCheckoutWithNativePay()) {
+
+        cart.CheckoutWithNativePay(
+            "com.merchant.id",
+            success: () => {
+                Debug.Log("User finished purchase/checkout!");
+            },
+            cancelled: () => {
+                Debug.Log("User cancelled out of the native checkout.");
+            },
+            failure: (e) => {
+                Debug.Log("Something bad happened - Error: " + e);
+            }
+        );
+    }
+});
 
 ```
 
@@ -326,12 +358,14 @@ cart.CheckoutWithNativePay(
     failure: (e) => {
         switch(e.Type) {
         case ShopifyError.ErrorType.HTTP:
-		     // Let the user know there is no internet connection 
+            // Let the user know there is no internet connection
+            break;
         default: 
             // Let the user know checkout could not be completed
             // Fallback to Web Checkout
+            break;
         }
-    },
+    }
 );
 ```
 
@@ -344,16 +378,16 @@ You may want to optionally drive users to setup their payment cards with Apple P
 
 The Unity Buy SDK is built on top of Shopify's [Storefront API](https://help.shopify.com/api/storefront-api), which is a GraphQL Web API. In GraphQL, you send queries to the endpoint and receive back a JSON responses.
 
-The following example shows a GraphQL query that retrieves a store's name and some details about its billing address:
+The following example shows a GraphQL query that retrieves a store's name and some details about its domain address:
 
 ```graphql
 query {
   shop {
-      name
-      billingAddress {
-          city
-          address1
-      }
+    name
+    primaryDomain {
+      url
+      host
+    }
   }
 }
 ```
@@ -365,9 +399,9 @@ When this query is sent to the Storefront API, the JSON response from the server
   "data": {
     "shop": {
       "name": "graphql",
-      "billingAddress": {
-        "city": "Toronto",
-        "address1": "80 Spadina Ave"
+      "primaryDomain": {
+        "url": "https://unity-buy-sdk.myshopify.com",
+        "host": "unity-buy-sdk.myshopify.com"
       }
     }
   }
@@ -381,12 +415,13 @@ In the previous example, the queries for `products` and `collections` were made 
 The following example shows how to build a custom query in C# that matches the GraphQL query mentioned above. It retrieves the same information that was queried in the previous example:
 
 - the shop's `name`
-- the shop's `billingAddress`
-    + `city`
-    + `address1`
+- the shop's `primaryDomain`
+    + `url`
+    + `host`
 
 ```cs
 using Shopify.Unity;
+using Shopify.Unity.SDK;
 
 void Start () {
     string accessToken = "b8d417759a62f7b342f3735dbe86b322";
@@ -402,15 +437,15 @@ void Start () {
         buildQuery: (query) => query
             .shop(shopQuery => shopQuery
                 .name()
-                .billingAddress(mailingAddressQuery => mailingAddressQuery
-                    .address1()
-                    .city()
+                .primaryDomain(primaryDomainQuery => primaryDomainQuery
+                    .url()
+                    .host()
                 )
             ),
-        callback: (result, errors, httpError) => {
+        callback: (result, error) => {
             // result is a QueryRoot instance
             Debug.Log("Shop name: " + result.shop().name());
-            Debug.Log("Shop city: " + result.shop().billingAddress().city());
+            Debug.Log("Shop url: " + result.shop().primaryDomain().url());
         }
     );
 }
