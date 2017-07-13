@@ -23,15 +23,16 @@ namespace <%= namespace %>.SDK.iOS {
         [DllImport ("__Internal")]
         private static extern void _PresentApplePayAuthorization();
 
-        private Cart CurrentCart;
         private ApplePayEventReceiverBridge ApplePayEventBridge;
 
         private CheckoutSuccessCallback OnSuccess;
         private CheckoutCancelCallback OnCancelled;
         private CheckoutFailureCallback OnFailure;
 
-        public iOSNativeCheckout(Cart cart) {
-            CurrentCart = cart;
+        private CheckoutMutator Mutator;
+
+        public iOSNativeCheckout(CheckoutMutator mutator) {
+            Mutator = mutator;
         }
 
         /// <summary>

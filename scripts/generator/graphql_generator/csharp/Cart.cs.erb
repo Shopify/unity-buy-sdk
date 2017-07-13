@@ -16,20 +16,9 @@ namespace <%= namespace %> {
     public class NoMatchingVariantException : Exception {
         public NoMatchingVariantException(string message) : base(message) {}
     }
-
-    /// <summary>
-    /// Wraps around a shipping address and shipping identifier. Used for sending the final checkout fields in one GraphQL query.
-    /// </summary>
-    public struct ShippingFields {
-        public MailingAddressInput ShippingAddress;
-        public string ShippingIdentifier; 
-
-        public ShippingFields(MailingAddressInput shippingAddress, string shippingIdentifier) {
-            ShippingIdentifier = shippingIdentifier;
-            ShippingAddress = shippingAddress;
-        }
-    }
     
+    // Public API
+
     /// <summary>
     /// Manages line items for an order. Can also be used to generate a web checkout link to check out in browser.
     /// </summary>
@@ -71,6 +60,7 @@ namespace <%= namespace %> {
 
         private IWebCheckout WebCheckout;
         private INativeCheckout NativeCheckout;
+        private CheckoutMutator CheckoutMutator;
 
         /// <summary>
         /// Constructs a new cart using a <see ref="ShopifyClient">ShopifyClient </see>. Typically, carts won't be
@@ -89,10 +79,11 @@ namespace <%= namespace %> {
         public Cart(ShopifyClient client) {
             Client = client;
             _LineItems = new CartLineItems(OnDeleteLineItem);
+            CheckoutMutator = new CheckoutMutator(client, DidMutateCheckout);
 
             #if UNITY_IOS
             WebCheckout = new iOSWebCheckout(this, Client);
-            NativeCheckout = new iOSNativeCheckout(this);
+            NativeCheckout = new iOSNativeCheckout(CheckoutMutator);
             #endif
         }
 
@@ -144,29 +135,6 @@ namespace <%= namespace %> {
             });
         }
 
-        public void SetShippingLine(string shippingRateHandle, CompletionCallback callback) {
-            MutationQuery query = new MutationQuery();
-
-            DefaultQueries.checkout.ShippingLineUpdate(query, CurrentCheckout.id(), shippingRateHandle);
-
-            Client.Mutation(query, (Mutation response, ShopifyError error) => {
-                if (error != null) {
-                    callback(error);
-                    return;
-                }
-
-                if (UpdateState(response.checkoutShippingLineUpdate().checkout(), response.checkoutShippingLineUpdate().userErrors())) {
-                    if (CurrentCheckout.ready()) {
-                        callback(null);
-                    } else {
-                        PollCheckoutAndUpdate(PollCheckoutReady, callback);
-                    }
-                } else {
-                    HandleUserError(callback);
-                }
-            });
-        }
-
         public bool CanShowNativePaySetup() {
             if (NativeCheckout != null) {
                return  NativeCheckout.CanShowPaymentSetup();
@@ -189,110 +157,6 @@ namespace <%= namespace %> {
             } else {
                 return false;
             }
-        }
-
-        public void SetEmailAddress(string email, CompletionCallback callback) {
-            MutationQuery query = new MutationQuery();
-
-            DefaultQueries.checkout.EmailUpdate(query, CurrentCheckout.id(), email);
-
-            Client.Mutation(query, (Mutation response, ShopifyError error) => {
-                if (error != null) {
-                    callback(error);
-                } else {
-                    if (UpdateState(response.checkoutEmailUpdate().checkout(), response.checkoutEmailUpdate().userErrors())) {
-                        if (CurrentCheckout.ready()) {
-                            callback(null);
-                        } else {
-                            PollCheckoutAndUpdate(PollCheckoutAvailableShippingRatesReady, callback);
-                        }
-                    } else {
-                        HandleUserError(callback);
-                    }
-                }
-            });
-        }
-
-        public void SetShippingAddress(MailingAddressInput mailingAddressInput, CompletionCallback callback) {
-            MutationQuery query = new MutationQuery();
-
-            DefaultQueries.checkout.ShippingAddressUpdate(query, CurrentCheckout.id(), mailingAddressInput);
-
-            Client.Mutation(query, (Mutation response, ShopifyError error) => {
-                if (error != null) {
-                    callback(error);
-                } else {
-                    if (UpdateState(response.checkoutShippingAddressUpdate().checkout(), response.checkoutShippingAddressUpdate().userErrors())) {
-                        PollCheckoutAndUpdate(PollCheckoutAvailableShippingRatesReady, callback);
-                    } else {
-                        HandleUserError(callback);
-                    }
-                }
-            });
-        }
-
-        public void SetFinalCheckoutFields(string email, ShippingFields? shippingFields, CompletionCallback callback) {
-            MutationQuery query = new MutationQuery();
-
-            DefaultQueries.checkout.EmailUpdate(query, CurrentCheckout.id(), email);
-
-            if (shippingFields.HasValue) {
-                DefaultQueries.checkout.ShippingAddressUpdate(query, CurrentCheckout.id(), shippingFields.Value.ShippingAddress);
-                DefaultQueries.checkout.ShippingLineUpdate(query, CurrentCheckout.id(), shippingFields.Value.ShippingIdentifier);
-            }
-
-            Client.Mutation(query, (Mutation response, ShopifyError error) => {
-                if (error != null) {
-                    callback(error);
-                } else {
-                    var userErrors = response.checkoutShippingAddressUpdate().userErrors();
-                    if (shippingFields.HasValue) {
-                        userErrors.AddRange(response.checkoutShippingLineUpdate().userErrors());
-                        userErrors.AddRange(response.checkoutEmailUpdate().userErrors());
-                    }
-
-                    if (UpdateState(response.checkoutEmailUpdate().checkout(), userErrors)) {
-                        PollCheckoutAndUpdate(PollCheckoutReady, callback);
-                    } else {
-                        HandleUserError(callback);
-                    }
-                }
-            });
-        }
-
-        private void CheckoutSave(CompletionCallback callback) {
-            if (!IsCreated) {
-                CheckoutCreate(callback);
-            } else if(!IsSaved) {
-                CheckoutUpdate(callback);
-            } else {
-                callback(null);
-            }
-        }
-
-        private void CheckoutCreate(CompletionCallback callback) {
-            MutationQuery query = new MutationQuery();
-
-            List<CheckoutLineItemInput> newLineItemInput = CartLineItems.ConvertToCheckoutLineItemInput(LineItems.All());
-
-            DefaultQueries.checkout.Create(query, newLineItemInput);
-
-            Client.Mutation(query, (Mutation response, ShopifyError error) => {
-                if (error != null) {
-                    callback(error);
-                    return;
-                }
-
-                if (UpdateState(response.checkoutCreate().checkout(), response.checkoutCreate().userErrors())) {
-                    if (CurrentCheckout.ready()) {
-                        callback(null);
-                    } else {
-                        PollCheckoutAndUpdate(PollCheckoutReady, callback);
-                    }
-                } else {
-                    HandleUserError(callback);
-                }
-            });
         }
 
         public void CheckoutWithTokenizedPayment(TokenizedPaymentInput tokenizedPaymentInput, CompletionCallback callback) {
@@ -349,49 +213,14 @@ namespace <%= namespace %> {
             }
         }
 
-        private void CheckoutUpdate(CompletionCallback callback) {
-            MutationQuery query = new MutationQuery();
+        private Checkout OnMutateCheckout(Checkout checkout, UserErrors errors) {
+            Checkout newCheckout;
 
-            // remove all line items them add them
-            List<string> lineItemsToRemove = CartLineItems.ConvertToLineItemIds(LineItems.All());
-            lineItemsToRemove.AddRange(DeletedLineItems);
-
-            List<CheckoutLineItemInput> lineItemsToAdd = CartLineItems.ConvertToCheckoutLineItemInput(LineItems.All());
-
-            DefaultQueries.checkout.LineItemsRemove(query, CurrentCheckout.id(), lineItemsToRemove);
-            DefaultQueries.checkout.LineItemsAdd(query, CurrentCheckout.id(), lineItemsToAdd);
-
-            Client.Mutation(query, (Mutation response, ShopifyError error) => {
-                if (error != null) {
-                    callback(error);
-                    return;
-                }
-
-                DeletedLineItems.Clear();
-
-                if (UpdateState(response.checkoutLineItemsAdd().checkout(), response.checkoutLineItemsAdd().userErrors())) {
-                    if (CurrentCheckout.ready()) {
-                        callback(null);
-                    } else {
-                        PollCheckoutAndUpdate(PollCheckoutReady, callback);
-                    }
-                } else {
-                    HandleUserError(callback);
-                }
-            });
-        }
-
-        private bool UpdateState(Checkout checkout) {
-            return UpdateState(checkout, new List<UserError>());
-        }
-
-        private bool UpdateState(Checkout checkout, List<UserError> userErrors) {
             if (CurrentCheckout == null) {
-                CurrentCheckout = checkout;
+                newCheckout = checkout;
             } else {
                 MergeCheckout merger = new MergeCheckout();
-
-                CurrentCheckout = merger.Merge(CurrentCheckout, checkout);
+                newCheckout = merger.Merge(CurrentCheckout, checkout);
             }
 
             if (userErrors.Count > 0) {
@@ -400,22 +229,26 @@ namespace <%= namespace %> {
                 _UserErrors = null;
             }
 
-            UpdateLineItemFromCheckout(CurrentCheckout);
-
-            return _UserErrors == null;
+            UpdateLineItemFromCheckout(newCheckout);
+            CurrentCheckout = newCheckout;
+            return newCheckout;
         }
 
         private void UpdateLineItemFromCheckout(Checkout checkout) {
             if (checkout == null) {
                 return;
             }
-
+        
             // sometimes we may not query line items for instance when polling is being performed
             try {
                 List<CheckoutLineItem> lineItems = (List<CheckoutLineItem>) checkout.lineItems();
 
                 LineItems.UpdateLineItemsFromCheckoutLineItems(lineItems);
             } catch(NoQueryException exception) {}
+        }
+
+        private void OnDeleteLineItem(string lineItemId) {
+            DeletedLineItems.Add(lineItemId);
         }
 
         private void HandleUserError(CompletionCallback callback) {
@@ -425,10 +258,6 @@ namespace <%= namespace %> {
             );
 
             callback(error);
-        }
-
-        private void OnDeleteLineItem(string lineItemId) {
-            DeletedLineItems.Add(lineItemId);
         }
     }
 }

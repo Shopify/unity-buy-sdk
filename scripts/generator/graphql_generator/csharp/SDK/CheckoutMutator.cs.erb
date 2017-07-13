@@ -1,0 +1,238 @@
+namespace <%= namespace %>.SDK.iOS {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using <%= namespace %>.SDK;
+    using <%= namespace %>.MiniJSON;
+
+    public class CheckoutMutator {
+        private Client Client;
+        private CheckoutMutationCallback OnMutateCheckout;
+
+        private delegate void CheckoutPollQuery(QueryRootQuery query, string checkoutId);
+        private delegate void CheckoutPoll(CheckoutPollFinishedHandler callback);
+        private delegate void CheckoutPollFinishedHandler(Checkout checkout, ShopifyError error);
+
+        public CheckoutMutator(Client client, CheckoutMutationCallback mutationCallback) {
+            Client = client;
+            DidMutateCheckout = mutationCallback;
+        }
+
+        public void CheckoutSave(CompletionCallback callback) {
+            if (!IsCreated) {
+                CheckoutCreate(callback);
+            } else if(!IsSaved) {
+                // CheckoutUpdate(callback);
+            } else {
+                callback(null);
+            }
+        }
+
+        public void CheckoutCreate(CompletionCallback callback) {
+            MutationQuery query = new MutationQuery();
+
+            List<CheckoutLineItemInput> newLineItemInput = CartLineItems.ConvertToCheckoutLineItemInput(LineItems.All());
+
+            DefaultQueries.checkout.Create(query, newLineItemInput);
+
+            Client.Mutation(query, (Mutation response, ShopifyError error) => {
+                if (error != null) {
+                    callback(error);
+                    return;
+                }
+
+                var userErrors = response.checkoutCreate().userErrors();
+                var newCheckout = OnMutateCheckout(response.checkoutCreate().checkout(), userErrors);
+
+                if (userErrors.Count > 0) {
+                    HandleUserError(callback);
+                    return;
+                } 
+
+                if (newCheckout.ready()) {
+                    callback(null);
+                } else {
+                    PollCheckoutAndUpdate(PollCheckoutReady, callback);
+                }
+            });
+        }
+
+        // public void CheckoutUpdate(CompletionCallback callback) {
+        //     MutationQuery query = new MutationQuery();
+
+        //     // remove all line items them add them
+        //     List<string> lineItemsToRemove = CartLineItems.ConvertToLineItemIds(LineItems.All());
+        //     lineItemsToRemove.AddRange(DeletedLineItems);
+
+        //     List<CheckoutLineItemInput> lineItemsToAdd = CartLineItems.ConvertToCheckoutLineItemInput(LineItems.All());
+
+        //     DefaultQueries.checkout.LineItemsRemove(query, CurrentCheckout.id(), lineItemsToRemove);
+        //     DefaultQueries.checkout.LineItemsAdd(query, CurrentCheckout.id(), lineItemsToAdd);
+
+        //     Client.Mutation(query, (Mutation response, ShopifyError error) => {
+        //         if (error != null) {
+        //             callback(error);
+        //             return;
+        //         }
+
+        //         DeletedLineItems.Clear();
+
+        //         if (UpdateState(response.checkoutLineItemsAdd().checkout(), response.checkoutLineItemsAdd().userErrors())) {
+        //             if (CurrentCheckout.ready()) {
+        //                 callback(null);
+        //             } else {
+        //                 PollCheckoutAndUpdate(PollCheckoutReady, callback);
+        //             }
+        //         } else {
+        //             HandleUserError(callback);
+        //         }
+        //     });
+        // }
+
+        public void SetShippingLine(string shippingRateHandle, CompletionCallback callback) {
+            MutationQuery query = new MutationQuery();
+
+            DefaultQueries.checkout.ShippingLineUpdate(query, CurrentCheckout.id(), shippingRateHandle);
+
+            Client.Mutation(query, (Mutation response, ShopifyError error) => {
+                if (error != null) {
+                    callback(error);
+                    return;
+                }
+
+                var checkout = response.checkoutShippingLineUpdate().checkout();
+                var userErrors = response.checkoutShippingLineUpdate().userErrors();
+                if (DidMutateCheckout(checkout, userErrors)) {
+                    if (checkout.ready()) {
+                        callback(null);
+                    } else {
+                        PollCheckoutAndUpdate(PollCheckoutReady, callback);
+                    }
+                } else {
+                    HandleUserError(callback);
+                }
+            });
+        }
+
+        public void SetEmailAddress(string email, CompletionCallback callback) {
+            MutationQuery query = new MutationQuery();
+
+            DefaultQueries.checkout.EmailUpdate(query, CurrentCheckout.id(), email);
+
+            Client.Mutation(query, (Mutation response, ShopifyError error) => {
+                if (error != null) {
+                    callback(error);
+                } else {
+                    var checkout = response.checkoutEmailUpdate().checkout();
+                    var userErrors = response.checkoutEmailUpdate().userErrors();
+                    if (DidMutateCheckout(checkout, userErrors)) {
+                        if (checkout.ready()) {
+                            callback(null);
+                        } else {
+                            PollCheckoutAndUpdate(PollCheckoutAvailableShippingRatesReady, callback);
+                        }
+                    } else {
+                        HandleUserError(callback);
+                    }
+                }
+            });
+        }
+
+        public void SetShippingAddress(MailingAddressInput mailingAddressInput, CompletionCallback callback) {
+            MutationQuery query = new MutationQuery();
+
+            DefaultQueries.checkout.ShippingAddressUpdate(query, CurrentCheckout.id(), mailingAddressInput);
+
+            Client.Mutation(query, (Mutation response, ShopifyError error) => {
+                if (error != null) {
+                    callback(error);
+                } else {
+                    var checkout = response.checkoutShippingAddressUpdate().checkout();
+                    var userErrors = response.checkoutShippingAddressUpdate().userErrors();
+                    if (DidMutateCheckout(checkout, userErrors)) {
+                        PollCheckoutAndUpdate(PollCheckoutAvailableShippingRatesReady, callback);
+                    } else {
+                        HandleUserError(callback);
+                    }
+                }
+            });
+        }
+
+        public void SetFinalCheckoutFields(string email, ShippingFields? shippingFields, CompletionCallback callback) {
+            MutationQuery query = new MutationQuery();
+
+            DefaultQueries.checkout.EmailUpdate(query, CurrentCheckout.id(), email);
+
+            if (shippingFields.HasValue) {
+                DefaultQueries.checkout.ShippingAddressUpdate(query, CurrentCheckout.id(), shippingFields.Value.ShippingAddress);
+                DefaultQueries.checkout.ShippingLineUpdate(query, CurrentCheckout.id(), shippingFields.Value.ShippingIdentifier);
+            }
+
+            Client.Mutation(query, (Mutation response, ShopifyError error) => {
+                if (error != null) {
+                    callback(error);
+                } else {
+                    var checkout = response.checkoutEmailUpdate().checkout();
+                    var userErrors = response.checkoutShippingAddressUpdate().userErrors();
+                    if (shippingFields.HasValue) {
+                        userErrors.AddRange(response.checkoutShippingLineUpdate().userErrors());
+                        userErrors.AddRange(response.checkoutEmailUpdate().userErrors());
+                    }
+
+                    if (DidMutateCheckout(checkout, userErrors)) {
+                        PollCheckoutAndUpdate(PollCheckoutReady, callback);
+                    } else {
+                        HandleUserError(callback);
+                    }
+                }
+            });
+        }
+
+        // Polls a Checkout, till isReady returns True.
+        private void PollCheckoutNode(CheckoutPollQuery checkoutQuery, PollUpdatedHandler isReady, CheckoutPollFinishedHandler callback) {
+            QueryRootQuery query = new QueryRootQuery();
+            checkoutQuery(query, CurrentCheckout.id());
+
+            Client.PollQuery(isReady, query, (response, error) => {
+
+                if (error != null) {
+                    callback(null, error);
+                } else {
+                    Checkout checkout = (Checkout) response.node();
+                    callback(checkout, null);
+                }
+            });
+        }
+
+        // Convenience method to poll a Checkout node till its ready property is True
+        private void PollCheckoutReady(CheckoutPollFinishedHandler callback) {
+
+            PollUpdatedHandler isReady = (updatedQueryRoot) => {
+                var checkout = (Checkout)updatedQueryRoot.node();
+                return checkout.ready();
+            };
+
+            PollCheckoutNode(DefaultQueries.checkout.Poll, isReady, callback);
+        }
+
+        // Convenience method to poll a Checkout node till its available shipping rates' ready property is True
+        private void PollCheckoutAvailableShippingRatesReady(CheckoutPollFinishedHandler callback) {
+            PollUpdatedHandler isReady = (updatedQueryRoot) => {
+                var checkout = (Checkout)updatedQueryRoot.node();
+                return checkout.availableShippingRates().ready();
+            };
+
+            PollCheckoutNode(DefaultQueries.checkout.AvailableShippingRatesPoll, isReady, callback);
+        }
+
+        // Convenience method to perform some polling on Checkout and update the Current Checkout when completed
+        private void PollCheckoutAndUpdate(CheckoutPoll poll, CompletionCallback callback) {
+            poll((Checkout checkout, ShopifyError error) => {
+                if (error == null && checkout != null) {
+                    DidMutateCheckout(checkout, new List<UserError>());
+                }
+                callback(error);
+            });
+        }
+    }
+}
