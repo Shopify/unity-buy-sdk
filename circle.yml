@@ -25,7 +25,11 @@ dependencies:
   cache_directories:
     - "unity/"
 test:
-  override:
+  pre:
     - ./scripts/build.sh
+    - ./scripts/activate_license.sh
+  override:
     - ./scripts/test_unity.sh
     - ./scripts/test_iOS.sh
+  post:
+    - ./scripts/deactivate_license.sh
