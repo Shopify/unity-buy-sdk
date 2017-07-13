@@ -35,5 +35,8 @@ extension Tester {
     enum Method: String {
         case repeatMessage = "RepeatMessage"
         case getLastMessage = "GetLastMessage"
+        case setupApplePayEventTest = "SetupApplePayEventTest"
+        case checkout = "Checkout"
+        case checkoutWithShippingAddress = "CheckoutWithShippingAddress"
     }
 }
