@@ -92,6 +92,7 @@ module GraphQLGenerator
         SDK/InputValueToString
         SDK/CastUtils
         SDK/CartLineItems
+        SDK/CheckoutMutator
         SDK/CheckoutPoller
         SDK/PaymentPoller
         SDK/ValidationUtils

@@ -5,7 +5,6 @@ namespace <%= namespace %>.SDK {
     public delegate void CheckoutPollQuery(QueryRootQuery query, string checkoutId);
     public delegate void CheckoutPoll(string checkoutId, CheckoutPollFinishedHandler callback);
     public delegate void CheckoutPollFinishedHandler(Checkout checkout, ShopifyError error);
-    public delegate bool CheckoutMutationCallback(Checkout checkout, List<UserError> userErrors);
 
     public class CheckoutPoller {
 
