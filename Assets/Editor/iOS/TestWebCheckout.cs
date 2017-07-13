@@ -19,7 +19,7 @@ namespace Shopify.Tests {
         }
 
         [Test]        
-        public void TestOnNativeMessageDismissedWithValidCheckout() {
+        public void TestWebCheckoutSucceeded() {
             bool didSucceed = false;
             bool didCancel = false;
             bool didFail = false;
@@ -39,7 +39,27 @@ namespace Shopify.Tests {
         }
 
         [Test]        
-        public void TestOnNativeMessageDismissedWithInvalidCheckout() {
+        public void TestWebCheckoutCancelled() {
+            bool didSucceed = false;
+            bool didCancel = false;
+            bool didFail = false;
+
+            var webViewMessageReceiver = CreateMockMessageReceiver("checkout-id-cancelled");
+
+            webViewMessageReceiver.OnSuccess = () => didSucceed = true;
+            webViewMessageReceiver.OnCancelled = () => didCancel = true;
+            webViewMessageReceiver.OnFailure = (e) => didFail = true;
+
+            string mockMessage = "{\"Identifier\": \"test\", \"Content\": \"dismissed\"}";
+            webViewMessageReceiver.OnNativeMessage(mockMessage);
+
+            Assert.IsFalse(didSucceed);
+            Assert.IsTrue(didCancel);
+            Assert.IsFalse(didFail);
+        }
+
+        [Test]        
+        public void TestWebCheckoutFailure() {
             bool didSucceed = false;
             bool didCancel = false;
             bool didFail = false;
