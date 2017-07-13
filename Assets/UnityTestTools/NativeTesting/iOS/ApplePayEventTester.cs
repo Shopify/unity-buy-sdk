@@ -1,50 +1,17 @@
-namespace Shopify.Tests.iOS {
+﻿namespace Shopify.Tests.iOS {
     using System.Collections;
     using System.Collections.Generic;
     using UnityEngine;
-
-    #if UNITY_IOS
     using Shopify.Unity.SDK.iOS;
-    #endif
 
-    public partial class ApplePayEventTester : MonoBehaviour {}
+    public class ApplePayEventTester : MonoBehaviour {
 
-    #if UNITY_IOS
-    public partial class ApplePayEventTester : IApplePayEventReceiver {
-        public void UpdateSummaryItemsForShippingIdentifier(string serializedMessage) {
+        #if UNITY_IOS
+        public void SetupApplePayEventTest(string serializedMessage) {
             var message = NativeMessageTester.CreateFromJSON(serializedMessage);
-            var response = new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, GetExpectedSummaryItems());
-            message.Respond(response.ToJsonString());
+            GetComponent<ApplePayEventReceiverBridge>().Receiver = new ApplePayEventTesterReceiver();
+            message.Respond("");
         }
-
-        public void UpdateSummaryItemsForShippingContact(string serializedMessage) {
-            var message = NativeMessageTester.CreateFromJSON(serializedMessage);
-            var response = new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, GetExpectedSummaryItems(), GetExpectedShippingMethods());
-            message.Respond(response.ToJsonString());
-        }
-
-        public void FetchApplePayCheckoutStatusForToken(string serializedMessage) {
-            var message = NativeMessageTester.CreateFromJSON(serializedMessage);
-            var response = new ApplePayEventResponse(ApplePayAuthorizationStatus.Success);
-            message.Respond(response.ToJsonString());
-        }
-
-        public void DidFinishCheckoutSession(string serializedMessage) {
-            // Create the message to record it as received
-             NativeMessageTester.CreateFromJSON(serializedMessage);
-        }
-
-        private List<SummaryItem> GetExpectedSummaryItems() {
-            var summaryItems = new List<SummaryItem>();
-            summaryItems.Add(new SummaryItem("SubTotal", "1.00"));
-            return summaryItems;
-        }
-
-        private List<ShippingMethod> GetExpectedShippingMethods() {
-            var shippingMethods = new List<ShippingMethod>();
-            shippingMethods.Add(new ShippingMethod("Free Shipping", "0", "unique_id", "10-15 Days"));
-            return shippingMethods;
-        }
+        #endif
     }
-    #endif
 }

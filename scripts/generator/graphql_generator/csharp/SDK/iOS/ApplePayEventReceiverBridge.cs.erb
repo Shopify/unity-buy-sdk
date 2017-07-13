@@ -1,11 +1,14 @@
-#if UNITY_IOS
 namespace <%= namespace %>.SDK.iOS {
     using System.Collections;
     using System.Collections.Generic;
+
+    #if !SHOPIFY_MONO_UNIT_TEST
     using UnityEngine;
+    public partial class ApplePayEventReceiverBridge : MonoBehaviour {}
+    #endif
 
-    public class ApplePayEventReceiverBridge : MonoBehaviour, IApplePayEventReceiver {
-
+    #if UNITY_IOS
+    public partial class ApplePayEventReceiverBridge : IApplePayEventReceiver {
         public IApplePayEventReceiver Receiver;
 
         public void UpdateSummaryItemsForShippingIdentifier(string serializedMessage) {
@@ -24,5 +27,5 @@ namespace <%= namespace %>.SDK.iOS {
             Receiver.DidFinishCheckoutSession(serializedMessage);
         }
     }
+    #endif
 }
-#endif
