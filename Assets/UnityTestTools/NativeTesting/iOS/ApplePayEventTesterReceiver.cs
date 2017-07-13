@@ -2,7 +2,6 @@
 namespace Shopify.Tests.iOS {
     using System.Collections;
     using System.Collections.Generic;
-    using UnityEngine;
     using Shopify.Unity.SDK.iOS;
 
     public class ApplePayEventTesterReceiver : IApplePayEventReceiver {
