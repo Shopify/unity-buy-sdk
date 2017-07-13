@@ -70,10 +70,10 @@ class ApplePayFlowTests: XCTestCase {
         
         let expectation = self.expectation(description: "MockAuthorizationController.invokeDidSelectShippingMethod failed to complete")
         
-        let expectedSubtotal = PKPaymentSummaryItem(label: "SUBTOTAL", amount: 0.77);
+        let expectedSubtotal = PKPaymentSummaryItem(label: "SUBTOTAL", amount: 25.47);
         let expectedShipping = PKPaymentSummaryItem(label: "SHIPPING", amount: 8.44);
-        let expectedTaxes    = PKPaymentSummaryItem(label: "TAXES",    amount: 0.09);
-        let expectedTotal    = PKPaymentSummaryItem(label: "TOTAL",    amount: 9.21);
+        let expectedTaxes    = PKPaymentSummaryItem(label: "TAXES",    amount: 2.93);
+        let expectedTotal    = PKPaymentSummaryItem(label: "TOTAL",    amount: 33.91);
         
         let method = Tester.Method.checkoutWithShippingAddress.rawValue;
         let checkoutMessage = UnityMessage(content: "", object: Tester.name, method: method)
