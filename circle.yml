@@ -22,7 +22,6 @@ dependencies:
     - xcrun instruments -w "iPhone 6 (10.0) [" || true
   override:
     - ./scripts/install_unity.sh
-    - ./scripts/link_playback_engines.sh
   cache_directories:
     - "unity/"
 test:
