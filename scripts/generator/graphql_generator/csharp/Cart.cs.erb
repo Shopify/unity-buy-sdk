@@ -110,6 +110,14 @@ namespace <%= namespace %> {
             });
         }
 
+        /// <summary>
+        /// Launches a platform-specific web view screen with the Cart's web checkout link loaded. This can be used to perform
+        /// a cart checkout from within your application instead of being directed to an external web application. Typically this
+        /// can be used as a fallback measure in cases where the user's device doesn't support native pay methods.
+        /// </summary>
+        /// <param name="success">called when the web checkout screen has been dismissed and the checkout was successful.</param>
+        /// <param name="cancelled">called when the web checkout screen was dismissed before completing a checkout.</param>
+        /// <param name="failure">called when an error was encountered after the web checkout screen has been dismissed.</param>
         public void CheckoutWithNativeWebView(CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
             if (WebCheckout == null) {
                 throw new PlatformNotSupportedException("This platform does not support checkout with web pay");
