@@ -87,12 +87,13 @@ module GraphQLGenerator
       %w(
         ShopifyBuy
         Cart
-        Cart.Poll
         SDK/Arguments
         SDK/InputBase
         SDK/InputValueToString
         SDK/CastUtils
         SDK/CartLineItems
+        SDK/CheckoutPoller
+        SDK/PaymentPoller
         SDK/ValidationUtils
         SDK/AbstractResponse
         SDK/NoQueryException
