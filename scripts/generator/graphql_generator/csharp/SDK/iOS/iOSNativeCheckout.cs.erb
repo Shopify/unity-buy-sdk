@@ -18,7 +18,15 @@ namespace <%= namespace %>.SDK.iOS {
         private static extern void _ShowApplePaySetup();
 
         [DllImport ("__Internal")]
-        private static extern bool _CreateApplePaySession(string unityDelegateObjectName, string merchantID, string countryCode, string currencyCode, string serializedSummaryItems, string serializedShippingMethods, bool requiringShipping);
+        private static extern bool _CreateApplePaySession(
+            string unityDelegateObjectName, 
+            string merchantID, 
+            string countryCode, 
+            string currencyCode, 
+            string serializedSummaryItems, 
+            string serializedShippingMethods, 
+            bool requiringShipping
+        );
 
         [DllImport ("__Internal")]
         private static extern void _PresentApplePayAuthorization();
@@ -29,10 +37,14 @@ namespace <%= namespace %>.SDK.iOS {
         private CheckoutCancelCallback OnCancelled;
         private CheckoutFailureCallback OnFailure;
 
-        private CheckoutMutator CheckoutMutator;
+        private Checkout CurrentCheckout;
 
-        public iOSNativeCheckout(CheckoutMutator mutator) {
+        private CheckoutMutator CheckoutMutator;
+        private readonly List<UserError> UserErrorsRef;
+
+        public iOSNativeCheckout(CheckoutMutator mutator, List<UserError> userErrors) {
             CheckoutMutator = mutator;
+            UserErrorsRef = userErrors;
         }
 
         /// <summary>
@@ -68,13 +80,12 @@ namespace <%= namespace %>.SDK.iOS {
         /// <param name="success">Delegate method that will be notified upon a successful payment</param>
         /// <param name="failure">Delegate method that will be notified upon a failure during the checkout process</param>
         /// <param name="cancelled">Delegate method that will be notified upon a cancellation during the checkout process</param>
-        public void Checkout(string key, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
+        public void Checkout(Checkout checkout, string key, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
+            CurrentCheckout = checkout;
 
             OnSuccess = success;
             OnCancelled = cancelled;
             OnFailure = failure;
-
-            var checkout = CurrentCart.CurrentCheckout;
 
             var summaryItems = GetSummaryItems();
             var summaryString = Json.Serialize(summaryItems);
@@ -94,31 +105,31 @@ namespace <%= namespace %>.SDK.iOS {
         }
 
         private List<SummaryItem> GetSummaryItems() {
-            var checkout = CurrentCart.CurrentCheckout;
             var summaryItems = new List<SummaryItem>();
-            summaryItems.Add(new SummaryItem("SUBTOTAL", checkout.subtotalPrice().ToString()));
+            summaryItems.Add(new SummaryItem("SUBTOTAL", CurrentCheckout.subtotalPrice().ToString()));
 
-            if (checkout.requiresShipping()) {
+            if (CurrentCheckout.requiresShipping()) {
                 try {
-                    summaryItems.Add(new SummaryItem("SHIPPING", checkout.shippingLine().price().ToString()));
+                    summaryItems.Add(new SummaryItem("SHIPPING", CurrentCheckout.shippingLine().price().ToString()));
                 } catch {}
             }
 
-            summaryItems.Add(new SummaryItem("TAXES", checkout.totalTax().ToString()));
-            summaryItems.Add(new SummaryItem("TOTAL", checkout.totalPrice().ToString()));
+            summaryItems.Add(new SummaryItem("TAXES", CurrentCheckout.totalTax().ToString()));
+            summaryItems.Add(new SummaryItem("TOTAL", CurrentCheckout.totalPrice().ToString()));
 
             return summaryItems;
         }
 
         private List<ShippingMethod> GetShippingMethods() {
-            var checkout = CurrentCart.CurrentCheckout;
             var shippingMethods = new List<ShippingMethod>();
 
             try {
-                var availableShippingRates = checkout.availableShippingRates().shippingRates();
+                var availableShippingRates = CurrentCheckout.availableShippingRates().shippingRates();
 
                 foreach (var shippingRate in availableShippingRates) {
-                    shippingMethods.Add(new ShippingMethod(shippingRate.title(), shippingRate.price().ToString(), shippingRate.handle()));
+                    shippingMethods.Add(
+                        new ShippingMethod(shippingRate.title(), shippingRate.price().ToString(), shippingRate.handle())
+                    );
                 }
             } catch (Exception e) {
                 throw new Exception("Attempted to gather information on available shipping rates on CurrentCheckout, but CurrentCheckout do not have those properties queried", e);

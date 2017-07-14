@@ -4,7 +4,14 @@ namespace <%= namespace %>.SDK {
         bool CanShowPaymentSetup();
         void ShowPaymentSetup();
         bool CanCheckout();
+
         /// Key is the public key that is used for encrypting a native payment's token data
-        void Checkout(string key, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure);
+        void Checkout(
+            Checkout checkout, 
+            string key, 
+            CheckoutSuccessCallback success, 
+            CheckoutCancelCallback cancelled, 
+            CheckoutFailureCallback failure
+        );
     }
 }

@@ -50,18 +50,14 @@ namespace <%= namespace %> {
 
         public Checkout CurrentCheckout { get; private set; }
 
-        private const float POLL_DELAY_SECONDS = 0.5f;
         private CartLineItems _LineItems;
-        private List<UserError> _UserErrors = null;
+        private List<UserError> _UserErrors = new List<UserError>();
         private List<String> DeletedLineItems = new List<string>();
         private ShopifyClient Client;
 
         private IWebCheckout WebCheckout;
         private INativeCheckout NativeCheckout;
         private CheckoutMutator CheckoutMutator;
-
-        private CheckoutPoller CheckoutPoller;
-        private PaymentPoller PaymentPoller;
 
         /// <summary>
         /// Constructs a new cart using a <see ref="ShopifyClient">ShopifyClient </see>. Typically, carts won't be
@@ -82,12 +78,10 @@ namespace <%= namespace %> {
             _LineItems = new CartLineItems(OnDeleteLineItem);
 
             CheckoutMutator = new CheckoutMutator(client, UpdateState);
-            CheckoutPoller = new CheckoutPoller(client, UpdateState);
-            PaymentPoller = new PaymentPoller(client);
 
             #if UNITY_IOS
             WebCheckout = new iOSWebCheckout(this, Client);
-            NativeCheckout = new iOSNativeCheckout(CheckoutMutator);
+            NativeCheckout = new iOSNativeCheckout(CheckoutMutator, _UserErrors);
             #endif
         }
 
@@ -131,7 +125,7 @@ namespace <%= namespace %> {
                 if (error != null) {
                     failure(error);
                 } else {
-                    NativeCheckout.Checkout(key, success, cancelled, failure);
+                    NativeCheckout.Checkout(CurrentCheckout, key, success, cancelled, failure);
                 }
             });
         }
@@ -160,68 +154,6 @@ namespace <%= namespace %> {
             }
         }
 
-        public void CheckoutWithTokenizedPayment(TokenizedPaymentInput tokenizedPaymentInput, CompletionCallback callback) {
-            Action<Payment> pollPayment = (payment) => {
-                PaymentPoller.PollPaymentReady(payment.id(), (Payment newPayment, ShopifyError error) => {
-                    if (error != null) {
-                        callback(error);
-                    } 
-
-                    UpdateState(payment.checkout());
-
-                    if (UserErrors.Count > 0) {
-                        HandleUserError(callback);
-                        return;
-                    }
-
-                    callback(null);
-                });
-            };
-
-            Action checkoutWithTokenizedPayment = () => {
-                MutationQuery query = new MutationQuery();
-                DefaultQueries.checkout.CheckoutCompleteWithTokenizedPayment(query, CurrentCheckout.id(), tokenizedPaymentInput);
-
-                Client.Mutation(query, (Mutation response, ShopifyError error) => {
-                    if (error != null) {
-                        callback(error);
-                        return;
-                    } 
-
-                    var responseNode = response.checkoutCompleteWithTokenizedPayment();
-                    var payment = responseNode.payment();
-
-                    UpdateState(responseNode.checkout(), responseNode.userErrors());
-
-                    if (UserErrors.Count > 0) {
-                        HandleUserError(callback);
-                        return;
-                    }
-
-                    if (payment.ready()) {
-                        callback(null);
-                    } else {
-                        pollPayment(payment);
-                    }
-                });
-            };
-
-            // Ensure we can checkout first
-            if (CurrentCheckout.ready()){
-                checkoutWithTokenizedPayment();
-                return;
-            } 
-
-            CheckoutPoller.PollCheckoutReady(CurrentCheckout.id(), (Checkout checkout, ShopifyError error) => {
-                if (error != null) {
-                    callback(error);
-                    return;
-                } 
-
-                checkoutWithTokenizedPayment();
-            });
-        }
-
         public void CheckoutSave(CompletionCallback callback) {
             if (!IsCreated) {
                 CreateCheckout(callback);
@@ -248,7 +180,7 @@ namespace <%= namespace %> {
             List<CheckoutLineItemInput> toAdd = CartLineItems.ConvertToCheckoutLineItemInput(LineItems.All());
 
             CheckoutMutator.UpdateItems(
-                checkoutId: CurrentCheckout.id(),
+                checkout: CurrentCheckout,
                 lineItemsToAdd: toAdd,
                 lineItemsToRemove: toRemove,
                 callback: (e) => {
@@ -292,15 +224,6 @@ namespace <%= namespace %> {
 
         private void OnDeleteLineItem(string lineItemId) {
             DeletedLineItems.Add(lineItemId);
-        }
-
-        private void HandleUserError(CompletionCallback callback) {
-            ShopifyError error = new ShopifyError(
-                ShopifyError.ErrorType.UserError,
-                "There were issues with some of the fields sent. See `cart.UserErrors`"
-            );
-
-            callback(error);
         }
     }
 }
