@@ -2,7 +2,7 @@
 
 . $(dirname $0)/common.sh
 
-UNITY_LICENSE_LOG_PATH="$PROJECT_ROOT"/license.log
+UNITY_LICENSE_LOG_PATH="$PROJECT_ROOT"/deactivate_license.log
 
 which "$UNITY_PATH" &> /dev/null || die "Unity does not exist at $UNITY_PATH"
 
@@ -13,8 +13,8 @@ if [[ -n "$UNITY_USERNAME" && -n "$UNITY_PASSWORD" && -n "$UNITY_SERIAL"  ]] ; t
     "$UNITY_PATH" \
         -quit \
         -batchmode \
-        -nographics \
-        -returnlicense
+        -returnlicense \
+        -logFile "$UNITY_LICENSE_LOG_PATH"
 
     if [ $? = 0 ] ; then
         echo "Deactivated license"
@@ -22,6 +22,7 @@ if [[ -n "$UNITY_USERNAME" && -n "$UNITY_PASSWORD" && -n "$UNITY_SERIAL"  ]] ; t
     else
         echo "Failed to deactivate license"
         echo "------------------\n\n"
+        cat "$UNITY_LICENSE_LOG_PATH"
         exit 1
     fi
 fi
