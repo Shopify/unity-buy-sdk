@@ -173,7 +173,7 @@ class ApplePayFlowTests: XCTestCase {
     }
     
     
-    /// Tests that selecting a shipping method returns the proper summary items for the checkout
+    /// Tests that we can checkout with valid information
     func testCompleteSuccessfulCheckout() {
         
         let session      = Models.createPaymentSession(requiringShippingAddressFields: true, usingNonDefault: MockAuthorizationController.self)
@@ -200,6 +200,129 @@ class ApplePayFlowTests: XCTestCase {
                 selectShippingExpectation.fulfill()
                 MockAuthorizationController.invokeDidAuthorizePayment(payment, completion: { authStatus in
                     XCTAssertEqual(authStatus, PKPaymentAuthorizationStatus.success)
+                    authorizePaymentExpectation.fulfill()
+                })
+            }
+        }
+        
+        self.wait(for: [selectShippingExpectation, authorizePaymentExpectation], timeout: timeout)
+    }
+    
+    /// Tests that we receive the correct error for incorrect shipping contact
+    func testCompleteInvalidShippingContactCheckout() {
+        
+        let session      = Models.createPaymentSession(requiringShippingAddressFields: true, usingNonDefault: MockAuthorizationController.self)
+        let dispatcher   = ApplePayEventDispatcher(receiver: Tester.name)
+        session.delegate = dispatcher
+        session.presentAuthorizationController()
+        
+        let selectedMethod = expeditedShippingMethod
+        
+        let incorrectContact = Models.createContact(with: Models.createPostalAddress())
+        incorrectContact.emailAddress = "incorrectEmail"
+        
+        let payment =
+            MockPayment(
+                token: Models.createSimulatorPaymentToken() as! MockPaymentToken,
+                billingContact: Models.createContact(with: Models.createPostalAddress()),
+                shippingContact: incorrectContact,
+                shippingMethod: selectedMethod)
+        
+        let selectShippingExpectation   = self.expectation(description: "MockAuthorizationController.invokeDidSelectShippingMethod failed to complete")
+        let authorizePaymentExpectation = self.expectation(description: "MockAuthorizationController.invokeDidAuthorizePayment failed to complete")
+        
+        let method = Tester.Method.checkoutWithShippingAddress.rawValue
+        let checkoutMessage = UnityMessage(content: "", object: Tester.name, method: method)
+        
+        MessageCenter.send(checkoutMessage) { response in
+            MockAuthorizationController.invokeDidSelectShippingMethod(selectedMethod) { status, items in
+                selectShippingExpectation.fulfill()
+                MockAuthorizationController.invokeDidAuthorizePayment(payment, completion: { authStatus in
+                    XCTAssertEqual(authStatus, PKPaymentAuthorizationStatus.invalidShippingContact)
+                    authorizePaymentExpectation.fulfill()
+                })
+            }
+        }
+        
+        self.wait(for: [selectShippingExpectation, authorizePaymentExpectation], timeout: timeout)
+    }
+    
+    /// Tests that we receive the correct error for incorrect billing address
+    func testCompleteInvalidBillingAddressCheckout() {
+        
+        let session      = Models.createPaymentSession(requiringShippingAddressFields: true, usingNonDefault: MockAuthorizationController.self)
+        let dispatcher   = ApplePayEventDispatcher(receiver: Tester.name)
+        session.delegate = dispatcher
+        session.presentAuthorizationController()
+        
+        let selectedMethod = expeditedShippingMethod
+        
+        let incorrectPostal  = Models.createPostalAddress() as! CNMutablePostalAddress
+        incorrectPostal.country = "Incorrect_country"
+        
+        let incorrectContact = Models.createContact(with: Models.createPostalAddress())
+        incorrectContact.postalAddress = incorrectPostal
+        
+        let payment =
+            MockPayment(
+                token: Models.createSimulatorPaymentToken() as! MockPaymentToken,
+                billingContact: incorrectContact,
+                shippingContact: Models.createContact(with: Models.createPostalAddress()),
+                shippingMethod: selectedMethod)
+        
+        let selectShippingExpectation   = self.expectation(description: "MockAuthorizationController.invokeDidSelectShippingMethod failed to complete")
+        let authorizePaymentExpectation = self.expectation(description: "MockAuthorizationController.invokeDidAuthorizePayment failed to complete")
+        
+        let method = Tester.Method.checkoutWithShippingAddress.rawValue
+        let checkoutMessage = UnityMessage(content: "", object: Tester.name, method: method)
+        
+        MessageCenter.send(checkoutMessage) { response in
+            MockAuthorizationController.invokeDidSelectShippingMethod(selectedMethod) { status, items in
+                selectShippingExpectation.fulfill()
+                MockAuthorizationController.invokeDidAuthorizePayment(payment, completion: { authStatus in
+                    XCTAssertEqual(authStatus, PKPaymentAuthorizationStatus.invalidBillingPostalAddress)
+                    authorizePaymentExpectation.fulfill()
+                })
+            }
+        }
+        
+        self.wait(for: [selectShippingExpectation, authorizePaymentExpectation], timeout: timeout)
+    }
+    
+    /// Tests that we receive the correct error for incorrect shipping address
+    func testCompleteInvalidShippingAddressCheckout() {
+        
+        let session      = Models.createPaymentSession(requiringShippingAddressFields: true, usingNonDefault: MockAuthorizationController.self)
+        let dispatcher   = ApplePayEventDispatcher(receiver: Tester.name)
+        session.delegate = dispatcher
+        session.presentAuthorizationController()
+        
+        let selectedMethod = expeditedShippingMethod
+        
+        let incorrectPostal = Models.createPostalAddress() as! CNMutablePostalAddress
+        incorrectPostal.country = "Incorrect_country"
+        
+        let incorrectContact = Models.createContact(with: Models.createPostalAddress())
+        incorrectContact.postalAddress = incorrectPostal
+        
+        let payment =
+            MockPayment(
+                token: Models.createSimulatorPaymentToken() as! MockPaymentToken,
+                billingContact: Models.createContact(with: Models.createPostalAddress()),
+                shippingContact: incorrectContact,
+                shippingMethod: selectedMethod)
+        
+        let selectShippingExpectation   = self.expectation(description: "MockAuthorizationController.invokeDidSelectShippingMethod failed to complete")
+        let authorizePaymentExpectation = self.expectation(description: "MockAuthorizationController.invokeDidAuthorizePayment failed to complete")
+        
+        let method = Tester.Method.checkoutWithShippingAddress.rawValue
+        let checkoutMessage = UnityMessage(content: "", object: Tester.name, method: method)
+        
+        MessageCenter.send(checkoutMessage) { response in
+            MockAuthorizationController.invokeDidSelectShippingMethod(selectedMethod) { status, items in
+                selectShippingExpectation.fulfill()
+                MockAuthorizationController.invokeDidAuthorizePayment(payment, completion: { authStatus in
+                    XCTAssertEqual(authStatus, PKPaymentAuthorizationStatus.invalidShippingPostalAddress)
                     authorizePaymentExpectation.fulfill()
                 })
             }
