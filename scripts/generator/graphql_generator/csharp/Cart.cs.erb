@@ -16,8 +16,6 @@ namespace <%= namespace %> {
     public class NoMatchingVariantException : Exception {
         public NoMatchingVariantException(string message) : base(message) {}
     }
-    
-    // Public API
 
     /// <summary>
     /// Manages line items for an order. Can also be used to generate a web checkout link to check out in browser.
@@ -83,8 +81,8 @@ namespace <%= namespace %> {
             Client = client;
             _LineItems = new CartLineItems(OnDeleteLineItem);
 
-            CheckoutMutator = new CheckoutMutator(client, DidMutateCheckout);
-            CheckoutPoller = new CheckoutPoller(client, DidMutateCheckout);
+            CheckoutMutator = new CheckoutMutator(client, UpdateState);
+            CheckoutPoller = new CheckoutPoller(client, UpdateState);
             PaymentPoller = new PaymentPoller(client);
 
             #if UNITY_IOS
@@ -92,8 +90,6 @@ namespace <%= namespace %> {
             NativeCheckout = new iOSNativeCheckout(CheckoutMutator);
             #endif
         }
-
-        #region Public API
 
         public void GetWebCheckoutLink(GetWebCheckoutLinkSuccess success, GetWebCheckoutLinkFailure failure) {
             CheckoutSave(error => {
@@ -169,10 +165,10 @@ namespace <%= namespace %> {
                 PaymentPoller.PollPaymentReady(payment.id(), (Payment newPayment, ShopifyError error) => {
                     if (error != null) {
                         callback(error);
-                        return;
                     } 
 
-                    DidMutateCheckout(payment.checkout());
+                    UpdateState(payment.checkout());
+
                     if (UserErrors.Count > 0) {
                         HandleUserError(callback);
                         return;
@@ -195,7 +191,7 @@ namespace <%= namespace %> {
                     var responseNode = response.checkoutCompleteWithTokenizedPayment();
                     var payment = responseNode.payment();
 
-                    DidMutateCheckout(responseNode.checkout(), responseNode.userErrors());
+                    UpdateState(responseNode.checkout(), responseNode.userErrors());
 
                     if (UserErrors.Count > 0) {
                         HandleUserError(callback);
@@ -236,10 +232,6 @@ namespace <%= namespace %> {
             }
         }
 
-        #endregion
-
-        #region Private Helpers
-
         private void CreateCheckout(CompletionCallback callback) {
             List<CheckoutLineItemInput> newLineItemInput = CartLineItems.ConvertToCheckoutLineItemInput(LineItems.All());
             CheckoutMutator.CreateCheckout(
@@ -266,18 +258,11 @@ namespace <%= namespace %> {
             );
         }
 
-        private Checkout DidMutateCheckout(Checkout checkout) {
-            return DidMutateCheckout(checkout, new List<UserError>());
+        private void UpdateState(Checkout checkout) {
+            UpdateState(checkout, new List<UserError>());
         }
 
-        /// <summary>
-        /// Callback that is loaded onto the CheckoutMutator that is invoked whenever a change
-        /// has been made on the checkout.
-        /// </summary>
-        /// <param name="checkout">New, mutated checkout from the server.</param>
-        /// <param name="errors">User errors returned from the checkout mutation.</param>
-        /// <returns></returns>
-        private Checkout DidMutateCheckout(Checkout checkout, List<UserError> userErrors) {
+        private void UpdateState(Checkout checkout, List<UserError> userErrors) {
             Checkout newCheckout;
 
             if (CurrentCheckout == null) {
@@ -287,15 +272,10 @@ namespace <%= namespace %> {
                 newCheckout = merger.Merge(CurrentCheckout, checkout);
             }
 
-            if (userErrors.Count > 0) {
-                _UserErrors = userErrors;
-            } else {
-                _UserErrors = null;
-            }
+            _UserErrors = userErrors;
 
             UpdateLineItemFromCheckout(newCheckout);
             CurrentCheckout = newCheckout;
-            return newCheckout;
         }
 
         private void UpdateLineItemFromCheckout(Checkout checkout) {
@@ -322,7 +302,5 @@ namespace <%= namespace %> {
 
             callback(error);
         }
-
-        #endregion
     }
 }

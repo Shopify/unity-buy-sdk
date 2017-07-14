@@ -34,5 +34,5 @@ namespace <%= namespace %>.SDK {
     public delegate void CheckoutCancelCallback();
 
     public delegate void CompletionCallback(ShopifyError error);
-    public delegate Checkout CheckoutMutationCallback(Checkout checkout, List<UserError> userErrors);
+    public delegate void CheckoutMutationCallback(Checkout checkout, List<UserError> userErrors);
 }

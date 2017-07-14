@@ -176,7 +176,7 @@ namespace <%= namespace %>.SDK {
             CheckoutPoll pollFinishedHandler,
             CompletionCallback callback
         ) {
-            var mergedCheckout = DidMutateCheckout(newCheckout, userErrors);
+            DidMutateCheckout(newCheckout, userErrors);
 
             if (userErrors.Count > 0) {
                 ShopifyError error = new ShopifyError(

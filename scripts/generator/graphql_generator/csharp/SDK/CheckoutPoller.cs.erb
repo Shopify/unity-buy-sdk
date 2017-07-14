@@ -1,10 +1,5 @@
 namespace <%= namespace %>.SDK {
-    using System;
-    using System.Collections;
     using System.Collections.Generic;
-    using <%= namespace %>;
-    using <%= namespace %>.SDK;
-    using <%= namespace %>.MiniJSON;
     using <%= namespace %>.GraphQL;
 
     public delegate void CheckoutPollQuery(QueryRootQuery query, string checkoutId);
@@ -48,6 +43,7 @@ namespace <%= namespace %>.SDK {
                 callback
             );
         }
+
         // Polls a Checkout, till isReady returns True.
         public void PollCheckoutNode(
             string checkoutId,
