@@ -88,7 +88,8 @@ namespace <%= namespace %>.SDK.iOS {
             if (_CreateApplePaySession(GlobalGameObject.Name, key, "CA", currencyCodeString, summaryString, null, requiresShipping)) {
                 _PresentApplePayAuthorization();
             } else {
-                //TODO call checkout failure
+                var error = new ShopifyError(ShopifyError.ErrorType.NativePaymentProcessingError, "Unable to create an Apple Pay payment request. Please check that your merchant ID is valid.");
+                OnFailure(error);
             }
         }
 
