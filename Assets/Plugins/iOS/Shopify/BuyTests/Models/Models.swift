@@ -119,6 +119,10 @@ struct Models {
         return MockPaymentToken(paymentMethod: Models.createPaymentMethod() as! MockPaymentMethod)
     }
     
+    static func createSimulatorPaymentToken() -> PKPaymentToken {
+        return MockPaymentToken(paymentMethod: Models.createPaymentMethod() as! MockPaymentMethod, forSimulator: true)
+    }
+    
     static func createPayment() -> PKPayment {
         return MockPayment(
             token: createPaymentToken() as! MockPaymentToken,
