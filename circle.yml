@@ -3,28 +3,26 @@ machine:
     PROJECT_ROOT: $PWD/unity-buy-sdk
     UNITY_DOWNLOAD_DIR: $PROJECT_ROOT/unity
     UNITY_PKG_LOCATION: $UNITY_DOWNLOAD_DIR/Unity.pkg
-    UNITY_PKG_URL: http://netstorage.unity3d.com/unity/fdbb5133b820/MacEditorInstaller/Unity-5.3.4f1.pkg
+    UNITY_PKG_URL: http://netstorage.unity3d.com/unity/b7e030c65c9b/MacEditorInstaller/Unity.pkg
     IOS_PKG_LOCATION: $UNITY_DOWNLOAD_DIR/Unity-iOS.pkg
-    IOS_PKG_URL: http://netstorage.unity3d.com/unity/fdbb5133b820/MacEditorTargetInstaller/UnitySetup-iOS-Support-for-Editor-5.3.4f1.pkg
+    IOS_PKG_URL: http://netstorage.unity3d.com/unity/b7e030c65c9b/MacEditorTargetInstaller/UnitySetup-iOS-Support-for-Editor-5.4.2f2.pkg
     UNITY_CIRCLE_XML_DIR: $CIRCLE_TEST_REPORTS/Unity
     UNITY_CIRCLE_XML_OUT_PATH: $UNITY_CIRCLE_XML_DIR/junit.xml
-    # These are actually not needed but since Circle expects all OSX projects to be
-    # XCode / iOS projects we need to drop these in
-    XCODE_SCHEME: symbolicator
-    XCODE_WORKSPACE: symbolicator
-  # Also not needed but Circle needs this
   xcode:
-    version: 7.3
+    version: 8.3.3
 dependencies:
   pre:
-    # The application is expecting xcode to be installed in its normal location
-    - sudo ln -s /Applications/Xcode-7.3.app /Applications/Xcode.app
+    - xcrun instruments -w "iPhone 6 (10.0) [" || true
   override:
     - ./scripts/install_unity.sh
-    - ./scripts/link_playback_engines.sh
   cache_directories:
     - "unity/"
 test:
-  override:
+  pre:
     - ./scripts/build.sh
+    - ./scripts/activate_license.sh
+  override:
     - ./scripts/test_unity.sh
+    - ./scripts/test_iOS.sh
+  post:
+    - ./scripts/deactivate_license.sh
