@@ -1,8 +1,9 @@
 ﻿namespace Shopify.Tests {
     using System.Collections;
     using System.Collections.Generic;
-    using UnityEngine;
     using System.Runtime.InteropServices;
+    using UnityEngine;
+    using Shopify.Unity.SDK.iOS;
 
     public class Tester : MonoBehaviour {
 
@@ -10,6 +11,10 @@
         protected static extern void _TesterObjectFinishedLoading();
 
         private bool DidFinishLoading = false;
+
+        void Start() {
+            gameObject.AddComponent<ApplePayEventReceiverBridge>();
+        }
 
         void Update() {
             // We call this in Update() instead of Start() to give a chance
