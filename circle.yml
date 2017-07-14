@@ -10,15 +10,14 @@ machine:
     UNITY_CIRCLE_XML_OUT_PATH: $UNITY_CIRCLE_XML_DIR/junit.xml
     # These are actually not needed but since Circle expects all OSX projects to be
     # XCode / iOS projects we need to drop these in
-    XCODE_SCHEME: symbolicator
-    XCODE_WORKSPACE: symbolicator
-  # Also not needed but Circle needs this
+    #XCODE_SCHEME: symbolicator
+    #XCODE_WORKSPACE: symbolicator
   xcode:
-    version: 7.3
+    version: 8.3.3
 dependencies:
   pre:
     # The application is expecting xcode to be installed in its normal location
-    - sudo ln -s /Applications/Xcode-7.3.app /Applications/Xcode.app
+    # - sudo ln -s /Applications/Xcode-8.3.3.app /Applications/Xcode.app
     - xcrun instruments -w "iPhone 6 (10.0) [" || true
   override:
     - ./scripts/install_unity.sh
