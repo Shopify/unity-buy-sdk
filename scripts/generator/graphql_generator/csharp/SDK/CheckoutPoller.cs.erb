@@ -1,0 +1,78 @@
+namespace <%= namespace %>.SDK {
+    using System.Collections.Generic;
+    using <%= namespace %>.GraphQL;
+
+    public delegate void CheckoutPollQuery(QueryRootQuery query, string checkoutId);
+    public delegate void CheckoutPoll(string checkoutId, CheckoutPollFinishedHandler callback);
+    public delegate void CheckoutPollFinishedHandler(Checkout checkout, ShopifyError error);
+    public delegate bool CheckoutMutationCallback(Checkout checkout, List<UserError> userErrors);
+
+    public class CheckoutPoller {
+
+        private ShopifyClient Client;
+        private CheckoutMutationCallback DidMutateCheckout;
+
+        public CheckoutPoller(ShopifyClient client, CheckoutMutationCallback mutationCallback) {
+            Client = client;
+            DidMutateCheckout = mutationCallback;
+        }
+
+        // Convenience method to poll a Checkout node till its ready property is True
+        public void PollCheckoutReady(string checkoutId, CheckoutPollFinishedHandler callback) {
+            PollUpdatedHandler isReady = (updatedQueryRoot) => {
+                var checkout = (Checkout)updatedQueryRoot.node();
+                return checkout.ready();
+            };
+
+            PollCheckoutNode(checkoutId, DefaultQueries.checkout.Poll, isReady, callback);
+        }
+
+        // Convenience method to poll a Checkout node till its available shipping rates' ready property is True
+        public void PollCheckoutAvailableShippingRatesReady(
+            string checkoutId,
+            CheckoutPollFinishedHandler callback
+        ) {
+            PollUpdatedHandler isReady = (updatedQueryRoot) => {
+                var checkout = (Checkout)updatedQueryRoot.node();
+                return checkout.availableShippingRates().ready();
+            };
+
+            PollCheckoutNode(
+                checkoutId, 
+                DefaultQueries.checkout.AvailableShippingRatesPoll, 
+                isReady, 
+                callback
+            );
+        }
+
+        // Polls a Checkout, till isReady returns True.
+        public void PollCheckoutNode(
+            string checkoutId,
+            CheckoutPollQuery checkoutQuery, 
+            PollUpdatedHandler isReady, 
+            CheckoutPollFinishedHandler callback
+        ) {
+            QueryRootQuery query = new QueryRootQuery();
+            checkoutQuery(query, checkoutId);
+
+            Client.PollQuery(isReady, query, (response, error) => {
+                if (error != null) {
+                    callback(null, error);
+                } else {
+                    Checkout checkout = (Checkout) response.node();
+                    callback(checkout, null);
+                }
+            });
+        }
+
+        // Convenience method to perform some polling on Checkout and update the Current Checkout when completed
+        public void PollCheckoutAndUpdate(string checkoutId, CheckoutPoll poll, CompletionCallback callback) {
+            poll(checkoutId, (Checkout checkout, ShopifyError error) => {
+                if (error == null && checkout != null) {
+                    DidMutateCheckout(checkout, new List<UserError>());
+                }
+                callback(error);
+            });
+        }
+    }
+}
