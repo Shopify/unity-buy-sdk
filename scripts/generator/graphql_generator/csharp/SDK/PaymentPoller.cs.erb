@@ -1,16 +1,24 @@
-namespace <%= namespace %> {
+namespace <%= namespace %>.SDK {
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using <%= namespace %>;
     using <%= namespace %>.SDK;
+    using <%= namespace %>.MiniJSON;
     using <%= namespace %>.GraphQL;
 
-    public partial class Cart {
+    public delegate void PaymentPollFinishedHandler(Payment payment, ShopifyError error);
 
-        private delegate void PaymentPollFinishedHandler(Payment payment, ShopifyError error);
+    public class PaymentPoller {
+
+        private ShopifyClient Client;
+
+        public PaymentPoller(ShopifyClient client) {
+            Client = client;
+        }
 
         // Polls a Payment node, till isReady returns True.
-        private void PollPaymentNode(string paymentId, PollUpdatedHandler isReady, PaymentPollFinishedHandler callback) {
+        public void PollPaymentNode(string paymentId, PollUpdatedHandler isReady, PaymentPollFinishedHandler callback) {
             QueryRootQuery query = new QueryRootQuery();
             DefaultQueries.checkout.PaymentPoll(query, paymentId);
 
@@ -24,7 +32,7 @@ namespace <%= namespace %> {
             });
         }
         // Convenience method to poll a Payment node with paymentId till its ready property is True
-        private void PollPaymentReady(string paymentId, PaymentPollFinishedHandler callback) {
+        public void PollPaymentReady(string paymentId, PaymentPollFinishedHandler callback) {
             PollUpdatedHandler isReady = (updatedQueryRoot) => {
                 var payment = (Payment)updatedQueryRoot.node();
                 return payment.ready();

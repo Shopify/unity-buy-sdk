@@ -30,7 +30,7 @@ namespace <%= namespace %>.SDK.iOS {
         public void UpdateSummaryItemsForShippingIdentifier(string serializedMessage) {
             var message = NativeMessage.CreateFromJSON(serializedMessage);
 
-            Mutator.SetShippingLine(message.Content, (ShopifyError error) => {
+            CheckoutMutator.SetShippingLine(message.Content, (ShopifyError error) => {
                 if (error == null) {
                     var summaryItems = GetSummaryItems();
                     message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, summaryItems).ToJsonString());
@@ -65,7 +65,7 @@ namespace <%= namespace %>.SDK.iOS {
                 message.Respond(response.ToJsonString());
             };
 
-            Mutator.SetShippingAddress(mailingAddressInput, (ShopifyError error) => {
+            CheckoutMutator.SetShippingAddress(mailingAddressInput, (ShopifyError error) => {
                 if (error == null) {
                     respondWithSuccess();
                 } else {
@@ -91,7 +91,7 @@ namespace <%= namespace %>.SDK.iOS {
                 });
             };
 
-            Mutator.SetFinalCheckoutFieldsForPayment(payment, checkout, (ApplePayEventResponse errorResponse) => {
+            CheckoutMutator.SetFinalCheckoutFieldsForPayment(payment, checkout, (ApplePayEventResponse errorResponse) => {
                 if (errorResponse == null) {
                     performCheckout();
                 } else {
@@ -123,7 +123,7 @@ namespace <%= namespace %>.SDK.iOS {
                 shippingFields = new ShippingFields(payment.ShippingAddress, payment.ShippingIdentifier);
             }
 
-            Mutator.SetFinalCheckoutFields(payment.Email, shippingFields, (ShopifyError error) => {
+            CheckoutMutator.SetFinalCheckoutFields(payment.Email, shippingFields, (ShopifyError error) => {
                 if (error == null) {
                     callback(null);
                 } else {
@@ -145,8 +145,6 @@ namespace <%= namespace %>.SDK.iOS {
                 }
             });
         }
-
-        
 
         private void CheckoutWithTokenizedPayment(TokenizedPaymentInput tokenizedPaymentInput, Checkout checkout, ApplePayEventHandlerCompletion callback) {
 
@@ -244,15 +242,6 @@ namespace <%= namespace %>.SDK.iOS {
             }
 
             return ApplePayAuthorizationStatus.InvalidShippingPostalAddress;
-        }
-
-        private void HandleUserError(CompletionCallback callback) {
-            ShopifyError error = new ShopifyError(
-                ShopifyError.ErrorType.UserError,
-                "There were issues with some of the fields sent. See `cart.UserErrors`"
-            );
-
-            callback(error);
         }
     }
 }

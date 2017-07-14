@@ -29,10 +29,10 @@ namespace <%= namespace %>.SDK.iOS {
         private CheckoutCancelCallback OnCancelled;
         private CheckoutFailureCallback OnFailure;
 
-        private CheckoutMutator Mutator;
+        private CheckoutMutator CheckoutMutator;
 
         public iOSNativeCheckout(CheckoutMutator mutator) {
-            Mutator = mutator;
+            CheckoutMutator = mutator;
         }
 
         /// <summary>
