@@ -40,13 +40,13 @@ namespace <%= namespace %>.SDK {
         public void Query(<%= schema.query_root_name %>Query query, QueryResponseHandler callback) {
 
             #if SHOPIFY_VERBOSE_DEBUG
-            Console.WriteLine("Sending Query: " + query.ToString());
+            Console.WriteLine("Sending Query: " + query.ToString() + "\n");
             #endif
 
             Loader.Load(query.ToString(), (string response, string error) => {
                 #if SHOPIFY_VERBOSE_DEBUG
-                Console.WriteLine("Response: " + response);
-                Console.WriteLine("Error: " + error);
+                Console.WriteLine("Response: " + response + "\n");
+                Console.WriteLine("Error: " + error + "\n");
                 #endif
                 if (error != null) {
                     callback(new QueryResponse(error));
@@ -77,13 +77,13 @@ namespace <%= namespace %>.SDK {
         public void Mutation(<%= schema.mutation_root_name %>Query query, MutationResponseHandler callback) {
 
             #if SHOPIFY_VERBOSE_DEBUG
-            Console.WriteLine("Sending Mutation: " + query.ToString());
+            Console.WriteLine("Sending Mutation: " + query.ToString() + "\n");
             #endif
 
             Loader.Load(query.ToString(), (string response, string error) => {
                 #if SHOPIFY_VERBOSE_DEBUG
-                Console.WriteLine("Response: " + response);
-                Console.WriteLine("Error: " + error);
+                Console.WriteLine("Response: " + response + "\n");
+                Console.WriteLine("Error: " + error + "\n");
                 #endif
 
                 if (error != null) {
