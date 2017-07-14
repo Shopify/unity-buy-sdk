@@ -214,7 +214,7 @@ namespace <%= namespace %> {
             if (checkout == null) {
                 return;
             }
-        
+
             // sometimes we may not query line items for instance when polling is being performed
             try {
                 List<CheckoutLineItem> lineItems = (List<CheckoutLineItem>) checkout.lineItems();
