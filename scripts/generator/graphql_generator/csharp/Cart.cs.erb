@@ -43,6 +43,12 @@ namespace <%= namespace %> {
             }
         }
 
+        /// <summary>
+        /// A list of all the user errors with the current checkout. For example, when a user enters invalid information
+        /// in a field during checkout, the API will return a list of user errors which gets stored here. In general, a
+        /// failure callback is invoked and the developer can reference this field to handle these issues.
+        /// </summary>
+        /// <returns>A list of <see ref="UserError">user errors</see> for this <see ref="Cart">Cart </see></returns>
         public List<UserError> UserErrors {
             get {
                 return State.UserErrors;
@@ -106,6 +112,12 @@ namespace <%= namespace %> {
             State.Reset();
         }
 
+        /// <summary>
+        /// Returns the web URL for checking out the contents of this Cart. For presenting the user with a web view that
+        /// loads this URL see <see ref="Cart.CheckoutWithNativeWebView">CheckoutWithNativeWebView</see>.
+        /// </summary>
+        /// <param name="success">Callback invoked when the checkout url was successfully generated.</param>
+        /// <param name="failure">Callback invoked when generating the checkout url failed.</param>
         public void GetWebCheckoutLink(GetWebCheckoutLinkSuccessCallback success, GetWebCheckoutLinkFailureCallback failure) {
             State.CheckoutSave(error => {
                 if (error != null) {
@@ -137,6 +149,15 @@ namespace <%= namespace %> {
             });
         }
 
+        /// <summary>
+        /// Launches a platform-specific native pay UI for checking out the Cart's contents. Currently supported native pay options
+        /// include:
+        ///     - iOS: Launches Apple Pay. 
+        /// </summary>
+        /// <param name="key">Vendor-specific key for identifying the merchant. For iOS devices this is the merchant ID.</param>
+        /// <param name="success">Callback invoked whenever the checkout process has completed successfully.</param>
+        /// <param name="cancelled">Callback invoked whenever the user cancels out of the native pay flow.</param>
+        /// <param name="failure">Callback invoked whenever an error or failure is encountered during native pay.</param>
         public void CheckoutWithNativePay(string key, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
             if (NativeCheckout == null) {
                 throw new PlatformNotSupportedException("This platform does not support checkout with native pay");
