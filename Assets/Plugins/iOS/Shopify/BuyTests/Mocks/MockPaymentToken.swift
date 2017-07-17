@@ -43,12 +43,21 @@ class MockPaymentToken: PKPaymentToken {
     
     private let _paymentMethod: MockPaymentMethod
     private let _transactionIdentifier = UUID().uuidString
-    private let _paymentData           = try! JSONSerialization.data(withJSONObject: [String: Any]())
+    private let _paymentData: Data
     
     // ----------------------------------
     //  MARK: - Init -
     //
-    init(paymentMethod: MockPaymentMethod) {
+    
+    // If forSimulator is true then paymentData will be set to a non serialzable string resulting in nil paymentData when
+    // we serialize and send to Unity
+    init(paymentMethod: MockPaymentMethod, forSimulator: Bool = false) {
         self._paymentMethod = paymentMethod
+        
+        if !forSimulator {
+            self._paymentData = try! JSONSerialization.data(withJSONObject: [String: Any]())
+        } else {
+            self._paymentData = "{non_serializable_string".data(using: .utf8)!
+        }
     }
 }
