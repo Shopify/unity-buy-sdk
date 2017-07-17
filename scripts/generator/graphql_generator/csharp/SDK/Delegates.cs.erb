@@ -30,5 +30,8 @@ namespace <%= namespace %>.SDK {
     public delegate void CheckoutFailureCallback(ShopifyError error);
     public delegate void CheckoutCancelCallback();
 
+    public delegate void GetWebCheckoutLinkSuccessCallback(string url);
+    public delegate void GetWebCheckoutLinkFailureCallback(ShopifyError error);
+
     public delegate void CompletionCallback(ShopifyError error);
 }
