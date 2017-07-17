@@ -1,5 +1,5 @@
 //
-//  MessageResponder.mm
+//  SwiftInterfaceHeader.h
 //  UnityBuySDK
 //
 //  Created by Shopify.
@@ -24,14 +24,4 @@
 //  THE SOFTWARE.
 //
 
-#import <PassKit/PassKit.h>
-#import <WebKit/WebKit.h>
-#import <SafariServices/SafariServices.h>
-#import "SwiftInterfaceHeader.h"
-
-extern "C" {
-    void _RespondToNativeMessage(const char *identifier, const char *response) {
-        UnityMessage *message = [MessageCenter messageForIdentifier:[NSString stringWithUTF8String:identifier]];
-        [message completeWith:[NSString stringWithUTF8String:response]];
-    }
-}
+#import "ProductName-Swift.h"
