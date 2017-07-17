@@ -73,7 +73,7 @@ namespace <%= namespace %>.SDK.iOS {
             );
 
             Action performCheckout = () => {
-                CheckoutWithTokenizedPayment(CurrentCheckout ,tokenizedPaymentInput, (ApplePayEventResponse errorResponse) => {
+                CheckoutWithTokenizedPayment(tokenizedPaymentInput, (ApplePayEventResponse errorResponse) => {
                     if (errorResponse == null) {
                         message.Respond((new ApplePayEventResponse(ApplePayAuthorizationStatus.Success)).ToJsonString());
                     } else {
@@ -136,7 +136,7 @@ namespace <%= namespace %>.SDK.iOS {
             });
         }
 
-        private void CheckoutWithTokenizedPayment(Checkout checkout, TokenizedPaymentInput tokenizedPaymentInput, ApplePayEventHandlerCompletion callback) {
+        private void CheckoutWithTokenizedPayment(TokenizedPaymentInput tokenizedPaymentInput, ApplePayEventHandlerCompletion callback) {
 
             CheckoutMutator.CheckoutWithTokenizedPayment(CurrentCheckout, tokenizedPaymentInput, (ShopifyError error) => {
                 if (error == null) {

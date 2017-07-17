@@ -56,7 +56,7 @@ namespace <%= namespace %> {
 
         private IWebCheckout WebCheckout;
         private INativeCheckout NativeCheckout;
-        private CheckoutMutator CheckoutMutator;
+        private CheckoutMutator Mutator;
 
         /// <summary>
         /// Constructs a new cart using a <see ref="ShopifyClient">ShopifyClient </see>. Typically, carts won't be
@@ -75,11 +75,11 @@ namespace <%= namespace %> {
         public Cart(ShopifyClient client) {
             _LineItems = new CartLineItems(OnDeleteLineItem);
 
-            CheckoutMutator = new CheckoutMutator(client, UpdateState);
+            Mutator = new CheckoutMutator(client, UpdateState);
 
             #if UNITY_IOS
             WebCheckout = new iOSWebCheckout(this, client);
-            NativeCheckout = new iOSNativeCheckout(CheckoutMutator, _UserErrors);
+            NativeCheckout = new iOSNativeCheckout(Mutator, _UserErrors);
             #endif
         }
 
@@ -164,7 +164,7 @@ namespace <%= namespace %> {
 
         private void CreateCheckout(CompletionCallback callback) {
             List<CheckoutLineItemInput> newLineItemInput = CartLineItems.ConvertToCheckoutLineItemInput(LineItems.All());
-            CheckoutMutator.CreateCheckout(
+            Mutator.CreateCheckout(
                 items: newLineItemInput,
                 callback: callback
             );
@@ -177,12 +177,15 @@ namespace <%= namespace %> {
 
             List<CheckoutLineItemInput> toAdd = CartLineItems.ConvertToCheckoutLineItemInput(LineItems.All());
 
-            CheckoutMutator.UpdateItems(
+            Mutator.UpdateItems(
                 checkout: CurrentCheckout,
                 lineItemsToAdd: toAdd,
                 lineItemsToRemove: toRemove,
                 callback: (e) => {
-                    DeletedLineItems.Clear();
+                    // Only clear items if we didn't receive an error.
+                    if (e == null) {
+                        DeletedLineItems.Clear();
+                    }
                     callback(e);
                 }
             );

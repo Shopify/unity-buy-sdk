@@ -117,7 +117,7 @@ namespace <%= namespace %>.SDK {
                 HandleCheckoutMutation(
                     response.checkoutEmailUpdate().checkout(),
                     response.checkoutEmailUpdate().userErrors(),
-                    CheckoutPoller.PollCheckoutAvailableShippingRatesReady,
+                    CheckoutPoller.PollCheckoutReady,
                     callback
                 ); 
             });
