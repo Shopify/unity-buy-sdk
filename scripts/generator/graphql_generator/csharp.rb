@@ -88,6 +88,8 @@ module GraphQLGenerator
         ShopifyBuy
         Cart
         Cart.Poll
+        Editor/ShopifyOnboardingPanel
+        Editor/ShopifyEditorStyleSettings
         SDK/Arguments
         SDK/InputBase
         SDK/InputValueToString
@@ -141,6 +143,7 @@ module GraphQLGenerator
         erb = CSharp::erb_for(File.expand_path("../csharp/#{class_file_name}.cs.erb", __FILE__))
         File.write("#{path}/#{class_file_name}.cs", reformat(erb.result(binding)))
       end
+
 
       # output type definitions
       schema.types.reject{ |type| type.builtin? || type.scalar? }.each do |type|

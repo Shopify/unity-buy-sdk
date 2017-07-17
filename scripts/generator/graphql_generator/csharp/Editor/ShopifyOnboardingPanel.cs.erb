@@ -1,0 +1,114 @@
+﻿using System.Net;
+
+namespace <%= namespace %>.SDK {
+    using System.Linq;
+    using UnityEditor;
+    using UnityEngine;
+
+    public class ShopifyOnboardingPanel : EditorWindow {
+        private const string HasSeenShopifyBuyPopupEditorPrefsKey = "has_seen_shopify_buy_popup";
+
+        [InitializeOnLoadMethod]
+        public static void OnLoad() {
+            if (PopupHasBeenShown()) return;
+            ShowWindow();
+        }
+
+        [MenuItem("Shopify/Help")]
+        public static void ShowWindow() {
+            var window = EditorWindow.GetWindow<ShopifyOnboardingPanel>();
+            window.ShowPopup();
+
+            EditorPrefs.SetBool(HasSeenShopifyBuyPopupEditorPrefsKey, true);
+        }
+
+        private static bool PopupHasBeenShown() {
+            return EditorPrefs.GetBool(HasSeenShopifyBuyPopupEditorPrefsKey, false);
+        }
+
+        private const string SettingsFileName = "Shopify Buy Visual GUI Settings";
+
+        private ShopifyEditorStyleSettings _settings;
+
+        private ShopifyEditorStyleSettings Settings {
+            get {
+                if (_settings != null) return _settings;
+                
+                Debug.Log(typeof(ShopifyEditorStyleSettings).FullName);
+                var assetGuids = AssetDatabase.FindAssets(SettingsFileName);
+
+                if (assetGuids.Length == 0)
+                    Debug.LogError("[Shopify Buy Internal Error] No GUI Settings object found.");
+
+                var settingsGuid = assetGuids.First();
+                var settingsAssetPath = AssetDatabase.GUIDToAssetPath(settingsGuid);
+                var settings = AssetDatabase.LoadAssetAtPath<ShopifyEditorStyleSettings>(settingsAssetPath);
+
+                _settings = settings;
+                return _settings;
+            }
+        }
+
+        private const float DesiredWindowWidth = 400f;
+        private const float DesiredWindowHeight = 600f;
+        private const float Margin = 20f;
+        private const float AccentBarHeight = 5f;
+
+        private void OnEnable() {
+            titleContent = new GUIContent("Shopify Buy SDK");
+            position = new Rect(position.xMin, position.yMin, DesiredWindowWidth, DesiredWindowHeight);
+        }
+
+        private void OnGUI() {
+            DrawRect(new Rect(0, 0, position.width, position.height), Settings.BackgroundColor);
+            DrawRect(new Rect(0, 0, position.width, 5f), Settings.AccentColor);
+            GUI.Label(
+                new Rect(
+                    position.width - Settings.BackgroundIllustration.width,
+                    position.height - Settings.BackgroundIllustration.height,
+                    Settings.BackgroundIllustration.width,
+                    Settings.BackgroundIllustration.height
+                ),
+                Settings.BackgroundIllustration
+            );
+
+            GUILayout.BeginArea(
+                new Rect(
+                    Margin,
+                    Margin + AccentBarHeight,
+                    Mathf.Min(position.width - Margin * 2, DesiredWindowWidth),
+                    position.height - Margin * 2
+                )
+            );
+
+            GUILayout.Label(Settings.LogoImage, GUILayout.Height(Settings.LogoImage.height));
+            GUILayout.Label("Welcome to the Shopify Unity Buy SDK", Settings.HeadingStyle);
+            GUILayout.Label(
+                "The Shopify Unity Buy SDK helps you connect your game to your store, Enabling you to sell merchandise directly in game.",
+                Settings.BodyStyle);
+
+            GUILayout.Label("Don't have a store?", Settings.SubheadingStyle);
+
+            if (GUILayout.Button("Sign up for a free trial today!", Settings.ButtonStyle))
+                Application.OpenURL("https://www.shopify.com");
+
+            GUILayout.Label("Want to learn more?", Settings.SubheadingStyle);
+
+            if (GUILayout.Button("Read the documentation", Settings.ButtonStyle))
+                Application.OpenURL("https://www.shopify.com");
+
+            GUILayout.EndArea();
+        }
+
+        private void DrawRect(Rect rect, Color color) {
+            var colorTex = new Texture2D(1, 1);
+            colorTex.SetPixel(0, 0, color);
+            colorTex.Apply();
+
+            var style = new GUIStyle();
+            style.normal.background = colorTex;
+
+            GUI.Label(rect, "", style);
+        }
+    }
+}
