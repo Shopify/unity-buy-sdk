@@ -2,6 +2,9 @@ namespace <%= namespace %>.SDK {
     using System.Collections.Generic;
     using MiniJSON;
 
+    /// <summary>
+    /// A class describing an error that has occurred within the Shopify Unity Buy SDK.
+    /// </summary>
     public class ShopifyError {
         public static explicit operator ShopifyError(TopLevelResponse response) {
             if (response.HTTPError != null) {
@@ -19,7 +22,11 @@ namespace <%= namespace %>.SDK {
             HTTP, GraphQL, UserError, NativePaymentProcessingError
         }
 
+        /// <summary>
+        /// Error type for determining what specific error was encountered.
+        /// </summary>
         public readonly ErrorType Type;
+
         public readonly string Description;
 
         public ShopifyError(ErrorType type, string description) {
