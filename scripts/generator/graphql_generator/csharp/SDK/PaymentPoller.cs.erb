@@ -1,0 +1,38 @@
+namespace <%= namespace %>.SDK {
+    using <%= namespace %>.GraphQL;
+
+    public delegate void PaymentPollFinishedHandler(Payment payment, ShopifyError error);
+
+    public class PaymentPoller {
+
+        private ShopifyClient Client;
+
+        public PaymentPoller(ShopifyClient client) {
+            Client = client;
+        }
+
+        // Polls a Payment node, till isReady returns True.
+        public void PollPaymentNode(string paymentId, PollUpdatedHandler isReady, PaymentPollFinishedHandler callback) {
+            QueryRootQuery query = new QueryRootQuery();
+            DefaultQueries.checkout.PaymentPoll(query, paymentId);
+
+            Client.PollQuery(isReady, query, (response, error) => {
+                if (error != null) {
+                    callback(null, error);
+                } else {
+                    Payment payment = (Payment)response.node();
+                    callback(payment, null);
+                }
+            });
+        }
+        // Convenience method to poll a Payment node with paymentId till its ready property is True
+        public void PollPaymentReady(string paymentId, PaymentPollFinishedHandler callback) {
+            PollUpdatedHandler isReady = (updatedQueryRoot) => {
+                var payment = (Payment)updatedQueryRoot.node();
+                return payment.ready();
+            };
+
+            PollPaymentNode(paymentId, isReady, callback);
+        }
+    }
+}

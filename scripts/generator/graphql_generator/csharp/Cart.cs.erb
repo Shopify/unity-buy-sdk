@@ -72,6 +72,9 @@ namespace <%= namespace %> {
         private IWebCheckout WebCheckout;
         private INativeCheckout NativeCheckout;
 
+        private CheckoutPoller CheckoutPoller;
+        private PaymentPoller PaymentPoller;
+
         /// <summary>
         /// Constructs a new cart using a <see ref="ShopifyClient">ShopifyClient </see>. Typically, carts won't be
         /// instantiated directly, but will rather be instatiated using <see ref="ShopifyClient.Cart">ShopifyBuy.Client().Cart() </see>.
@@ -89,6 +92,9 @@ namespace <%= namespace %> {
         public Cart(ShopifyClient client) {
             Client = client;
             _LineItems = new CartLineItems(OnDeleteLineItem);
+
+            CheckoutPoller = new CheckoutPoller(client, UpdateState);
+            PaymentPoller = new PaymentPoller(client);
 
             #if UNITY_IOS
             WebCheckout = new iOSWebCheckout(this, Client);
@@ -159,7 +165,7 @@ namespace <%= namespace %> {
                     if (CurrentCheckout.ready()) {
                         callback(null);
                     } else {
-                        PollCheckoutAndUpdate(PollCheckoutReady, callback);
+                        CheckoutPoller.PollCheckoutAndUpdate(CurrentCheckout.id(), CheckoutPoller.PollCheckoutReady, callback);
                     }
                 } else {
                     HandleUserError(callback);
@@ -204,7 +210,7 @@ namespace <%= namespace %> {
                         if (CurrentCheckout.ready()) {
                             callback(null);
                         } else {
-                            PollCheckoutAndUpdate(PollCheckoutAvailableShippingRatesReady, callback);
+                            CheckoutPoller.PollCheckoutAndUpdate(CurrentCheckout.id(), CheckoutPoller.PollCheckoutAvailableShippingRatesReady, callback);
                         }
                     } else {
                         HandleUserError(callback);
@@ -223,7 +229,7 @@ namespace <%= namespace %> {
                     callback(error);
                 } else {
                     if (UpdateState(response.checkoutShippingAddressUpdate().checkout(), response.checkoutShippingAddressUpdate().userErrors())) {
-                        PollCheckoutAndUpdate(PollCheckoutAvailableShippingRatesReady, callback);
+                        CheckoutPoller.PollCheckoutAndUpdate(CurrentCheckout.id(), CheckoutPoller.PollCheckoutAvailableShippingRatesReady, callback);
                     } else {
                         HandleUserError(callback);
                     }
@@ -252,7 +258,7 @@ namespace <%= namespace %> {
                     }
 
                     if (UpdateState(response.checkoutEmailUpdate().checkout(), userErrors)) {
-                        PollCheckoutAndUpdate(PollCheckoutReady, callback);
+                        CheckoutPoller.PollCheckoutAndUpdate(CurrentCheckout.id(), CheckoutPoller.PollCheckoutReady, callback);
                     } else {
                         HandleUserError(callback);
                     }
@@ -287,7 +293,7 @@ namespace <%= namespace %> {
                     if (CurrentCheckout.ready()) {
                         callback(null);
                     } else {
-                        PollCheckoutAndUpdate(PollCheckoutReady, callback);
+                        CheckoutPoller.PollCheckoutAndUpdate(CurrentCheckout.id(), CheckoutPoller.PollCheckoutReady, callback);
                     }
                 } else {
                     HandleUserError(callback);
@@ -297,7 +303,7 @@ namespace <%= namespace %> {
 
         public void CheckoutWithTokenizedPayment(TokenizedPaymentInput tokenizedPaymentInput, CompletionCallback callback) {
             Action<Payment> pollPayment = (payment) => {
-                PollPaymentReady(payment.id(), (Payment newPayment, ShopifyError error) => {
+                PaymentPoller.PollPaymentReady(payment.id(), (Payment newPayment, ShopifyError error) => {
                     if (error != null) {
                         callback(error);
                     } else {
@@ -339,7 +345,7 @@ namespace <%= namespace %> {
             if (CurrentCheckout.ready()){
                 checkoutWithTokenizedPayment();
             } else {
-                PollCheckoutReady((Checkout checkout, ShopifyError error) => {
+                CheckoutPoller.PollCheckoutReady(CurrentCheckout.id(), (Checkout checkout, ShopifyError error) => {
                     if (error != null) {
                         callback(error);
                     } else {
@@ -373,7 +379,7 @@ namespace <%= namespace %> {
                     if (CurrentCheckout.ready()) {
                         callback(null);
                     } else {
-                        PollCheckoutAndUpdate(PollCheckoutReady, callback);
+                        CheckoutPoller.PollCheckoutAndUpdate(CurrentCheckout.id(), CheckoutPoller.PollCheckoutReady, callback);
                     }
                 } else {
                     HandleUserError(callback);
