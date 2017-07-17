@@ -41,7 +41,7 @@ struct Models {
     static let city         = "Toronto"
     static let country      = "Canada"
     static let province     = "ON"
-    static let zip          = "A1B 2C3"
+    static let zip          = "M5V 2J4"
     
     static let merchantId   = "com.merchant.id"
     static let countryCode  = "US"
@@ -60,6 +60,16 @@ struct Models {
     // ----------------------------------
     //  MARK: - CNPostalAddress -
     //
+    
+    static func createPartialPostalAddress() -> CNPostalAddress {
+        let postalAddress        = CNMutablePostalAddress()
+        postalAddress.city       = city
+        postalAddress.country    = country
+        postalAddress.postalCode = zip
+        postalAddress.state      = province
+        return postalAddress
+    }
+    
     static func createPostalAddress() -> CNPostalAddress {
         let postalAddress        = CNMutablePostalAddress()
         postalAddress.street     = address1
@@ -107,6 +117,10 @@ struct Models {
     
     static func createPaymentToken() -> PKPaymentToken {
         return MockPaymentToken(paymentMethod: Models.createPaymentMethod() as! MockPaymentMethod)
+    }
+    
+    static func createSimulatorPaymentToken() -> PKPaymentToken {
+        return MockPaymentToken(paymentMethod: Models.createPaymentMethod() as! MockPaymentMethod, forSimulator: true)
     }
     
     static func createPayment() -> PKPayment {
