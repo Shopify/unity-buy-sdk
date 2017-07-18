@@ -17,7 +17,7 @@ namespace <%= namespace %>.SDK.iOS {
         public void UpdateSummaryItemsForShippingIdentifier(string serializedMessage) {
             var message = NativeMessage.CreateFromJSON(serializedMessage);
 
-            CurrentCart.SetShippingLine(message.Content, (ShopifyError error) => {
+            CheckoutMutator.SetShippingLine(CurrentCheckout, message.Content, (ShopifyError error) => {
                 if (error == null) {
                     var summaryItems = GetSummaryItems();
                     message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, summaryItems).ToJsonString());
@@ -41,8 +41,7 @@ namespace <%= namespace %>.SDK.iOS {
 
                 // Check to see if this is a recoverable user error
                 if (error.Type == ShopifyError.ErrorType.UserError) {
-                    var userErrors = CurrentCart.UserErrors;
-                    var status = GetAuthorizationStatusFromPreliminaryShippingUserErrors(userErrors);
+                    var status = GetAuthorizationStatusFromPreliminaryShippingUserErrors(UserErrorsRef);
 
                     if (status == ApplePayAuthorizationStatus.InvalidShippingPostalAddress) {
                         response = new ApplePayEventResponse(status, GetSummaryItems());
@@ -52,7 +51,7 @@ namespace <%= namespace %>.SDK.iOS {
                 message.Respond(response.ToJsonString());
             };
 
-            CurrentCart.SetShippingAddress(mailingAddressInput, (ShopifyError error) => {
+            CheckoutMutator.SetShippingAddress(CurrentCheckout, mailingAddressInput, (ShopifyError error) => {
                 if (error == null) {
                     respondWithSuccess();
                 } else {
@@ -62,14 +61,19 @@ namespace <%= namespace %>.SDK.iOS {
         }
 
         public void FetchApplePayCheckoutStatusForToken(string serializedMessage) {
-            var checkout = CurrentCart.CurrentCheckout;
             var message = NativeMessage.CreateFromJSON(serializedMessage);
-            var amount  = checkout.totalPrice();
+            var amount  = CurrentCheckout.totalPrice();
             var payment = new ApplePayPayment(message.Content);
-            var tokenizedPaymentInput = new TokenizedPaymentInput(amount: amount, billingAddress: payment.BillingAddress, idempotencyKey: payment.TransactionIdentifier, paymentData: payment.PaymentData, type: "apple_pay");
+            var tokenizedPaymentInput = new TokenizedPaymentInput(
+                amount: amount, 
+                billingAddress: payment.BillingAddress, 
+                idempotencyKey: payment.TransactionIdentifier, 
+                paymentData: payment.PaymentData, 
+                type: "apple_pay"
+            );
 
             Action performCheckout = () => {
-                CheckoutWithTokenizedPayment(tokenizedPaymentInput, checkout, (ApplePayEventResponse errorResponse) => {
+                CheckoutWithTokenizedPayment(tokenizedPaymentInput, (ApplePayEventResponse errorResponse) => {
                     if (errorResponse == null) {
                         message.Respond((new ApplePayEventResponse(ApplePayAuthorizationStatus.Success)).ToJsonString());
                     } else {
@@ -78,7 +82,7 @@ namespace <%= namespace %>.SDK.iOS {
                 });
             };
 
-            SetFinalCheckoutFieldsForPayment(payment, checkout, (ApplePayEventResponse errorResponse) => {
+            SetFinalCheckoutFieldsForPayment(payment, (ApplePayEventResponse errorResponse) => {
                 if (errorResponse == null) {
                     performCheckout();
                 } else {
@@ -104,14 +108,13 @@ namespace <%= namespace %>.SDK.iOS {
             }
         }
 
-        private void SetFinalCheckoutFieldsForPayment(ApplePayPayment payment, Checkout checkout, ApplePayEventHandlerCompletion callback) {
-
+        private void SetFinalCheckoutFieldsForPayment(ApplePayPayment payment, ApplePayEventHandlerCompletion callback) {
             ShippingFields? shippingFields = null;
-            if (checkout.requiresShipping()) {
+            if (CurrentCheckout.requiresShipping()) {
                 shippingFields = new ShippingFields(payment.ShippingAddress, payment.ShippingIdentifier);
             }
 
-            CurrentCart.SetFinalCheckoutFields(payment.Email, shippingFields, (ShopifyError error) => {
+            CheckoutMutator.SetFinalCheckoutFields(CurrentCheckout, payment.Email, shippingFields, (ShopifyError error) => {
                 if (error == null) {
                     callback(null);
                 } else {
@@ -119,8 +122,7 @@ namespace <%= namespace %>.SDK.iOS {
 
                     // Check to see if this is a recoverable user error
                     if (error.Type == ShopifyError.ErrorType.UserError) {
-                        var userErrors = CurrentCart.UserErrors;
-                        var status = GetAuthorizationStatusFromShippingUserErrors(userErrors);
+                        var status = GetAuthorizationStatusFromShippingUserErrors(UserErrorsRef);
 
                         if (status == ApplePayAuthorizationStatus.InvalidShippingPostalAddress) {
                             response = new ApplePayEventResponse(status, GetSummaryItems());
@@ -134,9 +136,9 @@ namespace <%= namespace %>.SDK.iOS {
             });
         }
 
-        private void CheckoutWithTokenizedPayment(TokenizedPaymentInput tokenizedPaymentInput, Checkout checkout, ApplePayEventHandlerCompletion callback) {
+        private void CheckoutWithTokenizedPayment(TokenizedPaymentInput tokenizedPaymentInput, ApplePayEventHandlerCompletion callback) {
 
-            CurrentCart.CheckoutWithTokenizedPayment(tokenizedPaymentInput, (ShopifyError error) => {
+            CheckoutMutator.CheckoutWithTokenizedPayment(CurrentCheckout, tokenizedPaymentInput, (ShopifyError error) => {
                 if (error == null) {
                     callback(null);
                 } else {
@@ -144,8 +146,7 @@ namespace <%= namespace %>.SDK.iOS {
 
                     // Check to see if this is a recoverable user error
                     if (error.Type == ShopifyError.ErrorType.UserError) {
-                        var userErrors = CurrentCart.UserErrors;
-                        var status = GetAuthorizationStatusFromCheckoutUserErrors(userErrors);
+                        var status = GetAuthorizationStatusFromCheckoutUserErrors(UserErrorsRef);
 
                         if (status != ApplePayAuthorizationStatus.Failure) {
                             response = new ApplePayEventResponse(status, GetSummaryItems(), GetShippingMethods());

@@ -26,9 +26,13 @@ namespace <%= namespace %>.SDK {
 
     public delegate bool PollUpdatedHandler(QueryRoot updatedQueryRoot);
 
+    public delegate void GetWebCheckoutLinkSuccess(string url);
+    public delegate void GetWebCheckoutLinkFailure(ShopifyError error);
+
     public delegate void CheckoutSuccessCallback();
     public delegate void CheckoutFailureCallback(ShopifyError error);
     public delegate void CheckoutCancelCallback();
 
     public delegate void CompletionCallback(ShopifyError error);
+    public delegate void CheckoutMutationCallback(Checkout checkout, List<UserError> userErrors);
 }

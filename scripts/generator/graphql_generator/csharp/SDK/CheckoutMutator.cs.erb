@@ -1,0 +1,268 @@
+namespace <%= namespace %>.SDK {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using <%= namespace %>;
+    using <%= namespace %>.SDK;
+    using <%= namespace %>.MiniJSON;
+    using <%= namespace %>.GraphQL;
+
+    /// <summary>
+    /// Wraps around a shipping address and shipping identifier. Used for sending the final checkout fields in one GraphQL query.
+    /// </summary>
+    public struct ShippingFields {
+        public MailingAddressInput ShippingAddress;
+        public string ShippingIdentifier; 
+
+        public ShippingFields(MailingAddressInput shippingAddress, string shippingIdentifier) {
+            ShippingIdentifier = shippingIdentifier;
+            ShippingAddress = shippingAddress;
+        }
+    }
+
+    public class CheckoutMutator {
+        private ShopifyClient Client;
+
+        /// <summary>
+        /// Callback that is invoked whenever the mutation has completed on the server.
+        /// </summary>
+        private CheckoutMutationCallback DidMutateCheckout;
+        private CheckoutPoller CheckoutPoller;
+        private PaymentPoller  PaymentPoller;
+
+        public CheckoutMutator(ShopifyClient client, CheckoutMutationCallback mutationCallback) {
+            Client = client;
+            DidMutateCheckout = mutationCallback;
+            CheckoutPoller = new CheckoutPoller(client, mutationCallback);
+            PaymentPoller = new PaymentPoller(client);
+        }
+
+        public void CreateCheckout(List<CheckoutLineItemInput> items, CompletionCallback callback) {
+            var query = new MutationQuery();
+            DefaultQueries.checkout.Create(query, items);
+
+            Client.Mutation(query, (Mutation response, ShopifyError error) => {
+                if (error != null) {
+                    callback(error);
+                    return;
+                }
+
+                HandleCheckoutMutation(
+                    response.checkoutCreate().checkout(),
+                    response.checkoutCreate().userErrors(),
+                    CheckoutPoller.PollCheckoutReady,
+                    callback
+                );
+            });
+        }
+
+        public void UpdateItems(
+            Checkout checkout, 
+            List<CheckoutLineItemInput> lineItemsToAdd, 
+            List<string> lineItemsToRemove,
+            CompletionCallback callback
+        ) {
+            MutationQuery query = new MutationQuery();
+            DefaultQueries.checkout.LineItemsRemove(query, checkout.id(), lineItemsToRemove);
+            DefaultQueries.checkout.LineItemsAdd(query, checkout.id(), lineItemsToAdd);
+
+            Client.Mutation(query, (Mutation response, ShopifyError error) => {
+                if (error != null) {
+                    callback(error);
+                    return;
+                }
+
+                HandleCheckoutMutation(
+                    response.checkoutLineItemsAdd().checkout(),
+                    response.checkoutLineItemsAdd().userErrors(),
+                    CheckoutPoller.PollCheckoutReady,
+                    callback
+                );
+            });
+        }
+
+        public void SetShippingLine(
+            Checkout checkout,
+            string shippingRateHandle, 
+            CompletionCallback callback
+        ) {
+            MutationQuery query = new MutationQuery();
+            DefaultQueries.checkout.ShippingLineUpdate(query, checkout.id(), shippingRateHandle);
+
+            Client.Mutation(query, (Mutation response, ShopifyError error) => {
+                if (error != null) {
+                    callback(error);
+                    return;
+                }
+
+                HandleCheckoutMutation(
+                    response.checkoutShippingLineUpdate().checkout(),
+                    response.checkoutShippingLineUpdate().userErrors(),
+                    CheckoutPoller.PollCheckoutReady,
+                    callback 
+                );
+            });
+        }
+
+        public void SetEmailAddress(Checkout checkout, string email, CompletionCallback callback) {
+            MutationQuery query = new MutationQuery();
+            DefaultQueries.checkout.EmailUpdate(query, checkout.id(), email);
+
+            Client.Mutation(query, (Mutation response, ShopifyError error) => {
+                if (error != null) {
+                    callback(error);
+                    return;
+                }
+
+                HandleCheckoutMutation(
+                    response.checkoutEmailUpdate().checkout(),
+                    response.checkoutEmailUpdate().userErrors(),
+                    CheckoutPoller.PollCheckoutReady,
+                    callback
+                ); 
+            });
+        }
+
+        public void SetShippingAddress(
+            Checkout checkout,
+            MailingAddressInput mailingAddressInput, 
+            CompletionCallback callback
+        ) {
+            MutationQuery query = new MutationQuery();
+            DefaultQueries.checkout.ShippingAddressUpdate(query, checkout.id(), mailingAddressInput);
+
+            Client.Mutation(query, (Mutation response, ShopifyError error) => {
+                if (error != null) {
+                    callback(error);
+                    return;
+                }
+
+                HandleCheckoutMutation(
+                    response.checkoutShippingAddressUpdate().checkout(),
+                    response.checkoutShippingAddressUpdate().userErrors(),
+                    CheckoutPoller.PollCheckoutAvailableShippingRatesReady,
+                    callback
+                ); 
+            });
+        }
+
+        public void SetFinalCheckoutFields(
+            Checkout checkout,
+            string email, 
+            ShippingFields? shippingFields, 
+            CompletionCallback callback
+        ) {
+            MutationQuery query = new MutationQuery();
+            DefaultQueries.checkout.EmailUpdate(query, checkout.id(), email);
+
+            if (shippingFields.HasValue) {
+                DefaultQueries.checkout.ShippingAddressUpdate(query, checkout.id(), shippingFields.Value.ShippingAddress);
+                DefaultQueries.checkout.ShippingLineUpdate(query, checkout.id(), shippingFields.Value.ShippingIdentifier);
+            }
+
+            Client.Mutation(query, (Mutation response, ShopifyError error) => {
+                if (error != null) {
+                    callback(error);
+                    return;
+                }
+
+                HandleCheckoutMutation(
+                    response.checkoutEmailUpdate().checkout(),
+                    response.checkoutShippingAddressUpdate().userErrors(),
+                    CheckoutPoller.PollCheckoutReady,
+                    callback
+                ); 
+            });
+        }
+
+        public void CheckoutWithTokenizedPayment(
+            Checkout checkout,
+            TokenizedPaymentInput tokenizedPaymentInput, 
+            CompletionCallback callback
+        ) {
+            Action<Payment> pollPayment = (payment) => {
+                PaymentPoller.PollPaymentReady(payment.id(), (Payment newPayment, ShopifyError error) => {
+                    if (error != null) {
+                        callback(error);
+                        return;
+                    } 
+
+                    DidMutateCheckout(payment.checkout(), null);
+                    callback(null);
+                });
+            };
+
+            Action checkoutWithTokenizedPayment = () => {
+                MutationQuery query = new MutationQuery();
+                DefaultQueries.checkout.CheckoutCompleteWithTokenizedPayment(query, checkout.id(), tokenizedPaymentInput);
+
+                Client.Mutation(query, (Mutation response, ShopifyError error) => {
+                    if (error != null) {
+                        callback(error);
+                        return;
+                    } 
+
+                    var responseNode = response.checkoutCompleteWithTokenizedPayment();
+                    var payment = responseNode.payment();
+                    var userErrors = responseNode.userErrors();
+
+                    DidMutateCheckout(responseNode.checkout(), userErrors);
+
+                    if (userErrors.Count > 0) {
+                        HandleUserError(callback);
+                        return;
+                    }
+
+                    if (payment.ready()) {
+                        callback(null);
+                    } else {
+                        pollPayment(payment);
+                    }
+                });
+            };
+
+            // Ensure we can checkout first
+            if (checkout.ready()){
+                checkoutWithTokenizedPayment();
+                return;
+            } 
+
+            CheckoutPoller.PollCheckoutReady(checkout.id(), (Checkout polledCheckout, ShopifyError error) => {
+                if (error != null) {
+                    callback(error);
+                    return;
+                } 
+
+                checkoutWithTokenizedPayment();
+            });
+        }
+
+        private void HandleCheckoutMutation(
+            Checkout newCheckout, 
+            List<UserError> userErrors, 
+            CheckoutPoll pollFinishedHandler,
+            CompletionCallback callback
+        ) {
+            DidMutateCheckout(newCheckout, userErrors);
+
+            if (userErrors.Count > 0) {
+                HandleUserError(callback);
+                return;
+            } 
+
+            if (newCheckout.ready()) {
+                callback(null);
+            } else {
+                CheckoutPoller.PollCheckoutAndUpdate(newCheckout.id(), pollFinishedHandler, callback);
+            }
+        }
+
+        private void HandleUserError(CompletionCallback callback) {
+            ShopifyError error = new ShopifyError(
+                ShopifyError.ErrorType.UserError,
+                "There were issues with some of the fields sent. See `cart.UserErrors`"
+            );
+            callback(error);
+        }
+    }
+}
