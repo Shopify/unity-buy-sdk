@@ -68,7 +68,7 @@ namespace <%= namespace %>.SDK.iOS {
         /// <param name="failure">Delegate method that will be notified upon a failure during the checkout process</param>
         /// <param name="cancelled">Delegate method that will be notified upon a cancellation during the checkout process</param>
         public void Checkout(string key, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
-
+            #if !SHOPIFY_MONO_UNIT_TEST
             OnSuccess = success;
             OnCancelled = cancelled;
             OnFailure = failure;
@@ -91,6 +91,7 @@ namespace <%= namespace %>.SDK.iOS {
                 var error = new ShopifyError(ShopifyError.ErrorType.NativePaymentProcessingError, "Unable to create an Apple Pay payment request. Please check that your merchant ID is valid.");
                 OnFailure(error);
             }
+            #endif
         }
 
         private List<SummaryItem> GetSummaryItems() {
