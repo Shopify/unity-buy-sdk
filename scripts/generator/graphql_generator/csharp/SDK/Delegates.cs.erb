@@ -22,6 +22,8 @@ namespace <%= namespace %>.SDK {
     public delegate void ResponseQueryHandler(<%= schema.query_root_name %> response, ShopifyError error);
     public delegate void ResponseMutationHandler(<%= schema.mutation_root_name %> response, ShopifyError error);
 
+    public delegate void PaymentSettingsHandler(PaymentSettings paymentSettings, ShopifyError error)
+
     public delegate void OnCartLineItemChange();
 
     public delegate bool PollUpdatedHandler(QueryRoot updatedQueryRoot);
