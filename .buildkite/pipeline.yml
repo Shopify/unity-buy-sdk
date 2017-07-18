@@ -1,17 +1,8 @@
 steps:
   -
-    name: Test Unity
-    command: ./scripts/prepare-ci.sh && ./scripts/test_unity.sh
-    timeout_in_minutes: 20
-    agents:
-      macstadium-scheduler: true
-    env:
-      TARGET_IMAGE: macos-xcode833
-
-  -
-    name: Test iOS
-    command: ./scripts/prepare-ci.sh && ./scripts/test_unity.sh
-    timeout_in_minutes: 20
+    name: Unity & iOS Tests
+    command: ./scripts/ci.sh
+    timeout_in_minutes: 30
     agents:
       macstadium-scheduler: true
     env:
