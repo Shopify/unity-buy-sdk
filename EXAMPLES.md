@@ -334,6 +334,13 @@ ShopifyBuy.Client().products((products, error) => {
 
 ```
 
+**Enabling Apple Pay on your Store**
+
+To enable Apple Pay for your store through an app, follow the following steps:
+
+1. Add the [Mobile App sales channel](https://help.shopify.com/api/sdks/custom-storefront/mobile-buy-sdk/add-mobile-app-sales-channel) in your Shopify admin.
+2. Enable Apple Pay in the Mobile App settings page.
+
 **Notes**
 
 `CheckoutWithNativePay` will throw an exception if the device is unable to make a payment through Apple Pay. So it is essential that `CanCheckoutWithNativePay` is used.
