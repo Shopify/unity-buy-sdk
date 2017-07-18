@@ -96,10 +96,7 @@ namespace <%= namespace %> {
             #endif
         }
 
-        public delegate void GetWebCheckoutLinkSuccess(string url);
-        public delegate void GetWebCheckoutLinkFailure(ShopifyError error);
-
-        public void GetWebCheckoutLink(GetWebCheckoutLinkSuccess success, GetWebCheckoutLinkFailure failure) {
+        public void GetWebCheckoutLink(GetWebCheckoutLinkSuccessCallback success, GetWebCheckoutLinkFailureCallback failure) {
             CheckoutSave(error => {
                 if (error != null) {
                     failure(error);
