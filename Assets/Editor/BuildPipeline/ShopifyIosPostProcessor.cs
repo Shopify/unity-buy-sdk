@@ -16,6 +16,7 @@ namespace Shopify.BuildPipeline {
             SetBuildProperties(project);
             SetCorrectTestsTarget(project);
             project.RemoveFileFromBuild(project.TestTargetGuid, project.FindFileGuidByProjectPath("Unity-iPhone Tests/Unity_iPhone_Tests.m"));
+            SetSwiftInterfaceHeader(project);
             project.Save();
         }
 
@@ -45,6 +46,26 @@ namespace Shopify.BuildPipeline {
 
             if (isBelowMinimumTarget) {
                 project.SetBuildProperty(project.GetAllTargetGuids(), ExtendedPBXProject.DeploymentTarget, "9.0");
+            }
+        }
+
+        private static void SetSwiftInterfaceHeader(ExtendedPBXProject project) {
+            var bundleIdentifier = PlayerSettings.iPhoneBundleIdentifier;
+
+            char[] separator = {'.'};
+            var keywords = bundleIdentifier.Split(separator);
+            var productName = keywords[keywords.Length - 1];
+
+            string swiftInterfaceHeaderPath = Path.Combine(project.BuildPath, "Libraries/Plugins/iOS/Shopify/SwiftInterfaceHeader.h");
+
+            if (File.Exists(swiftInterfaceHeaderPath)) {
+                string[] lines = File.ReadAllLines(swiftInterfaceHeaderPath, System.Text.Encoding.UTF8);
+
+                if (lines.Length != 0) {
+                    lines[0] = "#import \"" + productName + "-Swift.h\"";
+                }
+
+                File.WriteAllLines (swiftInterfaceHeaderPath, lines);
             }
         }
 
