@@ -7,6 +7,7 @@ UNITY_PKG_URL=${UNITY_PKG_URL:-http://netstorage.unity3d.com/unity/3829d7f588f3/
 IOS_PKG_LOCATION=${IOS_PKG_LOCATION:-$UNITY_DOWNLOAD_DIR/Unity-iOS.pkg}
 IOS_PKG_URL=${IOS_PKG_URL:-http://netstorage.unity3d.com/unity/3829d7f588f3/MacEditorTargetInstaller/UnitySetup-iOS-Support-for-Editor-5.5.2f1.pkg}
 
+rm -f "$UNITY_PKG_LOCATION"
 if [ ! -e "$UNITY_PKG_LOCATION" ]; then
     out "Downloading Unity to $UNITY_DOWNLOAD_DIR"
     out "Downloading from {$UNITY_PKG_URL}"
