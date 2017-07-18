@@ -15,6 +15,7 @@ if [ ! -e "$UNITY_PKG_LOCATION" ]; then
     out "Finished Downloading Unity"
 else
     out "$UNITY_PKG_LOCATION already exists"
+    ls /Users/shopify/unity-buy-sdk/unity-buy-sdk/unity
 fi
 
 if [ ! -e "$IOS_PKG_LOCATION" ]; then
