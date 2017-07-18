@@ -1,9 +1,13 @@
 #if UNITY_IOS
 namespace <%= namespace %>.SDK.iOS {
-    using UnityEngine;
+    using System;
     using System.Runtime.InteropServices;
     using <%= namespace %>.SDK;
     using <%= namespace %>.GraphQL;
+
+    #if !SHOPIFY_MONO_UNIT_TEST
+    using UnityEngine;
+    #endif
 
     class iOSWebCheckout: IWebCheckout {
         private static iOSWebViewMessageReceiver _messageReceiver;
@@ -20,10 +24,13 @@ namespace <%= namespace %>.SDK.iOS {
         private static extern void _CheckoutWithWebView(string unityDelegateObjectName, string checkoutURL);
 
         public void Checkout(string checkoutURL, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
+            #if !SHOPIFY_MONO_UNIT_TEST
             SetupNativeMessageReceiver(success, cancelled, failure);
             _CheckoutWithWebView(GlobalGameObject.Name, checkoutURL);
+            #endif
         }
 
+        #if !SHOPIFY_MONO_UNIT_TEST
         private void SetupNativeMessageReceiver(CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
             if (_messageReceiver == null) {
                 _messageReceiver = GlobalGameObject.AddComponent<iOSWebViewMessageReceiver>();
@@ -36,40 +43,7 @@ namespace <%= namespace %>.SDK.iOS {
             _messageReceiver.OnCancelled = cancelled;
             _messageReceiver.OnFailure = failure;
         }
-    }
-
-    public class iOSWebViewMessageReceiver: MonoBehaviour {
-        public ShopifyClient Client;
-        public Checkout CurrentCheckout;
-
-        public CheckoutSuccessCallback OnSuccess;
-        public CheckoutCancelCallback OnCancelled;
-        public CheckoutFailureCallback OnFailure;
-
-        public void OnNativeMessage(string jsonMessage) {
-            var message = NativeMessage.CreateFromJSON(jsonMessage);
-            if (message.Content == "dismissed") {
-                var query = new QueryRootQuery();
-                query.node(
-                    buildQuery: n => n
-                        .onCheckout(c => c.completedAt()),
-                    id: CurrentCheckout.id()
-                );
-                
-                Client.Query(query, (response, error) => {
-                    if (error != null) {
-                        OnFailure(error);
-                    } else {
-                        var checkout = (Checkout) response.node();
-                        if (checkout.completedAt() != null) {
-                            OnSuccess();
-                        } else {
-                            OnCancelled();
-                        }
-                    } 
-                });
-            }
-        }
+        #endif
     }
 }
 #endif
