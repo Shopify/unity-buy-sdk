@@ -82,7 +82,7 @@ namespace <%= namespace %> {
                         if (CurrentCheckout.ready()) {
                             callback(null);
                         } else {
-                            PollCheckoutAndUpdate(PollCheckoutAvailableShippingRatesReady, callback);
+                            PollCheckoutAndUpdate(PollCheckoutReady, callback);
                         }
                     } else {
                         HandleUserError(callback);
