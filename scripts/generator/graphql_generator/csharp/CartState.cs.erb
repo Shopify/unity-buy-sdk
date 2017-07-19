@@ -46,6 +46,13 @@ namespace <%= namespace %> {
             _LineItems = new CartLineItems(OnDeleteLineItem);
         }
 
+        public void Reset() {
+            _LineItems = new CartLineItems(OnDeleteLineItem);
+            _UserErrors = null;
+            DeletedLineItems.Clear();
+            CurrentCheckout = null;
+        }
+
         public void SetShippingLine(string shippingRateHandle, CompletionCallback callback) {
             MutationQuery query = new MutationQuery();
 

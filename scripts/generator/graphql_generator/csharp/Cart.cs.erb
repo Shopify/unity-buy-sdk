@@ -100,13 +100,10 @@ namespace <%= namespace %> {
         }
 
         /// <summary>
-        /// Resets the cart by removing all line items and resets all internal state. 
+        /// Resets the cart by removing all line items and resets all internal state.
         /// </summary>
         public void Reset() {
-            _LineItems = new CartLineItems(OnDeleteLineItem);
-            _UserErrors = null;
-            DeletedLineItems.Clear();
-            CurrentCheckout = null;
+            State.Reset();
         }
 
         public void GetWebCheckoutLink(GetWebCheckoutLinkSuccessCallback success, GetWebCheckoutLinkFailureCallback failure) {
