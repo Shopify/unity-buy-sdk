@@ -27,6 +27,41 @@ namespace Shopify.Tests
             Assert.IsNotNull(ShopifyBuy.Client().Cart(cartWithId), "created a cart with id");
             Assert.AreNotEqual(ShopifyBuy.Client().Cart(), ShopifyBuy.Client().Cart(cartWithId));
         }
+
+        [Test]
+        public void TestReset() {
+            ShopifyBuy.Init(new MockLoader());
+
+            Cart cart = ShopifyBuy.Client().Cart();
+            
+            // Add something to the cart.
+            cart.LineItems.AddOrUpdate("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTE1NQ==", 33);
+            cart.LineItems.AddOrUpdate("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTM0Nw==", 2);
+
+            Assert.AreEqual(2, cart.LineItems.All().Count, "cart has 2 line items");
+
+            // Start a checkout.
+            string responseURL = null;
+            ShopifyError error = null;
+            cart.GetWebCheckoutLink(
+                success: (url) => {
+                    responseURL = url;
+                },
+                failure: (shopError) => {
+                    error = shopError;
+                }
+            );
+
+            Assert.IsNotNull(responseURL, "Was able to generate a web checkout url");
+            Assert.IsNull(error, "No error from getting web checkout");
+            Assert.IsNotNull(cart.CurrentCheckout, "Cart has a checkout");
+
+            cart.Reset();
+
+            // Verify that we cleared out the line items and checkout.
+            Assert.AreEqual(0, cart.LineItems.All().Count, "has 0 items in cart");
+            Assert.IsNull(cart.CurrentCheckout, "cart has a null Checkout");
+        }
         
         [Test]
         public void TestAddRemoveLineItems() {
