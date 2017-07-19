@@ -7,3 +7,9 @@ steps:
       macstadium-scheduler: true
     env:
       TARGET_IMAGE: macos-xcode833
+    plugins:
+      shopify/cache:
+        save: true
+        save_branch: master buildkite-*
+        directories:
+          - './unity'
