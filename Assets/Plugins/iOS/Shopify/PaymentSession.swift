@@ -91,7 +91,7 @@ import PassKit
         request.currencyCode                  = currencyCode
         request.merchantIdentifier            = merchantId
         request.requiredBillingAddressFields  = .all
-        request.merchantCapabilities          = .capability3DS
+        request.merchantCapabilities          = PaymentSession.capabilities
         request.supportedNetworks             = PaymentSession.supportedNetworks
         request.requiredShippingAddressFields = requiringShippingAddressFields ?
             .all : PKAddressField.init(rawValue: PKAddressField.email.rawValue | PKAddressField.phone.rawValue)
@@ -122,16 +122,17 @@ import PassKit
 //
 extension PaymentSession {
     
-    static let supportedNetworks: [PKPaymentNetwork] = [.amex, .masterCard, .visa, .discover]
+    static let supportedNetworks: [PKPaymentNetwork] = [.amex, .masterCard, .visa]
+    static let capabilities: PKMerchantCapability    = [.capability3DS, .capabilityDebit, .capabilityCredit]
     
     static func canMakePayments() -> Bool {
         return PKPaymentAuthorizationViewController.canMakePayments() &&
-            PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: PaymentSession.supportedNetworks)
+            PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: PaymentSession.supportedNetworks, capabilities: capabilities)
     }
     
     static func canShowSetup() -> Bool {
         return PKPaymentAuthorizationViewController.canMakePayments() &&
-            !PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: PaymentSession.supportedNetworks)
+            !PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: PaymentSession.supportedNetworks, capabilities: capabilities)
     }
     
     static func showSetup() {

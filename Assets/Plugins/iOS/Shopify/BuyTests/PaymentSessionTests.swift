@@ -55,7 +55,7 @@ class PaymentSessionTests: XCTestCase {
         XCTAssertEqual(session.request.supportedNetworks,    PaymentSession.supportedNetworks)
         XCTAssertEqual(session.request.paymentSummaryItems,  summaryItems)
         XCTAssertEqual(session.request.shippingMethods!,     shippingMethods)
-        XCTAssertEqual(session.request.merchantCapabilities, .capability3DS)
+        XCTAssertEqual(session.request.merchantCapabilities, PaymentSession.capabilities)
         XCTAssertEqual(session.request.requiredShippingAddressFields, .all)
         XCTAssertEqual(session.request.requiredBillingAddressFields,  .all)
         
@@ -68,7 +68,7 @@ class PaymentSessionTests: XCTestCase {
     //  MARK: - Supported Networks -
     //
     func testSupportedNetworks() {
-        XCTAssertEqual(PaymentSession.supportedNetworks, [.amex, .masterCard, .visa, .discover])
+        XCTAssertEqual(PaymentSession.supportedNetworks, [.amex, .masterCard, .visa])
     }
 
     // ----------------------------------
