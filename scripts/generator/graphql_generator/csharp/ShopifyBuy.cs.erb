@@ -294,7 +294,7 @@ namespace <%= namespace %> {
         /// 	Debug.Log(products.Count);
         /// });
         /// \endcode
-        public void products(ResponseProductsHandler callback, int? first = null, string after = null) {
+        public void products(ProductsHandler callback, int? first = null, string after = null) {
             GetProductsList((products, error) => {
                 if (error != null) {
                     callback(null, error);
@@ -348,7 +348,7 @@ namespace <%= namespace %> {
         ///     Debug.Log(products[1].title());
         /// }, "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyNzYwOTk=", "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyNzkwNDM=");
         /// \endcode
-        public void products(ResponseProductsHandler callback, string firstProductId, params string[] otherProductIds) {
+        public void products(ProductsHandler callback, string firstProductId, params string[] otherProductIds) {
             List<string> productIds = new List<string>();
             productIds.Add(firstProductId);
             productIds.AddRange(otherProductIds);
@@ -402,7 +402,7 @@ namespace <%= namespace %> {
         ///     Debug.Log(products[1].title());
         /// }, productIds);
         /// \endcode
-        public void products(ResponseProductsHandler callback, List<string> productIds) {
+        public void products(ProductsHandler callback, List<string> productIds) {
             QueryRootQuery query = new QueryRootQuery();
 
             query.nodes(n => n
@@ -458,7 +458,7 @@ namespace <%= namespace %> {
         /// 	Debug.Log(collections.Count);
         /// });
         /// \endcode
-        public void collections(ResponseCollectionsHandler callback, int? first = null, string after = null) {
+        public void collections(CollectionsHandler callback, int? first = null, string after = null) {
             GetCollectionsList((collections, error) => {
                 // Short circuit if we have an error.
                 if (error != null) {
@@ -512,7 +512,7 @@ namespace <%= namespace %> {
         ///     }
         /// );
         /// \endcode
-        public void Query(<%= schema.query_root_name %>Query query, ResponseQueryHandler callback) {
+        public void Query(<%= schema.query_root_name %>Query query, QueryRootHandler callback) {
             Loader.Query(query, (response) => {
                 callback(response.data, (ShopifyError)response);
             });
@@ -544,7 +544,7 @@ namespace <%= namespace %> {
         ///     }
         /// );
         /// \endcode
-        public void Query(<%= schema.query_root_name %>Delegate buildQuery, ResponseQueryHandler callback) {
+        public void Query(<%= schema.query_root_name %>Delegate buildQuery, QueryRootHandler callback) {
             <%= schema.query_root_name %>Query query = new <%= schema.query_root_name %>Query();
 
             buildQuery(query);
@@ -578,7 +578,7 @@ namespace <%= namespace %> {
         ///         // checkout.ready() is true
         ///     }
         ///})
-        public void PollQuery(PollUpdatedHandler isReady, QueryRootQuery query, ResponseQueryHandler callback) {
+        public void PollQuery(PollUpdatedHandler isReady, QueryRootQuery query, QueryRootHandler callback) {
             const float POLL_DELAY_SECONDS = 0.5f;
 
             Query(query, (QueryRoot response, ShopifyError error) => {
@@ -646,7 +646,7 @@ namespace <%= namespace %> {
         /// 	}
         /// );
         /// \endcode
-        public void Mutation(<%= schema.mutation_root_name %>Query query, ResponseMutationHandler callback) {
+        public void Mutation(<%= schema.mutation_root_name %>Query query, MutationRootHandler callback) {
             Loader.Mutation(query, (response) => {
                 callback(response.data, (ShopifyError)response);
             });
@@ -696,7 +696,7 @@ namespace <%= namespace %> {
         ///     }
         /// );
         /// \endcode
-        public void Mutation(<%= schema.mutation_root_name %>Delegate buildQuery, ResponseMutationHandler callback) {
+        public void Mutation(<%= schema.mutation_root_name %>Delegate buildQuery, MutationRootHandler callback) {
             <%= schema.mutation_root_name %>Query query = new <%= schema.mutation_root_name %>Query();
 
             buildQuery(query);
@@ -737,7 +737,7 @@ namespace <%= namespace %> {
             }
         }
 
-        private void GetConnectionsForProducts(List<Product> products, ResponseProductsHandler callback) {
+        private void GetConnectionsForProducts(List<Product> products, ProductsHandler callback) {
             List<ConnectionQueryInfo> connectionInfos = new List<ConnectionQueryInfo>() {
                 new ConnectionQueryInfo(
                     getConnection: (p) => ((Product) p).images(),
@@ -816,7 +816,7 @@ namespace <%= namespace %> {
             );
         }
 
-        private void GetProductsList(ResponseProductsHandler callback, int? first = null, string after = null) {
+        private void GetProductsList(ProductsHandler callback, int? first = null, string after = null) {
             ConnectionLoader loader = new ConnectionLoader(Loader);
             int countToLoad = first == null ? int.MaxValue : (int) first;
 
@@ -858,7 +858,7 @@ namespace <%= namespace %> {
             );
         }
 
-        private void GetCollectionsList(ResponseCollectionsHandler callback, int? first = null, string after = null) {
+        private void GetCollectionsList(CollectionsHandler callback, int? first = null, string after = null) {
             ConnectionLoader loader = new ConnectionLoader(Loader);
             int countToLoad = first == null ? int.MaxValue : (int) first;
 

@@ -17,10 +17,10 @@ namespace <%= namespace %>.SDK {
 
     public delegate void MergeFieldDelegate(string field, Dictionary<string, object> into, Dictionary<string, object> responseA, Dictionary<string, object> responseB);
 
-    public delegate void ResponseProductsHandler(List<Product> products, ShopifyError error);
-    public delegate void ResponseCollectionsHandler(List<Collection> collections, ShopifyError error);
-    public delegate void ResponseQueryHandler(<%= schema.query_root_name %> response, ShopifyError error);
-    public delegate void ResponseMutationHandler(<%= schema.mutation_root_name %> response, ShopifyError error);
+    public delegate void ProductsHandler(List<Product> products, ShopifyError error);
+    public delegate void CollectionsHandler(List<Collection> collections, ShopifyError error);
+    public delegate void QueryRootHandler(<%= schema.query_root_name %> queryRoot, ShopifyError error);
+    public delegate void MutationRootHandler(<%= schema.mutation_root_name %> mutationRoot, ShopifyError error);
 
     public delegate void OnCartLineItemChange();
 
