@@ -74,11 +74,9 @@ module GraphQLGenerator
 
     def save(path)
       path_graphql = "#{path}/GraphQL"
-      path_buildpipeline = "#{path}/Editor/BuildPipeline"
 
       begin
         Dir.mkdir(path_graphql)
-        Dir.mkdir(path_buildpipeline)
       rescue Errno::EEXIST
       end
 
@@ -143,7 +141,7 @@ module GraphQLGenerator
         directory = "#{path}/#{File.dirname(class_file_name)}"
 
         unless File.directory?(directory)
-          Dir.mkdir(directory)
+          FileUtils.mkdir_p(directory)
         end
 
         erb = CSharp::erb_for(File.expand_path("../csharp/#{class_file_name}.cs.erb", __FILE__))
