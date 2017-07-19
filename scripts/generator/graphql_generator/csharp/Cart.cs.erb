@@ -69,6 +69,9 @@ namespace <%= namespace %> {
 
         private IWebCheckout WebCheckout;
         private INativeCheckout NativeCheckout;
+        private PaymentSettings StorePaymentSettings;
+
+        private Client CurrentClient;
 
         #if (SHOPIFY_TEST)
         public CartState State;
@@ -146,7 +149,13 @@ namespace <%= namespace %> {
                 if (error != null) {
                     failure(error);
                 } else {
-                    NativeCheckout.Checkout(key, success, cancelled, failure);
+                    GetPaymentSettings(paymentSettings, error) => {
+                        if (error != null) {
+                            failure(error);
+                        } else {
+                            NativeCheckout.Checkout(key, paymentSettings, success, cancelled, failure);
+                        }
+                    });
                 }
             });
         }
@@ -171,6 +180,19 @@ namespace <%= namespace %> {
                 return NativeCheckout.CanCheckout();
             } else {
                 return false;
+            }
+        }
+
+        private void GetPaymentSettings(PaymentSettingHandler callback) {
+            if (StorePaymentSettings != null) {
+                callback(StorePaymentSettings, null);
+            } else {
+                CurrentClient.paymentSettings((paymentSettings, error) => {
+                    if (error == null) {
+                        StorePaymentSettings = paymentSettings;
+                    }
+                    callback(paymentSettings, error);
+                });
             }
         }
     }
