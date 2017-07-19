@@ -17,6 +17,14 @@ source ./scripts/prepare_ci.sh
 echo "--- Build"
 ./scripts/build.sh
 
+echo "--- Decrypting secrets...."
+eval "$(rbenv init -)"
+ruby ./scripts/decrypt_secrets.rb
+source <(ruby ./scripts/decrypt_secrets.rb)
+
+echo "+++ DEBUG env:"
+env
+
 echo "--- Activate Unity license"
 ./scripts/activate_license.sh
 
