@@ -13,9 +13,8 @@ Before you can start using the Unity Buy SDK, you need:
 - [to install the Unity Buy SDK into your Unity project](https://github.com/shopify/unity-buy-sdk#using-the-unity-buy-sdk-in-unity)
 
 ### Using the SDK on iOS
-- Note that the Unity Buy SDK is largely implemented in Swift so it uses a [Swift to Objective C bridging header](https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html)
-    + You will need to set the `Objective-C Bridging Header` property in the Build Settings for the `Unity-iPhone` target to `Libraries/Plugins/iOS/Shopify/Unity-iPhone-Bridging-Header.h`
-    + If you already have a bridging header file you can simply add `#import "Unity-iPhone-Bridging-Header.h` to your own bridging header. Feel free to rename the header as well if it conflicts with an existing header.
+
+See [Build Target Requirements](https://github.com/Shopify/unity-buy-sdk/blob/master/BUILDTARGETS.md) for information on setting up the SDK on iOS.
 
 ### Initialize the SDK
 
