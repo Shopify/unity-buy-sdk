@@ -72,6 +72,7 @@
             ShopifyBuy.Init(AccessToken, ShopDomain);
             Client = ShopifyBuy.Client();
             CurrentCart = Client.Cart(CartName);
+            CurrentCart.State = new CartState(Client);
         }
 
         private void SetDefaultCartProducts(Action completion) {
@@ -94,7 +95,7 @@
                     zip: "M5V 2J4"
                 );
 
-            CurrentCart.SetShippingAddress(shippingAddressInput, (ShopifyError error) => {
+            CurrentCart.State.SetShippingAddress(shippingAddressInput, (ShopifyError error) => {
                 callback(error);
             });
         }
@@ -113,7 +114,7 @@
         private void CreateNativeCheckout() {
             #if UNITY_IOS
             var bridge = GetComponent<ApplePayEventReceiverBridge>();
-            bridge.Receiver = new iOSNativeCheckout(CurrentCart);
+            bridge.Receiver = new iOSNativeCheckout(CurrentCart.State);
             #endif
         }
     }
