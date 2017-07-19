@@ -279,13 +279,6 @@ ShopifyBuy.Client().products((products, error) => {
 });
 ```
 
-**Caveats**
-
-There are a few things we're still working out for the web checkout experience:
-
-1. Handling HTTP errors gracefully. When the user loses their internet connection there is currently no way to recover.
-2. Validating the web checkout purchase with results from the API. The completion callback is invoked when we detect that the user has navigated to the `thank you page`. This is the page that is shown when a checkout is completed but we don't validate the completion of the checkout with the server yet. Due to spoofing concern I wouldn't rely on this as knowledge of a completely validated purchase _yet_.
-
 ### Apple Pay checkout
 
 You can allow users to pay with Apple Pay, providing a seamless checkout experience.
