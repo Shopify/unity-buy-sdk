@@ -333,6 +333,16 @@ ShopifyBuy.Client().products((products, error) => {
 
 ```
 
+
+**Additional Build Settings**
+
+To use Apple Pay, you must also enable `Background fetch` in the Player Settings.
+
+1. Open Player Settings, Edit -> Project Settings -> Player
+2. Select `Settings for iOS`
+3. Under `Other Settings`, set `Behaviour in Background` to `Custom`
+4. Enable `Background fetch`
+
 **Enabling Apple Pay on your Store**
 
 To enable Apple Pay for your store through an app, follow the following steps:
