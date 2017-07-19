@@ -2,7 +2,7 @@
 # Sourced on CI
 
 echo "--- Exporting environment variables..."
-export PROJECT_ROOT=$PWD/unity-buy-sdk
+export PROJECT_ROOT=$PWD
 export UNITY_DOWNLOAD_DIR=$PROJECT_ROOT/unity
 export UNITY_PKG_LOCATION=$UNITY_DOWNLOAD_DIR/Unity.pkg
 export UNITY_PKG_URL=http://netstorage.unity3d.com/unity/b7e030c65c9b/MacEditorInstaller/Unity.pkg
