@@ -153,6 +153,8 @@ namespace <%= namespace %> {
         /// Launches a platform-specific native pay UI for checking out the Cart's contents. Currently supported native pay options
         /// include:
         ///     - iOS: Launches Apple Pay. 
+        ///
+        /// When running on an unsupported platform a <see cref="System.PlatformNotSupportedException">PlatformNotSupportedException</see> is thrown.
         /// </summary>
         /// <param name="key">Vendor-specific key for identifying the merchant. For iOS devices this is the merchant ID.</param>
         /// <param name="success">called whenever the checkout process has completed successfully.</param>

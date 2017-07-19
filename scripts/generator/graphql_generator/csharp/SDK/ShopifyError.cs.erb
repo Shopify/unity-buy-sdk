@@ -18,8 +18,21 @@ namespace <%= namespace %>.SDK {
             return null;
         }
 
+        /// <summary>
+        /// Type describing the error in more detail.
+        /// </summary>
         public enum ErrorType {
-            HTTP, GraphQL, UserError, NativePaymentProcessingError
+            /// <summary>Encountered an HTTP issue or failed connection.</summary>
+            HTTP, 
+
+            /// <summary>Encountered an internal GraphQL issue with the API.</summary>
+            GraphQL, 
+
+            /// <summary>UserErrors from the GraphQL API. For example, invalid form fields.</summary>
+            UserError, 
+
+            /// <summary>Error while handling payment using a native pay method such as Apple Pay.</summary>
+            NativePaymentProcessingError
         }
 
         /// <summary>
@@ -27,6 +40,9 @@ namespace <%= namespace %>.SDK {
         /// </summary>
         public readonly ErrorType Type;
 
+        /// <summary>
+        /// Readable description of the error.
+        /// </summary>
         public readonly string Description;
 
         public ShopifyError(ErrorType type, string description) {
