@@ -494,15 +494,14 @@ namespace <%= namespace %> {
         /// </summary>
         /// <param name="callback">callback that will receive responses from server</param>
         public void paymentSettings(PaymentSettingsHandler callback) {
-
             var query = new QueryRootQuery();
             DefaultQueries.shop.PaymentSettings(query);
 
             Query(query, (response, error) => {
                 if (error != null) {
-                    callback(response.shop().paymentSettings, error);
-                } else {
                     callback(null, error);
+                } else {
+                    callback(response.shop().paymentSettings(), null);
                 }
             });
         }
