@@ -27,7 +27,7 @@
 #import <PassKit/PassKit.h>
 #import <WebKit/WebKit.h>
 #import <SafariServices/SafariServices.h>
-#import "ProductName-Swift.h"
+#import "SwiftInterfaceHeader.h"
 
 extern "C" {
     void _RespondToNativeMessage(const char *identifier, const char *response) {
