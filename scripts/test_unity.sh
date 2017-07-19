@@ -5,12 +5,12 @@
 UNITY_LOG_PATH=$PROJECT_ROOT/test.log
 UNITY_TEST_RESULTS_PATH=$PROJECT_ROOT/EditorTestResults.xml
 
-which $UNITY_PATH &> /dev/null || die "Unity does not exist at $UNITY_PATH" 
+which $UNITY_PATH &> /dev/null || die "Unity does not exist at $UNITY_PATH"
 
 convertNUnitToJUnit() {
     if [ ! -z "${UNITY_CIRCLE_XML_OUT_PATH}" ]; then
         mkdir $UNITY_CIRCLE_XML_DIR
-        xsltproc -o $UNITY_CIRCLE_XML_OUT_PATH $SCRIPTS_ROOT/nunit-to-junit.xsl $UNITY_TEST_RESULTS_PATH
+        xsltproc -o $UNITY_CIRCLE_XML_OUT_PATH $(dirname $0)/nunit-to-junit.xsl $UNITY_TEST_RESULTS_PATH
     fi
 }
 
@@ -38,7 +38,7 @@ else
         cat $UNITY_TEST_RESULTS_PATH
         convertNUnitToJUnit
     else
-        cat $UNITY_LOG_PATH 
+        cat $UNITY_LOG_PATH
     fi
     exit 1
 fi

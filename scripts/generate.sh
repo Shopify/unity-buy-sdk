@@ -1,7 +1,7 @@
 . $(dirname $0)/common.sh
 
-bundle --gemfile=$SCRIPTS_ROOT/generator/Gemfile
-$SCRIPTS_ROOT/generator/update_schema
+bundle --gemfile=$(dirname $0)/generator/Gemfile
+$(dirname $0)/generator/update_schema
 
 if [ $? = 0 ] ; then
     echo "Generate finished"

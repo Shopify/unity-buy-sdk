@@ -9,7 +9,7 @@ check() {
     else
         echo "Export $@ failed. Exited with $?"
         echo "------------------\n\n"
-        cat $UNITY_LOG_PATH 
+        cat $UNITY_LOG_PATH
 
         exit 1
     fi
@@ -19,7 +19,7 @@ check() {
 delete_native_tests
 
 # check if we need to do a major, minor, patch update
-VERSION=`cat $SCRIPTS_ROOT/version`
+VERSION=`cat $(dirname $0)/version`
 
 VERSION_ARRAY=( ${VERSION//./ } )
 
@@ -41,23 +41,23 @@ fi
 
 VERSION="${VERSION_ARRAY[0]}.${VERSION_ARRAY[1]}.${VERSION_ARRAY[2]}"
 
-echo $VERSION > $SCRIPTS_ROOT/version
+echo $VERSION > $(dirname $0)/version
 echo "Version used $1: $VERSION"
 
 # Run generate.sh to create source code including the potentially new version number
-$SCRIPTS_ROOT/generate.sh
+$(dirname $0)/generate.sh
 check "generate"
 
 # Run tests just in case
-$SCRIPTS_ROOT/test.sh
+$(dirname $0)/test.sh
 check "test"
 
 # Now we'll attempt to actually generate the unitypackage
 UNITY_LOG_PATH=$PROJECT_ROOT/export.log
 
-which $UNITY_PATH &> /dev/null || die "Unity does not exist at $UNITY_PATH" 
+which $UNITY_PATH &> /dev/null || die "Unity does not exist at $UNITY_PATH"
 
-$SCRIPTS_ROOT/build_documentation.sh
+$(dirname $0)/build_documentation.sh
 check "docs"
 
 # copy EXAMPLES.md to Assets/Shopify/examples.txt
@@ -84,7 +84,7 @@ if [ $? = 0 ] ; then
 else
     echo "Export failed. Exited with $?"
     echo "------------------\n\n"
-    cat $UNITY_LOG_PATH 
+    cat $UNITY_LOG_PATH
 
     exit 1
 fi
