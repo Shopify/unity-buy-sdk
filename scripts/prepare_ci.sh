@@ -11,8 +11,13 @@ export IOS_PKG_URL=http://netstorage.unity3d.com/unity/b7e030c65c9b/MacEditorTar
 export UNITY_CIRCLE_XML_DIR=$CIRCLE_TEST_REPORTS/Unity
 export UNITY_CIRCLE_XML_OUT_PATH=$UNITY_CIRCLE_XML_DIR/junit.xml
 
+echo "--- Decrypting secrets...."
+source <(ruby ./scripts/decrypt_secrets.rb)
+
 echo "--- Booting simulator..."
 xcrun instruments -w "iPhone 6 (10.3.1) [" || true
 
 echo "--- Installing Unity"
 ./scripts/install_unity.sh
+
+
