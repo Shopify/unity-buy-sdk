@@ -32,7 +32,7 @@
 #import <WebKit/WebKit.h>
 #import <SafariServices/SafariServices.h>
 
-#import "ProductName-Swift.h"
+#import "SwiftInterfaceHeader.h"
 
 bool _CheckoutWithWebView(const char *unityDelegateObjectName, const char *checkoutURL) {
     WebCheckoutSession * session = [WebCheckoutSession

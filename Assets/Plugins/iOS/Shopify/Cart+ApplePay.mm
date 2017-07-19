@@ -28,7 +28,7 @@
 #import <PassKit/PassKit.h>
 #import <WebKit/WebKit.h>
 #import <SafariServices/SafariServices.h>
-#import "ProductName-Swift.h"
+#import "SwiftInterfaceHeader.h"
 
 bool _CanCheckoutWithApplePay() {
     return [PaymentSession canMakePayments];

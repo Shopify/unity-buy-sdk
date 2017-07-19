@@ -15,8 +15,8 @@ namespace Shopify.BuildPipeline {
             var project = new ExtendedPBXProject(buildPath);
             SetBuildProperties(project);
             SetCorrectTestsTarget(project);
-            AddUiKitImportHeader(project);
             project.RemoveFileFromBuild(project.TestTargetGuid, project.FindFileGuidByProjectPath("Unity-iPhone Tests/Unity_iPhone_Tests.m"));
+            SetSwiftInterfaceHeader(project);
             project.Save();
         }
 
@@ -49,6 +49,26 @@ namespace Shopify.BuildPipeline {
             }
         }
 
+        private static void SetSwiftInterfaceHeader(ExtendedPBXProject project) {
+            var bundleIdentifier = PlayerSettings.iPhoneBundleIdentifier;
+
+            char[] separator = {'.'};
+            var keywords = bundleIdentifier.Split(separator);
+            var productName = keywords[keywords.Length - 1];
+
+            string swiftInterfaceHeaderPath = Path.Combine(project.BuildPath, "Libraries/Plugins/iOS/Shopify/SwiftInterfaceHeader.h");
+
+            if (File.Exists(swiftInterfaceHeaderPath)) {
+                string[] lines = File.ReadAllLines(swiftInterfaceHeaderPath, System.Text.Encoding.UTF8);
+
+                if (lines.Length != 0) {
+                    lines[0] = "#import \"" + productName + "-Swift.h\"";
+                }
+
+                File.WriteAllLines (swiftInterfaceHeaderPath, lines);
+            }
+        }
+
         /// Sets the correct target for Shopify Tests
         private static void SetCorrectTestsTarget(ExtendedPBXProject project) {
             string testPath = Path.Combine(project.BuildPath, "Libraries/Plugins/iOS/Shopify/BuyTests/");
@@ -58,21 +78,6 @@ namespace Shopify.BuildPipeline {
                 project.SetFilesInDirectoryToTestTarget(testDirectory);
             } catch (Exception e) {
                 Debug.Log(e.Message);
-            }
-        }
-
-        /// Adds #import <UIKit/UIKit.h> to UnityAppController.h
-        private static void AddUiKitImportHeader(ExtendedPBXProject project) {
-            string appControllerHeaderPath = Path.Combine(project.BuildPath, "Classes/UnityAppController.h");
-
-            if (File.Exists(appControllerHeaderPath)) {
-                string[] lines = File.ReadAllLines (appControllerHeaderPath, System.Text.Encoding.UTF8);
-
-                if (lines.Length != 0) {
-                    lines[0] = String.Concat(lines[0], "\n#import <UIKit/UIKit.h>");
-                }
-
-                File.WriteAllLines (appControllerHeaderPath, lines);
             }
         }
     }
