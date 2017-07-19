@@ -161,14 +161,22 @@ namespace <%= namespace %> {
             });
         }
 
+        /// <summary>
+        /// Determine whether the user can be shown to setup their native payment solution
+        /// </summary>
+        /// <returns>True if the user can be shown a native payment setup</returns>
         public bool CanShowNativePaySetup() {
             if (NativeCheckout != null) {
-               return  NativeCheckout.CanShowPaymentSetup();
+                return  NativeCheckout.CanShowPaymentSetup();
             } else {
                 return false;
             }
         }
 
+        /// <summary>
+        /// Launch a native payment app to prompt the user to setup their payment card
+        /// </summary>
+        /// <exception cref="PlatformNotSupportedException">Thrown when the device does not support this feature</exception>
         public void ShowNativePaySetup() {
             if (NativeCheckout != null) {
                 NativeCheckout.ShowPaymentSetup();
@@ -177,6 +185,13 @@ namespace <%= namespace %> {
             }
         }
 
+        /// <summary>
+        /// Determine whether the user can checkout by paying with their native payment solution
+        /// </summary>
+        /// <param name="callback">
+        /// Closure that is invoked with the result.
+        /// True is returned if the user is able to pay with their native payment solution
+        /// </param>
         public void CanCheckoutWithNativePay(CanCheckoutWithNativePayCallback callback) {
             if (NativeCheckout != null) {
                 GetPaymentSettings((paymentSettings, error) => {
