@@ -14,6 +14,7 @@ export UNITY_CIRCLE_XML_DIR=$CIRCLE_TEST_REPORTS/Unity
 export UNITY_CIRCLE_XML_OUT_PATH=$UNITY_CIRCLE_XML_DIR/junit.xml
 
 echo "--- Decrypting secrets...."
+eval "$(rbenv init -)"
 source <(ruby ./scripts/decrypt_secrets.rb)
 
 echo "--- Booting simulator..."
