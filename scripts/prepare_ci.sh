@@ -1,6 +1,8 @@
 #!/bin/bash
 # Sourced on CI
 
+set -ex pipefail
+
 echo "--- Exporting environment variables..."
 export PROJECT_ROOT=$PWD
 export UNITY_DOWNLOAD_DIR=$PROJECT_ROOT/unity
