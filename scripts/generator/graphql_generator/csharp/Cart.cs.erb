@@ -71,7 +71,7 @@ namespace <%= namespace %> {
         private INativeCheckout NativeCheckout;
         private PaymentSettings StorePaymentSettings;
 
-        private ShopifyClient CurrentClient;
+        private ShopifyClient Client;
 
         #if (SHOPIFY_TEST)
         public CartState State;
@@ -95,7 +95,7 @@ namespace <%= namespace %> {
         /// \endcode
         public Cart(ShopifyClient client) {
             State = new CartState(client);
-            CurrentClient = client;
+            Client = client;
 
             #if UNITY_IOS
             WebCheckout = new iOSWebCheckout(this, client);
@@ -188,7 +188,7 @@ namespace <%= namespace %> {
             if (StorePaymentSettings != null) {
                 callback(StorePaymentSettings, null);
             } else {
-                CurrentClient.paymentSettings((paymentSettings, error) => {
+                Client.paymentSettings((paymentSettings, error) => {
                     if (error == null) {
                         StorePaymentSettings = paymentSettings;
                     }
