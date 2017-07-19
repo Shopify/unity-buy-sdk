@@ -74,9 +74,11 @@ module GraphQLGenerator
 
     def save(path)
       path_graphql = "#{path}/GraphQL"
+      path_buildpipeline = "#{path}/Editor/BuildPipeline"
 
       begin
         Dir.mkdir(path_graphql)
+        Dir.mkdir(path_buildpipeline)
       rescue Errno::EEXIST
       end
 
@@ -90,6 +92,8 @@ module GraphQLGenerator
         CartState
         Editor/ShopifyOnboardingPanel
         Editor/ShopifyEditorStyleHelper
+        Editor/BuildPipeline/iOSPostProcessor
+        Editor/BuildPipeline/ExtendedPBXProject
         SDK/Arguments
         SDK/InputBase
         SDK/InputValueToString

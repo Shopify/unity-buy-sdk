@@ -1,5 +1,5 @@
 #if UNITY_EDITOR
-namespace Shopify.BuildPipeline {
+namespace Shopify.Unity.Editor.BuildPipeline {
     using System.Collections;
     using System.Collections.Generic;
     using System;
@@ -32,7 +32,7 @@ namespace Shopify.BuildPipeline {
             string[] scenes = {"Assets/Scenes/iOSTestScene.unity"};
             PlayerSettings.iOS.sdkVersion = iOSSdkVersion.SimulatorSDK;
             BuildPipeline.BuildPlayer(scenes, path, BuildTarget.iOS, BuildOptions.Development);
-            ShopifyIosPostProcessor.ProcessForTests(path);
+            iOSTestPostProcessor.ProcessForTests(path);
         }
 
         private static string PlayerPathFromArguments(string[] arguments) {
