@@ -175,9 +175,15 @@ namespace <%= namespace %> {
             }
         }
 
-        public bool CanCheckoutWithNativePay() {
+        public bool CanCheckoutWithNativePay(CanCheckoutWithNativePayCallback callback) {
             if (NativeCheckout != null) {
-                return NativeCheckout.CanCheckout();
+                GetPaymentSettings((paymentSettings, error) => {
+                    if (error != null) {
+                        callback(false);
+                    } else {
+                        callback(NativeCheckout.CanCheckout(paymentSettings));
+                    }
+                });
             } else {
                 return false;
             }
