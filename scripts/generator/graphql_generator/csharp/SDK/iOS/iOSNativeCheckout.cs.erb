@@ -23,15 +23,15 @@ namespace <%= namespace %>.SDK.iOS {
         [DllImport ("__Internal")]
         private static extern void _PresentApplePayAuthorization();
 
-        private Cart CurrentCart;
+        private CartState CartState;
         private ApplePayEventReceiverBridge ApplePayEventBridge;
 
         private CheckoutSuccessCallback OnSuccess;
         private CheckoutCancelCallback OnCancelled;
         private CheckoutFailureCallback OnFailure;
 
-        public iOSNativeCheckout(Cart cart) {
-            CurrentCart = cart;
+        public iOSNativeCheckout(CartState cartState) {
+            CartState = cartState;
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace <%= namespace %>.SDK.iOS {
             OnCancelled = cancelled;
             OnFailure = failure;
 
-            var checkout = CurrentCart.CurrentCheckout;
+            var checkout = CartState.CurrentCheckout;
 
             var summaryItems = GetSummaryItems();
             var summaryString = Json.Serialize(summaryItems);
@@ -95,7 +95,7 @@ namespace <%= namespace %>.SDK.iOS {
         }
 
         private List<SummaryItem> GetSummaryItems() {
-            var checkout = CurrentCart.CurrentCheckout;
+            var checkout = CartState.CurrentCheckout;
             var summaryItems = new List<SummaryItem>();
             summaryItems.Add(new SummaryItem("SUBTOTAL", checkout.subtotalPrice().ToString()));
 
@@ -112,7 +112,7 @@ namespace <%= namespace %>.SDK.iOS {
         }
 
         private List<ShippingMethod> GetShippingMethods() {
-            var checkout = CurrentCart.CurrentCheckout;
+            var checkout = CartState.CurrentCheckout;
             var shippingMethods = new List<ShippingMethod>();
 
             try {
