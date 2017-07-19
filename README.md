@@ -8,12 +8,7 @@ The Unity Buy SDK allows Unity developers to query and sell products from Shopif
 - [Documentation](#documentation)
 - [Using the Unity Buy SDK in Unity](#using-the-unity-buy-sdk-in-unity)
 - [Examples](#examples)
-    + [Initialize the SDK](/EXAMPLES.md#initialize-the-sdk)
-    + [Query all products](/EXAMPLES.md#query-all-products)
-    + [Query all collections](/EXAMPLES.md#query-all-collections)
-    + [Cart and web checkout](/EXAMPLES.md#cart-and-web-checkout)
-    + [Cart line items based on selected options](/EXAMPLES.md#cart-line-items-based-on-selected-options)
-    + [Custom queries](/EXAMPLES.md#custom-queries)
+- [Supported build targets](#supported-build-targets)
 - [Getting set up for contributing](#getting-set-up-for-contributing)
 - [Build the GraphQL client](#build-the-unity-buy-sdk)
 - [Testing](#testing)
@@ -59,6 +54,9 @@ Checkout our [Example Guide](https://github.com/Shopify/unity-buy-sdk/blob/maste
 * [Cart and web checkout](/EXAMPLES.md#cart-and-web-checkout)
 * [Cart line items based on selected options](/EXAMPLES.md#cart-line-items-based-on-selected-options)
 * [Custom queries](/EXAMPLES.md#custom-queries)
+
+## Supported build targets 
+See [Build Target Requirements](https://github.com/Shopify/unity-buy-sdk/blob/master/BUILDTARGETS.md) for supported target platforms and requirements.
 
 ## Getting set up for contributing
 
