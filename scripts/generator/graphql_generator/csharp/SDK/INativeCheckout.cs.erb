@@ -3,21 +3,8 @@ namespace <%= namespace %>.SDK {
     interface INativeCheckout {
         bool CanShowPaymentSetup();
         void ShowPaymentSetup();
-
-        /// <summary>
-        /// Check whether the device supports making a native payment given the Shop's payment settings
-        /// </summary>
-        /// <param name="paymentSettings">The Shop's payment settings</param>
-        /// <returns>True if the device supports making a native payment</returns>
-        bool CanCheckout(PaymentSettings paymentSettings);
-
-        /// <summary>
-        /// Display the native payment sheet to perform a native payment
-        /// </summary>
-        /// <param name="key">The public key that is used for encrypting a native payment's token data</param>
-        /// <param name="success">The closure that is invoked upon success of the payment</param>
-        /// <param name="cancelled">The closure that is invoked upon cancellation of the payment</param>
-        /// <param name="failure">The closure that is invoked upon failure of the payment</param>
-        void Checkout(string key, PaymentSettings paymentSettings, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure);
+        bool CanCheckout();
+        /// Key is the public key that is used for encrypting a native payment's token data
+        void Checkout(string key, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure);
     }
 }

@@ -444,7 +444,7 @@ namespace <%= namespace %> {
         /// Note that <c>shop.collections</c> is a Connection (GraphQL paginated data structure). <see ref="ShopifyClient.collections">collections </see>
         /// will load all pages of collections by default unless a value is passed for the <c>first</c> param.
         /// </summary>
-        /// <param name="callback">callback that will receive responses from server</param>
+        /// <param name="callback">will receive responses from server</param>
         /// <param name="first">can be used to limit how many products are returned. For instance 10 would return only 10 collections</param>
         /// <param name="after">
         /// This is an advanced feature but when querying Relay Connections a cursor is returned which can be used to determine
@@ -484,26 +484,6 @@ namespace <%= namespace %> {
                     callback(nodesResult.ConvertAll(n => (Collection) n), responseError);
                 });
             }, first: first, after: after);
-        }
-
-        /// <summary>
-        /// Generates a query to fetch the <c>PaymentSettings</c> from a Shopify store. The generated query will query the following on paymentSettings:
-        ///     - currencyCode
-        ///     - countryCode
-        ///
-        /// </summary>
-        /// <param name="callback">callback that will receive responses from server</param>
-        public void paymentSettings(PaymentSettingsHandler callback) {
-            var query = new QueryRootQuery();
-            DefaultQueries.shop.PaymentSettings(query);
-
-            Query(query, (response, error) => {
-                if (error != null) {
-                    callback(null, error);
-                } else {
-                    callback(response.shop().paymentSettings(), null);
-                }
-            });
         }
 
         /// <summary>

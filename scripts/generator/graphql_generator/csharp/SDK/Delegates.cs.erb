@@ -22,13 +22,10 @@ namespace <%= namespace %>.SDK {
     public delegate void ResponseQueryHandler(<%= schema.query_root_name %> response, ShopifyError error);
     public delegate void ResponseMutationHandler(<%= schema.mutation_root_name %> response, ShopifyError error);
 
-    public delegate void PaymentSettingsHandler(PaymentSettings paymentSettings, ShopifyError error);
-
     public delegate void OnCartLineItemChange();
 
     public delegate bool PollUpdatedHandler(QueryRoot updatedQueryRoot);
 
-    public delegate void CanCheckoutWithNativePayCallback(bool canCheckout);
     public delegate void CheckoutSuccessCallback();
     public delegate void CheckoutFailureCallback(ShopifyError error);
     public delegate void CheckoutCancelCallback();
