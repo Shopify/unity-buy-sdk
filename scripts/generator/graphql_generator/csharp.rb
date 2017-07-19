@@ -90,6 +90,8 @@ module GraphQLGenerator
         CartState
         Editor/ShopifyOnboardingPanel
         Editor/ShopifyEditorStyleHelper
+        Editor/BuildPipeline/iOSPostProcessor
+        Editor/BuildPipeline/ExtendedPBXProject
         SDK/Arguments
         SDK/InputBase
         SDK/InputValueToString
@@ -139,7 +141,7 @@ module GraphQLGenerator
         directory = "#{path}/#{File.dirname(class_file_name)}"
 
         unless File.directory?(directory)
-          Dir.mkdir(directory)
+          FileUtils.mkdir_p(directory)
         end
 
         erb = CSharp::erb_for(File.expand_path("../csharp/#{class_file_name}.cs.erb", __FILE__))
