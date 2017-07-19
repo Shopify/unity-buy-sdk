@@ -1,0 +1,92 @@
+﻿# if UNITY_EDITOR
+namespace <%= namespace %>.SDK {
+    using UnityEngine;
+
+    public class ShopifyEditorStyleHelper {
+        public Color BackgroundColor {
+            get { return ColorFromHex("#F9FAFBFF"); }
+        }
+
+        public Color AccentColor {
+            get { return ColorFromHex("#5C6AC4FF");  }
+        }
+
+        public Texture LogoImage {
+            get { return Resources.Load("shopify_logo_black") as Texture; }
+        }
+
+        public Texture BackgroundIllustration {
+            get { return Resources.Load("shopify_unity_buy_bg_illustration") as Texture; }
+        }
+
+        public GUIStyle HeadingStyle {
+            get {
+                var style = new GUIStyle();
+                style.fontSize = 18;
+                style.fontStyle = FontStyle.Bold;
+                style.normal.textColor = ColorFromHex("#383838FF");
+                style.margin = new RectOffset(0, 30, 30, 10);
+
+                style.wordWrap = true;
+
+                return style;
+            }
+        }
+        
+        public GUIStyle SubheadingStyle {
+            get {
+                var style = new GUIStyle();
+                style.fontSize = 16;
+                style.fontStyle = FontStyle.Bold;
+                style.normal.textColor = ColorFromHex("#5E5E5EFF");
+                style.margin = new RectOffset(0, 0, 30, 10);
+                style.wordWrap = true;
+
+                return style;
+            }
+        }
+        
+        public GUIStyle ButtonStyle {
+            get {
+                var style = new GUIStyle();
+                style.normal.background = Resources.Load("shopify_indigo_button_normal") as Texture2D;
+                style.onNormal.background = Resources.Load("shopify_indigo_button_normal") as Texture2D;
+                style.hover.background = Resources.Load("shopify_indigo_button_hover") as Texture2D;
+                style.onHover.background = Resources.Load("shopify_indigo_button_hover") as Texture2D;
+                
+                style.normal.textColor = ColorFromHex("#FFFFFFFF");
+                style.onNormal.textColor = ColorFromHex("#FFFFFFFF");
+                style.hover.textColor = ColorFromHex("#FFFFFFFF");
+                style.onHover.textColor = ColorFromHex("#FFFFFFFF");
+                
+                style.border = new RectOffset(20, 20, 20, 20);
+                style.padding = new RectOffset(15, 15, 15, 15);
+                style.margin = new RectOffset(0, 0, 20, 20);
+
+                style.fontSize = 14;
+                style.stretchWidth = false;
+
+                return style;
+            }
+        }
+
+        public GUIStyle BodyStyle {
+            get {
+                var style = new GUIStyle();
+                style.fontSize = 14;
+                style.normal.textColor = ColorFromHex("#858585FF");
+                style.wordWrap = true;
+
+                return style;
+            }
+        }
+        
+        private Color ColorFromHex(string hex) {
+            Color color;
+            ColorUtility.TryParseHtmlString(hex, out color);
+
+            return color;
+        }
+    }
+}
+# endif

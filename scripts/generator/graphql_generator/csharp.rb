@@ -88,6 +88,8 @@ module GraphQLGenerator
         ShopifyBuy
         Cart
         CartState
+        Editor/ShopifyOnboardingPanel
+        Editor/ShopifyEditorStyleHelper
         SDK/Arguments
         SDK/InputBase
         SDK/InputValueToString
