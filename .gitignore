@@ -61,3 +61,7 @@ sysinfo.txt
 ####### ruby
 *.gem
 *.rbc
+
+####### buck build
+.buck-out
+.buckd

@@ -1,0 +1,16 @@
+android_library(
+    name = 'lib',
+    srcs = glob(['**/*.java']),
+)
+
+android_aar(
+    name = 'BuyAndroidPlugin',
+    manifest_skeleton = 'AndroidManifest.xml',
+    deps = [
+        ':lib',
+    ]
+)
+
+java_test(
+
+)
