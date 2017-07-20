@@ -6,7 +6,7 @@ namespace <%= namespace %>.SDK {
     /// <summary>
     /// Generates default queries for <see ref="ShopifyClient.collections">ShopifyClient.collections </see>.
     /// </summary>
-    public class DefaultCollectionsQueries {
+    public class DefaultCollectionQueries {
         public void ShopCollections(QueryRootQuery query, Dictionary<string, int> imageResolutions, int first = 250, string after = null) {
             query.shop(s => s
                 .collections(cc => cc
