@@ -100,6 +100,9 @@ namespace <%= namespace %> {
             #if UNITY_IOS
             WebCheckout = new iOSWebCheckout(this, client);
             NativeCheckout = new iOSNativeCheckout(State);
+            #else
+            WebCheckout = null;
+            NativeCheckout = null;
             #endif
         }
 

@@ -300,7 +300,9 @@ namespace <%= namespace %> {
                 List<CheckoutLineItem> lineItems = (List<CheckoutLineItem>) checkout.lineItems();
 
                 LineItems.UpdateLineItemsFromCheckoutLineItems(lineItems);
+            #pragma warning disable 0168
             } catch(NoQueryException exception) {}
+            #pragma warning restore 0168
         }
 
         private void HandleUserError(CompletionCallback callback) {
