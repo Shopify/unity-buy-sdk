@@ -74,8 +74,9 @@ class ApplePayFlowTests: XCTestCase {
         
         let expectation      = self.expectation(description: "MockAuthorizationController.invokeDidSelectShippingContact failed to complete")
         let expectedSubtotal = PKPaymentSummaryItem(label: "SUBTOTAL", amount: 25.47)
+        let expectedShipping = PKPaymentSummaryItem(label: "SHIPPING", amount: 8.44)
         let expectedTaxes    = PKPaymentSummaryItem(label: "TAXES",    amount: 2.93)
-        let expectedTotal    = PKPaymentSummaryItem(label: "TOTAL", amount: 25.47)
+        let expectedTotal    = PKPaymentSummaryItem(label: "TOTAL", amount: 33.91)
         
         let method = Tester.Method.checkout.rawValue
         let checkoutMessage = UnityMessage(content: "", object: Tester.name, method: method)
@@ -85,8 +86,9 @@ class ApplePayFlowTests: XCTestCase {
                 
                 XCTAssertEqual(status, PKPaymentAuthorizationStatus.success)
                 XCTAssertEqual(items[0], expectedSubtotal)
-                XCTAssertEqual(items[1], expectedTaxes)
-                XCTAssertEqual(items[2], expectedTotal)
+                XCTAssertEqual(items[1], expectedShipping)
+                XCTAssertEqual(items[2], expectedTaxes)
+                XCTAssertEqual(items[3], expectedTotal)
                 
                 XCTAssertEqual(methods[0], self.expeditedShippingMethod)
                 XCTAssertEqual(methods[1], self.xpressPostShippingMethod)
