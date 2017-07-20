@@ -32,33 +32,46 @@ namespace <%= namespace %>.SDK.iOS {
             var contentDictionary = (Dictionary<string, object>)Json.Deserialize(message.Content);
             var mailingAddressInput = new MailingAddressInput(contentDictionary);
 
-            Action respondWithSuccess = () => {
-                message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, GetSummaryItems(), GetShippingMethods()).ToJsonString());
-            };
-
-            Action<ShopifyError> respondToError = (ShopifyError error) => {
-                ApplePayEventResponse response = new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure);
-
-                // Check to see if this is a recoverable user error
-                if (error.Type == ShopifyError.ErrorType.UserError) {
-                    var userErrors = CartState.UserErrors;
-                    var status = GetAuthorizationStatusFromPreliminaryShippingUserErrors(userErrors);
-
-                    if (status == ApplePayAuthorizationStatus.InvalidShippingPostalAddress) {
-                        response = new ApplePayEventResponse(status, GetSummaryItems());
-                    }
-                }
-
-                message.Respond(response.ToJsonString());
-            };
-
             CartState.SetShippingAddress(mailingAddressInput, (ShopifyError error) => {
                 if (error == null) {
-                    respondWithSuccess();
+                    RespondToUpdateAddressSuccessForMessage(message);
                 } else {
-                    respondToError(error);
+                    RespondToUpdateAddressErrorForMessage(message, error);
                 }
             });
+        }
+
+        private void RespondToUpdateAddressSuccessForMessage(NativeMessage message) {
+            var shippingMethods = GetShippingMethods();
+
+            if (shippingMethods.Count > 0) {
+                // Set the first shipping method as the default
+                CartState.SetShippingLine(shippingMethods[0].Identifier, (ShopifyError error) => {
+                    if (error == null) {
+                        message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, GetSummaryItems(), shippingMethods).ToJsonString());
+                    } else {
+                        message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure).ToJsonString());
+                    }
+                });
+            } else {
+                message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, GetSummaryItems(), shippingMethods).ToJsonString());
+            }
+        }
+
+        private void RespondToUpdateAddressErrorForMessage(NativeMessage message, ShopifyError error) {
+            ApplePayEventResponse response = new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure);
+
+            // Check to see if this is a recoverable user error
+            if (error.Type == ShopifyError.ErrorType.UserError) {
+                var userErrors = CartState.UserErrors;
+                var status = GetAuthorizationStatusFromPreliminaryShippingUserErrors(userErrors);
+
+                if (status == ApplePayAuthorizationStatus.InvalidShippingPostalAddress) {
+                    response = new ApplePayEventResponse(status, GetSummaryItems());
+                }
+            }
+
+            message.Respond(response.ToJsonString());
         }
 
         public void FetchApplePayCheckoutStatusForToken(string serializedMessage) {
