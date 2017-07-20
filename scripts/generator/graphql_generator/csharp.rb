@@ -104,9 +104,9 @@ module GraphQLGenerator
         SDK/AliasException
         SDK/InvalidServerResponseException
         SDK/DefaultQueries
-        SDK/DefaultQueriesProducts
-        SDK/DefaultQueriesCollections
-        SDK/DefaultQueriesCheckout
+        SDK/DefaultProductQueries
+        SDK/DefaultCollectionQueries
+        SDK/DefaultCheckoutQueries
         SDK/DefaultShopQueries
         SDK/Delegates
         SDK/GlobalGameObject

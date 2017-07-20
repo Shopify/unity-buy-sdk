@@ -9,9 +9,9 @@ namespace <%= namespace %>.SDK {
     public class DefaultQueries {
         public static readonly int MaxPageSize = 250;
 
-        public static DefaultProductsQueries products = new DefaultProductsQueries();
-        public static DefaultCollectionsQueries collections = new DefaultCollectionsQueries();
-        public static DefaultQueriesCheckout checkout = new DefaultQueriesCheckout();
+        public static DefaultProductQueries products = new DefaultProductQueries();
+        public static DefaultCollectionQueries collections = new DefaultCollectionQueries();
+        public static DefaultCheckoutQueries checkout = new DefaultCheckoutQueries();
         public static DefaultShopQueries shop = new DefaultShopQueries();
 
         public static string GetAliasFromIndex(int idx) {
