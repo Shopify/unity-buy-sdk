@@ -44,10 +44,8 @@ namespace <%= namespace %>.SDK.iOS {
         private void RespondToUpdateAddressSuccessForMessage(NativeMessage message) {
             var shippingMethods = GetShippingMethods();
 
-            if (shippingMethods.Count == 1) {
-                // When there is one shipping method to select
-                // We must set it as the shipping line, as Apple Pay will not call
-                // The delegate method for selecting the only shipping method
+            if (shippingMethods.Count > 0) {
+                // Set the first shipping method as the default
                 CartState.SetShippingLine(shippingMethods[0].Identifier, (ShopifyError error) => {
                     if (error == null) {
                         message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, GetSummaryItems(), shippingMethods).ToJsonString());
@@ -56,7 +54,7 @@ namespace <%= namespace %>.SDK.iOS {
                     }
                 });
             } else {
-                message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, GetSummaryItems(), GetShippingMethods()).ToJsonString());
+                message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, GetSummaryItems(), shippingMethods).ToJsonString());
             }
         }
 
