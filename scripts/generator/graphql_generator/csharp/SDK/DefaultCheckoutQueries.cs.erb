@@ -3,7 +3,7 @@ namespace <%= namespace %>.SDK {
     using System.Collections.Generic;
     using <%= namespace %>.GraphQL;
 
-    public class DefaultQueriesCheckout {
+    public class DefaultCheckoutQueries {
         public void Create(MutationQuery query, List<CheckoutLineItemInput> lineItems) {
             query.checkoutCreate(
                 buildQuery: checkoutCreate => checkoutCreate
