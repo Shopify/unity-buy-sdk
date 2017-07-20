@@ -20,12 +20,29 @@ To check your the project's dependencies run:
 $ scripts/check_setup.sh
 ```
 
-Write some features.
+## Build the Unity Buy SDK
+
+Under the hood, the Unity Buy SDK works on top of GraphQL. In order to query Shopify, we generate a GraphQL client based on the [Storefront API](https://help.shopify.com/api-storefront-api) introspection schema.
+
+To build the GraphQL client, run the following command:
+```bash
+$ scripts/build.sh
+```
+
+Now you are free to write some features.
+
+## Testing
+
+Read our [Testing Guide](TESTING.md)
 
 Add some tests and make your change. Re-run the tests with:
+
 ```bash
 $ scripts/build.sh
 $ scripts/test_unity.sh
+
+# If you made iOS plugin changes
+$ scripts/test_ios.sh
 ```
 ## Creating your Pull Requests
 We use the [beta](https://github.com/shopify/unity-buy-sdk/tree/beta) branch to hold new features and bug fixes before they are seen on [master](https://github.com/Shopify/unity-buy-sdk/tree/master). Please make your pull request to the [beta](https://github.com/shopify/unity-buy-sdk/tree/beta) branch.
