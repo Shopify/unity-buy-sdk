@@ -83,7 +83,6 @@ namespace <%= namespace %>.SDK {
             bool shouldRemove = ContainsKey(key);
             
             if (shouldRemove) {
-                TValue value = Data[key];
                 Data.Remove(key);
 
                 OnDictionaryChange();
