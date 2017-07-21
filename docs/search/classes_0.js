@@ -2,6 +2,7 @@ var searchData=
 [
   ['abstractresponse',['AbstractResponse',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_abstract_response.html',1,'Shopify::Unity::SDK']]],
   ['aliasexception',['AliasException',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_alias_exception.html',1,'Shopify::Unity::SDK']]],
+  ['applepayeventreceiverbridge',['ApplePayEventReceiverBridge',['../class_shopify_1_1_unity_1_1_s_d_k_1_1i_o_s_1_1_apple_pay_event_receiver_bridge.html',1,'Shopify::Unity::SDK::iOS']]],
   ['appliedgiftcard',['AppliedGiftCard',['../class_shopify_1_1_unity_1_1_applied_gift_card.html',1,'Shopify::Unity']]],
   ['appliedgiftcardquery',['AppliedGiftCardQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_applied_gift_card_query.html',1,'Shopify::Unity::GraphQL']]],
   ['arguments',['Arguments',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_arguments.html',1,'Shopify::Unity::SDK']]],

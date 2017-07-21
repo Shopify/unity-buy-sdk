@@ -78,14 +78,98 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanShowPaymentSetup</
 <tr class="memitem:a9807c0730a46228a1e77a2d187c6a486"><td class="memItemLeft" align="right" valign="top"><a id="a9807c0730a46228a1e77a2d187c6a486"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ShowPaymentSetup</b> ()</td></tr>
 <tr class="separator:a9807c0730a46228a1e77a2d187c6a486"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b4ecc3917df10409397c33094cab53f"><td class="memItemLeft" align="right" valign="top"><a id="a2b4ecc3917df10409397c33094cab53f"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanCheckout</b> ()</td></tr>
-<tr class="separator:a2b4ecc3917df10409397c33094cab53f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a159992165882665563d10779197e1fdc"><td class="memItemLeft" align="right" valign="top"><a id="a159992165882665563d10779197e1fdc"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_shopify_1_1_unity_1_1_s_d_k_1_1_i_native_checkout.html#a159992165882665563d10779197e1fdc">Checkout</a> (string key, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure)</td></tr>
-<tr class="memdesc:a159992165882665563d10779197e1fdc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Key is the public key that is used for encrypting a native payment's token data. <br /></td></tr>
-<tr class="separator:a159992165882665563d10779197e1fdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee3516403d5eedaf873b5e42000986af"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_shopify_1_1_unity_1_1_s_d_k_1_1_i_native_checkout.html#aee3516403d5eedaf873b5e42000986af">CanCheckout</a> (<a class="el" href="class_shopify_1_1_unity_1_1_payment_settings.html">PaymentSettings</a> paymentSettings)</td></tr>
+<tr class="memdesc:aee3516403d5eedaf873b5e42000986af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the device supports making a native payment given the <a class="el" href="class_shopify_1_1_unity_1_1_shop.html" title="Shop represents a collection of the general settings and information about the shop. ">Shop</a>'s payment settings  <a href="#aee3516403d5eedaf873b5e42000986af">More...</a><br /></td></tr>
+<tr class="separator:aee3516403d5eedaf873b5e42000986af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6911fc8638590e1803340b43edb68d79"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_shopify_1_1_unity_1_1_s_d_k_1_1_i_native_checkout.html#a6911fc8638590e1803340b43edb68d79">Checkout</a> (string key, <a class="el" href="class_shopify_1_1_unity_1_1_payment_settings.html">PaymentSettings</a> paymentSettings, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure)</td></tr>
+<tr class="memdesc:a6911fc8638590e1803340b43edb68d79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display the native payment sheet to perform a native payment  <a href="#a6911fc8638590e1803340b43edb68d79">More...</a><br /></td></tr>
+<tr class="separator:a6911fc8638590e1803340b43edb68d79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="aee3516403d5eedaf873b5e42000986af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee3516403d5eedaf873b5e42000986af">&#9670;&nbsp;</a></span>CanCheckout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Shopify.Unity.SDK.INativeCheckout.CanCheckout </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_shopify_1_1_unity_1_1_payment_settings.html">PaymentSettings</a>&#160;</td>
+          <td class="paramname"><em>paymentSettings</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Check whether the device supports making a native payment given the <a class="el" href="class_shopify_1_1_unity_1_1_shop.html" title="Shop represents a collection of the general settings and information about the shop. ">Shop</a>'s payment settings </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">paymentSettings</td><td>The <a class="el" href="class_shopify_1_1_unity_1_1_shop.html" title="Shop represents a collection of the general settings and information about the shop. ">Shop</a>'s payment settings</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the device supports making a native payment</dd></dl>
+
+</div>
+</div>
+<a id="a6911fc8638590e1803340b43edb68d79"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6911fc8638590e1803340b43edb68d79">&#9670;&nbsp;</a></span>Checkout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Shopify.Unity.SDK.INativeCheckout.Checkout </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_shopify_1_1_unity_1_1_payment_settings.html">PaymentSettings</a>&#160;</td>
+          <td class="paramname"><em>paymentSettings</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CheckoutSuccessCallback&#160;</td>
+          <td class="paramname"><em>success</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CheckoutCancelCallback&#160;</td>
+          <td class="paramname"><em>cancelled</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CheckoutFailureCallback&#160;</td>
+          <td class="paramname"><em>failure</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Display the native payment sheet to perform a native payment </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>The public key that is used for encrypting a native payment's token data</td></tr>
+    <tr><td class="paramname">success</td><td>The closure that is invoked upon success of the payment</td></tr>
+    <tr><td class="paramname">cancelled</td><td>The closure that is invoked upon cancellation of the payment</td></tr>
+    <tr><td class="paramname">failure</td><td>The closure that is invoked upon failure of the payment</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this interface was generated from the following file:<ul>
 <li>Assets/Shopify/Unity/SDK/INativeCheckout.cs</li>
 </ul>

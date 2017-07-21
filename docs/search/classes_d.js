@@ -13,5 +13,9 @@ var searchData=
   ['shopifyerror',['ShopifyError',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_shopify_error.html',1,'Shopify::Unity::SDK']]],
   ['shoppolicy',['ShopPolicy',['../class_shopify_1_1_unity_1_1_shop_policy.html',1,'Shopify::Unity']]],
   ['shoppolicyquery',['ShopPolicyQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_shop_policy_query.html',1,'Shopify::Unity::GraphQL']]],
-  ['shopquery',['ShopQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_shop_query.html',1,'Shopify::Unity::GraphQL']]]
+  ['shopquery',['ShopQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_shop_query.html',1,'Shopify::Unity::GraphQL']]],
+  ['stringconnection',['StringConnection',['../class_shopify_1_1_unity_1_1_string_connection.html',1,'Shopify::Unity']]],
+  ['stringconnectionquery',['StringConnectionQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_string_connection_query.html',1,'Shopify::Unity::GraphQL']]],
+  ['stringedge',['StringEdge',['../class_shopify_1_1_unity_1_1_string_edge.html',1,'Shopify::Unity']]],
+  ['stringedgequery',['StringEdgeQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_string_edge_query.html',1,'Shopify::Unity::GraphQL']]]
 ];
