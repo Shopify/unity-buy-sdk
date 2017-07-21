@@ -21,6 +21,9 @@ echo "--- Decrypting secrets...."
 eval "$(rbenv init -)"
 source <(ruby ./scripts/decrypt_secrets.rb)
 
+echo "--- DEBUG env:"
+env
+
 echo "--- Activate Unity license"
 ./scripts/activate_license.sh
 
