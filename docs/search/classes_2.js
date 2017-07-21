@@ -3,6 +3,7 @@ var searchData=
   ['cart',['Cart',['../class_shopify_1_1_unity_1_1_cart.html',1,'Shopify::Unity']]],
   ['cartlineitem',['CartLineItem',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html',1,'Shopify::Unity::SDK']]],
   ['cartlineitems',['CartLineItems',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_items.html',1,'Shopify::Unity::SDK']]],
+  ['cartstate',['CartState',['../class_shopify_1_1_unity_1_1_cart_state.html',1,'Shopify::Unity']]],
   ['castutils',['CastUtils',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_cast_utils.html',1,'Shopify::Unity::SDK']]],
   ['checkout',['Checkout',['../class_shopify_1_1_unity_1_1_checkout.html',1,'Shopify::Unity']]],
   ['checkoutattributesupdateinput',['CheckoutAttributesUpdateInput',['../class_shopify_1_1_unity_1_1_checkout_attributes_update_input.html',1,'Shopify::Unity']]],

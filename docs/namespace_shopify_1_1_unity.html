@@ -112,6 +112,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html">Cart</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Manages line items for an order. Can also be used to generate a web checkout link to check out in browser.  <a href="class_shopify_1_1_unity_1_1_cart.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart_state.html">CartState</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal state class for a <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a>.  <a href="class_shopify_1_1_unity_1_1_cart_state.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_checkout.html">Checkout</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A container for all the information required to checkout items and pay.  <a href="class_shopify_1_1_unity_1_1_checkout.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -369,6 +372,12 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shop_policy.html">ShopPolicy</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Policy that a merchant has configured for their store, such as their refund or privacy policy.  <a href="class_shopify_1_1_unity_1_1_shop_policy.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_string_connection.html">StringConnection</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_shopify_1_1_unity_1_1_string_connection.html" title="StringConnection is a response object. StringConnection can be cast to List&lt;String&gt;. ">StringConnection</a> is a response object. <a class="el" href="class_shopify_1_1_unity_1_1_string_connection.html" title="StringConnection is a response object. StringConnection can be cast to List&lt;String&gt;. ">StringConnection</a> can be cast to <code>List&lt;String&gt;</code>.  <a href="class_shopify_1_1_unity_1_1_string_connection.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_string_edge.html">StringEdge</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_shopify_1_1_unity_1_1_string_edge.html" title="StringEdge is a response object. ">StringEdge</a> is a response object.  <a href="class_shopify_1_1_unity_1_1_string_edge.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_tokenized_payment_input.html">TokenizedPaymentInput</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies the fields required to complete a checkout with a tokenized payment.  <a href="class_shopify_1_1_unity_1_1_tokenized_payment_input.html#details">More...</a><br /></td></tr>
@@ -973,6 +982,17 @@ Enumerations</h2></td></tr>
  }<tr class="memdesc:ae8416a39b388c574b504a7e209456160"><td class="mdescLeft">&#160;</td><td class="mdescRight">The set of valid sort keys for the products query.  <a href="namespace_shopify_1_1_unity.html#ae8416a39b388c574b504a7e209456160">More...</a><br /></td></tr>
 </td></tr>
 <tr class="separator:ae8416a39b388c574b504a7e209456160"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afda2e567da6adb1edbf9afbaef1340ec"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_shopify_1_1_unity.html#afda2e567da6adb1edbf9afbaef1340ec">ProductImageSortKeys</a> { <br />
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#afda2e567da6adb1edbf9afbaef1340eca696b031073e74bf2cb98e5ef201d4aa3">ProductImageSortKeys.UNKNOWN</a>, 
+<b>CREATED_AT</b>, 
+<b>ID</b>, 
+<b>POSITION</b>, 
+<br />
+&#160;&#160;<b>RELEVANCE</b>
+<br />
+ }<tr class="memdesc:afda2e567da6adb1edbf9afbaef1340ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">The set of valid sort keys for the images query.  <a href="namespace_shopify_1_1_unity.html#afda2e567da6adb1edbf9afbaef1340ec">More...</a><br /></td></tr>
+</td></tr>
+<tr class="separator:afda2e567da6adb1edbf9afbaef1340ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a792531009a09796b48377f704cdeb35b"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_shopify_1_1_unity.html#a792531009a09796b48377f704cdeb35b">ProductSortKeys</a> { <br />
 &#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a792531009a09796b48377f704cdeb35ba696b031073e74bf2cb98e5ef201d4aa3">ProductSortKeys.UNKNOWN</a>, 
 <b>CREATED_AT</b>, 
@@ -2006,6 +2026,34 @@ Enumerations</h2></td></tr>
 <p>The set of valid sort keys for the products query. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ae8416a39b388c574b504a7e209456160a696b031073e74bf2cb98e5ef201d4aa3"></a>UNKNOWN&#160;</td><td class="fielddoc"><p>If the <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a> is not up to date with the schema in the Storefront API, it is possible to have enum values returned that are unknown to the <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a>. In this case the value will actually be UNKNOWN. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="afda2e567da6adb1edbf9afbaef1340ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afda2e567da6adb1edbf9afbaef1340ec">&#9670;&nbsp;</a></span>ProductImageSortKeys</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespace_shopify_1_1_unity.html#afda2e567da6adb1edbf9afbaef1340ec">Shopify.Unity.ProductImageSortKeys</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The set of valid sort keys for the images query. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="afda2e567da6adb1edbf9afbaef1340eca696b031073e74bf2cb98e5ef201d4aa3"></a>UNKNOWN&#160;</td><td class="fielddoc"><p>If the <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a> is not up to date with the schema in the Storefront API, it is possible to have enum values returned that are unknown to the <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a>. In this case the value will actually be UNKNOWN. </p>
 </td></tr>
 </table>
 

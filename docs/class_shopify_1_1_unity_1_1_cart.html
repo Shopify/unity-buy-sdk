@@ -79,53 +79,35 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a83ee6e32d803d5c60f54af65c9c8139b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html#a83ee6e32d803d5c60f54af65c9c8139b">Cart</a> (<a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html">ShopifyClient</a> client)</td></tr>
 <tr class="memdesc:a83ee6e32d803d5c60f54af65c9c8139b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a new cart using a <a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html" title="ShopifyClient  is the entry point to communicate with the Shopify Storefront API. ShopifyClient  also...">ShopifyClient</a> . Typically, carts won't be instantiated directly, but will rather be instatiated using <a class="el" href="class_shopify_1_1_unity_1_1_shopify_buy.html#ac15beb2a8534e89ffe4f30d27e87740e" title="Returns the default ShopifyClient . The default client is the first client created after calling Shop...">ShopifyBuy.Client()</a>.<a class="el" href="class_shopify_1_1_unity_1_1_cart.html#a83ee6e32d803d5c60f54af65c9c8139b" title="Constructs a new cart using a ShopifyClient . Typically, carts won&#39;t be instantiated directly...">Cart()</a> .  <a href="#a83ee6e32d803d5c60f54af65c9c8139b">More...</a><br /></td></tr>
 <tr class="separator:a83ee6e32d803d5c60f54af65c9c8139b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2844ec25a3f786ebfdd81f2044953f27"><td class="memItemLeft" align="right" valign="top"><a id="a2844ec25a3f786ebfdd81f2044953f27"></a>
-delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>GetWebCheckoutLinkSuccess</b> (string url)</td></tr>
-<tr class="separator:a2844ec25a3f786ebfdd81f2044953f27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d6f587487b0628bb0c7a09923468c64"><td class="memItemLeft" align="right" valign="top"><a id="a2d6f587487b0628bb0c7a09923468c64"></a>
-delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>GetWebCheckoutLinkFailure</b> (<a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_shopify_error.html">ShopifyError</a> error)</td></tr>
-<tr class="separator:a2d6f587487b0628bb0c7a09923468c64"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae38723cb3b2b3db505f2e98ab2033782"><td class="memItemLeft" align="right" valign="top"><a id="ae38723cb3b2b3db505f2e98ab2033782"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>GetWebCheckoutLink</b> (GetWebCheckoutLinkSuccess success, GetWebCheckoutLinkFailure failure)</td></tr>
-<tr class="separator:ae38723cb3b2b3db505f2e98ab2033782"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9def142eb55aca6a4c4fe284391b8fb4"><td class="memItemLeft" align="right" valign="top"><a id="a9def142eb55aca6a4c4fe284391b8fb4"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>CheckoutWithNativeWebView</b> (CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure)</td></tr>
+<tr class="memitem:a943988a56cc24156854cd13456a8edb4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html#a943988a56cc24156854cd13456a8edb4">Reset</a> ()</td></tr>
+<tr class="memdesc:a943988a56cc24156854cd13456a8edb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the cart by removing all line items and resets all internal state.  <a href="#a943988a56cc24156854cd13456a8edb4">More...</a><br /></td></tr>
+<tr class="separator:a943988a56cc24156854cd13456a8edb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88a9770fb0fd4b5ba5870a9dbbb7b2e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html#a88a9770fb0fd4b5ba5870a9dbbb7b2e5">GetWebCheckoutLink</a> (GetWebCheckoutLinkSuccessCallback success, GetWebCheckoutLinkFailureCallback failure)</td></tr>
+<tr class="memdesc:a88a9770fb0fd4b5ba5870a9dbbb7b2e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the web URL for checking out the contents of this <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a>. For presenting the user with a web view that loads this URL see CheckoutWithNativeWebView.  <a href="#a88a9770fb0fd4b5ba5870a9dbbb7b2e5">More...</a><br /></td></tr>
+<tr class="separator:a88a9770fb0fd4b5ba5870a9dbbb7b2e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9def142eb55aca6a4c4fe284391b8fb4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html#a9def142eb55aca6a4c4fe284391b8fb4">CheckoutWithNativeWebView</a> (CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure)</td></tr>
+<tr class="memdesc:a9def142eb55aca6a4c4fe284391b8fb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Launches a platform-specific web view screen with the <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a>'s web checkout link loaded. This can be used to perform a cart checkout from within your application instead of being directed to an external web application. Typically this can be used as a fallback measure in cases where the user's device doesn't support native pay methods.  <a href="#a9def142eb55aca6a4c4fe284391b8fb4">More...</a><br /></td></tr>
 <tr class="separator:a9def142eb55aca6a4c4fe284391b8fb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9df57cf27df2d789df7fcc3cdf4564c"><td class="memItemLeft" align="right" valign="top"><a id="af9df57cf27df2d789df7fcc3cdf4564c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>CheckoutWithNativePay</b> (string key, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure)</td></tr>
+<tr class="memitem:af9df57cf27df2d789df7fcc3cdf4564c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html#af9df57cf27df2d789df7fcc3cdf4564c">CheckoutWithNativePay</a> (string key, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure)</td></tr>
+<tr class="memdesc:af9df57cf27df2d789df7fcc3cdf4564c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Launches a platform-specific native pay UI for checking out the <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a>'s contents. Currently supported native pay options include:  <a href="#af9df57cf27df2d789df7fcc3cdf4564c">More...</a><br /></td></tr>
 <tr class="separator:af9df57cf27df2d789df7fcc3cdf4564c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71f23eb2ac9de6839c52e9adeb93edcb"><td class="memItemLeft" align="right" valign="top"><a id="a71f23eb2ac9de6839c52e9adeb93edcb"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetShippingLine</b> (string shippingRateHandle, CompletionCallback callback)</td></tr>
-<tr class="separator:a71f23eb2ac9de6839c52e9adeb93edcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4d767d10f8e14f275c1380b25ca585d"><td class="memItemLeft" align="right" valign="top"><a id="aa4d767d10f8e14f275c1380b25ca585d"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanShowNativePaySetup</b> ()</td></tr>
+<tr class="memitem:aa4d767d10f8e14f275c1380b25ca585d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html#aa4d767d10f8e14f275c1380b25ca585d">CanShowNativePaySetup</a> ()</td></tr>
+<tr class="memdesc:aa4d767d10f8e14f275c1380b25ca585d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether the user can be shown to setup their native payment solution  <a href="#aa4d767d10f8e14f275c1380b25ca585d">More...</a><br /></td></tr>
 <tr class="separator:aa4d767d10f8e14f275c1380b25ca585d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a820bed32a127c7272100a36531a9ae35"><td class="memItemLeft" align="right" valign="top"><a id="a820bed32a127c7272100a36531a9ae35"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ShowNativePaySetup</b> ()</td></tr>
+<tr class="memitem:a820bed32a127c7272100a36531a9ae35"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html#a820bed32a127c7272100a36531a9ae35">ShowNativePaySetup</a> ()</td></tr>
+<tr class="memdesc:a820bed32a127c7272100a36531a9ae35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Launch a native payment app to prompt the user to setup their payment card  <a href="#a820bed32a127c7272100a36531a9ae35">More...</a><br /></td></tr>
 <tr class="separator:a820bed32a127c7272100a36531a9ae35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf09e597b1e78d98eb5ee0ff50ccc1dd"><td class="memItemLeft" align="right" valign="top"><a id="adf09e597b1e78d98eb5ee0ff50ccc1dd"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanCheckoutWithNativePay</b> ()</td></tr>
-<tr class="separator:adf09e597b1e78d98eb5ee0ff50ccc1dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a09db6932aeec58cfc611521d700304ec"><td class="memItemLeft" align="right" valign="top"><a id="a09db6932aeec58cfc611521d700304ec"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetEmailAddress</b> (string email, CompletionCallback callback)</td></tr>
-<tr class="separator:a09db6932aeec58cfc611521d700304ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a655a91aaa2cd7762003d4e0fa8e69ec6"><td class="memItemLeft" align="right" valign="top"><a id="a655a91aaa2cd7762003d4e0fa8e69ec6"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetShippingAddress</b> (<a class="el" href="class_shopify_1_1_unity_1_1_mailing_address_input.html">MailingAddressInput</a> mailingAddressInput, CompletionCallback callback)</td></tr>
-<tr class="separator:a655a91aaa2cd7762003d4e0fa8e69ec6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45836411037db0189ce1e2198be235cf"><td class="memItemLeft" align="right" valign="top"><a id="a45836411037db0189ce1e2198be235cf"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetFinalCheckoutFields</b> (string email, <a class="el" href="struct_shopify_1_1_unity_1_1_shipping_fields.html">ShippingFields</a>? shippingFields, CompletionCallback callback)</td></tr>
-<tr class="separator:a45836411037db0189ce1e2198be235cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9bc88ee0cdb503bfcf185ebb4223cd1d"><td class="memItemLeft" align="right" valign="top"><a id="a9bc88ee0cdb503bfcf185ebb4223cd1d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>CheckoutWithTokenizedPayment</b> (<a class="el" href="class_shopify_1_1_unity_1_1_tokenized_payment_input.html">TokenizedPaymentInput</a> tokenizedPaymentInput, CompletionCallback callback)</td></tr>
-<tr class="separator:a9bc88ee0cdb503bfcf185ebb4223cd1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48acc54111176f8a7b63b98d9067d6d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html#a48acc54111176f8a7b63b98d9067d6d9">CanCheckoutWithNativePay</a> (CanCheckoutWithNativePayCallback callback)</td></tr>
+<tr class="memdesc:a48acc54111176f8a7b63b98d9067d6d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether the user can checkout by paying with their native payment solution  <a href="#a48acc54111176f8a7b63b98d9067d6d9">More...</a><br /></td></tr>
+<tr class="separator:a48acc54111176f8a7b63b98d9067d6d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a1a0f29106f9c12d332ec256464db7a10"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_items.html">CartLineItems</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html#a1a0f29106f9c12d332ec256464db7a10">LineItems</a><code> [get]</code></td></tr>
 <tr class="memdesc:a1a0f29106f9c12d332ec256464db7a10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current line items for this <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a> .  <a href="#a1a0f29106f9c12d332ec256464db7a10">More...</a><br /></td></tr>
 <tr class="separator:a1a0f29106f9c12d332ec256464db7a10"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a121532d836129b43005e6c3903a8dfec"><td class="memItemLeft" align="right" valign="top"><a id="a121532d836129b43005e6c3903a8dfec"></a>
-List&lt; <a class="el" href="class_shopify_1_1_unity_1_1_user_error.html">UserError</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>UserErrors</b><code> [get]</code></td></tr>
+<tr class="memitem:a121532d836129b43005e6c3903a8dfec"><td class="memItemLeft" align="right" valign="top">List&lt; <a class="el" href="class_shopify_1_1_unity_1_1_user_error.html">UserError</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html#a121532d836129b43005e6c3903a8dfec">UserErrors</a><code> [get]</code></td></tr>
+<tr class="memdesc:a121532d836129b43005e6c3903a8dfec"><td class="mdescLeft">&#160;</td><td class="mdescRight">A list of all the user errors with the current checkout. For example, when a user enters invalid information in a field during checkout, the API will return a list of user errors which gets stored here. In general, a failure callback is invoked and the developer can reference this field to handle these issues.  <a href="#a121532d836129b43005e6c3903a8dfec">More...</a><br /></td></tr>
 <tr class="separator:a121532d836129b43005e6c3903a8dfec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abaeb107623990ad5b15553ad831214f4"><td class="memItemLeft" align="right" valign="top"><a id="abaeb107623990ad5b15553ad831214f4"></a>
 <a class="el" href="class_shopify_1_1_unity_1_1_checkout.html">Checkout</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CurrentCheckout</b><code> [get]</code></td></tr>
@@ -168,6 +150,294 @@ List&lt; <a class="el" href="class_shopify_1_1_unity_1_1_user_error.html">UserEr
 <div class="fragment"><div class="line"><span class="comment">// Example that creates a cart using a ShopifyClient and checks how many line items it has</span></div><div class="line"><span class="comment">// (spoiler: it has 0 line items since the cart was just created).</span></div><div class="line">ShopifyClient client = <span class="keyword">new</span> ShopifyClient(accessToken, shopDomain);</div><div class="line"></div><div class="line"><a class="code" href="class_shopify_1_1_unity_1_1_cart.html#a83ee6e32d803d5c60f54af65c9c8139b">Cart</a> cart = <span class="keyword">new</span> <a class="code" href="class_shopify_1_1_unity_1_1_cart.html#a83ee6e32d803d5c60f54af65c9c8139b">Cart</a>(client);</div><div class="line"></div><div class="line">Debug.Log(cart.LineItems.All().Count);</div></div><!-- fragment --> 
 </div>
 </div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a48acc54111176f8a7b63b98d9067d6d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48acc54111176f8a7b63b98d9067d6d9">&#9670;&nbsp;</a></span>CanCheckoutWithNativePay()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Shopify.Unity.Cart.CanCheckoutWithNativePay </td>
+          <td>(</td>
+          <td class="paramtype">CanCheckoutWithNativePayCallback&#160;</td>
+          <td class="paramname"><em>callback</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Determine whether the user can checkout by paying with their native payment solution </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">callback</td><td>Closure that is invoked with the result. True is returned if the user is able to pay with their native payment solution </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa4d767d10f8e14f275c1380b25ca585d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4d767d10f8e14f275c1380b25ca585d">&#9670;&nbsp;</a></span>CanShowNativePaySetup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Shopify.Unity.Cart.CanShowNativePaySetup </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Determine whether the user can be shown to setup their native payment solution </p>
+<dl class="section return"><dt>Returns</dt><dd>True if the user can be shown a native payment setup</dd></dl>
+
+</div>
+</div>
+<a id="af9df57cf27df2d789df7fcc3cdf4564c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9df57cf27df2d789df7fcc3cdf4564c">&#9670;&nbsp;</a></span>CheckoutWithNativePay()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Shopify.Unity.Cart.CheckoutWithNativePay </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CheckoutSuccessCallback&#160;</td>
+          <td class="paramname"><em>success</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CheckoutCancelCallback&#160;</td>
+          <td class="paramname"><em>cancelled</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CheckoutFailureCallback&#160;</td>
+          <td class="paramname"><em>failure</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Launches a platform-specific native pay UI for checking out the <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a>'s contents. Currently supported native pay options include: </p>
+<ul>
+<li>iOS: Launches Apple Pay. </li>
+</ul>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">System.PlatformNotSupportedException</td><td>Thrown when invoking this method on an unsupported platform.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>Vendor-specific key for identifying the merchant. For iOS devices this is the merchant ID.</td></tr>
+    <tr><td class="paramname">success</td><td>called whenever the checkout process has completed successfully.</td></tr>
+    <tr><td class="paramname">cancelled</td><td>called whenever the user cancels out of the native pay flow.</td></tr>
+    <tr><td class="paramname">failure</td><td>called whenever an error or failure is encountered during native pay.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a9def142eb55aca6a4c4fe284391b8fb4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9def142eb55aca6a4c4fe284391b8fb4">&#9670;&nbsp;</a></span>CheckoutWithNativeWebView()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Shopify.Unity.Cart.CheckoutWithNativeWebView </td>
+          <td>(</td>
+          <td class="paramtype">CheckoutSuccessCallback&#160;</td>
+          <td class="paramname"><em>success</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CheckoutCancelCallback&#160;</td>
+          <td class="paramname"><em>cancelled</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CheckoutFailureCallback&#160;</td>
+          <td class="paramname"><em>failure</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Launches a platform-specific web view screen with the <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a>'s web checkout link loaded. This can be used to perform a cart checkout from within your application instead of being directed to an external web application. Typically this can be used as a fallback measure in cases where the user's device doesn't support native pay methods. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">success</td><td>called when the web checkout screen has been dismissed and the checkout was successful.</td></tr>
+    <tr><td class="paramname">cancelled</td><td>called when the web checkout screen was dismissed before completing a checkout.</td></tr>
+    <tr><td class="paramname">failure</td><td>called when an error was encountered after the web checkout screen has been dismissed.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a88a9770fb0fd4b5ba5870a9dbbb7b2e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88a9770fb0fd4b5ba5870a9dbbb7b2e5">&#9670;&nbsp;</a></span>GetWebCheckoutLink()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Shopify.Unity.Cart.GetWebCheckoutLink </td>
+          <td>(</td>
+          <td class="paramtype">GetWebCheckoutLinkSuccessCallback&#160;</td>
+          <td class="paramname"><em>success</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">GetWebCheckoutLinkFailureCallback&#160;</td>
+          <td class="paramname"><em>failure</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the web URL for checking out the contents of this <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a>. For presenting the user with a web view that loads this URL see CheckoutWithNativeWebView. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">success</td><td>called when the checkout url was successfully generated.</td></tr>
+    <tr><td class="paramname">failure</td><td>called when generating the checkout url failed.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a943988a56cc24156854cd13456a8edb4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a943988a56cc24156854cd13456a8edb4">&#9670;&nbsp;</a></span>Reset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Shopify.Unity.Cart.Reset </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Resets the cart by removing all line items and resets all internal state. </p>
+
+</div>
+</div>
+<a id="a820bed32a127c7272100a36531a9ae35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a820bed32a127c7272100a36531a9ae35">&#9670;&nbsp;</a></span>ShowNativePaySetup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Shopify.Unity.Cart.ShowNativePaySetup </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Launch a native payment app to prompt the user to setup their payment card </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">PlatformNotSupportedException</td><td>Thrown when the device does not support this feature</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <h2 class="groupheader">Property Documentation</h2>
 <a id="a1a0f29106f9c12d332ec256464db7a10"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1a0f29106f9c12d332ec256464db7a10">&#9670;&nbsp;</a></span>LineItems</h2>
@@ -193,9 +463,34 @@ List&lt; <a class="el" href="class_shopify_1_1_unity_1_1_user_error.html">UserEr
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following files:<ul>
+<a id="a121532d836129b43005e6c3903a8dfec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a121532d836129b43005e6c3903a8dfec">&#9670;&nbsp;</a></span>UserErrors</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">List&lt;<a class="el" href="class_shopify_1_1_unity_1_1_user_error.html">UserError</a>&gt; Shopify.Unity.Cart.UserErrors</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A list of all the user errors with the current checkout. For example, when a user enters invalid information in a field during checkout, the API will return a list of user errors which gets stored here. In general, a failure callback is invoked and the developer can reference this field to handle these issues. </p>
+<dl class="section return"><dt>Returns</dt><dd>A list of user errors</dd></dl>
+<p>for this <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a> </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>Assets/Shopify/Unity/Cart.cs</li>
-<li>Assets/Shopify/Unity/Cart.Poll.cs</li>
 </ul>
 </div><!-- contents -->
 <address class="footer"><small>
