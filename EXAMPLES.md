@@ -144,9 +144,7 @@ void Start () {
         Cart cart = ShopifyBuy.Client().Cart();
 
         List<ProductVariant> firstProductVariants = (List<ProductVariant>) products[0].variants();
-        List<ProductVariant> secondProductVariants = (List<ProductVariant>) products[1].variants();
         ProductVariant firstProductFirstVariant = firstProductVariants[0];
-        ProductVariant secondProductFirstVariant = secondProductVariants[0];
 
         // the following example adds a line item using the first products first variant
         // in this case the cart will have 3 copies of the variant
@@ -154,8 +152,8 @@ void Start () {
 
         // AddOrUpdate is overloaded to accept ProductVariant's or strings or select a variant based on selected options
         // alternately you can use a product variant id string to create line items
-        // this example adds 1 item to the cart
-        cart.LineItems.AddOrUpdate(secondProductFirstVariant.id(), 1);
+        // this example updates the first product in the cart to have a quantity of 1
+        cart.LineItems.AddOrUpdate(firstProductFirstVariant.id(), 1);
     });
 }
 ```
@@ -213,8 +211,8 @@ void Start () {
         // the following will create a dictionary where keys are option names and values are option values
         // you may for instance have drop downs for the user to select options from
         Dictionary<string,string> selectedOptions = new Dictionary<string,string>() {
-            {"Size", "Large"},
-            {"Color", "Green"}
+            {"Size", "M"},
+            {"Color", "White"}
         };
 
         // create a line item based on the selected options for a product
@@ -258,9 +256,9 @@ start a native modal overlay on top of your game with a web view containing the 
 
 ShopifyBuy.Client().products((products, error) => {
     var cart = ShopifyBuy.Client().Cart();
-    var secondProduct = products[1];
-    var secondProductVariants = (List<ProductVariant>) secondProduct.variants();
-    ProductVariant productVariantToCheckout = secondProductVariants[0];
+    var firstProduct = products[0];
+    var firstProductVariants = (List<ProductVariant>) firstProduct.variants();
+    ProductVariant productVariantToCheckout = firstProductVariants[0];
 
     cart.LineItems.AddOrUpdate(productVariantToCheckout, 1);
 
@@ -300,28 +298,29 @@ To determine whether the user is able to make a payment with Apple Pay you can u
 
 ShopifyBuy.Client().products((products, error) => {
     var cart = ShopifyBuy.Client().Cart();
-    var secondProduct = products[1];
-    var secondProductVariants = (List<ProductVariant>) secondProduct.variants();
-    ProductVariant productVariantToCheckout = secondProductVariants[0];
+    var firstProduct = products[0];
+    var firstProductVariants = (List<ProductVariant>) firstProduct.variants();
+    ProductVariant productVariantToCheckout = firstProductVariants[0];
 
     cart.LineItems.AddOrUpdate(productVariantToCheckout, 1);
 
     // Check to see if the user can make a payment through Apple Pay
-    if (cart.CanCheckoutWithNativePay()) {
-
-        cart.CheckoutWithNativePay(
-            "com.merchant.id",
-            success: () => {
-                Debug.Log("User finished purchase/checkout!");
-            },
-            cancelled: () => {
-                Debug.Log("User cancelled out of the native checkout.");
-            },
-            failure: (e) => {
-                Debug.Log("Something bad happened - Error: " + e);
-            }
-        );
-    }
+    cart.CanCheckoutWithNativePay((isNativePayAvailable) => {
+        if (isNativePayAvailable) {
+            cart.CheckoutWithNativePay(
+                "com.merchant.id",
+                success: () => {
+                    Debug.Log("User finished purchase/checkout!");
+                },
+                cancelled: () => {
+                    Debug.Log("User cancelled out of the native checkout.");
+                },
+                failure: (e) => {
+                    Debug.Log("Something bad happened - Error: " + e);
+                }
+            );
+        }
+    });
 });
 
 ```
