@@ -19,8 +19,8 @@ echo "--- Build"
 
 echo "--- Decrypting secrets...."
 eval "$(rbenv init -)"
-ruby ./scripts/decrypt_secrets.rb
-source <(ruby ./scripts/decrypt_secrets.rb)
+ruby ./scripts/decrypt_secrets.rb > /tmp/secrets
+source /tmp/secrets
 
 echo "+++ DEBUG env:"
 env
