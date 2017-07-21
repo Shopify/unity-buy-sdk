@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-
 require 'json'
 
 def print_export(key, value)
