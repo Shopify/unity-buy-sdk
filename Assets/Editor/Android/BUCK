@@ -10,7 +10,3 @@ android_aar(
         ':lib',
     ]
 )
-
-java_test(
-
-)
