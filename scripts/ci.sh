@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eo pipefail
+set -e pipefail
 
 if [ "$BUILDKITE" != "true" ] ; then
   echo "This should run on Buildkite!"
@@ -19,7 +19,10 @@ echo "--- Build"
 
 echo "--- Decrypting secrets...."
 eval "$(rbenv init -)"
-source <(ruby ./scripts/decrypt_secrets.rb)
+
+ruby ./scripts/decrypt_secrets.rb > /tmp/secrets
+cat /tmp/secrets
+source /tmp/secrets
 
 echo "--- DEBUG env:"
 env
