@@ -137,6 +137,7 @@ module GraphQLGenerator
         SDK/iOS/iOSNativeCheckout
         SDK/iOS/iOSNativeCheckout.ApplePayEventReceiver
         SDK/iOS/ApplePayPayment
+        SDK/Android/AndroidPluginTest
       ).each do |class_file_name|
         directory = "#{path}/#{File.dirname(class_file_name)}"
 
