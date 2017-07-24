@@ -1,4 +1,3 @@
-
 . $(dirname $0)/common.sh
 
 ANDROID_PLUGIN_ROOT="$PROJECT_ROOT/unity_buy_android"
