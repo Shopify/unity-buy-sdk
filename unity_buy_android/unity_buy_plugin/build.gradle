@@ -32,7 +32,7 @@ dependencies {
 
 task copyAARToPlugins {
     copy {
-        from('unity_buy_plugin/build/outputs/aar') {
+        from('build/outputs/aar') {
             rename "unity_buy_plugin-release.aar", "unity_buy_plugin.aar"
             exclude '*-debug.aar'
         }
