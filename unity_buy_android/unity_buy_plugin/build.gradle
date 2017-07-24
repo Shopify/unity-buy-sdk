@@ -29,3 +29,17 @@ dependencies {
     compile 'com.android.support:appcompat-v7:26.+'
     testCompile 'junit:junit:4.12'
 }
+
+task copyAARToPlugins {
+    copy {
+        from('build/outputs/aar') {
+            rename "unity_buy_plugin-release.aar", "unity_buy_plugin.aar"
+            exclude '*-debug.aar'
+        }
+        into '../../Assets/Plugins/Android'
+    }
+}
+
+task assembleUnity {
+    dependsOn 'assembleRelease', 'copyAARToPlugins'
+}
