@@ -22,3 +22,16 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
+task copyAARToPlugins {
+    copy {
+        from('unity_buy_plugin/build/outputs/aar') {
+            rename "unity_buy_plugin-release.aar", "unity_buy_plugin.aar"
+            exclude '*-debug.aar'
+        }
+        into '../Assets/Plugins/Android'
+    }
+}
+
+task assembleUnity {
+    dependsOn 'unity_buy_plugin:assembleRelease', 'copyAARToPlugins'
+}
