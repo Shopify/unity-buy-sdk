@@ -12,9 +12,8 @@ The Unity Buy SDK queries Shopify's [Storefront API](https://help.shopify.com/ap
 - [Query all products](#query-all-products)
 - [Query all collections](#query-all-collections)
 - [Build a cart](#build-a-cart)
-  - [Cart line items based on selected options](#cart-line-items-based-on-selected-options)
-  - [Native web view checkout](#native-web-view-checkout)
-  - [Apple Pay checkout](#apple-pay-checkout)
+- [Native web view checkout](#native-web-view-checkout)
+- [Apple Pay checkout](#apple-pay-checkout)
 - [Custom queries](#custom-queries)
 
 ## Before you begin
@@ -251,7 +250,7 @@ cart.LineItems.Get(firstProduct, selectedOptions);
 cart.LineItems.Delete(firstProduct, selectedOptions);
 ```
 
-### Native web view checkout
+## Native web view checkout
 
 After creating an instance of `Cart` and adding items to it, you can use the `CheckoutWithNativeWebView` method to
 start a native modal overlay on top of your game with a web view that contains the checkout for the cart.
@@ -290,7 +289,7 @@ ShopifyBuy.Client().products((products, error) => {
 });
 ```
 
-### Apple Pay checkout
+## Apple Pay checkout
 
 You can allow users to pay with Apple Pay, providing a seamless checkout experience.
 
@@ -338,33 +337,35 @@ ShopifyBuy.Client().products((products, error) => {
 
 ```
 
-#### Additional Build Settings
+### Additional Build Settings
 
 To use Apple Pay, you must also enable **Background fetch** in the Player Settings:
 
-1. Open Player Settings, and click on *Edit* > *Project Settings* > *Player*.
+1. In Unity, open **Player Settings**, and then click *Edit* > *Project Settings* > *Player*.
 2. Select **Settings for iOS**.
 3. Under **Other Settings**, set **Behavior in Background** to **Custom**.
 4. Enable **Background fetch**.
 
-#### Enabling Apple Pay on your Store
+### Enabling Apple Pay on your Store
 
 To enable Apple Pay for your store through an app:
 
 1. Add the [Mobile App sales channel](https://help.shopify.com/api/sdks/custom-storefront/mobile-buy-sdk/add-mobile-app-sales-channel) in your Shopify admin.
 2. Enable Apple Pay in the Mobile App settings page.
 
-#### Notes
+### Notes
 
 `CheckoutWithNativePay` will throw an exception if the device is unable to make a payment through Apple Pay. So it is essential that `CanCheckoutWithNativePay` is used.
 
-#### Errors
+### Errors
 
 On failure, you will receive a `ShopifyError`. There are 3 types of `ShopifyError` that you will have to handle:
 
 * `HTTP`
 * `NativePaymentProcessingError`
 * `GraphQL`
+
+`HTTP` errors will be thrown when there was an issue connecting or downloading to a required web server.
 
 `NativePaymentProcessingError` will be thrown when Apple Pay fails to generate a token while trying to authenticate the user's card. This error is unrecoverable and you should fall back to a different payment method, or allow the user to try going through the process again.
 
@@ -393,7 +394,7 @@ cart.CheckoutWithNativePay(
 );
 ```
 
-#### Extras
+### Extras
 
 You might want to optionally drive users to setup their payment cards with Apple Pay. You can do so by using `CanShowNativePaySetup` and `ShowNativePaySetup`. `CanShowNativePaySetup` lets you know whether the device supports this, and `ShowNativePaySetup` launches the native `Wallet` app prompting the user to set up his or her card.
 
