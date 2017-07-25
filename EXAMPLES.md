@@ -4,7 +4,19 @@ This guide contains code examples that show different ways that you can use the 
 
 The Unity Buy SDK queries Shopify's [Storefront API](https://help.shopify.com/api/storefront-api), which is a [GraphQL](http://graphql.org) API. GraphQL APIs accept queries that define the data that you want to retrieve. The Unity Buy SDK lets you query various data from Shopify, including store information, checkout URLs, products, and collections.
 
-### Before you begin
+## Table of contents
+
+- [Before you begin](#before-you-begin)
+- [Using the SDK on iOS](#using-the-sdk-on-ios)
+- [Initialize the SDK](#initialize-the-sdk)
+- [Query all products](#query-all-products)
+- [Query all collections](#query-all-collections)
+- [Build a cart](#build-a-cart)
+- [Native web view checkout](#native-web-view-checkout)
+- [Apple Pay checkout](#apple-pay-checkout)
+- [Custom queries](#custom-queries)
+
+## Before you begin
 
 Before you can start using the Unity Buy SDK, you need:
 
@@ -12,11 +24,11 @@ Before you can start using the Unity Buy SDK, you need:
 - [a storefront access token for your app](https://help.shopify.com/api/storefront-api/getting-started#obtaining-a-storefront-access-token)
 - [to install the Unity Buy SDK into your Unity project](https://github.com/shopify/unity-buy-sdk#using-the-unity-buy-sdk-in-unity)
 
-### Using the SDK on iOS
+## Using the SDK on iOS
 
 See [Build Target Requirements](https://github.com/Shopify/unity-buy-sdk/blob/master/BUILDTARGETS.md) for information on setting up the SDK on iOS.
 
-### Initialize the SDK
+## Initialize the SDK
 
 This code example initializes the SDK. The `ShopifyBuy.Init` method takes two arguments. The first is a storefront access token to communicate with the Storefront API. The second is the domain name of your shop.
 
@@ -29,7 +41,7 @@ ShopifyBuy.Init(accessToken, shopDomain);
 
 After you initialize the SDK, you can use `ShopifyBuy.Client()` to query Shopify. You need to initialize the SDK only once.
 
-### Query all products
+## Query all products
 
 The following example shows how to query all products in your Shopify store:
 
@@ -44,7 +56,7 @@ void Start () {
     // Init only needs to be called once
     ShopifyBuy.Init(accessToken, shopDomain);
 
-    // the following will query the shop for all products
+    // The following queries the shop for all products
     ShopifyBuy.Client().products((products, error) => {
         if (error != null) {
             Debug.Log(error.Description);
@@ -53,7 +65,7 @@ void Start () {
             // An HTTP error is actually Unity's WWW.error
             case ShopifyError.ErrorType.HTTP:
                 break;
-            // It's unlikely but it may be that an invalid GraphQL query was sent.
+            // Although it's unlikely, an invalid GraphQL query might be sent.
             // Report an issue to https://github.com/shopify/unity-buy-sdk/issues
             case ShopifyError.ErrorType.GraphQL:
                 break;
@@ -73,7 +85,7 @@ void Start () {
 }
 ```
 
-### Query all collections
+## Query all collections
 
 The following example shows how to query all collections in your Shopify store:
 
@@ -87,7 +99,7 @@ void Start () {
 
     ShopifyBuy.Init(accessToken, shopDomain);
 
-    // will query all collections on shop
+    // Queries all collections on shop
     ShopifyBuy.Client().collections((collections, error) => {
         if (error != null) {
             Debug.Log(error.Description);
@@ -126,9 +138,9 @@ In this example, if you called `product.title()` then an exception would be thro
 
 You can also make more complex requests using custom queries (see below).
 
-### Building a cart
+## Build a cart
 
-The following example shows how to create a cart and add line items to the cart using product variants.
+The following example shows how to create a cart and add line items to the cart using product variants:
 
 ```cs
 using Shopify.Unity;
@@ -146,13 +158,13 @@ void Start () {
         List<ProductVariant> firstProductVariants = (List<ProductVariant>) products[0].variants();
         ProductVariant firstProductFirstVariant = firstProductVariants[0];
 
-        // the following example adds a line item using the first products first variant
-        // in this case the cart will have 3 copies of the variant
+        // The following example adds a line item using the first products first variant.
+        // In this case, the cart will have 3 copies of the variant.
         cart.LineItems.AddOrUpdate(firstProductFirstVariant, 3);
 
-        // AddOrUpdate is overloaded to accept ProductVariant's or strings or select a variant based on selected options
-        // alternately you can use a product variant id string to create line items
-        // this example updates the first product in the cart to have a quantity of 1
+        // AddOrUpdate is overloaded to accept either ProductVariants or strings, or to select a variant based on selected options.
+        // Alternately, you can use a product variant id string to create line items.
+        // This example updates the first product in the cart to have a quantity of 1.
         cart.LineItems.AddOrUpdate(firstProductFirstVariant.id(), 1);
     });
 }
@@ -195,30 +207,30 @@ void Start () {
 
         List<ProductOption> options = firstProduct.options();
 
-        // we will output all options for this product
+        // Output all options for this product
         Debug.Log("Options:\n-------");
 
         foreach(ProductOption option in options) {
             // Options have possible values
             foreach(string value in option.values()) {
-                // Each option has a name such as Color and multiple values for color
+                // Each option has a name such as Color and multiple values for Color
                 Debug.Log(option.name() + ": " + value);
             }
         }
 
         Debug.Log("-------");
 
-        // the following will create a dictionary where keys are option names and values are option values
-        // you may for instance have drop downs for the user to select options from
+        // The following creates a dictionary where keys are option names and values are option values.
+        // You might, for instance, have drop downs where users can select relevant options.
         Dictionary<string,string> selectedOptions = new Dictionary<string,string>() {
             {"Size", "M"},
             {"Color", "White"}
         };
 
-        // create a line item based on the selected options for a product
+        // Create a line item based on the selected options for a product
         cart.LineItems.AddOrUpdate(firstProduct, selectedOptions, 1);
 
-        // checkout the selected product
+        // Checkout the selected product
         cart.GetWebCheckoutLink(
             success: (link) => {
                 Application.OpenURL(link);
@@ -238,16 +250,16 @@ cart.LineItems.Get(firstProduct, selectedOptions);
 cart.LineItems.Delete(firstProduct, selectedOptions);
 ```
 
-### Native web view checkout
+## Native web view checkout
 
-After creating an instance of `Cart` and adding items to it, you can use the `CheckoutWithNativeWebView` method to 
-start a native modal overlay on top of your game with a web view containing the checkout for the cart.
+After creating an instance of `Cart` and adding items to it, you can use the `CheckoutWithNativeWebView` method to
+start a native modal overlay on top of your game with a web view that contains the checkout for the cart.
 
-`CheckoutWithNativeWebView` which takes in 3 callback parameters:
+`CheckoutWithNativeWebView` takes in 3 callback parameters:
 
 * `CheckoutSuccessCallback` is called when the user has completed a checkout successfully.
 * `CheckoutCancelCallback` is called when the user cancels out of the checkout.
-* `CheckoutFailureCallback` is called when an error was encountered during the web checkout. The callback will be passed an instance of `ShopifyError` describing the issue.
+* `CheckoutFailureCallback` is called when an error was encountered during the web checkout. The callback will pass an instance of `ShopifyError` describing the issue.
 
 ```cs
 // Sample code for adding some product variants to your cart.
@@ -262,7 +274,7 @@ ShopifyBuy.Client().products((products, error) => {
 
     cart.LineItems.AddOrUpdate(productVariantToCheckout, 1);
 
-    // Launches the native web checkout experience overlayed on top of your game.
+    // Launches the native web checkout experience overlaid on top of your game.
     cart.CheckoutWithNativeWebView(
         success: () => {
             Debug.Log("User finished purchase/checkout!");
@@ -277,18 +289,18 @@ ShopifyBuy.Client().products((products, error) => {
 });
 ```
 
-### Apple Pay checkout
+## Apple Pay checkout
 
 You can allow users to pay with Apple Pay, providing a seamless checkout experience.
 
-To determine whether the user is able to make a payment with Apple Pay you can use the `CanCheckoutWithNativePay` method. If the user has this capability, you can use `CheckoutWithNativePay` to present the Apple Pay authentication interface to the user. If not you can have them pay using [Native Web Checkout](#native-web-view-checkout).
+To determine whether the user is able to make a payment with Apple Pay, you can use the `CanCheckoutWithNativePay` method. If the user has this capability, then you can use `CheckoutWithNativePay` to present the Apple Pay authentication interface to the user. If they do not, then you can accept payment using [Native Web Checkout](#native-web-view-checkout).
 
-`CheckoutWithNativePay` takes in 4  parameters:
+`CheckoutWithNativePay` takes in 4 parameters:
 
-1. `key` is the Merchant ID of your application found on your [Apple Developer Portal](https://developer.apple.com/library/content/ApplePay_Guide/Configuration.html)
-2. `CheckoutSuccessCallback` is called when the user has completed a checkout successfully.
-3. `CheckoutCancelCallback` is called when the user cancels out of the checkout.
-4. `CheckoutFailureCallback` is called when an error was encountered during the checkout. The callback will be passed an instance of `ShopifyError` describing the issue.
+* `key` is the Merchant ID of your application found on your [Apple Developer Portal](https://developer.apple.com/library/content/ApplePay_Guide/Configuration.html)
+* `CheckoutSuccessCallback` is called when the user has completed a checkout successfully.
+* `CheckoutCancelCallback` is called when the user cancels out of the checkout.
+* `CheckoutFailureCallback` is called when an error was encountered during the checkout. The callback will be passed an instance of `ShopifyError` describing the issue.
 
 
 ```csharp
@@ -325,30 +337,35 @@ ShopifyBuy.Client().products((products, error) => {
 
 ```
 
+### Additional Build Settings
 
-**Additional Build Settings**
+To use Apple Pay, you must also enable **Background fetch** in the Player Settings:
 
-To use Apple Pay, you must also enable `Background fetch` in the Player Settings.
+1. In Unity, open **Player Settings**, and then click *Edit* > *Project Settings* > *Player*.
+2. Select **Settings for iOS**.
+3. Under **Other Settings**, set **Behavior in Background** to **Custom**.
+4. Enable **Background fetch**.
 
-1. Open Player Settings, Edit -> Project Settings -> Player
-2. Select `Settings for iOS`
-3. Under `Other Settings`, set `Behaviour in Background` to `Custom`
-4. Enable `Background fetch`
+### Enabling Apple Pay on your Store
 
-**Enabling Apple Pay on your Store**
-
-To enable Apple Pay for your store through an app, follow the following steps:
+To enable Apple Pay for your store through an app:
 
 1. Add the [Mobile App sales channel](https://help.shopify.com/api/sdks/custom-storefront/mobile-buy-sdk/add-mobile-app-sales-channel) in your Shopify admin.
 2. Enable Apple Pay in the Mobile App settings page.
 
-**Notes**
+### Notes
 
 `CheckoutWithNativePay` will throw an exception if the device is unable to make a payment through Apple Pay. So it is essential that `CanCheckoutWithNativePay` is used.
 
-**Errors**
+### Errors
 
-On failure, you will receive a `ShopifyError`. The types of `ShopifyError` you will have to handle are `HTTP`, `NativePaymentProcessingError`, and `GraphQL`.
+On failure, you will receive a `ShopifyError`. There are 3 types of `ShopifyError` that you will have to handle:
+
+* `HTTP`
+* `NativePaymentProcessingError`
+* `GraphQL`
+
+`HTTP` errors will be thrown when there was an issue connecting or downloading to a required web server.
 
 `NativePaymentProcessingError` will be thrown when Apple Pay fails to generate a token while trying to authenticate the user's card. This error is unrecoverable and you should fall back to a different payment method, or allow the user to try going through the process again.
 
@@ -366,10 +383,10 @@ cart.CheckoutWithNativePay(
     failure: (e) => {
         switch(e.Type) {
         case ShopifyError.ErrorType.HTTP:
-            // Let the user know there is no internet connection
+            // Let the user know that there is no internet connection
             break;
-        default: 
-            // Let the user know checkout could not be completed
+        default:
+            // Let the user know that checkout could not be completed
             // Fallback to Web Checkout
             break;
         }
@@ -377,12 +394,12 @@ cart.CheckoutWithNativePay(
 );
 ```
 
-**Extras**
+### Extras
 
-You may want to optionally drive users to setup their payment cards with Apple Pay. You can do so by using `CanShowNativePaySetup` and `ShowNativePaySetup`. `CanShowNativePaySetup` lets you know whether the device supports this, and `ShowNativePaySetup` launches the native `Wallet` app prompting the user to set up his or her card.
+You might want to optionally drive users to setup their payment cards with Apple Pay. You can do so by using `CanShowNativePaySetup` and `ShowNativePaySetup`. `CanShowNativePaySetup` lets you know whether the device supports this, and `ShowNativePaySetup` launches the native `Wallet` app prompting the user to set up his or her card.
 
 
-### Custom queries
+## Custom queries
 
 The Unity Buy SDK is built on top of Shopify's [Storefront API](https://help.shopify.com/api/storefront-api), which is a GraphQL Web API. In GraphQL, you send queries to the endpoint and receive back a JSON responses.
 
@@ -437,11 +454,11 @@ void Start () {
 
     ShopifyBuy.Init(accessToken, shopDomain);
 
-    // the following will build a custom query
-    // this example uses named parameters but these could be omitted
+    // The following builds a custom query.
+    // This example uses named parameters but these could be omitted.
     ShopifyBuy.Client().Query(
-        // pass a lambda expression to 'buildQuery'
-        // the lambda will receive a QueryRootQuery instance
+        // Pass a lambda expression to 'buildQuery'
+        // The lambda receives a QueryRootQuery instance.
         buildQuery: (query) => query
             .shop(shopQuery => shopQuery
                 .name()
@@ -451,7 +468,7 @@ void Start () {
                 )
             ),
         callback: (result, error) => {
-            // result is a QueryRoot instance
+            // Results in a QueryRoot instance
             Debug.Log("Shop name: " + result.shop().name());
             Debug.Log("Shop url: " + result.shop().primaryDomain().url());
         }
