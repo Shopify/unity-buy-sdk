@@ -9,5 +9,5 @@ end "generating GraphQL client"
 
 
 start "generating Android .AAR plugin"
-$SCRIPTS_ROOT/build_android.sh &> /dev/null || die "Could not generate Android .AAR"
+$SCRIPTS_ROOT/build_android.sh || die "Could not generate Android .AAR"
 end "generating Android .AAR plugin"
