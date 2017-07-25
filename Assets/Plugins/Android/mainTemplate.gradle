@@ -46,4 +46,5 @@ dependencies {
 
     compile 'com.android.support:appcompat-v7:26.0.0'
     compile 'com.android.support:customtabs:26.0.0'
+    compile 'com.shopify.mobilebuysdk:buy3-pay-support:1.0.0'
 }
