@@ -13,6 +13,7 @@ machine:
 dependencies:
   pre:
     - xcrun instruments -w "iPhone 6 (10.0) [" || true
+    - echo y | android update sdk --no-ui --all --filter android-19,extra-google-google_play_services,extra-android-support
   override:
     - ./scripts/install_unity.sh
   cache_directories:
