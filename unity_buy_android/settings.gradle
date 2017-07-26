@@ -1,1 +1,1 @@
-include ':unity_buy_plugin', ':unity_classes'
+include ':unity_buy_plugin'
