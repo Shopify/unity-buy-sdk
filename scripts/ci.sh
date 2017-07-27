@@ -20,13 +20,8 @@ echo "--- Build"
 echo "--- Decrypting secrets...."
 eval "$(rbenv init -)"
 
-EJSON_FILE=secrets.ejson ruby ./scripts/decrypt_secrets.rb
 EJSON_FILE=secrets.ejson ruby ./scripts/decrypt_secrets.rb > /tmp/secrets
-cat /tmp/secrets
 source /tmp/secrets
-
-echo "--- DEBUG env:"
-env
 
 echo "--- Activate Unity license"
 ./scripts/activate_license.sh
