@@ -36,9 +36,9 @@ Coming Soon:
 
 By following the steps below you'll install the Unity Buy SDK into your Unity project using the [shopify-buy.unitypackage](https://github.com/Shopify/unity-buy-sdk/raw/master/shopify-buy.unitypackage):
 
-1. Download the [shopify-buy.unitypackage](https://github.com/Shopify/unity-buy-sdk/raw/master/shopify-buy.unitypackage)
+1. Download the latest release of the [shopify-buy.unitypackage](https://github.com/Shopify/unity-buy-sdk/releases/latest)
 2. Make sure that your project is open in Unity
-3. Open the downloaded [shopify-buy.unitypackage](https://github.com/Shopify/unity-buy-sdk/raw/master/shopify-buy.unitypackage)
+3. Open the downloaded `shopify-buy.unitypackage`
 
 
 ## Supported build targets 
