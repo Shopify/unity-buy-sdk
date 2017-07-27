@@ -95,9 +95,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae72772e2711d040fe05bef65a6806436"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#ae72772e2711d040fe05bef65a6806436">collections</a> (CollectionsHandler callback, int? first=null, string after=null)</td></tr>
 <tr class="memdesc:ae72772e2711d040fe05bef65a6806436"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a query to receive all <code>collections</code> from a <a class="el" href="namespace_shopify.html">Shopify</a> store. The generated query will query the following on collections:  <a href="#ae72772e2711d040fe05bef65a6806436">More...</a><br /></td></tr>
 <tr class="separator:ae72772e2711d040fe05bef65a6806436"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeba43c030231aa2e633337452e9a7edd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#aeba43c030231aa2e633337452e9a7edd">paymentSettings</a> (PaymentSettingsHandler callback)</td></tr>
-<tr class="memdesc:aeba43c030231aa2e633337452e9a7edd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a query to fetch the <code><a class="el" href="class_shopify_1_1_unity_1_1_payment_settings.html" title="Values required for completing various payment methods. ">PaymentSettings</a></code> from a <a class="el" href="namespace_shopify.html">Shopify</a> store. The generated query will query the following on paymentSettings:  <a href="#aeba43c030231aa2e633337452e9a7edd">More...</a><br /></td></tr>
-<tr class="separator:aeba43c030231aa2e633337452e9a7edd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e81f60efd90f09f46e744aedc176618"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#a6e81f60efd90f09f46e744aedc176618">Query</a> (<a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_query_root_query.html">QueryRootQuery</a> query, QueryRootHandler callback)</td></tr>
 <tr class="memdesc:a6e81f60efd90f09f46e744aedc176618"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to send custom <a class="el" href="namespace_shopify_1_1_unity_1_1_graph_q_l.html">GraphQL</a> queries to the Storefront API. While having utility functions like products collections is useful, the Storefront API has more functionality. This method allows you to access all the extra functionality that the Storefront API provides.  <a href="#a6e81f60efd90f09f46e744aedc176618">More...</a><br /></td></tr>
 <tr class="separator:a6e81f60efd90f09f46e744aedc176618"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -404,44 +401,6 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 <div class="fragment"><div class="line"><span class="comment">// Example that creates a new customer on a store</span></div><div class="line">ShopifyBuy.Client().Mutation(</div><div class="line">    buildQuery: (mutation) =&gt; { mutation</div><div class="line">        .customerCreate(</div><div class="line">            buildQuery: (cc) =&gt; { cc</div><div class="line">                .userErrors(</div><div class="line">                    buildQuery: (ue) =&gt; { ue</div><div class="line">                        .field()</div><div class="line">                        .message();</div><div class="line">                    }</div><div class="line">                );</div><div class="line">            },</div><div class="line">            input: <span class="keyword">new</span> CustomerCreateInput(</div><div class="line">                email: <span class="stringliteral">&quot;mikkoh@email.com&quot;</span>,</div><div class="line">                password: <span class="stringliteral">&quot;oh so secret&quot;</span></div><div class="line">            )</div><div class="line">        );</div><div class="line">    },</div><div class="line">    callback: (data, error) =&gt; {</div><div class="line">        <span class="keywordflow">if</span> (error != null) {</div><div class="line">            Debug.Log(<span class="stringliteral">&quot;There was an error: &quot;</span> + error.Reason);</div><div class="line">        } <span class="keywordflow">else</span> {</div><div class="line">            List&lt;UserError&gt; userErrors = data.customerCreate().userErrors();</div><div class="line"></div><div class="line">            <span class="keywordflow">if</span> (userErrors != null) {</div><div class="line">                <span class="keywordflow">foreach</span>(UserError error <span class="keywordflow">in</span> userErrors) {</div><div class="line">                    <span class="comment">// field which may have a user error</span></div><div class="line">                    Debug.Log(error.field());</div><div class="line">                    <span class="comment">// error message for the field which had an error</span></div><div class="line">                    Debug.Log(error.message());</div><div class="line">                }</div><div class="line">            } <span class="keywordflow">else</span> {</div><div class="line">                Debug.Log(<span class="stringliteral">&quot;No user errors the customer was created&quot;</span>);</div><div class="line">            }</div><div class="line">        }</div><div class="line">    }</div><div class="line">);</div></div><!-- fragment --> 
-</div>
-</div>
-<a id="aeba43c030231aa2e633337452e9a7edd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeba43c030231aa2e633337452e9a7edd">&#9670;&nbsp;</a></span>paymentSettings()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Shopify.Unity.ShopifyClient.paymentSettings </td>
-          <td>(</td>
-          <td class="paramtype">PaymentSettingsHandler&#160;</td>
-          <td class="paramname"><em>callback</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Generates a query to fetch the <code><a class="el" href="class_shopify_1_1_unity_1_1_payment_settings.html" title="Values required for completing various payment methods. ">PaymentSettings</a></code> from a <a class="el" href="namespace_shopify.html">Shopify</a> store. The generated query will query the following on paymentSettings: </p>
-<ul>
-<li>currencyCode</li>
-<li>countryCode</li>
-</ul>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">callback</td><td>callback that will receive responses from server</td></tr>
-  </table>
-  </dd>
-</dl>
-
 </div>
 </div>
 <a id="a2416fe5cc59a351bc9c07a5ea0b075ae"></a>
