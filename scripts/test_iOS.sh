@@ -24,11 +24,11 @@ else
     cat "$UNITY_IOS_LOG_PATH"
 fi
 
-xcodebuild test \
+set -o pipefail && xcodebuild test \
     -project "$IOS_PROJECT_PATH" \
     -sdk iphonesimulator \
     -scheme Unity-iPhone \
-    -destination 'platform=iOS Simulator,OS=10.3.1,name=iPhone 6'
+    -destination 'platform=iOS Simulator,OS=10.3.1,name=iPhone 6' | xcpretty
 
 if [ $? = 0 ] ; then
     echo "Tests passed"
