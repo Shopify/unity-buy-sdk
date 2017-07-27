@@ -235,11 +235,17 @@ namespace <%= namespace %> {
             if (StorePaymentSettings != null) {
                 callback(StorePaymentSettings, null);
             } else {
-                Client.paymentSettings((paymentSettings, error) => {
-                    if (error == null) {
-                        StorePaymentSettings = paymentSettings;
+                var query = new QueryRootQuery();
+                DefaultQueries.shop.PaymentSettings(query);
+
+                Client.Query(query, (response, error) => {
+                    if (error != null) {
+                        callback(null, error);
+                    } else {
+                        StorePaymentSettings = response.shop().paymentSettings();
+
+                        callback(StorePaymentSettings, null);
                     }
-                    callback(paymentSettings, error);
                 });
             }
         }
