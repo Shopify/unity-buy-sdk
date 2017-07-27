@@ -1,5 +1,4 @@
-#if UNITY_IOS
-namespace <%= namespace %>.SDK.iOS {
+namespace <%= namespace %>.SDK {
     using System;
     using System.Runtime.InteropServices;
     using <%= namespace %>.SDK;
@@ -7,10 +6,10 @@ namespace <%= namespace %>.SDK.iOS {
 
     #if !SHOPIFY_MONO_UNIT_TEST
     using UnityEngine;
-    public partial class iOSWebViewMessageReceiver: MonoBehaviour {}
+    public partial class NativeWebViewMessageReceiver: MonoBehaviour {}
     #endif
 
-    public partial class iOSWebViewMessageReceiver {
+    public partial class NativeWebViewMessageReceiver {
         public ShopifyClient Client;
         public Checkout CurrentCheckout;
 
@@ -44,4 +43,3 @@ namespace <%= namespace %>.SDK.iOS {
         }
     }
 }
-#endif
