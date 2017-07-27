@@ -20,7 +20,7 @@ echo "--- Build"
 echo "--- Decrypting secrets...."
 eval "$(rbenv init -)"
 
-ruby ./scripts/decrypt_secrets.rb > /tmp/secrets
+EJSON_FILE=secrets.ejson ruby ./scripts/decrypt_secrets.rb > /tmp/secrets
 cat /tmp/secrets
 source /tmp/secrets
 
