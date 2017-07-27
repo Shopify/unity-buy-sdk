@@ -1,0 +1,31 @@
+namespace <%= namespace %>.SDK {
+    using System;
+
+    #if !SHOPIFY_MONO_UNIT_TEST
+    using UnityEngine;
+    #endif
+
+    class NativeWebCheckout: IWebCheckout {
+
+        private static NativeWebViewMessageReceiver _messageReceiver;
+
+        protected ShopifyClient Client;
+        protected Cart Cart;
+
+        public NativeWebCheckout(Cart cart, ShopifyClient client) {
+            Client = client;
+            Cart = cart;
+        }
+
+        public virtual void Checkout(string checkoutURL, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
+            SetupNativeMessageReceiver(success, cancelled, failure);
+        }
+
+        private void SetupNativeMessageReceiver(CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
+            if (_messageReceiver == null) {
+                _messageReceiver = GlobalGameObject.AddComponent<NativeWebViewMessageReceiver>();
+            }
+            _messageReceiver.Init(Client, Cart.CurrentCheckout, success, cancelled, failure);
+        }
+    }
+}
