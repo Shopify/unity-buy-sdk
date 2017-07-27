@@ -78,9 +78,9 @@ namespace Shopify.Tests {
             Assert.IsTrue(didFail);
         }
 
-        private iOSWebViewMessageReceiver CreateMockMessageReceiver(string checkoutId) {
+        private NativeWebViewMessageReceiver CreateMockMessageReceiver(string checkoutId) {
 
-            var webViewMessageReceiver = new iOSWebViewMessageReceiver();
+            var webViewMessageReceiver = new NativeWebViewMessageReceiver();
 
             var cartDict = new Dictionary<string, object> { {"id", checkoutId} };
             webViewMessageReceiver.CurrentCheckout = new Checkout(cartDict);
