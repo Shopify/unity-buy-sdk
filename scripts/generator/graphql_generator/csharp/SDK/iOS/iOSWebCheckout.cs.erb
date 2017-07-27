@@ -10,7 +10,7 @@ namespace <%= namespace %>.SDK.iOS {
     #endif
 
     class iOSWebCheckout: IWebCheckout {
-        private static iOSWebViewMessageReceiver _messageReceiver;
+        private static NativeWebViewMessageReceiver _messageReceiver;
 
         private ShopifyClient Client;
         private Cart Cart;
@@ -33,7 +33,7 @@ namespace <%= namespace %>.SDK.iOS {
         #if !SHOPIFY_MONO_UNIT_TEST
         private void SetupNativeMessageReceiver(CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
             if (_messageReceiver == null) {
-                _messageReceiver = GlobalGameObject.AddComponent<iOSWebViewMessageReceiver>();
+                _messageReceiver = GlobalGameObject.AddComponent<NativeWebViewMessageReceiver>();
             }
         
             _messageReceiver.Client = Client;
