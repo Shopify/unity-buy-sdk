@@ -487,26 +487,6 @@ namespace <%= namespace %> {
         }
 
         /// <summary>
-        /// Generates a query to fetch the <c>PaymentSettings</c> from a Shopify store. The generated query will query the following on paymentSettings:
-        ///     - currencyCode
-        ///     - countryCode
-        ///
-        /// </summary>
-        /// <param name="callback">callback that will receive responses from server</param>
-        public void paymentSettings(PaymentSettingsHandler callback) {
-            var query = new QueryRootQuery();
-            DefaultQueries.shop.PaymentSettings(query);
-
-            Query(query, (response, error) => {
-                if (error != null) {
-                    callback(null, error);
-                } else {
-                    callback(response.shop().paymentSettings(), null);
-                }
-            });
-        }
-
-        /// <summary>
         /// Allows you to send custom GraphQL queries to the Storefront API. While having utility functions like <see ref="ShopifyClient.products">products </see>
         /// <see ref="ShopifyClient.collections">collections </see> is useful, the Storefront API has more functionality. This method
         /// allows you to access all the extra functionality that the Storefront API provides.
