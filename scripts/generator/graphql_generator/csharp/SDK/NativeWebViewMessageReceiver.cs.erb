@@ -17,6 +17,21 @@ namespace <%= namespace %>.SDK {
         public CheckoutCancelCallback OnCancelled;
         public CheckoutFailureCallback OnFailure;
 
+        public void Init(
+            ShopifyClient client,
+            Checkout currentCheckout,
+            CheckoutSuccessCallback onSuccess,
+            CheckoutCancelCallback onCancelled,
+            CheckoutFailureCallback onFailure)
+        {
+
+            Client = client;
+            CurrentCheckout = currentCheckout;
+            OnSuccess = onSuccess;
+            OnCancelled = onCancelled;
+            OnFailure = onFailure;
+        }
+
         public void OnNativeMessage(string jsonMessage) {
             var message = NativeMessage.CreateFromJSON(jsonMessage);
             if (message.Content == "dismissed") {
