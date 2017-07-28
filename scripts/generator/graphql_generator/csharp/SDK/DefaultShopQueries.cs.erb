@@ -15,5 +15,9 @@ namespace <%= namespace %>.SDK {
                 )
             );
         }
+
+        public void Name(QueryRootQuery query) {
+            query.shop(s => s.name());
+        }
     }
 }

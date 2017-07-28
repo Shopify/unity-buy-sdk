@@ -18,6 +18,6 @@ namespace <%= namespace %>.SDK {
         /// <param name="success">The closure that is invoked upon success of the payment</param>
         /// <param name="cancelled">The closure that is invoked upon cancellation of the payment</param>
         /// <param name="failure">The closure that is invoked upon failure of the payment</param>
-        void Checkout(string key, PaymentSettings paymentSettings, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure);
+        void Checkout(string key, string shopName, PaymentSettings paymentSettings, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure);
     }
 }

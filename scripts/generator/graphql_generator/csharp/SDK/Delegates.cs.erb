@@ -22,7 +22,7 @@ namespace <%= namespace %>.SDK {
     public delegate void QueryRootHandler(<%= schema.query_root_name %> queryRoot, ShopifyError error);
     public delegate void MutationRootHandler(<%= schema.mutation_root_name %> mutationRoot, ShopifyError error);
 
-    public delegate void PaymentSettingsHandler(PaymentSettings paymentSettings, ShopifyError error);
+    public delegate void PaymentSettingsShopNameHandler(PaymentSettings paymentSettings, string shopName, ShopifyError error);
 
     public delegate void OnCartLineItemChange();
 

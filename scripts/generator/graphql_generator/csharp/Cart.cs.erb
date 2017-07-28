@@ -76,6 +76,7 @@ namespace <%= namespace %> {
         private IWebCheckout WebCheckout;
         private INativeCheckout NativeCheckout;
         private PaymentSettings StorePaymentSettings;
+        private String ShopName;
 
         private ShopifyClient Client;
 
@@ -175,11 +176,11 @@ namespace <%= namespace %> {
                 if (error != null) {
                     failure(error);
                 } else {
-                    GetPaymentSettings((paymentSettings, paymentSettingsError) => {
+                    GetPaymentSettingsAndShopName((paymentSettings, shopName, paymentSettingsError) => {
                         if (paymentSettingsError != null) {
                             failure(paymentSettingsError);
                         } else {
-                            NativeCheckout.Checkout(key, paymentSettings, success, cancelled, failure);
+                            NativeCheckout.Checkout(key, shopName, paymentSettings, success, cancelled, failure);
                         }
                     });
                 }
@@ -219,7 +220,7 @@ namespace <%= namespace %> {
         /// </param>
         public void CanCheckoutWithNativePay(CanCheckoutWithNativePayCallback callback) {
             if (NativeCheckout != null) {
-                GetPaymentSettings((paymentSettings, error) => {
+                GetPaymentSettingsAndShopName((paymentSettings, shopName, error) => {
                     if (error != null) {
                         callback(false);
                     } else {
@@ -231,20 +232,22 @@ namespace <%= namespace %> {
             }
         }
 
-        private void GetPaymentSettings(PaymentSettingsHandler callback) {
-            if (StorePaymentSettings != null) {
-                callback(StorePaymentSettings, null);
+        private void GetPaymentSettingsAndShopName(PaymentSettingsShopNameHandler callback) {
+            if (StorePaymentSettings != null && ShopName != null) {
+                callback(StorePaymentSettings, ShopName, null);
             } else {
                 var query = new QueryRootQuery();
                 DefaultQueries.shop.PaymentSettings(query);
+                DefaultQueries.shop.Name(query);
 
                 Client.Query(query, (response, error) => {
                     if (error != null) {
-                        callback(null, error);
+                        callback(null, null, error);
                     } else {
                         StorePaymentSettings = response.shop().paymentSettings();
+                        ShopName = response.shop().name();
 
-                        callback(StorePaymentSettings, null);
+                        callback(StorePaymentSettings, ShopName, null);
                     }
                 });
             }
