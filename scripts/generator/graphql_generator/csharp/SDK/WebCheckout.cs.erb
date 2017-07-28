@@ -1,0 +1,20 @@
+namespace <%= namespace %>.SDK {
+    using System;
+
+    abstract class WebCheckout {
+
+        private static NativeWebViewMessageReceiver _messageReceiver;
+
+        protected abstract ShopifyClient Client { get; }
+        protected abstract Cart Cart { get; }
+
+        public abstract void Checkout(string checkoutURL, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure);
+
+        protected void SetupNativeMessageReceiver(CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
+            if (_messageReceiver == null) {
+                _messageReceiver = GlobalGameObject.AddComponent<NativeWebViewMessageReceiver>();
+            }
+            _messageReceiver.Init(Client, Cart.CurrentCheckout, success, cancelled, failure);
+        }
+    }
+}
