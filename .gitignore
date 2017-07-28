@@ -22,7 +22,9 @@ scripts/test_watch.sh
 ####### Unity test files
 EditorTestResults.xml
 test.log
+buildIOS.log
 export.log
+Shopify-iOS-Tests/
 
 ####### Unity
 /[Ll]ibrary/
