@@ -3,47 +3,38 @@ namespace <%= namespace %>.SDK.iOS {
     using System;
     using System.Runtime.InteropServices;
     using <%= namespace %>.SDK;
-    using <%= namespace %>.GraphQL;
 
-    #if !SHOPIFY_MONO_UNIT_TEST
-    using UnityEngine;
-    #endif
-
-    class iOSWebCheckout: IWebCheckout {
-        private static NativeWebViewMessageReceiver _messageReceiver;
-
-        private ShopifyClient Client;
-        private Cart Cart;
-
-        public iOSWebCheckout(Cart cart, ShopifyClient client) {
-            Client = client;
-            Cart = cart;
-        }
+    class iOSWebCheckout: WebCheckout {
 
         [DllImport ("__Internal")]
         private static extern void _CheckoutWithWebView(string unityDelegateObjectName, string checkoutURL);
 
-        public void Checkout(string checkoutURL, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
+        private ShopifyClient _client;
+        private Cart _cart;
+
+        protected override ShopifyClient Client {
+            get {
+                return _client;
+            }
+        }
+
+        protected override Cart Cart {
+            get {
+                return _cart;
+            }
+        }
+
+        public iOSWebCheckout(Cart cart, ShopifyClient client) {
+            _cart = cart;
+            _client = client;
+        }
+
+        public override void Checkout(string checkoutURL, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
             #if !SHOPIFY_MONO_UNIT_TEST
             SetupNativeMessageReceiver(success, cancelled, failure);
             _CheckoutWithWebView(GlobalGameObject.Name, checkoutURL);
             #endif
         }
-
-        #if !SHOPIFY_MONO_UNIT_TEST
-        private void SetupNativeMessageReceiver(CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
-            if (_messageReceiver == null) {
-                _messageReceiver = GlobalGameObject.AddComponent<NativeWebViewMessageReceiver>();
-            }
-        
-            _messageReceiver.Client = Client;
-            _messageReceiver.CurrentCheckout = Cart.CurrentCheckout;
-
-            _messageReceiver.OnSuccess = success;
-            _messageReceiver.OnCancelled = cancelled;
-            _messageReceiver.OnFailure = failure;
-        }
-        #endif
     }
 }
 #endif
