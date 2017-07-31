@@ -40,7 +40,7 @@ dependencies {
 task copyAARToPlugins {
     copy {
         from('build/outputs/aar') {
-            rename "unity_buy_plugin-release.aar", "unity_buy_plugin.aar"
+            rename "shopify_buy_plugin-release.aar", "shopify_buy_plugin.aar"
             exclude '*-debug.aar'
         }
         into '../../Assets/Plugins/Android'
