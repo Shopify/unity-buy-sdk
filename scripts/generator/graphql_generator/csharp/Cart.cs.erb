@@ -7,6 +7,8 @@ namespace <%= namespace %> {
 
     #if UNITY_IOS
     using <%= namespace %>.SDK.iOS;
+    #elif UNITY_ANDROID
+    using <%= namespace %>.SDK.Android;
     #endif
 
     /// <summary>
@@ -106,6 +108,9 @@ namespace <%= namespace %> {
             #if UNITY_IOS
             WebCheckout = new iOSWebCheckout(this, client);
             NativeCheckout = new iOSNativeCheckout(State);
+            #elif UNITY_ANDROID
+            WebCheckout = new AndroidWebCheckout(this, client);
+            NativeCheckout = null;
             #else
             WebCheckout = null;
             NativeCheckout = null;
