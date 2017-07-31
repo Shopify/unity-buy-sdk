@@ -1,4 +1,9 @@
 apply plugin: 'com.android.library'
+apply plugin: 'checkstyle'
+
+checkstyle {
+    toolVersion = "7.5.1" // http://checkstyle.sourceforge.net/releasenotes.html
+}
 
 android {
     compileSdkVersion 26
@@ -44,6 +49,21 @@ task copyAARToPlugins {
 
 task assembleUnity {
     dependsOn 'assembleRelease', 'copyAARToPlugins'
+}
+
+task checkstyle(type: Checkstyle) {
+    configFile = new File(rootDir, "checkstyle/config.xml")
+    configProperties.checkstyleSuppressionsPath = new File(rootDir, "checkstyle/suppressions.xml")
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+    classpath = files()
+}
+
+afterEvaluate {
+    if (project.tasks.findByName('check')) {
+        check.dependsOn('checkstyle')
+    }
 }
 
 tasks.withType(Test) {
