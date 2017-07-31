@@ -15,9 +15,10 @@ namespace <%= namespace %>.SDK {
         /// Display the native payment sheet to perform a native payment
         /// </summary>
         /// <param name="key">The public key that is used for encrypting a native payment's token data</param>
+        /// <param name="shopMetadata">The shop's metadata containing name and payment settings</param>
         /// <param name="success">The closure that is invoked upon success of the payment</param>
         /// <param name="cancelled">The closure that is invoked upon cancellation of the payment</param>
         /// <param name="failure">The closure that is invoked upon failure of the payment</param>
-        void Checkout(string key, string shopName, PaymentSettings paymentSettings, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure);
+        void Checkout(string key, ShopMetadata shopMetadata, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure);
     }
 }
