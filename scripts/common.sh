@@ -1,10 +1,12 @@
+#!/bin/bash
+
 die() {
-    out $@;
-    exit 1;
+    out "$@"
+    exit 1
 }
 
 out() {
-    echo -e $@;
+    printf "%s" "$@"
 }
 
 start() {
