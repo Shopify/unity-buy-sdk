@@ -1,6 +1,8 @@
 package com.shopify.unity.buy;
 
+import com.google.android.gms.wallet.WalletConstants;
 import com.shopify.buy3.pay.PayCart;
+import com.shopify.buy3.pay.PayHelper;
 import com.shopify.unity.buy.models.PricingLineItems;
 import com.shopify.unity.buy.utils.AndroidLogger;
 import com.shopify.unity.buy.utils.ILogger;
@@ -15,22 +17,45 @@ public final class AndroidPayCheckoutSession {
         this.logger = new AndroidLogger();
     }
 
-    public AndroidPayCheckoutSession(ILogger logger) {
+    AndroidPayCheckoutSession(ILogger logger) {
         this.logger = logger;
     }
 
+    //CHECKSTYLE:OFF
     public boolean checkoutWithAndroidPay(
             String unityDelegateObjectName,
             String merchantName,
+            String publicKey,
             String pricingLineItemsString,
             String currencyCode,
             String countryCode,
-            boolean requiresShipping
+            boolean requiresShipping,
+            boolean testing
     ) {
+        //CHECKSTYLE:ON
+        if (!PayHelper.isAndroidPayEnabledInManifest(UnityPlayer.currentActivity)) {
+            // TODO: Send unsupported error to Unity
+            return false;
+        }
+
         try {
             PayCart cart = cartFromUnity(merchantName, pricingLineItemsString, currencyCode, countryCode,
                     requiresShipping);
-            addAndroidPayFragment(unityDelegateObjectName, cart, countryCode);
+
+            UnityAndroidPayFragment payFragment = UnityAndroidPayFragment.builder()
+                    .setUnityDelegateObjectName(unityDelegateObjectName)
+                    .setPayCart(cart)
+                    .setCountryCode(countryCode)
+                    .setEnvironment(testing ?
+                            WalletConstants.ENVIRONMENT_TEST : WalletConstants.ENVIRONMENT_PRODUCTION)
+                    .setPublicKey(publicKey)
+                    .build();
+
+            UnityPlayer.currentActivity.getFragmentManager()
+                    .beginTransaction()
+                    .add(payFragment, "payFragment")
+                    .commit();
+
             return true;
         } catch (IOException e) {
             logger.error("ShopifyBuyPlugin", "Failed to parse summary items from Unity");
@@ -39,7 +64,7 @@ public final class AndroidPayCheckoutSession {
         }
     }
 
-    public PayCart cartFromUnity(
+    PayCart cartFromUnity(
         String merchantName,
         String pricingLineItemsString,
         String currencyCode,
@@ -59,14 +84,5 @@ public final class AndroidPayCheckoutSession {
                 .taxPrice(items.taxPrice)
                 .totalPrice(items.totalPrice)
                 .build();
-    }
-
-    private void addAndroidPayFragment(String unityDelegateObjectName, PayCart cart, String countryCode) {
-        UnityAndroidPayFragment payFragment =
-                UnityAndroidPayFragment.newInstance(unityDelegateObjectName, cart, countryCode);
-        UnityPlayer.currentActivity.getFragmentManager()
-                .beginTransaction()
-                .add(payFragment, "payFragment")
-                .commit();
     }
 }

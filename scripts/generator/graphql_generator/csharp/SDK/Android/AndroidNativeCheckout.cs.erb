@@ -62,7 +62,7 @@ namespace <%= namespace %>.SDK.Android {
             #if !SHOPIFY_MONO_UNIT_TEST
             using (var androidPayCheckoutSession = new AndroidJavaObject("com.shopify.unity.buy.AndroidPayCheckoutSession")) {
                 // TODO: Replace with mono object for receiving callbacks with.
-                object[] args = { "testing", merchantName, pricingLineItemsString, currencyCodeString, countryCodeString, requiresShipping };
+                object[] args = { "testing", merchantName, key, pricingLineItemsString, currencyCodeString, countryCodeString, requiresShipping };
                 if (androidPayCheckoutSession.Call<bool>("checkoutWithAndroidPay", args)) {
                     // TODO: Do I need to do anything on the Unity side after we've created the session
                 } else {
