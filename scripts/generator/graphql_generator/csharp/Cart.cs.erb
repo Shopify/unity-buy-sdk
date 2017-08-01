@@ -31,6 +31,14 @@ namespace <%= namespace %> {
             ShippingAddress = shippingAddress;
         }
     }
+
+    /// <summary>
+    /// Data struct containing metadata associated with a Shop.
+    /// </summary>
+    public struct ShopMetadata {
+        public String Name;
+        public PaymentSettings PaymentSettings;
+    }
     
     /// <summary>
     /// Manages line items for an order. Can also be used to generate a web checkout link to check out in browser.
@@ -77,7 +85,7 @@ namespace <%= namespace %> {
 
         private WebCheckout WebCheckout;
         private INativeCheckout NativeCheckout;
-        private PaymentSettings StorePaymentSettings;
+        private ShopMetadata? ShopMetadata;
 
         private ShopifyClient Client;
 
@@ -180,11 +188,11 @@ namespace <%= namespace %> {
                 if (error != null) {
                     failure(error);
                 } else {
-                    GetPaymentSettings((paymentSettings, paymentSettingsError) => {
-                        if (paymentSettingsError != null) {
-                            failure(paymentSettingsError);
+                    GetShopMetadata((metadata, metadataError) => {
+                        if (metadataError != null) {
+                            failure(metadataError);
                         } else {
-                            NativeCheckout.Checkout(key, paymentSettings, success, cancelled, failure);
+                            NativeCheckout.Checkout(key, metadata.Value, success, cancelled, failure);
                         }
                     });
                 }
@@ -224,11 +232,11 @@ namespace <%= namespace %> {
         /// </param>
         public void CanCheckoutWithNativePay(CanCheckoutWithNativePayCallback callback) {
             if (NativeCheckout != null) {
-                GetPaymentSettings((paymentSettings, error) => {
+                GetShopMetadata((metadata, error) => {
                     if (error != null) {
                         callback(false);
                     } else {
-                        callback(NativeCheckout.CanCheckout(paymentSettings));
+                        callback(NativeCheckout.CanCheckout(metadata.Value.PaymentSettings));
                     }
                 });
             } else {
@@ -236,20 +244,23 @@ namespace <%= namespace %> {
             }
         }
 
-        private void GetPaymentSettings(PaymentSettingsHandler callback) {
-            if (StorePaymentSettings != null) {
-                callback(StorePaymentSettings, null);
+        private void GetShopMetadata(ShopMetadataHandler callback) {
+            if (ShopMetadata != null) {
+                callback(ShopMetadata, null);
             } else {
                 var query = new QueryRootQuery();
                 DefaultQueries.shop.PaymentSettings(query);
+                DefaultQueries.shop.Name(query);
 
                 Client.Query(query, (response, error) => {
                     if (error != null) {
                         callback(null, error);
                     } else {
-                        StorePaymentSettings = response.shop().paymentSettings();
-
-                        callback(StorePaymentSettings, null);
+                        var metadata = new ShopMetadata();
+                        metadata.PaymentSettings = response.shop().paymentSettings();
+                        metadata.Name = response.shop().name();
+                        ShopMetadata = metadata;
+                        callback(ShopMetadata, null);
                     }
                 });
             }
