@@ -1,4 +1,4 @@
-. $(dirname $0)/common.sh
+. "$(dirname "$0")"/common.sh
 
 which mcs &> /dev/null || die "Mono is not installed"
 which nunit-console &> /dev/null || die "nunit-console is not installed"
@@ -16,6 +16,8 @@ mcs \
     -target:library \
     -out:test.dll
 
-if [ $? = 0 ] ; then
+MCS_RESULT=$?
+
+if [[ $MCS_RESULT = 0 ]] ; then
     nunit-console test.dll
 fi
