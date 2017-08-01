@@ -5,7 +5,7 @@ import static junit.framework.Assert.*;
 
 public class UnityBuyPluginTest {
     @Test
-    public void test_add() {
+    public void testAdd() {
         assertEquals(2, UnityBuyPlugin.add(1, 1));
     }
 }
