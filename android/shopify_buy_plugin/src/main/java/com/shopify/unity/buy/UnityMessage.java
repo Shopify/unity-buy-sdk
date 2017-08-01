@@ -27,7 +27,7 @@ public class UnityMessage implements JsonSerializable {
             json.put(IDENTIFIER_KEY, identifier);
             json.put(CONTENT_KEY, content);
         } catch (JSONException e) {
-            throw new IllegalStateException("Unity Message is not JsonSerializable");
+            throw new IllegalStateException("UnityMessage is not JsonSerializable");
         }
         return json.toString();
     }
