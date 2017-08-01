@@ -39,7 +39,7 @@ namespace <%= namespace %>.SDK.Android {
 
         public void Checkout(
             string key, 
-            PaymentSettings paymentSettings, 
+            ShopMetadata shopMetadata,
             CheckoutSuccessCallback success, 
             CheckoutCancelCallback cancelled, 
             CheckoutFailureCallback failure
@@ -52,11 +52,11 @@ namespace <%= namespace %>.SDK.Android {
             var checkout = CartState.CurrentCheckout;
 
             // TODO: Replace with Shop name
-            var merchantName = "mables-cables";
+            var merchantName = shopMetadata.Name;
             var summaryItems = GetSummaryItemsFromCheckout(checkout);
             var summaryString = Json.Serialize(summaryItems);
             var currencyCodeString = checkout.currencyCode().ToString("G");
-            var countryCodeString = paymentSettings.countryCode().ToString("G");
+            var countryCodeString = shopMetadata.PaymentSettings.countryCode().ToString("G");
             var requiresShipping = checkout.requiresShipping();
 
             #if !SHOPIFY_MONO_UNIT_TEST
