@@ -20,5 +20,11 @@ namespace <%= namespace %>.SDK {
             _messageReceiver.Init(Client, Cart.CurrentCheckout, success, cancelled, failure);
             #endif
         }
+
+        #if !SHOPIFY_MONO_UNIT_TEST
+        protected String GetNativeMessageReceiverName() {
+            return GlobalGameObject.Name;
+        }
+        #endif
     }
 }

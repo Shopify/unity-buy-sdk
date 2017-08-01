@@ -36,7 +36,8 @@ namespace <%= namespace %>.SDK.Android {
             #if !SHOPIFY_MONO_UNIT_TEST
             using(var webCheckoutSession = new AndroidJavaObject(WebCheckoutSessionClassName)) {
                 SetupNativeMessageReceiver(success, cancelled, failure);
-                webCheckoutSession.Call("checkout", checkoutURL);
+                object[] args = { GetNativeMessageReceiverName(), checkoutURL };
+                webCheckoutSession.Call("checkout", args);
             }
             #endif
         }
