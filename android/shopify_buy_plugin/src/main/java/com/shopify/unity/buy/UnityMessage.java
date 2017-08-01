@@ -1,22 +1,34 @@
 package com.shopify.unity.buy;
 
-import com.google.gson.Gson;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.UUID;
 
 public class UnityMessage implements JsonSerializable {
 
-    // Using capital case here, so when it is serialized the keys are capitalized
-    public String Content;
-    private String Identifier;
+    public static String CONTENT_KEY = "Content";
+    public static String IDENTIFIER_KEY = "Identifier";
+
+    public String content;
+    private String identifier;
 
     public UnityMessage(String content) {
-        Identifier = UUID.randomUUID().toString();
-        this.Content = content;
+        identifier = UUID.randomUUID().toString();
+        this.content = content;
     }
 
     @Override
     public String toJsonString() {
-        Gson gson = new Gson();
-        return gson.toJson(this);
+
+        JSONObject json = new JSONObject();
+
+        try {
+            json.put(IDENTIFIER_KEY, identifier);
+            json.put(CONTENT_KEY, content);
+        } catch (JSONException e) {
+            throw new IllegalStateException("Unity Message is not JsonSerializable");
+        }
+        return json.toString();
     }
 }

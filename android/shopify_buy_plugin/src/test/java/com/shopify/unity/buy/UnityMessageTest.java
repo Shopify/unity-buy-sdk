@@ -1,12 +1,8 @@
 package com.shopify.unity.buy;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Test;
-
-import java.lang.reflect.Type;
-import java.util.Map;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
@@ -15,31 +11,28 @@ import static junit.framework.Assert.assertTrue;
 public class UnityMessageTest {
 
     @Test
-    public void test_serialize() {
+    public void testSerialize() throws JSONException {
 
-        final String identifierKey = "Identifier";
-        final String contentKey = "Content";
+        final String identifierKey = UnityMessage.IDENTIFIER_KEY;
+        final String contentKey = UnityMessage.CONTENT_KEY;
         final String expectedContent = "expectedContent";
-
-        Type type = new TypeToken<Map<String, String>>(){}.getType();
-        Gson gson = new Gson();
 
         UnityMessage messageA = new UnityMessage(expectedContent);
         String messageAJsonString = messageA.toJsonString();
-        Map<String, String> jsonA = gson.fromJson(messageAJsonString, type);
+        JSONObject jsonA = new JSONObject(messageAJsonString);
 
         UnityMessage messageB = new UnityMessage(expectedContent);
         String messageBJsonString = messageB.toJsonString();
-        Map<String, String> jsonB = gson.fromJson(messageBJsonString, type);
+        JSONObject jsonB = new JSONObject(messageBJsonString);
 
-        assertTrue(jsonA.containsKey(identifierKey));
-        assertTrue(jsonA.containsKey(contentKey));
+        assertTrue(jsonA.has(identifierKey));
+        assertTrue(jsonA.has(contentKey));
         assertEquals(jsonA.get(contentKey), expectedContent);
 
-        String indentifierA = jsonA.get(identifierKey);
-        String indentifierB = jsonB.get(identifierKey);
+        String identifierA = jsonA.getString(identifierKey);
+        String identifierB = jsonB.getString(identifierKey);
 
-        assertFalse(indentifierA.equals(indentifierB));
+        assertFalse(identifierA.equals(identifierB));
         assertEquals(jsonA.get(contentKey), jsonB.get(contentKey));
     }
 }
