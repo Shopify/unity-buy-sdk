@@ -87,10 +87,12 @@ $UNITY_PATH \
     -exportPackage Assets/Shopify Assets/Plugins $UNITY_PACKAGE \
     -quit
 
+PUBLISH_SUCCESS=$?
+
 # restore files used for native extensions
 restore_native_tests
 
-if [ $? = 0 ] ; then
+if [[ $PUBLISH_SUCCESS = 0 ]] ; then
     # clean up examples.txt
     rm $PROJECT_ROOT/Assets/Shopify/examples.txt
 
