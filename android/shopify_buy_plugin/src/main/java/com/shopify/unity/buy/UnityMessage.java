@@ -5,13 +5,13 @@ import org.json.JSONObject;
 
 import java.util.UUID;
 
-public class UnityMessage implements JsonSerializable {
+public final class UnityMessage implements JsonSerializable {
 
-    public static String CONTENT_KEY = "Content";
-    public static String IDENTIFIER_KEY = "Identifier";
+    public static final String CONTENT_KEY = "Content";
+    public static final String IDENTIFIER_KEY = "Identifier";
 
-    public String content;
-    private String identifier;
+    public final String content;
+    private final String identifier;
 
     public UnityMessage(String content) {
         identifier = UUID.randomUUID().toString();
