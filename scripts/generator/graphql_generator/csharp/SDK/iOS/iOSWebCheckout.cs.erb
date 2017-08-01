@@ -32,7 +32,7 @@ namespace <%= namespace %>.SDK.iOS {
         public override void Checkout(string checkoutURL, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
             #if !SHOPIFY_MONO_UNIT_TEST
             SetupNativeMessageReceiver(success, cancelled, failure);
-            _CheckoutWithWebView(GlobalGameObject.Name, checkoutURL);
+            _CheckoutWithWebView(GetNativeMessageReceiverName(), checkoutURL);
             #endif
         }
     }
