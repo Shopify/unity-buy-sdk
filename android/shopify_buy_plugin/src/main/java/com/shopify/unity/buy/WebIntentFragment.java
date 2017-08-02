@@ -9,6 +9,7 @@ import android.support.customtabs.CustomTabsIntent;
 public final class WebIntentFragment extends Fragment {
 
     private static final String ARGS_URL = "url";
+    private boolean onPauseIssued = false;
     private WebIntentListener listener;
 
     public static WebIntentFragment newInstance(String url) {
@@ -32,9 +33,18 @@ public final class WebIntentFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        onPauseIssued = true;
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        notifyListenerOnClose();
+        if (onPauseIssued) {
+            notifyListenerOnClose();
+        }
+        onPauseIssued = false;
     }
 
     public void setListener(WebIntentListener listener) {
