@@ -28,11 +28,13 @@ namespace Shopify.Unity.Editor.BuildPipeline {
         [MenuItem("Build/Build Shopify iOS Tests")]
         public static void BuildIosForTests()
         {
+            #if UNITY_IOS
             string path = PlayerPath;
             string[] scenes = {"Assets/Scenes/iOSTestScene.unity"};
             PlayerSettings.iOS.sdkVersion = iOSSdkVersion.SimulatorSDK;
             BuildPipeline.BuildPlayer(scenes, path, BuildTarget.iOS, BuildOptions.Development);
             iOSTestPostProcessor.ProcessForTests(path);
+            #endif
         }
 
         private static string PlayerPathFromArguments(string[] arguments) {
