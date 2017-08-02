@@ -77,14 +77,14 @@ namespace <%= namespace %>.SDK.Android {
         private Dictionary<string, string> GetPricingLineItemsFromCheckout(Checkout checkout) {
             var dict = new Dictionary<string, string>()
             {
-                { "TAXES",      checkout.totalTax().ToString() },
-                { "SUBTOTAL",   checkout.subtotalPrice().ToString() },
-                { "TOTAL",      checkout.totalPrice().ToString() }
+                { "taxPrice",       checkout.totalTax().ToString() },
+                { "subtotal",       checkout.subtotalPrice().ToString() },
+                { "totalPrice",     checkout.totalPrice().ToString() }
             };
 
             if (checkout.requiresShipping()) {
                 try {
-                    dict.Add("SHIPPING", checkout.shippingLine().price().ToString());
+                    dict.Add("shippingPrice", checkout.shippingLine().price().ToString());
                 } catch {}
             }
             return dict;
