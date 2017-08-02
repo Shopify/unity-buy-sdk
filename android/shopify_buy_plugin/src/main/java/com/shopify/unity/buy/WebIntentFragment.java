@@ -23,11 +23,13 @@ public class WebIntentFragment extends Fragment {
     }
 
     public void launchUrl(String url) {
-        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-        CustomTabsIntent customTabsIntent = builder.build();
+        if (isAdded() && !isRemoving()) {
+            CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+            CustomTabsIntent customTabsIntent = builder.build();
 
-        didShowIntent = true;
-        customTabsIntent.launchUrl(getActivity().getApplicationContext(), Uri.parse(url));
+            didShowIntent = true;
+            customTabsIntent.launchUrl(getActivity().getApplicationContext(), Uri.parse(url));
+        }
     }
 
     private void notifyListenerOnClose() {
