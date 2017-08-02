@@ -35,45 +35,66 @@ else
     HAS_OPTIONAL=false
 fi
 
+print_bold_text() {
+    # arg 1: String
+    # arg 2: Color
+    printf "%b$1%b" "$2$BOLD" "$RESET_STYLE"
+}
+
+print_point_form_prefix() {
+    # arg 1: String
+    printf "◦ %s : " "$(print_bold_text "$1")"
+}
+
 # Output required dependencies
 if [[ $HAS_REQUIRED = false ]] ; then
-    printf "\n\n $COLOR_RED $BOLD The following required required dependencies are missing: $RESET_STYLE \n"
+    print_bold_text "\n\nThe following required required dependencies are missing:\n" "$COLOR_RED"
 fi
 
 if [[ $HAS_UNITY = false ]] ; then
-    printf "◦ $BOLD unity $RESET_STYLE : should be installed at the following path %s\n" "$UNITY_PATH"
+    print_point_form_prefix "unity"
+    printf "should be installed at the following path %s\n" "$UNITY_PATH"
 fi
 
 if [[ $HAS_RUBY = false ]] ; then
-    printf "◦ $BOLD ruby $RESET_STYLE : is used by 'scripts/build.sh'' to generate C# source for the SDK. Ruby 2.3.0 or greater is required\n"
+    print_point_form_prefix "ruby"
+    printf "is used by 'scripts/build.sh'' to generate C# source for the SDK. Ruby 2.3.0 or greater is required\n"
 fi
 
 if [[ $HAS_BUNDLER = false ]] ; then
-    printf "◦ $BOLD bundle $RESET_STYLE : is used to install dependencies for the generator for more information checkout: $BOLD http://bundler.io/ $RESET_STYLE \n"
+    print_point_form_prefix "bundle"
+    printf "is used to install dependencies for the generator for more information checkout: "
+    print_bold_text "http://bundler.io/ \n"
 fi
 
 if [[ $HAS_MCS = false ]] ; then
-    printf "◦ $BOLD mcs $RESET_STYLE : Mono C# compiler is required to compile C# for local testing. This is not required if all testing is done via Unity\n"
+    print_point_form_prefix "mcs"
+    printf "Mono C# compiler is required to compile C# for local testing. This is not required if all testing is done via Unity\n"
 fi
 
 if [[ $HAS_NUNIT_CONSOLE = false ]] ; then
-    printf "◦ nunit-console: is required to output results from tests\n"
+    print_point_form_prefix "nunit-console"
+    printf "is required to output results from tests\n"
 fi
 
 
 # Output optional dependencies
 if [[ $HAS_OPTIONAL = false ]] ; then
-    printf "\n\n $COLOR_RED $BOLD The following are optional dependencies which are missing: $RESET_STYLE \n"
+    print_bold_text "\n\nThe following are optional dependencies which are missing:\n" "$COLOR_RED"
 fi
 
 if [[ $HAS_NODE = false ]] ; then
-    printf "◦ $BOLD node $RESET_STYLE: is used when running 'scripts/test_watch.sh'. scripts/test_watch.sh will watch all development files, rebuild when files changes,\n" \
-    "and finally run tests. Basically this script allows for quick local development\n"
+    print_point_form_prefix "node"
+    printf "is used when running 'scripts/test_watch.sh'. scripts/test_watch.sh will watch all development files, rebuild when files changes, \n"
+    printf "and finally run tests. Basically this script allows for quick local development\n"
 fi
 
 if [[ $HAS_NODEMON = false ]] ; then
-    printf "◦ $BOLD nodemon $RESET_STYLE: watches files and runs a script when files are changed. In specific $BOLD nodemon $RESET_STYLE is used by 'scripts/test_watch.sh'.\n" \
-    "For more information checkout: $BOLD http://npmjs.com/nodemon $RESET_STYLE"
+    print_point_form_prefix "nodemon"
+    printf "watches files and runs a script when files are changed. In specific "
+    print_bold_text "nodemon"
+    printf " is used by 'scripts/test_watch.sh'.\n For more information checkout: "
+    print_bold_text "http://npmjs.com/nodemon \n"
 fi
 
 if [[ $HAS_OPTIONAL = false ]] ; then
@@ -81,5 +102,5 @@ if [[ $HAS_OPTIONAL = false ]] ; then
 fi
 
 if [[ $HAS_OPTIONAL = true && $HAS_REQUIRED ]] ; then
-    printf "$COLOR_GREEN $BOLD You are good to go $RESET_STYLE\n"
+    print_bold_text "You are good to go\n" "$COLOR_GREEN"
 fi
