@@ -2,39 +2,46 @@ package com.shopify.unity.buy;
 
 import android.app.Fragment;
 import android.net.Uri;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsIntent;
 
-public class WebIntentFragment extends Fragment {
+public final class WebIntentFragment extends Fragment {
 
-    private boolean didShowIntent = false;
+    private static final String ARGS_URL = "url";
     private WebIntentListener listener;
+
+    public static WebIntentFragment newInstance(String url) {
+        Bundle args = new Bundle();
+        args.putString(ARGS_URL, url);
+
+        WebIntentFragment fragment = new WebIntentFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        String url = getArguments().getString(ARGS_URL);
+        if (url != null) {
+            CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+            CustomTabsIntent customTabsIntent = builder.build();
+            customTabsIntent.launchUrl(getActivity().getApplicationContext(), Uri.parse(url));
+        }
+    }
 
     @Override
     public void onResume() {
         super.onResume();
-
-        if (didShowIntent) {
-            notifyListenerOnClose();
-        }
+        notifyListenerOnClose();
     }
 
     public void setListener(WebIntentListener listener) {
         this.listener = listener;
     }
 
-    public void launchUrl(String url) {
-        if (isAdded() && !isRemoving()) {
-            CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-            CustomTabsIntent customTabsIntent = builder.build();
-
-            didShowIntent = true;
-            customTabsIntent.launchUrl(getActivity().getApplicationContext(), Uri.parse(url));
-        }
-    }
-
     private void notifyListenerOnClose() {
-        didShowIntent = false;
-
         if (listener != null) {
             listener.onWebIntentClose();
         }
