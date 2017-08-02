@@ -15,9 +15,11 @@ namespace <%= namespace %>.SDK {
 
         [MenuItem("Shopify/Help")]
         public static void ShowWindow() {
-            var window = EditorWindow.GetWindow<ShopifyOnboardingPanel>();
-            window.ShowPopup();
+            var window = EditorWindow.GetWindowWithRect<ShopifyOnboardingPanel>(
+                new Rect(0, 0, DesiredWindowWidth, DesiredWindowHeight)
+            );
 
+            window.ShowPopup();
             EditorPrefs.SetBool(HasSeenOnboardingPanelEditorPrefsKey, true);
         }
 
@@ -35,6 +37,7 @@ namespace <%= namespace %>.SDK {
         private const float AccentBarHeight = 5f;
 
         private void OnEnable() {
+            minSize = new Vector2(DesiredWindowWidth, DesiredWindowHeight);
             titleContent = new GUIContent("Unity Buy SDK");
             position = new Rect(position.xMin, position.yMin, DesiredWindowWidth, DesiredWindowHeight);
             Styles = new ShopifyEditorStyleHelper();
