@@ -24,7 +24,7 @@ public class UnityAndroidPayFragment extends Fragment {
         UnityAndroidPayFragment fragment = new UnityAndroidPayFragment();
         Bundle bundle = new Bundle(3);
         bundle.putString(EXTRA_UNITY_DELEGATE_OBJECT_NAME, unityDelegateObjectName);
-        bundle.putParcelable(EXTRA_UNITY_DELEGATE_OBJECT_NAME, cart);
+        bundle.putParcelable(EXTRA_PAY_CART, cart);
         bundle.putString(EXTRA_COUNTRY_CODE, countryCode);
         fragment.setArguments(bundle);
         return fragment;
