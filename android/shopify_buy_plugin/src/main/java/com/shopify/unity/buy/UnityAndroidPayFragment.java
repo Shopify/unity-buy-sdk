@@ -12,6 +12,9 @@ import com.google.android.gms.wallet.WalletConstants;
 import com.shopify.buy3.pay.PayCart;
 import com.shopify.buy3.pay.PayHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks {
     private PayCart cart;
     private String unityDelegateObjectName;
@@ -30,6 +33,13 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
 
     static final class UnityAndroidPayFragmentBuilder {
         private Bundle bundle;
+        private String[] requiredExtras = {
+            EXTRA_UNITY_DELEGATE_OBJECT_NAME,
+            EXTRA_PAY_CART,
+            EXTRA_COUNTRY_CODE,
+            EXTRA_ANDROID_PAY_ENVIRONMENT,
+            EXTRA_PUBLIC_KEY
+        };
 
         UnityAndroidPayFragmentBuilder() {
             bundle = new Bundle();
@@ -61,9 +71,24 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
         }
 
         UnityAndroidPayFragment build() {
+            checkBundleContainsRequiredExtras();
+            
             UnityAndroidPayFragment fragment = new UnityAndroidPayFragment();
             fragment.setArguments(bundle);
             return fragment;
+        }
+
+        private void checkBundleContainsRequiredExtras() {
+            List<String> missingExtras = new ArrayList<>();
+            for (String extra : requiredExtras) {
+                if (bundle.get(extra) == null) {
+                    missingExtras.add(extra);
+                }
+            }
+
+            if (missingExtras.size() > 0) {
+                throw new IllegalArgumentException("Missing required bundle extras: " + missingExtras.toString());
+            }
         }
     }
 
