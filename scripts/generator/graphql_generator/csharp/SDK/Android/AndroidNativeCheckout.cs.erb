@@ -1,0 +1,94 @@
+#if UNITY_ANDROID
+namespace <%= namespace %>.SDK.Android {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Runtime.InteropServices;
+    using <%= namespace %>.SDK;
+    using <%= namespace %>.MiniJSON;
+
+    #if !SHOPIFY_MONO_UNIT_TEST
+    using UnityEngine;
+    #endif
+
+    public class AndroidNativeCheckout : INativeCheckout {
+        private CartState CartState;
+        private AndroidJavaObject AndroidPayCheckoutSession;
+
+        private CheckoutSuccessCallback OnSuccess;
+        private CheckoutCancelCallback OnCancelled;
+        private CheckoutFailureCallback OnFailure;
+
+        public AndroidNativeCheckout(CartState cartState) {
+            CartState = cartState;
+        }
+
+        public bool CanShowPaymentSetup() {
+            // TODO
+            return true;
+        }
+
+        public void ShowPaymentSetup() {
+            // TODO
+        }
+
+        public bool CanCheckout(PaymentSettings paymentSettings) {
+            // TODO: Invoke methods in the plugin to determine if we can perform Android Pay
+            return true;
+        }
+
+        public void Checkout(
+            string key, 
+            ShopMetadata shopMetadata,
+            CheckoutSuccessCallback success, 
+            CheckoutCancelCallback cancelled, 
+            CheckoutFailureCallback failure
+        ) {
+            // TODO: Store callbacks and extract items we need from the cart to pass to Android Pay.
+            OnSuccess = success;
+            OnCancelled = cancelled;
+            OnFailure = failure;
+
+            var checkout = CartState.CurrentCheckout;
+
+            // TODO: Replace with Shop name
+            var merchantName = shopMetadata.Name;
+            var pricingLineItems = GetPricingLineItemsFromCheckout(checkout);
+            var pricingLineItemsString = Json.Serialize(pricingLineItems);
+            var currencyCodeString = checkout.currencyCode().ToString("G");
+            var countryCodeString = shopMetadata.PaymentSettings.countryCode().ToString("G");
+            var requiresShipping = checkout.requiresShipping();
+
+            #if !SHOPIFY_MONO_UNIT_TEST
+            using (var androidPayCheckoutSession = new AndroidJavaObject("com.shopify.unity.buy.AndroidPayCheckoutSession")) {
+                // TODO: Replace with mono object for receiving callbacks with.
+                object[] args = { "testing", merchantName, pricingLineItemsString, currencyCodeString, countryCodeString, requiresShipping };
+                if (androidPayCheckoutSession.Call<bool>("checkoutWithAndroidPay", args)) {
+                    // TODO: Do I need to do anything on the Unity side after we've created the session
+                } else {
+                    // TODO: Create more meaningful error?
+                    var error = new ShopifyError(ShopifyError.ErrorType.NativePaymentProcessingError, "Unable to create Android Pay session.");
+                    OnFailure(error);
+                }
+            }
+            #endif
+        }
+
+        private Dictionary<string, string> GetPricingLineItemsFromCheckout(Checkout checkout) {
+            var dict = new Dictionary<string, string>()
+            {
+                { "taxPrice",       checkout.totalTax().ToString() },
+                { "subtotal",       checkout.subtotalPrice().ToString() },
+                { "totalPrice",     checkout.totalPrice().ToString() }
+            };
+
+            if (checkout.requiresShipping()) {
+                try {
+                    dict.Add("shippingPrice", checkout.shippingLine().price().ToString());
+                } catch {}
+            }
+            return dict;
+        }
+    }
+}
+#endif
