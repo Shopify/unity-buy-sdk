@@ -19,7 +19,7 @@ namespace <%= namespace %>.SDK.iOS {
 
             CartState.SetShippingLine(message.Content, (ShopifyError error) => {
                 if (error == null) {
-                    var summaryItems = GetSummaryItems();
+                    var summaryItems = GetSummaryItemsFromCheckout(CartState.CurrentCheckout);
                     message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, summaryItems).ToJsonString());
                 } else {
                     message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure).ToJsonString());
@@ -48,13 +48,15 @@ namespace <%= namespace %>.SDK.iOS {
                 // Set the first shipping method as the default
                 CartState.SetShippingLine(shippingMethods[0].Identifier, (ShopifyError error) => {
                     if (error == null) {
-                        message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, GetSummaryItems(), shippingMethods).ToJsonString());
+                        var summaryItems = GetSummaryItemsFromCheckout(CartState.CurrentCheckout);
+                        message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, summaryItems, shippingMethods).ToJsonString());
                     } else {
                         message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Failure).ToJsonString());
                     }
                 });
             } else {
-                message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, GetSummaryItems(), shippingMethods).ToJsonString());
+                var summaryItems = GetSummaryItemsFromCheckout(CartState.CurrentCheckout);
+                message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, summaryItems, shippingMethods).ToJsonString());
             }
         }
 
@@ -67,7 +69,8 @@ namespace <%= namespace %>.SDK.iOS {
                 var status = GetAuthorizationStatusFromPreliminaryShippingUserErrors(userErrors);
 
                 if (status == ApplePayAuthorizationStatus.InvalidShippingPostalAddress) {
-                    response = new ApplePayEventResponse(status, GetSummaryItems());
+                    var summaryItems = GetSummaryItemsFromCheckout(CartState.CurrentCheckout);
+                    response = new ApplePayEventResponse(status, summaryItems);
                 }
             }
 
@@ -135,10 +138,11 @@ namespace <%= namespace %>.SDK.iOS {
                         var userErrors = CartState.UserErrors;
                         var status = GetAuthorizationStatusFromShippingUserErrors(userErrors);
 
+                        var summaryItems = GetSummaryItemsFromCheckout(CartState.CurrentCheckout);
                         if (status == ApplePayAuthorizationStatus.InvalidShippingPostalAddress) {
-                            response = new ApplePayEventResponse(status, GetSummaryItems());
+                            response = new ApplePayEventResponse(status, summaryItems);
                         } else if (status == ApplePayAuthorizationStatus.InvalidShippingContact) {
-                            response = new ApplePayEventResponse(status, GetSummaryItems(), GetShippingMethods());
+                            response = new ApplePayEventResponse(status, summaryItems, GetShippingMethods());
                         }
                     }
 
@@ -161,7 +165,8 @@ namespace <%= namespace %>.SDK.iOS {
                         var status = GetAuthorizationStatusFromCheckoutUserErrors(userErrors);
 
                         if (status != ApplePayAuthorizationStatus.Failure) {
-                            response = new ApplePayEventResponse(status, GetSummaryItems(), GetShippingMethods());
+                            var summaryItems = GetSummaryItemsFromCheckout(CartState.CurrentCheckout);
+                            response = new ApplePayEventResponse(status, summaryItems, GetShippingMethods());
                         } else {
                             response = new ApplePayEventResponse(status);
                         }
