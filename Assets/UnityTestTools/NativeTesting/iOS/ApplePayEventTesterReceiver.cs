@@ -3,6 +3,7 @@ namespace Shopify.Tests.iOS {
     using System.Collections;
     using System.Collections.Generic;
     using Shopify.Unity.SDK.iOS;
+    using Shopify.Unity.SDK;
 
     public class ApplePayEventTesterReceiver : IApplePayEventReceiver {
         public void UpdateSummaryItemsForShippingIdentifier(string serializedMessage) {
