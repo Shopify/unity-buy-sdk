@@ -23,6 +23,7 @@ VERSION=`cat $SCRIPTS_ROOT/version`
 
 VERSION_ARRAY=( ${VERSION//./ } )
 PUBLISH_DESTINATION=$2
+UNITY_PACKAGE=shopify-buy.unitypackage
 
 if [ $# -eq 0 ] ; then
     echo "If you'd like to bump versions pass: major, minor, or patch. Using $VERSION for now."
@@ -70,6 +71,12 @@ check "docs"
 # copy EXAMPLES.md to Assets/Shopify/examples.txt
 cp $PROJECT_ROOT/EXAMPLES.md $PROJECT_ROOT/Assets/Shopify/examples.txt
 
+if [ "$PUBLISH_DESTINATION" = "asset-store" ] ; then
+    UNITY_PACKAGE=shopify-buy-asset-store.unitypackage
+fi
+
+echo "Exporting the unitypackage at: $UNITY_PACKAGE"
+
 # create the new unitypackage
 $UNITY_PATH \
     -batchmode \
@@ -77,7 +84,7 @@ $UNITY_PATH \
     -silent-crashes \
     -logFile $UNITY_LOG_PATH \
     -projectPath $PROJECT_ROOT \
-    -exportPackage Assets/Shopify Assets/Plugins shopify-buy.unitypackage \
+    -exportPackage Assets/Shopify Assets/Plugins $UNITY_PACKAGE \
     -quit
 
 # restore files used for native extensions
