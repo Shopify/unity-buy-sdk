@@ -11,6 +11,10 @@ namespace <%= namespace %> {
     using <%= namespace %>.SDK.Android;
     #endif
 
+    #if UNITY_ANDROID
+    using <%= namespace %>.SDK.Android;
+    #endif
+
     /// <summary>
     /// This exception is thrown when interacting with a cart to add, update, or delete line items and no matching
     /// variant could be found.
@@ -118,7 +122,7 @@ namespace <%= namespace %> {
             NativeCheckout = new iOSNativeCheckout(State);
             #elif UNITY_ANDROID
             WebCheckout = new AndroidWebCheckout(this, client);
-            NativeCheckout = null;
+            NativeCheckout = new AndroidNativeCheckout(State);
             #else
             WebCheckout = null;
             NativeCheckout = null;
