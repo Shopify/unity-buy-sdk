@@ -76,7 +76,7 @@ namespace <%= namespace %>.SDK.iOS {
 
             var checkout = CartState.CurrentCheckout;
 
-            var summaryItems = GetSummaryItems();
+            var summaryItems = GetSummaryItemsFromCheckout(checkout);
             var summaryString = Json.Serialize(summaryItems);
             var currencyCodeString = checkout.currencyCode().ToString("G");
             var countryCodeString = shopMetadata.PaymentSettings.countryCode().ToString("G");
@@ -96,8 +96,7 @@ namespace <%= namespace %>.SDK.iOS {
             #endif
         }
 
-        private List<SummaryItem> GetSummaryItems() {
-            var checkout = CartState.CurrentCheckout;
+        private List<SummaryItem> GetSummaryItemsFromCheckout(Checkout checkout) {
             var summaryItems = new List<SummaryItem>();
             summaryItems.Add(new SummaryItem("SUBTOTAL", checkout.subtotalPrice().ToString()));
 
