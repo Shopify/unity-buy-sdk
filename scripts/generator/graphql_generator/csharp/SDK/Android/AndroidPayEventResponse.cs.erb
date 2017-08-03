@@ -1,0 +1,28 @@
+#if UNITY_ANDROID
+namespace <%= namespace %>.SDK.Android {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using <%= namespace %>.MiniJSON;
+
+    public class AndroidPayEventResponse: Serializable {
+        public Dictionary<string, string> PricingLineItems;
+        public AndroidPayUnityStatus Status;
+
+        public AndroidPayEventResponse(
+            AndroidPayUnityStatus status, 
+            Dictionary<string, string> pricingLineItems = null
+        ) {
+            Status = status;
+            PricingLineItems = pricingLineItems;
+        }
+
+        public override object ToJson() {
+            var dict = new Dictionary<string, object>();
+            dict["UnityStatus"] = Status;
+            dict["PricingLineItems"] = PricingLineItems;
+            return dict;
+        }
+    }
+}
+#endif

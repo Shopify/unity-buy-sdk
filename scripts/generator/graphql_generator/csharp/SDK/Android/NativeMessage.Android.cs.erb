@@ -1,0 +1,22 @@
+#if UNITY_ANDROID
+namespace <%= namespace %>.SDK {
+    using System;
+    using System.Collections.Generic;
+    using System.Runtime.InteropServices;
+    using <%= namespace %>.MiniJSON;
+
+    #if !SHOPIFY_MONO_UNIT_TEST
+    using UnityEngine;
+    #endif
+
+    public partial class NativeMessage {
+        private static void _RespondToNativeMessage(string identifier, string message) {
+            #if !SHOPIFY_MONO_UNIT_TEST
+            using (var messageCenter = new AndroidJavaObject("com.shopify.unity.buy.MessageCenter")) {
+                messageCenter.CallStatic("onUnityResponse", identifier, message);
+            }
+            #endif
+        }
+    }
+}
+#endif

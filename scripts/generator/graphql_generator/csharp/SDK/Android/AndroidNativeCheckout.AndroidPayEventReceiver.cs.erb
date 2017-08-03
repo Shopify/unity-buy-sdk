@@ -1,0 +1,83 @@
+#if UNITY_ANDROID
+namespace <%= namespace %>.SDK.Android {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Runtime.InteropServices;
+    using <%= namespace %>.SDK;
+    using <%= namespace %>.MiniJSON;
+
+    using UnityEngine;
+
+    public partial class AndroidNativeCheckout : IAndroidPayEventReceiver {
+        public void OnUpdateShippingAddress(string serializedMessage) {
+            var message = NativeMessage.CreateFromJSON(serializedMessage);
+            var contentDictionary = (Dictionary<string, object>)Json.Deserialize(message.Content);
+            var mailingAddressInput = new MailingAddressInput(contentDictionary);
+
+            CartState.SetShippingAddress(mailingAddressInput, (ShopifyError error) => {
+                if (error == null) {
+                    SetDefaultShippingLine(message);
+                } else {
+                    message.Respond(new AndroidPayEventResponse(AndroidPayUnityStatus.Failure).ToJsonString());
+                }
+            });
+        }
+
+        public void OnUpdateShippingLine(string serializedMessage) {
+            var message = NativeMessage.CreateFromJSON(serializedMessage);
+
+            CartState.SetShippingLine(message.Content, (ShopifyError error) => {
+                if (error == null) {
+                    var updatedPricingLineItems = GetPricingLineItemsFromCheckout(CartState.CurrentCheckout);
+                    var jsonResponse = new AndroidPayEventResponse(
+                        AndroidPayUnityStatus.Success, 
+                        updatedPricingLineItems
+                    ).ToJsonString();
+                    message.Respond(jsonResponse);
+                } else {
+                    message.Respond(new AndroidPayEventResponse(AndroidPayUnityStatus.Failure).ToJsonString());
+                }
+            });
+        }
+
+        public void OnError(string serializedMessage) {
+            // TODO: Parse message and pass-through.
+            var error = new ShopifyError(
+                ShopifyError.ErrorType.NativePaymentProcessingError,
+                "Encountered error with Android Pay: "
+            );
+            OnFailure(error);
+        }
+
+        public void OnCancel(string serializedMessage) {
+            // Message is no-op on Android.
+            OnCancelled();
+        }
+
+        private void SetDefaultShippingLine(NativeMessage message) {
+            var shippingMethods = GetShippingMethods();
+
+            if (shippingMethods.Count > 0) {
+                CartState.SetShippingLine(message.Content, (ShopifyError error) => {
+                    if (error == null) {
+                        var jsonResponse = new AndroidPayEventResponse(
+                            AndroidPayUnityStatus.Success, 
+                            GetPricingLineItemsFromCheckout(CartState.CurrentCheckout)
+                        ).ToJsonString(); 
+                        message.Respond(jsonResponse);
+                    } else { 
+                        message.Respond(new AndroidPayEventResponse(AndroidPayUnityStatus.Failure).ToJsonString());
+                    }
+                });
+            } else {
+                var jsonResponse = new AndroidPayEventResponse(
+                    AndroidPayUnityStatus.Success, 
+                    GetPricingLineItemsFromCheckout(CartState.CurrentCheckout)
+                ).ToJsonString(); 
+                message.Respond(jsonResponse);
+            }
+        }
+    }
+}
+#endif

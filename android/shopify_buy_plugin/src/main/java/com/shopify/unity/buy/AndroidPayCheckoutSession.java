@@ -131,6 +131,7 @@ public final class AndroidPayCheckoutSession implements AndroidPaySessionCallbac
     }
 
     public void onCancel() {
+        Log.i("Test", "onCancelllll");
         removePayFragment();
         UnityMessage msg = UnityMessage.fromAndroid("");
         MessageCenter.UnityMessageReceiver receiver = new MessageCenter.UnityMessageReceiver(

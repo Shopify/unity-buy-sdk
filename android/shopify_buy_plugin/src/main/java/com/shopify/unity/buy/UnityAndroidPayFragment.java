@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wallet.MaskedWallet;
@@ -188,6 +189,7 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
 
             @Override
             public void onWalletRequestCancel(int requestCode) {
+                Log.i("Test", "Cancelling Wallet");
                 if (sessionCallbacks != null) {
                     sessionCallbacks.onCancel();
                 }

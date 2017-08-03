@@ -1,0 +1,13 @@
+
+#if UNITY_ANDROID
+namespace <%= namespace %>.SDK.Android {
+    using System.Collections;
+    using System.Collections.Generic;
+
+    public interface IAndroidPayEventReceiver {
+        void OnUpdateShippingAddress(string serializedMessage);
+        void OnError(string serializedMessage);
+        void OnCancel(string serializedMessage);
+    }
+}
+#endif

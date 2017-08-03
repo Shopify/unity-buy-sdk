@@ -130,21 +130,28 @@ module GraphQLGenerator
         SDK/NativeMessage
         SDK/Serializable
         SDK/SummaryItem
+        SDK/ShippingMethod
         SDK/INativeCheckout
         SDK/WebCheckout
         SDK/NativeWebViewMessageReceiver
         SDK/Android/AndroidWebCheckout
+        SDK/Android/AndroidPayEventResponse
+        SDK/Android/NativeMessage.Android
+        SDK/Android/AndroidNativeCheckout
+        SDK/Android/AndroidPayEventReceiverBridge
+        SDK/Android/AndroidNativeCheckout.AndroidPayEventReceiver
+        SDK/Android/IAndroidPayEventReceiver
+        SDK/Android/AndroidPayUnityStatus
         SDK/iOS/ApplePayAuthorizationStatus
         SDK/iOS/IApplePayEventReceiver
         SDK/iOS/ApplePayEventReceiverBridge
         SDK/iOS/ApplePayEventResponse
-        SDK/iOS/ShippingMethod
         SDK/iOS/PaymentNetwork
         SDK/iOS/iOSWebCheckout
         SDK/iOS/iOSNativeCheckout
         SDK/iOS/iOSNativeCheckout.ApplePayEventReceiver
+        SDK/iOS/NativeMessage.iOS
         SDK/iOS/ApplePayPayment
-        SDK/Android/AndroidNativeCheckout
       ).each do |class_file_name|
         directory = "#{path}/#{File.dirname(class_file_name)}"
 

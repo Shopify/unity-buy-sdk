@@ -4,11 +4,7 @@ namespace <%= namespace %>.SDK {
     using System.Runtime.InteropServices;
     using <%= namespace %>.MiniJSON;
 
-    public class NativeMessage {
-
-        [DllImport ("__Internal")]
-        private static extern void _RespondToNativeMessage(string identifier, string message);
-
+    public partial class NativeMessage {
         public string Identifier;
         public string Content;
 

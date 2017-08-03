@@ -1,0 +1,27 @@
+namespace <%= namespace %>.SDK.Android {
+    using System.Collections;
+    using System.Collections.Generic;
+
+    #if !SHOPIFY_MONO_UNIT_TEST
+    using UnityEngine;
+    public partial class AndroidPayEventReceiverBridge : MonoBehaviour {}
+    #endif
+
+    #if UNITY_ANDROID
+    public partial class AndroidPayEventReceiverBridge : IAndroidPayEventReceiver { 
+        public IAndroidPayEventReceiver Receiver;
+
+        public void OnUpdateShippingAddress(string serializedMessage) {
+            Receiver.OnUpdateShippingAddress(serializedMessage);
+        }
+
+        public void OnError(string serializedMessage ) {
+            Receiver.OnError(serializedMessage);
+        }
+
+        public void OnCancel(string serializedMessage) {
+            Receiver.OnCancel(serializedMessage);
+        }
+    }
+    #endif
+}

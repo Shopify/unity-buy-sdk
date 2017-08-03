@@ -38,12 +38,12 @@ public class MessageCenter {
     }
 
     @SuppressWarnings("unused")
-    public static void onUnityResponse(final String result) {
+    public static void onUnityResponse(final String identifier, final String result) {
         messageHandler.post(new Runnable() {
             @Override
             public void run() {
-                UnityMessage msg = UnityMessage.fromUnity(result);
-                MessageCallbacks callbacks = callbacksInWaiting.remove(msg.identifier);
+                UnityMessage msg = UnityMessage.fromUnity(identifier, result);
+                MessageCallbacks callbacks = callbacksInWaiting.remove(identifier);
                 if (callbacks != null) {
                     callbacks.onResponse(msg.content);
                 }

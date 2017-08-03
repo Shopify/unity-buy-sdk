@@ -22,13 +22,8 @@ public final class UnityMessage implements JsonSerializable {
         this.content = content;
     }
 
-    public static UnityMessage fromUnity(String message) {
-        try {
-            JSONObject json = new JSONObject(message);
-            return new UnityMessage(json.getString(IDENTIFIER_KEY), json.getString(CONTENT_KEY));
-        } catch (JSONException e) {
-            throw new IllegalArgumentException("UnityMessage from Unity is invalid -- Message: " + message);
-        }
+    public static UnityMessage fromUnity(String identifier, String message) {
+        return new UnityMessage(identifier, message);
     }
 
     public static UnityMessage fromAndroid(String content) {
