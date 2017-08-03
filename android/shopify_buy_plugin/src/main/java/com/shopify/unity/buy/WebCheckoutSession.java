@@ -35,24 +35,11 @@ public class WebCheckoutSession implements WebIntentListener {
     }
 
     private void launchWebIntent(final String checkoutUrl) {
-        final FragmentManager manager = getFragmentManager();
-        final FragmentTransaction transaction = manager.beginTransaction();
-
         WebIntentFragment fragment = WebIntentFragment.newInstance(checkoutUrl);
         fragment.setListener(this);
+
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.add(fragment, WEB_FRAGMENT_TAG);
-
-        final Runnable launchWebView = new Runnable() {
-            public void run() {
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                    transaction.commitNow();
-                } else {
-                    transaction.commit();
-                    manager.executePendingTransactions();
-                }
-            }
-        };
-
-        UnityPlayer.currentActivity.runOnUiThread(launchWebView);
+        transaction.commit();
     }
 }
