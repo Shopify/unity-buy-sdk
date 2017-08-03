@@ -17,7 +17,7 @@ public final class PricingLineItems implements JsonSerializable {
 
     @Nullable public final BigDecimal shippingPrice;
 
-    private static JsonAdapter<PricingLineItems> jsonAdapter =
+    private static final JsonAdapter<PricingLineItems> jsonAdapter =
             new Moshi.Builder().add(new BigDecimalAdapter()).build().adapter(PricingLineItems.class);
 
     private PricingLineItems() {
