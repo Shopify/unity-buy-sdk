@@ -12,7 +12,9 @@ import com.google.android.gms.wallet.WalletConstants;
 import com.shopify.buy3.pay.PayCart;
 import com.shopify.buy3.pay.PayHelper;
 import com.shopify.unity.buy.models.MailingAddressInput;
-import com.shopify.unity.buy.utils.ErrorFormatter;
+import com.shopify.unity.buy.utils.WalletErrorFormatter;
+
+import java.lang.ref.WeakReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -156,15 +158,20 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
 
                 MailingAddressInput input = new MailingAddressInput(maskedWallet.getBuyerShippingAddress());
                 UnityMessage msg = UnityMessage.fromAndroid(input.toJsonString());
-                MessageCenter.MessageReceiver receiver = new MessageCenter.MessageReceiver(
+                MessageCenter.UnityMessageReceiver receiver = new MessageCenter.UnityMessageReceiver(
                     unityDelegateObjectName,
                     MessageCenter.Method.ON_UPDATE_SHIPPING_ADDRESS
                 );
 
+                final WeakReference<UnityAndroidPayFragment> fragmentRef =
+                        new WeakReference<>(UnityAndroidPayFragment.this);
                 MessageCenter.sendMessageTo(msg, receiver, new MessageCenter.MessageCallbacks() {
                     @Override
                     public void onResponse(String jsonResult) {
-                        UnityAndroidPayFragment.this.maskedWallet = maskedWallet;
+                        UnityAndroidPayFragment fragment = fragmentRef.get();
+                        if (fragment != null) {
+                            fragment.maskedWallet = maskedWallet;
+                        }
 
                         // TODO: Request Full Wallet information here and parse for failures
                     }
@@ -175,8 +182,8 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
             public void onWalletError(int requestCode, int errorCode) {
                 // TODO: Parse the type of error we get to see if we need to shut it all down or not.
 
-                UnityMessage msg = UnityMessage.fromAndroid(ErrorFormatter.errorStringFromCode(errorCode));
-                MessageCenter.MessageReceiver receiver = new MessageCenter.MessageReceiver(
+                UnityMessage msg = UnityMessage.fromAndroid(WalletErrorFormatter.errorStringFromCode(errorCode));
+                MessageCenter.UnityMessageReceiver receiver = new MessageCenter.UnityMessageReceiver(
                     unityDelegateObjectName,
                     MessageCenter.Method.ON_ERROR
                 );
@@ -188,7 +195,7 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
                 // TODO: Probably want to send a message to the session to remove this fragment and stop the checkout.
 
                 UnityMessage msg = UnityMessage.fromAndroid("");
-                MessageCenter.MessageReceiver receiver = new MessageCenter.MessageReceiver(
+                MessageCenter.UnityMessageReceiver receiver = new MessageCenter.UnityMessageReceiver(
                     unityDelegateObjectName,
                     MessageCenter.Method.ON_CANCEL
                 );

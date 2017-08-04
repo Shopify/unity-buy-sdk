@@ -8,7 +8,7 @@ import com.unity3d.player.UnityPlayer;
 import java.util.HashMap;
 import java.util.Map;
 
-class MessageCenter {
+public class MessageCenter {
     private static final HandlerThread handlerThread = new HandlerThread("UnityMessageThread");
     private static final Handler messageHandler = new Handler(handlerThread.getLooper());
 
@@ -17,7 +17,7 @@ class MessageCenter {
     private MessageCenter() { }
 
     // Fire and forget sending of messages.
-    static void sendMessageTo(final UnityMessage msg, final MessageReceiver receiver) {
+    static void sendMessageTo(final UnityMessage msg, final UnityMessageReceiver receiver) {
         messageHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -27,7 +27,7 @@ class MessageCenter {
     }
 
     // Send message with callbacks to invoke when complete.
-    static void sendMessageTo(final UnityMessage msg, final MessageReceiver receiver, final MessageCallbacks callbacks) {
+    static void sendMessageTo(final UnityMessage msg, final UnityMessageReceiver receiver, final MessageCallbacks callbacks) {
         messageHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -49,11 +49,11 @@ class MessageCenter {
         });
     }
 
-    static class MessageReceiver {
+    static class UnityMessageReceiver {
         private final String unityDelegateObjectName;
         private final Method method;
 
-        MessageReceiver(String unityDelegateObjectName, Method method) {
+        UnityMessageReceiver(String unityDelegateObjectName, Method method) {
             this.unityDelegateObjectName = unityDelegateObjectName;
             this.method = method;
         }

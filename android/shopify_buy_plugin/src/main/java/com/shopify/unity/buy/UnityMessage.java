@@ -27,7 +27,7 @@ public final class UnityMessage implements JsonSerializable {
             JSONObject json = new JSONObject(message);
             return new UnityMessage(json.getString(IDENTIFIER_KEY), json.getString(CONTENT_KEY));
         } catch (JSONException e) {
-            throw new IllegalStateException("UnityMessage from Unity is invalid -- Message: " + message);
+            throw new IllegalArgumentException("UnityMessage from Unity is invalid -- Message: " + message);
         }
     }
 

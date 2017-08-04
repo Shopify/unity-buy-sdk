@@ -2,8 +2,8 @@ package com.shopify.unity.buy.utils;
 
 import com.google.android.gms.wallet.WalletConstants;
 
-public final class ErrorFormatter {
-    private ErrorFormatter() { }
+public final class WalletErrorFormatter {
+    private WalletErrorFormatter() { }
 
     public static String errorStringFromCode(int errorCode) {
         switch (errorCode) {
