@@ -3,5 +3,9 @@
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"
             android:value="true" />
+
+        <!-- Only used for instrument tests! -->
+        <activity android:name="com.shopify.unity.buy.MockUnityActivity" />
+
     </application>
 </manifest>

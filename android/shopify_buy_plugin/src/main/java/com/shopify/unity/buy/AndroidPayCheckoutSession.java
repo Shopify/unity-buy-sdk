@@ -1,14 +1,14 @@
 package com.shopify.unity.buy;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.util.Log;
 
 import com.google.android.gms.wallet.WalletConstants;
 import com.shopify.buy3.pay.PayCart;
 import com.shopify.buy3.pay.PayHelper;
 import com.shopify.unity.buy.models.MailingAddressInput;
 import com.shopify.unity.buy.models.PricingLineItems;
-import com.shopify.unity.buy.utils.AndroidLogger;
-import com.shopify.unity.buy.utils.ILogger;
 import com.unity3d.player.UnityPlayer;
 
 import java.io.IOException;
@@ -16,15 +16,15 @@ import java.io.IOException;
 public final class AndroidPayCheckoutSession implements AndroidPaySessionCallback {
     private static final String PAY_FRAGMENT_TAG = "payFragment";
 
-    private ILogger logger;
+    private final Activity rootActivity;
     private String unityDelegateObjectName;
 
     public AndroidPayCheckoutSession() {
-        this.logger = new AndroidLogger();
+        this.rootActivity = UnityPlayer.currentActivity;
     }
 
-    AndroidPayCheckoutSession(ILogger logger) {
-        this.logger = logger;
+    public AndroidPayCheckoutSession(Activity rootActivity) {
+        this.rootActivity = rootActivity;
     }
 
     //CHECKSTYLE:OFF
@@ -39,7 +39,7 @@ public final class AndroidPayCheckoutSession implements AndroidPaySessionCallbac
             boolean testing
     ) {
         //CHECKSTYLE:ON
-        if (!PayHelper.isAndroidPayEnabledInManifest(UnityPlayer.currentActivity)) {
+        if (!PayHelper.isAndroidPayEnabledInManifest(rootActivity)) {
             // TODO: Send unsupported error to Unity
             return false;
         }
@@ -54,12 +54,12 @@ public final class AndroidPayCheckoutSession implements AndroidPaySessionCallbac
 
             return true;
         } catch (IOException e) {
-            logger.error("ShopifyBuyPlugin", "Failed to parse summary items from Unity!");
+            Log.e("ShopifyBuyPlugin", "Failed to parse summary items from Unity!");
             return false;
         }
     }
 
-    PayCart cartFromUnity(
+    public PayCart cartFromUnity(
         String merchantName,
         String pricingLineItemsString,
         String currencyCode,
@@ -93,7 +93,7 @@ public final class AndroidPayCheckoutSession implements AndroidPaySessionCallbac
             .setSessionCallbacks(this)
             .build();
 
-        UnityPlayer.currentActivity.getFragmentManager()
+        rootActivity.getFragmentManager()
             .beginTransaction()
             .add(payFragment, PAY_FRAGMENT_TAG)
             .commit();
