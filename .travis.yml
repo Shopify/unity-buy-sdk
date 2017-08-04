@@ -1,0 +1,13 @@
+language: objective-c
+osx_image: xcode61
+rvm:
+  - 2.3.0
+cache:
+  directories:
+    - "unity/"
+install:
+  - ./scripts/install_unity.sh
+before_script:
+  - ./scripts/build.sh
+script:
+  - ./scripts/test_unity.sh
