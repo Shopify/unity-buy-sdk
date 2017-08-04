@@ -9,5 +9,6 @@ install:
   - ./scripts/install_unity.sh
 before_script:
   - ./scripts/build.sh
+  - ./scripts/activate_license.sh
 script:
   - ./scripts/test_unity.sh
