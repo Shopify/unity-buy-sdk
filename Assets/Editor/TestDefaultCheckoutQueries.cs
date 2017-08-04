@@ -7,7 +7,7 @@ namespace Shopify.Tests
     using Shopify.Unity.GraphQL;
 
     [TestFixture]
-    public class TestDefaultQueries {
+    public class TestDefaultCheckoutQueries {
         [Test]
         public void TestCheckoutCreate() {
             MutationQuery query = new MutationQuery();
