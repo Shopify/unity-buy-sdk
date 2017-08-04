@@ -22,6 +22,8 @@ delete_native_tests
 VERSION=`cat $SCRIPTS_ROOT/version`
 
 VERSION_ARRAY=( ${VERSION//./ } )
+PUBLISH_DESTINATION=$2
+UNITY_PACKAGE=shopify-buy.unitypackage
 
 if [ $# -eq 0 ] ; then
     echo "If you'd like to bump versions pass: major, minor, or patch. Using $VERSION for now."
@@ -34,9 +36,15 @@ elif [ $1 = "minor" ] ; then
     VERSION_ARRAY[2]=0
 elif [ $1 = "patch" ] ; then
     ((VERSION_ARRAY[2]++))
+elif [ $1 = "github" -o $1 = "asset-store" ] ; then
+    PUBLISH_DESTINATION=$1
 else
-    echo "Invalid version identifier: \"$1\". You must pass in either: major, minor, or patch"
+    echo -e "\nInvalid first parameter: \"$1\". You must pass in either a version bump param or a publish destination:\nmajor,\nminor,\npatch,\ngithub,\nasset-store"
     exit 1
+fi
+
+if [ "$PUBLISH_DESTINATION" != "github" ] && [ "$PUBLISH_DESTINATION" != "asset-store" ] ; then
+    die "\nInvalid publish target.\n\nPublish target should be:\n\"asset-store\"\n\"github\"\n\nExample: scripts/publish.sh github\n"
 fi
 
 VERSION="${VERSION_ARRAY[0]}.${VERSION_ARRAY[1]}.${VERSION_ARRAY[2]}"
@@ -45,7 +53,7 @@ echo $VERSION > $SCRIPTS_ROOT/version
 echo "Version used $1: $VERSION"
 
 # Run generate.sh to create source code including the potentially new version number
-$SCRIPTS_ROOT/generate.sh
+$SCRIPTS_ROOT/generate.sh $PUBLISH_DESTINATION
 check "generate"
 
 # Run tests just in case
@@ -63,6 +71,12 @@ check "docs"
 # copy EXAMPLES.md to Assets/Shopify/examples.txt
 cp $PROJECT_ROOT/EXAMPLES.md $PROJECT_ROOT/Assets/Shopify/examples.txt
 
+if [ "$PUBLISH_DESTINATION" = "asset-store" ] ; then
+    UNITY_PACKAGE=shopify-buy-asset-store.unitypackage
+fi
+
+echo "Exporting the unitypackage at: $UNITY_PACKAGE"
+
 # create the new unitypackage
 $UNITY_PATH \
     -batchmode \
@@ -70,7 +84,7 @@ $UNITY_PATH \
     -silent-crashes \
     -logFile $UNITY_LOG_PATH \
     -projectPath $PROJECT_ROOT \
-    -exportPackage Assets/Shopify Assets/Plugins shopify-buy.unitypackage \
+    -exportPackage Assets/Shopify Assets/Plugins $UNITY_PACKAGE \
     -quit
 
 # restore files used for native extensions

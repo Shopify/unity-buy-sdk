@@ -1,1 +1,1 @@
-nodemon --exec "scripts/build.sh && scripts/test.sh" -e .cs,.erb,.rb --ignore Assets/Shopify
+nodemon --exec "scripts/build.sh github && scripts/test.sh" -e .cs,.erb,.rb --ignore Assets/Shopify

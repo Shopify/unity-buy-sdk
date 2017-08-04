@@ -1,10 +1,10 @@
 die() {
-    echo $@;
+    out $@;
     exit 1;
 }
 
 out() {
-    echo $@;
+    echo -e $@;
 }
 
 start() {
