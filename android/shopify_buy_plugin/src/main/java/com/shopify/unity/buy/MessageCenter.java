@@ -5,6 +5,7 @@ import android.os.HandlerThread;
 
 import com.unity3d.player.UnityPlayer;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,7 +13,7 @@ public class MessageCenter {
     private static final HandlerThread handlerThread = new HandlerThread("UnityMessageThread");
     private static final Handler messageHandler = new Handler(handlerThread.getLooper());
 
-    private static Map<String, MessageCallbacks> callbacksInWaiting = new HashMap<>();
+    private static Map<String, WeakReference<MessageCallbacks>> callbacksInWaiting = new HashMap<>();
 
     private MessageCenter() { }
 
@@ -31,7 +32,7 @@ public class MessageCenter {
         messageHandler.post(new Runnable() {
             @Override
             public void run() {
-                callbacksInWaiting.put(msg.identifier, callbacks);
+                callbacksInWaiting.put(msg.identifier, new WeakReference<>(callbacks));
                 UnityPlayer.UnitySendMessage(receiver.unityDelegateObjectName, receiver.method.name, msg.toJsonString());
             }
         });
@@ -43,8 +44,10 @@ public class MessageCenter {
             @Override
             public void run() {
                 UnityMessage msg = UnityMessage.fromUnity(result);
-                MessageCallbacks callbacks = callbacksInWaiting.remove(msg.identifier);
-                callbacks.onResponse(msg.content);
+                WeakReference<MessageCallbacks> callbacksRef = callbacksInWaiting.remove(msg.identifier);
+                if (callbacksRef != null && callbacksRef.get() != null) {
+                    callbacksRef.get().onResponse(msg.content);
+                }
             }
         });
     }
