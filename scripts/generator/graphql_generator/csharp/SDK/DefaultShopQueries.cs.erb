@@ -11,7 +11,11 @@ namespace <%= namespace %>.SDK {
         public void PaymentSettings(QueryRootQuery query) {
             query.shop(
                 buildQuery: shop => shop.paymentSettings(
-                    buildQuery: paymentSettings => paymentSettings.countryCode().currencyCode()
+                    buildQuery: paymentSettings => paymentSettings
+                        .countryCode()
+                        .currencyCode()
+                        .acceptedCardBrands()
+                        .supportedDigitalWallets()
                 )
             );
         }
