@@ -3,7 +3,7 @@ osx_image: xcode61
 rvm:
   - 2.3.0
 env:
-  - PROJECT_ROOT=$PWD/unity-buy-sdk
+  - PROJECT_ROOT=$PWD
   - UNITY_DOWNLOAD_DIR=$PROJECT_ROOT/unity
   - UNITY_PKG_LOCATION=$UNITY_DOWNLOAD_DIR/Unity.pkg
   - UNITY_PKG_URL=http://netstorage.unity3d.com/unity/b7e030c65c9b/MacEditorInstaller/Unity.pkg
