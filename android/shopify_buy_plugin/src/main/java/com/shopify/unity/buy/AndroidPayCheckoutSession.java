@@ -58,8 +58,7 @@ public final class AndroidPayCheckoutSession {
 
             return true;
         } catch (IOException e) {
-            logger.error("ShopifyBuyPlugin", "Failed to parse summary items from Unity");
-            e.printStackTrace();
+            logger.error("ShopifyBuyPlugin", "Failed to parse summary items from Unity!");
             return false;
         }
     }
