@@ -1,5 +1,6 @@
 namespace Shopify.Tests {
     using System;
+    using System.Collections.Generic;
     using UnityEngine;
     using Shopify.Unity;
     using Shopify.Unity.SDK.iOS;
@@ -30,6 +31,22 @@ namespace Shopify.Tests {
         void GetVisaPaymentNetworkString(string serializedMessage) {
             var message = NativeMessageTester.CreateFromJSON(serializedMessage);
             message.Respond(PaymentNetwork.FromCardBrand(CardBrand.VISA).ToString());
+        }
+
+        void GetAllCardBrandPaymentNetworksString(string serializedMessage) {
+            var message = NativeMessageTester.CreateFromJSON(serializedMessage);
+
+            CardBrand[] cardBrands = {
+                CardBrand.AMERICAN_EXPRESS,
+                CardBrand.DINERS_CLUB,
+                CardBrand.DISCOVER,
+                CardBrand.JCB,
+                CardBrand.MASTERCARD,
+                CardBrand.VISA,
+                CardBrand.UNKNOWN
+            };
+
+            message.Respond(Json.Serialize(PaymentNetwork.NetworksFromCardBrands(new List<CardBrand>(cardBrands))));
         }
     }
 }

@@ -115,6 +115,41 @@ class PaymentNetworkStringTests: XCTestCase {
         
         self.wait(for: [messageExpectation], timeout: timeout)
     }
+    
+    @available(iOS 10.1, *)
+    func testAllCardBrandDeserialization() {
+        let method = Tester.Method.getAllCardBrandPaymentNetworksString
+        
+        let messageExpectation = expectation(description: "\(method.rawValue) failed to complete")
+        
+        callMethod(method) { response in
+            
+            /// Response consists of a serialized array defined in PaymentNetworkSerializationTester.cs containing
+            /// the serialized CardBrands below. The serializer in Unity will skip CardBrands that don't have a
+            /// PaymentNetwork equivalent when serializing from Unity.
+            /// CardBrand.AMERICAN_EXPRESS
+            /// CardBrand.DINERS_CLUB (Skipped)
+            /// CardBrand.DISCOVER
+            /// CardBrand.JCB
+            /// CardBrand.MASTERCARD
+            /// CardBrand.VISA
+            /// CardBrand.UNKNOWN (Skipped)
+
+            let data = response!.data(using: .utf8)!
+            let paymentNetworks = try! JSONSerialization.jsonObject(with: data) as! [String]
+            
+            XCTAssertEqual(PKPaymentNetwork(paymentNetworks[0]), .amex )
+            XCTAssertEqual(PKPaymentNetwork(paymentNetworks[1]), .discover)
+            XCTAssertEqual(PKPaymentNetwork(paymentNetworks[2]), .JCB)
+            XCTAssertEqual(PKPaymentNetwork(paymentNetworks[3]), .masterCard)
+            XCTAssertEqual(PKPaymentNetwork(paymentNetworks[4]), .visa)
+            XCTAssertEqual(paymentNetworks.count, 5)
+            
+            messageExpectation.fulfill()
+        }
+        
+        self.wait(for: [messageExpectation], timeout: timeout)
+    }
 }
 
 // ----------------------------------

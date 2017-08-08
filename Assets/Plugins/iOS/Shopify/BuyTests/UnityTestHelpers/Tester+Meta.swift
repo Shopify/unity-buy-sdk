@@ -47,5 +47,6 @@ extension Tester {
         case getJCBPaymentNetworkString = "GetJCBPaymentNetworkString"
         case getMasterCardPaymentNetworkString = "GetMasterCardPaymentNetworkString"
         case getVisaPaymentNetworkString = "GetVisaPaymentNetworkString"
+        case getAllCardBrandPaymentNetworksString = "GetAllCardBrandPaymentNetworksString"
     }
 }
