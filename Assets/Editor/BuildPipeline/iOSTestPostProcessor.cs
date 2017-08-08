@@ -1,4 +1,4 @@
-#if UNITY_EDITOR
+#if UNITY_EDITOR && UNITY_IOS
 namespace Shopify.Unity.Editor.BuildPipeline {
     using UnityEngine;
     using UnityEditor;
