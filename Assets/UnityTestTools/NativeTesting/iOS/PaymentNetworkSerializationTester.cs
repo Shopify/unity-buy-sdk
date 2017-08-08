@@ -36,7 +36,7 @@ namespace Shopify.Tests {
         void GetAllCardBrandPaymentNetworksString(string serializedMessage) {
             var message = NativeMessageTester.CreateFromJSON(serializedMessage);
 
-            CardBrand[] cardBrands = {
+            var cardBrands = new List<CardBrand>() {
                 CardBrand.AMERICAN_EXPRESS,
                 CardBrand.DINERS_CLUB,
                 CardBrand.DISCOVER,
@@ -46,7 +46,7 @@ namespace Shopify.Tests {
                 CardBrand.UNKNOWN
             };
 
-            message.Respond(Json.Serialize(PaymentNetwork.NetworksFromCardBrands(new List<CardBrand>(cardBrands))));
+            message.Respond(Json.Serialize(PaymentNetwork.NetworksFromCardBrands(cardBrands)));
         }
     }
 }
