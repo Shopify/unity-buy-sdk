@@ -17,11 +17,11 @@ public class UnityMessageTest {
         final String contentKey = UnityMessage.CONTENT_KEY;
         final String expectedContent = "expectedContent";
 
-        UnityMessage messageA = new UnityMessage(expectedContent);
+        UnityMessage messageA = UnityMessage.fromAndroid(expectedContent);
         String messageAJsonString = messageA.toJsonString();
         JSONObject jsonA = new JSONObject(messageAJsonString);
 
-        UnityMessage messageB = new UnityMessage(expectedContent);
+        UnityMessage messageB = UnityMessage.fromAndroid(expectedContent);
         String messageBJsonString = messageB.toJsonString();
         JSONObject jsonB = new JSONObject(messageBJsonString);
 

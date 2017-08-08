@@ -11,6 +11,10 @@ import com.google.android.gms.wallet.Wallet;
 import com.google.android.gms.wallet.WalletConstants;
 import com.shopify.buy3.pay.PayCart;
 import com.shopify.buy3.pay.PayHelper;
+import com.shopify.unity.buy.models.MailingAddressInput;
+import com.shopify.unity.buy.utils.WalletErrorFormatter;
+
+import java.lang.ref.WeakReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -137,7 +141,6 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        // On connection, request for a masked wallet.
         PayHelper.requestMaskedWallet(googleApiClient, cart, androidPublicKey);
     }
 
@@ -150,23 +153,53 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
         PayHelper.handleWalletResponse(requestCode, resultCode, data, new PayHelper.WalletResponseHandler() {
 
             @Override
-            public void onMaskedWallet(MaskedWallet maskedWallet) {
+            public void onMaskedWallet(final MaskedWallet maskedWallet) {
                 super.onMaskedWallet(maskedWallet);
 
-                // TODO: Send MaskedWallet information back to Unity to update that state
-                UnityAndroidPayFragment.this.maskedWallet = maskedWallet;
+                MailingAddressInput input = new MailingAddressInput(maskedWallet.getBuyerShippingAddress());
+                UnityMessage msg = UnityMessage.fromAndroid(input.toJsonString());
+                MessageCenter.UnityMessageReceiver receiver = new MessageCenter.UnityMessageReceiver(
+                    unityDelegateObjectName,
+                    MessageCenter.Method.ON_UPDATE_SHIPPING_ADDRESS
+                );
 
-                // TODO: Got a wallet - show the confirmation fragment
+                final WeakReference<UnityAndroidPayFragment> fragmentRef =
+                        new WeakReference<>(UnityAndroidPayFragment.this);
+                MessageCenter.sendMessageTo(msg, receiver, new MessageCenter.MessageCallbacks() {
+                    @Override
+                    public void onResponse(String jsonResult) {
+                        UnityAndroidPayFragment fragment = fragmentRef.get();
+                        if (fragment != null) {
+                            fragment.maskedWallet = maskedWallet;
+                        }
+
+                        // TODO: Request Full Wallet information here and parse for failures
+                    }
+                });
             }
 
             @Override
             public void onWalletError(int requestCode, int errorCode) {
-                // TODO: Error in wallet request - bubble error to Unity?
+                // TODO: Parse the type of error we get to see if we need to shut it all down or not.
+
+                UnityMessage msg = UnityMessage.fromAndroid(WalletErrorFormatter.errorStringFromCode(errorCode));
+                MessageCenter.UnityMessageReceiver receiver = new MessageCenter.UnityMessageReceiver(
+                    unityDelegateObjectName,
+                    MessageCenter.Method.ON_ERROR
+                );
+                MessageCenter.sendMessageTo(msg, receiver);
             }
 
             @Override
             public void onWalletRequestCancel(int requestCode) {
-                // TODO: We probably want to cancel out of the Android Pay stuff and tell Unity!
+                // TODO: Probably want to send a message to the session to remove this fragment and stop the checkout.
+
+                UnityMessage msg = UnityMessage.fromAndroid("");
+                MessageCenter.UnityMessageReceiver receiver = new MessageCenter.UnityMessageReceiver(
+                    unityDelegateObjectName,
+                    MessageCenter.Method.ON_CANCEL
+                );
+                MessageCenter.sendMessageTo(msg, receiver);
             }
         });
     }

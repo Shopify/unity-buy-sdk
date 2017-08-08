@@ -8,7 +8,6 @@ import com.unity3d.player.UnityPlayer;
 public class WebCheckoutSession implements WebIntentListener {
 
     private static final String WEB_FRAGMENT_TAG = "webFragment";
-    private static final String NATIVE_WEB_DELEGATE_METHOD_NAME = "OnNativeMessage";
     private static final String NATIVE_WEB_DELEGATE_METHOD_CONTENT = "dismissed";
     private String unityDelegateObjectName;
 
@@ -26,8 +25,11 @@ public class WebCheckoutSession implements WebIntentListener {
             manager.beginTransaction().remove(fragment).commit();
         }
 
-        UnityMessage dismissedMessage = new UnityMessage(NATIVE_WEB_DELEGATE_METHOD_CONTENT);
-        UnityPlayer.UnitySendMessage(unityDelegateObjectName, NATIVE_WEB_DELEGATE_METHOD_NAME, dismissedMessage.toJsonString());
+        UnityMessage dismissedMessage = UnityMessage.fromAndroid(NATIVE_WEB_DELEGATE_METHOD_CONTENT);
+        MessageCenter.UnityMessageReceiver receiver =
+            new MessageCenter.UnityMessageReceiver(unityDelegateObjectName,
+                MessageCenter.Method.ON_NATIVE_MESSAGE);
+        MessageCenter.sendMessageTo(dismissedMessage, receiver);
     }
 
     private FragmentManager getFragmentManager() {

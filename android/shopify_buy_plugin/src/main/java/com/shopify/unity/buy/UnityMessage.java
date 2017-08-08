@@ -11,11 +11,28 @@ public final class UnityMessage implements JsonSerializable {
     public static final String IDENTIFIER_KEY = "Identifier";
 
     public final String content;
-    private final String identifier;
+    public final String identifier;
 
-    public UnityMessage(String content) {
-        identifier = UUID.randomUUID().toString();
+    private UnityMessage(String content) {
+        this(UUID.randomUUID().toString(), content);
+    }
+
+    private UnityMessage(String identifier, String content) {
+        this.identifier = identifier;
         this.content = content;
+    }
+
+    public static UnityMessage fromUnity(String message) {
+        try {
+            JSONObject json = new JSONObject(message);
+            return new UnityMessage(json.getString(IDENTIFIER_KEY), json.getString(CONTENT_KEY));
+        } catch (JSONException e) {
+            throw new IllegalArgumentException("UnityMessage from Unity is invalid -- Message: " + message);
+        }
+    }
+
+    public static UnityMessage fromAndroid(String content) {
+        return new UnityMessage(content);
     }
 
     @Override
