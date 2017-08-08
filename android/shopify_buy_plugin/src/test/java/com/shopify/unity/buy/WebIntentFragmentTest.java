@@ -6,7 +6,6 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.android.controller.FragmentController;
 import org.robolectric.annotation.Config;
 
-
 import buy.unity.shopfiy.com.unitybuyplugin.BuildConfig;
 
 import static junit.framework.Assert.assertFalse;
