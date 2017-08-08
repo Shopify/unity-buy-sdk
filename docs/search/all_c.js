@@ -10,6 +10,7 @@ var searchData=
   ['mailingaddressinput',['MailingAddressInput',['../class_shopify_1_1_unity_1_1_mailing_address_input.html',1,'Shopify::Unity']]],
   ['mailingaddressquery',['MailingAddressQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_mailing_address_query.html',1,'Shopify.Unity.GraphQL.MailingAddressQuery'],['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_mailing_address_query.html#a22bcd4c5ebd5c114f967eb5e344a9f34',1,'Shopify.Unity.GraphQL.MailingAddressQuery.MailingAddressQuery()']]],
   ['maskednumber',['maskedNumber',['../class_shopify_1_1_unity_1_1_credit_card.html#a169f89e811a45d77ce2d16dbf2fbfcd1',1,'Shopify.Unity.CreditCard.maskedNumber()'],['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_credit_card_query.html#a7fb3692f81dcbfcca8ae39ab490f4857',1,'Shopify.Unity.GraphQL.CreditCardQuery.maskedNumber()']]],
+  ['mastercard',['MASTERCARD',['../namespace_shopify_1_1_unity.html#a09b6f1a20bdb64d15e3fb8359f7ced9aa866e34f8513b55cd91e09341626343ad',1,'Shopify::Unity']]],
   ['mc',['MC',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a92a54b358b4cf53cca4095e4697e1004',1,'Shopify::Unity']]],
   ['md',['MD',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a7dc10e66da5549d351765bd940b81be9',1,'Shopify::Unity']]],
   ['mdl',['MDL',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba348d31a82fa0f420fc0cde4a1d0d845d',1,'Shopify::Unity']]],
