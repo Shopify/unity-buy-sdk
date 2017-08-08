@@ -9,27 +9,27 @@ namespace Shopify.Tests {
 
         void GetAmexPaymentNetworkString(string serializedMessage) {
             var message = NativeMessageTester.CreateFromJSON(serializedMessage);
-            message.Respond(Json.Serialize(PaymentNetwork.FromCardBrand(CardBrand.AMERICAN_EXPRESS)));
+            message.Respond(PaymentNetwork.FromCardBrand(CardBrand.AMERICAN_EXPRESS).ToString());
         }
 
         void GetDiscoverPaymentNetworkString(string serializedMessage) {
             var message = NativeMessageTester.CreateFromJSON(serializedMessage);
-            message.Respond(Json.Serialize(PaymentNetwork.FromCardBrand(CardBrand.DISCOVER)));
+            message.Respond(PaymentNetwork.FromCardBrand(CardBrand.DISCOVER).ToString());
         }
 
         void GetJCBPaymentNetworkString(string serializedMessage) {
             var message = NativeMessageTester.CreateFromJSON(serializedMessage);
-            message.Respond(Json.Serialize(PaymentNetwork.FromCardBrand(CardBrand.JCB)));
+            message.Respond(PaymentNetwork.FromCardBrand(CardBrand.JCB).ToString());
         }
 
         void GetMasterCardPaymentNetworkString(string serializedMessage) {
             var message = NativeMessageTester.CreateFromJSON(serializedMessage);
-            message.Respond(Json.Serialize(PaymentNetwork.FromCardBrand(CardBrand.MASTERCARD)));
+            message.Respond(PaymentNetwork.FromCardBrand(CardBrand.MASTERCARD).ToString());
         }
 
         void GetVisaPaymentNetworkString(string serializedMessage) {
             var message = NativeMessageTester.CreateFromJSON(serializedMessage);
-            message.Respond(Json.Serialize(PaymentNetwork.FromCardBrand(CardBrand.VISA)));
+            message.Respond(PaymentNetwork.FromCardBrand(CardBrand.VISA).ToString());
         }
     }
 }
