@@ -17,6 +17,7 @@ The Unity Buy SDK allows Unity developers to query and sell products from Shopif
 - Create a cart
 - Check out via weblink
 - Checkouts via Apple Pay and Safari Web View
+- Checkouts via Chrome Custom Tab
 - Make custom GraphQL queries using the [Storefront API](https://help.shopify.com/api/storefront-api)
 
 Coming Soon:
