@@ -36,7 +36,16 @@ extension Tester {
         case repeatMessage = "RepeatMessage"
         case getLastMessage = "GetLastMessage"
         case setupApplePayEventTest = "SetupApplePayEventTest"
+        
+        // ApplePayFlowTester
         case checkout = "Checkout"
         case checkoutWithShippingAddress = "CheckoutWithShippingAddress"
+        
+        // PaymentNetworkSerializationTester
+        case getAmexPaymentNetworkString = "GetAmexPaymentNetworkString"
+        case getDiscoverPaymentNetworkString = "GetDiscoverPaymentNetworkString"
+        case getJCBPaymentNetworkString = "GetJCBPaymentNetworkString"
+        case getMasterCardPaymentNetworkString = "GetMasterCardPaymentNetworkString"
+        case getVisaPaymentNetworkString = "GetVisaPaymentNetworkString"
     }
 }
