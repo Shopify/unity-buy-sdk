@@ -32,19 +32,19 @@ namespace <%= namespace %>.SDK.iOS {
         private PaymentNetwork(CardBrand cardBrand) {
             switch(cardBrand) {
                 case CardBrand.AMERICAN_EXPRESS:
-                    rawValue = "amex";
+                    rawValue = "AmEx";
                     break;
                 case CardBrand.DISCOVER:
-                    rawValue = "discover";
+                    rawValue = "Discover";
                     break;
                 case CardBrand.JCB:
-                    rawValue = "jcb";
+                    rawValue = "JCB";
                     break;
                 case CardBrand.MASTERCARD:
-                    rawValue = "masterCard";
+                    rawValue = "MasterCard";
                     break;
                 case CardBrand.VISA:
-                    rawValue = "visa";
+                    rawValue = "Visa";
                     break;
                 default:
                     rawValue = null;
