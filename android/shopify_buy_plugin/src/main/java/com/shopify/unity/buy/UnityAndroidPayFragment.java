@@ -16,6 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks {
+
+    private static final String EXTRA_UNITY_DELEGATE_OBJECT_NAME = "unityDelegateObjectName";
+    private static final String EXTRA_PAY_CART = "payCart";
+    private static final String EXTRA_COUNTRY_CODE = "countryCode";
+    private static final String EXTRA_ANDROID_PAY_ENVIRONMENT = "androidPayEnvironment";
+    private static final String EXTRA_PUBLIC_KEY = "publicKey";
+
     private PayCart cart;
     private String unityDelegateObjectName;
     private String countryCode;
@@ -25,21 +32,16 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
 
     private MaskedWallet maskedWallet;
 
-    private static final String EXTRA_UNITY_DELEGATE_OBJECT_NAME = "unityDelegateObjectName";
-    private static final String EXTRA_PAY_CART = "payCart";
-    private static final String EXTRA_COUNTRY_CODE = "countryCode";
-    private static final String EXTRA_ANDROID_PAY_ENVIRONMENT = "androidPayEnvironment";
-    private static final String EXTRA_PUBLIC_KEY = "publicKey";
-
     static final class UnityAndroidPayFragmentBuilder {
-        private Bundle bundle;
-        private String[] requiredExtras = {
+        private static final String[] requiredExtras = {
             EXTRA_UNITY_DELEGATE_OBJECT_NAME,
             EXTRA_PAY_CART,
             EXTRA_COUNTRY_CODE,
             EXTRA_ANDROID_PAY_ENVIRONMENT,
             EXTRA_PUBLIC_KEY
         };
+
+        private Bundle bundle;
 
         UnityAndroidPayFragmentBuilder() {
             bundle = new Bundle();
@@ -72,7 +74,6 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
 
         UnityAndroidPayFragment build() {
             checkBundleContainsRequiredExtras();
-            
             UnityAndroidPayFragment fragment = new UnityAndroidPayFragment();
             fragment.setArguments(bundle);
             return fragment;
