@@ -10,7 +10,7 @@ public class MailingAddressInput {
     private final PayAddress payAddress;
 
     private static final JsonAdapter<PayAddress> jsonAdapter =
-            new Moshi.Builder().build().adapter(PayAddress.class);
+        new Moshi.Builder().build().adapter(PayAddress.class);
 
     public MailingAddressInput(UserAddress userAddress) {
         payAddress = PayAddress.fromUserAddress(userAddress);
