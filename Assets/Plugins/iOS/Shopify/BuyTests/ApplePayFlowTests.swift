@@ -35,9 +35,8 @@ class ApplePayFlowTests: XCTestCase {
     private let timeout = 10.0
     
     // These are the shipping methods expected from unity-buy-sdk.myshopify.com
-    private let expeditedShippingMethod    = PKShippingMethod(label: "Expedited Parcel", amount: 8.44,  identifier: "canada_post-DOM.EP-8.44")
-    private let xpressPostShippingMethod   = PKShippingMethod(label: "Xpresspost",       amount: 10.37, identifier: "canada_post-DOM.XP-10.37")
-    private let priorityPostShippingMethod = PKShippingMethod(label: "Priority",         amount: 18,    identifier: "canada_post-DOM.PC-18.00")
+    private let standardShippingMethod  = PKShippingMethod(label: "Standard Shipping",  amount: 5.83,  identifier: "shopify-Standard%20Shipping-5.83")
+    private let expeditedShippingMethod = PKShippingMethod(label: "Expedited Shipping", amount: 15.82, identifier: "shopify-Expedited%20Shipping-15.82")
     
     // These are part of the summary items that are expected from unity-buy-sdk.myshopify.com after adding
     // the product name "[Test] Ballooning Around Shirt" to the Cart
@@ -74,9 +73,9 @@ class ApplePayFlowTests: XCTestCase {
         
         let expectation      = self.expectation(description: "MockAuthorizationController.invokeDidSelectShippingContact failed to complete")
         let expectedSubtotal = PKPaymentSummaryItem(label: "SUBTOTAL", amount: 25.47)
-        let expectedShipping = PKPaymentSummaryItem(label: "SHIPPING", amount: 8.44)
+        let expectedShipping = PKPaymentSummaryItem(label: "SHIPPING", amount: standardShippingMethod.amount)
         let expectedTaxes    = PKPaymentSummaryItem(label: "TAXES",    amount: 2.93)
-        let expectedTotal    = PKPaymentSummaryItem(label: "TOTAL", amount: 33.91)
+        let expectedTotal    = PKPaymentSummaryItem(label: "TOTAL", amount: 31.30)
         
         let method = Tester.Method.checkout.rawValue
         let checkoutMessage = UnityMessage(content: "", object: Tester.name, method: method)
@@ -90,9 +89,8 @@ class ApplePayFlowTests: XCTestCase {
                 XCTAssertEqual(items[2], expectedTaxes)
                 XCTAssertEqual(items[3], expectedTotal)
                 
-                XCTAssertEqual(methods[0], self.expeditedShippingMethod)
-                XCTAssertEqual(methods[1], self.xpressPostShippingMethod)
-                XCTAssertEqual(methods[2], self.priorityPostShippingMethod)
+                XCTAssertEqual(methods[0], self.standardShippingMethod)
+                XCTAssertEqual(methods[1], self.expeditedShippingMethod)
                 
                 expectation.fulfill()
             }
@@ -151,9 +149,9 @@ class ApplePayFlowTests: XCTestCase {
 
         let expectation      = self.expectation(description: "MockAuthorizationController.invokeDidSelectShippingMethod failed to complete")
         let expectedSubtotal = PKPaymentSummaryItem(label: "SUBTOTAL", amount: 25.47)
-        let expectedShipping = PKPaymentSummaryItem(label: "SHIPPING", amount: 8.44)
+        let expectedShipping = PKPaymentSummaryItem(label: "SHIPPING", amount: expeditedShippingMethod.amount)
         let expectedTaxes    = PKPaymentSummaryItem(label: "TAXES",    amount: 2.93)
-        let expectedTotal    = PKPaymentSummaryItem(label: "TOTAL",    amount: 33.91)
+        let expectedTotal    = PKPaymentSummaryItem(label: "TOTAL",    amount: 41.29)
         
         let method = Tester.Method.checkoutWithShippingAddress.rawValue
         let checkoutMessage = UnityMessage(content: "", object: Tester.name, method: method)
