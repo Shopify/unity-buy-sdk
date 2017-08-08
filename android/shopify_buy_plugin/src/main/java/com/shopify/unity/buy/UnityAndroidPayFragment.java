@@ -14,31 +14,34 @@ import com.shopify.buy3.pay.PayHelper;
 import com.shopify.unity.buy.models.MailingAddressInput;
 import com.shopify.unity.buy.utils.WalletErrorFormatter;
 
-import java.lang.ref.WeakReference;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks {
 
-    private static final String EXTRA_UNITY_DELEGATE_OBJECT_NAME = "unityDelegateObjectName";
+    private enum CheckoutState {
+        READY,
+        REQUESTING_MASKED_WALLET,
+        RECEIVED_MASKED_WALLET,
+    }
+
     private static final String EXTRA_PAY_CART = "payCart";
     private static final String EXTRA_COUNTRY_CODE = "countryCode";
     private static final String EXTRA_ANDROID_PAY_ENVIRONMENT = "androidPayEnvironment";
     private static final String EXTRA_PUBLIC_KEY = "publicKey";
 
     private PayCart cart;
-    private String unityDelegateObjectName;
     private String countryCode;
-    private String androidPublicKey;
+    private String publicKey;
     private int androidPayEnvironment;
     private GoogleApiClient googleApiClient;
+    private AndroidPaySessionCallbacks sessionCallbacks;
 
+    private CheckoutState currentCheckoutState;
     private MaskedWallet maskedWallet;
 
     static final class UnityAndroidPayFragmentBuilder {
         private static final String[] requiredExtras = {
-            EXTRA_UNITY_DELEGATE_OBJECT_NAME,
             EXTRA_PAY_CART,
             EXTRA_COUNTRY_CODE,
             EXTRA_ANDROID_PAY_ENVIRONMENT,
@@ -49,11 +52,6 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
 
         UnityAndroidPayFragmentBuilder() {
             bundle = new Bundle();
-        }
-
-        UnityAndroidPayFragmentBuilder setUnityDelegateObjectName(String name) {
-            bundle.putString(EXTRA_UNITY_DELEGATE_OBJECT_NAME, name);
-            return this;
         }
 
         UnityAndroidPayFragmentBuilder setPayCart(PayCart cart) {
@@ -107,24 +105,24 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            unityDelegateObjectName = bundle.getString(EXTRA_UNITY_DELEGATE_OBJECT_NAME);
             cart = bundle.getParcelable(EXTRA_PAY_CART);
             countryCode = bundle.getString(EXTRA_COUNTRY_CODE);
             androidPayEnvironment = bundle.getInt(EXTRA_ANDROID_PAY_ENVIRONMENT,
                     WalletConstants.ENVIRONMENT_TEST);
-            androidPublicKey = bundle.getString(EXTRA_PUBLIC_KEY);
+            publicKey = bundle.getString(EXTRA_PUBLIC_KEY);
         }
 
         // Don't recreate this fragment during configuration change.
         setRetainInstance(true);
 
+        currentCheckoutState = CheckoutState.READY;
         googleApiClient = new GoogleApiClient.Builder(this.getActivity())
-                .addApi(Wallet.API, new Wallet.WalletOptions.Builder()
-                        .setEnvironment(androidPayEnvironment)
-                        .setTheme(WalletConstants.THEME_DARK)
-                        .build())
-                .addConnectionCallbacks(this)
-                .build();
+            .addApi(Wallet.API, new Wallet.WalletOptions.Builder()
+                    .setEnvironment(androidPayEnvironment)
+                    .setTheme(WalletConstants.THEME_DARK)
+                    .build())
+            .addConnectionCallbacks(this)
+            .build();
     }
 
     @Override
@@ -141,7 +139,10 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        PayHelper.requestMaskedWallet(googleApiClient, cart, androidPublicKey);
+        if (currentCheckoutState == CheckoutState.READY) {
+            currentCheckoutState = CheckoutState.REQUESTING_MASKED_WALLET;
+            PayHelper.requestMaskedWallet(googleApiClient, cart, publicKey);
+        }
     }
 
     @Override
@@ -155,52 +156,38 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
             @Override
             public void onMaskedWallet(final MaskedWallet maskedWallet) {
                 super.onMaskedWallet(maskedWallet);
+                UnityAndroidPayFragment.this.maskedWallet = maskedWallet;
+                currentCheckoutState = CheckoutState.RECEIVED_MASKED_WALLET;
 
                 MailingAddressInput input = new MailingAddressInput(maskedWallet.getBuyerShippingAddress());
-                UnityMessage msg = UnityMessage.fromAndroid(input.toJsonString());
-                MessageCenter.UnityMessageReceiver receiver = new MessageCenter.UnityMessageReceiver(
-                    unityDelegateObjectName,
-                    MessageCenter.Method.ON_UPDATE_SHIPPING_ADDRESS
-                );
 
-                final WeakReference<UnityAndroidPayFragment> fragmentRef =
-                        new WeakReference<>(UnityAndroidPayFragment.this);
-                MessageCenter.sendMessageTo(msg, receiver, new MessageCenter.MessageCallbacks() {
-                    @Override
-                    public void onResponse(String jsonResult) {
-                        UnityAndroidPayFragment fragment = fragmentRef.get();
-                        if (fragment != null) {
-                            fragment.maskedWallet = maskedWallet;
+                if (sessionCallbacks != null) {
+                    sessionCallbacks.onUpdateShippingAddress(input, new MessageCenter.MessageCallbacks() {
+                        @Override
+                        public void onResponse(String jsonResponse) {
+                            // TODO: Create a new pay cart with the updated shipping address and request full wallet
                         }
-
-                        // TODO: Request Full Wallet information here and parse for failures
-                    }
-                });
+                    });
+                }
             }
 
             @Override
             public void onWalletError(int requestCode, int errorCode) {
-                // TODO: Parse the type of error we get to see if we need to shut it all down or not.
-
-                UnityMessage msg = UnityMessage.fromAndroid(WalletErrorFormatter.errorStringFromCode(errorCode));
-                MessageCenter.UnityMessageReceiver receiver = new MessageCenter.UnityMessageReceiver(
-                    unityDelegateObjectName,
-                    MessageCenter.Method.ON_ERROR
-                );
-                MessageCenter.sendMessageTo(msg, receiver);
+                if (sessionCallbacks != null) {
+                    sessionCallbacks.onError(WalletErrorFormatter.errorStringFromCode(errorCode));
+                }
             }
 
             @Override
             public void onWalletRequestCancel(int requestCode) {
-                // TODO: Probably want to send a message to the session to remove this fragment and stop the checkout.
-
-                UnityMessage msg = UnityMessage.fromAndroid("");
-                MessageCenter.UnityMessageReceiver receiver = new MessageCenter.UnityMessageReceiver(
-                    unityDelegateObjectName,
-                    MessageCenter.Method.ON_CANCEL
-                );
-                MessageCenter.sendMessageTo(msg, receiver);
+                if (sessionCallbacks != null) {
+                    sessionCallbacks.onCancel();
+                }
             }
         });
+    }
+
+    public void setSessionCallbacks(AndroidPaySessionCallbacks callbacks) {
+        sessionCallbacks = callbacks;
     }
 }

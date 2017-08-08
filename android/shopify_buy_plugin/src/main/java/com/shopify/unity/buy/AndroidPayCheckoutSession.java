@@ -3,6 +3,7 @@ package com.shopify.unity.buy;
 import com.google.android.gms.wallet.WalletConstants;
 import com.shopify.buy3.pay.PayCart;
 import com.shopify.buy3.pay.PayHelper;
+import com.shopify.unity.buy.models.MailingAddressInput;
 import com.shopify.unity.buy.models.PricingLineItems;
 import com.shopify.unity.buy.utils.AndroidLogger;
 import com.shopify.unity.buy.utils.ILogger;
@@ -10,7 +11,7 @@ import com.unity3d.player.UnityPlayer;
 
 import java.io.IOException;
 
-public final class AndroidPayCheckoutSession {
+public final class AndroidPayCheckoutSession implements AndroidPaySessionCallbacks {
     private ILogger logger;
 
     public AndroidPayCheckoutSession() {
@@ -20,6 +21,9 @@ public final class AndroidPayCheckoutSession {
     AndroidPayCheckoutSession(ILogger logger) {
         this.logger = logger;
     }
+
+    private UnityAndroidPayFragment payFragment;
+    private String unityDelegateObjectName;
 
     //CHECKSTYLE:OFF
     public boolean checkoutWithAndroidPay(
@@ -42,19 +46,9 @@ public final class AndroidPayCheckoutSession {
             PayCart cart = cartFromUnity(merchantName, pricingLineItemsString, currencyCode, countryCode,
                     requiresShipping);
 
-            UnityAndroidPayFragment payFragment = UnityAndroidPayFragment.builder()
-                    .setUnityDelegateObjectName(unityDelegateObjectName)
-                    .setPayCart(cart)
-                    .setCountryCode(countryCode)
-                    .setEnvironment(testing ?
-                            WalletConstants.ENVIRONMENT_TEST : WalletConstants.ENVIRONMENT_PRODUCTION)
-                    .setPublicKey(publicKey)
-                    .build();
+            this.unityDelegateObjectName = unityDelegateObjectName;
 
-            UnityPlayer.currentActivity.getFragmentManager()
-                    .beginTransaction()
-                    .add(payFragment, "payFragment")
-                    .commit();
+            addPayFragment(cart, countryCode, publicKey, testing);
 
             return true;
         } catch (IOException e) {
@@ -83,5 +77,61 @@ public final class AndroidPayCheckoutSession {
                 .taxPrice(items.taxPrice)
                 .totalPrice(items.totalPrice)
                 .build();
+    }
+
+    private void addPayFragment(PayCart cart, String countryCode, String publicKey, boolean testing) {
+        if (payFragment != null) {
+            removePayFragment();
+        }
+
+        payFragment = UnityAndroidPayFragment.builder()
+            .setPayCart(cart)
+            .setCountryCode(countryCode)
+            .setEnvironment(testing ?
+                WalletConstants.ENVIRONMENT_TEST : WalletConstants.ENVIRONMENT_PRODUCTION)
+            .setPublicKey(publicKey)
+            .build();
+        payFragment.setSessionCallbacks(this);
+
+        UnityPlayer.currentActivity.getFragmentManager()
+            .beginTransaction()
+            .add(payFragment, "payFragment")
+            .commit();
+    }
+
+    private void removePayFragment() {
+        UnityPlayer.currentActivity.getFragmentManager()
+            .beginTransaction()
+            .remove(payFragment)
+            .commit();
+    }
+
+    public void onUpdateShippingAddress(MailingAddressInput address, MessageCenter.MessageCallbacks messageCallbacks) {
+        UnityMessage msg = UnityMessage.fromAndroid(address.toJsonString());
+        MessageCenter.UnityMessageReceiver receiver = new MessageCenter.UnityMessageReceiver(
+            unityDelegateObjectName,
+            MessageCenter.Method.ON_UPDATE_SHIPPING_ADDRESS
+        );
+        MessageCenter.sendMessageTo(msg, receiver, messageCallbacks);
+    }
+
+    public void onError(String error) {
+        removePayFragment();
+        UnityMessage msg = UnityMessage.fromAndroid(error);
+        MessageCenter.UnityMessageReceiver receiver = new MessageCenter.UnityMessageReceiver(
+            unityDelegateObjectName,
+            MessageCenter.Method.ON_ERROR
+        );
+        MessageCenter.sendMessageTo(msg, receiver);
+    }
+
+    public void onCancel() {
+        removePayFragment();
+        UnityMessage msg = UnityMessage.fromAndroid("");
+        MessageCenter.UnityMessageReceiver receiver = new MessageCenter.UnityMessageReceiver(
+            unityDelegateObjectName,
+            MessageCenter.Method.ON_CANCEL
+        );
+        MessageCenter.sendMessageTo(msg, receiver);
     }
 }

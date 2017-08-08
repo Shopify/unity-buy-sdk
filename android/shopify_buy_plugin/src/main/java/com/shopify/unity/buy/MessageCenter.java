@@ -65,7 +65,8 @@ public class MessageCenter {
         ON_NATIVE_MESSAGE("OnNativeMessage"),
         ON_UPDATE_SHIPPING_ADDRESS("OnUpdateShippingAddress"),
         ON_ERROR("OnError"),
-        ON_CANCEL("OnCancel");
+        ON_CANCEL("OnCancel"),
+        ON_COMPLETE("OnComplete");
 
         private final String name;
 
