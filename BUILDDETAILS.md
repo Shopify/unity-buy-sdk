@@ -2,7 +2,7 @@
 
 The Unity Buy SDK uses Unity features to modify certain files during the build phase when building for a specific platform.
 
-These modifications ensure that the SDK is properly configured for ease of use. Below are esoteric details on what these modifications entail.
+These modifications ensure that the SDK is properly configured for ease of use. Below is a more detailed explanation on what these modifications are.
 
 # Android
 

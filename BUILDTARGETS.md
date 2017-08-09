@@ -5,7 +5,7 @@ The Unity Buy SDK currently supports the following build targets:
 * [Android](#Android)
 * [iOS](#ios)
 
-You can find more esoteric details regarding platform specific dependencies and the build phase in [Build Details](BUILDDETAILS.md)
+You can find a more detailed explanation regarding platform specific dependencies and the build phase in [Build Details](BUILDDETAILS.md)
 
 # Android
 
@@ -17,4 +17,3 @@ In addition Unity 5.6 and above must be used to build on the Android platform. A
 # iOS
 
 The Unity Buy SDK requires iOS games to have a minimum target SDK of iOS 9 and support Swift 3.
-
