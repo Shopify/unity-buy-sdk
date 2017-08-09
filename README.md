@@ -1,3 +1,5 @@
+![image](https://user-images.githubusercontent.com/12721181/29127322-c0acb984-7cee-11e7-97bd-e55f72af29aa.png) 
+
 # Unity Buy SDK
 
 The Unity Buy SDK allows Unity developers to query and sell products from Shopify directly in Unity.
