@@ -206,12 +206,21 @@ namespace <%= namespace %> {
         /// <summary>
         /// Determine whether the user can be shown to setup their native payment solution
         /// </summary>
-        /// <returns>True if the user can be shown a native payment setup</returns>
-        public bool CanShowNativePaySetup() {
+        /// <param name="callback">
+        /// Closure that is invoked with the result.
+        /// True is returned if the user can be shown a native payment app to setup their payment card
+        /// </param>
+        public void CanShowNativePaySetup(CanShowNativePaySetupCallback callback) {
             if (NativeCheckout != null) {
-                return  NativeCheckout.CanShowPaymentSetup();
+                GetShopMetadata((metadata, error) => {
+                    if (error != null) {
+                        callback(false);
+                    } else {
+                        callback(NativeCheckout.CanShowPaymentSetup(metadata.Value.PaymentSettings));
+                    }
+                });
             } else {
-                return false;
+                callback(false);
             }
         }
 
