@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 class BigDecimalAdapter {
     @FromJson
     BigDecimal fromJson(String number) {
-        return new BigDecimal(number);
+        return new BigDecimal(number).setScale(2, BigDecimal.ROUND_FLOOR);
     }
 
     @ToJson
