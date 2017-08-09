@@ -29,12 +29,6 @@ import PassKit
 
 extension PKPaymentSummaryItem: Deserializable {
     
-    private enum Field: String {
-        case amount = "Amount"
-        case label  = "Label"
-        case type   = "Type"
-    }
-    
     class func deserialize(_ json: JSON) -> Self? {
         guard
             let label  = json[Field.label.rawValue] as? String,
@@ -49,5 +43,13 @@ extension PKPaymentSummaryItem: Deserializable {
         } else {
             return self.init(label: label, amount: NSDecimalNumber(string: amount))
         }
+    }
+}
+
+extension PKPaymentSummaryItem {
+    fileprivate enum Field: String {
+        case amount = "Amount"
+        case label  = "Label"
+        case type   = "Type"
     }
 }

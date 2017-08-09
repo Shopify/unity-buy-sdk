@@ -27,42 +27,44 @@
 import Foundation
 import PassKit
 
-enum ContactField: String {
-    case firstName
-    case lastName
-    case address1
-    case address2
-    case city
-    case country
-    case province
-    case zip
-    case email
-    case phone
-}
-
 extension PKContact: Serializable {
     
     func serializedJSON() -> JSON {
         var json = JSON()
-        json.insert(nullable: self.name?.givenName,           forKey: ContactField.firstName)
-        json.insert(nullable: self.name?.familyName,          forKey: ContactField.lastName)
-        json.insert(nullable: self.postalAddress?.city,       forKey: ContactField.city)
-        json.insert(nullable: self.postalAddress?.country,    forKey: ContactField.country)
-        json.insert(nullable: self.postalAddress?.state,      forKey: ContactField.province)
-        json.insert(nullable: self.postalAddress?.postalCode, forKey: ContactField.zip)
-        json.insert(nullable: self.emailAddress,              forKey: ContactField.email)
-        json.insert(nullable: self.phoneNumber?.stringValue,  forKey: ContactField.phone)
+        json.insert(nullable: self.name?.givenName,           forKey: PKContact.Field.firstName)
+        json.insert(nullable: self.name?.familyName,          forKey: PKContact.Field.lastName)
+        json.insert(nullable: self.postalAddress?.city,       forKey: PKContact.Field.city)
+        json.insert(nullable: self.postalAddress?.country,    forKey: PKContact.Field.country)
+        json.insert(nullable: self.postalAddress?.state,      forKey: PKContact.Field.province)
+        json.insert(nullable: self.postalAddress?.postalCode, forKey: PKContact.Field.zip)
+        json.insert(nullable: self.emailAddress,              forKey: PKContact.Field.email)
+        json.insert(nullable: self.phoneNumber?.stringValue,  forKey: PKContact.Field.phone)
         
         if let street = self.postalAddress?.street {
             
             let addresses = street.lines
-            json.insert(nullable: addresses[0], forKey: ContactField.address1)
+            json.insert(nullable: addresses[0], forKey: PKContact.Field.address1)
             
             if addresses.count > 1 {
-                json.insert(nullable: addresses[1], forKey: ContactField.address2)
+                json.insert(nullable: addresses[1], forKey: PKContact.Field.address2)
             }
         }
         
         return json
+    }
+}
+
+extension PKContact {
+    enum Field: String {
+        case firstName
+        case lastName
+        case address1
+        case address2
+        case city
+        case country
+        case province
+        case zip
+        case email
+        case phone
     }
 }
