@@ -81,21 +81,12 @@ class PaymentSessionTests: XCTestCase {
         let session = Models.createPaymentSession(requiringShippingAddressFields: true, usingNonDefault: MockAuthorizationController.self)
         
         let unityController = UIApplication.shared.delegate as! UnityBuyAppController
-        print(unityController)
-        print(unityController.shouldResignActive)
-        
         XCTAssertTrue(unityController.shouldResignActive)
         
         session.presentAuthorizationController()
         XCTAssertFalse(unityController.shouldResignActive)
-
-        print(unityController)
-        print(unityController.shouldResignActive)
         
         MockAuthorizationController.invokeDidFinish()
-        print(unityController)
-        print(unityController.shouldResignActive)
-        
         XCTAssertTrue(unityController.shouldResignActive)
     }
     
