@@ -49,6 +49,7 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
         };
 
         private Bundle bundle;
+        private AndroidPaySessionCallbacks callbacks;
 
         UnityAndroidPayFragmentBuilder() {
             bundle = new Bundle();
@@ -74,10 +75,16 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
             return this;
         }
 
+        UnityAndroidPayFragmentBuilder setSessionCallbacks(AndroidPaySessionCallbacks callbacks) {
+            this.callbacks = callbacks;
+            return this;
+        }
+
         UnityAndroidPayFragment build() {
             checkBundleContainsRequiredExtras();
             UnityAndroidPayFragment fragment = new UnityAndroidPayFragment();
             fragment.setArguments(bundle);
+            fragment.setSessionCallbacks(callbacks);
             return fragment;
         }
 

@@ -1,5 +1,7 @@
 package com.shopify.unity.buy;
 
+import android.app.Fragment;
+
 import com.google.android.gms.wallet.WalletConstants;
 import com.shopify.buy3.pay.PayCart;
 import com.shopify.buy3.pay.PayHelper;
@@ -12,7 +14,10 @@ import com.unity3d.player.UnityPlayer;
 import java.io.IOException;
 
 public final class AndroidPayCheckoutSession implements AndroidPaySessionCallbacks {
+    private static final String PAY_FRAGMENT_TAG = "payFragment";
+
     private ILogger logger;
+    private String unityDelegateObjectName;
 
     public AndroidPayCheckoutSession() {
         this.logger = new AndroidLogger();
@@ -21,9 +26,6 @@ public final class AndroidPayCheckoutSession implements AndroidPaySessionCallbac
     AndroidPayCheckoutSession(ILogger logger) {
         this.logger = logger;
     }
-
-    private UnityAndroidPayFragment payFragment;
-    private String unityDelegateObjectName;
 
     //CHECKSTYLE:OFF
     public boolean checkoutWithAndroidPay(
@@ -80,29 +82,32 @@ public final class AndroidPayCheckoutSession implements AndroidPaySessionCallbac
     }
 
     private void addPayFragment(PayCart cart, String countryCode, String publicKey, boolean testing) {
-        if (payFragment != null) {
-            removePayFragment();
-        }
+        removePayFragment();
 
-        payFragment = UnityAndroidPayFragment.builder()
+        Fragment payFragment = UnityAndroidPayFragment.builder()
             .setPayCart(cart)
             .setCountryCode(countryCode)
             .setEnvironment(testing ?
                 WalletConstants.ENVIRONMENT_TEST : WalletConstants.ENVIRONMENT_PRODUCTION)
             .setPublicKey(publicKey)
+            .setSessionCallbacks(this)
             .build();
-        payFragment.setSessionCallbacks(this);
 
         UnityPlayer.currentActivity.getFragmentManager()
             .beginTransaction()
-            .add(payFragment, "payFragment")
+            .add(payFragment, PAY_FRAGMENT_TAG)
             .commit();
     }
 
     private void removePayFragment() {
+        Fragment fragment = UnityPlayer.currentActivity.getFragmentManager().findFragmentByTag(PAY_FRAGMENT_TAG);
+        if (fragment == null)  {
+            return;
+        }
+
         UnityPlayer.currentActivity.getFragmentManager()
             .beginTransaction()
-            .remove(payFragment)
+            .remove(fragment)
             .commit();
     }
 
