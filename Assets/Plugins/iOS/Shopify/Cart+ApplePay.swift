@@ -149,7 +149,7 @@ extension Cart {
         }
         
         return stringCollection.flatMap { string in
-            return PKPaymentNetwork.fromCardBrand(string)
+            return PKPaymentNetwork(string)
         }
     }
 }

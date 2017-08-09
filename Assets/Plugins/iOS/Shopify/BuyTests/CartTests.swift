@@ -43,23 +43,25 @@ class CartTests: XCTestCase {
         let shippingMethod      = Models.createShippingMethodJson(amount: shippingAmount, label: shippingLabel, identifier: identifier, detail: detail)
         let summaryItemData     = try! JSONSerialization.data(withJSONObject: summaryItem)
         let shippingMethodData  = try! JSONSerialization.data(withJSONObject: shippingMethod)
-        let serializedSummaryItem    = String.init(data: summaryItemData,    encoding: .utf8)!
-        let serializedShippingMethod = String.init(data: shippingMethodData, encoding: .utf8)!
+        let serializedSummaryItem    = String(data: summaryItemData,    encoding: .utf8)!
+        let serializedShippingMethod = String(data: shippingMethodData, encoding: .utf8)!
         
         // Put into an array of strings
         let summaryItemsData    = try! JSONSerialization.data(withJSONObject: [serializedSummaryItem]);
         let shippingMethodsData = try! JSONSerialization.data(withJSONObject: [serializedShippingMethod]);
-        let serializedSummaryItems    = String.init(data: summaryItemsData,    encoding: .utf8)!.cString(using: .utf8)
-        let serializedShippingMethods = String.init(data: shippingMethodsData, encoding: .utf8)!.cString(using: .utf8)
+        let serializedSummaryItems    = String(data: summaryItemsData,    encoding: .utf8)!.cString(using: .utf8)
+        let serializedShippingMethods = String(data: shippingMethodsData, encoding: .utf8)!.cString(using: .utf8)
         
         let merchantID        = "merchantID".cString(using: .utf8)
         let countryCode       = "US".cString(using: .utf8)
         let currencyCode      = "USD".cString(using: .utf8)
         let requiringShipping = true
         let unityObjectName   = "Tester".cString(using: .utf8)
+        
+        let supportedPaymentNetworks = Models.createSerializedPaymentNetworksString()
 
         XCTAssertNil(Cart.session)
-        _CreateApplePaySession(unityObjectName, merchantID, countryCode, currencyCode, serializedSummaryItems, serializedShippingMethods, requiringShipping)
+        _CreateApplePaySession(unityObjectName, merchantID, countryCode, currencyCode, supportedPaymentNetworks, serializedSummaryItems, serializedShippingMethods, requiringShipping)
         XCTAssertNotNil(Cart.session)
         
         let session = Cart.session!
