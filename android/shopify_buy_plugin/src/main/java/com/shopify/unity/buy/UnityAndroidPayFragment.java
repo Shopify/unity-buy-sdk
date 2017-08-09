@@ -199,7 +199,7 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
         sessionCallbacks = callbacks;
     }
 
-    public void setGoogleClient(GoogleApiClient client) {
+    protected void setGoogleClient(GoogleApiClient client) {
         googleApiClient = client;
     }
 }
