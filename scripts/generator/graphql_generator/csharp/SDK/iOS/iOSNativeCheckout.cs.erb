@@ -37,6 +37,7 @@ namespace <%= namespace %>.SDK.iOS {
         /// <summary>
         /// Checks if the device is capable of paying with Apple Pay
         /// </summary>
+        /// <param name="paymentSettings">The Shop's payment settings</param>
         /// <returns>True if the device is capable of paying with Apple Pay</returns>
         public bool CanCheckout(PaymentSettings paymentSettings) {
             return _CanCheckoutWithApplePay();
@@ -45,8 +46,9 @@ namespace <%= namespace %>.SDK.iOS {
         /// <summary>
         /// Checks if the device is capable of setting up Apple Pay
         /// </summary>
+        /// <param name="paymentSettings">The Shop's payment settings</param>
         /// <returns>True if the device is capable of setting up Apple Pay </returns>
-        public bool CanShowPaymentSetup() {
+        public bool CanShowPaymentSetup(PaymentSettings paymentSettings) {
             return _CanShowApplePaySetup();
         }
 
