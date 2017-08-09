@@ -29,14 +29,6 @@ import PassKit
 
 extension PKShippingMethod {
     
-    private enum Field: String {
-        case amount     = "Amount"
-        case label      = "Label"
-        case type       = "Type"
-        case detail     = "Detail"
-        case identifier = "Identifier"
-    }
-    
     override class func deserialize(_ json: JSON) -> Self? {
         guard
             let label  = json[Field.label.rawValue] as? String,
@@ -55,5 +47,15 @@ extension PKShippingMethod {
         shippingMethod.detail     = json[Field.detail.rawValue] as? String
         shippingMethod.identifier = json[Field.identifier.rawValue] as? String
         return shippingMethod
+    }
+}
+
+extension PKShippingMethod {
+    fileprivate enum Field: String {
+        case amount     = "Amount"
+        case label      = "Label"
+        case type       = "Type"
+        case detail     = "Detail"
+        case identifier = "Identifier"
     }
 }
