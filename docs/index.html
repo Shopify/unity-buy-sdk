@@ -90,10 +90,10 @@ $(function() {
 <ul>
 <li>a <a class="el" href="namespace_shopify.html">Shopify</a> store with at least one product</li>
 <li><a href="https://help.shopify.com/api/storefront-api/getting-started#obtaining-a-storefront-access-token">a storefront access token for your app</a></li>
-<li><a href="https://github.com/shopify/unity-buy-sdk#using-the-unity-buy-sdk-in-unity">to install the Unity Buy SDK into your Unity project</a></li>
+<li><a href="README.md#using-the-unity-buy-sdk-in-unity">to install the Unity Buy SDK into your Unity project</a></li>
 </ul>
-<h2>Using the SDK on iOS</h2>
-<p>See https://github.com/Shopify/unity-buy-sdk/blob/master/BUILDTARGETS.md "Build Target Requirements" for information on setting up the SDK on iOS.</p>
+<h2>Supported build targets</h2>
+<p>See Build Target Requirements for information on setting up the SDK on iOS and Android</p>
 <h2>Initialize the SDK</h2>
 <p>This code example initializes the SDK. The <code>ShopifyBuy.Init</code> method takes two arguments. The first is a storefront access token to communicate with the Storefront API. The second is the domain name of your shop.</p>
 <div class="fragment"><div class="line"><span class="keywordtype">string</span> accessToken = <span class="stringliteral">&quot;b8d417759a62f7b342f3735dbe86b322&quot;</span>;</div><div class="line"><span class="keywordtype">string</span> shopDomain = <span class="stringliteral">&quot;unity-buy-sdk.myshopify.com&quot;</span>;</div><div class="line"></div><div class="line">ShopifyBuy.Init(accessToken, shopDomain);</div></div><!-- fragment --><p>After you initialize the SDK, you can use <code>ShopifyBuy.Client()</code> to query <a class="el" href="namespace_shopify.html">Shopify</a>. You need to initialize the SDK only once.</p>

@@ -91,9 +91,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af9df57cf27df2d789df7fcc3cdf4564c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html#af9df57cf27df2d789df7fcc3cdf4564c">CheckoutWithNativePay</a> (string key, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure)</td></tr>
 <tr class="memdesc:af9df57cf27df2d789df7fcc3cdf4564c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Launches a platform-specific native pay UI for checking out the <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a>'s contents. Currently supported native pay options include:  <a href="#af9df57cf27df2d789df7fcc3cdf4564c">More...</a><br /></td></tr>
 <tr class="separator:af9df57cf27df2d789df7fcc3cdf4564c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4d767d10f8e14f275c1380b25ca585d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html#aa4d767d10f8e14f275c1380b25ca585d">CanShowNativePaySetup</a> ()</td></tr>
-<tr class="memdesc:aa4d767d10f8e14f275c1380b25ca585d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether the user can be shown to setup their native payment solution  <a href="#aa4d767d10f8e14f275c1380b25ca585d">More...</a><br /></td></tr>
-<tr class="separator:aa4d767d10f8e14f275c1380b25ca585d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ebb6884850e2a4249d060abc7a61669"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html#a2ebb6884850e2a4249d060abc7a61669">CanShowNativePaySetup</a> (CanShowNativePaySetupCallback callback)</td></tr>
+<tr class="memdesc:a2ebb6884850e2a4249d060abc7a61669"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether the user can be shown to setup their native payment solution  <a href="#a2ebb6884850e2a4249d060abc7a61669">More...</a><br /></td></tr>
+<tr class="separator:a2ebb6884850e2a4249d060abc7a61669"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a820bed32a127c7272100a36531a9ae35"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html#a820bed32a127c7272100a36531a9ae35">ShowNativePaySetup</a> ()</td></tr>
 <tr class="memdesc:a820bed32a127c7272100a36531a9ae35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Launch a native payment app to prompt the user to setup their payment card  <a href="#a820bed32a127c7272100a36531a9ae35">More...</a><br /></td></tr>
 <tr class="separator:a820bed32a127c7272100a36531a9ae35"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -185,8 +185,8 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="aa4d767d10f8e14f275c1380b25ca585d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa4d767d10f8e14f275c1380b25ca585d">&#9670;&nbsp;</a></span>CanShowNativePaySetup()</h2>
+<a id="a2ebb6884850e2a4249d060abc7a61669"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ebb6884850e2a4249d060abc7a61669">&#9670;&nbsp;</a></span>CanShowNativePaySetup()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -195,9 +195,10 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool Shopify.Unity.Cart.CanShowNativePaySetup </td>
+          <td class="memname">void Shopify.Unity.Cart.CanShowNativePaySetup </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">CanShowNativePaySetupCallback&#160;</td>
+          <td class="paramname"><em>callback</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -209,7 +210,12 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Determine whether the user can be shown to setup their native payment solution </p>
-<dl class="section return"><dt>Returns</dt><dd>True if the user can be shown a native payment setup</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">callback</td><td>Closure that is invoked with the result. True is returned if the user can be shown a native payment app to setup their payment card </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

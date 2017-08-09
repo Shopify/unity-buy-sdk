@@ -10,6 +10,5 @@ var searchData=
   ['inativecheckout',['INativeCheckout',['../interface_shopify_1_1_unity_1_1_s_d_k_1_1_i_native_checkout.html',1,'Shopify::Unity::SDK']]],
   ['inputbase',['InputBase',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_input_base.html',1,'Shopify::Unity::SDK']]],
   ['inputvaluetostring',['InputValueToString',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_input_value_to_string.html',1,'Shopify::Unity::SDK']]],
-  ['invalidserverresponseexception',['InvalidServerResponseException',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_invalid_server_response_exception.html',1,'Shopify::Unity::SDK']]],
-  ['iwebcheckout',['IWebCheckout',['../interface_shopify_1_1_unity_1_1_s_d_k_1_1_i_web_checkout.html',1,'Shopify::Unity::SDK']]]
+  ['invalidserverresponseexception',['InvalidServerResponseException',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_invalid_server_response_exception.html',1,'Shopify::Unity::SDK']]]
 ];
