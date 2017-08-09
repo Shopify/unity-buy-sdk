@@ -28,6 +28,5 @@ var searchData=
   ['ir',['IR',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a4f74d343f26bbd58a8cbbad2cab6a704',1,'Shopify::Unity']]],
   ['is',['IS',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a0bfc16cc12effc1bae4d3766c4f2257d',1,'Shopify::Unity']]],
   ['isk',['ISK',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba3f7d50b1685e7b14f5bfabf8b30c703a',1,'Shopify::Unity']]],
-  ['it',['IT',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7acd32106bcb6de321930cf34574ea388c',1,'Shopify::Unity']]],
-  ['iwebcheckout',['IWebCheckout',['../interface_shopify_1_1_unity_1_1_s_d_k_1_1_i_web_checkout.html',1,'Shopify::Unity::SDK']]]
+  ['it',['IT',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7acd32106bcb6de321930cf34574ea388c',1,'Shopify::Unity']]]
 ];
