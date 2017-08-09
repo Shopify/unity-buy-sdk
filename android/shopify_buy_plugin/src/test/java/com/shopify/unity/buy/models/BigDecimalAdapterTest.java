@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 import static junit.framework.Assert.assertEquals;
 
 public class BigDecimalAdapterTest {
-
     @Test
     public void testToJson() {
         BigDecimalAdapter adapter = new BigDecimalAdapter();

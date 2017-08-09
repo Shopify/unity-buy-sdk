@@ -25,10 +25,10 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
         RECEIVED_MASKED_WALLET,
     }
 
-    private static final String EXTRA_PAY_CART = "payCart";
-    private static final String EXTRA_COUNTRY_CODE = "countryCode";
-    private static final String EXTRA_ANDROID_PAY_ENVIRONMENT = "androidPayEnvironment";
-    private static final String EXTRA_PUBLIC_KEY = "publicKey";
+    public static final String EXTRA_PAY_CART = "payCart";
+    public static final String EXTRA_COUNTRY_CODE = "countryCode";
+    public static final String EXTRA_ANDROID_PAY_ENVIRONMENT = "androidPayEnvironment";
+    public static final String EXTRA_PUBLIC_KEY = "publicKey";
 
     private PayCart cart;
     private String countryCode;
@@ -132,6 +132,7 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
             .build();
     }
 
+
     @Override
     public void onStart() {
         super.onStart();
@@ -196,5 +197,9 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
 
     public void setSessionCallbacks(AndroidPaySessionCallback callbacks) {
         sessionCallbacks = callbacks;
+    }
+
+    public void setGoogleClient(GoogleApiClient client) {
+        googleApiClient = client;
     }
 }

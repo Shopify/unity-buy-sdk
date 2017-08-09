@@ -100,12 +100,12 @@ public final class AndroidPayCheckoutSession implements AndroidPaySessionCallbac
     }
 
     private void removePayFragment() {
-        Fragment fragment = UnityPlayer.currentActivity.getFragmentManager().findFragmentByTag(PAY_FRAGMENT_TAG);
+        Fragment fragment = rootActivity.getFragmentManager().findFragmentByTag(PAY_FRAGMENT_TAG);
         if (fragment == null)  {
             return;
         }
 
-        UnityPlayer.currentActivity.getFragmentManager()
+        rootActivity.getFragmentManager()
             .beginTransaction()
             .remove(fragment)
             .commit();

@@ -16,7 +16,6 @@ import static junit.framework.Assert.assertEquals;
 @RunWith(AndroidJUnit4.class)
 @SmallTest
 public class MailingAddressInputTest {
-
     @Test
     public void testToJsonString() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 
