@@ -4,6 +4,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
 
+import java.util.UUID;
+
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
@@ -11,7 +13,7 @@ import static junit.framework.Assert.assertTrue;
 public class UnityMessageTest {
 
     @Test
-    public void testSerialize() throws JSONException {
+    public void testSerializeFromAndroid() throws JSONException {
 
         final String identifierKey = UnityMessage.IDENTIFIER_KEY;
         final String contentKey = UnityMessage.CONTENT_KEY;
@@ -34,5 +36,21 @@ public class UnityMessageTest {
 
         assertFalse(identifierA.equals(identifierB));
         assertEquals(jsonA.get(contentKey), jsonB.get(contentKey));
+    }
+
+    @Test
+    public void testDeserializeFromUnity() throws JSONException {
+        final String identifierKey = UnityMessage.IDENTIFIER_KEY;
+        final String contentKey = UnityMessage.CONTENT_KEY;
+        final String expectedContent = "expectedContent";
+        final String identifier = UUID.randomUUID().toString();
+
+        final String jsonFromUnity =
+                "{ \"" + identifierKey + "\": \"" + identifier + "\", " +
+                "  \"" + contentKey + "\": \"" + expectedContent + "\" }";
+
+        UnityMessage message = UnityMessage.fromUnity(jsonFromUnity);
+        assertEquals(identifier, message.identifier);
+        assertEquals(expectedContent, message.content);
     }
 }
