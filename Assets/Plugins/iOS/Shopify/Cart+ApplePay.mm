@@ -30,19 +30,27 @@
 #import <SafariServices/SafariServices.h>
 #import "SwiftInterfaceHeader.h"
 
-bool _CanCheckoutWithApplePay() {
-    return [PaymentSession canMakePayments];
+bool _CanCheckoutWithApplePay(const char *serializedSupportedNetworks) {
+    return [Cart canMakePaymentsUsingSerializedNetworks:[NSString stringWithUTF8String:serializedSupportedNetworks]];
 }
 
-bool _CanShowApplePaySetup() {
-    return [PaymentSession canShowSetup];
+bool _CanShowApplePaySetup(const char *serializedSupportedNetworks) {
+    return [Cart canMakePaymentsUsingSerializedNetworks:[NSString stringWithUTF8String:serializedSupportedNetworks]];
 }
 
 void _ShowApplePaySetup() {
-    [PaymentSession showSetup];
+    [Cart showPaymentSetup];
 }
 
-bool _CreateApplePaySession(const char *unityDelegateObjectName, const char *merchantID, const char *countryCode, const char *currencyCode, const char *serializedSummaryItems, const char *serializedShippingMethods, bool requiringShipping) {
+bool _CreateApplePaySession(const char *unityDelegateObjectName,
+                            const char *merchantID,
+                            const char *countryCode,
+                            const char *currencyCode,
+                            const char *serializedSupportedNetworks,
+                            const char *serializedSummaryItems,
+                            const char *serializedShippingMethods,
+                            bool requiringShipping)
+{
 
     NSString *shippingMethodsString;
     if (serializedShippingMethods != nil) {
@@ -53,6 +61,7 @@ bool _CreateApplePaySession(const char *unityDelegateObjectName, const char *mer
                                                        merchantID:[NSString stringWithUTF8String:merchantID]
                                                       countryCode:[NSString stringWithUTF8String:countryCode]
                                                      currencyCode:[NSString stringWithUTF8String:currencyCode]
+                                      serializedSupportedNetworks:[NSString stringWithUTF8String:serializedSupportedNetworks]
                                            serializedSummaryItems:[NSString stringWithUTF8String:serializedSummaryItems]
                                         serializedShippingMethods:shippingMethodsString
                                                 requiringShipping:requiringShipping];
