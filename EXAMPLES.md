@@ -22,11 +22,11 @@ Before you can start using the Unity Buy SDK, you need:
 
 - a Shopify store with at least one product
 - [a storefront access token for your app](https://help.shopify.com/api/storefront-api/getting-started#obtaining-a-storefront-access-token)
-- [to install the Unity Buy SDK into your Unity project](https://github.com/shopify/unity-buy-sdk#using-the-unity-buy-sdk-in-unity)
+- [to install the Unity Buy SDK into your Unity project](README.md#using-the-unity-buy-sdk-in-unity)
 
-## Using the SDK on iOS
+## Supported build targets
 
-See [Build Target Requirements](https://github.com/Shopify/unity-buy-sdk/blob/master/BUILDTARGETS.md) for information on setting up the SDK on iOS.
+See [Build Target Requirements](BUILDTARGETS.md) for information on setting up the SDK on iOS and Android
 
 ## Initialize the SDK
 
