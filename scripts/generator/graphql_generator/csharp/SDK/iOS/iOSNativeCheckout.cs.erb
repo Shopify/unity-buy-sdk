@@ -9,16 +9,24 @@ namespace <%= namespace %>.SDK.iOS {
 
     partial class iOSNativeCheckout : INativeCheckout {
         [DllImport ("__Internal")]
-        private static extern bool _CanCheckoutWithApplePay();
+        private static extern bool _CanCheckoutWithApplePay(string supportedPaymentNetworks);
 
         [DllImport ("__Internal")]
-        private static extern bool _CanShowApplePaySetup();
+        private static extern bool _CanShowApplePaySetup(string supportedPaymentNetworks);
 
         [DllImport ("__Internal")]
         private static extern void _ShowApplePaySetup();
 
         [DllImport ("__Internal")]
-        private static extern bool _CreateApplePaySession(string unityDelegateObjectName, string merchantID, string countryCode, string currencyCode, string serializedSummaryItems, string serializedShippingMethods, bool requiringShipping);
+        private static extern bool _CreateApplePaySession(
+            string unityDelegateObjectName,
+            string merchantID,
+            string countryCode,
+            string currencyCode,
+            string serializedSupportedNetworks,
+            string serializedSummaryItems,
+            string serializedShippingMethods,
+            bool requiringShipping);
 
         [DllImport ("__Internal")]
         private static extern void _PresentApplePayAuthorization();
@@ -40,7 +48,7 @@ namespace <%= namespace %>.SDK.iOS {
         /// <param name="paymentSettings">The Shop's payment settings</param>
         /// <returns>True if the device is capable of paying with Apple Pay</returns>
         public bool CanCheckout(PaymentSettings paymentSettings) {
-            return _CanCheckoutWithApplePay();
+            return _CanCheckoutWithApplePay(SerializedPaymentNetworksFromCardBrands(paymentSettings.acceptedCardBrands()));
         }
 
         /// <summary>
@@ -49,7 +57,7 @@ namespace <%= namespace %>.SDK.iOS {
         /// <param name="paymentSettings">The Shop's payment settings</param>
         /// <returns>True if the device is capable of setting up Apple Pay </returns>
         public bool CanShowPaymentSetup(PaymentSettings paymentSettings) {
-            return _CanShowApplePaySetup();
+            return _CanShowApplePaySetup(SerializedPaymentNetworksFromCardBrands(paymentSettings.acceptedCardBrands()));
         }
 
         /// <summary>
@@ -78,10 +86,14 @@ namespace <%= namespace %>.SDK.iOS {
 
             var checkout = CartState.CurrentCheckout;
 
+            var supportedNetworksString = SerializedPaymentNetworksFromCardBrands(shopMetadata.PaymentSettings.acceptedCardBrands());
+
             var summaryItems = GetSummaryItemsFromCheckout(checkout);
             var summaryString = Json.Serialize(summaryItems);
+
             var currencyCodeString = checkout.currencyCode().ToString("G");
             var countryCodeString = shopMetadata.PaymentSettings.countryCode().ToString("G");
+
             var requiresShipping = checkout.requiresShipping();
 
             if (ApplePayEventBridge == null) {
@@ -89,7 +101,7 @@ namespace <%= namespace %>.SDK.iOS {
                 ApplePayEventBridge.Receiver = this;
             }
 
-            if (_CreateApplePaySession(GlobalGameObject.Name, key, countryCodeString, currencyCodeString, summaryString, null, requiresShipping)) {
+            if (_CreateApplePaySession(GlobalGameObject.Name, key, countryCodeString, currencyCodeString, supportedNetworksString, summaryString, null, requiresShipping)) {
                 _PresentApplePayAuthorization();
             } else {
                 var error = new ShopifyError(ShopifyError.ErrorType.NativePaymentProcessingError, "Unable to create an Apple Pay payment request. Please check that your merchant ID is valid.");
@@ -129,6 +141,11 @@ namespace <%= namespace %>.SDK.iOS {
             }
 
             return shippingMethods;
+        }
+
+        private string SerializedPaymentNetworksFromCardBrands(List<CardBrand> cardBrands) {
+            var paymentNetworks = PaymentNetwork.NetworksFromCardBrands(cardBrands);
+            return Json.Serialize(paymentNetworks);
         }
     }
 }
