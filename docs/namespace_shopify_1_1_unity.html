@@ -323,7 +323,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A payment applied to a checkout.  <a href="class_shopify_1_1_unity_1_1_payment.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_payment_settings.html">PaymentSettings</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Values required for completing various payment methods.  <a href="class_shopify_1_1_unity_1_1_payment_settings.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Settings related to payments.  <a href="class_shopify_1_1_unity_1_1_payment_settings.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_product.html">Product</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A product represents an individual item for sale in a <a class="el" href="namespace_shopify.html">Shopify</a> store. Products are often physical, but they don't have to be. For example, a digital download (such as a movie, music or ebook file) also qualifies as a product, as do services (such as equipment rental, work for hire, customization of another product or an extended warranty).  <a href="class_shopify_1_1_unity_1_1_product.html#details">More...</a><br /></td></tr>
@@ -369,6 +369,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html">ShopifyClient</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html">ShopifyClient </a> is the entry point to communicate with the <a class="el" href="namespace_shopify.html">Shopify</a> Storefront API. <a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html">ShopifyClient </a> also has functionality to easily generate and send queries to receive information about products, collections, and has the ability to create checkouts.  <a href="class_shopify_1_1_unity_1_1_shopify_client.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_shopify_1_1_unity_1_1_shop_metadata.html">ShopMetadata</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data struct containing metadata associated with a <a class="el" href="class_shopify_1_1_unity_1_1_shop.html" title="Shop represents a collection of the general settings and information about the shop. ">Shop</a>.  <a href="struct_shopify_1_1_unity_1_1_shop_metadata.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shop_policy.html">ShopPolicy</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Policy that a merchant has configured for their store, such as their refund or privacy policy.  <a href="class_shopify_1_1_unity_1_1_shop_policy.html#details">More...</a><br /></td></tr>
@@ -448,6 +451,19 @@ Enumerations</h2></td></tr>
  }<tr class="memdesc:a5dfb6dce6787178d88e9ca27502d4bc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The set of valid sort keys for the blogs query.  <a href="namespace_shopify_1_1_unity.html#a5dfb6dce6787178d88e9ca27502d4bc6">More...</a><br /></td></tr>
 </td></tr>
 <tr class="separator:a5dfb6dce6787178d88e9ca27502d4bc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09b6f1a20bdb64d15e3fb8359f7ced9a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_shopify_1_1_unity.html#a09b6f1a20bdb64d15e3fb8359f7ced9a">CardBrand</a> { <br />
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a09b6f1a20bdb64d15e3fb8359f7ced9aa696b031073e74bf2cb98e5ef201d4aa3">CardBrand.UNKNOWN</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a09b6f1a20bdb64d15e3fb8359f7ced9aa996a1b06b8d2c8aef69bf8ab86042e3d">CardBrand.AMERICAN_EXPRESS</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a09b6f1a20bdb64d15e3fb8359f7ced9aa31d5931882b8065c56689c25c4ce9c54">CardBrand.DINERS_CLUB</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a09b6f1a20bdb64d15e3fb8359f7ced9aa987e4c5476405d9dab8a979f4ff8bba6">CardBrand.DISCOVER</a>, 
+<br />
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a09b6f1a20bdb64d15e3fb8359f7ced9aa53619d5dc16df90ad84a8958b7121aa8">CardBrand.JCB</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a09b6f1a20bdb64d15e3fb8359f7ced9aa866e34f8513b55cd91e09341626343ad">CardBrand.MASTERCARD</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a09b6f1a20bdb64d15e3fb8359f7ced9aa93d207a5540aa38f404ae593385a7b64">CardBrand.VISA</a>
+<br />
+ }<tr class="memdesc:a09b6f1a20bdb64d15e3fb8359f7ced9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Card brand, such as Visa or Mastercard, which can be used for payments.  <a href="namespace_shopify_1_1_unity.html#a09b6f1a20bdb64d15e3fb8359f7ced9a">More...</a><br /></td></tr>
+</td></tr>
+<tr class="separator:a09b6f1a20bdb64d15e3fb8359f7ced9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e8be354f304034101bf0112fde5dbfb"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_shopify_1_1_unity.html#a2e8be354f304034101bf0112fde5dbfb">CollectionSortKeys</a> { <br />
 &#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a2e8be354f304034101bf0112fde5dbfba696b031073e74bf2cb98e5ef201d4aa3">CollectionSortKeys.UNKNOWN</a>, 
 <b>ID</b>, 
@@ -763,7 +779,7 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a70f73ee5133fa9c2b13516067fabfd87">CountryCode.ZM</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a31645929703e0ca8727296992f4dc763">CountryCode.ZW</a>
 <br />
- }<tr class="memdesc:a4ac2ce915c4dff60a384bb28448ea8c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Country codes  <a href="namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7">More...</a><br /></td></tr>
+ }<tr class="memdesc:a4ac2ce915c4dff60a384bb28448ea8c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">ISO 3166-1 alpha-2 country codes with some differences.  <a href="namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7">More...</a><br /></td></tr>
 </td></tr>
 <tr class="separator:a4ac2ce915c4dff60a384bb28448ea8c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae6f7c4d6eba107063bbcd35e801753c1"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_shopify_1_1_unity.html#ae6f7c4d6eba107063bbcd35e801753c1">CropRegion</a> { <br />
@@ -955,6 +971,13 @@ Enumerations</h2></td></tr>
  }<tr class="memdesc:a99d081e99a38fbef1b41ea929d1eabbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Currency codes  <a href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbb">More...</a><br /></td></tr>
 </td></tr>
 <tr class="separator:a99d081e99a38fbef1b41ea929d1eabbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0b290d34c3c31410d1a17511d2fe70b"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_shopify_1_1_unity.html#ae0b290d34c3c31410d1a17511d2fe70b">DigitalWallet</a> { <a class="el" href="namespace_shopify_1_1_unity.html#ae0b290d34c3c31410d1a17511d2fe70ba696b031073e74bf2cb98e5ef201d4aa3">DigitalWallet.UNKNOWN</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#ae0b290d34c3c31410d1a17511d2fe70ba1a96a9f9c39de1a6a640ed1cd9ec15c2">DigitalWallet.ANDROID_PAY</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#ae0b290d34c3c31410d1a17511d2fe70bad27b65cb9ca3d6f05cae9222d72ca3e5">DigitalWallet.APPLE_PAY</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#ae0b290d34c3c31410d1a17511d2fe70ba9b44a7c7e817f2bdf0d39480282fe62c">DigitalWallet.SHOPIFY_PAY</a>
+ }<tr class="memdesc:ae0b290d34c3c31410d1a17511d2fe70b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Digital wallet, such as Apple Pay, which can be used for accelerated checkouts.  <a href="namespace_shopify_1_1_unity.html#ae0b290d34c3c31410d1a17511d2fe70b">More...</a><br /></td></tr>
+</td></tr>
+<tr class="separator:ae0b290d34c3c31410d1a17511d2fe70b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8305f39ffb3a7bc048810b40530d0f2a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_shopify_1_1_unity.html#a8305f39ffb3a7bc048810b40530d0f2a">OrderSortKeys</a> { <br />
 &#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a8305f39ffb3a7bc048810b40530d0f2aa696b031073e74bf2cb98e5ef201d4aa3">OrderSortKeys.UNKNOWN</a>, 
 <b>ID</b>, 
@@ -1097,6 +1120,46 @@ Enumerations</h2></td></tr>
 
 </div>
 </div>
+<a id="a09b6f1a20bdb64d15e3fb8359f7ced9a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09b6f1a20bdb64d15e3fb8359f7ced9a">&#9670;&nbsp;</a></span>CardBrand</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespace_shopify_1_1_unity.html#a09b6f1a20bdb64d15e3fb8359f7ced9a">Shopify.Unity.CardBrand</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Card brand, such as Visa or Mastercard, which can be used for payments. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a09b6f1a20bdb64d15e3fb8359f7ced9aa696b031073e74bf2cb98e5ef201d4aa3"></a>UNKNOWN&#160;</td><td class="fielddoc"><p>If the <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a> is not up to date with the schema in the Storefront API, it is possible to have enum values returned that are unknown to the <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a>. In this case the value will actually be UNKNOWN. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a09b6f1a20bdb64d15e3fb8359f7ced9aa996a1b06b8d2c8aef69bf8ab86042e3d"></a>AMERICAN_EXPRESS&#160;</td><td class="fielddoc"><p>American Express </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a09b6f1a20bdb64d15e3fb8359f7ced9aa31d5931882b8065c56689c25c4ce9c54"></a>DINERS_CLUB&#160;</td><td class="fielddoc"><p>Diners Club </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a09b6f1a20bdb64d15e3fb8359f7ced9aa987e4c5476405d9dab8a979f4ff8bba6"></a>DISCOVER&#160;</td><td class="fielddoc"><p>Discover </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a09b6f1a20bdb64d15e3fb8359f7ced9aa53619d5dc16df90ad84a8958b7121aa8"></a>JCB&#160;</td><td class="fielddoc"><p>JCB </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a09b6f1a20bdb64d15e3fb8359f7ced9aa866e34f8513b55cd91e09341626343ad"></a>MASTERCARD&#160;</td><td class="fielddoc"><p>Mastercard </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a09b6f1a20bdb64d15e3fb8359f7ced9aa93d207a5540aa38f404ae593385a7b64"></a>VISA&#160;</td><td class="fielddoc"><p>Visa </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <a id="a2e8be354f304034101bf0112fde5dbfb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2e8be354f304034101bf0112fde5dbfb">&#9670;&nbsp;</a></span>CollectionSortKeys</h2>
 
@@ -1145,7 +1208,7 @@ Enumerations</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Country codes </p>
+<p>ISO 3166-1 alpha-2 country codes with some differences. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a4ac2ce915c4dff60a384bb28448ea8c7a696b031073e74bf2cb98e5ef201d4aa3"></a>UNKNOWN&#160;</td><td class="fielddoc"><p>If the <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a> is not up to date with the schema in the Storefront API, it is possible to have enum values returned that are unknown to the <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a>. In this case the value will actually be UNKNOWN. </p>
 </td></tr>
@@ -1970,6 +2033,40 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="a99d081e99a38fbef1b41ea929d1eabbbaff803aa0c51703daa2dab2119613aa6f"></a>ZAR&#160;</td><td class="fielddoc"><p>South African Rand (ZAR) </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a99d081e99a38fbef1b41ea929d1eabbbad97f121505552c7709f4a998ebe7d84e"></a>ZMW&#160;</td><td class="fielddoc"><p>Zambian Kwacha (ZMW) </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="ae0b290d34c3c31410d1a17511d2fe70b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0b290d34c3c31410d1a17511d2fe70b">&#9670;&nbsp;</a></span>DigitalWallet</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespace_shopify_1_1_unity.html#ae0b290d34c3c31410d1a17511d2fe70b">Shopify.Unity.DigitalWallet</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Digital wallet, such as Apple Pay, which can be used for accelerated checkouts. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ae0b290d34c3c31410d1a17511d2fe70ba696b031073e74bf2cb98e5ef201d4aa3"></a>UNKNOWN&#160;</td><td class="fielddoc"><p>If the <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a> is not up to date with the schema in the Storefront API, it is possible to have enum values returned that are unknown to the <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a>. In this case the value will actually be UNKNOWN. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ae0b290d34c3c31410d1a17511d2fe70ba1a96a9f9c39de1a6a640ed1cd9ec15c2"></a>ANDROID_PAY&#160;</td><td class="fielddoc"><p>Android Pay </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ae0b290d34c3c31410d1a17511d2fe70bad27b65cb9ca3d6f05cae9222d72ca3e5"></a>APPLE_PAY&#160;</td><td class="fielddoc"><p>Apple Pay </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ae0b290d34c3c31410d1a17511d2fe70ba9b44a7c7e817f2bdf0d39480282fe62c"></a>SHOPIFY_PAY&#160;</td><td class="fielddoc"><p><a class="el" href="namespace_shopify.html">Shopify</a> Pay </p>
 </td></tr>
 </table>
 

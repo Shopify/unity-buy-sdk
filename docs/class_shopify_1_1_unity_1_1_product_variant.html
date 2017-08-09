@@ -94,6 +94,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afbb7d691bffe65541829ee78fe9d9fea"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_product_variant.html#afbb7d691bffe65541829ee78fe9d9fea">availableForSale</a> ()</td></tr>
 <tr class="memdesc:afbb7d691bffe65541829ee78fe9d9fea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates if the product variant is available for sale.  <a href="#afbb7d691bffe65541829ee78fe9d9fea">More...</a><br /></td></tr>
 <tr class="separator:afbb7d691bffe65541829ee78fe9d9fea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a828b63ce70488fe00251f9eeaff3422d"><td class="memItemLeft" align="right" valign="top">decimal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_product_variant.html#a828b63ce70488fe00251f9eeaff3422d">compareAtPrice</a> ()</td></tr>
+<tr class="memdesc:a828b63ce70488fe00251f9eeaff3422d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The compare at price of the variant. This can be used to mark a variant as on sale, when <code>compareAtPrice</code> is higher than <code>price</code>.  <a href="#a828b63ce70488fe00251f9eeaff3422d">More...</a><br /></td></tr>
+<tr class="separator:a828b63ce70488fe00251f9eeaff3422d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6263f6adb76bf929f9eafa32173045c3"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_product_variant.html#a6263f6adb76bf929f9eafa32173045c3">id</a> ()</td></tr>
 <tr class="memdesc:a6263f6adb76bf929f9eafa32173045c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Globally unique identifier.  <a href="#a6263f6adb76bf929f9eafa32173045c3">More...</a><br /></td></tr>
 <tr class="separator:a6263f6adb76bf929f9eafa32173045c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -109,6 +112,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1f6723262e576286a7e75c13c6f5c96f"><td class="memItemLeft" align="right" valign="top">List&lt; <a class="el" href="class_shopify_1_1_unity_1_1_selected_option.html">SelectedOption</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_product_variant.html#a1f6723262e576286a7e75c13c6f5c96f">selectedOptions</a> ()</td></tr>
 <tr class="memdesc:a1f6723262e576286a7e75c13c6f5c96f"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of product options applied to the variant.  <a href="#a1f6723262e576286a7e75c13c6f5c96f">More...</a><br /></td></tr>
 <tr class="separator:a1f6723262e576286a7e75c13c6f5c96f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c13503b201433e529a7cf2fe35e963e"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_product_variant.html#a6c13503b201433e529a7cf2fe35e963e">sku</a> ()</td></tr>
+<tr class="memdesc:a6c13503b201433e529a7cf2fe35e963e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The SKU (Stock Keeping Unit) associated with the variant.  <a href="#a6c13503b201433e529a7cf2fe35e963e">More...</a><br /></td></tr>
+<tr class="separator:a6c13503b201433e529a7cf2fe35e963e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19e404dd44fc9bf2143f803a11f0eacc"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_product_variant.html#a19e404dd44fc9bf2143f803a11f0eacc">title</a> ()</td></tr>
 <tr class="memdesc:a19e404dd44fc9bf2143f803a11f0eacc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The product variant’s title.  <a href="#a19e404dd44fc9bf2143f803a11f0eacc">More...</a><br /></td></tr>
 <tr class="separator:a19e404dd44fc9bf2143f803a11f0eacc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -227,6 +233,33 @@ Dictionary&lt; string, object &gt;&#160;</td><td class="memItemRight" valign="bo
 </div><div class="memdoc">
 
 <p>Indicates if the product variant is available for sale. </p>
+
+</div>
+</div>
+<a id="a828b63ce70488fe00251f9eeaff3422d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a828b63ce70488fe00251f9eeaff3422d">&#9670;&nbsp;</a></span>compareAtPrice()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">decimal Shopify.Unity.ProductVariant.compareAtPrice </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The compare at price of the variant. This can be used to mark a variant as on sale, when <code>compareAtPrice</code> is higher than <code>price</code>. </p>
 
 </div>
 </div>
@@ -371,6 +404,33 @@ Dictionary&lt; string, object &gt;&#160;</td><td class="memItemRight" valign="bo
 </div><div class="memdoc">
 
 <p>List of product options applied to the variant. </p>
+
+</div>
+</div>
+<a id="a6c13503b201433e529a7cf2fe35e963e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c13503b201433e529a7cf2fe35e963e">&#9670;&nbsp;</a></span>sku()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">string Shopify.Unity.ProductVariant.sku </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The SKU (Stock Keeping Unit) associated with the variant. </p>
 
 </div>
 </div>

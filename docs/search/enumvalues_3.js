@@ -1,6 +1,8 @@
 var searchData=
 [
   ['de',['DE',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a3a52f3c22ed6fcde5bf696a6c02c9e73',1,'Shopify::Unity']]],
+  ['diners_5fclub',['DINERS_CLUB',['../namespace_shopify_1_1_unity.html#a09b6f1a20bdb64d15e3fb8359f7ced9aa31d5931882b8065c56689c25c4ce9c54',1,'Shopify::Unity']]],
+  ['discover',['DISCOVER',['../namespace_shopify_1_1_unity.html#a09b6f1a20bdb64d15e3fb8359f7ced9aa987e4c5476405d9dab8a979f4ff8bba6',1,'Shopify::Unity']]],
   ['dj',['DJ',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a27a5773a603825cc6999e48cc2b1b270',1,'Shopify::Unity']]],
   ['dk',['DK',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7add65ef9a5579d4e518c6d4abbd0cb1c6',1,'Shopify::Unity']]],
   ['dkk',['DKK',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba5b006441e694cb45a1af078e58a66a87',1,'Shopify::Unity']]],
