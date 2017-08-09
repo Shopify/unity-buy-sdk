@@ -1,7 +1,17 @@
 namespace <%= namespace %>.SDK {
 
     interface INativeCheckout {
-        bool CanShowPaymentSetup();
+
+        /// <summary>
+        /// Check whether the device supports displaying a native wallet application to setup the user's payment card
+        /// </summary>
+        /// <param name="paymentSettings">The Shop's payment settings</param>
+        /// <returns>True if the device supports displaying a native wallet application</returns>
+        bool CanShowPaymentSetup(PaymentSettings paymentSettings);
+
+        /// <summary>
+        /// Invokes a native method that will prompt the user to setup the user's payment card via the native wallet application
+        /// </summary>
         void ShowPaymentSetup();
 
         /// <summary>
