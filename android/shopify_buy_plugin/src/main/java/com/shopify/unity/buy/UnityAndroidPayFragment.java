@@ -35,7 +35,7 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
     private String publicKey;
     private int androidPayEnvironment;
     private GoogleApiClient googleApiClient;
-    private AndroidPaySessionCallbacks sessionCallbacks;
+    private AndroidPaySessionCallback sessionCallbacks;
 
     private CheckoutState currentCheckoutState;
     private MaskedWallet maskedWallet;
@@ -49,7 +49,7 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
         };
 
         private Bundle bundle;
-        private AndroidPaySessionCallbacks callbacks;
+        private AndroidPaySessionCallback callbacks;
 
         UnityAndroidPayFragmentBuilder() {
             bundle = new Bundle();
@@ -75,7 +75,7 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
             return this;
         }
 
-        UnityAndroidPayFragmentBuilder setSessionCallbacks(AndroidPaySessionCallbacks callbacks) {
+        UnityAndroidPayFragmentBuilder setSessionCallbacks(AndroidPaySessionCallback callbacks) {
             this.callbacks = callbacks;
             return this;
         }
@@ -194,7 +194,7 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
         });
     }
 
-    public void setSessionCallbacks(AndroidPaySessionCallbacks callbacks) {
+    public void setSessionCallbacks(AndroidPaySessionCallback callbacks) {
         sessionCallbacks = callbacks;
     }
 }
