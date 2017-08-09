@@ -19,6 +19,7 @@ The Unity Buy SDK allows Unity developers to query and sell products from Shopif
 - Create a cart
 - Check out via weblink
 - Checkouts via Apple Pay and Safari Web View
+- Checkouts via Android Chrome Custom Tab
 - Make custom GraphQL queries using the [Storefront API](https://help.shopify.com/api/storefront-api)
 
 Coming Soon:
@@ -42,6 +43,7 @@ By following the steps below you'll install the Unity Buy SDK into your Unity pr
 2. Make sure that your project is open in Unity
 3. Open the downloaded `shopify-buy.unitypackage`
 
+When you are ready to build for a specific platform, please read the [Supported build targets](#supported-build-targets) section to know how to configure your `Player Settings` and `Build Settings` in Unity
 
 ## Supported build targets 
 See [Build Target Requirements](BUILDTARGETS.md) for supported target platforms and requirements.
