@@ -2,7 +2,7 @@ package com.shopify.unity.buy;
 
 import com.shopify.unity.buy.models.MailingAddressInput;
 
-interface AndroidPaySessionCallbacks {
+interface AndroidPaySessionCallback {
 
     void onError(String errorMessage);
 
