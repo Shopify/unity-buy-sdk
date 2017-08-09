@@ -3,10 +3,16 @@ namespace Shopify.Tests {
     using System.Collections.Generic;
     using UnityEngine;
     using Shopify.Unity;
-    using Shopify.Unity.SDK.iOS;
     using Shopify.Unity.MiniJSON;
 
-    public class PaymentNetworkSerializationTester : MonoBehaviour {
+    #if UNITY_IOS
+    using Shopify.Unity.SDK.iOS;
+    #endif
+
+    public partial class PaymentNetworkSerializationTester : MonoBehaviour {}
+
+    #if UNITY_IOS
+    public partial class PaymentNetworkSerializationTester {
 
         void GetAmexPaymentNetworkString(string serializedMessage) {
             var message = NativeMessageTester.CreateFromJSON(serializedMessage);
@@ -49,4 +55,5 @@ namespace Shopify.Tests {
             message.Respond(Json.Serialize(PaymentNetwork.NetworksFromCardBrands(cardBrands)));
         }
     }
+    #endif
 }
