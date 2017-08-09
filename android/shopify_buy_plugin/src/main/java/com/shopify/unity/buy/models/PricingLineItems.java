@@ -24,7 +24,7 @@ public final class PricingLineItems implements JsonSerializable {
         this.totalPrice = BigDecimal.ZERO;
         this.subtotal = BigDecimal.ZERO;
         this.taxPrice = BigDecimal.ZERO;
-        this.shippingPrice = BigDecimal.ZERO;
+        this.shippingPrice = null;
     }
 
     public static PricingLineItems fromJsonString(String jsonString) throws IOException {
