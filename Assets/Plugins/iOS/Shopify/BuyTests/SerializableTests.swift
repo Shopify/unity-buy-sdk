@@ -128,17 +128,17 @@ class SerializableTests: XCTestCase {
     //  MARK: - Convenience Asserts -
     //
     func assertEqual(serializedContact: JSON, to contact: PKContact, havingMultipleAddresses: Bool) {
-        XCTAssertEqual(serializedContact[ContactField.firstName.rawValue] as? String, contact.name?.givenName);
-        XCTAssertEqual(serializedContact[ContactField.lastName.rawValue]  as? String, contact.name?.familyName);
-        XCTAssertEqual(serializedContact[ContactField.city.rawValue]      as? String, contact.postalAddress?.city);
-        XCTAssertEqual(serializedContact[ContactField.country.rawValue]   as? String, contact.postalAddress?.country);
-        XCTAssertEqual(serializedContact[ContactField.province.rawValue]  as? String, contact.postalAddress?.state);
-        XCTAssertEqual(serializedContact[ContactField.zip.rawValue]       as? String, contact.postalAddress?.postalCode);
-        XCTAssertEqual(serializedContact[ContactField.email.rawValue]     as? String, contact.emailAddress);
-        XCTAssertEqual(serializedContact[ContactField.phone.rawValue]     as? String, contact.phoneNumber?.stringValue);
+        XCTAssertEqual(serializedContact[PKContact.Field.firstName.rawValue] as? String, contact.name?.givenName);
+        XCTAssertEqual(serializedContact[PKContact.Field.lastName.rawValue]  as? String, contact.name?.familyName);
+        XCTAssertEqual(serializedContact[PKContact.Field.city.rawValue]      as? String, contact.postalAddress?.city);
+        XCTAssertEqual(serializedContact[PKContact.Field.country.rawValue]   as? String, contact.postalAddress?.country);
+        XCTAssertEqual(serializedContact[PKContact.Field.province.rawValue]  as? String, contact.postalAddress?.state);
+        XCTAssertEqual(serializedContact[PKContact.Field.zip.rawValue]       as? String, contact.postalAddress?.postalCode);
+        XCTAssertEqual(serializedContact[PKContact.Field.email.rawValue]     as? String, contact.emailAddress);
+        XCTAssertEqual(serializedContact[PKContact.Field.phone.rawValue]     as? String, contact.phoneNumber?.stringValue);
         
-        let firstAddress  = serializedContact[ContactField.address1.rawValue] as? String
-        let secondAddress = serializedContact[ContactField.address2.rawValue] as? String
+        let firstAddress  = serializedContact[PKContact.Field.address1.rawValue] as? String
+        let secondAddress = serializedContact[PKContact.Field.address2.rawValue] as? String
 
         if havingMultipleAddresses {
             XCTAssertEqual(firstAddress! + "\n" + secondAddress!, contact.postalAddress!.street);
