@@ -43,7 +43,7 @@ public class UnityAndroidPayFragmentTest {
     private UnityAndroidPayFragment fragment;
 
     @Mock
-    private AndroidPaySessionCallbacks mockCallbacks;
+    private AndroidPaySessionCallback mockCallbacks;
 
     @Mock
     private GoogleApiClient mockGoogleClient;
