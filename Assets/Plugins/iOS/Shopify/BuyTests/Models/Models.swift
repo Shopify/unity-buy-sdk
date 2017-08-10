@@ -47,6 +47,8 @@ struct Models {
     static let countryCode  = "US"
     static let currencyCode = "USD"
     
+    static let supportedPaymentNetworks: [PKPaymentNetwork] = [.amex, .visa, .masterCard]
+    
     // ----------------------------------
     //  MARK: - PersonNameComponents -
     //
@@ -179,6 +181,7 @@ struct Models {
                 countryCode: countryCode,
                 currencyCode: currencyCode,
                 requiringShippingAddressFields: requiringShippingAddressFields,
+                supportedNetworks: supportedPaymentNetworks,
                 summaryItems: createSummaryItems(),
                 shippingMethods: createShippingMethods(),
                 controllerType: controllerType)
@@ -188,9 +191,16 @@ struct Models {
                 countryCode: countryCode,
                 currencyCode: currencyCode,
                 requiringShippingAddressFields: requiringShippingAddressFields,
+                supportedNetworks: supportedPaymentNetworks,
                 summaryItems: createSummaryItems(),
                 shippingMethods: createShippingMethods())
         }
+    }
+    
+    static func createSerializedPaymentNetworksString() -> String {
+        let jsonData = try! JSONSerialization.data(withJSONObject: supportedPaymentNetworks)
+        let stringRepresentation = String(data: jsonData, encoding: .utf8)!
+        return stringRepresentation
     }
 }
 

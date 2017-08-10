@@ -52,7 +52,7 @@ class PaymentSessionTests: XCTestCase {
         XCTAssertEqual(session.request.merchantIdentifier,   Models.merchantId)
         XCTAssertEqual(session.request.countryCode,          Models.countryCode)
         XCTAssertEqual(session.request.currencyCode,         Models.currencyCode)
-        XCTAssertEqual(session.request.supportedNetworks,    PaymentSession.supportedNetworks)
+        XCTAssertEqual(session.request.supportedNetworks,    Models.supportedPaymentNetworks)
         XCTAssertEqual(session.request.paymentSummaryItems,  summaryItems)
         XCTAssertEqual(session.request.shippingMethods!,     shippingMethods)
         XCTAssertEqual(session.request.merchantCapabilities, PaymentSession.capabilities)
@@ -64,13 +64,6 @@ class PaymentSessionTests: XCTestCase {
         XCTAssertEqual(noShippingSession.request.requiredShippingAddressFields, PKAddressField(rawValue: PKAddressField.email.rawValue | PKAddressField.phone.rawValue))
     }
     
-    // ----------------------------------
-    //  MARK: - Supported Networks -
-    //
-    func testSupportedNetworks() {
-        XCTAssertEqual(PaymentSession.supportedNetworks, [.amex, .masterCard, .visa])
-    }
-
     // ----------------------------------
     //  MARK: - Presenting and Dismissing -
     //
