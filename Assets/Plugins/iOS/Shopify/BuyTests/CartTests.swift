@@ -74,5 +74,7 @@ class CartTests: XCTestCase {
         XCTAssertEqual(session.request.shippingMethods!.first!.amount,     NSDecimalNumber(string: shippingAmount))
         XCTAssertEqual(session.request.shippingMethods!.first!.identifier, identifier)
         XCTAssertEqual(session.request.shippingMethods!.first!.detail,     detail)
+        
+        XCTAssertEqual(session.request.supportedNetworks, Models.supportedPaymentNetworks)
     }
 }
