@@ -1,11 +1,6 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="buy.unity.shopfiy.com.unitybuyplugin">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.shopify.unity.buy">
     <application android:label="@string/app_name" android:supportsRtl="true">
-        <meta-data
-            android:name="com.google.android.gms.wallet.api.enabled"
-            android:value="true" />
-
         <!-- Only used for instrument tests! -->
         <activity android:name="com.shopify.unity.buy.MockUnityActivity" />
-
     </application>
 </manifest>
