@@ -84,7 +84,15 @@ import PassKit
     // ----------------------------------
     //  MARK: - Init -
     //
-    init(merchantId: String, countryCode: String, currencyCode: String, requiringShippingAddressFields: Bool, summaryItems: [PKPaymentSummaryItem], shippingMethods:[PKShippingMethod]?, controllerType: PaymentAuthorizationControlling.Type = PKPaymentAuthorizationViewController.self)
+    init(
+        merchantId: String,
+        countryCode: String,
+        currencyCode: String,
+        requiringShippingAddressFields: Bool,
+        supportedNetworks: [PKPaymentNetwork],
+        summaryItems: [PKPaymentSummaryItem],
+        shippingMethods:[PKShippingMethod]?,
+        controllerType: PaymentAuthorizationControlling.Type = PKPaymentAuthorizationViewController.self)
     {
         request = PKPaymentRequest.init()
         request.countryCode                   = countryCode
@@ -92,7 +100,7 @@ import PassKit
         request.merchantIdentifier            = merchantId
         request.requiredBillingAddressFields  = .all
         request.merchantCapabilities          = PaymentSession.capabilities
-        request.supportedNetworks             = PaymentSession.supportedNetworks
+        request.supportedNetworks             = supportedNetworks
         request.requiredShippingAddressFields = requiringShippingAddressFields ?
             .all : PKAddressField.init(rawValue: PKAddressField.email.rawValue | PKAddressField.phone.rawValue)
         
@@ -122,17 +130,16 @@ import PassKit
 //
 extension PaymentSession {
     
-    static let supportedNetworks: [PKPaymentNetwork] = [.amex, .masterCard, .visa]
-    static let capabilities: PKMerchantCapability    = [.capability3DS, .capabilityDebit, .capabilityCredit]
+    static let capabilities: PKMerchantCapability = [.capability3DS, .capabilityDebit, .capabilityCredit]
     
-    static func canMakePayments() -> Bool {
+    static func canMakePayments(usingNetworks networks: [PKPaymentNetwork]) -> Bool {
         return PKPaymentAuthorizationViewController.canMakePayments() &&
-            PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: PaymentSession.supportedNetworks, capabilities: capabilities)
+            PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: networks, capabilities: capabilities)
     }
     
-    static func canShowSetup() -> Bool {
+    static func canShowSetup(forNetworks networks: [PKPaymentNetwork]) -> Bool {
         return PKPaymentAuthorizationViewController.canMakePayments() &&
-            !PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: PaymentSession.supportedNetworks, capabilities: capabilities)
+            !PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: networks, capabilities: capabilities)
     }
     
     static func showSetup() {

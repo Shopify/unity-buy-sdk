@@ -30,9 +30,9 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-    bool _CreateApplePaySession(const char *unityDelegateObjectName, const char *merchantID, const char *countryCode, const char *currencyCode, const char *serializedSummaryItems, const char *serializedShippingMethods, bool requiringShipping);
-    bool _CanCheckoutWithApplePay();
-    bool _CanShowApplePaySetup();
+    bool _CreateApplePaySession(const char *unityDelegateObjectName, const char *merchantID, const char *countryCode, const char *currencyCode, const char *serializedPaymentNetworks, const char *serializedSummaryItems, const char *serializedShippingMethods, bool requiringShipping);
+    bool _CanCheckoutWithApplePay(const char *serializedSupportedNetworks);
+    bool _CanShowApplePaySetup(const char *serializedSupportedNetworks);
     void _ShowApplePaySetup();
     bool _PresentApplePayAuthorization();
 #ifdef __cplusplus
