@@ -33,6 +33,7 @@ import PassKit
 class ApplePayFlowTests: XCTestCase {
     
     private let timeout = 10.0
+    private let totalLabel = "Test Store"
     
     // These are the shipping methods expected from unity-buy-sdk.myshopify.com
     private let standardShippingMethod  = PKShippingMethod(label: "Standard Shipping",  amount: 5.83,  identifier: "shopify-Standard%20Shipping-5.83")
@@ -75,7 +76,7 @@ class ApplePayFlowTests: XCTestCase {
         let expectedSubtotal = PKPaymentSummaryItem(label: "SUBTOTAL", amount: 25.47)
         let expectedShipping = PKPaymentSummaryItem(label: "SHIPPING", amount: standardShippingMethod.amount)
         let expectedTaxes    = PKPaymentSummaryItem(label: "TAXES",    amount: 2.93)
-        let expectedTotal    = PKPaymentSummaryItem(label: "TOTAL", amount: 31.30)
+        let expectedTotal    = PKPaymentSummaryItem(label: totalLabel, amount: 31.30)
         
         let method = Tester.Method.checkout.rawValue
         let checkoutMessage = UnityMessage(content: "", object: Tester.name, method: method)
@@ -115,7 +116,7 @@ class ApplePayFlowTests: XCTestCase {
         let expectation      = self.expectation(description: "MockAuthorizationController.invokeDidSelectShippingContact failed to complete")
         let expectedSubtotal = PKPaymentSummaryItem(label: "SUBTOTAL", amount: 25.47)
         let expectedTaxes    = PKPaymentSummaryItem(label: "TAXES",    amount: 0)
-        let expectedTotal    = PKPaymentSummaryItem(label: "TOTAL", amount: 25.47)
+        let expectedTotal    = PKPaymentSummaryItem(label: totalLabel, amount: 25.47)
         
         let method = Tester.Method.checkout.rawValue
         let checkoutMessage = UnityMessage(content: "", object: Tester.name, method: method)
@@ -151,7 +152,7 @@ class ApplePayFlowTests: XCTestCase {
         let expectedSubtotal = PKPaymentSummaryItem(label: "SUBTOTAL", amount: 25.47)
         let expectedShipping = PKPaymentSummaryItem(label: "SHIPPING", amount: expeditedShippingMethod.amount)
         let expectedTaxes    = PKPaymentSummaryItem(label: "TAXES",    amount: 2.93)
-        let expectedTotal    = PKPaymentSummaryItem(label: "TOTAL",    amount: 41.29)
+        let expectedTotal    = PKPaymentSummaryItem(label: totalLabel,    amount: 41.29)
         
         let method = Tester.Method.checkoutWithShippingAddress.rawValue
         let checkoutMessage = UnityMessage(content: "", object: Tester.name, method: method)
