@@ -32,11 +32,12 @@ import PassKit
     private(set) static var session: PaymentSession?
     private static var dispatcher: ApplePayEventDispatcher?
     
-    static func createApplePaySession(unityDelegateObjectName: String, merchantID: String, countryCode: String, currencyCode: String, serializedSummaryItems: String, serializedShippingMethods: String?, requiringShipping: Bool) -> Bool {
+    static func createApplePaySession(unityDelegateObjectName: String, merchantID: String, countryCode: String, currencyCode: String, serializedSupportedNetworks: String, serializedSummaryItems: String, serializedShippingMethods: String?, requiringShipping: Bool) -> Bool {
         
         guard
-            let summaryItemsJson = extractItems(from: serializedSummaryItems),
-            let summaryItems     = PKPaymentSummaryItem.deserialize(summaryItemsJson)
+            let summaryItemsJson  = extractItems(from: serializedSummaryItems),
+            let summaryItems      = PKPaymentSummaryItem.deserialize(summaryItemsJson),
+            let supportedNetworks = supportedPaymentNetworks(from: serializedSupportedNetworks)
         else {
             return false
         }
@@ -60,6 +61,7 @@ import PassKit
                         countryCode: countryCode,
                         currencyCode: currencyCode,
                         requiringShippingAddressFields: requiringShipping,
+                        supportedNetworks: supportedNetworks,
                         summaryItems: summaryItems,
                         shippingMethods: shippingMethods)
         
@@ -76,14 +78,57 @@ import PassKit
         session.presentAuthorizationController()
         return true
     }
-    
-    private static func extractItems(from jsonString: String) -> [JSON]? {
+}
+
+
+//  ----------------------------------
+//  MARK: - Static PaymentSession helpers -
+//
+extension Cart {
+    public static func canMakePayments(usingSerializedNetworks networks: String) -> Bool {
         
-        guard
-            let data = jsonString.data(using: .utf8),
+        if let supportedNetworks = supportedPaymentNetworks(from: networks) {
+            return PaymentSession.canMakePayments(usingNetworks: supportedNetworks)
+        }
+        
+        return false
+    }
+    
+    public static func canShowSetup(forSerializedNetworks networks: String) -> Bool {
+        
+        if let supportedNetworks = supportedPaymentNetworks(from: networks) {
+            return PaymentSession.canShowSetup(forNetworks: supportedNetworks)
+        }
+        
+        return false
+    }
+    
+    public static func showPaymentSetup() {
+        PaymentSession.showSetup()
+    }
+}
+
+
+// ----------------------------------
+//  MARK: - String deserialization helpers -
+//
+extension Cart {
+    
+    fileprivate static func stringCollection(from jsonString: String) -> [String]? {
+        
+        if let data = jsonString.data(using: .utf8),
             let object = try? JSONSerialization.jsonObject(with: data),
-            let stringCollection = object as? [String]
-        else {
+            let stringCollection = object as? [String] {
+            return stringCollection
+        }
+        
+        return nil
+        
+    }
+    
+    fileprivate static func extractItems(from jsonString: String) -> [JSON]? {
+        
+        guard let stringCollection = stringCollection(from: jsonString) else {
             return nil
         }
         
@@ -95,6 +140,16 @@ import PassKit
             } else {
                 return nil
             }
+        }
+    }
+    
+    fileprivate static func supportedPaymentNetworks(from jsonString: String) -> [PKPaymentNetwork]? {
+        guard let stringCollection = stringCollection(from: jsonString) else {
+            return nil
+        }
+        
+        return stringCollection.flatMap { string in
+            return PKPaymentNetwork(string)
         }
     }
 }
