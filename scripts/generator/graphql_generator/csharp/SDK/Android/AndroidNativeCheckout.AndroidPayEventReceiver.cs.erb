@@ -1,0 +1,26 @@
+#if UNITY_ANDROID
+namespace <%= namespace %>.SDK.Android {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Runtime.InteropServices;
+    using <%= namespace %>.SDK;
+    using <%= namespace %>.MiniJSON;
+
+    using UnityEngine;
+
+    public partial class AndroidNativeCheckout : IAndroidPayEventReceiver {
+        public void OnUpdateShippingAddress(string serializedMessage) {
+        }
+
+        public void OnUpdateShippingLine(string serializedMessage) {
+        }
+
+        public void OnError(string serializedMessage) {
+        }
+
+        public void OnCancel(string serializedMessage) {
+        }
+    }
+}
+#endif
