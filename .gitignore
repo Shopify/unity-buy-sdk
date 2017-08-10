@@ -61,3 +61,7 @@ sysinfo.txt
 ####### ruby
 *.gem
 *.rbc
+
+###### export query
+export.exe
+export.exe.mdb
