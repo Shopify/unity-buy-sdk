@@ -47,8 +47,8 @@ class CartTests: XCTestCase {
         let serializedShippingMethod = String(data: shippingMethodData, encoding: .utf8)!
         
         // Put into an array of strings
-        let summaryItemsData    = try! JSONSerialization.data(withJSONObject: [serializedSummaryItem]);
-        let shippingMethodsData = try! JSONSerialization.data(withJSONObject: [serializedShippingMethod]);
+        let summaryItemsData    = try! JSONSerialization.data(withJSONObject: [serializedSummaryItem])
+        let shippingMethodsData = try! JSONSerialization.data(withJSONObject: [serializedShippingMethod])
         let serializedSummaryItems    = String(data: summaryItemsData,    encoding: .utf8)!.cString(using: .utf8)
         let serializedShippingMethods = String(data: shippingMethodsData, encoding: .utf8)!.cString(using: .utf8)
         
