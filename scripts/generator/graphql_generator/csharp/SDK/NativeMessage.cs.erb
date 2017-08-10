@@ -4,11 +4,7 @@ namespace <%= namespace %>.SDK {
     using System.Runtime.InteropServices;
     using <%= namespace %>.MiniJSON;
 
-    public class NativeMessage {
-
-        [DllImport ("__Internal")]
-        private static extern void _RespondToNativeMessage(string identifier, string message);
-
+    public partial class NativeMessage {
         public string Identifier;
         public string Content;
 
@@ -23,7 +19,7 @@ namespace <%= namespace %>.SDK {
         }
 
         public void Respond(string message) {
-            #if !SHOPIFY_MONO_UNIT_TEST
+            #if !SHOPIFY_MONO_UNIT_TEST && (UNITY_IOS || UNITY_ANDROID)
             _RespondToNativeMessage(Identifier, message);
             #endif
         }

@@ -1,0 +1,13 @@
+#if UNITY_IOS
+namespace <%= namespace %>.SDK {
+    using System;
+    using System.Collections.Generic;
+    using System.Runtime.InteropServices;
+    using <%= namespace %>.MiniJSON;
+
+    public partial class NativeMessage {
+        [DllImport ("__Internal")]
+        private static extern void _RespondToNativeMessage(string identifier, string message);
+    }
+}
+#endif
