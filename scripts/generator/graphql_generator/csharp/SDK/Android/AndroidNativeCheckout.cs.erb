@@ -13,7 +13,6 @@ namespace <%= namespace %>.SDK.Android {
 
     public partial class AndroidNativeCheckout : INativeCheckout {
         private CartState CartState;
-        private AndroidJavaObject AndroidPayCheckoutSession;
         private AndroidPayEventReceiverBridge AndroidPayEventBridge;
 
         private CheckoutSuccessCallback OnSuccess;
@@ -25,8 +24,7 @@ namespace <%= namespace %>.SDK.Android {
         }
 
         public bool CanShowPaymentSetup(PaymentSettings paymentSettings) {
-            // TODO
-            return true;
+            return false;
         }
 
         public void ShowPaymentSetup() {
@@ -61,15 +59,16 @@ namespace <%= namespace %>.SDK.Android {
             var requiresShipping = checkout.requiresShipping();
 
             #if !SHOPIFY_MONO_UNIT_TEST
-            AndroidPayCheckoutSession = new AndroidJavaObject("com.shopify.unity.buy.AndroidPayCheckoutSession");
-            object[] args = { GlobalGameObject.Name, merchantName, key, pricingLineItemsString, currencyCodeString, countryCodeString, requiresShipping, true };
-            if (AndroidPayCheckoutSession.Call<bool>("checkoutWithAndroidPay", args)) {
-                AndroidPayEventBridge = GlobalGameObject.AddComponent<AndroidPayEventReceiverBridge>();
-                AndroidPayEventBridge.Receiver = this;
-            } else {
-                // TODO: Create more meaningful error?
-                var error = new ShopifyError(ShopifyError.ErrorType.NativePaymentProcessingError, "Unable to create Android Pay session.");
-                OnFailure(error);
+            using (var androidPayCheckoutSession = new AndroidJavaObject("com.shopify.unity.buy.AndroidPayCheckoutSession")) {
+                object[] args = { GlobalGameObject.Name, merchantName, key, pricingLineItemsString, currencyCodeString, countryCodeString, requiresShipping, true };
+                if (androidPayCheckoutSession.Call<bool>("checkoutWithAndroidPay", args)) {
+                    AndroidPayEventBridge = GlobalGameObject.AddComponent<AndroidPayEventReceiverBridge>();
+                    AndroidPayEventBridge.Receiver = this;
+                } else {
+                    // TODO: Create more meaningful error?
+                    var error = new ShopifyError(ShopifyError.ErrorType.NativePaymentProcessingError, "Unable to create Android Pay session.");
+                    OnFailure(error);
+                }
             }
             #endif
         }
