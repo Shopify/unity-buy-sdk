@@ -62,8 +62,10 @@ namespace <%= namespace %>.SDK.Android {
             using (var androidPayCheckoutSession = new AndroidJavaObject("com.shopify.unity.buy.AndroidPayCheckoutSession")) {
                 object[] args = { GlobalGameObject.Name, merchantName, key, pricingLineItemsString, currencyCodeString, countryCodeString, requiresShipping, true };
                 if (androidPayCheckoutSession.Call<bool>("checkoutWithAndroidPay", args)) {
-                    AndroidPayEventBridge = GlobalGameObject.AddComponent<AndroidPayEventReceiverBridge>();
-                    AndroidPayEventBridge.Receiver = this;
+                    if (AndroidPayEventBridge == null) {
+                        AndroidPayEventBridge = GlobalGameObject.AddComponent<AndroidPayEventReceiverBridge>();
+                        AndroidPayEventBridge.Receiver = this;
+                    }
                 } else {
                     // TODO: Create more meaningful error?
                     var error = new ShopifyError(ShopifyError.ErrorType.NativePaymentProcessingError, "Unable to create Android Pay session.");
