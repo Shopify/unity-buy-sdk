@@ -111,13 +111,13 @@ public final class AndroidPayCheckoutSession implements AndroidPaySessionCallbac
             .commit();
     }
 
-    public void onUpdateShippingAddress(MailingAddressInput address, MessageCenter.MessageCallbacks messageCallbacks) {
+    public void onUpdateShippingAddress(MailingAddressInput address, MessageCenter.MessageCallback messageCallback) {
         UnityMessage msg = UnityMessage.fromAndroid(address.toJsonString());
         MessageCenter.UnityMessageReceiver receiver = new MessageCenter.UnityMessageReceiver(
             unityDelegateObjectName,
             MessageCenter.Method.ON_UPDATE_SHIPPING_ADDRESS
         );
-        MessageCenter.sendMessageTo(msg, receiver, messageCallbacks);
+        MessageCenter.sendMessageTo(msg, receiver, messageCallback);
     }
 
     public void onError(String error) {

@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MessageCenter {
-    private static Map<String, MessageCallbacks> callbacksInWaiting = new HashMap<>();
+    private static Map<String, MessageCallback> callbacksInWaiting = new HashMap<>();
 
     private MessageCenter() { }
 
@@ -16,7 +16,7 @@ public class MessageCenter {
     }
 
     // Send message with callbacks to invoke when complete.
-    static void sendMessageTo(final UnityMessage msg, final UnityMessageReceiver receiver, final MessageCallbacks callbacks) {
+    static void sendMessageTo(final UnityMessage msg, final UnityMessageReceiver receiver, final MessageCallback callbacks) {
         callbacksInWaiting.put(msg.identifier, callbacks);
         UnityPlayer.UnitySendMessage(receiver.unityDelegateObjectName, receiver.method.name, msg.toJsonString());
     }
@@ -24,7 +24,7 @@ public class MessageCenter {
     @SuppressWarnings("unused")
     public static void onUnityResponse(final String result) {
         UnityMessage msg = UnityMessage.fromUnity(result);
-        MessageCallbacks callbacks = callbacksInWaiting.remove(msg.identifier);
+        MessageCallback callbacks = callbacksInWaiting.remove(msg.identifier);
         if (callbacks != null) {
             callbacks.onResponse(msg.content);
         }
@@ -54,7 +54,7 @@ public class MessageCenter {
         }
     }
 
-    interface MessageCallbacks {
+    interface MessageCallback {
         void onResponse(String jsonResponse);
     }
 }
