@@ -29,9 +29,6 @@ cache:
     - $HOME/.gradle/wrapper/
     - $HOME/.android/build-cache
 
-before_script:
-  - cd android
-
 script:
-  - ./gradlew :shopify_buy_plugin:build :shopify_buy_plugin:check :shopify_buy_plugin:connectedCheck
+  - cd android; ./gradlew :shopify_buy_plugin:build :shopify_buy_plugin:check :shopify_buy_plugin:connectedCheck;
 
