@@ -50,6 +50,7 @@ task copyAARToPlugins {
         }
         into '../../Assets/Plugins/Android'
     }
+    outputs.upToDateWhen { false }
 }
 
 task assembleUnity {
