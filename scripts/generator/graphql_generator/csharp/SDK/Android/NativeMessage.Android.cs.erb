@@ -2,7 +2,6 @@
 namespace <%= namespace %>.SDK {
     using System;
     using System.Collections.Generic;
-    using System.Runtime.InteropServices;
     using <%= namespace %>.MiniJSON;
 
     #if !SHOPIFY_MONO_UNIT_TEST
@@ -10,11 +9,14 @@ namespace <%= namespace %>.SDK {
     #endif
 
     public partial class NativeMessage {
+        private AndroidJavaObject MessageCenter;
+
         private static void _RespondToNativeMessage(string identifier, string message) {
             #if !SHOPIFY_MONO_UNIT_TEST
-            using (var messageCenter = new AndroidJavaObject("com.shopify.unity.buy.MessageCenter")) {
-                messageCenter.CallStatic("onUnityResponse", identifier, message);
+            if (MessageCenter == null) {
+                MessageCenter = new AndroidJavaObject("com.shopify.unity.buy.MessageCenter");
             }
+            MessageCenter.CallStatic("onUnityResponse", identifier, message);
             #endif
         }
     }
