@@ -56,6 +56,8 @@ task assembleUnity {
     dependsOn 'assembleRelease', 'copyAARToPlugins'
 }
 
+copyAARToPlugins.mustRunAfter('assembleRelease')
+
 task checkstyle(type: Checkstyle) {
     configFile = new File(rootDir, "checkstyle/config.xml")
     configProperties.checkstyleSuppressionsPath = new File(rootDir, "checkstyle/suppressions.xml")
