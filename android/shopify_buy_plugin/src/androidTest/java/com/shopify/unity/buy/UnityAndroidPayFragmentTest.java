@@ -133,7 +133,7 @@ public class UnityAndroidPayFragmentTest {
 
         fragment.onActivityResult(REQUEST_CODE_CHANGE_MASKED_WALLET, Activity.RESULT_OK, mockIntent);
         verify(mockCallbacks).onUpdateShippingAddress(mailingAddressEquals(expected),
-            any(MessageCenter.MessageCallbacks.class));
+            any(MessageCenter.MessageCallback.class));
     }
 
     @Test
