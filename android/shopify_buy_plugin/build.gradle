@@ -42,19 +42,22 @@ dependencies {
     testCompile 'org.json:json:20140107'
 }
 
-task copyAARToPlugins {
-    copy {
-        from('build/outputs/aar') {
-            rename "shopify_buy_plugin-release.aar", "shopify_buy_plugin.aar"
-            exclude '*-debug.aar'
-        }
-        into '../../Assets/Plugins/Android'
+task copyAARToPlugins(type: Copy) {
+
+    from('build/outputs/aar') {
+        rename "shopify_buy_plugin-release.aar", "shopify_buy_plugin.aar"
+        exclude '*-debug.aar'
     }
+    into '../../Assets/Plugins/Android'
+
+    outputs.upToDateWhen { false }
 }
 
 task assembleUnity {
     dependsOn 'assembleRelease', 'copyAARToPlugins'
 }
+
+copyAARToPlugins.mustRunAfter('assembleRelease')
 
 task checkstyle(type: Checkstyle) {
     configFile = new File(rootDir, "checkstyle/config.xml")
