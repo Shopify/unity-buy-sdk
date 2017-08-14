@@ -3,17 +3,17 @@ namespace <%= namespace %>.SDK {
 
     abstract class WebCheckout {
 
-        private static NativeWebViewMessageReceiver _messageReceiver;
+        private static WebCheckoutMessageReceiver _messageReceiver;
 
         protected abstract ShopifyClient Client { get; }
         protected abstract Cart Cart { get; }
 
         public abstract void Checkout(string checkoutURL, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure);
 
-        protected void SetupNativeMessageReceiver(CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
+        protected void SetupWebCheckoutMessageReceiver(CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
             #if !SHOPIFY_MONO_UNIT_TEST
             if (_messageReceiver == null) {
-                _messageReceiver = GlobalGameObject.AddComponent<NativeWebViewMessageReceiver>();
+                _messageReceiver = GlobalGameObject.AddComponent<WebCheckoutMessageReceiver>();
             }
 
             _messageReceiver.Init(Client, Cart.CurrentCheckout, success, cancelled, failure);

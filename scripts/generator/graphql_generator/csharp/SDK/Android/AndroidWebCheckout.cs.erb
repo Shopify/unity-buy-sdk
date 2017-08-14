@@ -35,7 +35,7 @@ namespace <%= namespace %>.SDK.Android {
         public override void Checkout(string checkoutURL, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
             #if !SHOPIFY_MONO_UNIT_TEST
             using(var webCheckoutSession = new AndroidJavaObject(WebCheckoutSessionClassName)) {
-                SetupNativeMessageReceiver(success, cancelled, failure);
+                SetupWebCheckoutMessageReceiver(success, cancelled, failure);
                 object[] args = { GetNativeMessageReceiverName(), checkoutURL };
                 webCheckoutSession.Call("checkout", args);
             }
