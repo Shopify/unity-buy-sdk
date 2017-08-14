@@ -14,7 +14,7 @@ import com.unity3d.player.UnityPlayer;
 import java.io.IOException;
 
 public final class AndroidPayCheckoutSession implements AndroidPaySessionCallback {
-    private static final String PAY_FRAGMENT_TAG = "payFragment";
+    public static final String PAY_FRAGMENT_TAG = "payFragment";
 
     private final Activity rootActivity;
     private String unityDelegateObjectName;
