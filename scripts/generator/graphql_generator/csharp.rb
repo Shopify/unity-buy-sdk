@@ -134,6 +134,10 @@ module GraphQLGenerator
         SDK/WebCheckout
         SDK/NativeWebViewMessageReceiver
         SDK/Android/AndroidWebCheckout
+        SDK/Android/AndroidNativeCheckout
+        SDK/Android/AndroidPayEventReceiverBridge
+        SDK/Android/AndroidNativeCheckout.AndroidPayEventReceiver
+        SDK/Android/IAndroidPayEventReceiver
         SDK/iOS/ApplePayAuthorizationStatus
         SDK/iOS/IApplePayEventReceiver
         SDK/iOS/ApplePayEventReceiverBridge
@@ -144,7 +148,6 @@ module GraphQLGenerator
         SDK/iOS/iOSNativeCheckout
         SDK/iOS/iOSNativeCheckout.ApplePayEventReceiver
         SDK/iOS/ApplePayPayment
-        SDK/Android/AndroidNativeCheckout
       ).each do |class_file_name|
         directory = "#{path}/#{File.dirname(class_file_name)}"
 
