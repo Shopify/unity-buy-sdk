@@ -8,5 +8,5 @@ interface AndroidPaySessionCallback {
 
     void onCancel();
 
-    void onUpdateShippingAddress(MailingAddressInput address, MessageCenter.MessageCallbacks messageCallbacks);
+    void onUpdateShippingAddress(MailingAddressInput address, MessageCenter.MessageCallback messageCallback);
 }

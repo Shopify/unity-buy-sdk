@@ -170,7 +170,7 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
                 MailingAddressInput input = new MailingAddressInput(maskedWallet.getBuyerShippingAddress());
 
                 if (sessionCallbacks != null) {
-                    sessionCallbacks.onUpdateShippingAddress(input, new MessageCenter.MessageCallbacks() {
+                    sessionCallbacks.onUpdateShippingAddress(input, new MessageCenter.MessageCallback() {
                         @Override
                         public void onResponse(String jsonResponse) {
                             // TODO: Create a new pay cart with the updated shipping address and request full wallet
