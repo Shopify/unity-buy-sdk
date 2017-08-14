@@ -40,8 +40,13 @@ namespace <%= namespace %> {
     /// Data struct containing metadata associated with a Shop.
     /// </summary>
     public struct ShopMetadata {
-        public String Name;
-        public PaymentSettings PaymentSettings;
+        public readonly string Name;
+        public readonly PaymentSettings PaymentSettings;
+
+        public ShopMetadata(string name, PaymentSettings paymentSettings) {
+            Name = name;
+            PaymentSettings = paymentSettings;
+        }
     }
     
     /// <summary>
@@ -269,9 +274,7 @@ namespace <%= namespace %> {
                     if (error != null) {
                         callback(null, error);
                     } else {
-                        var metadata = new ShopMetadata();
-                        metadata.PaymentSettings = response.shop().paymentSettings();
-                        metadata.Name = response.shop().name();
+                        var metadata = new ShopMetadata(response.shop().name(), response.shop().paymentSettings());
                         ShopMetadata = metadata;
                         callback(ShopMetadata, null);
                     }
