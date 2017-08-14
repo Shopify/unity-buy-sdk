@@ -28,7 +28,7 @@ public final class WebIntentFragment extends Fragment {
         if (url != null) {
             CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
             CustomTabsIntent customTabsIntent = builder.build();
-            customTabsIntent.launchUrl(getActivity().getApplicationContext(), Uri.parse(url));
+            customTabsIntent.launchUrl(getActivity(), Uri.parse(url));
         }
     }
 
