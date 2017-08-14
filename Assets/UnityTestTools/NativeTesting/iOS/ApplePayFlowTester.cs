@@ -12,6 +12,7 @@
         private const string AccessToken = "020fe3a820b23c7fe618656c7dc069ce";
         private const string ShopDomain = "unity-buy-sdk.myshopify.com";
         private const string CartName = "ApplePayFlowTester";
+        private const string StoreName = "Test Store";
 
         private ShopifyClient Client;
         private Cart CurrentCart;
@@ -114,7 +115,12 @@
         private void CreateNativeCheckout() {
             #if UNITY_IOS
             var bridge = GetComponent<ApplePayEventReceiverBridge>();
-            bridge.Receiver = new iOSNativeCheckout(CurrentCart.State);
+            var checkout = new iOSNativeCheckout(CurrentCart.State);
+            var paymentSettingsJSON = new Dictionary<string, object>();
+            var shopMetaData = new ShopMetadata(StoreName, new PaymentSettings(paymentSettingsJSON));
+
+            bridge.Receiver = checkout;
+            checkout.Checkout("com.merchant.id", shopMetaData, () => {}, () => {}, (error) => {});
             #endif
         }
     }
