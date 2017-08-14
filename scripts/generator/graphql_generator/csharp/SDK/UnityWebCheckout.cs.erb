@@ -1,13 +1,10 @@
-#if UNITY_IOS
-namespace <%= namespace %>.SDK.iOS {
+#if UNITY_EDITOR || UNITY_STANDALONE
+namespace <%= namespace %>.SDK {
     using System;
-    using System.Runtime.InteropServices;
+    using UnityEngine;
     using <%= namespace %>.SDK;
 
-    class iOSWebCheckout: WebCheckout {
-
-        [DllImport ("__Internal")]
-        private static extern void _CheckoutWithWebView(string unityDelegateObjectName, string checkoutURL);
+    class UnityWebCheckout: WebCheckout {
 
         private ShopifyClient _client;
         private Cart _cart;
@@ -24,7 +21,7 @@ namespace <%= namespace %>.SDK.iOS {
             }
         }
 
-        public iOSWebCheckout(Cart cart, ShopifyClient client) {
+        public UnityWebCheckout(Cart cart, ShopifyClient client) {
             _cart = cart;
             _client = client;
         }
@@ -32,7 +29,7 @@ namespace <%= namespace %>.SDK.iOS {
         public override void Checkout(string checkoutURL, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
             #if !SHOPIFY_MONO_UNIT_TEST
             SetupWebCheckoutMessageReceiver(success, cancelled, failure);
-            _CheckoutWithWebView(GetNativeMessageReceiverName(), checkoutURL);
+            Application.OpenURL(checkoutURL);
             #endif
         }
     }

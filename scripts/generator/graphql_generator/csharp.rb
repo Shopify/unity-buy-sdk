@@ -128,11 +128,12 @@ module GraphQLGenerator
         SDK/ILoader
         SDK/Log
         SDK/NativeMessage
+        SDK/UnityWebCheckout
         SDK/Serializable
         SDK/SummaryItem
         SDK/INativeCheckout
         SDK/WebCheckout
-        SDK/NativeWebViewMessageReceiver
+        SDK/WebCheckoutMessageReceiver
         SDK/Android/AndroidWebCheckout
         SDK/Android/AndroidNativeCheckout
         SDK/Android/AndroidPayEventReceiverBridge

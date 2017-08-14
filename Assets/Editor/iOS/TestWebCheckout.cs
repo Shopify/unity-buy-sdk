@@ -18,75 +18,75 @@ namespace Shopify.Tests {
             ShopifyBuy.Init(new MockLoader());
         }
 
-        [Test]        
+        [Test]
         public void TestWebCheckoutSucceeded() {
             bool didSucceed = false;
             bool didCancel = false;
             bool didFail = false;
 
-            var webViewMessageReceiver = CreateMockMessageReceiver("checkout-id");
+            var webCheckoutMessageReceiver = CreateMockMessageReceiver("checkout-id");
 
-            webViewMessageReceiver.OnSuccess = () => didSucceed = true;
-            webViewMessageReceiver.OnCancelled = () => didCancel = true;
-            webViewMessageReceiver.OnFailure = (e) => didFail = true;
+            webCheckoutMessageReceiver.OnSuccess = () => didSucceed = true;
+            webCheckoutMessageReceiver.OnCancelled = () => didCancel = true;
+            webCheckoutMessageReceiver.OnFailure = (e) => didFail = true;
 
             string mockMessage = "{\"Identifier\": \"test\", \"Content\": \"dismissed\"}";
-            webViewMessageReceiver.OnNativeMessage(mockMessage);
+            webCheckoutMessageReceiver.OnNativeMessage(mockMessage);
 
             Assert.IsTrue(didSucceed);
             Assert.IsFalse(didCancel);
             Assert.IsFalse(didFail);
         }
 
-        [Test]        
+        [Test]
         public void TestWebCheckoutCancelled() {
             bool didSucceed = false;
             bool didCancel = false;
             bool didFail = false;
 
-            var webViewMessageReceiver = CreateMockMessageReceiver("checkout-id-cancelled");
+            var webCheckoutMessageReceiver = CreateMockMessageReceiver("checkout-id-cancelled");
 
-            webViewMessageReceiver.OnSuccess = () => didSucceed = true;
-            webViewMessageReceiver.OnCancelled = () => didCancel = true;
-            webViewMessageReceiver.OnFailure = (e) => didFail = true;
+            webCheckoutMessageReceiver.OnSuccess = () => didSucceed = true;
+            webCheckoutMessageReceiver.OnCancelled = () => didCancel = true;
+            webCheckoutMessageReceiver.OnFailure = (e) => didFail = true;
 
             string mockMessage = "{\"Identifier\": \"test\", \"Content\": \"dismissed\"}";
-            webViewMessageReceiver.OnNativeMessage(mockMessage);
+            webCheckoutMessageReceiver.OnNativeMessage(mockMessage);
 
             Assert.IsFalse(didSucceed);
             Assert.IsTrue(didCancel);
             Assert.IsFalse(didFail);
         }
 
-        [Test]        
+        [Test]
         public void TestWebCheckoutFailure() {
             bool didSucceed = false;
             bool didCancel = false;
             bool didFail = false;
 
-            var webViewMessageReceiver = CreateMockMessageReceiver("checkout-id-failed");
+            var webCheckoutMessageReceiver = CreateMockMessageReceiver("checkout-id-failed");
 
-            webViewMessageReceiver.OnSuccess = () => didSucceed = true;
-            webViewMessageReceiver.OnCancelled = () => didCancel = true;
-            webViewMessageReceiver.OnFailure = (e) => didFail = true;
+            webCheckoutMessageReceiver.OnSuccess = () => didSucceed = true;
+            webCheckoutMessageReceiver.OnCancelled = () => didCancel = true;
+            webCheckoutMessageReceiver.OnFailure = (e) => didFail = true;
 
             string mockMessage = "{\"Identifier\": \"test\", \"Content\": \"dismissed\"}";
-            webViewMessageReceiver.OnNativeMessage(mockMessage);
+            webCheckoutMessageReceiver.OnNativeMessage(mockMessage);
 
             Assert.IsFalse(didSucceed);
             Assert.IsFalse(didCancel);
             Assert.IsTrue(didFail);
         }
 
-        private NativeWebViewMessageReceiver CreateMockMessageReceiver(string checkoutId) {
+        private WebCheckoutMessageReceiver CreateMockMessageReceiver(string checkoutId) {
 
-            var webViewMessageReceiver = new NativeWebViewMessageReceiver();
+            var webCheckoutMessageReceiver = new WebCheckoutMessageReceiver();
 
             var cartDict = new Dictionary<string, object> { {"id", checkoutId} };
-            webViewMessageReceiver.CurrentCheckout = new Checkout(cartDict);
-            webViewMessageReceiver.Client = ShopifyBuy.Client();
+            webCheckoutMessageReceiver.CurrentCheckout = new Checkout(cartDict);
+            webCheckoutMessageReceiver.Client = ShopifyBuy.Client();
 
-            return webViewMessageReceiver;
+            return webCheckoutMessageReceiver;
         }
     }
 }

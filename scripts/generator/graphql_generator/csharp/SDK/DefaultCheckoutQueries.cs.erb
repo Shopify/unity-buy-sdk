@@ -44,6 +44,14 @@ namespace <%= namespace %>.SDK {
             );
         }
 
+        public void Completed(QueryRootQuery query, string checkoutId) {
+            query.node(
+                buildQuery: node => node
+                    .onCheckout(checkout => checkout.completedAt()),
+                id: checkoutId
+            );
+        }
+
         public void PaymentPoll(QueryRootQuery query, string paymentId) {
             query.node(
                 buildQuery: node => node
