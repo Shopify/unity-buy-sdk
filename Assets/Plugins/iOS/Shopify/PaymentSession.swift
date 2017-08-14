@@ -94,7 +94,7 @@ import PassKit
         shippingMethods:[PKShippingMethod]?,
         controllerType: PaymentAuthorizationControlling.Type = PKPaymentAuthorizationViewController.self)
     {
-        request = PKPaymentRequest.init()
+        request = PKPaymentRequest()
         request.countryCode                   = countryCode
         request.currencyCode                  = currencyCode
         request.merchantIdentifier            = merchantId
@@ -102,7 +102,7 @@ import PassKit
         request.merchantCapabilities          = PaymentSession.capabilities
         request.supportedNetworks             = supportedNetworks
         request.requiredShippingAddressFields = requiringShippingAddressFields ?
-            .all : PKAddressField.init(rawValue: PKAddressField.email.rawValue | PKAddressField.phone.rawValue)
+            .all : PKAddressField(rawValue: PKAddressField.email.rawValue | PKAddressField.phone.rawValue)
         
         request.paymentSummaryItems = summaryItems
         request.shippingMethods     = shippingMethods
@@ -143,7 +143,7 @@ extension PaymentSession {
     }
     
     static func showSetup() {
-        PKPassLibrary.init().openPaymentSetup()
+        PKPassLibrary().openPaymentSetup()
     }
 }
 
