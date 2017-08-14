@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. $(dirname $0)/common.sh
+. "$(dirname "$0")"/common.sh
 
 IOS_BUILD_PATH="$PROJECT_ROOT"/Shopify-iOS-Tests
 IOS_PROJECT_PATH="$IOS_BUILD_PATH"/Unity-iPhone.xcodeproj
@@ -19,8 +19,10 @@ which "$UNITY_PATH" &> /dev/null || die "Unity does not exist at $UNITY_PATH"
     -buildPlayerPath "$IOS_BUILD_PATH" \
     -quit
 
-if [ $? = 0 ] ; then
-    echo "Project Built"
+UNITY_BUILD_RESULT=$?
+
+if [[ $UNITY_BUILD_RESULT = 0 ]] ; then
+    printf "Project Built\n"
 else
     cat "$UNITY_IOS_LOG_PATH"
 fi
@@ -31,11 +33,13 @@ xcodebuild test \
     -scheme Unity-iPhone \
     -destination 'platform=iOS Simulator,OS=10.1,name=iPhone 6'
 
-if [ $? = 0 ] ; then
-    echo "Tests passed"
+IOS_TEST_RESULT=$?
+
+if [[ $IOS_TEST_RESULT = 0 ]] ; then
+    printf "Tests passed\n"
     exit 0
 else
-    echo "Tests failed. Exited with $?"
-    echo "------------------\n\n"
+    printf "Tests failed. Exited with %s\n" "$IOS_TEST_RESULT"
+    printf "------------------\n\n"
     exit 1
 fi
