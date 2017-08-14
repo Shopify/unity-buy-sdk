@@ -15,7 +15,7 @@ namespace Shopify.Tests
 
             DefaultQueries.checkout.Create(query, lineItems);
             Assert.AreEqual(
-                "mutation{checkoutCreate (input:{allowPartialAddresses:true,lineItems:[]}){checkout {id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}userErrors {field message }}}",
+                "mutation{checkoutCreate (input:{lineItems:[],allowPartialAddresses:true}){checkout {id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}userErrors {field message }}}",
                 query.ToString()
             );
         }
@@ -24,7 +24,7 @@ namespace Shopify.Tests
         public void TestCheckoutPoll() {
             QueryRootQuery query = new QueryRootQuery();
             string checkoutId = "an-id";
-            
+
             DefaultQueries.checkout.Poll(query, checkoutId);
             Assert.AreEqual(
                 "{node (id:\"an-id\"){__typename ...on Checkout{id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready }}}",
@@ -138,11 +138,17 @@ namespace Shopify.Tests
             string checkoutId = "an-id";
 
             var billingAddress = new MailingAddressInput("123 Test Street", "456", "Toronto", "Shopify", "Canada", "First", "Last", "1234567890", "Ontario", "A1B2C3");
-            var tokenizedPaymentInput = new TokenizedPaymentInput(new decimal(1), billingAddress, "unique_id", "some_utf8_data_string", "apple_pay");
+            var tokenizedPaymentInput = new TokenizedPaymentInput(
+                amount: new decimal(1),
+                idempotencyKey: "unique_id",
+                billingAddress: billingAddress,
+                paymentData: "some_utf8_data_string",
+                type: "apple_pay"
+            );
 
             DefaultQueries.checkout.CheckoutCompleteWithTokenizedPayment(query, checkoutId, tokenizedPaymentInput);
             Assert.AreEqual(
-                "mutation{checkoutCompleteWithTokenizedPayment (checkoutId:\"an-id\",payment:{amount:1,billingAddress:{address1:\"123 Test Street\",address2:\"456\",city:\"Toronto\",company:\"Shopify\",country:\"Canada\",firstName:\"First\",lastName:\"Last\",phone:\"1234567890\",province:\"Ontario\",zip:\"A1B2C3\"},idempotencyKey:\"unique_id\",paymentData:\"some_utf8_data_string\",type:\"apple_pay\"}){checkout {id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready }payment {checkout {id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready completedAt }errorMessage id ready }userErrors {field message }}}",
+                "mutation{checkoutCompleteWithTokenizedPayment (checkoutId:\"an-id\",payment:{amount:1,idempotencyKey:\"unique_id\",billingAddress:{address1:\"123 Test Street\",address2:\"456\",city:\"Toronto\",company:\"Shopify\",country:\"Canada\",firstName:\"First\",lastName:\"Last\",phone:\"1234567890\",province:\"Ontario\",zip:\"A1B2C3\"},type:\"apple_pay\",paymentData:\"some_utf8_data_string\"}){checkout {id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready }payment {checkout {id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready completedAt }errorMessage id ready }userErrors {field message }}}",
                 query.ToString()
             );
         }
