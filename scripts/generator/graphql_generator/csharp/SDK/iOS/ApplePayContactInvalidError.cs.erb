@@ -1,0 +1,29 @@
+#if UNITY_IOS
+namespace <%= namespace %>.SDK.iOS {
+    using System.Collections;
+    using System.Collections.Generic;
+
+    public class ApplePayContactInvalidError: ApplePayError {
+
+        public enum ContactField {
+            PostalAddress,
+            EmailAddress,
+            PhoneNumber,
+            Name,
+            PhoneticName
+        }
+
+        public readonly ContactField Field;
+
+        public ApplePayContactInvalidError(string description, ContactField field): base(ErrorType.PaymentContactInvalid, description) {
+            Field = field;
+        }
+
+        public override object ToJson() {
+            var dict = (Dictionary<string, object>)base.ToJson();
+            dict["Field"] = Field;
+            return dict;
+        }
+    }
+}
+#endif
