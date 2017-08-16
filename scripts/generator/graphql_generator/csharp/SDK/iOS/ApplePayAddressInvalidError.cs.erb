@@ -1,0 +1,32 @@
+#if UNITY_IOS
+namespace <%= namespace %>.SDK.iOS {
+    using System.Collections;
+    using System.Collections.Generic;
+
+    public class ApplePayAddressInvalidError: ApplePayError {
+
+            public enum AddressField {
+                Street,
+                Sublocality,
+                City,
+                SubAdministrativeArea,
+                State,
+                PostalCode,
+                Country,
+                ISOCountryCode
+            }
+
+        public readonly AddressField Field;
+
+        public ApplePayAddressInvalidError(ErrorType type, string description, AddressField field): base(type, description) {
+            Field = field;
+        }
+
+        public override object ToJson() {
+            var dict = (Dictionary<string, object>)base.ToJson();
+            dict["Field"] = Field;
+            return dict;
+        }
+    }
+}
+#endif

@@ -142,6 +142,12 @@ module GraphQLGenerator
         SDK/iOS/IApplePayEventReceiver
         SDK/iOS/ApplePayEventReceiverBridge
         SDK/iOS/ApplePayEventResponse
+        SDK/iOS/ApplePayError
+        SDK/iOS/ApplePayAddressInvalidError
+        SDK/iOS/ApplePayShippingAddressInvalidError
+        SDK/iOS/ApplePayBillingAddressInvalidError
+        SDK/iOS/ApplePayContactInvalidError
+        SDK/iOS/ApplePayShippingAddressUnservicableError
         SDK/iOS/ShippingMethod
         SDK/iOS/PaymentNetwork
         SDK/iOS/iOSWebCheckout
