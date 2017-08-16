@@ -11,7 +11,6 @@ mcs \
     -define:UNITY_IOS \
     -recurse:'Assets/Shopify/*.cs' \
     -recurse:'Assets/Editor/*.cs' \
-    -recurse:'Assets/Editor/iOS/*.cs' \
     -reference:nunit.framework.dll \
     -target:library \
     -out:test.dll
