@@ -147,15 +147,15 @@ namespace <%= namespace %> {
 
         public void CheckoutSave(CompletionCallback callback) {
             if (!IsCreated) {
-                CheckoutCreate(callback);
+                CreateRemoteCheckoutFromLocalState(callback);
             } else if(!IsSaved) {
-                CheckoutUpdate(callback);
+                UpdateRemoteCheckoutFromLocalState(callback);
             } else {
                 callback(null);
             }
         }
 
-        public void CheckoutCreate(CompletionCallback callback) {
+        private void CreateRemoteCheckoutFromLocalState(CompletionCallback callback) {
             MutationQuery query = new MutationQuery();
 
             List<CheckoutLineItemInput> newLineItemInput = CartLineItems.ConvertToCheckoutLineItemInput(LineItems.All());
@@ -234,7 +234,7 @@ namespace <%= namespace %> {
             }
         }
 
-        void CheckoutUpdate(CompletionCallback callback) {
+        private void UpdateRemoteCheckoutFromLocalState(CompletionCallback callback) {
             MutationQuery query = new MutationQuery();
 
             // remove all line items them add them
