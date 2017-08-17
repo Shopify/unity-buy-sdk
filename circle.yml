@@ -3,16 +3,16 @@ machine:
     PROJECT_ROOT: $PWD/unity-buy-sdk
     UNITY_DOWNLOAD_DIR: $PROJECT_ROOT/unity
     UNITY_PKG_LOCATION: $UNITY_DOWNLOAD_DIR/Unity.pkg
-    UNITY_PKG_URL: http://netstorage.unity3d.com/unity/b7e030c65c9b/MacEditorInstaller/Unity.pkg
+    UNITY_PKG_URL: http://beta.unity3d.com/download/4bc201a72e4a/MacEditorInstaller/Unity.pkg
     IOS_PKG_LOCATION: $UNITY_DOWNLOAD_DIR/Unity-iOS.pkg
-    IOS_PKG_URL: http://netstorage.unity3d.com/unity/b7e030c65c9b/MacEditorTargetInstaller/UnitySetup-iOS-Support-for-Editor-5.4.2f2.pkg
+    IOS_PKG_URL: http://beta.unity3d.com/download/4bc201a72e4a/MacEditorTargetInstaller/UnitySetup-iOS-Support-for-Editor-2017.2.0b7.pkg
     UNITY_CIRCLE_XML_DIR: $CIRCLE_TEST_REPORTS/Unity
     UNITY_CIRCLE_XML_OUT_PATH: $UNITY_CIRCLE_XML_DIR/junit.xml
   xcode:
-    version: 8.3.3
+    version: "9.0"
 dependencies:
   pre:
-    - xcrun instruments -w "iPhone 6 (10.0) [" || true
+    - xcrun instruments -w "iPhone 6 (11.0) [" || true
   override:
     - ./scripts/install_unity.sh
   cache_directories:
