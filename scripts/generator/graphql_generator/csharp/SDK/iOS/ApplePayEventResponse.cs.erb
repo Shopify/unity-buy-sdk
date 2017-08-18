@@ -5,14 +5,21 @@ namespace <%= namespace %>.SDK.iOS {
     using System.Collections.Generic;
 
     public class ApplePayEventResponse: Serializable {
-        public string AuthorizationStatus;
-        public List<SummaryItem> SummaryItems;
-        public List<ShippingMethod> ShippingMethods;
+        public readonly string AuthorizationStatus;
+        public readonly List<SummaryItem> SummaryItems;
+        public readonly List<ShippingMethod> ShippingMethods;
+        public readonly List<ApplePayError> Errors;
 
-        public ApplePayEventResponse(ApplePayAuthorizationStatus authorizationStatus, List<SummaryItem> summaryItems = null, List<ShippingMethod> shippingMethods = null) {
+        public ApplePayEventResponse(
+            ApplePayAuthorizationStatus authorizationStatus,
+            List<SummaryItem> summaryItems = null,
+            List<ShippingMethod> shippingMethods = null,
+            List<ApplePayError> errors = null)
+        {
             AuthorizationStatus = authorizationStatus.ToString("G");
             SummaryItems = summaryItems ?? new List<SummaryItem>();
             ShippingMethods = shippingMethods ?? new List<ShippingMethod>();
+            Errors = errors ?? new List<ApplePayError>();
         }
 
         public override object ToJson() {
@@ -30,6 +37,12 @@ namespace <%= namespace %>.SDK.iOS {
                 shippingMethodsJSON.Add((Dictionary<string, object>) method.ToJson());
             }
             dict["ShippingMethods"] = shippingMethodsJSON;
+
+            var errorsJSON = new List<Dictionary<string, object>>();
+            foreach (var error in Errors) {
+                errorsJSON.Add((Dictionary<string, object>) error.ToJson());
+            }
+            dict["Errors"] = errorsJSON;
 
             return dict;
         }
