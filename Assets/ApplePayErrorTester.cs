@@ -40,7 +40,7 @@ namespace Shopify.Tests {
             var field = (ApplePayAddressInvalidError.AddressField) Enum.Parse(typeof(ApplePayAddressInvalidError.AddressField), meta.Field);
             var error = new ApplePayShippingAddressInvalidError(meta.Description, field);
 
-            message.Respond(Json.Serialize(error));
+            message.Respond(error.ToJsonString());
         }
 
         void CreateApplePayBillingAddressInvalidError(string serializedMessage) {
@@ -50,7 +50,7 @@ namespace Shopify.Tests {
             var field = (ApplePayAddressInvalidError.AddressField) Enum.Parse(typeof(ApplePayAddressInvalidError.AddressField), meta.Field);
             var error = new ApplePayBillingAddressInvalidError(meta.Description, field);
 
-            message.Respond(Json.Serialize(error));
+            message.Respond(error.ToJsonString());
         }
 
         void CreateApplePayContactInvalidError(string serializedMessage) {
@@ -60,7 +60,7 @@ namespace Shopify.Tests {
             var field = (ApplePayContactInvalidError.ContactField) Enum.Parse(typeof(ApplePayContactInvalidError.ContactField), meta.Field);
             var error = new ApplePayContactInvalidError(meta.Description, field);
 
-            message.Respond(Json.Serialize(error));
+            message.Respond(error.ToJsonString());
         }
 
         void CreateApplePayShippingAddressUnservicableError(string serializedMessage) {
@@ -68,7 +68,7 @@ namespace Shopify.Tests {
             var meta = new ErrorMeta(message.Content);
 
             var error = new ApplePayShippingAddressUnservicableError(meta.Description);
-            message.Respond(Json.Serialize(error));
+            message.Respond(error.ToJsonString());
         }
     }
     #endif
