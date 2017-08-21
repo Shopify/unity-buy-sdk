@@ -120,14 +120,19 @@ namespace <%= namespace %>.GraphQL {
     <% when 'INPUT_OBJECT' %>
         <%= docs_input_object(type) %>
         public class <%= type.classify_name %> : InputBase {
+
+            <% type.input_fields.each do |field| %>
+            public const string <%= field.name %>FieldKey = "<%= field.name %>";
+            <% end %>
+
             <% type.input_fields.each do |field| %>
                 <%= docs_input_field(field) %>
                 public <%= graph_type_to_csharp_type(field.type) %> <%= field.name %> {
                     get {
-                        return <%= graph_type_to_csharp_cast(field.type, "Get(\"#{field.name}\")") %>;
+                        return <%= graph_type_to_csharp_cast(field.type, "Get(#{field.name}FieldKey)") %>;
                     }
                     set {
-                        Set("<%= field.name %>", value);
+                        Set(<%= field.name %>FieldKey, value);
                     }
                 }
             <% end %>
@@ -136,13 +141,13 @@ namespace <%= namespace %>.GraphQL {
             public <%= type.classify_name %>(<%= input_args(type) %>) {
                 <%# handle adding required fields %>
                 <% type.required_input_fields.each do |field| %>
-                    Set("<%= field.name %>", <%= escape_reserved_word(field.name) %>);
+                    Set(<%= field.name %>FieldKey, <%= escape_reserved_word(field.name) %>);
                 <% end %>
 
                 <%# handle adding optional fields %>
                 <% type.optional_input_fields.each do |field| %>
                     if (<%= escape_reserved_word(field.name) %> != null) {
-                        Set("<%= field.name %>", <%= escape_reserved_word(field.name) %>);
+                        Set(<%= field.name %>FieldKey, <%= escape_reserved_word(field.name) %>);
                     }
                 <% end %>
             }
@@ -153,7 +158,7 @@ namespace <%= namespace %>.GraphQL {
                 <% if type.required_input_fields.length > 0 %>
                 try {
                     <% type.required_input_fields.each do |field| %>
-                        Set("<%= field.name %>", dataJSON["<%= escape_reserved_word(field.name) %>"]);
+                        Set(<%= field.name %>FieldKey, dataJSON[<%= field.name %>FieldKey]);
                     <% end %>
                 } catch {
                     throw;
@@ -162,8 +167,8 @@ namespace <%= namespace %>.GraphQL {
 
                 <%# handle adding optional fields %>
                 <% type.optional_input_fields.each do |field| %>
-                    if (dataJSON.ContainsKey("<%= escape_reserved_word(field.name) %>")) {
-                        Set("<%= field.name %>", dataJSON["<%= escape_reserved_word(field.name) %>"]);
+                    if (dataJSON.ContainsKey(<%= field.name %>FieldKey)) {
+                        Set(<%= field.name %>FieldKey, dataJSON[<%= field.name %>FieldKey]);
                     }
                 <% end %>
             }
