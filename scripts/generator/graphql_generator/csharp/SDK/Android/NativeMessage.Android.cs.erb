@@ -9,7 +9,9 @@ namespace <%= namespace %>.SDK {
     #endif
 
     public partial class NativeMessage {
+        #if !SHOPIFY_MONO_UNIT_TEST
         private static AndroidJavaObject MessageCenter;
+        #endif
 
         private static void _RespondToNativeMessage(string identifier, string message) {
             #if !SHOPIFY_MONO_UNIT_TEST
