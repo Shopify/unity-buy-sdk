@@ -32,7 +32,21 @@ struct ApplePayEventResponse: Deserializable {
     let authorizationStatus: PKPaymentAuthorizationStatus?
     let summaryItems: [PKPaymentSummaryItem]?
     let shippingMethods: [PKShippingMethod]?
-
+    
+    fileprivate let _paymentErrors: [Error]?
+    
+    @available(iOS 11.0, *)
+    var paymentErrors: [Error]? {
+        return _paymentErrors
+    }
+    
+    fileprivate init (status: PKPaymentAuthorizationStatus?, items: [PKPaymentSummaryItem]?, methods: [PKShippingMethod]?, paymentErrors: [Error]?) {
+        authorizationStatus = status
+        summaryItems = items
+        shippingMethods = methods
+        _paymentErrors = paymentErrors
+    }
+    
     // ----------------------------------
     //  MARK: - Init -
     //
@@ -41,6 +55,7 @@ struct ApplePayEventResponse: Deserializable {
         var authorizationStatus: PKPaymentAuthorizationStatus? = nil
         var summaryItems: [PKPaymentSummaryItem]? = nil
         var shippingMethods: [PKShippingMethod]? = nil
+        var paymentErrors: [Error]? = nil
         
         /// Parse Authorization Status
         if let authStatusString = json[ResponseKey.authorizationStatus.rawValue] as? String {
@@ -67,7 +82,21 @@ struct ApplePayEventResponse: Deserializable {
             shippingMethods = methods
         }
         
-        return self.init(authorizationStatus: authorizationStatus, summaryItems: summaryItems, shippingMethods: shippingMethods)
+        /// Parse Payment Errors
+        if #available(iOS 11.0, *) {
+            
+            if let paymentErrorJsonObject = json[ResponseKey.paymentErrors.rawValue] as? [JSON] {
+                
+                let errors = paymentErrorJsonObject.flatMap {
+                    NSError.paymentError(with: $0)
+                }
+                
+                assert(errors.count == paymentErrorJsonObject.count)
+                paymentErrors = errors
+            }
+        }
+        
+        return self.init(status: authorizationStatus, items: summaryItems, methods: shippingMethods, paymentErrors: paymentErrors)
     }
 }
 
@@ -81,5 +110,7 @@ extension ApplePayEventResponse {
         case summaryItems = "SummaryItems"
         /// The updated shipping methods for the request
         case shippingMethods = "ShippingMethods"
+        /// A list of PKErrors for the request. If there are none the list is empty
+        case paymentErrors = "Errors"
     }
 }
