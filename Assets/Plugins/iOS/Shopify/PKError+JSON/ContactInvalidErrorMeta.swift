@@ -62,7 +62,7 @@ extension ContactInvalidErrorMeta {
     
     fileprivate enum Field: String {
         case postalAddress = "PostalAddress"
-        case emailAddressa = "EmailAddress"
+        case emailAddress = "EmailAddress"
         case phoneNumber   = "PhoneNumber"
         case name          = "Name"
         case phoneticName  = "PhoneticName"
@@ -70,7 +70,7 @@ extension ContactInvalidErrorMeta {
         func contactField() -> PKContactField {
             switch self {
             case .postalAddress: return PKContactField.postalAddress
-            case .emailAddressa: return PKContactField.emailAddress
+            case .emailAddress:  return PKContactField.emailAddress
             case .phoneNumber:   return PKContactField.phoneNumber
             case .name:          return PKContactField.name
             case .phoneticName:  return PKContactField.phoneticName
