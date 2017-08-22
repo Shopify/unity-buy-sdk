@@ -1,13 +1,17 @@
-. $(dirname $0)/common.sh
+#!/bin/bash
 
-bundle --gemfile=$SCRIPTS_ROOT/generator/Gemfile
-$SCRIPTS_ROOT/generator/update_schema $1
+. "$(dirname "$0")"/common.sh
 
-if [ $? = 0 ] ; then
-    echo "Generate finished"
+bundle --gemfile="$SCRIPTS_ROOT"/generator/Gemfile
+"$SCRIPTS_ROOT"/generator/update_schema "$1"
+
+UPDATE_SCHEMA_RESULT=$?
+
+if [[ $UPDATE_SCHEMA_RESULT = 0 ]] ; then
+    printf "Generate finished\n"
     exit 0
 else
-    echo "Generate failed. Exited with $?"
+    printf "Generate failed. Exited with %s\n" "$?"
 
     exit 1
 fi
