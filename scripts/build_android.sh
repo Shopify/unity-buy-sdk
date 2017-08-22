@@ -1,4 +1,6 @@
-. $(dirname $0)/common.sh
+#!/bin/bash
+
+. "$(dirname "$0")"/common.sh
 
 ANDROID_PLUGIN_ROOT="$PROJECT_ROOT/android"
 

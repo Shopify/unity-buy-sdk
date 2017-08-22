@@ -1,18 +1,20 @@
+#!/bin/bash
+
 die() {
-    out $@;
-    exit 1;
+    out "$*"
+    exit 1
 }
 
 out() {
-    echo -e $@;
+    printf "%s" "$*"
 }
 
 start() {
-    out "Starting: $@"
+    out "Starting: $*"
 }
 
 end() {
-    out "Finished: $@"
+    out "Finished: $*"
 }
 
 PROJECT_ROOT=${PROJECT_ROOT:-$(pwd)}
