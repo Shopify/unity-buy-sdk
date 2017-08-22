@@ -15,7 +15,7 @@ convertNUnitToJUnit() {
 }
 
 UNITY_VERSION=$(ls "$UNITY_PACKAGE_MANAGER_PATH")
-printf "Testing with Unity Version: %s" "$UNITY_VERSION"
+printf "Testing with Unity Version: %s\n" "$UNITY_VERSION"
 
 "$UNITY_PATH" \
     -batchmode \
