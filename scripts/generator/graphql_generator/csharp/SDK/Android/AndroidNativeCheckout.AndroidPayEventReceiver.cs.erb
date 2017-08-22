@@ -6,7 +6,9 @@ namespace <%= namespace %>.SDK.Android {
     using <%= namespace %>.SDK;
     using <%= namespace %>.MiniJSON;
 
+    #if !SHOPIFY_MONO_UNIT_TEST
     using UnityEngine;
+    #endif
 
     public partial class AndroidNativeCheckout : IAndroidPayEventReceiver {
         public void OnUpdateShippingAddress(string serializedMessage) {

@@ -138,6 +138,7 @@ module GraphQLGenerator
         SDK/Android/AndroidPayEventReceiverBridge
         SDK/Android/AndroidNativeCheckout.AndroidPayEventReceiver
         SDK/Android/IAndroidPayEventReceiver
+        SDK/Android/NativeMessage.Android
         SDK/iOS/ApplePayAuthorizationStatus
         SDK/iOS/IApplePayEventReceiver
         SDK/iOS/ApplePayEventReceiverBridge
@@ -149,6 +150,7 @@ module GraphQLGenerator
         SDK/iOS/ApplePayContactInvalidError
         SDK/iOS/ApplePayShippingAddressUnservicableError
         SDK/iOS/ShippingMethod
+        SDK/iOS/NativeMessage.iOS
         SDK/iOS/PaymentNetwork
         SDK/iOS/iOSWebCheckout
         SDK/iOS/iOSNativeCheckout
