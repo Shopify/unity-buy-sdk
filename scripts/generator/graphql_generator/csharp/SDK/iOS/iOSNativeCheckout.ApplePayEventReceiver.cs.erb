@@ -8,10 +8,52 @@ namespace <%= namespace %>.SDK.iOS {
 
     public partial class iOSNativeCheckout : IApplePayEventReceiver {
 
+        /// These are the Shipping Address Fields we send as part of a MailingAddressInput
+        private static readonly string[] ShippingAddressFields = {
+            MailingAddressInput.address1FieldKey,
+            MailingAddressInput.address2FieldKey,
+            MailingAddressInput.cityFieldKey,
+            MailingAddressInput.countryFieldKey,
+            MailingAddressInput.provinceFieldKey,
+            MailingAddressInput.zipFieldKey
+        };
+
+        private static readonly HashSet<string> ShippingAddressFieldsSet = new HashSet<string>(ShippingAddressFields);
+
+        /// These are the Contact Fields we send as part of a MailingAddressInput
+        private static readonly string[] ShippingContactFields = {
+            MailingAddressInput.firstNameFieldKey,
+            MailingAddressInput.lastNameFieldKey,
+            MailingAddressInput.phoneFieldKey
+        };
+
+        private static readonly HashSet<string> ShippingContactFieldsSet = new HashSet<string>(ShippingContactFields);
+
+        /// These are the Shipping Address Fields we send as part of a MailingAddressInput when
+        /// we only have the partial shipping address before payment authentication
+        private static readonly string[] PartialShippingAddressFields = {
+            MailingAddressInput.cityFieldKey,
+            MailingAddressInput.countryFieldKey,
+            MailingAddressInput.provinceFieldKey,
+            MailingAddressInput.zipFieldKey
+        };
+
+        private static readonly HashSet<string> PartialShippingAddressFieldsSet = new HashSet<string>(PartialShippingAddressFields);
+
         private delegate void ApplePayEventHandlerCompletion(ApplePayEventResponse errorResponse);
 
         private enum NativePaymentStatus {
             Success, Cancelled, Failed
+        }
+
+        private struct UpdateRequestStatus {
+            public readonly ApplePayAuthorizationStatus AuthorizationStatus;
+            public readonly List<ApplePayError> Errors;
+
+            public UpdateRequestStatus(ApplePayAuthorizationStatus status, List<ApplePayError> errors = null) {
+                AuthorizationStatus = status;
+                Errors = errors;
+            }
         }
 
         public void UpdateSummaryItemsForShippingIdentifier(string serializedMessage) {
@@ -41,6 +83,111 @@ namespace <%= namespace %>.SDK.iOS {
             });
         }
 
+        private static bool IsShippingAddressField(string field) {
+            return ShippingAddressFieldsSet.Contains(field);
+        }
+
+        private static bool IsContactField(string field) {
+            return ShippingContactFieldsSet.Contains(field);
+        }
+
+        private static bool IsPartialShippingAddressField(string field) {
+            return PartialShippingAddressFieldsSet.Contains(field);
+        }
+
+        private static UpdateRequestStatus GetUpdateRequestStatusFromCheckoutUserErrors(List<UserError> errors) {
+
+            var payErrors = new List<ApplePayError>();
+
+            // Check to see if any of the user errors are not billing address errors
+            // If it is not a billing address error return a failure
+            foreach (var error in errors) {
+                var fields = error.field();
+                if (fields.Contains("billingAddress")) {
+                    string description = error.message();
+                    string lastField = fields[fields.Count - 1];
+
+                    try {
+                        var payError = new ApplePayBillingAddressInvalidError(description, lastField);
+                        payErrors.Add(payError);
+                    } catch {
+                        return new UpdateRequestStatus(ApplePayAuthorizationStatus.Failure);
+                    }
+                } else {
+                    return new UpdateRequestStatus(ApplePayAuthorizationStatus.Failure);
+                }
+            }
+
+            return new UpdateRequestStatus(ApplePayAuthorizationStatus.InvalidBillingPostalAddress, payErrors);
+        }
+
+        private static UpdateRequestStatus GetUpdateRequestStatusFromShippingUserErrors(List<UserError> errors) {
+
+            ApplePayAuthorizationStatus statusToReturn = ApplePayAuthorizationStatus.Failure;
+            var payErrors = new List<ApplePayError>();
+
+            foreach (var error in errors) {
+                var fields = error.field();
+                var lastField = fields[fields.Count - 1];
+
+                if (IsShippingAddressField(lastField)) {
+
+                    try {
+                        var payError = new ApplePayShippingAddressInvalidError(error.message(), lastField);
+                        payErrors.Add(payError);
+                        statusToReturn = ApplePayAuthorizationStatus.InvalidShippingPostalAddress;
+                    } catch {
+                        statusToReturn = ApplePayAuthorizationStatus.Failure;
+                        break;
+                    }
+
+                } else if (IsContactField(lastField)) {
+
+                    try {
+                        var payError = new ApplePayContactInvalidError(error.message(), lastField);
+                        payErrors.Add(payError);
+                        statusToReturn = ApplePayAuthorizationStatus.InvalidShippingContact;
+                    } catch {
+                        statusToReturn = ApplePayAuthorizationStatus.Failure;
+                        break;
+                    }
+
+                } else {
+                    statusToReturn = ApplePayAuthorizationStatus.Failure;
+                    break;
+                }
+            }
+
+            if (statusToReturn == ApplePayAuthorizationStatus.Failure) {
+                return new UpdateRequestStatus(statusToReturn);
+            } else {
+                return new UpdateRequestStatus(statusToReturn, payErrors);
+            }
+        }
+
+        // We only receive a partial shipping address before the user has authenticated
+        // City, State, Zip, Country
+        private static UpdateRequestStatus GetUpdateRequestStatusFromPreliminaryShippingUserErrors(List<UserError> errors) {
+
+            var payErrors = new List<ApplePayError>();
+
+            foreach (var error in errors) {
+                var fields = error.field();
+                var lastField = fields[fields.Count - 1];
+
+                if (IsPartialShippingAddressField(lastField)) {
+                    try {
+                        var payError = new ApplePayShippingAddressInvalidError(error.message(), lastField);
+                        payErrors.Add(payError);
+                    } catch {
+                        return new UpdateRequestStatus(ApplePayAuthorizationStatus.Failure);
+                    }
+                }
+            }
+
+            return new UpdateRequestStatus(ApplePayAuthorizationStatus.InvalidShippingPostalAddress, payErrors);
+        }
+
         private void RespondToUpdateAddressSuccessForMessage(NativeMessage message) {
             var shippingMethods = GetShippingMethods();
 
@@ -66,11 +213,16 @@ namespace <%= namespace %>.SDK.iOS {
             // Check to see if this is a recoverable user error
             if (error.Type == ShopifyError.ErrorType.UserError) {
                 var userErrors = CartState.UserErrors;
-                var status = GetAuthorizationStatusFromPreliminaryShippingUserErrors(userErrors);
 
-                if (status == ApplePayAuthorizationStatus.InvalidShippingPostalAddress) {
+                var status = GetUpdateRequestStatusFromPreliminaryShippingUserErrors(userErrors);
+                if (status.AuthorizationStatus == ApplePayAuthorizationStatus.InvalidShippingPostalAddress) {
                     var summaryItems = GetSummaryItemsFromCheckout(CartState.CurrentCheckout);
-                    response = new ApplePayEventResponse(status, summaryItems);
+                    response =
+                        new ApplePayEventResponse(
+                            authorizationStatus: status.AuthorizationStatus,
+                            summaryItems: summaryItems,
+                            errors: status.Errors
+                        );
                 }
             }
 
@@ -136,13 +288,24 @@ namespace <%= namespace %>.SDK.iOS {
                     // Check to see if this is a recoverable user error
                     if (error.Type == ShopifyError.ErrorType.UserError) {
                         var userErrors = CartState.UserErrors;
-                        var status = GetAuthorizationStatusFromShippingUserErrors(userErrors);
+                        var status = GetUpdateRequestStatusFromShippingUserErrors(userErrors);
 
                         var summaryItems = GetSummaryItemsFromCheckout(CartState.CurrentCheckout);
-                        if (status == ApplePayAuthorizationStatus.InvalidShippingPostalAddress) {
-                            response = new ApplePayEventResponse(status, summaryItems);
-                        } else if (status == ApplePayAuthorizationStatus.InvalidShippingContact) {
-                            response = new ApplePayEventResponse(status, summaryItems, GetShippingMethods());
+                        if (status.AuthorizationStatus == ApplePayAuthorizationStatus.InvalidShippingPostalAddress) {
+                            response =
+                                new ApplePayEventResponse(
+                                    authorizationStatus: status.AuthorizationStatus,
+                                    summaryItems: summaryItems,
+                                    errors: status.Errors
+                                );
+                        } else if (status.AuthorizationStatus == ApplePayAuthorizationStatus.InvalidShippingContact) {
+                            response =
+                                new ApplePayEventResponse(
+                                    status.AuthorizationStatus,
+                                    summaryItems,
+                                    GetShippingMethods(),
+                                    status.Errors
+                                );
                         }
                     }
 
@@ -162,92 +325,17 @@ namespace <%= namespace %>.SDK.iOS {
                     // Check to see if this is a recoverable user error
                     if (error.Type == ShopifyError.ErrorType.UserError) {
                         var userErrors = CartState.UserErrors;
-                        var status = GetAuthorizationStatusFromCheckoutUserErrors(userErrors);
+                        var status = GetUpdateRequestStatusFromCheckoutUserErrors(userErrors);
 
-                        if (status != ApplePayAuthorizationStatus.Failure) {
+                        if (status.AuthorizationStatus != ApplePayAuthorizationStatus.Failure) {
                             var summaryItems = GetSummaryItemsFromCheckout(CartState.CurrentCheckout);
-                            response = new ApplePayEventResponse(status, summaryItems, GetShippingMethods());
-                        } else {
-                            response = new ApplePayEventResponse(status);
+                            response = new ApplePayEventResponse(status.AuthorizationStatus, summaryItems, GetShippingMethods(), status.Errors);
                         }
                     }
 
                     callback(response);
                 }
             });
-        }
-
-        private ApplePayAuthorizationStatus GetAuthorizationStatusFromCheckoutUserErrors(List<UserError> errors) {
-            // Check to see if any of the user errors are not billing address errors
-            // If it is not a billing address error return a failure
-            foreach (var error in errors) {
-                var fields = error.field();
-                var isBillingAddressError = false;
-
-                foreach(var field in fields) {
-                    if (field.Equals("billingAddress")) {
-                        isBillingAddressError = true;
-                        break;
-                    }
-                }
-
-                if (!isBillingAddressError) {
-                    return ApplePayAuthorizationStatus.Failure;
-                }
-            }
-
-            return ApplePayAuthorizationStatus.InvalidBillingPostalAddress;
-        }
-
-        private ApplePayAuthorizationStatus GetAuthorizationStatusFromShippingUserErrors(List<UserError> errors) {
-
-            string[] shippingAddressFields = {"address1", "address2", "city", "country", "province", "zip"};
-            var shippingAddressFieldsSet = new HashSet<string>(shippingAddressFields);
-
-            string[] shippingContactFields = {"firstName", "lastName", "phone", "email"};
-            var shippingContactFieldsSet = new HashSet<string>(shippingContactFields);
-
-            ApplePayAuthorizationStatus statusToReturn = ApplePayAuthorizationStatus.Failure;
-
-            foreach (var error in errors) {
-                var fields = error.field();
-                var lastField = fields[fields.Count - 1];
-
-                var isInvalidShippingAddressError =  shippingAddressFieldsSet.Contains(lastField);
-                var isInvalidShippingContactError =  shippingContactFieldsSet.Contains(lastField);
-
-                if (isInvalidShippingAddressError) {
-                    statusToReturn = ApplePayAuthorizationStatus.InvalidShippingPostalAddress;
-                } else if (isInvalidShippingContactError) {
-                    statusToReturn = ApplePayAuthorizationStatus.InvalidShippingContact;
-                } else {
-                    statusToReturn = ApplePayAuthorizationStatus.Failure;
-                    break;
-                }
-            }
-
-            return statusToReturn;
-        }
-
-        // We only receive a partial shipping address before the user has authenticated
-        // City, State, Zip, Country
-        // So we will receive user errors from our GraphQL query, even though it was a success
-        private ApplePayAuthorizationStatus GetAuthorizationStatusFromPreliminaryShippingUserErrors(List<UserError> errors) {
-
-            string[] shippingAddressFields = {"city", "country", "province", "zip"};
-            var shippingAddressFieldsSet = new HashSet<string>(shippingAddressFields);
-
-            foreach (var error in errors) {
-                var fields = error.field();
-                var lastField = fields[fields.Count - 1];
-                var isInvalidShippingAddressError = shippingAddressFieldsSet.Contains(lastField);
-
-                if (!isInvalidShippingAddressError) {
-                    return ApplePayAuthorizationStatus.Failure;
-                }
-            }
-
-            return ApplePayAuthorizationStatus.InvalidShippingPostalAddress;
         }
     }
 }
