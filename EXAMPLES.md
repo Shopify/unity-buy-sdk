@@ -12,7 +12,7 @@ The Unity Buy SDK queries Shopify's [Storefront API](https://help.shopify.com/ap
 - [Query all products](#query-all-products)
 - [Query all collections](#query-all-collections)
 - [Build a cart](#build-a-cart)
-- [Native web view checkout](#native-web-view-checkout)
+- [Web view checkout](#web-view-checkout)
 - [Apple Pay checkout](#apple-pay-checkout)
 - [Custom queries](#custom-queries)
 
@@ -250,12 +250,12 @@ cart.LineItems.Get(firstProduct, selectedOptions);
 cart.LineItems.Delete(firstProduct, selectedOptions);
 ```
 
-## Native web view checkout
+## Web view checkout
 
-After creating an instance of `Cart` and adding items to it, you can use the `CheckoutWithNativeWebView` method to
-start a native modal overlay on top of your game with a web view that contains the checkout for the cart.
+After creating an instance of `Cart` and adding items to it, you can use the `CheckoutWithWebView` method to
+start a web view that contains the checkout for the cart.
 
-`CheckoutWithNativeWebView` takes in 3 callback parameters:
+`CheckoutWithWebView` takes in 3 callback parameters:
 
 * `CheckoutSuccessCallback` is called when the user has completed a checkout successfully.
 * `CheckoutCancelCallback` is called when the user cancels out of the checkout.
@@ -274,8 +274,8 @@ ShopifyBuy.Client().products((products, error) => {
 
     cart.LineItems.AddOrUpdate(productVariantToCheckout, 1);
 
-    // Launches the native web checkout experience overlaid on top of your game.
-    cart.CheckoutWithNativeWebView(
+    // Launches the web view checkout experience overlaid on top of your game.
+    cart.CheckoutWithWebView(
         success: () => {
             Debug.Log("User finished purchase/checkout!");
         },
@@ -293,7 +293,7 @@ ShopifyBuy.Client().products((products, error) => {
 
 You can allow users to pay with Apple Pay, providing a seamless checkout experience.
 
-To determine whether the user is able to make a payment with Apple Pay, you can use the `CanCheckoutWithNativePay` method. If the user has this capability, then you can use `CheckoutWithNativePay` to present the Apple Pay authentication interface to the user. If they do not, then you can accept payment using [Native Web Checkout](#native-web-view-checkout).
+To determine whether the user is able to make a payment with Apple Pay, you can use the `CanCheckoutWithNativePay` method. If the user has this capability, then you can use `CheckoutWithNativePay` to present the Apple Pay authentication interface to the user. If they do not, then you can accept payment using [Web View Checkout](#web-view-checkout).
 
 `CheckoutWithNativePay` takes in 4 parameters:
 
