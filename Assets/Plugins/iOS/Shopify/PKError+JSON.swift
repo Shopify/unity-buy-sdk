@@ -31,13 +31,13 @@ import PassKit
 //  MARK: - Class Payment Error Creator -
 //
 @available(iOS 11.0, *)
-extension NSError {
+extension PKPaymentRequest {
 
     /// Convenience method to create a payment error with a JSON
     /// Returns a Payment error, payment errors can be found in PKError.h
     class func paymentError(with json: JSON) -> Error? {
         
-        guard let errorType = errorType(in: json) else {
+        guard let errorType = ErrorType(json: json) else {
             return nil
         }
         
@@ -58,7 +58,7 @@ extension NSError {
 //  MARK: - Fileprivate Error Creators -
 //
 @available(iOS 11.0, *)
-extension NSError {
+extension PKPaymentRequest {
     
     fileprivate class func paymentBillingAddressInvalidError(from json: JSON) -> Error? {
 
@@ -113,7 +113,7 @@ extension NSError {
 //  MARK: - Parsing Errors -
 //
 @available(iOS 11.0, *)
-extension NSError {
+extension PKPaymentRequest {
 
     fileprivate enum PaymentErrorKey: String {
         case type        = "Type"
@@ -126,14 +126,16 @@ extension NSError {
         case paymentShippingAddress      = "PaymentShippingAddress"
         case paymentContactInvalid       = "PaymentContactInvalid"
         case shippingAddressUnservicable = "ShippingAddressUnservicable"
-    }
 
-    fileprivate class func errorType(in json: JSON) -> ErrorType? {
+        init? (json: JSON) {
+            guard
+                let typeString = json[PaymentErrorKey.type.rawValue] as? String,
+                let type = ErrorType(rawValue: typeString)
+            else {
+                return nil
+            }
 
-        guard let typeString = json[PaymentErrorKey.type.rawValue] as? String else {
-            return nil
+            self = type
         }
-
-        return ErrorType(rawValue: typeString)
     }
 }
