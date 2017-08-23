@@ -95,6 +95,10 @@ namespace <%= namespace %>.SDK.iOS {
             return PartialShippingAddressFieldsSet.Contains(field);
         }
 
+        private static bool IsEmailField(string field) {
+            return field == "email";
+        }
+
         private static UpdateRequestStatus GetUpdateRequestStatusFromCheckoutUserErrors(List<UserError> errors) {
 
             var payErrors = new List<ApplePayError>();
@@ -151,7 +155,16 @@ namespace <%= namespace %>.SDK.iOS {
                         statusToReturn = ApplePayAuthorizationStatus.Failure;
                         break;
                     }
+                } else if (IsEmailField(lastField)) {
 
+                    try {
+                        var payError = new ApplePayContactInvalidError(error.message(), ApplePayContactInvalidError.ContactField.EmailAddress);
+                        payErrors.Add(payError);
+                        statusToReturn = ApplePayAuthorizationStatus.InvalidShippingContact;
+                    } catch {
+                        statusToReturn = ApplePayAuthorizationStatus.Failure;
+                        break;
+                    }
                 } else {
                     statusToReturn = ApplePayAuthorizationStatus.Failure;
                     break;
