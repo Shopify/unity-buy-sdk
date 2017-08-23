@@ -1,5 +1,5 @@
 //
-//  ApplePayEventDispatcherTests.swift
+//  ApplePayErrorDeserializingTests.swift
 //  UnityBuySDK
 //
 //  Created by Shopify.
