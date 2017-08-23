@@ -252,10 +252,10 @@ cart.LineItems.Delete(firstProduct, selectedOptions);
 
 ## Native web view checkout
 
-After creating an instance of `Cart` and adding items to it, you can use the `CheckoutWithNativeWebView` method to
+After creating an instance of `Cart` and adding items to it, you can use the `CheckoutWithWebView` method to
 start a native modal overlay on top of your game with a web view that contains the checkout for the cart.
 
-`CheckoutWithNativeWebView` takes in 3 callback parameters:
+`CheckoutWithWebView` takes in 3 callback parameters:
 
 * `CheckoutSuccessCallback` is called when the user has completed a checkout successfully.
 * `CheckoutCancelCallback` is called when the user cancels out of the checkout.
@@ -275,7 +275,7 @@ ShopifyBuy.Client().products((products, error) => {
     cart.LineItems.AddOrUpdate(productVariantToCheckout, 1);
 
     // Launches the native web checkout experience overlaid on top of your game.
-    cart.CheckoutWithNativeWebView(
+    cart.CheckoutWithWebView(
         success: () => {
             Debug.Log("User finished purchase/checkout!");
         },
