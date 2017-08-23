@@ -27,6 +27,13 @@
 import Foundation
 import PassKit
 
+private enum Key: String {
+    case type        = "Type"
+    case description = "Description"
+    case field       = "Field"
+}
+
+
 // ----------------------------------
 //  MARK: - Class Payment Error Creator -
 //
@@ -63,8 +70,8 @@ extension PKPaymentRequest {
     fileprivate class func paymentBillingAddressInvalidError(from json: JSON) -> Error? {
 
         guard
-            let description        = json[PaymentErrorKey.description.rawValue] as? String,
-            let addressFieldString = json[PaymentErrorKey.field.rawValue] as? String,
+            let description        = json[Key.description.rawValue] as? String,
+            let addressFieldString = json[Key.field.rawValue] as? String,
             let addressKey         = CNPostalAddress.postalAddressKey(for: addressFieldString)
         else {
             return nil
@@ -76,8 +83,8 @@ extension PKPaymentRequest {
     fileprivate class func paymentShippingAddressInvalidError(from json: JSON) -> Error? {
 
         guard
-            let description        = json[PaymentErrorKey.description.rawValue] as? String,
-            let addressFieldString = json[PaymentErrorKey.field.rawValue] as? String,
+            let description        = json[Key.description.rawValue] as? String,
+            let addressFieldString = json[Key.field.rawValue] as? String,
             let addressKey         = CNPostalAddress.postalAddressKey(for: addressFieldString)
         else {
             return nil
@@ -89,8 +96,8 @@ extension PKPaymentRequest {
     fileprivate class func paymentContactInvalidError(from json: JSON) -> Error? {
 
         guard
-            let description        = json[PaymentErrorKey.description.rawValue] as? String,
-            let contactFieldString = json[PaymentErrorKey.field.rawValue] as? String,
+            let description        = json[Key.description.rawValue] as? String,
+            let contactFieldString = json[Key.field.rawValue] as? String,
             let contactField       = PKContactField(string: contactFieldString)
         else {
             return nil
@@ -101,7 +108,7 @@ extension PKPaymentRequest {
     
     fileprivate class func paymentShippingAddressUnserviceableError(from json: JSON) -> Error? {
 
-        if let description = json[PaymentErrorKey.description.rawValue] as? String {
+        if let description = json[Key.description.rawValue] as? String {
             return paymentShippingAddressUnserviceableError(withLocalizedDescription: description)
         } else {
             return nil
@@ -115,12 +122,6 @@ extension PKPaymentRequest {
 @available(iOS 11.0, *)
 extension PKPaymentRequest {
 
-    fileprivate enum PaymentErrorKey: String {
-        case type        = "Type"
-        case description = "Description"
-        case field       = "Field"
-    }
-
     fileprivate enum ErrorType: String {
         case paymentBillingAddress       = "PaymentBillingAddress"
         case paymentShippingAddress      = "PaymentShippingAddress"
@@ -129,7 +130,7 @@ extension PKPaymentRequest {
 
         init? (json: JSON) {
             guard
-                let typeString = json[PaymentErrorKey.type.rawValue] as? String,
+                let typeString = json[Key.type.rawValue] as? String,
                 let type = ErrorType(rawValue: typeString)
             else {
                 return nil
