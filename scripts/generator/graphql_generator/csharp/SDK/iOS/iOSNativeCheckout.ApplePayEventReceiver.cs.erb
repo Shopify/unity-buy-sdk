@@ -109,9 +109,9 @@ namespace <%= namespace %>.SDK.iOS {
                 var fields = error.field();
                 if (fields.Contains("billingAddress")) {
                     string description = error.message();
-                    string lastField = fields[fields.Count - 1];
 
                     try {
+                        string lastField = fields[fields.Count - 1];
                         var payError = new ApplePayBillingAddressInvalidError(description, lastField);
                         payErrors.Add(payError);
                     } catch {
@@ -132,40 +132,34 @@ namespace <%= namespace %>.SDK.iOS {
 
             foreach (var error in errors) {
                 var fields = error.field();
-                var lastField = fields[fields.Count - 1];
 
-                if (IsShippingAddressField(lastField)) {
+                try {
+                    var lastField = fields[fields.Count - 1];
 
-                    try {
+                    if (IsShippingAddressField(lastField)) {
+
                         var payError = new ApplePayShippingAddressInvalidError(error.message(), lastField);
                         payErrors.Add(payError);
                         statusToReturn = ApplePayAuthorizationStatus.InvalidShippingPostalAddress;
-                    } catch {
-                        statusToReturn = ApplePayAuthorizationStatus.Failure;
-                        break;
-                    }
 
-                } else if (IsContactField(lastField)) {
+                    } else if (IsContactField(lastField)) {
 
-                    try {
                         var payError = new ApplePayContactInvalidError(error.message(), lastField);
                         payErrors.Add(payError);
                         statusToReturn = ApplePayAuthorizationStatus.InvalidShippingContact;
-                    } catch {
-                        statusToReturn = ApplePayAuthorizationStatus.Failure;
-                        break;
-                    }
-                } else if (IsEmailField(lastField)) {
 
-                    try {
+                    } else if (IsEmailField(lastField)) {
+
                         var payError = new ApplePayContactInvalidError(error.message(), ApplePayContactInvalidError.ContactField.EmailAddress);
                         payErrors.Add(payError);
                         statusToReturn = ApplePayAuthorizationStatus.InvalidShippingContact;
-                    } catch {
+
+                    } else {
+
                         statusToReturn = ApplePayAuthorizationStatus.Failure;
                         break;
                     }
-                } else {
+                } catch {
                     statusToReturn = ApplePayAuthorizationStatus.Failure;
                     break;
                 }
@@ -186,15 +180,16 @@ namespace <%= namespace %>.SDK.iOS {
 
             foreach (var error in errors) {
                 var fields = error.field();
-                var lastField = fields[fields.Count - 1];
 
-                if (IsPartialShippingAddressField(lastField)) {
-                    try {
+                try {
+                    var lastField = fields[fields.Count - 1];
+
+                    if (IsPartialShippingAddressField(lastField)) {
                         var payError = new ApplePayShippingAddressInvalidError(error.message(), lastField);
                         payErrors.Add(payError);
-                    } catch {
-                        return new UpdateRequestStatus(ApplePayAuthorizationStatus.Failure);
                     }
+                } catch {
+                    return new UpdateRequestStatus(ApplePayAuthorizationStatus.Failure);
                 }
             }
 
