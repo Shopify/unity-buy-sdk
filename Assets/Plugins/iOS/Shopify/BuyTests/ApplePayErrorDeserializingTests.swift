@@ -68,13 +68,13 @@ extension ApplePayErrorDeserializingTests {
     func testStreetShippingAddressInvalidError() {
         
         let field = "Street"
-        let expectedError = NSError.paymentShippingAddressInvalidError(withKey: CNPostalAddressStreetKey, localizedDescription: expectedDescription) as NSError
+        let expectedError = PKPaymentRequest.paymentShippingAddressInvalidError(withKey: CNPostalAddressStreetKey, localizedDescription: expectedDescription) as NSError
         
         let createErrorExpectation = shippingAddressInvalidErrorExpectation(forField: field)
         createShippingAddressInvalidErrorJsonString(forField: field, withDescription: expectedDescription) { errorJsonString in
             
             let errorJson     = try! JSONSerialization.jsonObject(with: errorJsonString.data(using: .utf8)!) as! JSON
-            let paymentError  = NSError.paymentError(with: errorJson)! as NSError
+            let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
             XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
@@ -88,13 +88,13 @@ extension ApplePayErrorDeserializingTests {
     func testSublocalityShippingAddressInvalidError() {
         
         let field = "Sublocality"
-        let expectedError = NSError.paymentShippingAddressInvalidError(withKey: CNPostalAddressSubLocalityKey, localizedDescription: expectedDescription) as NSError
+        let expectedError = PKPaymentRequest.paymentShippingAddressInvalidError(withKey: CNPostalAddressSubLocalityKey, localizedDescription: expectedDescription) as NSError
         
         let createErrorExpectation = shippingAddressInvalidErrorExpectation(forField: field)
         createShippingAddressInvalidErrorJsonString(forField: field, withDescription: expectedDescription) { errorJsonString in
             
             let errorJson     = try! JSONSerialization.jsonObject(with: errorJsonString.data(using: .utf8)!) as! JSON
-            let paymentError  = NSError.paymentError(with: errorJson)! as NSError
+            let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
             XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
@@ -108,13 +108,13 @@ extension ApplePayErrorDeserializingTests {
     func testCityShippingAddressInvalidError() {
         
         let field = "City"
-        let expectedError = NSError.paymentShippingAddressInvalidError(withKey: CNPostalAddressCityKey, localizedDescription: expectedDescription) as NSError
+        let expectedError = PKPaymentRequest.paymentShippingAddressInvalidError(withKey: CNPostalAddressCityKey, localizedDescription: expectedDescription) as NSError
         
         let createErrorExpectation = shippingAddressInvalidErrorExpectation(forField: field)
         createShippingAddressInvalidErrorJsonString(forField: field, withDescription: expectedDescription) { errorJsonString in
             
             let errorJson     = try! JSONSerialization.jsonObject(with: errorJsonString.data(using: .utf8)!) as! JSON
-            let paymentError  = NSError.paymentError(with: errorJson)! as NSError
+            let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
             XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
@@ -128,13 +128,13 @@ extension ApplePayErrorDeserializingTests {
     func testSubAdministrativeAreaShippingAddressInvalidError() {
         
         let field = "SubAdministrativeArea"
-        let expectedError = NSError.paymentShippingAddressInvalidError(withKey: CNPostalAddressSubAdministrativeAreaKey, localizedDescription: expectedDescription) as NSError
+        let expectedError = PKPaymentRequest.paymentShippingAddressInvalidError(withKey: CNPostalAddressSubAdministrativeAreaKey, localizedDescription: expectedDescription) as NSError
         
         let createErrorExpectation = shippingAddressInvalidErrorExpectation(forField: field)
         createShippingAddressInvalidErrorJsonString(forField: field, withDescription: expectedDescription) { errorJsonString in
             
             let errorJson     = try! JSONSerialization.jsonObject(with: errorJsonString.data(using: .utf8)!) as! JSON
-            let paymentError  = NSError.paymentError(with: errorJson)! as NSError
+            let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
             XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
@@ -148,13 +148,13 @@ extension ApplePayErrorDeserializingTests {
     func testStateShippingAddressInvalidError() {
         
         let field = "State"
-        let expectedError = NSError.paymentShippingAddressInvalidError(withKey: CNPostalAddressStateKey, localizedDescription: expectedDescription) as NSError
+        let expectedError = PKPaymentRequest.paymentShippingAddressInvalidError(withKey: CNPostalAddressStateKey, localizedDescription: expectedDescription) as NSError
         
         let createErrorExpectation = shippingAddressInvalidErrorExpectation(forField: field)
         createShippingAddressInvalidErrorJsonString(forField: field, withDescription: expectedDescription) { errorJsonString in
             
             let errorJson     = try! JSONSerialization.jsonObject(with: errorJsonString.data(using: .utf8)!) as! JSON
-            let paymentError  = NSError.paymentError(with: errorJson)! as NSError
+            let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
             XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
@@ -168,13 +168,13 @@ extension ApplePayErrorDeserializingTests {
     func testPostalCodeShippingAddressInvalidError() {
         
         let field = "PostalCode"
-        let expectedError = NSError.paymentShippingAddressInvalidError(withKey: CNPostalAddressPostalCodeKey, localizedDescription: expectedDescription) as NSError
+        let expectedError = PKPaymentRequest.paymentShippingAddressInvalidError(withKey: CNPostalAddressPostalCodeKey, localizedDescription: expectedDescription) as NSError
         
         let createErrorExpectation = shippingAddressInvalidErrorExpectation(forField: field)
         createShippingAddressInvalidErrorJsonString(forField: field, withDescription: expectedDescription) { errorJsonString in
             
             let errorJson     = try! JSONSerialization.jsonObject(with: errorJsonString.data(using: .utf8)!) as! JSON
-            let paymentError  = NSError.paymentError(with: errorJson)! as NSError
+            let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
             XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
@@ -188,13 +188,13 @@ extension ApplePayErrorDeserializingTests {
     func testCountryShippingAddressInvalidError() {
         
         let field = "Country"
-        let expectedError = NSError.paymentShippingAddressInvalidError(withKey: CNPostalAddressCountryKey, localizedDescription: expectedDescription) as NSError
+        let expectedError = PKPaymentRequest.paymentShippingAddressInvalidError(withKey: CNPostalAddressCountryKey, localizedDescription: expectedDescription) as NSError
         
         let createErrorExpectation = shippingAddressInvalidErrorExpectation(forField: field)
         createShippingAddressInvalidErrorJsonString(forField: field, withDescription: expectedDescription) { errorJsonString in
             
             let errorJson     = try! JSONSerialization.jsonObject(with: errorJsonString.data(using: .utf8)!) as! JSON
-            let paymentError  = NSError.paymentError(with: errorJson)! as NSError
+            let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
             XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
@@ -208,13 +208,13 @@ extension ApplePayErrorDeserializingTests {
     func testISOCountryCodeShippingAddressInvalidError() {
         
         let field = "ISOCountryCode"
-        let expectedError = NSError.paymentShippingAddressInvalidError(withKey: CNPostalAddressISOCountryCodeKey, localizedDescription: expectedDescription) as NSError
+        let expectedError = PKPaymentRequest.paymentShippingAddressInvalidError(withKey: CNPostalAddressISOCountryCodeKey, localizedDescription: expectedDescription) as NSError
         
         let createErrorExpectation = shippingAddressInvalidErrorExpectation(forField: field)
         createShippingAddressInvalidErrorJsonString(forField: field, withDescription: expectedDescription) { errorJsonString in
             
             let errorJson     = try! JSONSerialization.jsonObject(with: errorJsonString.data(using: .utf8)!) as! JSON
-            let paymentError  = NSError.paymentError(with: errorJson)! as NSError
+            let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
             XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
@@ -235,13 +235,13 @@ extension ApplePayErrorDeserializingTests {
     func testStreetBillingAddressInvalidError() {
         
         let field = "Street"
-        let expectedError = NSError.paymentBillingAddressInvalidError(withKey: CNPostalAddressStreetKey, localizedDescription: expectedDescription) as NSError
+        let expectedError = PKPaymentRequest.paymentBillingAddressInvalidError(withKey: CNPostalAddressStreetKey, localizedDescription: expectedDescription) as NSError
         
         let createErrorExpectation = billingAddressInvalidErrorExpectation(forField: field)
         createBillingAddressInvalidErrorJsonString(forField: field, withDescription: expectedDescription) { errorJsonString in
             
             let errorJson     = try! JSONSerialization.jsonObject(with: errorJsonString.data(using: .utf8)!) as! JSON
-            let paymentError  = NSError.paymentError(with: errorJson)! as NSError
+            let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
             XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
@@ -255,13 +255,13 @@ extension ApplePayErrorDeserializingTests {
     func testSublocalityBillingAddressInvalidError() {
         
         let field = "Sublocality"
-        let expectedError = NSError.paymentBillingAddressInvalidError(withKey: CNPostalAddressSubLocalityKey, localizedDescription: expectedDescription) as NSError
+        let expectedError = PKPaymentRequest.paymentBillingAddressInvalidError(withKey: CNPostalAddressSubLocalityKey, localizedDescription: expectedDescription) as NSError
         
         let createErrorExpectation = billingAddressInvalidErrorExpectation(forField: field)
         createBillingAddressInvalidErrorJsonString(forField: field, withDescription: expectedDescription) { errorJsonString in
             
             let errorJson     = try! JSONSerialization.jsonObject(with: errorJsonString.data(using: .utf8)!) as! JSON
-            let paymentError  = NSError.paymentError(with: errorJson)! as NSError
+            let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
             XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
@@ -275,13 +275,13 @@ extension ApplePayErrorDeserializingTests {
     func testCityBillingAddressInvalidError() {
         
         let field = "City"
-        let expectedError = NSError.paymentBillingAddressInvalidError(withKey: CNPostalAddressCityKey, localizedDescription: expectedDescription) as NSError
+        let expectedError = PKPaymentRequest.paymentBillingAddressInvalidError(withKey: CNPostalAddressCityKey, localizedDescription: expectedDescription) as NSError
         
         let createErrorExpectation = billingAddressInvalidErrorExpectation(forField: field)
         createBillingAddressInvalidErrorJsonString(forField: field, withDescription: expectedDescription) { errorJsonString in
             
             let errorJson     = try! JSONSerialization.jsonObject(with: errorJsonString.data(using: .utf8)!) as! JSON
-            let paymentError  = NSError.paymentError(with: errorJson)! as NSError
+            let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
             XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
@@ -295,13 +295,13 @@ extension ApplePayErrorDeserializingTests {
     func testSubAdministrativeAreaBillingAddressInvalidError() {
         
         let field = "SubAdministrativeArea"
-        let expectedError = NSError.paymentBillingAddressInvalidError(withKey: CNPostalAddressSubAdministrativeAreaKey, localizedDescription: expectedDescription) as NSError
+        let expectedError = PKPaymentRequest.paymentBillingAddressInvalidError(withKey: CNPostalAddressSubAdministrativeAreaKey, localizedDescription: expectedDescription) as NSError
         
         let createErrorExpectation = billingAddressInvalidErrorExpectation(forField: field)
         createBillingAddressInvalidErrorJsonString(forField: field, withDescription: expectedDescription) { errorJsonString in
             
             let errorJson     = try! JSONSerialization.jsonObject(with: errorJsonString.data(using: .utf8)!) as! JSON
-            let paymentError  = NSError.paymentError(with: errorJson)! as NSError
+            let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
             XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
@@ -315,13 +315,13 @@ extension ApplePayErrorDeserializingTests {
     func testStateBillingAddressInvalidError() {
         
         let field = "State"
-        let expectedError = NSError.paymentBillingAddressInvalidError(withKey: CNPostalAddressStateKey, localizedDescription: expectedDescription) as NSError
+        let expectedError = PKPaymentRequest.paymentBillingAddressInvalidError(withKey: CNPostalAddressStateKey, localizedDescription: expectedDescription) as NSError
         
         let createErrorExpectation = billingAddressInvalidErrorExpectation(forField: field)
         createBillingAddressInvalidErrorJsonString(forField: field, withDescription: expectedDescription) { errorJsonString in
             
             let errorJson     = try! JSONSerialization.jsonObject(with: errorJsonString.data(using: .utf8)!) as! JSON
-            let paymentError  = NSError.paymentError(with: errorJson)! as NSError
+            let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
             XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
@@ -335,13 +335,13 @@ extension ApplePayErrorDeserializingTests {
     func testPostalCodeBillingAddressInvalidError() {
         
         let field = "PostalCode"
-        let expectedError = NSError.paymentBillingAddressInvalidError(withKey: CNPostalAddressPostalCodeKey, localizedDescription: expectedDescription) as NSError
+        let expectedError = PKPaymentRequest.paymentBillingAddressInvalidError(withKey: CNPostalAddressPostalCodeKey, localizedDescription: expectedDescription) as NSError
         
         let createErrorExpectation = billingAddressInvalidErrorExpectation(forField: field)
         createBillingAddressInvalidErrorJsonString(forField: field, withDescription: expectedDescription) { errorJsonString in
             
             let errorJson     = try! JSONSerialization.jsonObject(with: errorJsonString.data(using: .utf8)!) as! JSON
-            let paymentError  = NSError.paymentError(with: errorJson)! as NSError
+            let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
             XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
@@ -355,13 +355,13 @@ extension ApplePayErrorDeserializingTests {
     func testCountryBillingAddressInvalidError() {
         
         let field = "Country"
-        let expectedError = NSError.paymentBillingAddressInvalidError(withKey: CNPostalAddressCountryKey, localizedDescription: expectedDescription) as NSError
+        let expectedError = PKPaymentRequest.paymentBillingAddressInvalidError(withKey: CNPostalAddressCountryKey, localizedDescription: expectedDescription) as NSError
         
         let createErrorExpectation = billingAddressInvalidErrorExpectation(forField: field)
         createBillingAddressInvalidErrorJsonString(forField: field, withDescription: expectedDescription) { errorJsonString in
             
             let errorJson     = try! JSONSerialization.jsonObject(with: errorJsonString.data(using: .utf8)!) as! JSON
-            let paymentError  = NSError.paymentError(with: errorJson)! as NSError
+            let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
             XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
@@ -375,13 +375,13 @@ extension ApplePayErrorDeserializingTests {
     func testISOCountryCodeBillingAddressInvalidError() {
         
         let field = "ISOCountryCode"
-        let expectedError = NSError.paymentBillingAddressInvalidError(withKey: CNPostalAddressISOCountryCodeKey, localizedDescription: expectedDescription) as NSError
+        let expectedError = PKPaymentRequest.paymentBillingAddressInvalidError(withKey: CNPostalAddressISOCountryCodeKey, localizedDescription: expectedDescription) as NSError
         
         let createErrorExpectation = billingAddressInvalidErrorExpectation(forField: field)
         createBillingAddressInvalidErrorJsonString(forField: field, withDescription: expectedDescription) { errorJsonString in
             
             let errorJson     = try! JSONSerialization.jsonObject(with: errorJsonString.data(using: .utf8)!) as! JSON
-            let paymentError  = NSError.paymentError(with: errorJson)! as NSError
+            let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
             XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
@@ -402,13 +402,13 @@ extension ApplePayErrorDeserializingTests {
     func testPostalAddressContactInvalidError() {
         
         let field = "PostalAddress"
-        let expectedError = NSError.paymentContactInvalidError(withContactField: PKContactField.postalAddress, localizedDescription: expectedDescription) as NSError
+        let expectedError = PKPaymentRequest.paymentContactInvalidError(withContactField: PKContactField.postalAddress, localizedDescription: expectedDescription) as NSError
         
         let createErrorExpectation = contactInvalidErrorExpectation(forField: field)
         createContactInvalidErrorJsonString(forField: field, withDescription: expectedDescription) { errorJsonString in
             
             let errorJson     = try! JSONSerialization.jsonObject(with: errorJsonString.data(using: .utf8)!) as! JSON
-            let paymentError  = NSError.paymentError(with: errorJson)! as NSError
+            let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
             XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.contactFieldUserInfoKey] as! PKContactField, expectedError.userInfo[PKPaymentErrorKey.contactFieldUserInfoKey] as! PKContactField)
@@ -422,13 +422,13 @@ extension ApplePayErrorDeserializingTests {
     func testEmailAddressContactInvalidError() {
         
         let field = "EmailAddress"
-        let expectedError = NSError.paymentContactInvalidError(withContactField: PKContactField.emailAddress, localizedDescription: expectedDescription) as NSError
+        let expectedError = PKPaymentRequest.paymentContactInvalidError(withContactField: PKContactField.emailAddress, localizedDescription: expectedDescription) as NSError
         
         let createErrorExpectation = contactInvalidErrorExpectation(forField: field)
         createContactInvalidErrorJsonString(forField: field, withDescription: expectedDescription) { errorJsonString in
             
             let errorJson     = try! JSONSerialization.jsonObject(with: errorJsonString.data(using: .utf8)!) as! JSON
-            let paymentError  = NSError.paymentError(with: errorJson)! as NSError
+            let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
             XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.contactFieldUserInfoKey] as! PKContactField, expectedError.userInfo[PKPaymentErrorKey.contactFieldUserInfoKey] as! PKContactField)
@@ -442,13 +442,13 @@ extension ApplePayErrorDeserializingTests {
     func testPhoneNumberContactInvalidError() {
         
         let field = "PhoneNumber"
-        let expectedError = NSError.paymentContactInvalidError(withContactField: PKContactField.phoneNumber, localizedDescription: expectedDescription) as NSError
+        let expectedError = PKPaymentRequest.paymentContactInvalidError(withContactField: PKContactField.phoneNumber, localizedDescription: expectedDescription) as NSError
         
         let createErrorExpectation = contactInvalidErrorExpectation(forField: field)
         createContactInvalidErrorJsonString(forField: field, withDescription: expectedDescription) { errorJsonString in
             
             let errorJson     = try! JSONSerialization.jsonObject(with: errorJsonString.data(using: .utf8)!) as! JSON
-            let paymentError  = NSError.paymentError(with: errorJson)! as NSError
+            let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
             XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.contactFieldUserInfoKey] as! PKContactField, expectedError.userInfo[PKPaymentErrorKey.contactFieldUserInfoKey] as! PKContactField)
@@ -462,13 +462,13 @@ extension ApplePayErrorDeserializingTests {
     func testNameContactInvalidError() {
         
         let field = "Name"
-        let expectedError = NSError.paymentContactInvalidError(withContactField: PKContactField.name, localizedDescription: expectedDescription) as NSError
+        let expectedError = PKPaymentRequest.paymentContactInvalidError(withContactField: PKContactField.name, localizedDescription: expectedDescription) as NSError
         
         let createErrorExpectation = contactInvalidErrorExpectation(forField: field)
         createContactInvalidErrorJsonString(forField: field, withDescription: expectedDescription) { errorJsonString in
             
             let errorJson     = try! JSONSerialization.jsonObject(with: errorJsonString.data(using: .utf8)!) as! JSON
-            let paymentError  = NSError.paymentError(with: errorJson)! as NSError
+            let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
             XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.contactFieldUserInfoKey] as! PKContactField, expectedError.userInfo[PKPaymentErrorKey.contactFieldUserInfoKey] as! PKContactField)
@@ -482,13 +482,13 @@ extension ApplePayErrorDeserializingTests {
     func testPhoneticNameContactInvalidError() {
         
         let field = "PhoneticName"
-        let expectedError = NSError.paymentContactInvalidError(withContactField: PKContactField.phoneticName, localizedDescription: expectedDescription) as NSError
+        let expectedError = PKPaymentRequest.paymentContactInvalidError(withContactField: PKContactField.phoneticName, localizedDescription: expectedDescription) as NSError
         
         let createErrorExpectation = contactInvalidErrorExpectation(forField: field)
         createContactInvalidErrorJsonString(forField: field, withDescription: expectedDescription) { errorJsonString in
             
             let errorJson     = try! JSONSerialization.jsonObject(with: errorJsonString.data(using: .utf8)!) as! JSON
-            let paymentError  = NSError.paymentError(with: errorJson)! as NSError
+            let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
             XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.contactFieldUserInfoKey] as! PKContactField, expectedError.userInfo[PKPaymentErrorKey.contactFieldUserInfoKey] as! PKContactField)
