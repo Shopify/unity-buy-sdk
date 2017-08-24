@@ -18,6 +18,12 @@ namespace <%= namespace %>.SDK {
             }
         }
 
+        public decimal Price {
+            get {
+                return _Price;
+            }
+        }
+
         public long Quantity {
             get {
                 return _Quantity;
@@ -48,12 +54,14 @@ namespace <%= namespace %>.SDK {
         public string ID = null;
         private string _VariantId;
         private long _Quantity;
+        private decimal _Price;
         private ObservableDictionary<string, string> _CustomAttributes;
         private OnCartLineItemChange OnChange;
 
-        public CartLineItem(string variantId, OnCartLineItemChange onChange, long quantity = 1, IDictionary<string, string> customAttributes = null) {
-            _VariantId = variantId;
+        public CartLineItem(ProductVariant variant, OnCartLineItemChange onChange, long quantity = 1, IDictionary<string, string> customAttributes = null) {
+            _VariantId = variant.id();
             _Quantity = quantity;
+            _Price = variant.price();
             OnChange = onChange;
 
             if (customAttributes != null) {
@@ -126,6 +134,18 @@ namespace <%= namespace %>.SDK {
             }
         }
 
+        public decimal Subtotal {
+            get {
+                decimal subtotalOut = 0;
+
+                foreach (var lineitem in LineItems) {
+                    subtotalOut += lineitem.Price * lineitem.Quantity;
+                }
+
+                return subtotalOut;
+            }
+        }
+
         private bool _IsSaved = false;
         private List<CartLineItem> LineItems = new List<CartLineItem>();
         private Action<string> OnDeleteLineItem;
@@ -165,7 +185,7 @@ namespace <%= namespace %>.SDK {
 
                 LineItems.Add(
                     new CartLineItem(
-                        variantId: variant.id(),
+                        variant: variant,
                         onChange: OnLineItemChange,
                         quantity: (long) quantity,
                         customAttributes: customAttributes

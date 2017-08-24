@@ -53,6 +53,10 @@ namespace <%= namespace %> {
             CurrentCheckout = null;
         }
 
+        public decimal Subtotal() {
+            return _LineItems.Subtotal;
+        }
+
         public void SetShippingLine(string shippingRateHandle, CompletionCallback callback) {
             MutationQuery query = new MutationQuery();
 

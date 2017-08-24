@@ -64,6 +64,25 @@ namespace Shopify.Tests
         }
 
         [Test]
+        public void TestSubtotal() {
+            ShopifyBuy.Init(new MockLoader());
+
+            Cart cart = ShopifyBuy.Client().Cart();
+
+            cart.LineItems.AddOrUpdate(CreateProductVariant("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTE1NQ=="), 33);
+
+            Assert.AreEqual(33, cart.Subtotal());
+
+            cart.LineItems.AddOrUpdate(CreateProductVariant("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTM0Nw=="), 2);
+
+            Assert.AreEqual(35, cart.Subtotal());
+
+            cart.LineItems.AddOrUpdate(CreateProductVariant("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0LzczMzY1NjgxMzE=", 3.00m));
+
+            Assert.AreEqual(38, cart.Subtotal());
+        }
+
+        [Test]
         public void TestAddRemoveLineItems() {
             ShopifyBuy.Init(new MockLoader());
 
@@ -92,6 +111,7 @@ namespace Shopify.Tests
             ShopifyBuy.Init(new MockLoader());
 
             Cart cart = ShopifyBuy.Client().Cart();
+
             var variantId = "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTE1NQ==";
             var variant = CreateProductVariant(variantId);
 
@@ -123,7 +143,8 @@ namespace Shopify.Tests
                 {"id", "a-checkout-id"},
                 {
                     "variant", new Dictionary<string, object>() {
-                        {"id", "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTE1NQ=="}
+                        {"id", "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTE1NQ=="},
+                        {"price", "1.00"},
                     }
                 }
             };
@@ -240,6 +261,7 @@ namespace Shopify.Tests
                     {
                         ""node"": {
                             ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yODQ3MjY3MDUzMQ=="",
+                            ""price"": ""1.00"",
                             ""selectedOptions"": [
                             {
                                 ""name"": ""Size"",
@@ -255,6 +277,7 @@ namespace Shopify.Tests
                     {
                         ""node"": {
                             ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yODQ3MjcwNTAyNw=="",
+                            ""price"": ""1.00"",
                             ""selectedOptions"": [
                             {
                                 ""name"": ""Size"",
@@ -270,6 +293,7 @@ namespace Shopify.Tests
                     {
                         ""node"": {
                             ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yODQ3MjcwNTA5MQ=="",
+                            ""price"": ""1.00"",
                             ""selectedOptions"": [
                             {
                                 ""name"": ""Size"",
@@ -285,6 +309,7 @@ namespace Shopify.Tests
                     {
                         ""node"": {
                             ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yODQ3MjcwNTE1NQ=="",
+                            ""price"": ""1.00"",
                             ""selectedOptions"": [
                             {
                                 ""name"": ""Size"",
@@ -444,9 +469,10 @@ namespace Shopify.Tests
             Assert.AreEqual("bad things happened", cart.UserErrors[0].message(), "messaged was correct");
         }
 
-        private ProductVariant CreateProductVariant(string id) {
+        private ProductVariant CreateProductVariant(string id, decimal price = 1.00m) {
             Dictionary<string,object> data = new Dictionary<string,object>();
             data.Add("id", id);
+            data.Add("price", price);
 
             return new ProductVariant(data);
         }
