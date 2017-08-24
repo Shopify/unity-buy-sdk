@@ -88,7 +88,7 @@ struct ApplePayEventResponse: Deserializable {
             if let paymentErrorJsonObject = json[ResponseKey.paymentErrors.rawValue] as? [JSON] {
                 
                 let errors = paymentErrorJsonObject.flatMap {
-                    NSError.paymentError(with: $0)
+                    PKPaymentRequest.paymentError(with: $0)
                 }
                 
                 assert(errors.count == paymentErrorJsonObject.count)
