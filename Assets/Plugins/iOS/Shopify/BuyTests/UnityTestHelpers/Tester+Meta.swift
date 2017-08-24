@@ -33,7 +33,7 @@ extension Tester {
     }
     
     enum Method: String {
-        case repeatMessage = "RepeatMessage"
+        case repeatMessage  = "RepeatMessage"
         case getLastMessage = "GetLastMessage"
         case setupApplePayEventTest = "SetupApplePayEventTest"
         
@@ -42,11 +42,17 @@ extension Tester {
         case checkoutWithShippingAddress = "CheckoutWithShippingAddress"
         
         // PaymentNetworkSerializationTester
-        case getAmexPaymentNetworkString = "GetAmexPaymentNetworkString"
-        case getDiscoverPaymentNetworkString = "GetDiscoverPaymentNetworkString"
-        case getJCBPaymentNetworkString = "GetJCBPaymentNetworkString"
-        case getMasterCardPaymentNetworkString = "GetMasterCardPaymentNetworkString"
-        case getVisaPaymentNetworkString = "GetVisaPaymentNetworkString"
+        case getAmexPaymentNetworkString          = "GetAmexPaymentNetworkString"
+        case getDiscoverPaymentNetworkString      = "GetDiscoverPaymentNetworkString"
+        case getJCBPaymentNetworkString           = "GetJCBPaymentNetworkString"
+        case getMasterCardPaymentNetworkString    = "GetMasterCardPaymentNetworkString"
+        case getVisaPaymentNetworkString          = "GetVisaPaymentNetworkString"
         case getAllCardBrandPaymentNetworksString = "GetAllCardBrandPaymentNetworksString"
+        
+        // ApplePayErrorTester
+        case createApplePayShippingAddressInvalidError      = "CreateApplePayShippingAddressInvalidError"
+        case createApplePayBillingAddressInvalidError       = "CreateApplePayBillingAddressInvalidError"
+        case createApplePayContactInvalidError              = "CreateApplePayContactInvalidError"
+        case createApplePayShippingAddressUnservicableError = "CreateApplePayShippingAddressUnservicableError"
     }
 }
