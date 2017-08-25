@@ -50,7 +50,7 @@ namespace <%= namespace %>.SDK {
         private long _Quantity;
         private ObservableDictionary<string, string> _CustomAttributes;
         private OnCartLineItemChange OnChange;
-        
+
         public CartLineItem(string variantId, OnCartLineItemChange onChange, long quantity = 1, IDictionary<string, string> customAttributes = null) {
             _VariantId = variantId;
             _Quantity = quantity;
@@ -213,7 +213,7 @@ namespace <%= namespace %>.SDK {
         /// cart.LineItems.AddOrUpdate(product, selectedOptions, 3);
         /// \endcode
         public void AddOrUpdate(Product product, Dictionary<string, string> selectedOptions, long? quantity = null, Dictionary<string, string> customAttributes = null) {
-            string variantId = VariantIdFromSelectedOptions(product, selectedOptions);
+            string variantId = VariantFromSelectedOptions(product, selectedOptions).id();
 
             if (variantId == null) {
                 throw new NoMatchingVariantException("Could not `AddOrUpdate` line item as no matching variant could be found for selected options");
@@ -283,7 +283,7 @@ namespace <%= namespace %>.SDK {
         /// Debug.Log(cart.LineItems.Get(product, selectedOptions).quantity);
         /// \endcode
         public CartLineItem Get(Product product, Dictionary<string, string> selectedOptions) {
-            string variantId = VariantIdFromSelectedOptions(product, selectedOptions);
+            string variantId = VariantFromSelectedOptions(product, selectedOptions).id();
 
             if (variantId == null) {
                 return null;
@@ -315,7 +315,7 @@ namespace <%= namespace %>.SDK {
                 if (lineItemRemoved.ID != null) {
                     OnDeleteLineItem(lineItemRemoved.ID);
                 }
-                
+
                 return true;
             }
         }
@@ -353,7 +353,7 @@ namespace <%= namespace %>.SDK {
         /// Debug.Log("Did delete? " + cart.LineItems.Delete(product, selectedOptions));
         /// \endcode
         public bool Delete(Product product, Dictionary<string, string> selectedOptions) {
-            string variantId = VariantIdFromSelectedOptions(product, selectedOptions);
+            string variantId = VariantFromSelectedOptions(product, selectedOptions).id();
 
             if (variantId == null) {
                 return false;
@@ -367,8 +367,8 @@ namespace <%= namespace %>.SDK {
                 bool didUpdateID = false;
                 string checkoutVariantId = checkoutLineItem.variant().id();
                 string checkoutLineItemId = checkoutLineItem.id();
-                
-                foreach(CartLineItem cartLineItem in LineItems) {    
+
+                foreach(CartLineItem cartLineItem in LineItems) {
                     if (cartLineItem.VariantId == checkoutVariantId) {
                         cartLineItem.ID = checkoutLineItemId;
                         didUpdateID = true;
@@ -399,34 +399,34 @@ namespace <%= namespace %>.SDK {
             _IsSaved = true;
         }
 
-        private string VariantIdFromSelectedOptions(Product product, Dictionary<string, string> selectedOptions) {
+        private ProductVariant VariantFromSelectedOptions(Product product, Dictionary<string, string> selectedOptions) {
             List<ProductVariant> variants = (List<ProductVariant>) product.variants();
-            string variantId = null;
+            ProductVariant variantOut = null;
 
             foreach(ProductVariant variant in variants) {
                 List<SelectedOption> variantSelectedOptions = variant.selectedOptions();
 
                 if (variantSelectedOptions.Count == selectedOptions.Keys.Count) {
-                    variantId = variant.id();
+                    variantOut = variant;
 
                     foreach(SelectedOption variantOption in variantSelectedOptions) {
                         string optionName = variantOption.name();
                         string optionValue = variantOption.value();
 
                         if (!selectedOptions.ContainsKey(optionName) || selectedOptions[optionName] != optionValue) {
-                            variantId = null;
+                            variantOut = null;
 
                             break;
                         }
                     }
                 }
 
-                if (variantId != null) {
+                if (variantOut != null) {
                     break;
                 }
             }
 
-            return variantId;
+            return variantOut;
         }
 
         private void OnLineItemChange() {
