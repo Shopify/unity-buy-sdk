@@ -4,7 +4,7 @@ namespace <%= namespace %>.SDK.iOS {
 
     public class ApplePayShippingAddressInvalidError: ApplePayAddressInvalidError {
         public ApplePayShippingAddressInvalidError(string description, AddressField field): base(ErrorType.PaymentShippingAddress, description, field) {}
-        public ApplePayShippingAddressInvalidError(string description, string mailingAddressInputField): base(ErrorType.PaymentBillingAddress, description, mailingAddressInputField) {}
+        public ApplePayShippingAddressInvalidError(string description, string mailingAddressInputField): base(ErrorType.PaymentShippingAddress, description, mailingAddressInputField) {}
     }
 }
 #endif
