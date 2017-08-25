@@ -100,34 +100,47 @@ namespace <%= namespace %>.SDK.iOS {
         }
 
         private static UpdateRequestStatus GetUpdateRequestStatusFromCheckoutUserErrors(List<UserError> errors) {
-
             var payErrors = new List<ApplePayError>();
+            var statusToReturn = ApplePayAuthorizationStatus.Failure;
 
             // Check to see if any of the user errors are not billing address errors
             // If it is not a billing address error return a failure
             foreach (var error in errors) {
                 var fields = error.field();
-                if (fields.Contains("billingAddress")) {
-                    string description = error.message();
+                var fieldsSet = new HashSet<string>(fields);
 
-                    try {
-                        string lastField = fields[fields.Count - 1];
-                        var payError = new ApplePayBillingAddressInvalidError(description, lastField);
-                        payErrors.Add(payError);
-                    } catch {
-                        return new UpdateRequestStatus(ApplePayAuthorizationStatus.Failure);
+                try {
+                    string lastField = fields[fields.Count - 1];
+                    ApplePayAddressInvalidError payError;
+
+                    if (fieldsSet.Contains("billingAddress")) {
+                        payError = new ApplePayBillingAddressInvalidError(error.message(), lastField);
+                        statusToReturn = ApplePayAuthorizationStatus.InvalidBillingPostalAddress;
+                    } else if (fieldsSet.Contains("shippingAddress")) {
+                        payError = new ApplePayShippingAddressInvalidError(error.message(), lastField);
+                        statusToReturn = ApplePayAuthorizationStatus.InvalidShippingPostalAddress;
+                    } else {
+                        statusToReturn = ApplePayAuthorizationStatus.Failure;
+                        break;
                     }
-                } else {
-                    return new UpdateRequestStatus(ApplePayAuthorizationStatus.Failure);
+
+                    payErrors.Add(payError);
+
+                } catch {
+                    statusToReturn = ApplePayAuthorizationStatus.Failure;
+                    break;
                 }
             }
 
-            return new UpdateRequestStatus(ApplePayAuthorizationStatus.InvalidBillingPostalAddress, payErrors);
+            if (statusToReturn == ApplePayAuthorizationStatus.Failure) {
+                return new UpdateRequestStatus(statusToReturn);
+            } else {
+                return new UpdateRequestStatus(statusToReturn, payErrors);
+            }
         }
 
         private static UpdateRequestStatus GetUpdateRequestStatusFromShippingUserErrors(List<UserError> errors) {
-
-            ApplePayAuthorizationStatus statusToReturn = ApplePayAuthorizationStatus.Failure;
+            var statusToReturn = ApplePayAuthorizationStatus.Failure;
             var payErrors = new List<ApplePayError>();
 
             foreach (var error in errors) {
@@ -135,30 +148,24 @@ namespace <%= namespace %>.SDK.iOS {
 
                 try {
                     var lastField = fields[fields.Count - 1];
+                    ApplePayError payError;
 
                     if (IsShippingAddressField(lastField)) {
-
-                        var payError = new ApplePayShippingAddressInvalidError(error.message(), lastField);
-                        payErrors.Add(payError);
+                        payError = new ApplePayShippingAddressInvalidError(error.message(), lastField);
                         statusToReturn = ApplePayAuthorizationStatus.InvalidShippingPostalAddress;
-
                     } else if (IsContactField(lastField)) {
-
-                        var payError = new ApplePayContactInvalidError(error.message(), lastField);
-                        payErrors.Add(payError);
+                        payError = new ApplePayContactInvalidError(error.message(), lastField);
                         statusToReturn = ApplePayAuthorizationStatus.InvalidShippingContact;
-
                     } else if (IsEmailField(lastField)) {
-
-                        var payError = new ApplePayContactInvalidError(error.message(), ApplePayContactInvalidError.ContactField.EmailAddress);
-                        payErrors.Add(payError);
+                        payError = new ApplePayContactInvalidError(error.message(), ApplePayContactInvalidError.ContactField.EmailAddress);
                         statusToReturn = ApplePayAuthorizationStatus.InvalidShippingContact;
-
                     } else {
-
                         statusToReturn = ApplePayAuthorizationStatus.Failure;
                         break;
                     }
+
+                    payErrors.Add(payError);
+
                 } catch {
                     statusToReturn = ApplePayAuthorizationStatus.Failure;
                     break;
@@ -175,7 +182,6 @@ namespace <%= namespace %>.SDK.iOS {
         // We only receive a partial shipping address before the user has authenticated
         // City, State, Zip, Country
         private static UpdateRequestStatus GetUpdateRequestStatusFromPreliminaryShippingUserErrors(List<UserError> errors) {
-
             var payErrors = new List<ApplePayError>();
 
             foreach (var error in errors) {
@@ -266,6 +272,7 @@ namespace <%= namespace %>.SDK.iOS {
         public void DidFinishCheckoutSession(string serializedMessage) {
             var message = NativeMessage.CreateFromJSON(serializedMessage);
             var paymentStatus = (NativePaymentStatus) Enum.Parse(typeof(NativePaymentStatus), (string) message.Content);
+
             switch (paymentStatus) {
             case NativePaymentStatus.Success:
                 OnSuccess();
