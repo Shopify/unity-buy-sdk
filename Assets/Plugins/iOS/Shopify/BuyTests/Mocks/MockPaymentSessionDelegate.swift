@@ -28,6 +28,7 @@ import Foundation
 import PassKit
 @testable import ProductName
 
+@available(iOS 11.0, *)
 final class MockPaymentSessionDelegate: NSObject {
     var onSessionDidFinish: ((PaymentSession, PaymentStatus) -> Void)?
     
@@ -38,13 +39,22 @@ final class MockPaymentSessionDelegate: NSObject {
         ((PaymentSession, PKContact, (PKPaymentAuthorizationStatus, [PKShippingMethod], [PKPaymentSummaryItem]) -> Void) -> Void)?
     
     var onSessionDidAuthorizePayment:
-        ((PaymentSession, PKPayment,  (PKPaymentAuthorizationStatus) -> Void) -> Void)?
+        ((PaymentSession, PKPayment, (PKPaymentAuthorizationStatus) -> Void) -> Void)?
+
+    var onSessionDidSelectShippingContactUpdateRequest: ((PaymentSession, PKContact, (PKPaymentRequestShippingContactUpdate) -> Void) -> Void)?
+
+    var onSessionDidSelectShippingMethodUpdateRequest: ((PaymentSession, PKShippingMethod, (PKPaymentRequestShippingMethodUpdate) -> Void) -> Void)?
+
+    var onSessionDidAuthorizePaymentUpdateRequest: ((PaymentSession, PKPayment, (PKPaymentAuthorizationResult) -> Void) -> Void)?
+
 }
 
 // ----------------------------------
 //  MARK: - PaymentSessionDelegate -
 //
+@available(iOS 11.0, *)
 extension MockPaymentSessionDelegate: PaymentSessionDelegate {
+
     func paymentSessionDidFinish(session: PaymentSession, with status: PaymentStatus) {
         onSessionDidFinish?(session, status)
     }
@@ -59,5 +69,17 @@ extension MockPaymentSessionDelegate: PaymentSessionDelegate {
     
     func paymentSession(_ session: PaymentSession, didAuthorize payment: PKPayment, completion: @escaping (PKPaymentAuthorizationStatus) -> Void) {
         onSessionDidAuthorizePayment?(session, payment, completion)
+    }
+
+    func paymentSession(_ session: PaymentSession, didAuthorize payment: PKPayment, handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
+        onSessionDidAuthorizePaymentUpdateRequest?(session, payment, completion)
+    }
+
+    func paymentSession(_ session: PaymentSession, didSelect shippingMethod: PKShippingMethod, handler completion: @escaping (PKPaymentRequestShippingMethodUpdate) -> Void) {
+        onSessionDidSelectShippingMethodUpdateRequest?(session, shippingMethod, completion)
+    }
+
+    func paymentSession(_ session: PaymentSession, didSelectShippingContact contact: PKContact, handler completion: @escaping (PKPaymentRequestShippingContactUpdate) -> Void) {
+        onSessionDidSelectShippingContactUpdateRequest?(session, contact, completion)
     }
 }
