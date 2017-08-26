@@ -32,18 +32,18 @@ import PassKit
 @available(iOS 10.0, *)
 class ApplePayFlowTests: XCTestCase {
     
-    private let timeout = 10.0
-    private let totalLabel = "Test Store"
+    fileprivate let timeout = 10.0
+    fileprivate let totalLabel = "Test Store"
     
     // These are the shipping methods expected from unity-buy-sdk.myshopify.com
-    private let standardShippingMethod  = PKShippingMethod(label: "Standard Shipping",  amount: 5.83,  identifier: "shopify-Standard%20Shipping-5.83")
-    private let expeditedShippingMethod = PKShippingMethod(label: "Expedited Shipping", amount: 15.82, identifier: "shopify-Expedited%20Shipping-15.82")
+    fileprivate let standardShippingMethod  = PKShippingMethod(label: "Standard Shipping",  amount: 5.83,  identifier: "shopify-Standard%20Shipping-5.83")
+    fileprivate let expeditedShippingMethod = PKShippingMethod(label: "Expedited Shipping", amount: 15.82, identifier: "shopify-Expedited%20Shipping-15.82")
     
     // These are part of the summary items that are expected from unity-buy-sdk.myshopify.com after adding
     // the product name "[Test] Ballooning Around Shirt" to the Cart
     
-    private let expectedSubtotal = PKPaymentSummaryItem(label: "SUBTOTAL", amount: 25.47)
-    private let expectedTaxes    = PKPaymentSummaryItem(label: "TAXES",    amount: 2.93)
+    fileprivate let expectedSubtotal = PKPaymentSummaryItem(label: "SUBTOTAL", amount: 25.47)
+    fileprivate let expectedTaxes    = PKPaymentSummaryItem(label: "TAXES",    amount: 2.93)
 
     override func setUp() {
         super.setUp()
@@ -329,6 +329,124 @@ class ApplePayFlowTests: XCTestCase {
             }
         }
         
+        self.wait(for: [selectShippingExpectation, authorizePaymentExpectation], timeout: timeout)
+    }
+}
+
+@available(iOS 10.0, *)
+extension ApplePayFlowTests {
+
+    /// Tests that setting an invalid shipping address returns the proper summary items and shipping methods for the checkout
+    func testSetInvalidShippingContactIos11() {
+
+        guard #available(iOS 11.0, *) else {
+            return
+        }
+
+        let session      = Models.createPaymentSession(requiringShippingAddressFields: true, usingNonDefault: MockAuthorizationController.self)
+        let dispatcher   = ApplePayEventDispatcher(receiver: Tester.name)
+        session.delegate = dispatcher
+        session.presentAuthorizationController()
+
+        let setContact     = PKContact()
+        let postalAddress  = Models.createPartialPostalAddress() as! CNMutablePostalAddress
+        postalAddress.country = "Incorrect_country"
+        setContact.postalAddress = postalAddress
+
+        let expectation      = self.expectation(description: "MockAuthorizationController.invokeDidSelectShippingContact failed to complete")
+        let expectedSubtotal = PKPaymentSummaryItem(label: "SUBTOTAL", amount: 25.47)
+        let expectedTaxes    = PKPaymentSummaryItem(label: "TAXES",    amount: 0)
+        let expectedTotal    = PKPaymentSummaryItem(label: totalLabel, amount: 25.47)
+
+        let expectedDescription = "Country is not supported"
+        let expectedError       = PKPaymentRequest.paymentShippingAddressInvalidError(withKey: CNPostalAddressCountryKey, localizedDescription: expectedDescription) as NSError
+
+
+        let method = Tester.Method.checkout.rawValue
+        let checkoutMessage = UnityMessage(content: "", object: Tester.name, method: method)
+
+        MessageCenter.send(checkoutMessage) { response in
+            MockAuthorizationController.invokeDidSelectShippingContact(setContact) { (update: PKPaymentRequestShippingContactUpdate) in
+                let items = update.paymentSummaryItems
+                let error = update.errors.first! as NSError
+
+                // Summary Item Asserts
+                XCTAssertEqual(update.status, PKPaymentAuthorizationStatus.failure)
+                XCTAssertEqual(items[0], expectedSubtotal)
+                XCTAssertEqual(items[1], expectedTaxes)
+                XCTAssertEqual(items[2], expectedTotal)
+
+                // Shipping Asserts
+                XCTAssertEqual(update.shippingMethods.count, 0)
+
+                // Error Asserts
+                XCTAssertEqual(error.domain, expectedError.domain)
+                XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
+                XCTAssertEqual(error.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
+                XCTAssertEqual(update.errors.count, 1)
+
+                expectation.fulfill()
+            }
+        }
+
+        self.wait(for: [expectation], timeout: timeout)
+    }
+
+
+    /// Tests that we receive the correct error for incorrect shipping contact with incorrect postal address
+    func testCompleteInvalidShippingAddressCheckoutIos11() {
+
+        guard #available(iOS 11.0, *) else {
+            return
+        }
+
+        let session      = Models.createPaymentSession(requiringShippingAddressFields: true, usingNonDefault: MockAuthorizationController.self)
+        let dispatcher   = ApplePayEventDispatcher(receiver: Tester.name)
+        session.delegate = dispatcher
+        session.presentAuthorizationController()
+
+        let selectedMethod = expeditedShippingMethod
+
+        let postalAddress        = Models.createPostalAddress() as! CNMutablePostalAddress
+        postalAddress.postalCode = "incorrectPostalCode"
+        let incorrectContact     = Models.createContact(with: postalAddress)
+
+        let payment =
+            MockPayment(
+                token: Models.createSimulatorPaymentToken() as! MockPaymentToken,
+                billingContact: Models.createContact(with: Models.createPostalAddress()),
+                shippingContact: incorrectContact,
+                shippingMethod: selectedMethod)
+
+        let selectShippingExpectation   = self.expectation(description: "MockAuthorizationController.invokeDidSelectShippingMethod failed to complete")
+        let authorizePaymentExpectation = self.expectation(description: "MockAuthorizationController.invokeDidAuthorizePayment failed to complete")
+
+        let expectedDescription = "Province is not a valid province in Canada"
+        let expectedError       = PKPaymentRequest.paymentShippingAddressInvalidError(withKey: CNPostalAddressPostalCodeKey, localizedDescription: expectedDescription) as NSError
+
+        let method = Tester.Method.checkoutWithShippingAddress.rawValue
+        let checkoutMessage = UnityMessage(content: "", object: Tester.name, method: method)
+
+        MessageCenter.send(checkoutMessage) { response in
+            MockAuthorizationController.invokeDidSelectShippingMethod(selectedMethod) { (shippingUpdate: PKPaymentRequestShippingMethodUpdate) in
+
+                selectShippingExpectation.fulfill()
+                MockAuthorizationController.invokeDidAuthorizePayment(payment) { (result: PKPaymentAuthorizationResult) in
+
+                    let error = result.errors.first! as NSError
+
+                    XCTAssertEqual(result.status, PKPaymentAuthorizationStatus.failure)
+
+                    XCTAssertEqual(error.domain, expectedError.domain)
+                    XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
+                    XCTAssertEqual(error.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
+                    XCTAssertEqual(result.errors.count, 1)
+
+                    authorizePaymentExpectation.fulfill()
+                }
+            }
+        }
+
         self.wait(for: [selectShippingExpectation, authorizePaymentExpectation], timeout: timeout)
     }
 }
