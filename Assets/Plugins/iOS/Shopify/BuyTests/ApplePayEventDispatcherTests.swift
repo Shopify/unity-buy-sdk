@@ -83,11 +83,11 @@ class ApplePayEventDispatcherTests: XCTestCase {
         // Check that the proper response was received from the delegate
         // The value we expect to receive is defined in the Unity Tester object
         let authExpectation = self.expectation(description: "MockAuthorizationController.invokeDidAuthorizePayment failed to complete")
-        MockAuthorizationController.invokeDidAuthorizePayment(payment) { status in
+        MockAuthorizationController.invokeDidAuthorizePayment(payment) { (status: PKPaymentAuthorizationStatus) in
             XCTAssertEqual(.success, status)
             authExpectation.fulfill()
         }
-        self.wait(for: [authExpectation], timeout: timeout)
+        wait(for: [authExpectation], timeout: timeout)
         assertLastMessageContentEqual(to: try! payment.serializedString())
         
         MockAuthorizationController.invokeDidFinish()
@@ -115,7 +115,7 @@ class ApplePayEventDispatcherTests: XCTestCase {
             XCTAssertEqual(expectedItem, items[0])
             expectation.fulfill()
         }
-        self.wait(for: [expectation], timeout: timeout)
+        wait(for: [expectation], timeout: timeout)
         
         assertLastMessageContentEqual(to: selectedMethod.identifier)
         MockAuthorizationController.invokeDidFinish()
