@@ -42,19 +42,15 @@ class ApplePayEventDispatcher: NSObject {
     }
 }
 
-//  ----------------------------------
-//  MARK: - PaymentSessionDelegate -
-//
-extension ApplePayEventDispatcher: PaymentSessionDelegate {
-    
-    private enum Method: String {
+extension ApplePayEventDispatcher {
+    fileprivate enum Method: String {
         case updateSummaryItemsForShippingIdentifier = "UpdateSummaryItemsForShippingIdentifier"
         case updateSummaryItemsForShippingContact    = "UpdateSummaryItemsForShippingContact"
         case fetchCheckoutStatusForToken             = "FetchApplePayCheckoutStatusForToken"
         case didFinishCheckoutSession                = "DidFinishCheckoutSession"
     }
     
-    private func call(method: Method, value: String, completionHandler: AppleEventCompletion? = nil) {
+    fileprivate func call(method: Method, value: String, completionHandler: AppleEventCompletion? = nil) {
         
         let message = UnityMessage(content: value, object: receiver, method: method.rawValue)
         
@@ -71,6 +67,12 @@ extension ApplePayEventDispatcher: PaymentSessionDelegate {
             MessageCenter.send(message)
         }
     }
+}
+
+//  ----------------------------------
+//  MARK: - PaymentSessionDelegate -
+//
+extension ApplePayEventDispatcher: PaymentSessionDelegate {
     
     func paymentSessionDidFinish(session: PaymentSession, with status: PaymentStatus) {
         call(method: .didFinishCheckoutSession, value: status.description)
@@ -102,7 +104,7 @@ extension ApplePayEventDispatcher: PaymentSessionDelegate {
                 let response     = response,
                 let authStatus   = response.authorizationStatus,
                 let summaryItems = response.summaryItems
-                else {
+            else {
                     completion(.failure, [])
                     return
             }
@@ -123,11 +125,103 @@ extension ApplePayEventDispatcher: PaymentSessionDelegate {
                 let authStatus      = response.authorizationStatus,
                 let summaryItems    = response.summaryItems,
                 let shippingMethods = response.shippingMethods
-                else {
+            else {
                     completion(.failure, [], [])
                     return
             }
             completion(authStatus, shippingMethods, summaryItems)
+        }
+    }
+}
+
+@available(iOS 11.0, *)
+extension ApplePayEventDispatcher  {
+    func paymentSession(_ session: PaymentSession, didAuthorize payment: PKPayment, handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
+        let paymentString = try! payment.serializedString()
+        
+        call(method: .fetchCheckoutStatusForToken, value: paymentString) { response in
+            guard
+                let response   = response,
+                let authStatus = response.authorizationStatus,
+                let errors     = response.paymentErrors
+            else {
+                completion(PKPaymentAuthorizationResult(status: .failure, errors: nil))
+                return
+            }
+            
+            // Since response.authorizationStatus still supports iOS 11 and below
+            // we can receive a deprecated auth status, in which should be a .failure
+            var authStatusToReturn = authStatus
+            
+            if (errors.count > 0) {
+                authStatusToReturn = .failure
+            }
+            
+            completion(PKPaymentAuthorizationResult(status: authStatusToReturn, errors: errors))
+        }
+    }
+    
+    func paymentSession(_ session: PaymentSession, didSelect shippingMethod: PKShippingMethod, handler completion: @escaping (PKPaymentRequestShippingMethodUpdate) -> Void) {
+        
+        let failureUpdate = PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: [])
+        failureUpdate.status = .failure
+        
+        guard let identifier = shippingMethod.identifier else {
+            completion(failureUpdate)
+            return
+        }
+        
+        call(method: .updateSummaryItemsForShippingIdentifier, value: identifier) { response in
+            guard
+                let response     = response,
+                let authStatus   = response.authorizationStatus,
+                let summaryItems = response.summaryItems
+            else {
+                completion(failureUpdate)
+                return
+            }
+            
+            let updateToReturn = PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: summaryItems)
+            updateToReturn.status = authStatus
+            
+            completion(updateToReturn)
+        }
+    }
+    
+    func paymentSession(_ session: PaymentSession, didSelectShippingContact contact: PKContact, handler completion: @escaping (PKPaymentRequestShippingContactUpdate) -> Void) {
+        
+        let failureUpdate = PKPaymentRequestShippingContactUpdate(errors: nil, paymentSummaryItems: [], shippingMethods: [])
+        failureUpdate.status = .failure
+        
+        guard let contactString = try? contact.serializedString() else {
+            completion(failureUpdate)
+            return
+        }
+        
+        call(method: .updateSummaryItemsForShippingContact, value: contactString) { response in
+            guard
+                let response        = response,
+                let authStatus      = response.authorizationStatus,
+                let summaryItems    = response.summaryItems,
+                let shippingMethods = response.shippingMethods,
+                let errors          = response.paymentErrors
+            else {
+                completion(failureUpdate)
+                return
+            }
+            
+            // Since response.authorizationStatus still supports iOS 11 and below
+            // we can receive a deprecated auth status, in which should be a .failure
+            var authStatusToReturn = authStatus
+            
+            if (errors.count > 0) {
+                authStatusToReturn = .failure
+            }
+            
+            let updateToReturn = PKPaymentRequestShippingContactUpdate(errors: errors, paymentSummaryItems: summaryItems, shippingMethods: shippingMethods)
+            updateToReturn.status = authStatusToReturn
+            
+            completion(updateToReturn)
         }
     }
 }
