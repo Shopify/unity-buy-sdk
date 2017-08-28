@@ -216,8 +216,11 @@ namespace <%= namespace %>.SDK.iOS {
                     }
                 });
             } else {
+                // Since there are no shipping methods available, it means that the shipping address that was set is unserviceable
                 var summaryItems = GetSummaryItemsFromCheckout(CartState.CurrentCheckout);
-                message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.Success, summaryItems, shippingMethods).ToJsonString());
+                var payErrors = new List<ApplePayError>();
+                payErrors.Add(new ApplePayShippingAddressUnservicableError("Shipping address is in an unserviceable area"));
+                message.Respond(new ApplePayEventResponse(ApplePayAuthorizationStatus.InvalidShippingPostalAddress, summaryItems, shippingMethods, payErrors).ToJsonString());
             }
         }
 
