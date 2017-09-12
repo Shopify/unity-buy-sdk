@@ -98,7 +98,7 @@ namespace <%= namespace %>.SDK {
         public void ProductVariant(ProductVariantQuery variant, Dictionary<string,int> imageResolutions) {
             variant
             .id()
-            .available()
+            .availableForSale()
             .image(pnvi => pnvi
                 .altText()
                 .src()
