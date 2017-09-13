@@ -9,6 +9,6 @@ var searchData=
   ['blogedge',['BlogEdge',['../class_shopify_1_1_unity_1_1_blog_edge.html#aaff4c7b6bb7f67081a79d7cd49a28a1a',1,'Shopify::Unity::BlogEdge']]],
   ['blogedgequery',['BlogEdgeQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_blog_edge_query.html#a9984d940c8a5245457aa3fbe3f16bda5',1,'Shopify::Unity::GraphQL::BlogEdgeQuery']]],
   ['blogquery',['BlogQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_blog_query.html#ae90d6d2c68725117ca7d7bd96ada5b45',1,'Shopify::Unity::GraphQL::BlogQuery']]],
-  ['blogs',['blogs',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_shop_query.html#ae30e5bd12d16b0239946fa70189f2d82',1,'Shopify.Unity.GraphQL.ShopQuery.blogs()'],['../class_shopify_1_1_unity_1_1_shop.html#acab558658f38c597fa080fff12e016f6',1,'Shopify.Unity.Shop.blogs()']]],
+  ['blogs',['blogs',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_shop_query.html#a525355f236cb44cb9746355e2a557e0a',1,'Shopify.Unity.GraphQL.ShopQuery.blogs()'],['../class_shopify_1_1_unity_1_1_shop.html#acab558658f38c597fa080fff12e016f6',1,'Shopify.Unity.Shop.blogs()']]],
   ['body',['body',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_shop_policy_query.html#a07e27ee9f7fd62aaaccb193045112fb8',1,'Shopify.Unity.GraphQL.ShopPolicyQuery.body()'],['../class_shopify_1_1_unity_1_1_shop_policy.html#a2acece9bf54e97cb84f9ed6319527c92',1,'Shopify.Unity.ShopPolicy.body()']]]
 ];
