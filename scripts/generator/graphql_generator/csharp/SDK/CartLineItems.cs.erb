@@ -18,6 +18,12 @@ namespace <%= namespace %>.SDK {
             }
         }
 
+        public decimal Price {
+            get {
+                return _Price;
+            }
+        }
+
         public long Quantity {
             get {
                 return _Quantity;
@@ -48,12 +54,14 @@ namespace <%= namespace %>.SDK {
         public string ID = null;
         private string _VariantId;
         private long _Quantity;
+        private decimal _Price;
         private ObservableDictionary<string, string> _CustomAttributes;
         private OnCartLineItemChange OnChange;
 
-        public CartLineItem(string variantId, OnCartLineItemChange onChange, long quantity = 1, IDictionary<string, string> customAttributes = null) {
-            _VariantId = variantId;
+        public CartLineItem(ProductVariant variant, OnCartLineItemChange onChange, long quantity = 1, IDictionary<string, string> customAttributes = null) {
+            _VariantId = variant.id();
             _Quantity = quantity;
+            _Price = variant.price();
             OnChange = onChange;
 
             if (customAttributes != null) {
@@ -126,52 +134,24 @@ namespace <%= namespace %>.SDK {
             }
         }
 
+        public decimal Subtotal {
+            get {
+                decimal subtotalOut = 0;
+
+                foreach (var lineitem in LineItems) {
+                    subtotalOut += lineitem.Price * lineitem.Quantity;
+                }
+
+                return subtotalOut;
+            }
+        }
+
         private bool _IsSaved = false;
         private List<CartLineItem> LineItems = new List<CartLineItem>();
         private Action<string> OnDeleteLineItem;
 
         public CartLineItems(Action<string> onDeleteLineItem) {
             OnDeleteLineItem = onDeleteLineItem;
-        }
-
-        /// <summary>
-        /// Adds or updates an existing line item using a variant id.
-        /// </summary>
-        /// <param name="variantId">variant id for a <see ref="ProductVariant">ProductVariant </see></param>
-        /// <param name="quantity">the number of items you'd like to order for variantId</param>
-        /// <param name="customAttributes">can be used to define extra information for this line item</param>
-        /// \code
-        /// // Example that updates the quantity of items to be purchased to 3.
-        /// // If no line item exists for `variantId`, then a new line item is created
-        /// Cart cart = ShopifyBuy.Client().Cart();
-        ///
-        /// cart.LineItems.AddOrUpdate(variantId, 3);
-        /// \endcode
-        public void AddOrUpdate(string variantId, long? quantity = null, Dictionary<string, string> customAttributes = null) {
-            CartLineItem input = Get(variantId);
-
-            if (input != null) {
-                if (quantity != null) {
-                    input.Quantity = (long) quantity;
-                }
-
-                if (customAttributes != null) {
-                    input.CustomAttributes = customAttributes;
-                }
-            } else {
-                if (quantity == null) {
-                    quantity = 1;
-                }
-
-                LineItems.Add(
-                    new CartLineItem(
-                        variantId: variantId,
-                        onChange: OnLineItemChange,
-                        quantity: (long) quantity,
-                        customAttributes: customAttributes
-                    )
-                );
-            }
         }
 
         /// <summary>
@@ -188,7 +168,30 @@ namespace <%= namespace %>.SDK {
         /// cart.LineItems.AddOrUpdate(variant, 3);
         /// \endcode
         public void AddOrUpdate(ProductVariant variant, long? quantity = null, Dictionary<string, string> customAttributes = null) {
-            AddOrUpdate(variant.id(), quantity, customAttributes);
+            CartLineItem input = Get(variant.id());
+
+            if (input != null) {
+                if (quantity != null) {
+                    input.Quantity = (long) quantity;
+                }
+
+                if (customAttributes != null) {
+                    input.CustomAttributes = customAttributes;
+                }
+            } else {
+                if (quantity == null) {
+                    quantity = 1;
+                }
+
+                LineItems.Add(
+                    new CartLineItem(
+                        variant: variant,
+                        onChange: OnLineItemChange,
+                        quantity: (long) quantity,
+                        customAttributes: customAttributes
+                    )
+                );
+            }
         }
 
         /// <summary>
@@ -213,13 +216,13 @@ namespace <%= namespace %>.SDK {
         /// cart.LineItems.AddOrUpdate(product, selectedOptions, 3);
         /// \endcode
         public void AddOrUpdate(Product product, Dictionary<string, string> selectedOptions, long? quantity = null, Dictionary<string, string> customAttributes = null) {
-            string variantId = VariantFromSelectedOptions(product, selectedOptions).id();
+            var variant = VariantFromSelectedOptions(product, selectedOptions);
 
-            if (variantId == null) {
+            if (variant == null) {
                 throw new NoMatchingVariantException("Could not `AddOrUpdate` line item as no matching variant could be found for selected options");
             }
 
-            AddOrUpdate(variantId, quantity, customAttributes);
+            AddOrUpdate(variant, quantity, customAttributes);
         }
 
         /// <summary>
@@ -365,11 +368,11 @@ namespace <%= namespace %>.SDK {
         public void UpdateLineItemsFromCheckoutLineItems(List<CheckoutLineItem> checkoutLineItems) {
             foreach(CheckoutLineItem checkoutLineItem in checkoutLineItems) {
                 bool didUpdateID = false;
-                string checkoutVariantId = checkoutLineItem.variant().id();
+                var checkoutVariant = checkoutLineItem.variant();
                 string checkoutLineItemId = checkoutLineItem.id();
 
                 foreach(CartLineItem cartLineItem in LineItems) {
-                    if (cartLineItem.VariantId == checkoutVariantId) {
+                    if (cartLineItem.VariantId == checkoutVariant.id()) {
                         cartLineItem.ID = checkoutLineItemId;
                         didUpdateID = true;
                         break;
@@ -391,8 +394,8 @@ namespace <%= namespace %>.SDK {
                     } catch(NoQueryException error) {}
                     #pragma warning restore 0168
 
-                    AddOrUpdate(checkoutVariantId, quantity, customAttributes);
-                    Get(checkoutVariantId).ID = checkoutLineItemId;
+                    AddOrUpdate(checkoutVariant, quantity, customAttributes);
+                    Get(checkoutVariant.id()).ID = checkoutLineItemId;
                 }
             }
 

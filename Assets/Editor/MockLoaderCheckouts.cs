@@ -51,7 +51,8 @@ namespace Shopify.Tests {
                                             ""node"": {
                                                 ""id"": ""line-item-id1"",
                                                 ""variant"": {
-                                                    ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTE1NQ==""
+                                                    ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTE1NQ=="",
+                                                    ""price"": ""1.00""
                                                 }
                                             },
                                             ""cursor"": ""line-item-1-cursor""
@@ -60,7 +61,8 @@ namespace Shopify.Tests {
                                             ""node"": {
                                                 ""id"": ""line-item-id2"",
                                                 ""variant"": {
-                                                    ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTM0Nw==""
+                                                    ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTM0Nw=="",
+                                                    ""price"": ""1.00""
                                                 }
                                             },
                                             ""cursor"": ""line-item-1-cursor""
@@ -99,7 +101,8 @@ namespace Shopify.Tests {
                                             ""node"": {
                                                 ""id"": ""line-item-id1"",
                                                 ""variant"": {
-                                                    ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTPOLL==""
+                                                    ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTPOLL=="",
+                                                    ""price"": ""1.00""
                                                 }
                                             },
                                             ""cursor"": ""line-item-1-cursor""
@@ -108,7 +111,8 @@ namespace Shopify.Tests {
                                             ""node"": {
                                                 ""id"": ""line-item-id2"",
                                                 ""variant"": {
-                                                    ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTM0Nw==""
+                                                    ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTM0Nw=="",
+                                                    ""price"": ""1.00""
                                                 }
                                             },
                                             ""cursor"": ""line-item-1-cursor""
@@ -161,7 +165,8 @@ namespace Shopify.Tests {
                                             ""node"": {
                                                 ""id"": ""line-item-id1"",
                                                 ""variant"": {
-                                                    ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyUpdate==""
+                                                    ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyUpdate=="",
+                                                    ""price"": ""1.00""
                                                 }
                                             },
                                             ""cursor"": ""line-item-1-cursor""
@@ -170,7 +175,8 @@ namespace Shopify.Tests {
                                             ""node"": {
                                                 ""id"": ""line-item-id2"",
                                                 ""variant"": {
-                                                    ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyDelete==""
+                                                    ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyDelete=="",
+                                                    ""price"": ""1.00""
                                                 }
                                             },
                                             ""cursor"": ""line-item-1-cursor""
@@ -210,7 +216,8 @@ namespace Shopify.Tests {
                                             ""node"": {
                                                 ""id"": ""line-item-id1"",
                                                 ""variant"": {
-                                                    ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyUpdate==""
+                                                    ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyUpdate=="",
+                                                    ""price"": ""1.00""
                                                 }
                                             },
                                             ""cursor"": ""line-item-1-cursor""
@@ -219,7 +226,8 @@ namespace Shopify.Tests {
                                             ""node"": {
                                                 ""id"": ""line-item-id3"",
                                                 ""variant"": {
-                                                    ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NTMNewItem==""
+                                                    ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NTMNewItem=="",
+                                                    ""price"": ""1.00""
                                                 }
                                             },
                                             ""cursor"": ""line-item-3-cursor""

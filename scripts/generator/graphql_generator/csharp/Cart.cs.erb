@@ -144,6 +144,10 @@ namespace <%= namespace %> {
             State.Reset();
         }
 
+        public decimal Subtotal() {
+            return State.Subtotal();
+        }
+
         /// <summary>
         /// Returns the web URL for checking out the contents of this Cart. For presenting the user with a web view that
         /// loads this URL see <see cref="Cart.CheckoutWithWebView">CheckoutWithWebView</see>.

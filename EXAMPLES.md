@@ -162,10 +162,13 @@ void Start () {
         // In this case, the cart will have 3 copies of the variant.
         cart.LineItems.AddOrUpdate(firstProductFirstVariant, 3);
 
-        // AddOrUpdate is overloaded to accept either ProductVariants or strings, or to select a variant based on selected options.
-        // Alternately, you can use a product variant id string to create line items.
-        // This example updates the first product in the cart to have a quantity of 1.
-        cart.LineItems.AddOrUpdate(firstProductFirstVariant.id(), 1);
+        // AddOrUpdate is overloaded to accept either a ProductVariant or a Product and the options which describe a particular variant. For example, here we are adding the variant with corresponding options
+        Dictionary<string, string> options = new Dictionary<string, string>() {
+            {"size", "small"},
+            {"color", "red"}
+        };
+
+        cart.LineItems.AddOrUpdate(products[0], 1, options);
     });
 }
 ```
