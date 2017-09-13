@@ -19,7 +19,7 @@ namespace <%= namespace %> {
         /// // Example that checks the SDK version
         /// Debug.Log("Current SDK Version: " + ShopifyBuy.VERSION);
         /// \endcode
-        public const string VERSION = "<%= version %>";
+        public const string VERSION = "<%= version %>-<%= publish_destination ? publish_destination : "no_publish_destination" %>";
 
         #if (SHOPIFY_TEST)
         public static void Reset() {

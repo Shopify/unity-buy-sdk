@@ -215,6 +215,13 @@ namespace Shopify.Tests
         }
 
         [Test]
+        public void TestHasVersionNumberWithPublishDestination() {
+            Regex version = new Regex(@"^\d+\.\d+\.\d+-github$");
+
+            Assert.IsTrue(version.IsMatch(ShopifyBuy.VERSION));
+        }
+
+        [Test]
         public void TestProductsByIds() {
             ShopifyBuy.Init(new MockLoader());
             List<Product> products = null;
