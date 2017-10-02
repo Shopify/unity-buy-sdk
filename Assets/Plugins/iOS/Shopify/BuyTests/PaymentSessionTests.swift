@@ -247,7 +247,6 @@ class PaymentSessionTests: XCTestCase {
         let expectedPayment  = Models.createPayment()
         let paymentStatus    = PaymentStatus.failed
 
-        let authorizeExpectation = self.expectation(description: "MockAuthorizationController.invokeDidAuthorizePayment failed to complete")
         let finishExpectation    = self.expectation(description: "MockPaymentSessionDelegate.onSessionDidFinish failed to complete")
         
         let delegate = MockPaymentSessionDelegate()
@@ -264,12 +263,7 @@ class PaymentSessionTests: XCTestCase {
         
         paymentSession.delegate = delegate
         paymentSession.presentAuthorizationController()
-        
-        MockAuthorizationController.invokeDidAuthorizePayment(expectedPayment) { (status: PKPaymentAuthorizationStatus) in
-            authorizeExpectation.fulfill()
-        }
-        
-        self.wait(for: [authorizeExpectation], timeout: expectTimeout)
+        paymentSession.paymentAuthorizationWillAuthorizePayment()
         
         MockAuthorizationController.invokeDidFinish();
         
