@@ -56,6 +56,10 @@ printf "Version used %s: %s\n" "$1" "$VERSION"
 "$SCRIPTS_ROOT"/generate.sh "$PUBLISH_DESTINATION"
 check "generate"
 
+# Run generate.sh to create source code including the potentially new version number
+"$SCRIPTS_ROOT"/build_android.sh "$PUBLISH_DESTINATION"
+check "build_android"
+
 # Run tests just in case
 "$SCRIPTS_ROOT"/test.sh
 check "test"
