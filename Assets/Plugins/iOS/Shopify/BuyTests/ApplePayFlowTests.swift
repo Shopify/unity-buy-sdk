@@ -414,14 +414,14 @@ extension ApplePayFlowTests {
         let payment =
             MockPayment(
                 token: Models.createSimulatorPaymentToken() as! MockPaymentToken,
-                billingContact: Models.createContact(with: Models.createPostalAddress()),
+                billingContact: Models.createContact(with: postalAddress),
                 shippingContact: incorrectContact,
                 shippingMethod: selectedMethod)
 
         let selectShippingExpectation   = self.expectation(description: "MockAuthorizationController.invokeDidSelectShippingMethod failed to complete")
         let authorizePaymentExpectation = self.expectation(description: "MockAuthorizationController.invokeDidAuthorizePayment failed to complete")
 
-        let expectedDescription = "Province is not a valid province in Canada"
+        let expectedDescription = "Zip is not valid for Canada"
         let expectedError       = PKPaymentRequest.paymentShippingAddressInvalidError(withKey: CNPostalAddressPostalCodeKey, localizedDescription: expectedDescription) as NSError
 
         let method = Tester.Method.checkoutWithShippingAddress.rawValue
