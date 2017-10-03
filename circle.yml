@@ -9,10 +9,10 @@ machine:
     UNITY_CIRCLE_XML_DIR: $CIRCLE_TEST_REPORTS/Unity
     UNITY_CIRCLE_XML_OUT_PATH: $UNITY_CIRCLE_XML_DIR/junit.xml
   xcode:
-    version: 8.3.3
+    version: 9.0
 dependencies:
   pre:
-    - xcrun instruments -w "iPhone 6 (10.0) [" || true
+    - xcrun instruments -w "iPhone 6 (11.0) [" || true
   override:
     - ./scripts/install_unity.sh
   cache_directories:
