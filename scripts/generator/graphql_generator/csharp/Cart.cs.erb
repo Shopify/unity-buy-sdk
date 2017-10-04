@@ -175,7 +175,7 @@ namespace <%= namespace %> {
         /// <param name="failure">called when an error was encountered after the web checkout screen has been dismissed.</param>
         public void CheckoutWithWebView(CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
             if (WebCheckout == null) {
-                throw new PlatformNotSupportedException("This platform does not support checkout with web pay");
+                throw new PlatformNotSupportedException("Sorry. We haven't implemented web checkout for this platform yet.");
             }
 
             GetWebCheckoutLink(url => {
@@ -197,7 +197,7 @@ namespace <%= namespace %> {
         /// <param name="failure">called whenever an error or failure is encountered during native pay.</param>
         public void CheckoutWithNativePay(string key, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
             if (NativeCheckout == null) {
-                throw new PlatformNotSupportedException("This platform does not support checkout with native pay");
+                throw new PlatformNotSupportedException("Sorry. We haven't implemented native payments for this platform yet.");
             }
 
             State.CheckoutSave(error => {
@@ -244,7 +244,7 @@ namespace <%= namespace %> {
             if (NativeCheckout != null) {
                 NativeCheckout.ShowPaymentSetup();
             } else {
-                throw new PlatformNotSupportedException("This platform does not support showing a native payment setup");
+                throw new PlatformNotSupportedException("Sorry. We haven't implemented native payments for this platform yet.");
             }
         }
 
