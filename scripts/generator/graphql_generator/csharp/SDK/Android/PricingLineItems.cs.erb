@@ -1,0 +1,38 @@
+#if UNITY_ANDROID
+namespace <%= namespace %>.SDK.Android {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
+    public class PricingLineItems : Serializable {
+
+        public readonly decimal TaxPrice;
+        public readonly decimal Subtotal;
+        public readonly decimal TotalPrice;
+        public readonly decimal? ShippingPrice;
+
+        public PricingLineItems(
+            decimal taxPrice,
+            decimal subtotal,
+            decimal totalPrice,
+            decimal? shippingPrice = null)
+        {
+            TaxPrice = taxPrice;
+            Subtotal = subtotal;
+            TotalPrice = totalPrice;
+            ShippingPrice = shippingPrice;
+        }
+
+        public override object ToJson() {
+            var dict = new Dictionary<string, object>();
+            dict["taxPrice"] = TaxPrice;
+            dict["subtotal"] = Subtotal;
+            dict["totalPrice"] = TotalPrice;
+            if (ShippingPrice != null) {
+                dict["shippingPrice"] = ShippingPrice;
+            }
+            return dict;
+        }
+    }
+}
+#endif

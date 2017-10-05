@@ -1,0 +1,41 @@
+#if UNITY_ANDROID
+namespace <%= namespace %>.SDK.Android {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
+    public class AndroidPayCheckoutResponse : Serializable {
+
+        public readonly string MerchantName;
+        public readonly PricingLineItems PricingLineItems;
+        public readonly string CurrencyCode;
+        public readonly string CountryCode;
+        public readonly bool RequiresShipping;
+
+        public AndroidPayCheckoutResponse(
+            string merchantName,
+            PricingLineItems pricingLineItems,
+            string currencyCode,
+            string countryCode,
+            bool requiresShipping)
+        {
+
+            MerchantName = merchantName;
+            PricingLineItems = pricingLineItems;
+            CurrencyCode = currencyCode;
+            CountryCode = countryCode;
+            RequiresShipping = requiresShipping;
+        }
+
+        public override object ToJson() {
+            var dict = new Dictionary<string, object>();
+            dict["merchantName"] = MerchantName;
+            dict["pricingLineItems"] = PricingLineItems;
+            dict["currencyCode"] = CurrencyCode;
+            dict["countryCode"] = CountryCode;
+            dict["requiresShipping"] = RequiresShipping;
+            return dict;
+        }
+    }
+}
+#endif

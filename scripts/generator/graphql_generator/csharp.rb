@@ -136,6 +136,8 @@ module GraphQLGenerator
         SDK/WebCheckoutMessageReceiver
         SDK/Android/AndroidWebCheckout
         SDK/Android/AndroidNativeCheckout
+        SDK/Android/AndroidPayCheckoutResponse
+        SDK/Android/PricingLineItems
         SDK/Android/AndroidPayEventReceiverBridge
         SDK/Android/AndroidNativeCheckout.AndroidPayEventReceiver
         SDK/Android/IAndroidPayEventReceiver

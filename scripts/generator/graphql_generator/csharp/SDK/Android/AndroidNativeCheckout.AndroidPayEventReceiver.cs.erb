@@ -12,6 +12,17 @@ namespace <%= namespace %>.SDK.Android {
 
     public partial class AndroidNativeCheckout : IAndroidPayEventReceiver {
         public void OnUpdateShippingAddress(string serializedMessage) {
+            var message = NativeMessage.CreateFromJSON(serializedMessage);
+            var contentDictionary = (Dictionary<string, object>) Json.Deserialize(message.Content);
+            var mailingAddressInput = new MailingAddressInput(contentDictionary);
+
+            CartState.SetShippingAddress(mailingAddressInput, (ShopifyError error) => {
+                if (error == null) {
+                    message.Respond(GetAndroidPayCheckoutResponse().ToJsonString());
+                } else {
+                    RespondToUpdateAddressErrorForMessage(message, error);
+                }
+            });
         }
 
         public void OnUpdateShippingLine(string serializedMessage) {
@@ -21,6 +32,14 @@ namespace <%= namespace %>.SDK.Android {
         }
 
         public void OnCancel(string serializedMessage) {
+        }
+
+        private void RespondToUpdateAddressSuccessForMessage(NativeMessage message) {
+            message.Respond("Success test");
+        }
+
+        private void RespondToUpdateAddressErrorForMessage(NativeMessage message, ShopifyError error) {
+            message.Respond("Error test");
         }
     }
 }

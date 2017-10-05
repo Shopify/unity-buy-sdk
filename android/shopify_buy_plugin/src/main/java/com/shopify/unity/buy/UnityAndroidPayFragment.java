@@ -6,14 +6,21 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.wallet.FullWallet;
 import com.google.android.gms.wallet.MaskedWallet;
 import com.google.android.gms.wallet.Wallet;
 import com.google.android.gms.wallet.WalletConstants;
 import com.shopify.buy3.pay.PayCart;
 import com.shopify.buy3.pay.PayHelper;
+import com.shopify.unity.buy.models.AndroidPayCheckoutResponse;
 import com.shopify.unity.buy.models.MailingAddressInput;
+import com.shopify.unity.buy.models.PricingLineItems;
+import com.shopify.unity.buy.utils.Logger;
 import com.shopify.unity.buy.utils.WalletErrorFormatter;
 
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -115,7 +122,7 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
             cart = bundle.getParcelable(EXTRA_PAY_CART);
             countryCode = bundle.getString(EXTRA_COUNTRY_CODE);
             androidPayEnvironment = bundle.getInt(EXTRA_ANDROID_PAY_ENVIRONMENT,
-                    WalletConstants.ENVIRONMENT_TEST);
+                    WalletConstants.ENVIRONMENT_SANDBOX);
             publicKey = bundle.getString(EXTRA_PUBLIC_KEY);
         }
 
@@ -148,6 +155,7 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         if (currentCheckoutState == CheckoutState.READY) {
+            Logger.d("Google API Client connected");
             currentCheckoutState = CheckoutState.REQUESTING_MASKED_WALLET;
             PayHelper.requestMaskedWallet(googleApiClient, cart, publicKey);
         }
@@ -169,18 +177,28 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
 
                 MailingAddressInput input = new MailingAddressInput(maskedWallet.getBuyerShippingAddress());
 
+                Logger.d("Masked wallet received");
+
                 if (sessionCallbacks != null) {
                     sessionCallbacks.onUpdateShippingAddress(input, new MessageCenter.MessageCallback() {
                         @Override
                         public void onResponse(String jsonResponse) {
-                            // TODO: Create a new pay cart with the updated shipping address and request full wallet
+                            UnityAndroidPayFragment.this.onUpdateShippingAddress(jsonResponse);
                         }
                     });
                 }
             }
 
             @Override
+            public void onFullWallet(FullWallet fullWallet) {
+                super.onFullWallet(fullWallet);
+                Logger.d("Full wallet received.");
+            }
+
+            @Override
             public void onWalletError(int requestCode, int errorCode) {
+                final String msg = "Wallet error: " + WalletErrorFormatter.errorStringFromCode(errorCode);
+                Logger.d(msg);
                 if (sessionCallbacks != null) {
                     sessionCallbacks.onError(WalletErrorFormatter.errorStringFromCode(errorCode));
                 }
@@ -188,11 +206,41 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
 
             @Override
             public void onWalletRequestCancel(int requestCode) {
+                super.onWalletRequestCancel(requestCode);
+                Logger.d("Wallet canceled");
                 if (sessionCallbacks != null) {
                     sessionCallbacks.onCancel();
                 }
             }
         });
+    }
+
+    private void onUpdateShippingAddress(String jsonResponse) {
+        // TODO: Create a new pay cart with the updated shipping address and request full wallet
+        Logger.d("New cart data from Unity: " + jsonResponse);
+        try {
+            cart = newPayCart(AndroidPayCheckoutResponse.fromJsonString(jsonResponse));
+            requestFullWallet(cart);
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private PayCart newPayCart(AndroidPayCheckoutResponse response) {
+        final PricingLineItems items = response.pricingLineItems;
+        return PayCart.builder()
+                .merchantName(response.merchantName)
+                .currencyCode(response.currencyCode)
+                .shippingAddressRequired(response.requiresShipping)
+                .subtotal(items.subtotal)
+                .shippingPrice(items.shippingPrice)
+                .taxPrice(items.taxPrice)
+                .totalPrice(items.totalPrice)
+                .build();
+    }
+
+    private void requestFullWallet(PayCart cart) {
+        PayHelper.requestFullWallet(googleApiClient, cart, maskedWallet);
     }
 
     public void setSessionCallbacks(AndroidPaySessionCallback callbacks) {
