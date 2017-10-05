@@ -1,5 +1,6 @@
 package com.shopify.unity.buy.models;
 
+import org.json.JSONException;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -10,10 +11,10 @@ import static junit.framework.Assert.assertEquals;
 
 public class PricingLineItemsTest {
     private static final String jsonString =
-            "{\"subtotal\":\"5.23\",\"taxPrice\":\"1.23\",\"totalPrice\":\"6.46\"}";
+            "{\"totalPrice\":\"6.46\",\"subtotal\":\"5.23\",\"taxPrice\":\"1.23\"}";
 
     @Test
-    public void testFromJsonString() throws IOException {
+    public void testFromJsonString() throws JSONException {
         PricingLineItems items = PricingLineItems.fromJsonString(jsonString);
 
         assertEquals(items.subtotal, BigDecimal.valueOf(5.23));
@@ -22,7 +23,7 @@ public class PricingLineItemsTest {
     }
 
     @Test
-    public void testToJson() throws IOException {
+    public void testToJson() throws JSONException {
         PricingLineItems items = PricingLineItems.fromJsonString(jsonString);
 
         assertEquals(items.subtotal, BigDecimal.valueOf(5.23));
