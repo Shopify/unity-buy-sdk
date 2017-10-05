@@ -1,50 +1,74 @@
 package com.shopify.unity.buy;
 
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.content.pm.PackageManager;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.filters.MediumTest;
-import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import org.junit.Rule;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 
 import static junit.framework.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 
 @MediumTest
 @RunWith(AndroidJUnit4.class)
 public class AndroidPayCheckoutSessionTest {
-    @Rule
-    public ActivityTestRule<MockUnityActivity> rule = new ActivityTestRule<>(MockUnityActivity.class);
+    private Activity mockActivity;
+
+    @Before
+    public void setUp() throws Exception {
+        this.mockActivity = Mockito.mock(Activity.class);
+        when(this.mockActivity.getPackageName()).thenReturn("com.shopify.unity.buy.test");
+
+        FragmentManager mockFragmentManager = Mockito.mock(FragmentManager.class);
+        FragmentTransaction mockFragmentTransaction = Mockito.mock(FragmentTransaction.class);
+
+        when(mockFragmentManager.beginTransaction()).thenReturn(mockFragmentTransaction);
+        when(mockFragmentTransaction.add(any(Fragment.class), anyString())).thenReturn(mockFragmentTransaction);
+        when(this.mockActivity.getFragmentManager()).thenReturn(mockFragmentManager);
+
+        PackageManager packageManager =
+            InstrumentationRegistry.getTargetContext().getPackageManager();
+
+        when(this.mockActivity.getPackageManager()).thenReturn(packageManager);
+    }
 
     @Test
     public void testCreateSessionWithValidParams() {
-        final MockUnityActivity activity = rule.getActivity();
-        AndroidPayCheckoutSession session = new AndroidPayCheckoutSession(activity);
+        AndroidPayCheckoutSession session = new AndroidPayCheckoutSession(this.mockActivity);
         boolean result = session.checkoutWithAndroidPay(
-                "test",
-                "merchantName",
-                "publicKey",
-                "{}",
-                "CAD",
-                "CA",
-                false,
-                true);
+            "test",
+            "merchantName",
+            "publicKey",
+            "{}",
+            "CAD",
+            "CA",
+            false,
+            true);
 
         assertTrue(result);
     }
 
     @Test(expected = NullPointerException.class)
     public void testCreateSessionWithInvalidParams() {
-        final MockUnityActivity activity = rule.getActivity();
-        AndroidPayCheckoutSession session = new AndroidPayCheckoutSession(activity);
+        AndroidPayCheckoutSession session = new AndroidPayCheckoutSession(this.mockActivity);
         boolean result = session.checkoutWithAndroidPay(
-                null,
-                null,
-                null,
-                "{}",
-                "CAD",
-                "CA",
-                false,
-                true);
+            null,
+            null,
+            null,
+            "{}",
+            "CAD",
+            "CA",
+            false,
+            true);
     }
 }
