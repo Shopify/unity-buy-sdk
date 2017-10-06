@@ -12,7 +12,7 @@ import com.google.android.gms.wallet.Wallet;
 import com.google.android.gms.wallet.WalletConstants;
 import com.shopify.buy3.pay.PayCart;
 import com.shopify.buy3.pay.PayHelper;
-import com.shopify.unity.buy.models.AndroidPayCheckoutResponse;
+import com.shopify.unity.buy.models.AndroidPayEventResponse;
 import com.shopify.unity.buy.models.MailingAddressInput;
 import com.shopify.unity.buy.models.PricingLineItems;
 import com.shopify.unity.buy.utils.Logger;
@@ -219,14 +219,14 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
         // TODO: Create a new pay cart with the updated shipping address and request full wallet
         Logger.d("New cart data from Unity: " + jsonResponse);
         try {
-            cart = newPayCart(AndroidPayCheckoutResponse.fromJsonString(jsonResponse));
+            cart = newPayCart(AndroidPayEventResponse.fromJsonString(jsonResponse));
             requestFullWallet(cart);
         } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
     }
 
-    private PayCart newPayCart(AndroidPayCheckoutResponse response) {
+    private PayCart newPayCart(AndroidPayEventResponse response) {
         final PricingLineItems items = response.pricingLineItems;
         return PayCart.builder()
                 .merchantName(response.merchantName)

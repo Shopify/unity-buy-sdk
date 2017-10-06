@@ -4,7 +4,7 @@ namespace <%= namespace %>.SDK.Android {
     using System.Collections;
     using System.Collections.Generic;
 
-    public class AndroidPayCheckoutResponse : Serializable {
+    public class AndroidPayEventResponse : Serializable {
 
         public readonly string MerchantName;
         public readonly PricingLineItems PricingLineItems;
@@ -12,7 +12,7 @@ namespace <%= namespace %>.SDK.Android {
         public readonly string CountryCode;
         public readonly bool RequiresShipping;
 
-        public AndroidPayCheckoutResponse(
+        public AndroidPayEventResponse(
             string merchantName,
             PricingLineItems pricingLineItems,
             string currencyCode,

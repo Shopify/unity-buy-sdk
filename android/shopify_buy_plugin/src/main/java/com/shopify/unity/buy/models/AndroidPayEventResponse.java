@@ -9,7 +9,7 @@ import java.io.IOException;
  * @author Flavio Faria
  */
 
-public final class AndroidPayCheckoutResponse {
+public final class AndroidPayEventResponse {
 
     private static final String MERCHANT_NAME = "merchantName";
     private static final String PRICING_LINE_ITEMS = "pricingLineItems";
@@ -23,9 +23,9 @@ public final class AndroidPayCheckoutResponse {
     public final String countryCode;
     public final boolean requiresShipping;
 
-    public AndroidPayCheckoutResponse(String merchantName, PricingLineItems pricingLineItems,
-                                      String currencyCode, String countryCode,
-                                      boolean requiresShipping) {
+    private AndroidPayEventResponse(String merchantName, PricingLineItems pricingLineItems,
+                                    String currencyCode, String countryCode,
+                                    boolean requiresShipping) {
 
         this.merchantName = merchantName;
         this.pricingLineItems = pricingLineItems;
@@ -34,7 +34,7 @@ public final class AndroidPayCheckoutResponse {
         this.requiresShipping = requiresShipping;
     }
 
-    public static AndroidPayCheckoutResponse fromJsonString(String jsonString)
+    public static AndroidPayEventResponse fromJsonString(String jsonString)
             throws JSONException, IOException {
 
         final JSONObject jsonObject = new JSONObject(jsonString);
@@ -45,7 +45,7 @@ public final class AndroidPayCheckoutResponse {
         final String countryCode = jsonObject.getString(COUNTRY_CODE);
         final boolean requiresShipping = jsonObject.getBoolean(REQUIRES_SHIPPING);
 
-        return new AndroidPayCheckoutResponse(merchantName, pricingLineItems,
+        return new AndroidPayEventResponse(merchantName, pricingLineItems,
                 currencyCode, countryCode, requiresShipping);
     }
 }

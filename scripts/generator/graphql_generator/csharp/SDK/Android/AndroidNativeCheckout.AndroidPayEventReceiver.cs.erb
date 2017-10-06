@@ -18,7 +18,7 @@ namespace <%= namespace %>.SDK.Android {
 
             CartState.SetShippingAddress(mailingAddressInput, (ShopifyError error) => {
                 if (error == null) {
-                    message.Respond(GetAndroidPayCheckoutResponse().ToJsonString());
+                    message.Respond(GetAndroidPayEventResponse().ToJsonString());
                 } else {
                     RespondToUpdateAddressErrorForMessage(message, error);
                 }

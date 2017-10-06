@@ -77,12 +77,12 @@ namespace <%= namespace %>.SDK.Android {
             #endif
         }
 
-        private AndroidPayCheckoutResponse GetAndroidPayCheckoutResponse() {
+        private AndroidPayEventResponse GetAndroidPayEventResponse() {
             var checkout = CartState.CurrentCheckout;
             var pricingLineItems = GetPricingLineItemsFromCheckout(checkout);
             var currencyCodeString = checkout.currencyCode().ToString("G");
             var requiresShipping = checkout.requiresShipping();
-            return new AndroidPayCheckoutResponse(MerchantName, pricingLineItems, currencyCodeString, CountryCodeString, requiresShipping);
+            return new AndroidPayEventResponse(MerchantName, pricingLineItems, currencyCodeString, CountryCodeString, requiresShipping);
         }
 
         private PricingLineItems GetPricingLineItemsFromCheckout(Checkout checkout) {
