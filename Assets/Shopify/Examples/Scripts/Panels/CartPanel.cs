@@ -158,7 +158,7 @@ namespace Panels {
                 totalLineItemQuantity += (int)lineItem.Quantity;
             }
 
-            CheckoutButtonText.text = "Checkout";
+            CheckoutButtonText.text = "Checkout " + _cart.Subtotal().ToString("c");
 
             OnCartQuantityChanged.Invoke(totalLineItemQuantity);
         }
