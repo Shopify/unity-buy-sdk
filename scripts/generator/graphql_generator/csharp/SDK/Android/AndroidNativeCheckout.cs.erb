@@ -77,6 +77,10 @@ namespace <%= namespace %>.SDK.Android {
             #endif
         }
 
+        /// <summary>
+        /// Creates an <see cref="AndroidPayEventResponse"/> object based on the <see cref="CartState"/>
+        /// data.
+        /// </summary>
         private AndroidPayEventResponse GetAndroidPayEventResponse() {
             var checkout = CartState.CurrentCheckout;
             var pricingLineItems = GetPricingLineItemsFromCheckout(checkout);
@@ -85,6 +89,13 @@ namespace <%= namespace %>.SDK.Android {
             return new AndroidPayEventResponse(MerchantName, pricingLineItems, currencyCodeString, CountryCodeString, requiresShipping);
         }
 
+        /// <summary>
+        /// Creates a <see cref="PricingLineItems"/> object based on the <see cref="Checkout"/>
+        /// data.
+        /// </summary>
+        /// <param name="checkout">
+        /// A <code>Checkout</code> object to build the <code>PricingLineItems</code> on.
+        /// </param>
         private PricingLineItems GetPricingLineItemsFromCheckout(Checkout checkout) {
             var taxPrice = checkout.totalTax();
             var subtotal = checkout.subtotalPrice();

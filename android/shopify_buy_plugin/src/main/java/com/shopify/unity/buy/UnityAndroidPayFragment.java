@@ -18,8 +18,6 @@ import com.shopify.unity.buy.models.PricingLineItems;
 import com.shopify.unity.buy.utils.Logger;
 import com.shopify.unity.buy.utils.WalletErrorFormatter;
 
-import org.json.JSONException;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -215,17 +213,28 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
         });
     }
 
+    /**
+     * Unity callback method that runs whenever the shipping address is updated on the Unity side.
+     *
+     * @param jsonResponse the {@link AndroidPayEventResponse} represented as a JSON string
+     */
     private void onUpdateShippingAddress(String jsonResponse) {
         // TODO: Create a new pay cart with the updated shipping address and request full wallet
         Logger.d("New cart data from Unity: " + jsonResponse);
         try {
             cart = payCartFromEventResponse(AndroidPayEventResponse.fromJsonString(jsonResponse));
             requestFullWallet(cart);
-        } catch (JSONException | IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Creates a new {@link PayCart} populated with data from {@link AndroidPayEventResponse}.
+     *
+     * @param response the {@code AndroidPayEventResponse} with data to populate the cart
+     * @return a new {@code PayCart} built based on the {@code response} argument
+     */
     private PayCart payCartFromEventResponse(AndroidPayEventResponse response) {
         final PricingLineItems items = response.pricingLineItems;
         return PayCart.builder()
@@ -239,6 +248,11 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
                 .build();
     }
 
+    /**
+     * Requests the full wallet to Google Pay API.
+     *
+     * @param cart the {@link PayCart} to request a full wallet for
+     */
     private void requestFullWallet(PayCart cart) {
         PayHelper.requestFullWallet(googleApiClient, cart, maskedWallet);
     }

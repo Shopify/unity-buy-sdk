@@ -4,12 +4,21 @@ namespace <%= namespace %>.SDK.Android {
     using System.Collections;
     using System.Collections.Generic;
 
+    /// <summary>
+    /// Model class that wraps the all the data sent from Unity to the Android library
+    /// after the shipping address is changed.
+    /// </summary>
     public class AndroidPayEventResponse : Serializable {
 
+        /// <value>JSON name for the "merchant name" attribute.</value>
         public readonly string MerchantName;
+        /// <value>JSON name for the "pricing line items" attribute.</value>
         public readonly PricingLineItems PricingLineItems;
+        /// <value>JSON name for the "currency code" attribute.</value>
         public readonly string CurrencyCode;
+        /// <value>JSON name for the "country code" attribute.</value>
         public readonly string CountryCode;
+        /// <value>JSON name for the "requires shipping" attribute.</value>
         public readonly bool RequiresShipping;
 
         public AndroidPayEventResponse(

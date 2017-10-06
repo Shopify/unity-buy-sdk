@@ -4,11 +4,19 @@ namespace <%= namespace %>.SDK.Android {
     using System.Collections;
     using System.Collections.Generic;
 
+    /// <summary>
+    /// Model class that wraps the aggregate of all purchases, taxes and shipping
+    /// costs of the cart.
+    /// </summary>
     public class PricingLineItems : Serializable {
 
+        /// <value>JSON name for the "tax price" attribute.</value>
         public readonly decimal TaxPrice;
+        /// <value>JSON name for the "subtotal" attribute.</value>
         public readonly decimal Subtotal;
+        /// <value>JSON name for the "total price" attribute.</value>
         public readonly decimal TotalPrice;
+        /// <value>JSON name for the "shipping price" attribute.</value>
         public readonly decimal? ShippingPrice;
 
         public PricingLineItems(
