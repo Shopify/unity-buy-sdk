@@ -219,14 +219,14 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
         // TODO: Create a new pay cart with the updated shipping address and request full wallet
         Logger.d("New cart data from Unity: " + jsonResponse);
         try {
-            cart = newPayCart(AndroidPayEventResponse.fromJsonString(jsonResponse));
+            cart = payCartFromEventResponse(AndroidPayEventResponse.fromJsonString(jsonResponse));
             requestFullWallet(cart);
         } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
     }
 
-    private PayCart newPayCart(AndroidPayEventResponse response) {
+    private PayCart payCartFromEventResponse(AndroidPayEventResponse response) {
         final PricingLineItems items = response.pricingLineItems;
         return PayCart.builder()
                 .merchantName(response.merchantName)
