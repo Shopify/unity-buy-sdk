@@ -19,8 +19,6 @@ namespace <%= namespace %>.SDK.Android {
             CartState.SetShippingAddress(mailingAddressInput, (ShopifyError error) => {
                 if (error == null) {
                     message.Respond(GetAndroidPayEventResponse().ToJsonString());
-                } else {
-                    RespondToUpdateAddressErrorForMessage(message, error);
                 }
             });
         }
@@ -32,14 +30,6 @@ namespace <%= namespace %>.SDK.Android {
         }
 
         public void OnCancel(string serializedMessage) {
-        }
-
-        private void RespondToUpdateAddressSuccessForMessage(NativeMessage message) {
-            message.Respond("Success test");
-        }
-
-        private void RespondToUpdateAddressErrorForMessage(NativeMessage message, ShopifyError error) {
-            message.Respond("Error test");
         }
     }
 }
