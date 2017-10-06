@@ -52,8 +52,7 @@ public class AndroidPayCheckoutSessionTest {
             "{\"totalPrice\":\"6.46\",\"subtotal\":\"5.23\",\"taxPrice\":\"1.23\"}",
             "CAD",
             "CA",
-            false,
-            true);
+            false);
 
         assertTrue(result);
     }
@@ -68,7 +67,6 @@ public class AndroidPayCheckoutSessionTest {
             "{\"totalPrice\":\"6.46\",\"subtotal\":\"5.23\",\"taxPrice\":\"1.23\"}",
             "CAD",
             "CA",
-            false,
-            true);
+            false);
     }
 }

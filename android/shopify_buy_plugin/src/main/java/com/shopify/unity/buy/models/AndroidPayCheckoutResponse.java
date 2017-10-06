@@ -39,11 +39,8 @@ public final class AndroidPayCheckoutResponse {
 
         final JSONObject jsonObject = new JSONObject(jsonString);
         final String merchantName = jsonObject.getString(MERCHANT_NAME);
-        final String pricingLineItemsString = jsonObject.getString(PRICING_LINE_ITEMS);
-
-        final PricingLineItems pricingLineItems =
-                PricingLineItems.fromJsonString(pricingLineItemsString);
-
+        final JSONObject pricingLineItemsJson = jsonObject.getJSONObject(PRICING_LINE_ITEMS);
+        final PricingLineItems pricingLineItems = PricingLineItems.fromJson(pricingLineItemsJson);
         final String currencyCode = jsonObject.getString(CURRENCY_CODE);
         final String countryCode = jsonObject.getString(COUNTRY_CODE);
         final boolean requiresShipping = jsonObject.getBoolean(REQUIRES_SHIPPING);

@@ -30,7 +30,7 @@ namespace <%= namespace %>.SDK.Android {
         public override object ToJson() {
             var dict = new Dictionary<string, object>();
             dict["merchantName"] = MerchantName;
-            dict["pricingLineItems"] = PricingLineItems;
+            dict["pricingLineItems"] = PricingLineItems.ToJson();
             dict["currencyCode"] = CurrencyCode;
             dict["countryCode"] = CountryCode;
             dict["requiresShipping"] = RequiresShipping;
