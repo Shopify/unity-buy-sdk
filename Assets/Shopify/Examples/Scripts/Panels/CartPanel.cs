@@ -44,7 +44,7 @@ namespace Panels {
         private void Start() {
             BackToProductsButton.onClick.AddListener(() => OnReturnToProducts.Invoke());
             CheckoutButton.onClick.AddListener(() => {
-                _cart.CheckoutWithNativeWebView(
+                _cart.CheckoutWithWebView(
                     () => {
                         OnCheckoutSuccess.Invoke();
                         EmptyCart();
@@ -158,7 +158,7 @@ namespace Panels {
                 totalLineItemQuantity += (int)lineItem.Quantity;
             }
 
-            CheckoutButtonText.text = "Checkout " + _cart.ToString();
+            CheckoutButtonText.text = "Checkout";
 
             OnCartQuantityChanged.Invoke(totalLineItemQuantity);
         }
