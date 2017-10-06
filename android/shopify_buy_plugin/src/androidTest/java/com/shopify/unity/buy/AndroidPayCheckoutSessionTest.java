@@ -60,7 +60,7 @@ public class AndroidPayCheckoutSessionTest {
     @Test(expected = NullPointerException.class)
     public void testCreateSessionWithInvalidParams() {
         AndroidPayCheckoutSession session = new AndroidPayCheckoutSession(this.mockActivity, true);
-        boolean result = session.checkoutWithAndroidPay(
+        session.checkoutWithAndroidPay(
             null,
             null,
             null,
