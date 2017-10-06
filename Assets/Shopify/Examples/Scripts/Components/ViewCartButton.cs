@@ -2,30 +2,27 @@
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace Components
-{
-	public class ViewCartButton : MonoBehaviour {
+namespace Components {
+    public class ViewCartButton : MonoBehaviour {
 
-		public Text Quantity;
-		public Image SingleDigitBadge;
-		public Image DoubleDigitBadge;
-		public Image CartIcon;
+        public Text Quantity;
+        public Image SingleDigitBadge;
+        public Image DoubleDigitBadge;
+        public Image CartIcon;
 
-		public UnityEvent OnClick;
+        public UnityEvent OnClick;
 
-		private void Start()
-		{
-			gameObject.GetComponent<Button>().onClick.AddListener (() => OnClick.Invoke());
-		}
+        private void Start() {
+            gameObject.GetComponent<Button>().onClick.AddListener(() => OnClick.Invoke());
+        }
 
-		public void UpdateCartQuantity(int quantity)
-		{
-			Quantity.text = quantity.ToString ();
+        public void UpdateCartQuantity(int quantity) {
+            Quantity.text = quantity.ToString();
 
-			SingleDigitBadge.gameObject.SetActive (quantity < 10);
-			DoubleDigitBadge.gameObject.SetActive (quantity >= 10);
+            SingleDigitBadge.gameObject.SetActive(quantity < 10);
+            DoubleDigitBadge.gameObject.SetActive(quantity >= 10);
 
-			gameObject.SetActive(quantity > 0);
-		}
-	}
+            gameObject.SetActive(quantity > 0);
+        }
+    }
 }
