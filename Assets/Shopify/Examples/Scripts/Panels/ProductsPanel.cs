@@ -5,19 +5,17 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using System.Linq;
+ {
+     {
+    }
 
-namespace Panels
-{
-	public class ShowProductEvent : UnityEvent<Shopify.Unity.Product>
-	{
-	}
-
+    
 	public class ProductsPanel : MonoBehaviour {
-
-		public ShowProductEvent OnShowProduct = new ShowProductEvent();
-		public UnityEvent OnViewCart;
+        
+        public ShowProductEvent OnShowProduct = new ShowProductEvent();
+        public UnityEvent OnViewCart;
 		public UnityEvent OnClosePanel;
-
+        
 		public Button ViewCartButton;
 		public Button ClosePanelButton;
 
