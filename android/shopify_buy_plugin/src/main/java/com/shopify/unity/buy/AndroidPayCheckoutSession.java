@@ -11,7 +11,7 @@ import com.shopify.unity.buy.models.MailingAddressInput;
 import com.shopify.unity.buy.models.PricingLineItems;
 import com.unity3d.player.UnityPlayer;
 
-import java.io.IOException;
+import org.json.JSONException;
 
 public final class AndroidPayCheckoutSession implements AndroidPaySessionCallback {
     public static final String PAY_FRAGMENT_TAG = "payFragment";
@@ -53,7 +53,7 @@ public final class AndroidPayCheckoutSession implements AndroidPaySessionCallbac
             addPayFragment(cart, countryCode, publicKey, testing);
 
             return true;
-        } catch (IOException e) {
+        } catch (JSONException e) {
             Log.e("ShopifyBuyPlugin", "Failed to parse summary items from Unity!");
             return false;
         }
@@ -67,7 +67,7 @@ public final class AndroidPayCheckoutSession implements AndroidPaySessionCallbac
         // TODO: Pull in updated buy3 SDK which will use the countryCode.
         String countryCode,
         boolean requiresShipping
-    ) throws IOException {
+    ) throws JSONException {
         PricingLineItems items = PricingLineItems.fromJsonString(pricingLineItemsString);
 
         return PayCart.builder()
