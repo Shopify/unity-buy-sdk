@@ -87,7 +87,7 @@ printf "Exporting the unitypackage at: %s\n" "$UNITY_PACKAGE"
     -silent-crashes \
     -logFile "$UNITY_LOG_PATH" \
     -projectPath "$PROJECT_ROOT" \
-    -exportPackage Assets/Shopify Assets/Plugins "$UNITY_PACKAGE" \
+    -exportPackage Assets/Shopify "$UNITY_PACKAGE" \
     -quit
 
 PUBLISH_SUCCESS=$?

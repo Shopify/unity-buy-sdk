@@ -5,7 +5,7 @@ tmp/
 
 # ignore generated files for now
 Assets/Shopify/Unity/
-Assets/Plugins/Android/*.aar
+Assets/Shopify/Plugins/Android/*.aar
 !Assets/Shopify/Unity/Vendor*
 !Assets/Shopify/Unity/Static*
 
