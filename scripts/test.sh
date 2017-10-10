@@ -9,7 +9,7 @@ mcs \
     -define:SHOPIFY_TEST \
     -define:SHOPIFY_MONO_UNIT_TEST \
     -define:UNITY_IOS \
-    -recurse:'Assets/Shopify/*.cs' \
+    -recurse:'Assets/Shopify/Unity/*.cs' \
     -recurse:'Assets/Editor/*.cs' \
     -reference:nunit.framework.dll \
     -target:library \
