@@ -6,7 +6,7 @@ These modifications ensure that the SDK is properly configured for ease of use. 
 
 # Android
 
-The library comes in a form of a `.AAR` file. In doing so we have provided a [mainTemplate.gradle](Assets/Plugins/Android/mainTemplate.gradle) that will be used by Unity when creating a Gradle project.
+The library comes in a form of a `.AAR` file. In doing so we have provided a [mainTemplate.gradle](Assets/Shopify/Plugins/Android/mainTemplate.gradle) that will be used by Unity when creating a Gradle project.
 
 The Gradle file includes the dependencies used by the library. If you would like to use your own Gradle file, add the following dependencies:
 
