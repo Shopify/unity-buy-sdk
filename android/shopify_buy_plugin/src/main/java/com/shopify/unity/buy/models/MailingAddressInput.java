@@ -4,12 +4,13 @@ import android.util.Log;
 
 import com.google.android.gms.identity.intents.model.UserAddress;
 import com.shopify.buy3.pay.PayAddress;
+import com.shopify.unity.buy.JsonSerializable;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 // A wrapper around PayAddress to convert it to Json.
-public class MailingAddressInput {
+public class MailingAddressInput implements JsonSerializable {
     private final PayAddress payAddress;
 
     private static final String ADDRESS_1 = "address1";
