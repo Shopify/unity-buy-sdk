@@ -33,8 +33,8 @@ dependencies {
     androidTestCompile 'org.mockito:mockito-core:1.10.19'
 
     compile project(':unity_classes')
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:customtabs:25.3.1'
+    compile 'com.android.support:appcompat-v7:26.0.0'
+    compile 'com.android.support:customtabs:26.0.0'
     compile 'com.shopify.mobilebuysdk:buy3-pay-support:1.0.0'
 
     testCompile 'junit:junit:4.12'
