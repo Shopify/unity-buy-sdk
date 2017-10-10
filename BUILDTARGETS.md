@@ -9,7 +9,7 @@ You can find a more detailed explanation regarding platform specific dependencie
 
 # Android
 
-The Unity Buy SDK requires Android games to have a minimum API level of Android 4.4 'Kit Kat' (API Level 19)
+The Unity Buy SDK requires Android games to have a minimum API level of Android 4.4 'Kit Kat' (API Level 19).
 
 # iOS
 
