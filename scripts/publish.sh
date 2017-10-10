@@ -82,12 +82,14 @@ printf "Exporting the unitypackage at: %s\n" "$UNITY_PACKAGE"
 
 # create the new unitypackage
 "$UNITY_PATH" \
+    -gvh_disable \
     -batchmode \
     -nographics \
     -silent-crashes \
     -logFile "$UNITY_LOG_PATH" \
+    -importPackage "ThirdParty/play-services-resolver-1.2.12.0.unitypackage" \
     -projectPath "$PROJECT_ROOT" \
-    -exportPackage Assets/Shopify "$UNITY_PACKAGE" \
+    -exportPackage Assets/Shopify Assets/PlayServicesResolver "$UNITY_PACKAGE" \
     -quit
 
 PUBLISH_SUCCESS=$?
