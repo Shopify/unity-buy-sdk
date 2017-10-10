@@ -5,8 +5,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace Shopify.Examples.LineItems {
-    public class ProductsPanelLineItem : MonoBehaviour {
+namespace Shopify.Examples.Panels {
+    public class ProductsPanelCell : MonoBehaviour {
         public UnityEvent OnClick;
 
         public int MaxDescriptionCharacters = 150;

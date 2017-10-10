@@ -18,9 +18,9 @@ namespace Shopify.Examples.Panels {
         public Button ViewCartButton;
         public Button ClosePanelButton;
 
-        public ProductsPanelLineItem ProductsPanelLineItemTemplate;
+        public ProductsPanelCell ProductsPanelCellTemplate;
 
-        private readonly List<ProductsPanelLineItem> _lineItems = new List<ProductsPanelLineItem>();
+        private readonly List<ProductsPanelCell> _lineItems = new List<ProductsPanelCell>();
 
         public ScrollRect ScrollView;
         public RectTransform Content;
@@ -51,7 +51,7 @@ namespace Shopify.Examples.Panels {
 
         public void AddProduct(Shopify.Unity.Product product) {
             // Create instance of the template
-            var instance = Instantiate(ProductsPanelLineItemTemplate);
+            var instance = Instantiate(ProductsPanelCellTemplate);
             // Need to set transform so that scrolling works properly
             instance.transform.SetParent(Content, false);
             // Pass in the product to set the line item attributes
