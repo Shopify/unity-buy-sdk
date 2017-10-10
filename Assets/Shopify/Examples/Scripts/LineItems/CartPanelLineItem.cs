@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using Helpers;
+using Shopify.Examples.Helpers;
 using Shopify.Unity;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using Image = UnityEngine.UI.Image;
 
-namespace LineItems {
+namespace Shopify.Examples.LineItems {
     public class VariantLineItemQuantityAdjustmentEvent : UnityEvent<ProductVariant, int> {
     }
 

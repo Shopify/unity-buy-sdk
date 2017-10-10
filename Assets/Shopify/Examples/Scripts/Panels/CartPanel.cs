@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Helpers;
-using LineItems;
+using Shopify.Examples.Helpers;
+using Shopify.Examples.LineItems;
 using Shopify.Unity;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace Panels {
+namespace Shopify.Examples.Panels {
     public class CartQuantityChangedEvent : UnityEvent<int> {
     }
 

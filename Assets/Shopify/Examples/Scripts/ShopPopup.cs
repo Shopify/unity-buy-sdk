@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Components;
-using Helpers;
-using Panels;
+using Shopify.Examples.Helpers;
+using Shopify.Examples.Panels;
 using Shopify.Unity;
 using UnityEngine;
 using UnityEngine.UI;
