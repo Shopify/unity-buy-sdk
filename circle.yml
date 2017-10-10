@@ -3,10 +3,11 @@ machine:
     PROJECT_ROOT: $PWD/unity-buy-sdk
     UNITY_DOWNLOAD_DIR: $PROJECT_ROOT/unity
     UNITY_PKG_LOCATION: $UNITY_DOWNLOAD_DIR/Unity.pkg
-    UNITY_PKG_URL: https://download.unity3d.com/download_unity/5d30cf096e79/MacEditorInstaller/Unity-2017.1.1f1.pkg
+    UNITY_PKG_URL: https://netstorage.unity3d.com/unity/cc85bf6a8a04/MacEditorInstaller/Unity-2017.1.2f1.pkg
     IOS_PKG_LOCATION: $UNITY_DOWNLOAD_DIR/Unity-iOS.pkg
-    IOS_PKG_URL: http://netstorage.unity3d.com/unity/5d30cf096e79/MacEditorTargetInstaller/UnitySetup-iOS-Support-for-Editor.pkg
+    IOS_PKG_URL: http://netstorage.unity3d.com/unity/cc85bf6a8a04/MacEditorTargetInstaller/UnitySetup-iOS-Support-for-Editor-2017.1.2f1.pkg
     UNITY_CIRCLE_XML_DIR: $CIRCLE_TEST_REPORTS/Unity
+
     UNITY_CIRCLE_XML_OUT_PATH: $UNITY_CIRCLE_XML_DIR/junit.xml
   xcode:
     version: 9.0
