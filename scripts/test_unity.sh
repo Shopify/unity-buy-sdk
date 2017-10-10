@@ -20,6 +20,7 @@ printf "Testing with Unity Version: %s\n" "$UNITY_VERSION"
 "$UNITY_PATH" \
     -batchmode \
     -nographics \
+    -force-opengl \
     -silent-crashes \
     -logFile "$UNITY_LOG_PATH" \
     -projectPath "$PROJECT_ROOT" \

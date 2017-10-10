@@ -42,22 +42,6 @@ import PassKit
             return "Success"
         }
     }
-    
-    static func from(status: PKPaymentAuthorizationStatus?) -> PaymentStatus {
-        
-        guard let status = status else {
-            return .cancelled
-        }
-        
-        switch status {
-        case .failure:
-            return .failed
-        case .success:
-            return .success
-        default:
-            return .cancelled
-        }
-    }
 }
 
 @objc protocol PaymentSessionDelegate : class {
@@ -68,16 +52,28 @@ import PassKit
     func paymentSession(_ session: PaymentSession, didSelectShippingContact shippingContact: PKContact, completion: @escaping (PKPaymentAuthorizationStatus, [PKShippingMethod], [PKPaymentSummaryItem]) -> Void)
     
     func paymentSession(_ session: PaymentSession, didAuthorize payment: PKPayment, completion: @escaping (PKPaymentAuthorizationStatus) -> Void)
+    
+    @available(iOS 11.0, *)
+    func paymentSession(_ session: PaymentSession, didAuthorize payment: PKPayment, handler completion: @escaping (PKPaymentAuthorizationResult) -> Void)
+    
+    @available(iOS 11.0, *)
+    func paymentSession(_ session: PaymentSession, didSelect shippingMethod: PKShippingMethod, handler completion: @escaping (PKPaymentRequestShippingMethodUpdate) -> Void)
+    
+    @available(iOS 11.0, *)
+    func paymentSession(_ session: PaymentSession, didSelectShippingContact contact: PKContact, handler completion: @escaping (PKPaymentRequestShippingContactUpdate) -> Void)
 }
+    
 
 @objc class PaymentSession: NSObject {
     
     let request: PKPaymentRequest
     var controller: PaymentAuthorizationControlling
     
-    /// The last status of the authorization received by passing the token data
-    /// to the payment server
-    var lastAuthStatus: PKPaymentAuthorizationStatus?
+    /// Whether Apple is in the process of authenticating the payment request
+    var isAuthenticating: Bool = false
+    
+    /// Whether Apple and Shopify has authenticated the payment request
+    var hasAuthenticated: Bool = false
     
     weak var delegate: PaymentSessionDelegate?
     
@@ -153,7 +149,16 @@ extension PaymentSession {
 extension PaymentSession {
     
     func paymentAuthorizationDidFinish() {
-        let paymentStatus   = PaymentStatus.from(status: lastAuthStatus)
+        let paymentStatus: PaymentStatus
+        
+        if (isAuthenticating) {
+            paymentStatus = PaymentStatus.failed
+        } else if (hasAuthenticated) {
+            paymentStatus = PaymentStatus.success
+        } else {
+            paymentStatus = PaymentStatus.cancelled
+        }
+        
         let unityController = UIApplication.shared.delegate as! UnityBuyAppController
         unityController.shouldResignActive = true
         
@@ -162,68 +167,61 @@ extension PaymentSession {
         }
     }
     
+    func paymentAuthorizationWillAuthorizePayment() {
+        isAuthenticating = true
+    }
+}
+
+@available(iOS, introduced: 8.0, deprecated: 11.0)
+extension PaymentSession {
+    
     func paymentAuthorization(didSelect shippingMethod: PKShippingMethod, completion: @escaping (PKPaymentAuthorizationStatus, [PKPaymentSummaryItem]) -> Void) {
-        delegate?.paymentSession(self, didSelect: shippingMethod) { (status: PKPaymentAuthorizationStatus, items: [PKPaymentSummaryItem]) in
-            completion(status, items)
-        }
+        delegate?.paymentSession(self, didSelect: shippingMethod, completion: completion)
     }
     
     func paymentAuthorization(didSelectShippingContact contact: PKContact, completion: @escaping (PKPaymentAuthorizationStatus, [PKShippingMethod], [PKPaymentSummaryItem]) -> Void) {
-        delegate?.paymentSession(self, didSelectShippingContact: contact) {
-            (status: PKPaymentAuthorizationStatus, shippingMethods: [PKShippingMethod], items: [PKPaymentSummaryItem]) in
-            completion(status, shippingMethods ,items)
-        }
+        delegate?.paymentSession(self, didSelectShippingContact: contact, completion: completion)
     }
     
     func paymentAuthorization(didAuthorizePayment payment: PKPayment, completion: @escaping (PKPaymentAuthorizationStatus) -> Void) {
-        delegate?.paymentSession(self, didAuthorize: payment) { (status: PKPaymentAuthorizationStatus) in
-            self.lastAuthStatus = status
+        
+        isAuthenticating = false
+        
+        delegate?.paymentSession(self, didAuthorize: payment, completion: { status in
+            
+            if (status == PKPaymentAuthorizationStatus.success) {
+                self.hasAuthenticated = true
+            } else {
+                self.hasAuthenticated = false
+            }
+            
             completion(status)
-        }
+        })
     }
 }
 
-// ----------------------------------
-//  MARK: - PKPaymentAuthorizationViewControllerDelegate -
-//
-extension PaymentSession: PKPaymentAuthorizationViewControllerDelegate {
-    
-    func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
-        paymentAuthorizationDidFinish()
+@available(iOS 11.0, *)
+extension PaymentSession {
+    func paymentAuthorization(didSelectShippingMethod shippingMethod: PKShippingMethod, handler completion: @escaping (PKPaymentRequestShippingMethodUpdate) -> Void) {
+        delegate?.paymentSession(self, didSelect: shippingMethod, handler: completion)
     }
     
-    func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController, didSelect shippingMethod: PKShippingMethod, completion: @escaping (PKPaymentAuthorizationStatus, [PKPaymentSummaryItem]) -> Void) {
-        paymentAuthorization(didSelect: shippingMethod, completion: completion)
+    func paymentAuthorization(didSelectShippingContact contact: PKContact, handler completion: @escaping (PKPaymentRequestShippingContactUpdate) -> Void) {
+        delegate?.paymentSession(self, didSelectShippingContact: contact, handler: completion)
     }
     
-    func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController, didSelectShippingContact contact: PKContact, completion: @escaping (PKPaymentAuthorizationStatus, [PKShippingMethod], [PKPaymentSummaryItem]) -> Void) {
-        paymentAuthorization(didSelectShippingContact: contact, completion: completion)
-    }
-    
-    func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController, didAuthorizePayment payment: PKPayment, completion: @escaping (PKPaymentAuthorizationStatus) -> Void) {
-        paymentAuthorization(didAuthorizePayment: payment, completion: completion)
-    }
-}
-
-// ----------------------------------
-//  MARK: - PKPaymentAuthorizationControllerDelegate -
-//
-@available(iOS 10.0, *)
-extension PaymentSession: PKPaymentAuthorizationControllerDelegate {
-    
-    func paymentAuthorizationControllerDidFinish(_ controller: PKPaymentAuthorizationController) {
-        paymentAuthorizationDidFinish()
-    }
-    
-    func paymentAuthorizationController(_ controller: PKPaymentAuthorizationController, didSelectShippingMethod shippingMethod: PKShippingMethod, completion: @escaping (PKPaymentAuthorizationStatus, [PKPaymentSummaryItem]) -> Void) {
-        paymentAuthorization(didSelect: shippingMethod, completion: completion)
-    }
-    
-    func paymentAuthorizationController(_ controller: PKPaymentAuthorizationController, didSelectShippingContact contact: PKContact, completion: @escaping (PKPaymentAuthorizationStatus, [PKShippingMethod], [PKPaymentSummaryItem]) -> Void) {
-        paymentAuthorization(didSelectShippingContact: contact, completion: completion)
-    }
-    
-    func paymentAuthorizationController(_ controller: PKPaymentAuthorizationController, didAuthorizePayment payment: PKPayment, completion: @escaping (PKPaymentAuthorizationStatus) -> Swift.Void) {
-        paymentAuthorization(didAuthorizePayment: payment, completion: completion)
+    func paymentAuthorization(didAuthorizePayment payment: PKPayment, handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
+        isAuthenticating = false
+        
+        delegate?.paymentSession(self, didAuthorize: payment, handler: { result in
+            
+            if (result.status == PKPaymentAuthorizationStatus.success) {
+                self.hasAuthenticated = true
+            } else {
+                self.hasAuthenticated = false
+            }
+            
+            completion(result)
+        })
     }
 }
