@@ -47,10 +47,7 @@ public class ShopPopup : MonoBehaviour {
         // With initialization complete, fetch products
         ShopifyHelper.FetchProducts(
             delegate (List<Product> products) {
-                foreach (var product in products) {
-                    // For each of the products received, add them to the products panel
-                    ProductsPanel.AddProduct(product);
-                }
+                ProductsPanel.SetProducts(products);
             },
             delegate {
                 RenderError("Could not find products.");

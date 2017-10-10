@@ -22,13 +22,17 @@ namespace Shopify.Examples.Panels {
         public Image BrokenImageIcon;
 
         [HideInInspector]
-        public RectTransform RectTransform;
+        public RectTransform RectTransform {
+            get {
+                // Lazily GetComponent and cache the result so we can return this faster later on
+                _cachedRectTransform = _cachedRectTransform ?? GetComponent<RectTransform>();
+                return _cachedRectTransform;
+            }
+        }
+
+        private RectTransform _cachedRectTransform;
 
         public bool IsLoaded { get; private set; }
-
-        private void Start() {
-            RectTransform = GetComponent<RectTransform>();
-        }
 
         public void Load() {
             IsLoaded = true;
