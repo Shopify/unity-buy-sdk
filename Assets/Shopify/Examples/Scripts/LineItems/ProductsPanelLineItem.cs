@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
-using Helpers;
+using Shopify.Examples.Helpers;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace LineItems {
+namespace Shopify.Examples.LineItems {
     public class ProductsPanelLineItem : MonoBehaviour {
         public UnityEvent OnClick;
 
