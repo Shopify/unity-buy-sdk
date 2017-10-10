@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Components;
-using Helpers;
+using Shopify.Examples.Helpers;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace Panels {
+namespace Shopify.Examples.Panels {
     public class AddProductToCartEvent : UnityEvent<Shopify.Unity.Product, Shopify.Unity.ProductVariant> {
     }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Shopify.Unity;
 using UnityEngine;
 
-namespace Helpers {
+namespace Shopify.Examples.Helpers {
     public class ShopifyAlreadyInitializedException : Exception {
     }
 

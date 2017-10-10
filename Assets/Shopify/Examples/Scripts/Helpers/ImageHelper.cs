@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Helpers {
+namespace Shopify.Examples.Helpers {
     public static class ImageHelper {
         private static readonly Dictionary<string, Texture2D> TextureCache = new Dictionary<string, Texture2D>();
 

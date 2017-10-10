@@ -2,7 +2,7 @@
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace Panels {
+namespace Shopify.Examples.Panels {
     public class EmptyCartPanel : MonoBehaviour {
 
         public Button BackToProductsButton;
