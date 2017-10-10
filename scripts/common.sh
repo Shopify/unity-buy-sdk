@@ -6,7 +6,7 @@ die() {
 }
 
 out() {
-    printf "%s" "$*"
+    echo -e $*
 }
 
 start() {
