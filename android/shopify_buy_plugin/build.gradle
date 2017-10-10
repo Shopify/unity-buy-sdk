@@ -48,7 +48,7 @@ task copyAARToPlugins(type: Copy) {
         rename "shopify_buy_plugin-release.aar", "shopify_buy_plugin.aar"
         exclude '*-debug.aar'
     }
-    into '../../Assets/Plugins/Android'
+    into '../../Assets/Shopify/Plugins/Android'
 
     outputs.upToDateWhen { false }
 }
