@@ -3,6 +3,7 @@ package com.shopify.unity.buy.view.widget;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.widget.TextView;
@@ -24,13 +25,13 @@ public final class TotalSummaryView extends ConstraintLayout
     private static final NumberFormat CURRENCY_FORMAT = NumberFormat.getCurrencyInstance();
 
     /** Cart subtotal price label. */
-    private TextView subtotal;
+    @VisibleForTesting TextView subtotal;
     /** Cart shipping price label. */
-    private TextView shipping;
+    @VisibleForTesting TextView shipping;
     /** Cart tax price label. */
-    private TextView tax;
+    @VisibleForTesting TextView tax;
     /** Cart total price label. */
-    private TextView total;
+    @VisibleForTesting TextView total;
 
     public TotalSummaryView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);

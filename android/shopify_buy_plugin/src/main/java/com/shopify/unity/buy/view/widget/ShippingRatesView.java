@@ -1,6 +1,7 @@
 package com.shopify.unity.buy.view.widget;
 
 import android.content.Context;
+import android.support.annotation.VisibleForTesting;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.View;
@@ -22,9 +23,9 @@ public final class ShippingRatesView extends ConstraintLayout
     private static final NumberFormat CURRENCY_FORMAT = NumberFormat.getCurrencyInstance();
 
     /** Shipping line description label. */
-    private TextView shippingLine;
+    @VisibleForTesting TextView shippingLine;
     /** Shipping price label. */
-    private TextView price;
+    @VisibleForTesting TextView price;
 
     public ShippingRatesView(Context context, AttributeSet attrs) {
         super(context, attrs);
