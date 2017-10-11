@@ -55,7 +55,7 @@ namespace <%= namespace %>.Editor.BuildPipeline {
             var keywords = bundleIdentifier.Split(separator);
             var productName = keywords[keywords.Length - 1];
 
-            string swiftInterfaceHeaderPath = Path.Combine(project.BuildPath, "Libraries/Plugins/iOS/Shopify/SwiftInterfaceHeader.h");
+            string swiftInterfaceHeaderPath = Path.Combine(project.BuildPath, "Libraries/Shopify/Plugins/iOS/Shopify/SwiftInterfaceHeader.h");
 
             if (File.Exists(swiftInterfaceHeaderPath)) {
                 string[] lines = File.ReadAllLines(swiftInterfaceHeaderPath, System.Text.Encoding.UTF8);
