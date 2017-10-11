@@ -5,7 +5,7 @@ namespace <%= namespace %>.SDK {
     using UnityEngine;
 
     public class ShopifyOnboardingPanel : EditorWindow {
-        private const string HasSeenOnboardingPanelEditorPrefsKey = "shopify_unity_buy_has_seen_onboarding";
+        private const string HasSeenOnboardingPanelEditorPrefsKey = "shopify_buy_has_seen_onboarding";
 
         [InitializeOnLoadMethod]
         public static void OnLoad() {
@@ -84,7 +84,7 @@ namespace <%= namespace %>.SDK {
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
             if (GUILayout.Button("Start your free trial", Styles.ButtonStyle))
-                Application.OpenURL("www.shopify.com/unity?signup_types=<%= publish_destination %>-unityeditor");
+                Application.OpenURL("https://www.shopify.com/unity?ref=<%= publish_destination %>-unityeditor");
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 
