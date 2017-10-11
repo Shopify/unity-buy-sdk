@@ -84,7 +84,7 @@ namespace <%= namespace %>.SDK {
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
             if (GUILayout.Button("Start your free trial", Styles.ButtonStyle))
-                Application.OpenURL("www.shopify.com/unity?signup_types=unity_buy_sdk,<%= publish_destination %>-unityeditor");
+                Application.OpenURL("www.shopify.com/unity?signup_types=<%= publish_destination %>-unityeditor");
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 
