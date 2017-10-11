@@ -1,6 +1,7 @@
 var searchData=
 [
   ['abstractresponse',['AbstractResponse',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_abstract_response.html',1,'Shopify::Unity::SDK']]],
+  ['addproducttocartevent',['AddProductToCartEvent',['../class_shopify_1_1_examples_1_1_panels_1_1_add_product_to_cart_event.html',1,'Shopify::Examples::Panels']]],
   ['aliasexception',['AliasException',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_alias_exception.html',1,'Shopify::Unity::SDK']]],
   ['applepayeventreceiverbridge',['ApplePayEventReceiverBridge',['../class_shopify_1_1_unity_1_1_s_d_k_1_1i_o_s_1_1_apple_pay_event_receiver_bridge.html',1,'Shopify::Unity::SDK::iOS']]],
   ['appliedgiftcard',['AppliedGiftCard',['../class_shopify_1_1_unity_1_1_applied_gift_card.html',1,'Shopify::Unity']]],

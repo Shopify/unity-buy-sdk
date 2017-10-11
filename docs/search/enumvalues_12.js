@@ -31,5 +31,6 @@ var searchData=
   ['sx',['SX',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7ac5c6b36796a5cfb3b845cd7881e3fee4',1,'Shopify::Unity']]],
   ['sy',['SY',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a174fe2539889bbf873e7c2de71949074',1,'Shopify::Unity']]],
   ['syp',['SYP',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbae2fcd30d2212e6e0a029704038803f37',1,'Shopify::Unity']]],
-  ['sz',['SZ',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a715f9a16ad2c8290efe57b63d279d8fa',1,'Shopify::Unity']]]
+  ['sz',['SZ',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a715f9a16ad2c8290efe57b63d279d8fa',1,'Shopify::Unity']]],
+  ['szl',['SZL',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba736b36e322b5593697b4927d6d9132ab',1,'Shopify::Unity']]]
 ];

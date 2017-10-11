@@ -80,9 +80,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a334095ebda12550ce9947813b1d41fb1"><td class="memItemLeft" align="right" valign="top"><a id="a334095ebda12550ce9947813b1d41fb1"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>CartLineItems</b> (Action&lt; string &gt; onDeleteLineItem)</td></tr>
 <tr class="separator:a334095ebda12550ce9947813b1d41fb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07c9d25c2d997bfdf8cc5df579126e05"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_items.html#a07c9d25c2d997bfdf8cc5df579126e05">AddOrUpdate</a> (string variantId, long? quantity=null, Dictionary&lt; string, string &gt; customAttributes=null)</td></tr>
-<tr class="memdesc:a07c9d25c2d997bfdf8cc5df579126e05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds or updates an existing line item using a variant id.  <a href="#a07c9d25c2d997bfdf8cc5df579126e05">More...</a><br /></td></tr>
-<tr class="separator:a07c9d25c2d997bfdf8cc5df579126e05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59b0634c3fbfc0b093819a06f9cdb697"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_items.html#a59b0634c3fbfc0b093819a06f9cdb697">AddOrUpdate</a> (<a class="el" href="class_shopify_1_1_unity_1_1_product_variant.html">ProductVariant</a> variant, long? quantity=null, Dictionary&lt; string, string &gt; customAttributes=null)</td></tr>
 <tr class="memdesc:a59b0634c3fbfc0b093819a06f9cdb697"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds or updates a line item using a <a class="el" href="class_shopify_1_1_unity_1_1_product_variant.html" title="A product variant represents a different version of a product, such as differing sizes or differing c...">ProductVariant</a> .  <a href="#a59b0634c3fbfc0b093819a06f9cdb697">More...</a><br /></td></tr>
 <tr class="separator:a59b0634c3fbfc0b093819a06f9cdb697"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -128,65 +125,16 @@ Properties</h2></td></tr>
 <tr class="memitem:afd9be0fba50b7981cb8d6088e44cadc1"><td class="memItemLeft" align="right" valign="top"><a id="afd9be0fba50b7981cb8d6088e44cadc1"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsSaved</b><code> [get]</code></td></tr>
 <tr class="separator:afd9be0fba50b7981cb8d6088e44cadc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc90f1772e7c45783e796f9fd4637fdb"><td class="memItemLeft" align="right" valign="top"><a id="afc90f1772e7c45783e796f9fd4637fdb"></a>
+decimal&#160;</td><td class="memItemRight" valign="bottom"><b>Subtotal</b><code> [get]</code></td></tr>
+<tr class="separator:afc90f1772e7c45783e796f9fd4637fdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Is used to add, update, or delete line items in a <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a> </p>
 <p>. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a07c9d25c2d997bfdf8cc5df579126e05"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a07c9d25c2d997bfdf8cc5df579126e05">&#9670;&nbsp;</a></span>AddOrUpdate() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Shopify.Unity.SDK.CartLineItems.AddOrUpdate </td>
-          <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>variantId</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">long?&#160;</td>
-          <td class="paramname"><em>quantity</em> = <code>null</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Dictionary&lt; string, string &gt;&#160;</td>
-          <td class="paramname"><em>customAttributes</em> = <code>null</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Adds or updates an existing line item using a variant id. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">variantId</td><td>variant id for a <a class="el" href="class_shopify_1_1_unity_1_1_product_variant.html" title="A product variant represents a different version of a product, such as differing sizes or differing c...">ProductVariant</a> </td></tr>
-    <tr><td class="paramname">quantity</td><td>the number of items you'd like to order for variantId</td></tr>
-    <tr><td class="paramname">customAttributes</td><td>can be used to define extra information for this line item</td></tr>
-  </table>
-  </dd>
-</dl>
-<div class="fragment"><div class="line"><span class="comment">// Example that updates the quantity of items to be purchased to 3.</span></div><div class="line"><span class="comment">// If no line item exists for `variantId`, then a new line item is created</span></div><div class="line">Cart cart = ShopifyBuy.Client().Cart();</div><div class="line"></div><div class="line">cart.LineItems.AddOrUpdate(variantId, 3);</div></div><!-- fragment --> 
-</div>
-</div>
 <a id="a59b0634c3fbfc0b093819a06f9cdb697"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a59b0634c3fbfc0b093819a06f9cdb697">&#9670;&nbsp;</a></span>AddOrUpdate() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a59b0634c3fbfc0b093819a06f9cdb697">&#9670;&nbsp;</a></span>AddOrUpdate() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -238,7 +186,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsSaved</b><code> [ge
 </div>
 </div>
 <a id="a7283bb4d1e802609c5e91e533158eab2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7283bb4d1e802609c5e91e533158eab2">&#9670;&nbsp;</a></span>AddOrUpdate() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7283bb4d1e802609c5e91e533158eab2">&#9670;&nbsp;</a></span>AddOrUpdate() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
