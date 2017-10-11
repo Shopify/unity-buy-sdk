@@ -75,9 +75,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae90d6d2c68725117ca7d7bd96ada5b45"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_blog_query.html#ae90d6d2c68725117ca7d7bd96ada5b45">BlogQuery</a> (StringBuilder query)</td></tr>
 <tr class="memdesc:ae90d6d2c68725117ca7d7bd96ada5b45"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_blog_query.html">BlogQuery</a> is used to build queries. Typically <a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_blog_query.html">BlogQuery</a> will not be used directly but instead will be used when building queries from either <a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_query_root_query.html" title="QueryRootQuery is the root query builder. All Storefront API queries are built off of QueryRootQuery...">QueryRootQuery</a> or <a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_mutation_query.html" title="MutationQuery is the root mutation builder. All Storefront API mutation queries are built off of Muta...">MutationQuery</a>.  <a href="#ae90d6d2c68725117ca7d7bd96ada5b45">More...</a><br /></td></tr>
 <tr class="separator:ae90d6d2c68725117ca7d7bd96ada5b45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afac5dada34d35524718e6da1e94d17ad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_blog_query.html">BlogQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_blog_query.html#afac5dada34d35524718e6da1e94d17ad">articles</a> (ArticleConnectionDelegate buildQuery, long first, string after=null, bool? reverse=null, string alias=null)</td></tr>
-<tr class="memdesc:afac5dada34d35524718e6da1e94d17ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of the blog's articles.  <a href="#afac5dada34d35524718e6da1e94d17ad">More...</a><br /></td></tr>
-<tr class="separator:afac5dada34d35524718e6da1e94d17ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a023ecb476aea8ba43a41a90c15b59423"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_blog_query.html">BlogQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_blog_query.html#a023ecb476aea8ba43a41a90c15b59423">articles</a> (ArticleConnectionDelegate buildQuery, long? first=null, string after=null, long? last=null, string before=null, bool? reverse=null, string alias=null)</td></tr>
+<tr class="memdesc:a023ecb476aea8ba43a41a90c15b59423"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of the blog's articles.  <a href="#a023ecb476aea8ba43a41a90c15b59423">More...</a><br /></td></tr>
+<tr class="separator:a023ecb476aea8ba43a41a90c15b59423"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac44019af4f9393f9036a79cda289be57"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_blog_query.html">BlogQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_blog_query.html#ac44019af4f9393f9036a79cda289be57">id</a> ()</td></tr>
 <tr class="memdesc:ac44019af4f9393f9036a79cda289be57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Globally unique identifier.  <a href="#ac44019af4f9393f9036a79cda289be57">More...</a><br /></td></tr>
 <tr class="separator:ac44019af4f9393f9036a79cda289be57"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -118,8 +118,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="afac5dada34d35524718e6da1e94d17ad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afac5dada34d35524718e6da1e94d17ad">&#9670;&nbsp;</a></span>articles()</h2>
+<a id="a023ecb476aea8ba43a41a90c15b59423"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a023ecb476aea8ba43a41a90c15b59423">&#9670;&nbsp;</a></span>articles()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -136,14 +136,26 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">long&#160;</td>
-          <td class="paramname"><em>first</em>, </td>
+          <td class="paramtype">long?&#160;</td>
+          <td class="paramname"><em>first</em> = <code>null</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">string&#160;</td>
           <td class="paramname"><em>after</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long?&#160;</td>
+          <td class="paramname"><em>last</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>before</em> = <code>null</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>

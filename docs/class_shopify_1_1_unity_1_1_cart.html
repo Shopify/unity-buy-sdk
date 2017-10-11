@@ -51,7 +51,7 @@ $(function() {
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
-<iframe src="javascript:void(0)" frameborder="0"
+<iframe src="javascript:void(0)" frameborder="0" 
         name="MSearchResults" id="MSearchResults">
 </iframe>
 </div>
@@ -71,7 +71,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Manages line items for an order. Can also be used to generate a web checkout link to check out in browser.
+<p>Manages line items for an order. Can also be used to generate a web checkout link to check out in browser.  
  <a href="class_shopify_1_1_unity_1_1_cart.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -82,12 +82,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a943988a56cc24156854cd13456a8edb4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html#a943988a56cc24156854cd13456a8edb4">Reset</a> ()</td></tr>
 <tr class="memdesc:a943988a56cc24156854cd13456a8edb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the cart by removing all line items and resets all internal state.  <a href="#a943988a56cc24156854cd13456a8edb4">More...</a><br /></td></tr>
 <tr class="separator:a943988a56cc24156854cd13456a8edb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad56823f43045f9d676c6a894b325e6f"><td class="memItemLeft" align="right" valign="top"><a id="aad56823f43045f9d676c6a894b325e6f"></a>
+decimal&#160;</td><td class="memItemRight" valign="bottom"><b>Subtotal</b> ()</td></tr>
+<tr class="separator:aad56823f43045f9d676c6a894b325e6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88a9770fb0fd4b5ba5870a9dbbb7b2e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html#a88a9770fb0fd4b5ba5870a9dbbb7b2e5">GetWebCheckoutLink</a> (GetWebCheckoutLinkSuccessCallback success, GetWebCheckoutLinkFailureCallback failure)</td></tr>
-<tr class="memdesc:a88a9770fb0fd4b5ba5870a9dbbb7b2e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the web URL for checking out the contents of this <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a>. For presenting the user with a web view that loads this URL see CheckoutWithWebView.  <a href="#a88a9770fb0fd4b5ba5870a9dbbb7b2e5">More...</a><br /></td></tr>
+<tr class="memdesc:a88a9770fb0fd4b5ba5870a9dbbb7b2e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the web URL for checking out the contents of this <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a>. For presenting the user with a web view that loads this URL see <a class="el" href="class_shopify_1_1_unity_1_1_cart.html#a932016a2ba26278e5cf6f2492d231936">CheckoutWithWebView</a>.  <a href="#a88a9770fb0fd4b5ba5870a9dbbb7b2e5">More...</a><br /></td></tr>
 <tr class="separator:a88a9770fb0fd4b5ba5870a9dbbb7b2e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9def142eb55aca6a4c4fe284391b8fb4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html#a9def142eb55aca6a4c4fe284391b8fb4">CheckoutWithWebView</a> (CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure)</td></tr>
-<tr class="memdesc:a9def142eb55aca6a4c4fe284391b8fb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Launches a platform-specific web view screen with the <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a>'s web checkout link loaded. This can be used to perform a cart checkout from within your application instead of being directed to an external web application. Typically this can be used as a fallback measure in cases where the user's device doesn't support native pay methods.  <a href="#a9def142eb55aca6a4c4fe284391b8fb4">More...</a><br /></td></tr>
-<tr class="separator:a9def142eb55aca6a4c4fe284391b8fb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a932016a2ba26278e5cf6f2492d231936"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html#a932016a2ba26278e5cf6f2492d231936">CheckoutWithWebView</a> (CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure)</td></tr>
+<tr class="memdesc:a932016a2ba26278e5cf6f2492d231936"><td class="mdescLeft">&#160;</td><td class="mdescRight">Launches a platform-specific web view screen with the <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a>'s web checkout link loaded. This can be used to perform a cart checkout from within your application instead of being directed to an external web application. Typically this can be used as a fallback measure in cases where the user's device doesn't support native pay methods.  <a href="#a932016a2ba26278e5cf6f2492d231936">More...</a><br /></td></tr>
+<tr class="separator:a932016a2ba26278e5cf6f2492d231936"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af9df57cf27df2d789df7fcc3cdf4564c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_cart.html#af9df57cf27df2d789df7fcc3cdf4564c">CheckoutWithNativePay</a> (string key, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure)</td></tr>
 <tr class="memdesc:af9df57cf27df2d789df7fcc3cdf4564c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Launches a platform-specific native pay UI for checking out the <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a>'s contents. Currently supported native pay options include:  <a href="#af9df57cf27df2d789df7fcc3cdf4564c">More...</a><br /></td></tr>
 <tr class="separator:af9df57cf27df2d789df7fcc3cdf4564c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -147,7 +150,7 @@ Properties</h2></td></tr>
   </table>
   </dd>
 </dl>
-<div class="fragment"><div class="line"><span class="comment">// Example that creates a cart using a ShopifyClient and checks how many line items it has</span></div><div class="line"><span class="comment">// (spoiler: it has 0 line items since the cart was just created).</span></div><div class="line">ShopifyClient client = <span class="keyword">new</span> ShopifyClient(accessToken, shopDomain);</div><div class="line"></div><div class="line"><a class="code" href="class_shopify_1_1_unity_1_1_cart.html#a83ee6e32d803d5c60f54af65c9c8139b">Cart</a> cart = <span class="keyword">new</span> <a class="code" href="class_shopify_1_1_unity_1_1_cart.html#a83ee6e32d803d5c60f54af65c9c8139b">Cart</a>(client);</div><div class="line"></div><div class="line">Debug.Log(cart.LineItems.All().Count);</div></div><!-- fragment -->
+<div class="fragment"><div class="line"><span class="comment">// Example that creates a cart using a ShopifyClient and checks how many line items it has</span></div><div class="line"><span class="comment">// (spoiler: it has 0 line items since the cart was just created).</span></div><div class="line">ShopifyClient client = <span class="keyword">new</span> ShopifyClient(accessToken, shopDomain);</div><div class="line"></div><div class="line"><a class="code" href="class_shopify_1_1_unity_1_1_cart.html#a83ee6e32d803d5c60f54af65c9c8139b">Cart</a> cart = <span class="keyword">new</span> <a class="code" href="class_shopify_1_1_unity_1_1_cart.html#a83ee6e32d803d5c60f54af65c9c8139b">Cart</a>(client);</div><div class="line"></div><div class="line">Debug.Log(cart.LineItems.All().Count);</div></div><!-- fragment --> 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -287,8 +290,8 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="a9def142eb55aca6a4c4fe284391b8fb4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9def142eb55aca6a4c4fe284391b8fb4">&#9670;&nbsp;</a></span>CheckoutWithWebView()</h2>
+<a id="a932016a2ba26278e5cf6f2492d231936"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a932016a2ba26278e5cf6f2492d231936">&#9670;&nbsp;</a></span>CheckoutWithWebView()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -373,7 +376,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Returns the web URL for checking out the contents of this <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a>. For presenting the user with a web view that loads this URL see CheckoutWithWebView. </p>
+<p>Returns the web URL for checking out the contents of this <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a>. For presenting the user with a web view that loads this URL see <a class="el" href="class_shopify_1_1_unity_1_1_cart.html#a932016a2ba26278e5cf6f2492d231936">CheckoutWithWebView</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">success</td><td>called when the checkout url was successfully generated.</td></tr>

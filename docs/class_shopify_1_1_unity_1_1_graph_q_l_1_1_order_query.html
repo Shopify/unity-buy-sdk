@@ -93,9 +93,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6d386a0c1e2bb1d2cee3b0b91121973c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_order_query.html">OrderQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_order_query.html#a6d386a0c1e2bb1d2cee3b0b91121973c">id</a> ()</td></tr>
 <tr class="memdesc:a6d386a0c1e2bb1d2cee3b0b91121973c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Globally unique identifier.  <a href="#a6d386a0c1e2bb1d2cee3b0b91121973c">More...</a><br /></td></tr>
 <tr class="separator:a6d386a0c1e2bb1d2cee3b0b91121973c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe02a3b83c8a317635d0c9c1f9f70abc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_order_query.html">OrderQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_order_query.html#afe02a3b83c8a317635d0c9c1f9f70abc">lineItems</a> (OrderLineItemConnectionDelegate buildQuery, long first, string after=null, bool? reverse=null, string alias=null)</td></tr>
-<tr class="memdesc:afe02a3b83c8a317635d0c9c1f9f70abc"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of the order’s line items.  <a href="#afe02a3b83c8a317635d0c9c1f9f70abc">More...</a><br /></td></tr>
-<tr class="separator:afe02a3b83c8a317635d0c9c1f9f70abc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab32242b128f88377c86e86eb7ed66c25"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_order_query.html">OrderQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_order_query.html#ab32242b128f88377c86e86eb7ed66c25">lineItems</a> (OrderLineItemConnectionDelegate buildQuery, long? first=null, string after=null, long? last=null, string before=null, bool? reverse=null, string alias=null)</td></tr>
+<tr class="memdesc:ab32242b128f88377c86e86eb7ed66c25"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of the order’s line items.  <a href="#ab32242b128f88377c86e86eb7ed66c25">More...</a><br /></td></tr>
+<tr class="separator:ab32242b128f88377c86e86eb7ed66c25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af35c18dbbf26d759f51ef6cec5fb5587"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_order_query.html">OrderQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_order_query.html#af35c18dbbf26d759f51ef6cec5fb5587">orderNumber</a> ()</td></tr>
 <tr class="memdesc:af35c18dbbf26d759f51ef6cec5fb5587"><td class="mdescLeft">&#160;</td><td class="mdescRight">A unique numeric identifier for the order for use by shop owner and customer.  <a href="#af35c18dbbf26d759f51ef6cec5fb5587">More...</a><br /></td></tr>
 <tr class="separator:af35c18dbbf26d759f51ef6cec5fb5587"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -291,8 +291,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="afe02a3b83c8a317635d0c9c1f9f70abc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afe02a3b83c8a317635d0c9c1f9f70abc">&#9670;&nbsp;</a></span>lineItems()</h2>
+<a id="ab32242b128f88377c86e86eb7ed66c25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab32242b128f88377c86e86eb7ed66c25">&#9670;&nbsp;</a></span>lineItems()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -309,14 +309,26 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">long&#160;</td>
-          <td class="paramname"><em>first</em>, </td>
+          <td class="paramtype">long?&#160;</td>
+          <td class="paramname"><em>first</em> = <code>null</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">string&#160;</td>
           <td class="paramname"><em>after</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long?&#160;</td>
+          <td class="paramname"><em>last</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>before</em> = <code>null</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>

@@ -81,9 +81,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7bb11b8a709d044a8cd4d22066621ff4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_article_query.html">ArticleQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_article_query.html#a7bb11b8a709d044a8cd4d22066621ff4">blog</a> (BlogDelegate buildQuery)</td></tr>
 <tr class="memdesc:a7bb11b8a709d044a8cd4d22066621ff4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The blog that the article belongs to.  <a href="#a7bb11b8a709d044a8cd4d22066621ff4">More...</a><br /></td></tr>
 <tr class="separator:a7bb11b8a709d044a8cd4d22066621ff4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a74a3799c55403afbc1ab767d832467df"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_article_query.html">ArticleQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_article_query.html#a74a3799c55403afbc1ab767d832467df">comments</a> (CommentConnectionDelegate buildQuery, long first, string after=null, bool? reverse=null, string alias=null)</td></tr>
-<tr class="memdesc:a74a3799c55403afbc1ab767d832467df"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of comments posted on the article.  <a href="#a74a3799c55403afbc1ab767d832467df">More...</a><br /></td></tr>
-<tr class="separator:a74a3799c55403afbc1ab767d832467df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7940ab7184bd317fa514381585d30f43"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_article_query.html">ArticleQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_article_query.html#a7940ab7184bd317fa514381585d30f43">comments</a> (CommentConnectionDelegate buildQuery, long? first=null, string after=null, long? last=null, string before=null, bool? reverse=null, string alias=null)</td></tr>
+<tr class="memdesc:a7940ab7184bd317fa514381585d30f43"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of comments posted on the article.  <a href="#a7940ab7184bd317fa514381585d30f43">More...</a><br /></td></tr>
+<tr class="separator:a7940ab7184bd317fa514381585d30f43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a869ba506195f7fcc305cfb088a8c2eef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_article_query.html">ArticleQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_article_query.html#a869ba506195f7fcc305cfb088a8c2eef">content</a> (long? truncateAt=null, string alias=null)</td></tr>
 <tr class="memdesc:a869ba506195f7fcc305cfb088a8c2eef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stripped content of the article, single line with HTML tags removed.  <a href="#a869ba506195f7fcc305cfb088a8c2eef">More...</a><br /></td></tr>
 <tr class="separator:a869ba506195f7fcc305cfb088a8c2eef"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -201,8 +201,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a74a3799c55403afbc1ab767d832467df"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a74a3799c55403afbc1ab767d832467df">&#9670;&nbsp;</a></span>comments()</h2>
+<a id="a7940ab7184bd317fa514381585d30f43"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7940ab7184bd317fa514381585d30f43">&#9670;&nbsp;</a></span>comments()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -219,14 +219,26 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">long&#160;</td>
-          <td class="paramname"><em>first</em>, </td>
+          <td class="paramtype">long?&#160;</td>
+          <td class="paramname"><em>first</em> = <code>null</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">string&#160;</td>
           <td class="paramname"><em>after</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long?&#160;</td>
+          <td class="paramname"><em>last</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>before</em> = <code>null</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
