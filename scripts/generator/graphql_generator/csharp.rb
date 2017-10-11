@@ -95,7 +95,6 @@ module GraphQLGenerator
         CartState
         Editor/ShopifyOnboardingPanel
         Editor/ShopifyEditorStyleHelper
-        Editor/ShopifyDependencies
         Editor/BuildPipeline/iOSPostProcessor
         Editor/BuildPipeline/ExtendedPBXProject
         SDK/Arguments
