@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.shopify.unity.buy.view.widget.ShippingRatesView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:paddingBottom="@dimen/default_padding"
+    android:paddingEnd="@dimen/default_padding"
+    android:paddingStart="@dimen/default_padding"
+    android:paddingTop="@dimen/default_padding">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/default_padding_half"
+        android:text="@string/confirmation_shipping_method_title"
+        android:textAppearance="@style/Shopify.SubTitleText.Inverse"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/change"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_padding_half"
+        android:foreground="?attr/selectableItemBackground"
+        android:text="@string/confirmation_shipping_method_change"
+        android:textAppearance="@style/WalletDetailsButton"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/shipping_line"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/default_padding"
+        android:layout_marginTop="@dimen/default_padding_half"
+        android:text="@string/confirmation_shipping_method_not_selected"
+        android:textAppearance="@style/Shopify.BodyText.Inverse"
+        android:textColor="@color/text_grey"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/price"
+        app:layout_constraintTop_toBottomOf="@+id/change"
+        tools:text="DHL" />
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_padding_half"
+        android:text="@string/confirmation_shipping_method_price_not_available"
+        android:textAppearance="@style/Shopify.BodyText.Inverse"
+        android:textColor="@color/text_grey"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/change"
+        tools:text="$59.60" />
+
+</com.shopify.unity.buy.view.widget.ShippingRatesView>

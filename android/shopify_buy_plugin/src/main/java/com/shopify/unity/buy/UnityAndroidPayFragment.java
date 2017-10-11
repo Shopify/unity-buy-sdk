@@ -43,7 +43,6 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
     private AndroidPaySessionCallback sessionCallbacks;
 
     private CheckoutState currentCheckoutState;
-    private MaskedWallet maskedWallet;
 
     static final class UnityAndroidPayFragmentBuilder {
         private static final String[] requiredExtras = {
@@ -170,7 +169,7 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
             @Override
             public void onMaskedWallet(final MaskedWallet maskedWallet) {
                 super.onMaskedWallet(maskedWallet);
-                UnityAndroidPayFragment.this.maskedWallet = maskedWallet;
+                MaskedWalletHolder.maskedWallet = maskedWallet;
                 currentCheckoutState = CheckoutState.RECEIVED_MASKED_WALLET;
 
                 MailingAddressInput input = new MailingAddressInput(maskedWallet.getBuyerShippingAddress());
@@ -191,6 +190,7 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
             public void onFullWallet(FullWallet fullWallet) {
                 super.onFullWallet(fullWallet);
                 Logger.d("Full wallet received.");
+                startActivity(ConfirmationActivity.newIntent(getActivity(), cart));
             }
 
             @Override
@@ -254,7 +254,7 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
      * @param cart the {@link PayCart} to request a full wallet for
      */
     private void requestFullWallet(PayCart cart) {
-        PayHelper.requestFullWallet(googleApiClient, cart, maskedWallet);
+        PayHelper.requestFullWallet(googleApiClient, cart, MaskedWalletHolder.maskedWallet);
     }
 
     public void setSessionCallbacks(AndroidPaySessionCallback callbacks) {

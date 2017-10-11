@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">UnityBuyPlugin</string>
+    <string name="confirmation_title">Order Confirmation</string>
+    <string name="confirmation_summary_subtotal">Subtotal</string>
+    <string name="confirmation_summary_shipping">Shipping</string>
+    <string name="confirmation_summary_tax">Tax</string>
+    <string name="confirmation_summary_total">Total: %1$s</string>
+    <string name="confirmation_shipping_method_title">Shipping Method</string>
+    <string name="confirmation_shipping_method_change">CHANGE</string>
+    <string name="confirmation_shipping_method_not_selected">Not Selected</string>
+    <string name="confirmation_shipping_method_price_not_available">N/A</string>
+    <string name="confirmation_confirm">Confirm Order</string>
 </resources>
