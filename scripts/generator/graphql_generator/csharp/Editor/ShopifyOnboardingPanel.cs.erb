@@ -27,18 +27,14 @@ namespace <%= namespace %>.SDK {
             return EditorPrefs.GetBool(HasSeenOnboardingPanelEditorPrefsKey, false);
         }
 
-        private const string SettingsFileName = "Shopify Buy Visual GUI Settings";
-
         private ShopifyEditorStyleHelper Styles;
-
-        private const float DesiredWindowWidth = 400f;
-        private const float DesiredWindowHeight = 600f;
-        private const float Margin = 20f;
+        private const float DesiredWindowWidth = 550f;
+        private const float DesiredWindowHeight = 745f;
         private const float AccentBarHeight = 5f;
 
         private void OnEnable() {
             minSize = new Vector2(DesiredWindowWidth, DesiredWindowHeight);
-            titleContent = new GUIContent("Unity Buy SDK");
+            titleContent = new GUIContent("Shopify Buy SDK");
             position = new Rect(position.xMin, position.yMin, DesiredWindowWidth, DesiredWindowHeight);
             Styles = new ShopifyEditorStyleHelper();
         }
@@ -47,49 +43,68 @@ namespace <%= namespace %>.SDK {
             DrawRect(new Rect(0, 0, position.width, position.height), Styles.BackgroundColor);
             DrawRect(new Rect(0, 0, position.width, 5f), Styles.AccentColor);
 
-            GUI.Label(
-                BottomRightAnchoredRect(Styles.BackgroundIllustration.width, Styles.BackgroundIllustration.height),
-                Styles.BackgroundIllustration
-            );
-
             GUILayout.BeginArea(
                 new Rect(
-                    Margin,
-                    Margin + AccentBarHeight,
-                    Mathf.Min(position.width - Margin * 2, DesiredWindowWidth),
-                    position.height - (Margin * 2) - AccentBarHeight
+                    0,
+                    AccentBarHeight,
+                    Mathf.Min(position.width, DesiredWindowWidth),
+                    position.height - AccentBarHeight
                 )
             );
 
-            GUILayout.Label(Styles.LogoImage, GUILayout.Height(Styles.LogoImage.height));
-            GUILayout.Label("Unity Buy SDK", Styles.HeadingStyle);
+            GUILayout.BeginVertical();
+
+            GUILayout.Space(20f);
+
+            GUILayout.Label(Styles.Illustration, Styles.HeadingStyle, GUILayout.Height(Styles.Illustration.height/3f));
+
+            GUILayout.Label("Generate additional revenue with an in-game store", Styles.HeadingStyle);
 
             GUILayout.Label(
-                "Reward your most dedicated fans with physical merchandise. Shopify Buy SDK enables players to order merchandise directly from your game experience.",
+                "Start selling merchandise directly inside your game with the Shopify In-Game Buy SDK.",
+                Styles.AccentBody
+            );
+
+            GUILayout.EndVertical();
+
+            var bottomArea = EditorGUILayout.BeginVertical();
+
+            DrawRect(new Rect(0, bottomArea.yMin, position.width, bottomArea.height), Styles.AltBackgroundColor);
+            DrawRect(new Rect(0, bottomArea.yMin, position.width, 1), Styles.SeparatorColor);
+
+            GUILayout.Space(40f);
+
+            GUILayout.Label("Start your 30-day free trial", Styles.SubheadingStyle);
+
+            GUILayout.Label(
+                "In order to use this plugin, you need to sign up for a Shopify account. Your Shopify account allows you to build products, manage orders, and accept payments.",
                 Styles.BodyStyle
             );
 
-            GUILayout.Label("Start your store today", Styles.SubheadingStyle);
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button("Start your free trial", Styles.ButtonStyle))
+                Application.OpenURL("www.shopify.com/unity?signup_types=<%= publish_destination %>-unityeditor");
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+
+            GUILayout.Label("Need help getting started?", Styles.SubheadingStyle);
 
             GUILayout.Label(
-                "To use the Shopify Buy SDK you’ll need to set up a Shopify store.",
+                "Getting started with the SDK is easy, with setup in less than an hour. Hit the button below to view a step-by-step guide to get up and running.",
                 Styles.BodyStyle
             );
 
-            if (GUILayout.Button("Start your free trial", Styles.ButtonStyle)) {
-                Application.OpenURL("https://www.shopify.com/signup?signup_types=unity_buy_sdk,<%= publish_destination %>");
-            }
-            
-            GUILayout.Label("Learn how to connect your game to your Shopify store", Styles.SubheadingStyle);
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button("View the guide", Styles.ButtonStyle))
+                Application.OpenURL("https://www.shopify.com/partners/blog/using-shopify-unity-buy-sdk");
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
 
-            GUILayout.Label(
-                "Read the step-by-step instructions on how to get up and running.",
-                Styles.BodyStyle
-            );
+            GUILayout.Space(40f);
 
-            if (GUILayout.Button("Read the help documentation", Styles.ButtonStyle))
-            Application.OpenURL("https://help.shopify.com/api/sdks/custom-storefront/unity-buy-sdk/getting-started");
-
+            EditorGUILayout.EndVertical();
             GUILayout.EndArea();
         }
 
@@ -102,15 +117,6 @@ namespace <%= namespace %>.SDK {
             style.normal.background = colorTex;
 
             GUI.Label(rect, "", style);
-        }
-
-        private Rect BottomRightAnchoredRect(float width, float height) {
-            return new Rect(
-                position.width - width,
-                position.height - height,
-                width,
-                height
-            );
         }
     }
 }

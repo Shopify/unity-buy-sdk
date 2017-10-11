@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 8f12fbc31476c4bbeb3af6297e16c012
+timeCreated: 1507300829
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Inter UI
+  fontNames:
+  - Inter UI
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 7aac9a301b91b45abba49ad2f9a152a9, type: 3}
+  - {fileID: 12800000, guid: 5527b337b045a45c7bb1edbd83e4fbed, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
