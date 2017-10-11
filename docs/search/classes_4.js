@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['globalgameobject',['GlobalGameObject',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_global_game_object.html',1,'Shopify::Unity::SDK']]]
+  ['emptycartpanel',['EmptyCartPanel',['../class_shopify_1_1_examples_1_1_panels_1_1_empty_cart_panel.html',1,'Shopify::Examples::Panels']]],
+  ['errorpanel',['ErrorPanel',['../class_shopify_1_1_examples_1_1_panels_1_1_error_panel.html',1,'Shopify::Examples::Panels']]]
 ];

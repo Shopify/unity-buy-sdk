@@ -7,6 +7,7 @@ var searchData=
   ['oncheckoutlineitem',['onCheckoutLineItem',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_node_query.html#aadd82f5e82edbd164ee2e730e2676833',1,'Shopify::Unity::GraphQL::NodeQuery']]],
   ['oncollection',['onCollection',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_node_query.html#a8f37c602fa6047f7b05e5e0b5d3e19af',1,'Shopify::Unity::GraphQL::NodeQuery']]],
   ['oncomment',['onComment',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_node_query.html#a611e03a5c46383d172c6c1ca642ff3d1',1,'Shopify::Unity::GraphQL::NodeQuery']]],
+  ['onlinestoreurl',['onlineStoreUrl',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_product_query.html#a503e7ebff2e99e0e52159fd85695ff2c',1,'Shopify.Unity.GraphQL.ProductQuery.onlineStoreUrl()'],['../class_shopify_1_1_unity_1_1_product.html#a1359be9bc7860e0ab4d8c735e2e1c7c9',1,'Shopify.Unity.Product.onlineStoreUrl()']]],
   ['onmailingaddress',['onMailingAddress',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_node_query.html#aecc5c68f7e0722026dd52dfdcd3c1baa',1,'Shopify::Unity::GraphQL::NodeQuery']]],
   ['onorder',['onOrder',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_node_query.html#a43009d1de00f7e91ba5e6229928f1818',1,'Shopify::Unity::GraphQL::NodeQuery']]],
   ['onpayment',['onPayment',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_node_query.html#aa4e89ce89108dd268971e3f56b5e3b2a',1,'Shopify::Unity::GraphQL::NodeQuery']]],
@@ -40,6 +41,6 @@ var searchData=
   ['orderlineitemquery',['OrderLineItemQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_order_line_item_query.html#a6404bd2cceac6fb606dec6bfa8c8e9d3',1,'Shopify::Unity::GraphQL::OrderLineItemQuery']]],
   ['ordernumber',['orderNumber',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_order_query.html#af35c18dbbf26d759f51ef6cec5fb5587',1,'Shopify.Unity.GraphQL.OrderQuery.orderNumber()'],['../class_shopify_1_1_unity_1_1_order.html#a2e1245a226aadf59e07e9f8ea33112e8',1,'Shopify.Unity.Order.orderNumber()']]],
   ['orderquery',['OrderQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_order_query.html#adaadb9d10ffa116dbbb8e1e4fe44f2ea',1,'Shopify::Unity::GraphQL::OrderQuery']]],
-  ['orders',['orders',['../class_shopify_1_1_unity_1_1_customer.html#a3a2811e012042973e159dfba943b2bf9',1,'Shopify.Unity.Customer.orders()'],['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_customer_query.html#a127e9dcd11d5d042443e05ea41935e0c',1,'Shopify.Unity.GraphQL.CustomerQuery.orders()']]],
+  ['orders',['orders',['../class_shopify_1_1_unity_1_1_customer.html#a3a2811e012042973e159dfba943b2bf9',1,'Shopify.Unity.Customer.orders()'],['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_customer_query.html#a283f01cb885e499c8039f2c86218f2fb',1,'Shopify.Unity.GraphQL.CustomerQuery.orders()']]],
   ['orderstatusurl',['orderStatusUrl',['../class_shopify_1_1_unity_1_1_checkout.html#a5b4ad18915afb145484056acf3f8e7b6',1,'Shopify.Unity.Checkout.orderStatusUrl()'],['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html#a1fae14afd91c463174b46918a29efbe7',1,'Shopify.Unity.GraphQL.CheckoutQuery.orderStatusUrl()']]]
 ];
