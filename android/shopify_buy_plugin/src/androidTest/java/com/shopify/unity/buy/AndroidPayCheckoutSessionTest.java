@@ -44,7 +44,7 @@ public class AndroidPayCheckoutSessionTest {
 
     @Test
     public void testCreateSessionWithValidParams() {
-        AndroidPayCheckoutSession session = new AndroidPayCheckoutSession(this.mockActivity);
+        AndroidPayCheckoutSession session = new AndroidPayCheckoutSession(this.mockActivity, true);
         boolean result = session.checkoutWithAndroidPay(
             "test",
             "merchantName",
@@ -52,23 +52,21 @@ public class AndroidPayCheckoutSessionTest {
             "{\"totalPrice\":\"6.46\",\"subtotal\":\"5.23\",\"taxPrice\":\"1.23\"}",
             "CAD",
             "CA",
-            false,
-            true);
+            false);
 
         assertTrue(result);
     }
 
     @Test(expected = NullPointerException.class)
     public void testCreateSessionWithInvalidParams() {
-        AndroidPayCheckoutSession session = new AndroidPayCheckoutSession(this.mockActivity);
-        boolean result = session.checkoutWithAndroidPay(
+        AndroidPayCheckoutSession session = new AndroidPayCheckoutSession(this.mockActivity, true);
+        session.checkoutWithAndroidPay(
             null,
             null,
             null,
             "{\"totalPrice\":\"6.46\",\"subtotal\":\"5.23\",\"taxPrice\":\"1.23\"}",
             "CAD",
             "CA",
-            false,
-            true);
+            false);
     }
 }

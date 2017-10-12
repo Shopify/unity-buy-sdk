@@ -13,6 +13,8 @@ namespace <%= namespace %>.SDK.Android {
 
     public partial class AndroidNativeCheckout : INativeCheckout {
         private CartState CartState;
+        private String MerchantName;
+        private String CountryCodeString;
         private AndroidPayEventReceiverBridge AndroidPayEventBridge;
 
         private CheckoutSuccessCallback OnSuccess;
@@ -50,17 +52,17 @@ namespace <%= namespace %>.SDK.Android {
 
             var checkout = CartState.CurrentCheckout;
 
-            // TODO: Replace with Shop name
-            var merchantName = shopMetadata.Name;
+            MerchantName = shopMetadata.Name; // TODO: Replace with Shop name
             var pricingLineItems = GetPricingLineItemsFromCheckout(checkout);
-            var pricingLineItemsString = Json.Serialize(pricingLineItems);
+            var pricingLineItemsString = pricingLineItems.ToJsonString();
             var currencyCodeString = checkout.currencyCode().ToString("G");
-            var countryCodeString = shopMetadata.PaymentSettings.countryCode().ToString("G");
+            CountryCodeString = shopMetadata.PaymentSettings.countryCode().ToString("G");
             var requiresShipping = checkout.requiresShipping();
 
             #if !SHOPIFY_MONO_UNIT_TEST
-            using (var androidPayCheckoutSession = new AndroidJavaObject("com.shopify.unity.buy.AndroidPayCheckoutSession")) {
-                object[] args = { GlobalGameObject.Name, merchantName, key, pricingLineItemsString, currencyCodeString, countryCodeString, requiresShipping, true };
+            const bool testing = true; // TODO parametrize for 3rd-party devs
+            using (var androidPayCheckoutSession = new AndroidJavaObject("com.shopify.unity.buy.AndroidPayCheckoutSession", testing)) {
+                object[] args = { GlobalGameObject.Name, MerchantName, key, pricingLineItemsString, currencyCodeString, CountryCodeString, requiresShipping };
                 if (androidPayCheckoutSession.Call<bool>("checkoutWithAndroidPay", args)) {
                     if (AndroidPayEventBridge == null) {
                         AndroidPayEventBridge = GlobalGameObject.AddComponent<AndroidPayEventReceiverBridge>();
@@ -75,20 +77,36 @@ namespace <%= namespace %>.SDK.Android {
             #endif
         }
 
-        private Dictionary<string, string> GetPricingLineItemsFromCheckout(Checkout checkout) {
-            var dict = new Dictionary<string, string>()
-            {
-                { "taxPrice",       checkout.totalTax().ToString() },
-                { "subtotal",       checkout.subtotalPrice().ToString() },
-                { "totalPrice",     checkout.totalPrice().ToString() }
-            };
+        /// <summary>
+        /// Creates an <see cref="AndroidPayEventResponse"/> object based on the <see cref="CartState"/>
+        /// data.
+        /// </summary>
+        private AndroidPayEventResponse GetAndroidPayEventResponse() {
+            var checkout = CartState.CurrentCheckout;
+            var pricingLineItems = GetPricingLineItemsFromCheckout(checkout);
+            var currencyCodeString = checkout.currencyCode().ToString("G");
+            var requiresShipping = checkout.requiresShipping();
+            return new AndroidPayEventResponse(MerchantName, pricingLineItems, currencyCodeString, CountryCodeString, requiresShipping);
+        }
 
+        /// <summary>
+        /// Creates a <see cref="PricingLineItems"/> object based on the <see cref="Checkout"/>
+        /// data.
+        /// </summary>
+        /// <param name="checkout">
+        /// A <code>Checkout</code> object to build the <code>PricingLineItems</code> on.
+        /// </param>
+        private PricingLineItems GetPricingLineItemsFromCheckout(Checkout checkout) {
+            var taxPrice = checkout.totalTax();
+            var subtotal = checkout.subtotalPrice();
+            var totalPrice = checkout.totalPrice();
+            var shippingPrice = (decimal?) null;
             if (checkout.requiresShipping()) {
                 try {
-                    dict.Add("shippingPrice", checkout.shippingLine().price().ToString());
+                    shippingPrice = checkout.shippingLine().price();
                 } catch {}
             }
-            return dict;
+            return new PricingLineItems(taxPrice, subtotal, totalPrice, shippingPrice);
         }
     }
 }
