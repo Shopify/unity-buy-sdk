@@ -2,13 +2,15 @@ package com.shopify.unity.buy;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.util.Log;
+import android.app.FragmentManager;
+import android.support.annotation.VisibleForTesting;
 
 import com.google.android.gms.wallet.WalletConstants;
 import com.shopify.buy3.pay.PayCart;
 import com.shopify.buy3.pay.PayHelper;
 import com.shopify.unity.buy.models.MailingAddressInput;
 import com.shopify.unity.buy.models.PricingLineItems;
+import com.shopify.unity.buy.utils.Logger;
 import com.unity3d.player.UnityPlayer;
 
 import org.json.JSONException;
@@ -17,14 +19,18 @@ public final class AndroidPayCheckoutSession implements AndroidPaySessionCallbac
     public static final String PAY_FRAGMENT_TAG = "payFragment";
 
     private final Activity rootActivity;
+    private final boolean testing;
     private String unityDelegateObjectName;
 
-    public AndroidPayCheckoutSession() {
-        this.rootActivity = UnityPlayer.currentActivity;
+    public AndroidPayCheckoutSession(boolean testing) {
+        this(UnityPlayer.currentActivity, testing);
     }
 
-    public AndroidPayCheckoutSession(Activity rootActivity) {
+    @VisibleForTesting
+    AndroidPayCheckoutSession(Activity rootActivity, boolean testing) {
         this.rootActivity = rootActivity;
+        this.testing = testing;
+        Logger.setEnabled(testing);
     }
 
     //CHECKSTYLE:OFF
@@ -35,14 +41,22 @@ public final class AndroidPayCheckoutSession implements AndroidPaySessionCallbac
             String pricingLineItemsString,
             String currencyCode,
             String countryCode,
-            boolean requiresShipping,
-            boolean testing
+            boolean requiresShipping
     ) {
         //CHECKSTYLE:ON
         if (!PayHelper.isAndroidPayEnabledInManifest(rootActivity)) {
             // TODO: Send unsupported error to Unity
             return false;
         }
+
+        final String msg = "unityDelegateObjectName = " + unityDelegateObjectName + "\n" +
+                "merchantName = " + merchantName + "\n" +
+                "publicKey = " + publicKey + "\n" +
+                "pricingLineItemsString = " + pricingLineItemsString + "\n" +
+                "currencyCode = " + currencyCode + "\n" +
+                "countryCode = " + countryCode + "\n" +
+                "requiresShipping = " + requiresShipping + "\n";
+        Logger.d(msg);
 
         try {
             PayCart cart = cartFromUnity(merchantName, pricingLineItemsString, currencyCode, countryCode,
@@ -54,7 +68,7 @@ public final class AndroidPayCheckoutSession implements AndroidPaySessionCallbac
 
             return true;
         } catch (JSONException e) {
-            Log.e("ShopifyBuyPlugin", "Failed to parse summary items from Unity!");
+            Logger.e("Failed to parse summary items from Unity!");
             return false;
         }
     }
@@ -88,27 +102,31 @@ public final class AndroidPayCheckoutSession implements AndroidPaySessionCallbac
             .setPayCart(cart)
             .setCountryCode(countryCode)
             .setEnvironment(testing ?
-                WalletConstants.ENVIRONMENT_TEST : WalletConstants.ENVIRONMENT_PRODUCTION)
+                WalletConstants.ENVIRONMENT_SANDBOX : WalletConstants.ENVIRONMENT_PRODUCTION)
             .setPublicKey(publicKey)
             .setSessionCallbacks(this)
             .build();
 
-        rootActivity.getFragmentManager()
+        getFragmentManager()
             .beginTransaction()
             .add(payFragment, PAY_FRAGMENT_TAG)
             .commit();
     }
 
     private void removePayFragment() {
-        Fragment fragment = rootActivity.getFragmentManager().findFragmentByTag(PAY_FRAGMENT_TAG);
+        Fragment fragment = getFragmentManager().findFragmentByTag(PAY_FRAGMENT_TAG);
         if (fragment == null)  {
             return;
         }
 
-        rootActivity.getFragmentManager()
+        getFragmentManager()
             .beginTransaction()
             .remove(fragment)
             .commit();
+    }
+
+    private FragmentManager getFragmentManager() {
+        return rootActivity.getFragmentManager();
     }
 
     public void onUpdateShippingAddress(MailingAddressInput address, MessageCenter.MessageCallback messageCallback) {

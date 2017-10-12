@@ -1,5 +1,6 @@
 package com.shopify.unity.buy;
 
+import com.shopify.unity.buy.utils.Logger;
 import com.unity3d.player.UnityPlayer;
 
 import java.util.HashMap;
@@ -22,11 +23,11 @@ public class MessageCenter {
     }
 
     @SuppressWarnings("unused")
-    public static void onUnityResponse(final String result) {
-        UnityMessage msg = UnityMessage.fromUnity(result);
-        MessageCallback callbacks = callbacksInWaiting.remove(msg.identifier);
+    public static void onUnityResponse(final String identifier, final String content) {
+        Logger.d("New message: identifier = " + identifier + ", content = " + content);
+        MessageCallback callbacks = callbacksInWaiting.remove(identifier);
         if (callbacks != null) {
-            callbacks.onResponse(msg.content);
+            callbacks.onResponse(content);
         }
     }
 
