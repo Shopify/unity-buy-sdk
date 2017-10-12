@@ -21,15 +21,15 @@ public class MailingAddressInput implements JsonSerializable {
     private static final String PROVINCE = "province";
     private static final String ZIP = "zip";
 
-    final String address1;
-    final String address2;
-    final String city;
-    final String country;
-    final String firstName;
-    final String lastName;
-    final String phone;
-    final String province;
-    final String zip;
+    public final String address1;
+    public final String address2;
+    public final String city;
+    public final String country;
+    public final String firstName;
+    public final String lastName;
+    public final String phone;
+    public final String province;
+    public final String zip;
 
     public MailingAddressInput(UserAddress userAddress) {
         PayAddress payAddress = PayAddress.fromUserAddress(userAddress);
@@ -58,7 +58,6 @@ public class MailingAddressInput implements JsonSerializable {
 
         return new MailingAddressInput(address1, address2, city, country, firstName, lastName, phone, province, zip);
     }
-
 
     //CHECKSTYLE:OFF
     private MailingAddressInput(String address1, String address2, String city,
