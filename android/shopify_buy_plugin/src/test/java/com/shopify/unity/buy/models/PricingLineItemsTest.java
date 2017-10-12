@@ -2,6 +2,8 @@ package com.shopify.unity.buy.models;
 
 import org.json.JSONException;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -9,6 +11,7 @@ import java.math.MathContext;
 
 import static junit.framework.Assert.assertEquals;
 
+@RunWith(JUnit4.class)
 public class PricingLineItemsTest {
     private static final String jsonString =
             "{\"totalPrice\":\"6.46\",\"subtotal\":\"5.23\",\"taxPrice\":\"1.23\"}";

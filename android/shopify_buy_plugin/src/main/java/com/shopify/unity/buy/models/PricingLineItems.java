@@ -32,15 +32,19 @@ public final class PricingLineItems implements JsonSerializable {
         this.shippingPrice = shippingPrice;
     }
 
+
     public static PricingLineItems fromJsonString(String jsonString) throws JSONException {
-        JSONObject json = new JSONObject(jsonString);
+        return fromJson(new JSONObject(jsonString));
+    }
+
+    public static PricingLineItems fromJson(JSONObject json) throws JSONException {
         BigDecimal subtotal = decimalPropertyFromJson(json, SUBTOTAL);
         BigDecimal taxPrice = decimalPropertyFromJson(json, TAX_PRICE);
         BigDecimal totalPrice = decimalPropertyFromJson(json, TOTAL_PRICE);
 
         BigDecimal shippingPrice = null;
         if (json.has(SHIPPING_PRICE)) {
-             shippingPrice = nullableDecimalPropertyFromJson(json, SHIPPING_PRICE);
+            shippingPrice = nullableDecimalPropertyFromJson(json, SHIPPING_PRICE);
         }
 
         return new PricingLineItems(subtotal, taxPrice, totalPrice, shippingPrice);
