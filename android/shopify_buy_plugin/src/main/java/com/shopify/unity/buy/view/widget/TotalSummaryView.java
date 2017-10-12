@@ -25,13 +25,13 @@ public final class TotalSummaryView extends ConstraintLayout
     private static final NumberFormat CURRENCY_FORMAT = NumberFormat.getCurrencyInstance();
 
     /** Cart subtotal price label. */
-    @VisibleForTesting TextView subtotal;
+    private TextView subtotal;
     /** Cart shipping price label. */
-    @VisibleForTesting TextView shipping;
+    private TextView shipping;
     /** Cart tax price label. */
-    @VisibleForTesting TextView tax;
+    private TextView tax;
     /** Cart total price label. */
-    @VisibleForTesting TextView total;
+    private TextView total;
 
     public TotalSummaryView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -56,5 +56,25 @@ public final class TotalSummaryView extends ConstraintLayout
         final String totalValue = CURRENCY_FORMAT.format(totalSummaryViewModel.total);
         final String totalLabel = context.getString(R.string.confirmation_summary_total, totalValue);
         total.setText(totalLabel);
+    }
+
+    @VisibleForTesting
+    TextView getSubtotal() {
+        return subtotal;
+    }
+
+    @VisibleForTesting
+    TextView getShipping() {
+        return shipping;
+    }
+
+    @VisibleForTesting
+    TextView getTax() {
+        return tax;
+    }
+
+    @VisibleForTesting
+    TextView getTotal() {
+        return total;
     }
 }

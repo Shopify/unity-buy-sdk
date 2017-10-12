@@ -56,7 +56,7 @@ public final class AndroidPayCheckoutSession implements AndroidPaySessionCallbac
                 "currencyCode = " + currencyCode + "\n" +
                 "countryCode = " + countryCode + "\n" +
                 "requiresShipping = " + requiresShipping + "\n";
-        Logger.d(msg);
+        Logger.debug(msg);
 
         try {
             PayCart cart = cartFromUnity(merchantName, pricingLineItemsString, currencyCode, countryCode,
@@ -68,7 +68,7 @@ public final class AndroidPayCheckoutSession implements AndroidPaySessionCallbac
 
             return true;
         } catch (JSONException e) {
-            Logger.e("Failed to parse summary items from Unity!");
+            Logger.error("Failed to parse summary items from Unity!");
             return false;
         }
     }

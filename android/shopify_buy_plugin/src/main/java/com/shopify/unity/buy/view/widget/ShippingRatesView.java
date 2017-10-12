@@ -23,9 +23,9 @@ public final class ShippingRatesView extends ConstraintLayout
     private static final NumberFormat CURRENCY_FORMAT = NumberFormat.getCurrencyInstance();
 
     /** Shipping line description label. */
-    @VisibleForTesting TextView shippingLine;
+    private TextView shippingLine;
     /** Shipping price label. */
-    @VisibleForTesting TextView price;
+    private TextView price;
 
     public ShippingRatesView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -47,6 +47,16 @@ public final class ShippingRatesView extends ConstraintLayout
     public void update(ShippingRatesViewModel shippingRatesViewModel) {
         shippingLine.setText(shippingRatesViewModel.shippingLine);
         price.setText(CURRENCY_FORMAT.format(shippingRatesViewModel.price));
+    }
+
+    @VisibleForTesting
+    TextView getShippingLine() {
+        return shippingLine;
+    }
+
+    @VisibleForTesting
+    TextView getPrice() {
+        return price;
     }
 
     private void onChangeClick() {

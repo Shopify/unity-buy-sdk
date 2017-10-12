@@ -12,11 +12,11 @@ import java.util.Locale;
 
 public class ForceLocaleRule implements TestRule {
 
-    private final Locale mTestLocale;
-    private Locale mDeviceLocale;
+    private final Locale testLocale;
+    private Locale deviceLocale;
 
     public ForceLocaleRule(Locale testLocale) {
-        mTestLocale = testLocale;
+        this.testLocale = testLocale;
     }
 
     @Override
@@ -24,23 +24,22 @@ public class ForceLocaleRule implements TestRule {
         return new Statement() {
             public void evaluate() throws Throwable {
                 try {
-                    if (mTestLocale != null) {
-                        mDeviceLocale = Locale.getDefault();
-                        setLocale(mTestLocale);
+                    if (testLocale != null) {
+                        deviceLocale = Locale.getDefault();
+                        setLocale(testLocale);
                     }
 
                     base.evaluate();
                 } finally {
-                    if (mDeviceLocale != null) {
-                        setLocale(mDeviceLocale);
+                    if (deviceLocale != null) {
+                        setLocale(deviceLocale);
                     }
                 }
             }
         };
     }
 
-
-    public void setLocale(Locale locale) {
+    private void setLocale(Locale locale) {
         Resources resources = InstrumentationRegistry.getTargetContext().getResources();
         Locale.setDefault(locale);
         Configuration config = resources.getConfiguration();

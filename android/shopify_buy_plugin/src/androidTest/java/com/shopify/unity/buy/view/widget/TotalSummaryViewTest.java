@@ -47,9 +47,9 @@ public class TotalSummaryViewTest {
         );
 
         view.update(model);
-        assertEquals(view.subtotal.getText(), "$21.48");
-        assertEquals(view.shipping.getText(), "$3.20");
-        assertEquals(view.tax.getText(), "$2.32");
-        assertEquals(view.total.getText(), "Total: $27.00");
+        assertEquals(view.getSubtotal().getText(), "$21.48");
+        assertEquals(view.getShipping().getText(), "$3.20");
+        assertEquals(view.getTax().getText(), "$2.32");
+        assertEquals(view.getTotal().getText(), "Total: $27.00");
     }
 }

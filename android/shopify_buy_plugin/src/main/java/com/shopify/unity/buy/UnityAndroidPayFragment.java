@@ -152,7 +152,7 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         if (currentCheckoutState == CheckoutState.READY) {
-            Logger.d("Google API Client connected");
+            Logger.debug("Google API Client connected");
             currentCheckoutState = CheckoutState.REQUESTING_MASKED_WALLET;
             PayHelper.requestMaskedWallet(googleApiClient, cart, publicKey);
         }
@@ -174,7 +174,7 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
 
                 MailingAddressInput input = new MailingAddressInput(maskedWallet.getBuyerShippingAddress());
 
-                Logger.d("Masked wallet received");
+                Logger.debug("Masked wallet received");
 
                 if (sessionCallbacks != null) {
                     sessionCallbacks.onUpdateShippingAddress(input, new MessageCenter.MessageCallback() {
@@ -189,14 +189,14 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
             @Override
             public void onFullWallet(FullWallet fullWallet) {
                 super.onFullWallet(fullWallet);
-                Logger.d("Full wallet received.");
+                Logger.debug("Full wallet received.");
                 startActivity(ConfirmationActivity.newIntent(getActivity(), cart));
             }
 
             @Override
             public void onWalletError(int requestCode, int errorCode) {
                 final String msg = "Wallet error: " + WalletErrorFormatter.errorStringFromCode(errorCode);
-                Logger.d(msg);
+                Logger.debug(msg);
                 if (sessionCallbacks != null) {
                     sessionCallbacks.onError(WalletErrorFormatter.errorStringFromCode(errorCode));
                 }
@@ -205,7 +205,7 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
             @Override
             public void onWalletRequestCancel(int requestCode) {
                 super.onWalletRequestCancel(requestCode);
-                Logger.d("Wallet canceled");
+                Logger.debug("Wallet canceled");
                 if (sessionCallbacks != null) {
                     sessionCallbacks.onCancel();
                 }
@@ -220,7 +220,7 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
      */
     private void onUpdateShippingAddress(String jsonResponse) {
         // TODO: Create a new pay cart with the updated shipping address and request full wallet
-        Logger.d("New cart data from Unity: " + jsonResponse);
+        Logger.debug("New cart data from Unity: " + jsonResponse);
         try {
             cart = payCartFromEventResponse(AndroidPayEventResponse.fromJsonString(jsonResponse));
             requestFullWallet(cart);

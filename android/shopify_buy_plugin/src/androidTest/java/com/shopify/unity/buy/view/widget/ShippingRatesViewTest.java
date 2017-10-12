@@ -48,7 +48,7 @@ public class ShippingRatesViewTest {
         );
 
         view.update(model);
-        assertEquals(view.shippingLine.getText(), "Shipping line");
-        assertEquals(view.price.getText(), "$3.45");
+        assertEquals(view.getShippingLine().getText(), "Shipping line");
+        assertEquals(view.getPrice().getText(), "$3.45");
     }
 }
