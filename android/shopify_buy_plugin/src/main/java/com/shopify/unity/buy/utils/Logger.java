@@ -29,11 +29,11 @@ public final class Logger {
 
     /**
      * If log is enabled, this will log a message at debug level. The log tag will be
-     * in the format of {@code CallingClassName:CallingLine}, (e.g.: {@code MessageCenter:32}).
+     * in the format of {@code CallingClassName:CallingLine}, (error.g.: {@code MessageCenter:32}).
      *
      * @param msg the message to be logged
      */
-    public static void d(String msg) {
+    public static void debug(String msg) {
         if (enabled) {
             Log.d(buildTag(), msg);
         }
@@ -41,11 +41,11 @@ public final class Logger {
 
     /**
      * If log is enabled, this will log a message at error level. The log tag will be
-     * in the format of {@code CallingClassName:CallingLine}, (e.g.: {@code MessageCenter:32}).
+     * in the format of {@code CallingClassName:CallingLine}, (error.g.: {@code MessageCenter:32}).
      *
      * @param msg the message to be logged
      */
-    public static void e(String msg) {
+    public static void error(String msg) {
         if (enabled) {
             Log.e(buildTag(), msg);
         }
@@ -58,13 +58,13 @@ public final class Logger {
      * <pre><code>
      *     class MyClass {
      *         void myMethod() {
-     *             Logger.d("some message");
+     *             Logger.debug("some message");
      *         }
      *     }
      * </code></pre>
      *
-     * The tag generated for this call will be {@code MyClass:3} because {@link Logger#d(String)}
-     * is being called in {@code MyClass} at line {@code 3}.
+     * The tag generated for this call will be {@code MyClass:3} because
+     * {@link Logger#debug(String)} is being called in {@code MyClass} at line {@code 3}.
      *
      * @return a log tag to be used by logging methods
      */
