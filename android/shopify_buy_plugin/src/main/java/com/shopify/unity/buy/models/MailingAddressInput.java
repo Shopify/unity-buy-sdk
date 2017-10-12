@@ -21,15 +21,15 @@ public class MailingAddressInput implements JsonSerializable {
     private static final String PROVINCE = "province";
     private static final String ZIP = "zip";
 
-    public final String address1;
-    public final String address2;
-    public final String city;
-    public final String country;
-    public final String firstName;
-    public final String lastName;
-    public final String phone;
-    public final String province;
-    public final String zip;
+    final String address1;
+    final String address2;
+    final String city;
+    final String country;
+    final String firstName;
+    final String lastName;
+    final String phone;
+    final String province;
+    final String zip;
 
     public MailingAddressInput(UserAddress userAddress) {
         PayAddress payAddress = PayAddress.fromUserAddress(userAddress);
@@ -44,19 +44,7 @@ public class MailingAddressInput implements JsonSerializable {
         this.zip = payAddress.zip;
     }
 
-    public static MailingAddressInput fromJsonString(String json) throws JSONException {
-        String expected = "{" +
-            "\"address1\":\"address1\"," +
-            "\"address2\":\"address2, address3, address4, address5\"," +
-            "\"city\":\"locality\"," +
-            "\"country\":\"countryCode\"," +
-            "\"firstName\":\"firstName\"," +
-            "\"lastName\":\"lastName\"," +
-            "\"phone\":\"phoneNumber\"," +
-            "\"province\":\"administrativeArea\"," +
-            "\"zip\":\"postalCode\"" +
-            "}";
-
+    static MailingAddressInput fromJsonString(String json) throws JSONException {
         JSONObject obj = new JSONObject(json);
         String address1 = obj.getString("address1");
         String address2 = obj.getString("address2");
