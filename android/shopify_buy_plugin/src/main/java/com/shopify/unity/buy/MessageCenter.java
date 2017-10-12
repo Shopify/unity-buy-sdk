@@ -24,7 +24,7 @@ public class MessageCenter {
 
     @SuppressWarnings("unused")
     public static void onUnityResponse(final String identifier, final String content) {
-        Logger.d("New message: identifier = " + identifier + ", content = " + content);
+        Logger.debug("New message: identifier = " + identifier + ", content = " + content);
         MessageCallback callbacks = callbacksInWaiting.remove(identifier);
         if (callbacks != null) {
             callbacks.onResponse(content);
