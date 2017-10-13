@@ -5,6 +5,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.google.android.gms.identity.intents.model.UserAddress;
 
+import org.json.JSONException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -17,7 +18,7 @@ import static junit.framework.Assert.assertEquals;
 @SmallTest
 public class MailingAddressInputTest {
     @Test
-    public void testToJsonString() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    public void testToJsonString() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, JSONException {
 
         final Constructor<UserAddress> constructor = UserAddress.class.getDeclaredConstructor(int.class, String.class, String.class,
                 String.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class,
@@ -28,19 +29,16 @@ public class MailingAddressInputTest {
 
         MailingAddressInput mailingAddress = new MailingAddressInput(userAddress);
         String jsonString = mailingAddress.toJsonString();
+        MailingAddressInput outputMailingAddress = MailingAddressInput.fromJsonString(jsonString);
 
-        String expected = "{" +
-                "\"address1\":\"address1\"," +
-                "\"address2\":\"address2, address3, address4, address5\"," +
-                "\"city\":\"locality\"," +
-                "\"country\":\"countryCode\"," +
-                "\"firstName\":\"firstName\"," +
-                "\"lastName\":\"lastName\"," +
-                "\"phone\":\"phoneNumber\"," +
-                "\"province\":\"administrativeArea\"," +
-                "\"zip\":\"postalCode\"" +
-                "}";
-
-        assertEquals(jsonString, expected);
+        assertEquals(mailingAddress.address1, outputMailingAddress.address1);
+        assertEquals(mailingAddress.address2, outputMailingAddress.address2);
+        assertEquals(mailingAddress.city, outputMailingAddress.city);
+        assertEquals(mailingAddress.country, outputMailingAddress.country);
+        assertEquals(mailingAddress.firstName, outputMailingAddress.firstName);
+        assertEquals(mailingAddress.lastName, outputMailingAddress.lastName);
+        assertEquals(mailingAddress.phone, outputMailingAddress.phone);
+        assertEquals(mailingAddress.province, outputMailingAddress.province);
+        assertEquals(mailingAddress.zip, outputMailingAddress.zip);
     }
 }
