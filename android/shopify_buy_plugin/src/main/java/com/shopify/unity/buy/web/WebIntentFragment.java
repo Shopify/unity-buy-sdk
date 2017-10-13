@@ -1,4 +1,4 @@
-package com.shopify.unity.buy;
+package com.shopify.unity.buy.web;
 
 import android.app.Fragment;
 import android.net.Uri;

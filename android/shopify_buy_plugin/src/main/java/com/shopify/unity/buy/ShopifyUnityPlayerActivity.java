@@ -3,6 +3,7 @@ package com.shopify.unity.buy;
 import android.app.Fragment;
 import android.content.Intent;
 
+import com.shopify.unity.buy.androidpay.AndroidPayCheckoutSession;
 import com.unity3d.player.UnityPlayerActivity;
 
 public class ShopifyUnityPlayerActivity extends UnityPlayerActivity {

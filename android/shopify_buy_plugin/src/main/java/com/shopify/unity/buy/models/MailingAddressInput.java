@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.google.android.gms.identity.intents.model.UserAddress;
 import com.shopify.buy3.pay.PayAddress;
-import com.shopify.unity.buy.JsonSerializable;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -1,8 +1,10 @@
-package com.shopify.unity.buy;
+package com.shopify.unity.buy.web;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 
+import com.shopify.unity.buy.MessageCenter;
+import com.shopify.unity.buy.UnityMessage;
 import com.unity3d.player.UnityPlayer;
 
 public class WebCheckoutSession implements WebIntentListener {
