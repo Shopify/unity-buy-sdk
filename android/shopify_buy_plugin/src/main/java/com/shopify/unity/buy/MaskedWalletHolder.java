@@ -3,6 +3,8 @@ package com.shopify.unity.buy;
 import android.content.Intent;
 
 import com.google.android.gms.wallet.MaskedWallet;
+import com.shopify.unity.buy.androidpay.ConfirmationActivity;
+import com.shopify.unity.buy.androidpay.UnityAndroidPayFragment;
 
 /**
  * Class that holds a {@link MaskedWallet} instance to be shared across

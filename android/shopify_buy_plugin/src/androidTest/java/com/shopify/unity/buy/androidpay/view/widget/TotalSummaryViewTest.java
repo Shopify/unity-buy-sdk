@@ -1,19 +1,17 @@
-package com.shopify.unity.buy.view.widget;
+package com.shopify.unity.buy.androidpay.view.widget;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 
 import com.shopify.unity.buy.R;
+import com.shopify.unity.buy.androidpay.view.viewmodel.TotalSummaryViewModel;
 import com.shopify.unity.buy.utils.ForceLocaleRule;
-import com.shopify.unity.buy.view.viewmodel.ShippingRatesViewModel;
 
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import java.math.BigDecimal;
 import java.util.Locale;
@@ -23,8 +21,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author Flavio Faria
  */
-@RunWith(AndroidJUnit4.class)
-public class ShippingRatesViewTest {
+public class TotalSummaryViewTest {
 
     @ClassRule
     public static ForceLocaleRule localeTestRule = new ForceLocaleRule(Locale.US);
@@ -38,17 +35,21 @@ public class ShippingRatesViewTest {
 
     @Test
     public void update() throws Exception {
-        ShippingRatesView view = (ShippingRatesView) LayoutInflater
+        TotalSummaryView view = (TotalSummaryView) LayoutInflater
                 .from(themedContext)
-                .inflate(R.layout.view_confirmation_shipping_rates, null);
+                .inflate(R.layout.view_confirmation_total_summary, null);
 
-        ShippingRatesViewModel model = new ShippingRatesViewModel(
-                "Shipping line",
-                new BigDecimal(3.45)
+        TotalSummaryViewModel model = new TotalSummaryViewModel(
+                new BigDecimal(21.48),
+                new BigDecimal(3.20),
+                new BigDecimal(2.32),
+                new BigDecimal(27.00)
         );
 
         view.update(model);
-        assertEquals(view.getShippingLine().getText(), "Shipping line");
-        assertEquals(view.getPrice().getText(), "$3.45");
+        assertEquals(view.getSubtotal().getText(), "$21.48");
+        assertEquals(view.getShipping().getText(), "$3.20");
+        assertEquals(view.getTax().getText(), "$2.32");
+        assertEquals(view.getTotal().getText(), "Total: $27.00");
     }
 }

@@ -61,7 +61,7 @@ namespace <%= namespace %>.SDK.Android {
 
             #if !SHOPIFY_MONO_UNIT_TEST
             const bool testing = true; // TODO parametrize for 3rd-party devs
-            using (var androidPayCheckoutSession = new AndroidJavaObject("com.shopify.unity.buy.AndroidPayCheckoutSession", testing)) {
+            using (var androidPayCheckoutSession = new AndroidJavaObject("com.shopify.unity.buy.androidpay.AndroidPayCheckoutSession", testing)) {
                 object[] args = { GlobalGameObject.Name, MerchantName, key, pricingLineItemsString, currencyCodeString, CountryCodeString, requiresShipping };
                 if (androidPayCheckoutSession.Call<bool>("checkoutWithAndroidPay", args)) {
                     if (AndroidPayEventBridge == null) {

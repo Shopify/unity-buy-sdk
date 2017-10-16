@@ -1,4 +1,4 @@
-package com.shopify.unity.buy.view.widget;
+package com.shopify.unity.buy.androidpay.view.widget;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
@@ -16,7 +16,7 @@ import com.google.android.gms.wallet.fragment.WalletFragmentStyle;
 import com.shopify.buy3.pay.PayHelper;
 import com.shopify.unity.buy.MaskedWalletHolder;
 import com.shopify.unity.buy.R;
-import com.shopify.unity.buy.view.viewmodel.ConfirmationViewModel;
+import com.shopify.unity.buy.androidpay.view.viewmodel.ConfirmationViewModel;
 
 /**
  * Custom view that shows a checkout confirmation screen with broken down prices,

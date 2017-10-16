@@ -1,4 +1,4 @@
-package com.shopify.unity.buy.view.widget;
+package com.shopify.unity.buy.androidpay.view.widget;
 
 /**
  * Defines that a view consumes an object that is used to update the view state.

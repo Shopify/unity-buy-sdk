@@ -1,4 +1,4 @@
-package com.shopify.unity.buy;
+package com.shopify.unity.buy.androidpay;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -8,6 +8,8 @@ import android.support.annotation.VisibleForTesting;
 import com.google.android.gms.wallet.WalletConstants;
 import com.shopify.buy3.pay.PayCart;
 import com.shopify.buy3.pay.PayHelper;
+import com.shopify.unity.buy.MessageCenter;
+import com.shopify.unity.buy.UnityMessage;
 import com.shopify.unity.buy.models.MailingAddressInput;
 import com.shopify.unity.buy.models.PricingLineItems;
 import com.shopify.unity.buy.utils.Logger;

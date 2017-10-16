@@ -12,12 +12,12 @@ public class MessageCenter {
     private MessageCenter() { }
 
     // Fire and forget sending of messages.
-    static void sendMessageTo(final UnityMessage msg, final UnityMessageReceiver receiver) {
+    public static void sendMessageTo(final UnityMessage msg, final UnityMessageReceiver receiver) {
         UnityPlayer.UnitySendMessage(receiver.unityDelegateObjectName, receiver.method.name, msg.toJsonString());
     }
 
     // Send message with callbacks to invoke when complete.
-    static void sendMessageTo(final UnityMessage msg, final UnityMessageReceiver receiver, final MessageCallback callbacks) {
+    public static void sendMessageTo(final UnityMessage msg, final UnityMessageReceiver receiver, final MessageCallback callbacks) {
         callbacksInWaiting.put(msg.identifier, callbacks);
         UnityPlayer.UnitySendMessage(receiver.unityDelegateObjectName, receiver.method.name, msg.toJsonString());
     }
@@ -31,17 +31,17 @@ public class MessageCenter {
         }
     }
 
-    static class UnityMessageReceiver {
+    public static class UnityMessageReceiver {
         private final String unityDelegateObjectName;
         private final Method method;
 
-        UnityMessageReceiver(String unityDelegateObjectName, Method method) {
+        public UnityMessageReceiver(String unityDelegateObjectName, Method method) {
             this.unityDelegateObjectName = unityDelegateObjectName;
             this.method = method;
         }
     }
 
-    enum Method {
+    public enum Method {
         ON_NATIVE_MESSAGE("OnNativeMessage"),
         ON_UPDATE_SHIPPING_ADDRESS("OnUpdateShippingAddress"),
         ON_ERROR("OnError"),
@@ -55,7 +55,7 @@ public class MessageCenter {
         }
     }
 
-    interface MessageCallback {
+    public interface MessageCallback {
         void onResponse(String jsonResponse);
     }
 }
