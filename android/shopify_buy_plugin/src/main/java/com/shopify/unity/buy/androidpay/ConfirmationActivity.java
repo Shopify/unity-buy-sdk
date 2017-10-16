@@ -1,4 +1,4 @@
-package com.shopify.unity.buy;
+package com.shopify.unity.buy.androidpay;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,10 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.shopify.buy3.pay.PayCart;
-import com.shopify.unity.buy.view.viewmodel.ConfirmationViewModel;
-import com.shopify.unity.buy.view.viewmodel.ShippingRatesViewModel;
-import com.shopify.unity.buy.view.viewmodel.TotalSummaryViewModel;
-import com.shopify.unity.buy.view.widget.ConfirmationView;
+import com.shopify.unity.buy.R;
+import com.shopify.unity.buy.androidpay.view.viewmodel.ConfirmationViewModel;
+import com.shopify.unity.buy.androidpay.view.viewmodel.ShippingRatesViewModel;
+import com.shopify.unity.buy.androidpay.view.viewmodel.TotalSummaryViewModel;
+import com.shopify.unity.buy.androidpay.view.widget.ConfirmationView;
 
 import java.math.BigDecimal;
 

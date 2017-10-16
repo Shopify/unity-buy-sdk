@@ -1,4 +1,4 @@
-package com.shopify.unity.buy.view.widget;
+package com.shopify.unity.buy.androidpay.view.widget;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,7 +9,7 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 
 import com.shopify.unity.buy.R;
-import com.shopify.unity.buy.view.viewmodel.TotalSummaryViewModel;
+import com.shopify.unity.buy.androidpay.view.viewmodel.TotalSummaryViewModel;
 
 import java.text.NumberFormat;
 

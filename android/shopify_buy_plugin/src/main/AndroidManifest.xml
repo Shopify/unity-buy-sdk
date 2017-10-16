@@ -9,7 +9,7 @@
             android:value="true" />
 
         <activity
-            android:name=".ConfirmationActivity"
+            android:name=".androidpay.ConfirmationActivity"
             android:theme="@style/BuyTheme" />
 
     </application>

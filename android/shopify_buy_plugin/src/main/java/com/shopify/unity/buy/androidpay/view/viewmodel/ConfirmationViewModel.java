@@ -1,8 +1,8 @@
-package com.shopify.unity.buy.view.viewmodel;
+package com.shopify.unity.buy.androidpay.view.viewmodel;
 
 import android.support.annotation.NonNull;
 
-import com.shopify.unity.buy.view.widget.ConfirmationView;
+import com.shopify.unity.buy.androidpay.view.widget.ConfirmationView;
 
 /**
  * View model class that is used to populate a {@link ConfirmationView}.

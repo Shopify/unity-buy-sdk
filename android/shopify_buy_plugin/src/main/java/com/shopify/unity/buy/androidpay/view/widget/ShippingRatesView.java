@@ -1,4 +1,4 @@
-package com.shopify.unity.buy.view.widget;
+package com.shopify.unity.buy.androidpay.view.widget;
 
 import android.content.Context;
 import android.support.annotation.VisibleForTesting;
@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.shopify.unity.buy.R;
-import com.shopify.unity.buy.view.viewmodel.ShippingRatesViewModel;
+import com.shopify.unity.buy.androidpay.view.viewmodel.ShippingRatesViewModel;
 
 import java.text.NumberFormat;
 

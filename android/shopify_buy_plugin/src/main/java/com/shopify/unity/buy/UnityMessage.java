@@ -1,5 +1,7 @@
 package com.shopify.unity.buy;
 
+import com.shopify.unity.buy.models.JsonSerializable;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 

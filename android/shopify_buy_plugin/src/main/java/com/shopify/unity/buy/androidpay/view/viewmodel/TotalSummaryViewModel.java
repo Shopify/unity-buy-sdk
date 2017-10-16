@@ -1,8 +1,8 @@
-package com.shopify.unity.buy.view.viewmodel;
+package com.shopify.unity.buy.androidpay.view.viewmodel;
 
 import android.support.annotation.NonNull;
 
-import com.shopify.unity.buy.view.widget.TotalSummaryView;
+import com.shopify.unity.buy.androidpay.view.widget.TotalSummaryView;
 
 import java.math.BigDecimal;
 
