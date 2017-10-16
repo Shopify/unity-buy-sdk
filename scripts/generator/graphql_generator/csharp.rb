@@ -165,7 +165,7 @@ module GraphQLGenerator
         SDK/iOS/iOSNativeCheckout.ApplePayEventReceiver
         SDK/iOS/ApplePayPayment
         SDK/NativePayment
-        UI/ApplePayButtonUI
+        UI/NativePayButtonUI
       ).each do |class_file_name|
         directory = "#{path}/#{File.dirname(class_file_name)}"
 
