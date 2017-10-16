@@ -5,7 +5,21 @@
         <item name="colorControlNormal">@android:color/white</item>
         <item name="colorAccent">@android:color/holo_green_dark</item>
         <item name="colorControlHighlight">#65669900</item>
-        <item name="colorPrimary">#0A0A0B</item>
+        <item name="colorPrimary">@color/color_primary</item>
+    </style>
+
+    <style name="BuyTheme.ShippingMethodDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorAccent">@android:color/holo_green_dark</item>
+        <item name="colorControlHighlight">#65669900</item>
+        <item name="android:windowCloseOnTouchOutside">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:colorBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.3</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
     </style>
 
     <style name="Shopify.TitleText" parent="TextAppearance.AppCompat">

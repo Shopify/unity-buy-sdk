@@ -8,5 +8,6 @@
     <string name="confirmation_shipping_method_change">CHANGE</string>
     <string name="confirmation_shipping_method_not_selected">Not Selected</string>
     <string name="confirmation_shipping_method_price_not_available">N/A</string>
+    <string name="confirmation_shipping_method_select_title">Select Shipping Method</string>
     <string name="confirmation_confirm">Confirm Order</string>
 </resources>

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 
 import com.shopify.unity.buy.R;
 import com.shopify.unity.buy.androidpay.view.viewmodel.ShippingRatesViewModel;
+import com.shopify.unity.buy.models.ShippingMethod;
 import com.shopify.unity.buy.utils.ForceLocaleRule;
 
 import org.junit.Before;
@@ -16,6 +17,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 
 import static org.junit.Assert.assertEquals;
@@ -42,13 +45,17 @@ public class ShippingRatesViewTest {
                 .from(themedContext)
                 .inflate(R.layout.view_confirmation_shipping_rates, null);
 
-        ShippingRatesViewModel model = new ShippingRatesViewModel(
-                "Shipping line",
-                new BigDecimal(3.45)
+        ShippingMethod shippingMethod = new ShippingMethod(
+                "identifier",
+                "detail",
+                "label",
+                BigDecimal.valueOf(3.45)
         );
+        List<ShippingMethod> shippingMethods = Collections.singletonList(shippingMethod);
+        ShippingRatesViewModel model = new ShippingRatesViewModel(shippingMethods, 0);
 
         view.update(model);
-        assertEquals(view.getShippingLine().getText(), "Shipping line");
+        assertEquals(view.getShippingLine().getText(), "label");
         assertEquals(view.getPrice().getText(), "$3.45");
     }
 }
