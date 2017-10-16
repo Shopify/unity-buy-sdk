@@ -4,24 +4,57 @@ namespace <%= namespace %>.UI {
 
     using System.Runtime.InteropServices;
     using System.Text;
+    using System;
 
+    /// <summary>
+    /// The Apple Pay payment button style C# enum. See https://developer.apple.com/documentation/passkit/pkpaymentbuttonstyle
+    /// for all available options.
+    /// </summary>
     public enum ApplePayButtonStyle {
-        plain
+        white,
+        whiteOutline,
+        black
     }
 
+    /// <summary>
+    /// The Apple Pay payment button type C# enum. See https://developer.apple.com/documentation/passkit/pkpaymentbuttontype
+    /// for all available options.
+    /// </summary>
     public enum ApplePayButtonType {
-        pay
+        plain,
+        buy,
+        setUp,
+        inStore,
+        donate
     }
 
+    /// <summary>
+    /// UI Script that fills in an attached UI Image component with a platform-rendered Apple Pay button.
+    /// </summary>
     public class ApplePayButtonUI : MonoBehaviour {
+        /// <summary>
+        /// The Apple Pay payment button style. See https://developer.apple.com/documentation/passkit/pkpaymentbuttonstyle
+        /// for all available options.
+        /// </summary>
         public ApplePayButtonStyle buttonStyle;
 
+        /// <summary>
+        /// The Apple Pay payment button type. See https://developer.apple.com/documentation/passkit/pkpaymentbuttontype
+        /// for all available options.
+        /// </summary>
         public ApplePayButtonType buttonType;
 
+        /// <summary>
+        /// When set to true, the the Apple Pay button image will include the 10% minimum spacing around the 
+        /// button image required by Apple's design guidelines.
+        /// </summary>
+        public bool includeMinimumSpacing;
+
         [DllImport ("__Internal")]
-        private static extern string _GenerateApplePayButtonImage(string type, string style, float width, float height);
+        private static extern IntPtr _GenerateApplePayButtonImage(string type, string style, float width, float height);
 
         private Image buttonImage;
+        private Texture2D imageTexture;
 
         public void Start() {
             buttonImage = this.gameObject.GetComponent<Image>();
@@ -30,21 +63,25 @@ namespace <%= namespace %>.UI {
             UpdateImage(rectTransform);
         }
 
-        public void UpdateImage(RectTransform transform) {
+        private void UpdateImage(RectTransform transform) {
             // Ask iOS to generate us an image of the native Apple Pay button.
-            var base64ImageString = _GenerateApplePayButtonImage(
+            var imageStringPtr = _GenerateApplePayButtonImage(
                 buttonType.ToString(), 
                 buttonStyle.ToString(), 
                 transform.rect.width, 
                 transform.rect.height
             );
 
-            byte[] imageBytes = System.Convert.FromBase64String(base64ImageString);
+            string managedBase64ImageString = Marshal.PtrToStringAnsi(imageStringPtr);
+            byte[] imageBytes = System.Convert.FromBase64String(managedBase64ImageString);
 
             // Create a Texture2D object from the raw byte data from iOS
-            var imageTexture = new Texture2D((int)transform.rect.width, (int)transform.rect.height, TextureFormat.RGBA32, false);
-            imageTexture.LoadRawTextureData(imageBytes);
+            imageTexture = new Texture2D(1, 1);
+            imageTexture.LoadImage(imageBytes);
             imageTexture.Apply();
+
+            // Free malloced base64 string from iOS
+            Marshal.FreeHGlobal(imageStringPtr);
 
             // Create Sprite and assign to the image component.
             buttonImage.sprite = Sprite.Create(
@@ -55,4 +92,4 @@ namespace <%= namespace %>.UI {
             );
         }
     }
-}
+    }
