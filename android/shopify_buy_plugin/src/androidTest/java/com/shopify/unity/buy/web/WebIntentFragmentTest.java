@@ -1,4 +1,4 @@
-package com.shopify.unity.buy;
+package com.shopify.unity.buy.web;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -10,12 +10,11 @@ import android.support.test.runner.AndroidJUnit4;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @MediumTest
@@ -33,7 +32,7 @@ public class WebIntentFragmentTest implements WebIntentListener {
         FragmentTransaction mockFragmentTransaction = Mockito.mock(FragmentTransaction.class);
 
         when(mockFragmentManager.beginTransaction()).thenReturn(mockFragmentTransaction);
-        when(mockFragmentTransaction.add(any(Fragment.class), anyString())).thenReturn(mockFragmentTransaction);
+        when(mockFragmentTransaction.add(ArgumentMatchers.any(Fragment.class), ArgumentMatchers.anyString())).thenReturn(mockFragmentTransaction);
         when(this.mockActivity.getFragmentManager()).thenReturn(mockFragmentManager);
     }
 

@@ -1,4 +1,4 @@
-package com.shopify.unity.buy;
+package com.shopify.unity.buy.androidpay;
 
 import android.app.Activity;
 import android.app.Fragment;

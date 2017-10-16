@@ -1,4 +1,4 @@
-package com.shopify.unity.buy;
+package com.shopify.unity.buy.models;
 
 import org.json.JSONException;
 

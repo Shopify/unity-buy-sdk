@@ -1,5 +1,6 @@
-package com.shopify.unity.buy;
+package com.shopify.unity.buy.androidpay;
 
+import com.shopify.unity.buy.MessageCenter;
 import com.shopify.unity.buy.models.MailingAddressInput;
 
 interface AndroidPaySessionCallback {

@@ -1,4 +1,4 @@
-package com.shopify.unity.buy;
+package com.shopify.unity.buy.androidpay;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,6 +11,7 @@ import com.google.android.gms.identity.intents.model.UserAddress;
 import com.google.android.gms.wallet.MaskedWallet;
 import com.google.android.gms.wallet.WalletConstants;
 import com.shopify.buy3.pay.PayCart;
+import com.shopify.unity.buy.MessageCenter;
 import com.shopify.unity.buy.models.MailingAddressInput;
 import com.shopify.unity.buy.utils.TestHelpers;
 

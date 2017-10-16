@@ -3,8 +3,6 @@ package com.shopify.unity.buy.models;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.shopify.unity.buy.JsonSerializable;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
