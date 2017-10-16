@@ -18,6 +18,7 @@ namespace <%= namespace %>.Editor.BuildPipeline {
                 return;
 
             var project = new ExtendedPBXProject(buildPath);
+            SetCorrectTestsTarget(project);
             SetBuildProperties(project);
             SetSwiftInterfaceHeader(project);
             project.Save();
@@ -65,6 +66,18 @@ namespace <%= namespace %>.Editor.BuildPipeline {
                 }
 
                 File.WriteAllLines (swiftInterfaceHeaderPath, lines);
+            }
+        }
+
+        /// Sets the correct target for Shopify Tests
+        private static void SetCorrectTestsTarget(ExtendedPBXProject project) {
+            string testPath = Path.Combine(project.BuildPath, "Libraries/Shopify/Plugins/iOS/Shopify/BuyTests/");
+            var testDirectory = new DirectoryInfo(testPath);
+
+            try {
+                project.SetFilesInDirectoryToTestTarget(testDirectory);
+            } catch (Exception e) {
+                Debug.Log(e.Message);
             }
         }
     }
