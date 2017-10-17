@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['tester',['Tester',['../class_tester.html',1,'']]],
   ['tokenizedpaymentinput',['TokenizedPaymentInput',['../class_shopify_1_1_unity_1_1_tokenized_payment_input.html',1,'Shopify::Unity']]],
   ['toplevelresponse',['TopLevelResponse',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_top_level_response.html',1,'Shopify::Unity::SDK']]],
   ['transaction',['Transaction',['../class_shopify_1_1_unity_1_1_transaction.html',1,'Shopify::Unity']]],

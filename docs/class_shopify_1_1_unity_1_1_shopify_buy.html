@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Unity Buy SDK: Shopify.Unity.ShopifyBuy Class Reference</title>
+<title>Shopify SDK for Unity: Shopify.Unity.ShopifyBuy Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Unity Buy SDK
+   <div id="projectname">Shopify SDK for Unity
    </div>
   </td>
  </tr>
@@ -71,7 +71,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Is the main entry point for the <a class="el" href="namespace_shopify_1_1_unity.html">Unity</a> Buy <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a>. Using  you'll create a client which can create queries on the Storefront API. <a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html" title="ShopifyClient  is the entry point to communicate with the Shopify Storefront API. ShopifyClient  also...">ShopifyClient</a> can also be used to create a <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a> .  
+<p>Is the main entry point for the <a class="el" href="namespace_shopify.html">Shopify</a> <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a> for <a class="el" href="namespace_shopify_1_1_unity.html">Unity</a>. Using  you'll create a client which can create queries on the Storefront API. <a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html" title="ShopifyClient  is the entry point to communicate with the Shopify Storefront API. ShopifyClient  also...">ShopifyClient</a> can also be used to create a <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a> .  
  <a href="class_shopify_1_1_unity_1_1_shopify_buy.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
@@ -86,17 +86,17 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memdesc:a72623b45a5034bf418db4107e08c6d58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a <a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html" title="ShopifyClient  is the entry point to communicate with the Shopify Storefront API. ShopifyClient  also...">ShopifyClient</a> that can be used to query the Storefront API. The default client which can be accessed by calling <a class="el" href="class_shopify_1_1_unity_1_1_shopify_buy.html#ac15beb2a8534e89ffe4f30d27e87740e" title="Returns the default ShopifyClient . The default client is the first client created after calling Shop...">ShopifyBuy.Client()</a> which is initialized after <a class="el" href="class_shopify_1_1_unity_1_1_shopify_buy.html#a72623b45a5034bf418db4107e08c6d58" title="Initializes a ShopifyClient that can be used to query the Storefront API. The default client which ca...">ShopifyBuy.Init</a> is called. To access the client for the specific domain passed, use ShopifyBuy.Client(domain) .  <a href="#a72623b45a5034bf418db4107e08c6d58">More...</a><br /></td></tr>
 <tr class="separator:a72623b45a5034bf418db4107e08c6d58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6f6cce19706006b54a0955416dcd3f2"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html">ShopifyClient</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_buy.html#af6f6cce19706006b54a0955416dcd3f2">Init</a> (<a class="el" href="interface_shopify_1_1_unity_1_1_s_d_k_1_1_i_loader.html">ILoader</a> loader)</td></tr>
-<tr class="memdesc:af6f6cce19706006b54a0955416dcd3f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Typically not used, but it is possible to create a <a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html" title="ShopifyClient  is the entry point to communicate with the Shopify Storefront API. ShopifyClient  also...">ShopifyClient</a> by passing an instance that implements ILoader . ILoaders handle network communicationication with the Storefront API. This functionality is useful if you'd like to use the <a class="el" href="namespace_shopify_1_1_unity.html">Unity</a> Buy <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a> in a C# environment outside of <a class="el" href="namespace_shopify_1_1_unity.html">Unity</a>. The <code>domain</code> string used to access specific initialized clients is inferred from <a class="el" href="interface_shopify_1_1_unity_1_1_s_d_k_1_1_i_loader.html#a993bff5b68336d539ccc0bfa9aba0bc4" title="Domain of a Shopify store. ">ILoader.Domain</a>which can be used to request a specific client.  <a href="#af6f6cce19706006b54a0955416dcd3f2">More...</a><br /></td></tr>
+<tr class="memdesc:af6f6cce19706006b54a0955416dcd3f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Typically not used, but it is possible to create a <a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html" title="ShopifyClient  is the entry point to communicate with the Shopify Storefront API. ShopifyClient  also...">ShopifyClient</a> by passing an instance that implements ILoader . ILoaders handle network communicationication with the Storefront API. This functionality is useful if you'd like to use the <a class="el" href="namespace_shopify.html">Shopify</a> <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a> for <a class="el" href="namespace_shopify_1_1_unity.html">Unity</a> in a C# environment outside of <a class="el" href="namespace_shopify_1_1_unity.html">Unity</a>. The <code>domain</code> string used to access specific initialized clients is inferred from <a class="el" href="interface_shopify_1_1_unity_1_1_s_d_k_1_1_i_loader.html#a993bff5b68336d539ccc0bfa9aba0bc4" title="Domain of a Shopify store. ">ILoader.Domain</a>which can be used to request a specific client.  <a href="#af6f6cce19706006b54a0955416dcd3f2">More...</a><br /></td></tr>
 <tr class="separator:af6f6cce19706006b54a0955416dcd3f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:adaacb5839967fbeac06c4fac90e37498"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_buy.html#adaacb5839967fbeac06c4fac90e37498">VERSION</a> = &quot;0.4.0-asset-store&quot;</td></tr>
-<tr class="memdesc:adaacb5839967fbeac06c4fac90e37498"><td class="mdescLeft">&#160;</td><td class="mdescRight">Version of the <a class="el" href="namespace_shopify_1_1_unity.html">Unity</a> Buy <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a>.  <a href="#adaacb5839967fbeac06c4fac90e37498">More...</a><br /></td></tr>
+<tr class="memitem:adaacb5839967fbeac06c4fac90e37498"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_buy.html#adaacb5839967fbeac06c4fac90e37498">VERSION</a> = &quot;0.4.0-github&quot;</td></tr>
+<tr class="memdesc:adaacb5839967fbeac06c4fac90e37498"><td class="mdescLeft">&#160;</td><td class="mdescRight">Version of the <a class="el" href="namespace_shopify.html">Shopify</a> <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a> for <a class="el" href="namespace_shopify_1_1_unity.html">Unity</a>.  <a href="#adaacb5839967fbeac06c4fac90e37498">More...</a><br /></td></tr>
 <tr class="separator:adaacb5839967fbeac06c4fac90e37498"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Is the main entry point for the <a class="el" href="namespace_shopify_1_1_unity.html">Unity</a> Buy <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a>. Using  you'll create a client which can create queries on the Storefront API. <a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html" title="ShopifyClient  is the entry point to communicate with the Shopify Storefront API. ShopifyClient  also...">ShopifyClient</a> </p>
+<div class="textblock"><p>Is the main entry point for the <a class="el" href="namespace_shopify.html">Shopify</a> <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a> for <a class="el" href="namespace_shopify_1_1_unity.html">Unity</a>. Using  you'll create a client which can create queries on the Storefront API. <a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html" title="ShopifyClient  is the entry point to communicate with the Shopify Storefront API. ShopifyClient  also...">ShopifyClient</a> </p>
 <p>can also be used to create a <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a> </p>
 <p>. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
@@ -203,7 +203,7 @@ Public Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
-<div class="fragment"><div class="line"><span class="comment">// Example that initializes the Unity Buy SDK</span></div><div class="line"><span class="keywordtype">string</span> accessToken = <span class="stringliteral">&quot;b8d417759a62f7b342f3735dbe86b322&quot;</span>;</div><div class="line"><span class="keywordtype">string</span> shopDomain = <span class="stringliteral">&quot;unity-buy-sdk.myshopify.com&quot;</span>;</div><div class="line"></div><div class="line"><span class="comment">// Init only needs to be called once</span></div><div class="line">ShopifyBuy.Init(accessToken, shopDomain);</div></div><!-- fragment --> 
+<div class="fragment"><div class="line"><span class="comment">// Example that initializes the Shopify SDK for Unity</span></div><div class="line"><span class="keywordtype">string</span> accessToken = <span class="stringliteral">&quot;b8d417759a62f7b342f3735dbe86b322&quot;</span>;</div><div class="line"><span class="keywordtype">string</span> shopDomain = <span class="stringliteral">&quot;unity-buy-sdk.myshopify.com&quot;</span>;</div><div class="line"></div><div class="line"><span class="comment">// Init only needs to be called once</span></div><div class="line">ShopifyBuy.Init(accessToken, shopDomain);</div></div><!-- fragment --> 
 </div>
 </div>
 <a id="af6f6cce19706006b54a0955416dcd3f2"></a>
@@ -230,7 +230,7 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Typically not used, but it is possible to create a <a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html" title="ShopifyClient  is the entry point to communicate with the Shopify Storefront API. ShopifyClient  also...">ShopifyClient</a> by passing an instance that implements ILoader . ILoaders handle network communicationication with the Storefront API. This functionality is useful if you'd like to use the <a class="el" href="namespace_shopify_1_1_unity.html">Unity</a> Buy <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a> in a C# environment outside of <a class="el" href="namespace_shopify_1_1_unity.html">Unity</a>. The <code>domain</code> string used to access specific initialized clients is inferred from <a class="el" href="interface_shopify_1_1_unity_1_1_s_d_k_1_1_i_loader.html#a993bff5b68336d539ccc0bfa9aba0bc4" title="Domain of a Shopify store. ">ILoader.Domain</a>which can be used to request a specific client. </p>
+<p>Typically not used, but it is possible to create a <a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html" title="ShopifyClient  is the entry point to communicate with the Shopify Storefront API. ShopifyClient  also...">ShopifyClient</a> by passing an instance that implements ILoader . ILoaders handle network communicationication with the Storefront API. This functionality is useful if you'd like to use the <a class="el" href="namespace_shopify.html">Shopify</a> <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a> for <a class="el" href="namespace_shopify_1_1_unity.html">Unity</a> in a C# environment outside of <a class="el" href="namespace_shopify_1_1_unity.html">Unity</a>. The <code>domain</code> string used to access specific initialized clients is inferred from <a class="el" href="interface_shopify_1_1_unity_1_1_s_d_k_1_1_i_loader.html#a993bff5b68336d539ccc0bfa9aba0bc4" title="Domain of a Shopify store. ">ILoader.Domain</a>which can be used to request a specific client. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">loader</td><td>a loader which will handle network communicationication with the Storefront API</td></tr>
@@ -248,12 +248,12 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const string Shopify.Unity.ShopifyBuy.VERSION = &quot;0.4.0-asset-store&quot;</td>
+          <td class="memname">const string Shopify.Unity.ShopifyBuy.VERSION = &quot;0.4.0-github&quot;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Version of the <a class="el" href="namespace_shopify_1_1_unity.html">Unity</a> Buy <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a>. </p>
+<p>Version of the <a class="el" href="namespace_shopify.html">Shopify</a> <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a> for <a class="el" href="namespace_shopify_1_1_unity.html">Unity</a>. </p>
 <div class="fragment"><div class="line"><span class="comment">// Example that checks the SDK version</span></div><div class="line">Debug.Log(<span class="stringliteral">&quot;Current SDK Version: &quot;</span> + ShopifyBuy.VERSION);</div></div><!-- fragment --> 
 </div>
 </div>
