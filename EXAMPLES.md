@@ -1,8 +1,8 @@
 # Examples
 
-This guide contains code examples that show different ways that you can use the Unity Buy SDK.
+This guide contains code examples that show different ways that you can use the Shopify SDK for Unity.
 
-The Unity Buy SDK queries Shopify's [Storefront API](https://help.shopify.com/api/storefront-api), which is a [GraphQL](http://graphql.org) API. GraphQL APIs accept queries that define the data that you want to retrieve. The Unity Buy SDK lets you query various data from Shopify, including store information, checkout URLs, products, and collections.
+The Shopify SDK for Unity queries Shopify's [Storefront API](https://help.shopify.com/api/storefront-api), which is a [GraphQL](http://graphql.org) API. GraphQL APIs accept queries that define the data that you want to retrieve. The Shopify SDK for Unity lets you query various data from Shopify, including store information, checkout URLs, products, and collections.
 
 ## Table of contents
 
@@ -18,11 +18,11 @@ The Unity Buy SDK queries Shopify's [Storefront API](https://help.shopify.com/ap
 
 ## Before you begin
 
-Before you can start using the Unity Buy SDK, you need:
+Before you can start using the Shopify SDK for Unity, you need:
 
 - a Shopify store with at least one product
 - [a storefront access token for your app](https://help.shopify.com/api/storefront-api/getting-started#obtaining-a-storefront-access-token)
-- [to install the Unity Buy SDK into your Unity project](README.md#using-the-unity-buy-sdk-in-unity)
+- [to install the Shopify SDK for Unity into your Unity project](README.md#using-the-unity-buy-sdk-in-unity)
 
 ## Supported build targets
 
@@ -134,7 +134,7 @@ void Start () {
 }
 ```
 
-In this example, if you called `product.title()` then an exception would be thrown. Since the Unity Buy SDK is built on GraphQL queries, when `collections` are queried using this method only `id` is queried on `Product`. To learn which fields are queried using this method, see `DefaultQueries.cs`.
+In this example, if you called `product.title()` then an exception would be thrown. Since the Shopify SDK for Unity is built on GraphQL queries, when `collections` are queried using this method only `id` is queried on `Product`. To learn which fields are queried using this method, see `DefaultQueries.cs`.
 
 You can also make more complex requests using custom queries (see below).
 
@@ -416,7 +416,7 @@ You might want to optionally drive users to setup their payment cards with Apple
 
 ## Custom queries
 
-The Unity Buy SDK is built on top of Shopify's [Storefront API](https://help.shopify.com/api/storefront-api), which is a GraphQL Web API. In GraphQL, you send queries to the endpoint and receive back a JSON responses.
+The Shopify SDK for Unity is built on top of Shopify's [Storefront API](https://help.shopify.com/api/storefront-api), which is a GraphQL Web API. In GraphQL, you send queries to the endpoint and receive back a JSON responses.
 
 The following example shows a GraphQL query that retrieves a store's name and some details about its domain address:
 

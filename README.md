@@ -1,14 +1,14 @@
 ![image](https://user-images.githubusercontent.com/12721181/29127322-c0acb984-7cee-11e7-97bd-e55f72af29aa.png) 
 
-# Unity Buy SDK
+# Shopify SDK for Unity
 
-The Unity Buy SDK allows Unity developers to query and sell products from Shopify directly in Unity.
+The Shopify SDK for Unity allows Unity developers to query and sell products from Shopify directly in Unity.
 
 ## Table of contents
 
 - [Features](#features)
 - [Documentation](#documentation)
-- [Using the Unity Buy SDK in Unity](#using-the-unity-buy-sdk-in-unity)
+- [Using the Shopify SDK for Unity in Unity](#using-the-unity-buy-sdk-in-unity)
 - [Supported build targets](#supported-build-targets)
 - [Examples](#examples)
 
@@ -35,9 +35,9 @@ Coming Soon:
 - [How to contribute](CONTRIBUTING.md)
 - [How to Test](TESTING.md)
 
-## Using the Unity Buy SDK in Unity
+## Using the Shopify SDK for Unity in Unity
 
-By following the steps below you'll install the Unity Buy SDK into your Unity project using the [shopify-buy.unitypackage](https://github.com/Shopify/unity-buy-sdk/raw/master/shopify-buy.unitypackage):
+By following the steps below you'll install the Shopify SDK for Unity into your Unity project using the [shopify-buy.unitypackage](https://github.com/Shopify/unity-buy-sdk/raw/master/shopify-buy.unitypackage):
 
 1. Download the latest release of the [shopify-buy.unitypackage](https://github.com/Shopify/unity-buy-sdk/releases/latest)
 2. Make sure that your project is open in Unity
