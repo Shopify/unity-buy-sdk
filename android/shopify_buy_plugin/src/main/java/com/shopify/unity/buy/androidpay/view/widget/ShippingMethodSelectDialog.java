@@ -153,9 +153,9 @@ final class ShippingMethodSelectDialog extends BottomSheetDialog {
         static final NumberFormat CURRENCY_FORMAT = NumberFormat.getCurrencyInstance();
 
         /** Shipping method title view. */
-        TextView title;
+        private TextView title;
         /** Shipping method price view. */
-        TextView price;
+        private TextView price;
 
         ShippingMethodViewHolder(View itemView) {
             super(itemView);

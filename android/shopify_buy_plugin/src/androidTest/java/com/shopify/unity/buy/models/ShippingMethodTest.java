@@ -60,7 +60,7 @@ public class ShippingMethodTest {
     public void parcelable() {
         ShippingMethod input = new ShippingMethod("identifier", "detail",
                 "label", BigDecimal.valueOf(0));
-        
+
         Parcel parcel = Parcel.obtain();
         input.writeToParcel(parcel, input.describeContents());
         parcel.setDataPosition(0);
