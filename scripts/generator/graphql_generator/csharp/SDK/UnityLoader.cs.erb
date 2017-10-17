@@ -47,7 +47,7 @@ namespace <%= namespace %>.SDK {
     /// Performs network communication to send GraphQL queries between Unity and a Shopify GraphQL endpoint.
     /// </summary>
     public class UnityLoader : BaseLoader {
-        Dictionary<string,string> _Headers = new Dictionary<string,string>();
+        private Dictionary<string,string> _Headers = new Dictionary<string,string>();
 
         /// <param name="domain">Shopify store domain that you'd like to query on</param>
         /// <param name="accessToken">access token used to communicate with the Shopify Store</param>
@@ -61,15 +61,15 @@ namespace <%= namespace %>.SDK {
         override public void Load(string query, LoaderResponseHandler callback) {
             GlobalGameObject.AddComponent<LoaderComponent>()
             .SetURL("https://" + Domain + "/api/graphql.json")
-            .SetHeaders(headers)
+            .SetHeaders(_Headers)
             .Load(query, callback);
         }
 
         override public void SetHeader(string key, string value) {
-            headers[key] = value;
+            _Headers[key] = value;
         }
 
-        override public void SDKVariantName() {
+        override public string SDKVariantName() {
             return "unity";
         }
     }
