@@ -18,24 +18,10 @@ namespace Shopify.Tests {
         );
     }
 
-    public class TestLoader : ILoader {
-        public string Domain {
-            get {
-                return "someshop.myshopify.com";
-            }
-        }
+    public class TestLoader : BaseLoader {
+        public TestLoader() : base("someshop.myshopify.com", "1234") {}
 
-        public string AccessToken {
-            get {
-                return "1234";
-            }
-        }
-
-        public TestLoader() {
-
-        }
-
-        public void Load(string query, LoaderResponseHandler callback) {
+        public override void Load(string query, LoaderResponseHandler callback) {
             if (query == TestQueries.QueryFail.ToString() || query == TestQueries.MutationFail.ToString()) {
                 callback(null, "Error: 404 Not Found error");
             } else if (query == TestQueries.Query.ToString()) {
@@ -45,6 +31,14 @@ namespace Shopify.Tests {
             } else {
                 throw new Exception("Invalid test data");
             }
+        }
+
+        public override void SetHeader(string key, string value) {
+            // No-op
+        }
+
+        public override string SDKVariantName() {
+            return "test-loader";
         }
     }
 

@@ -6,7 +6,7 @@ namespace Shopify.Tests {
     using Shopify.Unity.GraphQL;
     using Shopify.Unity.SDK;
 
-    public class MockLoader : ILoader {
+    public class MockLoader : BaseLoader {
         private static bool Initialized;
 
         public static int PageSize = DefaultQueries.MaxPageSize;
@@ -24,31 +24,19 @@ namespace Shopify.Tests {
             Initialized = true;
         }
 
-        public string Domain {
-            get {
-                return "graphql.myshopify.com";
-            }
-        }
-
-        public string AccessToken {
-            get {
-                return "1234";
-            }
-        }
-
         public List<IMockLoader> Loaders {
             get {
                 return _Loaders;
             }
         }
 
-        public MockLoader() {
+        public MockLoader() : base("graphql.myshopify.com", "1234") {
             if (!Initialized) {
                 Initialize();
             }
         }
 
-        public void Load(string query, LoaderResponseHandler callback) {
+        public override void Load(string query, LoaderResponseHandler callback) {
             bool handledResponse = false;
 
             foreach(IMockLoader loader in _Loaders) {
@@ -63,6 +51,14 @@ namespace Shopify.Tests {
             if (!handledResponse) {
                 throw new Exception("NO QUERY RESPONSE: \n\n" + query + "\n\n");
             }
+        }
+
+        public override void SetHeader(string key, string value) {
+            // No-op
+        }
+
+        public override string SDKVariantName() {
+            return "unity-test";
         }
     }
 }

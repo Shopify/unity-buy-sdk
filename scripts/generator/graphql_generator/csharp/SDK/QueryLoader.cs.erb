@@ -6,16 +6,16 @@ namespace <%= namespace %>.SDK {
     using <%= namespace %>.MiniJSON;
 
     /// <summary>
-    /// Abstracts creating and sending queries and mutations via an ILoader.
+    /// Abstracts creating and sending queries and mutations via a BaseLoader.
     /// </summary>
     public class QueryLoader {
-        ILoader Loader;
+        BaseLoader Loader;
 
         /// <summary>
-        /// Accepts the <see ref="ILoader">ILoader </see>, which will do network communcation to send GraphQL queries.
+        /// Accepts the <see ref="BaseLoader">BaseLoader </see>, which will do network communcation to send GraphQL queries.
         /// </summary>
         /// <param name="loader">will perform network communication to send GraphQL queries to a GraphQL endpoint</param>
-        public QueryLoader(ILoader loader) {
+        public QueryLoader(BaseLoader loader) {
             Loader = loader;
         }
 

@@ -129,7 +129,7 @@ module GraphQLGenerator
         SDK/ResponseMergeUtil
         SDK/MergeCheckout
         SDK/QueryResponse
-        SDK/ILoader
+        SDK/BaseLoader
         SDK/Log
         SDK/NativeMessage
         SDK/UnityWebCheckout
