@@ -44,8 +44,7 @@ namespace Shopify.Examples.Panels {
         private void Start() {
             BackToProductsButton.onClick.AddListener(() => OnReturnToProducts.Invoke());
             CheckoutButton.onClick.AddListener(() => {
-				_cart.CheckoutWithNativePay(
-					"BL9QiRljozDhgfyfVHoK+l1l98fBY0x/in0rCYJxmTfnzJDWsX1+8l4HEa4LO0WeKQlYtuk8zcJtzimTMhr1UL8=",
+				_cart.CheckoutWithWebView(
                     () => {
                         OnCheckoutSuccess.Invoke();
                         EmptyCart();
