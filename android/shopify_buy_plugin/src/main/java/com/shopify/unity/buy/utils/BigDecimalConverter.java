@@ -38,7 +38,7 @@ public final class BigDecimalConverter {
      * @param obj the {@code JSONObject} to extract the decimal from
      * @param property the JSON property name to read the decimal from
      * @return a {@code BigDecimal} representation of the JSON-encoded decimal number or
-     * {@code null} if such representatoin is absent from the JSON object
+     * {@code null} if such representation is absent from the JSON object
      * @throws JSONException if the {@code property} is not encoded as {@link String}
      */
     public static BigDecimal nullableDecimalPropertyFromJson(@NonNull JSONObject obj,
