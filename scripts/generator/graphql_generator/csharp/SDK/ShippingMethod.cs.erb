@@ -1,8 +1,8 @@
-#if UNITY_IOS
-namespace <%= namespace %>.SDK.iOS {
+namespace <%= namespace %>.SDK {
     using System.Collections.Generic;
     using System.Collections;
     using System;
+    using <%= namespace %>.MiniJSON;
     [Serializable]
     public class ShippingMethod : SummaryItem {
 
@@ -22,6 +22,14 @@ namespace <%= namespace %>.SDK.iOS {
             dict["Detail"] = Detail;
             return dict;
         }
+
+        public static List<object> ListToJson(List<ShippingMethod> shippingMethods) {
+            List<object> list = new List<object>(shippingMethods.Count);
+            foreach (ShippingMethod shippingMethod in shippingMethods) {
+                list.Add(shippingMethod.ToJson());
+            }
+            return list;
+        }
     }
 }
-#endif
+

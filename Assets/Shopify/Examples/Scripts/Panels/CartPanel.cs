@@ -44,7 +44,7 @@ namespace Shopify.Examples.Panels {
         private void Start() {
             BackToProductsButton.onClick.AddListener(() => OnReturnToProducts.Invoke());
             CheckoutButton.onClick.AddListener(() => {
-                _cart.CheckoutWithWebView(
+				_cart.CheckoutWithWebView(
                     () => {
                         OnCheckoutSuccess.Invoke();
                         EmptyCart();

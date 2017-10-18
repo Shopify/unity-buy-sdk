@@ -20,19 +20,23 @@ namespace <%= namespace %>.SDK.Android {
         public readonly string CountryCode;
         /// <value>JSON name for the "requires shipping" attribute.</value>
         public readonly bool RequiresShipping;
+        /// <value>JSON name for the "shipping methods" attribute.</value>
+        public readonly List<ShippingMethod> ShippingMethods;
 
         public AndroidPayEventResponse(
             string merchantName,
             PricingLineItems pricingLineItems,
             string currencyCode,
             string countryCode,
-            bool requiresShipping)
+            bool requiresShipping,
+            List<ShippingMethod> shippingMethods)
         {
             MerchantName = merchantName;
             PricingLineItems = pricingLineItems;
             CurrencyCode = currencyCode;
             CountryCode = countryCode;
             RequiresShipping = requiresShipping;
+            ShippingMethods = shippingMethods;
         }
 
         public override object ToJson() {
@@ -42,6 +46,7 @@ namespace <%= namespace %>.SDK.Android {
             dict["currencyCode"] = CurrencyCode;
             dict["countryCode"] = CountryCode;
             dict["requiresShipping"] = RequiresShipping;
+            dict["shippingMethods"] = ShippingMethod.ListToJson(ShippingMethods);
             return dict;
         }
     }

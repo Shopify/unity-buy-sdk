@@ -41,6 +41,7 @@ dependencies {
     compile project(':unity_classes')
     compile 'com.android.support:appcompat-v7:26.0.0'
     compile 'com.android.support:customtabs:26.0.0'
+    compile 'com.android.support:design:26.0.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.shopify.mobilebuysdk:buy3-pay-support:1.0.0'
 
