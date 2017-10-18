@@ -17,10 +17,12 @@ import com.shopify.unity.buy.MessageCenter;
 import com.shopify.unity.buy.models.AndroidPayEventResponse;
 import com.shopify.unity.buy.models.MailingAddressInput;
 import com.shopify.unity.buy.models.PricingLineItems;
+import com.shopify.unity.buy.models.ShippingMethod;
 import com.shopify.unity.buy.utils.Logger;
 import com.shopify.unity.buy.utils.WalletErrorFormatter;
 
-import java.io.IOException;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +40,7 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
     public static final String EXTRA_PUBLIC_KEY = "publicKey";
 
     private PayCart cart;
+    private List<ShippingMethod> shippingMethods;
     private String countryCode;
     private String publicKey;
     private int androidPayEnvironment;
@@ -192,7 +195,7 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
             public void onFullWallet(FullWallet fullWallet) {
                 super.onFullWallet(fullWallet);
                 Logger.debug("Full wallet received.");
-                startActivity(ConfirmationActivity.newIntent(getActivity(), cart));
+                startActivity(ConfirmationActivity.newIntent(getActivity(), cart, shippingMethods));
             }
 
             @Override
@@ -224,9 +227,12 @@ public class UnityAndroidPayFragment extends Fragment implements GoogleApiClient
         // TODO: Create a new pay cart with the updated shipping address and request full wallet
         Logger.debug("New cart data from Unity: " + jsonResponse);
         try {
-            cart = payCartFromEventResponse(AndroidPayEventResponse.fromJsonString(jsonResponse));
+            final AndroidPayEventResponse response =
+                    AndroidPayEventResponse.fromJsonString(jsonResponse);
+            shippingMethods = response.shippingMethods;
+            cart = payCartFromEventResponse(response);
             requestFullWallet(cart);
-        } catch (IOException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
     }

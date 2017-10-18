@@ -9,8 +9,11 @@ import android.widget.TextView;
 
 import com.shopify.unity.buy.R;
 import com.shopify.unity.buy.androidpay.view.viewmodel.ShippingRatesViewModel;
+import com.shopify.unity.buy.models.ShippingMethod;
 
 import java.text.NumberFormat;
+
+import static com.shopify.unity.buy.androidpay.view.widget.ShippingMethodSelectDialog.OnShippingMethodSelectListener;
 
 /**
  * Custom view that shows shipping information.
@@ -26,6 +29,8 @@ public final class ShippingRatesView extends ConstraintLayout
     private TextView shippingLine;
     /** Shipping price label. */
     private TextView price;
+
+    private ShippingRatesViewModel viewModel;
 
     public ShippingRatesView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -45,8 +50,11 @@ public final class ShippingRatesView extends ConstraintLayout
 
     @Override
     public void update(ShippingRatesViewModel shippingRatesViewModel) {
-        shippingLine.setText(shippingRatesViewModel.shippingLine);
-        price.setText(CURRENCY_FORMAT.format(shippingRatesViewModel.price));
+        viewModel = shippingRatesViewModel;
+        final ShippingMethod currentShippingMethod =
+                shippingRatesViewModel.getCurrentShippingMethod();
+        shippingLine.setText(currentShippingMethod.label);
+        price.setText(CURRENCY_FORMAT.format(currentShippingMethod.amount));
     }
 
     @VisibleForTesting
@@ -60,6 +68,13 @@ public final class ShippingRatesView extends ConstraintLayout
     }
 
     private void onChangeClick() {
+        new ShippingMethodSelectDialog(getContext()).show(viewModel.shippingMethods,
+                new OnShippingMethodSelectListener() {
+                    @Override
+                    public void onShippingMethodSelected(ShippingMethod shippingMethod, int position) {
+                        update(new ShippingRatesViewModel(viewModel.shippingMethods, position));
+                    }
+                });
         // TODO show shipping method selection dialog
     }
 }

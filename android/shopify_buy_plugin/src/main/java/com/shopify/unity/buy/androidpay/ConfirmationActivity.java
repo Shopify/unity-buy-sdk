@@ -15,8 +15,11 @@ import com.shopify.unity.buy.androidpay.view.viewmodel.ConfirmationViewModel;
 import com.shopify.unity.buy.androidpay.view.viewmodel.ShippingRatesViewModel;
 import com.shopify.unity.buy.androidpay.view.viewmodel.TotalSummaryViewModel;
 import com.shopify.unity.buy.androidpay.view.widget.ConfirmationView;
+import com.shopify.unity.buy.models.ShippingMethod;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Activity that shows a checkout confirmation screen with broken down prices,
@@ -27,17 +30,24 @@ public final class ConfirmationActivity extends AppCompatActivity {
 
     /** {@link Intent} extra that holds the {@link PayCart} of the current checkout. */
     private static final String EXTRA_PAY_CART = "payCart";
+    /** {@link Intent} extra that holds a {@link List} of {@link ShippingMethod ShippingMethods}
+     * of the current checkout. */
+    private static final String EXTRA_SHIPPING_METHODS = "shippingMethods";
 
     /**
      * Creates a new {@link Intent} that resolves to this {@link ConfirmationActivity}.
      *
      * @param context a {@link Context} used to create the {@code Intent}
      * @param payCart a {@link PayCart} used to populate the screen
+     * @param shippingMethods a {@link List} of {@link ShippingMethod ShippingMethods}
+     *                        used to populate the screen
      * @return an {@code Intent} that shows the {@code payCart} checkout information
      */
-    static Intent newIntent(@NonNull Context context, @NonNull PayCart payCart) {
+    static Intent newIntent(@NonNull Context context, @NonNull PayCart payCart,
+                            @NonNull List<ShippingMethod> shippingMethods) {
         return new Intent(context, ConfirmationActivity.class)
-                .putExtra(EXTRA_PAY_CART, payCart);
+                .putExtra(EXTRA_PAY_CART, payCart)
+                .putExtra(EXTRA_SHIPPING_METHODS, new ArrayList<>(shippingMethods));
     }
 
     /**
@@ -48,6 +58,16 @@ public final class ConfirmationActivity extends AppCompatActivity {
      */
     private PayCart getPayCart() {
         return getIntent().getParcelableExtra(EXTRA_PAY_CART);
+    }
+
+    /**
+     * Gets the {@link List} of {@link ShippingMethod ShippingMethods} from the
+     * {@link Intent} that started this {@link ConfirmationActivity}.
+     *
+     * @return a {@code List<ShippingMethod>} object to populate the screen
+     */
+    private List<ShippingMethod> getShippingMethods() {
+        return getIntent().getParcelableArrayListExtra(EXTRA_SHIPPING_METHODS);
     }
 
     @Override
@@ -108,10 +128,8 @@ public final class ConfirmationActivity extends AppCompatActivity {
      * @return the {@code ShippingRatesViewModel} based on the {@code payCart}
      */
     private ShippingRatesViewModel shippingRatesViewModelFromPayCart(@NonNull PayCart payCart) {
-        return new ShippingRatesViewModel(
-                "Some shipping method", // TODO get this from Unity
-                nonNullShippingPrice(payCart)
-        );
+        // TODO make sure the 0-indexed shipping method is the same one in the payCart
+        return new ShippingRatesViewModel(getShippingMethods(), 0);
     }
 
     /**

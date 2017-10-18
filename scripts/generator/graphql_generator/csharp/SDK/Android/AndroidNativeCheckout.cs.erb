@@ -62,7 +62,15 @@ namespace <%= namespace %>.SDK.Android {
             #if !SHOPIFY_MONO_UNIT_TEST
             const bool testing = true; // TODO parametrize for 3rd-party devs
             using (var androidPayCheckoutSession = new AndroidJavaObject("com.shopify.unity.buy.androidpay.AndroidPayCheckoutSession", testing)) {
-                object[] args = { GlobalGameObject.Name, MerchantName, key, pricingLineItemsString, currencyCodeString, CountryCodeString, requiresShipping };
+                object[] args = {
+                     GlobalGameObject.Name,
+                     MerchantName,
+                     key,
+                     pricingLineItemsString,
+                     currencyCodeString,
+                     CountryCodeString,
+                     requiresShipping
+                };
                 if (androidPayCheckoutSession.Call<bool>("checkoutWithAndroidPay", args)) {
                     if (AndroidPayEventBridge == null) {
                         AndroidPayEventBridge = GlobalGameObject.AddComponent<AndroidPayEventReceiverBridge>();
@@ -86,7 +94,9 @@ namespace <%= namespace %>.SDK.Android {
             var pricingLineItems = GetPricingLineItemsFromCheckout(checkout);
             var currencyCodeString = checkout.currencyCode().ToString("G");
             var requiresShipping = checkout.requiresShipping();
-            return new AndroidPayEventResponse(MerchantName, pricingLineItems, currencyCodeString, CountryCodeString, requiresShipping);
+            var shippingMethods = GetShippingMethods();
+            return new AndroidPayEventResponse(MerchantName, pricingLineItems, currencyCodeString,
+                    CountryCodeString, requiresShipping, shippingMethods);
         }
 
         /// <summary>
@@ -107,6 +117,27 @@ namespace <%= namespace %>.SDK.Android {
                 } catch {}
             }
             return new PricingLineItems(taxPrice, subtotal, totalPrice, shippingPrice);
+        }
+
+        /// <summary>
+        /// Creates a list of <see cref="ShippingMethod"/> objects based on the for the
+        /// current shipping address set to the <see cref="Checkout"/> object.
+        /// </summary>
+        private List<ShippingMethod> GetShippingMethods() {
+            var checkout = CartState.CurrentCheckout;
+            var shippingMethods = new List<ShippingMethod>();
+
+            try {
+                var availableShippingRates = checkout.availableShippingRates().shippingRates();
+
+                foreach (var shippingRate in availableShippingRates) {
+                    shippingMethods.Add(new ShippingMethod(shippingRate.title(), shippingRate.price().ToString(), shippingRate.handle()));
+                }
+            } catch (Exception e) {
+                throw new Exception("Attempted to gather information on available shipping rates on CurrentCheckout, but CurrentCheckout do not have those properties queried", e);
+            }
+
+            return shippingMethods;
         }
     }
 }
