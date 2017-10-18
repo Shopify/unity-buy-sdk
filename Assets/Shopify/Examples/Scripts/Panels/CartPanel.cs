@@ -6,6 +6,7 @@ using Shopify.Unity;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Shopify.Unity.SDK;
 
 namespace Shopify.Examples.Panels {
     public class CartQuantityChangedEvent : UnityEvent<int> {
@@ -28,6 +29,7 @@ namespace Shopify.Examples.Panels {
 
         public Button BackToProductsButton;
         public Button CheckoutButton;
+        public Button NativeCheckoutButton;
         public Text CheckoutButtonText;
         public Text SubtotalText;
 
@@ -45,20 +47,54 @@ namespace Shopify.Examples.Panels {
             BackToProductsButton.onClick.AddListener(() => OnReturnToProducts.Invoke());
             CheckoutButton.onClick.AddListener(() => {
 				_cart.CheckoutWithWebView(
-                    () => {
-                        OnCheckoutSuccess.Invoke();
-                        EmptyCart();
-                    },
-                    () => {
-                        OnCheckoutCancelled.Invoke();
-                    },
-                    (checkoutError) => {
-                        OnCheckoutFailure.Invoke(checkoutError.Description);
-                    }
+                    OnCheckoutSuccessCallback,
+                    OnCheckoutCancelledCallback,
+                    OnCheckoutFailedCallback
                 );
             });
 
+
             gameObject.SetActive(false);
+        }
+
+        private void SetupNativePayButton() {
+            _cart.CanCheckoutWithNativePay((bool canNativePay) => {
+                Debug.Log(canNativePay);
+                if (canNativePay) {
+                    NativeCheckoutButton.onClick.AddListener(() => {
+                        _cart.CheckoutWithNativePay(
+                            "com.merchant.id",
+                            OnCheckoutSuccessCallback,
+                            OnCheckoutCancelledCallback,
+                            OnCheckoutFailedCallback
+                        );
+                    });
+                } else {
+                    HideNativePayButton();
+                }
+            });
+        }
+
+        private void OnCheckoutSuccessCallback() {
+            OnCheckoutSuccess.Invoke();
+            EmptyCart();
+        }
+
+        private void OnCheckoutCancelledCallback() {
+            OnCheckoutCancelled.Invoke();
+        }
+
+        private void OnCheckoutFailedCallback(ShopifyError error) {
+            OnCheckoutFailure.Invoke(error.Description);
+        }
+
+        // Hides the native pay button and centers the remaining checkout button for web checkout.
+        private void HideNativePayButton() {
+            Debug.Log("Testing!");
+            NativeCheckoutButton.gameObject.SetActive(false);
+            var transform = CheckoutButton.gameObject.GetComponent<RectTransform>();
+            transform.pivot = new Vector2(0.5f, 0.5f);
+            transform.anchoredPosition -= new Vector2(transform.anchoredPosition.x, 0);
         }
 
         // When the quantity adjustment buttons are clicked they will trigger this event handler.
@@ -95,6 +131,7 @@ namespace Shopify.Examples.Panels {
         public void AddToCart(Product product, ProductVariant variant) {
             if (_cart == null) {
                 _cart = ShopifyHelper.CreateCart();
+                SetupNativePayButton();
             }
 
             // Handle adding a particular variant to the cart
