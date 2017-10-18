@@ -3,6 +3,8 @@ package com.shopify.unity.buy.models;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.shopify.unity.buy.utils.BigDecimalConverter;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,13 +38,13 @@ public final class PricingLineItems implements JsonSerializable {
     }
 
     public static PricingLineItems fromJson(JSONObject json) throws JSONException {
-        BigDecimal subtotal = decimalPropertyFromJson(json, SUBTOTAL);
-        BigDecimal taxPrice = decimalPropertyFromJson(json, TAX_PRICE);
-        BigDecimal totalPrice = decimalPropertyFromJson(json, TOTAL_PRICE);
+        final BigDecimal subtotal = BigDecimalConverter.decimalPropertyFromJson(json, SUBTOTAL);
+        final BigDecimal taxPrice = BigDecimalConverter.decimalPropertyFromJson(json, TAX_PRICE);
+        final BigDecimal totalPrice = BigDecimalConverter.decimalPropertyFromJson(json, TOTAL_PRICE);
 
         BigDecimal shippingPrice = null;
         if (json.has(SHIPPING_PRICE)) {
-            shippingPrice = nullableDecimalPropertyFromJson(json, SHIPPING_PRICE);
+            shippingPrice = BigDecimalConverter.nullableDecimalPropertyFromJson(json, SHIPPING_PRICE);
         }
 
         return new PricingLineItems(subtotal, taxPrice, totalPrice, shippingPrice);
@@ -60,16 +62,5 @@ public final class PricingLineItems implements JsonSerializable {
         }
 
         return json.toString();
-    }
-
-    private static BigDecimal nullableDecimalPropertyFromJson(JSONObject obj, String property) throws JSONException {
-        if (obj.has(property)) {
-            return decimalPropertyFromJson(obj, property);
-        }
-        return null;
-    }
-
-    private static BigDecimal decimalPropertyFromJson(JSONObject obj, String property) throws JSONException {
-        return new BigDecimal(obj.getString(property)).setScale(2, BigDecimal.ROUND_FLOOR);
     }
 }

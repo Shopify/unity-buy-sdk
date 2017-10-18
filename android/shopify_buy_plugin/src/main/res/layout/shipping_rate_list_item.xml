@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?attr/selectableItemBackground"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/default_padding_half"
+    android:paddingEnd="@dimen/default_padding"
+    android:paddingStart="@dimen/default_padding"
+    android:paddingTop="@dimen/default_padding_half">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingEnd="@dimen/default_padding"
+        android:textAppearance="@style/Shopify.SubTitleText.Inverse"
+        tools:text="DHL" />
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/Shopify.BodyText.Inverse"
+        android:textColor="@color/text_grey"
+        tools:text="$59.60" />
+
+</LinearLayout>
