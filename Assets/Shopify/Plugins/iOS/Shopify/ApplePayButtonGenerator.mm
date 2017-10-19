@@ -1,4 +1,3 @@
-#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <PassKit/PassKit.h>
 #import "UnityAppController.h"
@@ -7,11 +6,11 @@
 extern "C" {
 #endif
     PKPaymentButtonStyle SBPayButtonStyleFromString(const char *style) {
-        if (strcmp(style, "white") == 0) {
+        if (strncmp(style, "WHITE", 5) == 0) {
             return PKPaymentButtonStyleWhite;
-        } else if (strcmp(style, "black") == 0) {
+        } else if (strncmp(style, "BLACK", 5) == 0) {
             return PKPaymentButtonStyleBlack;
-        } else if (strcmp(style, "whiteOutline") == 0) {
+        } else if (strncmp(style, "WHITE_OUTLINE", 11) == 0) {
             return PKPaymentButtonStyleWhiteOutline;
         } else {
             return PKPaymentButtonStyleBlack;
@@ -19,15 +18,15 @@ extern "C" {
     }
     
     PKPaymentButtonType SBPayButtonTypeFromString(const char *type) {
-        if (strcmp(type, "plain") == 0) {
+        if (strncmp(type, "PLAIN", 5) == 0) {
             return PKPaymentButtonTypePlain;
-        } else if (strcmp(type, "buy") == 0) {
+        } else if (strncmp(type, "BUY", 3) == 0) {
             return PKPaymentButtonTypeBuy;
-        } else if (strcmp(type, "setUp") == 0) {
+        } else if (strncmp(type, "SETUP", 5) == 0) {
             return PKPaymentButtonTypeSetUp;
-        } else if (strcmp(type, "inStore") == 0) {
+        } else if (strncmp(type, "IN_STORE", 6) == 0) {
             return PKPaymentButtonTypeInStore;
-        } else if (strcmp(type, "donate") == 0) {
+        } else if (strncmp(type, "DONATE", 6) == 0) {
             return PKPaymentButtonTypeDonate;
         } else {
             return PKPaymentButtonTypePlain;
@@ -35,13 +34,12 @@ extern "C" {
     }
     
     // Helper method for making a copy of a C String.
-    const char* cStringCopy(const char* string) {
+    const char* cStringCopy(const char* string, size_t length) {
         if (string == NULL)
             return NULL;
         
-        char* res = (char*)malloc(strlen(string) + 1);
-        strcpy(res, string);
-        
+        char* res = (char*)malloc((length + 1) * sizeof(char));
+        strncpy(res, string, length + 1);
         return res;
     }
     
@@ -81,7 +79,8 @@ extern "C" {
         
         // We create a malloc'ed copy of the string here so we can manually release the memory associated
         // with it on the Unity side using Marshal.FreeHGlobal.
-        return cStringCopy([byteArray UTF8String]);
+        const char *utf8String = [byteArray UTF8String];
+        return cStringCopy(utf8String, strlen(utf8String));
     }
 #ifdef __cplusplus
 }

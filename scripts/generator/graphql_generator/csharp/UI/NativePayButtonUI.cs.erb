@@ -1,3 +1,4 @@
+#if !SHOPIFY_MONO_UNIT_TEST
 namespace <%= namespace %>.UI {
     using UnityEngine;
     using UnityEngine.UI;
@@ -11,9 +12,9 @@ namespace <%= namespace %>.UI {
     /// for all available options.
     /// </summary>
     public enum ApplePayButtonStyle {
-        white,
-        whiteOutline,
-        black
+        WHITE,
+        WHITE_OUTLINE,
+        BLACK
     }
 
     /// <summary>
@@ -21,11 +22,11 @@ namespace <%= namespace %>.UI {
     /// for all available options.
     /// </summary>
     public enum ApplePayButtonType {
-        plain,
-        buy,
-        setUp,
-        inStore,
-        donate
+        PLAIN,
+        BUY,
+        SETUP,
+        IN_STORE,
+        DONATE 
     }
 
     public class NativePayButtonUI : MonoBehaviour {
@@ -47,11 +48,6 @@ namespace <%= namespace %>.UI {
         /// </summary>
         public bool includeMinimumSpacingForIOS;
 
-        [DllImport ("__Internal")]
-        private static extern IntPtr _GenerateApplePayButtonImage(string type, string style, 
-                                                                  float width, float height, 
-                                                                  bool includeMinimumSpacingForIOS);
-
         private Image buttonImage;
         private Texture2D imageTexture;
 
@@ -60,8 +56,16 @@ namespace <%= namespace %>.UI {
 
             #if UNITY_IOS
             GenerateApplePayImage();
+            #elif UNITY_ANDROID
+            GenerateAndroidPayImage();
             #endif            
         }
+
+        #if UNITY_IOS
+        [DllImport ("__Internal")]
+        private static extern IntPtr _GenerateApplePayButtonImage(string type, string style, 
+                                                                  float width, float height, 
+                                                                  bool includeMinimumSpacingForIOS);
 
         private void GenerateApplePayImage() {
             var rectTransform = this.gameObject.GetComponent<RectTransform>();
@@ -93,9 +97,13 @@ namespace <%= namespace %>.UI {
                 100.0f
             );
         }
+        #endif
 
+        #if UNITY_ANDROID
         private void GenerateAndroidPayImage() {
             // TODO: Get a render of the Android Pay button for use in Unity.
         }
+        #endif
     }
 }
+#endif
