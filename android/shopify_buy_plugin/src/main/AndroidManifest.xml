@@ -8,10 +8,7 @@
             android:name="com.google.android.gms.wallet.api.enabled"
             android:value="true" />
 
-        <activity
-            android:name=".androidpay.ConfirmationActivity"
-            android:theme="@style/BuyTheme" />
-
+        <activity android:name=".ShopifyUnityPlayerActivity"/>
     </application>
 
 </manifest>

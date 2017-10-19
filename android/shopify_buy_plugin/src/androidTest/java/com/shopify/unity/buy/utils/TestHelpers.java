@@ -22,6 +22,17 @@ public class TestHelpers {
             "administrativeArea", "locality", "countryCode", "postalCode", "sortingCode", "phoneNumber", false, "companyName", "emailAddress");
     }
 
+    public static String buildAndroidPayEventResponseJson() {
+        return "{" +
+                "\"merchantName\": \"Merchant Name\"," +
+                "\"pricingLineItems\": {\"subtotal\": \"5.23\", \"taxPrice\": \"1.23\", \"totalPrice\": \"6.46\", \"shippingPrice\": \"0.28\"}," +
+                "\"currencyCode\": \"CAD\"," +
+                "\"countryCode\": \"CA\"," +
+                "\"requiresShipping\": true," +
+                "\"shippingMethods\": [{\"Identifier\": \"Identifier\", \"Detail\": \"Detail\", \"Label\": \"Label\", \"Amount\": \"3.45\"}]" +
+                "}";
+    }
+
     public static MaskedWallet createMaskedWallet(final UserAddress shippingAddress, final UserAddress billingAddress, final String email,
                                                   final String googleTransactionId) throws Exception {
         final Constructor<MaskedWallet> maskedWalletConstructor = MaskedWallet.class.getDeclaredConstructor();

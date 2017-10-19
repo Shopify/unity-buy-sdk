@@ -25,6 +25,7 @@
 package com.shopify.unity.buy.androidpay.view.widget;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
@@ -53,7 +54,6 @@ final class ShippingMethodSelectDialog extends BottomSheetDialog {
     ShippingMethodSelectDialog(@NonNull Context context) {
         super(context, R.style.BuyTheme_ShippingMethodDialog);
         setContentView(R.layout.shipping_rate_list);
-
         final Toolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
             toolbar.setTitle(R.string.confirmation_shipping_method_select_title);
@@ -86,6 +86,31 @@ final class ShippingMethodSelectDialog extends BottomSheetDialog {
                 });
         recyclerView.setAdapter(adapter);
         show();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        enableImmersiveMode();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            enableImmersiveMode();
+        }
+    }
+
+    protected void enableImmersiveMode() {
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        );
     }
 
     /**
