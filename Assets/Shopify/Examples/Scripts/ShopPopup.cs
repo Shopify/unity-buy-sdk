@@ -57,6 +57,8 @@ public class ShopPopup : MonoBehaviour {
             }
         );
 
+        CartPanel.SetCart(ShopifyHelper.CreateCart());
+
         // Setup event listeners for panels
 
         // Handle transition to specific product 

@@ -16,7 +16,6 @@ namespace Shopify.Examples.Panels {
     }
 
     public class CartPanel : MonoBehaviour {
-
         // Shopify cart object which manages the items which are added for purchase, and handles 
         // initiating the checkout process
         private Cart _cart;
@@ -128,12 +127,12 @@ namespace Shopify.Examples.Panels {
             DispatchCartQuantityChanged();
         }
 
-        public void AddToCart(Product product, ProductVariant variant) {
-            if (_cart == null) {
-                _cart = ShopifyHelper.CreateCart();
-                SetupNativePayButton();
-            }
+        public void SetCart(Cart cart) {
+            _cart = cart;
+            SetupNativePayButton();
+        }
 
+        public void AddToCart(Product product, ProductVariant variant) {
             // Handle adding a particular variant to the cart
             // For more information on adding variants to the cart visit
             // https://help.shopify.com/api/sdks/custom-storefront/unity-buy-sdk/getting-started#create-cart-line-items-based-on-selected-options
