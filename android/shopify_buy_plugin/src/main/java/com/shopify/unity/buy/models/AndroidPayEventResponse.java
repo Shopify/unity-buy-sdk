@@ -42,7 +42,7 @@ public final class AndroidPayEventResponse {
     /** A list of available shipping methods. */
     public final List<ShippingMethod> shippingMethods;
 
-    private AndroidPayEventResponse(String merchantName, PricingLineItems pricingLineItems,
+    public AndroidPayEventResponse(String merchantName, PricingLineItems pricingLineItems,
                                     String currencyCode, String countryCode,
                                     boolean requiresShipping,
                                     List<ShippingMethod> shippingMethods) {

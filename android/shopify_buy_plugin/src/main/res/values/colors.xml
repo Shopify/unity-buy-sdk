@@ -3,4 +3,6 @@
     <color name="color_primary">#0A0A0B</color>
     <color name="color_white">#FFFFFF</color>
     <color name="text_grey">#6C6C6C</color>
+    <color name="button_enabled">#669900</color>
+    <color name="button_disabled">#59683D</color>
 </resources>

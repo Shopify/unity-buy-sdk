@@ -11,10 +11,13 @@ public class WebCheckoutSession implements WebIntentListener {
 
     private static final String WEB_FRAGMENT_TAG = "webFragment";
     private static final String NATIVE_WEB_DELEGATE_METHOD_CONTENT = "dismissed";
-    private String unityDelegateObjectName;
+    private static final MessageCenter MESSAGE_CENTER = new MessageCenter();
 
-    public void checkout(String unityDelegateObjectName, String url) {
-        this.unityDelegateObjectName = unityDelegateObjectName;
+    public WebCheckoutSession(String unityDelegateObjectName) {
+        MessageCenter.init(unityDelegateObjectName);
+    }
+
+    public void checkout(String url) {
         launchWebIntent(url);
     }
 
@@ -28,10 +31,7 @@ public class WebCheckoutSession implements WebIntentListener {
         }
 
         UnityMessage dismissedMessage = UnityMessage.fromAndroid(NATIVE_WEB_DELEGATE_METHOD_CONTENT);
-        MessageCenter.UnityMessageReceiver receiver =
-            new MessageCenter.UnityMessageReceiver(unityDelegateObjectName,
-                MessageCenter.Method.ON_NATIVE_MESSAGE);
-        MessageCenter.sendMessageTo(dismissedMessage, receiver);
+        MESSAGE_CENTER.sendMessageTo(MessageCenter.Method.ON_NATIVE_MESSAGE, dismissedMessage);
     }
 
     private FragmentManager getFragmentManager() {

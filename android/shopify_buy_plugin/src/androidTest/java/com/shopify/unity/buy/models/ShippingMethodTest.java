@@ -59,16 +59,16 @@ public class ShippingMethodTest {
     @Test
     public void parcelable() {
         ShippingMethod input = new ShippingMethod("identifier", "detail",
-                "label", BigDecimal.valueOf(0));
+                "label", BigDecimal.valueOf(1.00));
 
         Parcel parcel = Parcel.obtain();
         input.writeToParcel(parcel, input.describeContents());
         parcel.setDataPosition(0);
 
         ShippingMethod output = ShippingMethod.CREATOR.createFromParcel(parcel);
-        assertEquals(output.identifier, "identifier");
-        assertEquals(output.detail, "detail");
-        assertEquals(output.label, "label");
-        assertEquals(output.amount, BigDecimal.valueOf(0));
+        assertEquals("identifier", output.identifier);
+        assertEquals("detail", output.detail);
+        assertEquals("label", output.label);
+        assertEquals(BigDecimal.valueOf(1.00).stripTrailingZeros(), output.amount.stripTrailingZeros());
     }
 }
