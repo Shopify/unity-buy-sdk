@@ -56,7 +56,7 @@ public final class ShippingMethod implements Parcelable {
         this.identifier = identifier;
         this.detail = detail;
         this.label = label;
-        this.amount = amount;
+        this.amount = amount.setScale(2, BigDecimal.ROUND_HALF_EVEN);
     }
 
     private ShippingMethod(Parcel in) {

@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public final class PricingLineItems implements JsonSerializable {
     private static final String SUBTOTAL = "subtotal";
@@ -22,14 +23,18 @@ public final class PricingLineItems implements JsonSerializable {
 
     @Nullable public final BigDecimal shippingPrice;
 
-    private PricingLineItems(@NonNull BigDecimal subtotal,
+    public PricingLineItems(@NonNull BigDecimal subtotal,
                              @NonNull BigDecimal taxPrice,
                              @NonNull BigDecimal totalPrice,
                              @Nullable BigDecimal shippingPrice) {
-        this.totalPrice = totalPrice;
-        this.subtotal = subtotal;
-        this.taxPrice = taxPrice;
-        this.shippingPrice = shippingPrice;
+        this.totalPrice = totalPrice.setScale(2, RoundingMode.HALF_EVEN);
+        this.subtotal = subtotal.setScale(2, RoundingMode.HALF_EVEN);
+        this.taxPrice = taxPrice.setScale(2, RoundingMode.HALF_EVEN);
+        if (shippingPrice != null) {
+            this.shippingPrice = shippingPrice.setScale(2, RoundingMode.HALF_EVEN);
+        } else {
+            this.shippingPrice = null;
+        }
     }
 
 

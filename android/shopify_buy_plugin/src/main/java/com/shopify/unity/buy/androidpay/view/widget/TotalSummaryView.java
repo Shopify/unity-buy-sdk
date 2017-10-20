@@ -18,8 +18,7 @@ import java.text.NumberFormat;
  * shipping, tax, and total.
  */
 
-public final class TotalSummaryView extends ConstraintLayout
-        implements Updatable<TotalSummaryViewModel> {
+public final class TotalSummaryView extends ConstraintLayout {
 
     /** Localized currency formatter. */
     private static final NumberFormat CURRENCY_FORMAT = NumberFormat.getCurrencyInstance();
@@ -46,7 +45,6 @@ public final class TotalSummaryView extends ConstraintLayout
         total = findViewById(R.id.total);
     }
 
-    @Override
     public void update(TotalSummaryViewModel totalSummaryViewModel) {
         subtotal.setText(CURRENCY_FORMAT.format(totalSummaryViewModel.subtotal));
         shipping.setText(CURRENCY_FORMAT.format(totalSummaryViewModel.shipping));

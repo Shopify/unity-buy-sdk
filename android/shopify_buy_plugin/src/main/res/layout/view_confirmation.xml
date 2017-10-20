@@ -6,7 +6,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:theme="@style/BuyTheme"
+    android:fitsSystemWindows="true"
+    android:background="?android:attr/windowBackground">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -63,7 +66,7 @@
             android:layout_width="320dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
-            android:background="?attr/colorAccent"
+            android:background="@drawable/button_background"
             android:foreground="?attr/selectableItemBackground"
             android:text="@string/confirmation_confirm" />
     </FrameLayout>

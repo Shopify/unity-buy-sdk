@@ -60,10 +60,10 @@ namespace <%= namespace %>.SDK.Android {
             var requiresShipping = checkout.requiresShipping();
 
             #if !SHOPIFY_MONO_UNIT_TEST
+            const string target = "com.shopify.unity.buy.androidpay.AndroidPayCheckoutSession";
             const bool testing = true; // TODO parametrize for 3rd-party devs
-            using (var androidPayCheckoutSession = new AndroidJavaObject("com.shopify.unity.buy.androidpay.AndroidPayCheckoutSession", testing)) {
+            using (var androidPayCheckoutSession = new AndroidJavaObject(target, GlobalGameObject.Name, testing)) {
                 object[] args = {
-                     GlobalGameObject.Name,
                      MerchantName,
                      key,
                      pricingLineItemsString,
