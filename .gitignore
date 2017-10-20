@@ -66,3 +66,6 @@ sysinfo.txt
 ####### ruby
 *.gem
 *.rbc
+
+# Android
+.project
