@@ -74,6 +74,10 @@ module GraphQLGenerator
         graph_type: 'ID',
         csharp_type: 'string',
       ),
+      Scalar.new(
+        graph_type: 'Decimal',
+        csharp_type: 'decimal',
+      ),
     ]
 
 
