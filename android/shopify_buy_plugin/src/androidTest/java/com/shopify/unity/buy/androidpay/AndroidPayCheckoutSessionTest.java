@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 
 @MediumTest
 @RunWith(AndroidJUnit4.class)
-public class AndroidPayAndroidPayCheckoutSessionTest {
+public class AndroidPayCheckoutSessionTest {
     private ShopifyUnityPlayerActivity mockActivity;
 
     @Before
