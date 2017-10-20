@@ -19,8 +19,7 @@ import static com.shopify.unity.buy.androidpay.view.widget.ShippingMethodSelectD
  * Custom view that shows shipping information.
  */
 
-public final class ShippingRatesView extends ConstraintLayout
-        implements Updatable<ShippingRatesViewModel> {
+public final class ShippingRatesView extends ConstraintLayout {
 
     /** Localized currency formatter. */
     private static final NumberFormat CURRENCY_FORMAT = NumberFormat.getCurrencyInstance();
@@ -48,7 +47,6 @@ public final class ShippingRatesView extends ConstraintLayout
         });
     }
 
-    @Override
     public void update(ShippingRatesViewModel shippingRatesViewModel) {
         viewModel = shippingRatesViewModel;
         final ShippingMethod currentShippingMethod =

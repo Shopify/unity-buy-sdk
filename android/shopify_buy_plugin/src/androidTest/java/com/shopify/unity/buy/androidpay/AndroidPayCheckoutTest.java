@@ -1,0 +1,157 @@
+package com.shopify.unity.buy.androidpay;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.support.test.filters.MediumTest;
+import android.support.test.runner.AndroidJUnit4;
+
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.identity.intents.model.UserAddress;
+import com.google.android.gms.wallet.MaskedWallet;
+import com.google.android.gms.wallet.WalletConstants;
+import com.shopify.buy3.pay.PayCart;
+import com.shopify.unity.buy.MessageCenter;
+import com.shopify.unity.buy.UnityMessage;
+import com.shopify.unity.buy.models.AndroidPayEventResponse;
+import com.shopify.unity.buy.models.PricingLineItems;
+import com.shopify.unity.buy.models.ShippingMethod;
+import com.shopify.unity.buy.utils.TestHelpers;
+
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
+import org.mockito.stubbing.Answer;
+
+import java.math.BigDecimal;
+
+import static com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import static com.google.android.gms.wallet.WalletConstants.ERROR_CODE_AUTHENTICATION_FAILURE;
+import static com.shopify.buy3.pay.PayHelper.REQUEST_CODE_CHANGE_MASKED_WALLET;
+import static com.shopify.unity.buy.MessageCenter.MessageCallback;
+import static com.shopify.unity.buy.MessageCenter.Method;
+import static com.shopify.unity.buy.MessageCenter.Method.ON_UPDATE_SHIPPING_ADDRESS;
+import static com.shopify.unity.buy.androidpay.AndroidPayCheckout.Listener;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyListOf;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.internal.verification.VerificationModeFactory.atMost;
+
+@MediumTest
+@RunWith(AndroidJUnit4.class)
+public class AndroidPayCheckoutTest {
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
+
+    // System under test
+    private AndroidPayCheckout checkout;
+
+    // SUT dependencies
+    @Mock private GoogleApiClient mockGoogleClient;
+    @Mock private MessageCenter messageCenter;
+    @Mock private Listener listener;
+
+    @Before
+    public void setUp() {
+        GoogleApiClientFactory factory = mock(GoogleApiClientFactory.class);
+        when(factory.newGoogleApiClient(any(ConnectionCallbacks.class)))
+                .thenReturn(mockGoogleClient);
+        checkout = new AndroidPayCheckout(factory, messageCenter, listener);
+    }
+
+    @Test
+    public void testGoogleClientConnectsOnResume() {
+        checkout.resume();
+        verify(mockGoogleClient, atMost(1)).connect();
+    }
+
+    @Test
+    public void testGoogleClientDisconnectsOnSuspend() {
+        checkout.suspend();
+        verify(mockGoogleClient, atMost(1)).disconnect();
+    }
+
+    @Test
+    public void testRunsCallbackOnMaskedWalletRequest() throws Exception {
+        doAnswer(new Answer() {
+            @Override public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+                MessageCallback callback = invocationOnMock.getArgument(2);
+                callback.onResponse(TestHelpers.buildAndroidPayEventResponseJson());
+                return null;
+            }
+        }).when(messageCenter).sendMessageTo(
+                eq(ON_UPDATE_SHIPPING_ADDRESS),
+                any(UnityMessage.class),
+                any(MessageCallback.class)
+        );
+
+        Intent mockIntent = new Intent();
+        UserAddress fakedAddress = TestHelpers.buildMockUserAddress();
+
+        MaskedWallet maskedWallet = TestHelpers.createMaskedWallet(fakedAddress, fakedAddress,
+            "fakeemail@email.com", "googleTransactionId");
+        mockIntent.putExtra(WalletConstants.EXTRA_MASKED_WALLET, maskedWallet);
+
+        checkout.handleWalletResponse(REQUEST_CODE_CHANGE_MASKED_WALLET, Activity.RESULT_OK, mockIntent);
+
+        assertEquals(maskedWallet, checkout.getMaskedWallet());
+        verify(listener).onSynchronizeShippingAddress(any(PayCart.class), anyListOf(ShippingMethod.class));
+    }
+
+    @Test
+    public void testSendsErrorToUnity() {
+        Intent intent = new Intent();
+        intent.putExtra(WalletConstants.EXTRA_ERROR_CODE, ERROR_CODE_AUTHENTICATION_FAILURE);
+        checkout.handleWalletResponse(REQUEST_CODE_CHANGE_MASKED_WALLET, Activity.RESULT_OK, intent);
+        ArgumentCaptor<Method> methodCapture = ArgumentCaptor.forClass(Method.class);
+        ArgumentCaptor<UnityMessage> messageCapture = ArgumentCaptor.forClass(UnityMessage.class);
+        verify(messageCenter).sendMessageTo(methodCapture.capture(), messageCapture.capture());
+        assertEquals(Method.ON_ERROR, methodCapture.getValue());
+        assertEquals(messageCapture.getValue().content, "AUTHENTICATION_FAILURE");
+    }
+
+    @Test
+    public void testSendsCancellationToSessionCallbacks() {
+        checkout.handleWalletResponse(REQUEST_CODE_CHANGE_MASKED_WALLET, Activity.RESULT_CANCELED, null);
+        ArgumentCaptor<Method> methodCapture = ArgumentCaptor.forClass(Method.class);
+        ArgumentCaptor<UnityMessage> messageCapture = ArgumentCaptor.forClass(UnityMessage.class);
+        verify(messageCenter).sendMessageTo(methodCapture.capture(), messageCapture.capture());
+        assertEquals(Method.ON_CANCEL, methodCapture.getValue());
+        assertEquals(messageCapture.getValue().content, "");
+    }
+
+    @Test
+    public void testPayCartFromEventResponse() {
+        PricingLineItems items = new PricingLineItems(
+                BigDecimal.valueOf(28.11), // subtotal
+                BigDecimal.valueOf(4.76),  // taxPrice
+                BigDecimal.valueOf(33.48), // totalPrice
+                BigDecimal.valueOf(1.22)   // shippingPrice
+        );
+        AndroidPayEventResponse response = new AndroidPayEventResponse(
+                "merchant name",
+                items,
+                "CAD",
+                "CA",
+                true,
+                null
+        );
+        PayCart cart = checkout.payCartFromEventResponse(response);
+        assertEquals("merchant name", cart.merchantName);
+        assertEquals("CAD", cart.currencyCode);
+        assertEquals(true, cart.shippingAddressRequired);
+        assertEquals(BigDecimal.valueOf(28.11), cart.subtotal);
+        assertEquals(BigDecimal.valueOf(1.22), cart.shippingPrice);
+        assertEquals(BigDecimal.valueOf(4.76), cart.taxPrice);
+        assertEquals(BigDecimal.valueOf(33.48), cart.totalPrice);
+    }
+}

@@ -1,6 +1,5 @@
 package com.shopify.unity.buy.androidpay;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -8,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.filters.MediumTest;
 import android.support.test.runner.AndroidJUnit4;
+
+import com.shopify.unity.buy.ShopifyUnityPlayerActivity;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,11 +23,11 @@ import static org.mockito.Mockito.when;
 @MediumTest
 @RunWith(AndroidJUnit4.class)
 public class AndroidPayCheckoutSessionTest {
-    private Activity mockActivity;
+    private ShopifyUnityPlayerActivity mockActivity;
 
     @Before
     public void setUp() throws Exception {
-        this.mockActivity = Mockito.mock(Activity.class);
+        this.mockActivity = Mockito.mock(ShopifyUnityPlayerActivity.class);
         when(this.mockActivity.getPackageName()).thenReturn("com.shopify.unity.buy.test");
 
         FragmentManager mockFragmentManager = Mockito.mock(FragmentManager.class);
@@ -44,9 +45,8 @@ public class AndroidPayCheckoutSessionTest {
 
     @Test
     public void testCreateSessionWithValidParams() {
-        AndroidPayCheckoutSession session = new AndroidPayCheckoutSession(this.mockActivity, true);
+        AndroidPayCheckoutSession session = new AndroidPayCheckoutSession(mockActivity, "", true);
         boolean result = session.checkoutWithAndroidPay(
-            "test",
             "merchantName",
             "publicKey",
             "{\"totalPrice\":\"6.46\",\"subtotal\":\"5.23\",\"taxPrice\":\"1.23\"}",
@@ -59,9 +59,8 @@ public class AndroidPayCheckoutSessionTest {
 
     @Test(expected = NullPointerException.class)
     public void testCreateSessionWithInvalidParams() {
-        AndroidPayCheckoutSession session = new AndroidPayCheckoutSession(this.mockActivity, true);
+        AndroidPayCheckoutSession session = new AndroidPayCheckoutSession(mockActivity, "", true);
         session.checkoutWithAndroidPay(
-            null,
             null,
             null,
             "{\"totalPrice\":\"6.46\",\"subtotal\":\"5.23\",\"taxPrice\":\"1.23\"}",
