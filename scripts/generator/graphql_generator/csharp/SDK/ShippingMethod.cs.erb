@@ -6,6 +6,9 @@ namespace <%= namespace %>.SDK {
     [Serializable]
     public class ShippingMethod : SummaryItem {
 
+        private const string IDENTIFIER = "Identifier";
+        private const string DETAIL = "Detail";
+
         #pragma warning disable 0414
         public string Identifier;
         public string Detail;
@@ -16,10 +19,30 @@ namespace <%= namespace %>.SDK {
             Detail = detail;
         }
 
+        public static ShippingMethod CreateFromJson(Dictionary<string, object> dataJSON) {
+            string label = null;
+            if (dataJSON.ContainsKey(LABEL)) {
+                label = dataJSON[LABEL].ToString();
+            }
+            string amount = null;
+            if (dataJSON.ContainsKey(AMOUNT)) {
+                amount = dataJSON[AMOUNT].ToString();
+            }
+            string identifier = null;
+            if (dataJSON.ContainsKey(IDENTIFIER)) {
+                identifier = dataJSON[IDENTIFIER].ToString();
+            }
+            string detail = null;
+            if (dataJSON.ContainsKey(DETAIL)) {
+                amount = dataJSON[DETAIL].ToString();
+            }
+            return new ShippingMethod(label, amount, identifier, detail);
+        }
+
         public override object ToJson() {
             var dict = (Dictionary<string, object>) base.ToJson();
-            dict["Identifier"] = Identifier;
-            dict["Detail"] = Detail;
+            dict[IDENTIFIER] = Identifier;
+            dict[DETAIL] = Detail;
             return dict;
         }
 

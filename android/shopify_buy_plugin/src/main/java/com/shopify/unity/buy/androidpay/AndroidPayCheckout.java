@@ -15,6 +15,7 @@ import com.shopify.buy3.pay.PayHelper;
 import com.shopify.unity.buy.MessageCenter;
 import com.shopify.unity.buy.UnityMessage;
 import com.shopify.unity.buy.models.AndroidPayEventResponse;
+import com.shopify.unity.buy.models.CheckoutInfo;
 import com.shopify.unity.buy.models.MailingAddressInput;
 import com.shopify.unity.buy.models.PricingLineItems;
 import com.shopify.unity.buy.models.ShippingMethod;
@@ -23,7 +24,8 @@ import com.shopify.unity.buy.utils.WalletErrorFormatter;
 
 import org.json.JSONException;
 
-import java.util.List;
+import static com.shopify.unity.buy.MessageCenter.MessageCallback;
+import static com.shopify.unity.buy.MessageCenter.Method;
 
 /**
  * @author Flavio Faria
@@ -48,8 +50,8 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
 
     // Checkout stuff
     @NonNull private CheckoutState currentCheckoutState = CheckoutState.READY;
-    @Nullable private PayCart cart;
-    @Nullable private List<ShippingMethod> shippingMethods;
+    @NonNull private CheckoutInfo checkoutInfo = CheckoutInfo.fresh();
+
     @NonNull private final Listener listener;
 
     public AndroidPayCheckout(@NonNull GoogleApiClientFactory googleApiClientFactory,
@@ -61,10 +63,29 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
     }
 
     public void startCheckout(@NonNull PayCart cart, @NonNull String publicKey) {
-        this.cart = cart;
+        checkoutInfo = CheckoutInfo.from(checkoutInfo).payCart(cart).build();
         this.publicKey = publicKey;
         if (!googleApiClient.isConnected()) {
             googleApiClient.connect();
+        }
+    }
+
+    public void updateShippingMethod(@NonNull ShippingMethod shippingMethod) {
+        try {
+            checkoutInfo = CheckoutInfo
+                    .from(checkoutInfo)
+                    .currentShippingMethod(shippingMethod)
+                    .build();
+            final String jsonStr = shippingMethod.toJsonString();
+            final UnityMessage msg = UnityMessage.fromAndroid(jsonStr);
+            messageCenter.sendMessageTo(Method.ON_UPDATE_SHIPPING_LINE, msg, new MessageCallback() {
+                @Override public void onResponse(String jsonResponse) {
+                    AndroidPayCheckout.this.onResponseReceived(jsonResponse);
+                }
+            });
+        } catch (JSONException e) {
+            Logger.error("Failed to convert ShippingMethod into a JSON String.");
+            e.printStackTrace();
         }
     }
 
@@ -87,7 +108,7 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
         if (currentCheckoutState == CheckoutState.READY) {
             Logger.debug("Google API Client connected");
             currentCheckoutState = CheckoutState.REQUESTING_MASKED_WALLET;
-            PayHelper.requestMaskedWallet(googleApiClient, cart, publicKey);
+            PayHelper.requestMaskedWallet(googleApiClient, checkoutInfo.getPayCart(), publicKey);
         }
     }
 
@@ -120,10 +141,10 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
         if (currentCheckoutState == CheckoutState.REQUESTING_MASKED_WALLET) {
             currentCheckoutState = CheckoutState.RECEIVED_MASKED_WALLET;
         }
-        listener.onUpdateShippingAddress(cart, shippingMethods);
-        updateMaskedWallet(maskedWallet, new MessageCenter.MessageCallback() {
+        listener.onUpdateShippingAddress(checkoutInfo);
+        updateMaskedWallet(maskedWallet, new MessageCallback() {
             @Override public void onResponse(String jsonResponse) {
-                AndroidPayCheckout.this.onShippingAddressSynchronized(jsonResponse);
+                AndroidPayCheckout.this.onResponseReceived(jsonResponse);
             }
         });
     }
@@ -136,13 +157,13 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
         Logger.debug("Wallet error: " + WalletErrorFormatter.errorStringFromCode(errorCode));
         final String errorString = WalletErrorFormatter.errorStringFromCode(errorCode);
         final UnityMessage message = UnityMessage.fromAndroid(errorString);
-        messageCenter.sendMessageTo(MessageCenter.Method.ON_ERROR, message);
+        messageCenter.sendMessageTo(Method.ON_ERROR, message);
     }
 
     private void onWalletRequestCancel(int requestCode) {
         Logger.debug("Wallet canceled");
         final UnityMessage message = UnityMessage.fromAndroid("");
-        messageCenter.sendMessageTo(MessageCenter.Method.ON_CANCEL, message);
+        messageCenter.sendMessageTo(Method.ON_CANCEL, message);
     }
 
     @Nullable
@@ -151,13 +172,13 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
     }
 
     private void updateMaskedWallet(@NonNull MaskedWallet maskedWallet,
-                                    @Nullable MessageCenter.MessageCallback callback) {
+                                    @Nullable MessageCallback callback) {
         Logger.debug("Masked wallet received");
         this.maskedWallet = maskedWallet;
         final UserAddress address = maskedWallet.getBuyerShippingAddress();
         final MailingAddressInput input = new MailingAddressInput(address);
         final UnityMessage msg = UnityMessage.fromAndroid(input.toJsonString());
-        messageCenter.sendMessageTo(MessageCenter.Method.ON_UPDATE_SHIPPING_ADDRESS, msg, callback);
+        messageCenter.sendMessageTo(Method.ON_UPDATE_SHIPPING_ADDRESS, msg, callback);
     }
 
     @Nullable
@@ -170,19 +191,29 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
         this.fullWallet = fullWallet;
     }
 
+    @NonNull
+    public CheckoutInfo getCheckoutInfo() {
+        return checkoutInfo;
+    }
+
     /**
-     * Unity callback method that runs whenever the shipping address is updated on the Unity side.
+     * Unity callback method that runs whenever the checkout information
+     * is updated on the Unity side.
      *
      * @param jsonResponse the {@link AndroidPayEventResponse} represented as a JSON string
      */
-    private void onShippingAddressSynchronized(String jsonResponse) {
-        Logger.debug("New cart data from Unity: " + jsonResponse);
+    private void onResponseReceived(String jsonResponse) {
+        Logger.debug("New payCart data from Unity: " + jsonResponse);
         try {
             final AndroidPayEventResponse response =
                     AndroidPayEventResponse.fromJsonString(jsonResponse);
-            shippingMethods = response.shippingMethods;
-            cart = payCartFromEventResponse(response);
-            listener.onSynchronizeShippingAddress(cart, shippingMethods);
+
+            checkoutInfo = CheckoutInfo.from(checkoutInfo)
+                    .payCart(payCartFromEventResponse(response))
+                    .shippingMethods(response.shippingMethods)
+                    .build();
+
+            listener.onSynchronizeShippingAddress(checkoutInfo);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -191,7 +222,7 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
     /**
      * Creates a new {@link PayCart} populated with data from {@link AndroidPayEventResponse}.
      *
-     * @param response the {@code AndroidPayEventResponse} with data to populate the cart
+     * @param response the {@code AndroidPayEventResponse} with data to populate the payCart
      * @return a new {@code PayCart} built based on the {@code response} argument
      */
     @VisibleForTesting PayCart payCartFromEventResponse(AndroidPayEventResponse response) {
@@ -218,9 +249,7 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
     }
 
     public interface Listener {
-        void onUpdateShippingAddress(@NonNull PayCart payCart,
-                                     @NonNull List<ShippingMethod> shippingMethods);
-        void onSynchronizeShippingAddress(@NonNull PayCart payCart,
-                                          @NonNull List<ShippingMethod> shippingMethods);
+        void onUpdateShippingAddress(@NonNull CheckoutInfo checkoutInfo);
+        void onSynchronizeShippingAddress(@NonNull CheckoutInfo checkoutInfo);
     }
 }

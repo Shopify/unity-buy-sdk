@@ -55,7 +55,7 @@ public class ShippingRatesViewTest {
         ShippingRatesViewModel model = new ShippingRatesViewModel(shippingMethods, 0);
 
         view.update(model);
-        assertEquals(view.getShippingLine().getText(), "label");
-        assertEquals(view.getPrice().getText(), "$3.45");
+        assertEquals(view.getShippingLineView().getText(), "label");
+        assertEquals(view.getPriceView().getText(), "$3.45");
     }
 }

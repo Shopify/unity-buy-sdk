@@ -14,16 +14,18 @@ import com.shopify.unity.buy.androidpay.AndroidPayCheckout;
 import com.shopify.unity.buy.androidpay.GoogleApiClientFactory;
 import com.shopify.unity.buy.androidpay.view.viewmodel.ConfirmationViewModel;
 import com.shopify.unity.buy.androidpay.view.widget.ConfirmationView;
+import com.shopify.unity.buy.androidpay.view.widget.ShippingMethodSelectDialog;
 import com.shopify.unity.buy.androidpay.view.widget.WalletFragmentInstaller;
+import com.shopify.unity.buy.models.CheckoutInfo;
 import com.shopify.unity.buy.models.ShippingMethod;
 import com.unity3d.player.UnityPlayerActivity;
 
-import java.util.List;
+import static com.shopify.unity.buy.androidpay.view.widget.ShippingMethodSelectDialog.OnShippingMethodSelectListener;
 
 public class ShopifyUnityPlayerActivity extends UnityPlayerActivity
         implements AndroidPayCheckout.Listener {
 
-    @Nullable private AndroidPayCheckout androidPayCheckout;
+    @Nullable private AndroidPayCheckout checkout;
     private ConfirmationView confirmationView;
     private ViewGroup root;
 
@@ -40,15 +42,15 @@ public class ShopifyUnityPlayerActivity extends UnityPlayerActivity
     @Override
     public void onStart() {
         super.onStart();
-        if (androidPayCheckout != null) {
-            androidPayCheckout.resume();
+        if (checkout != null) {
+            checkout.resume();
         }
     }
 
     @Override
     public void onStop() {
-        if (androidPayCheckout != null) {
-            androidPayCheckout.suspend();
+        if (checkout != null) {
+            checkout.suspend();
         }
         super.onStop();
     }
@@ -56,34 +58,27 @@ public class ShopifyUnityPlayerActivity extends UnityPlayerActivity
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (androidPayCheckout != null) {
-            androidPayCheckout.handleWalletResponse(requestCode, resultCode, data);
+        if (checkout != null) {
+            checkout.handleWalletResponse(requestCode, resultCode, data);
         }
     }
 
     public void startAndroidPayCheckout(@NonNull PayCart cart, @NonNull String publicKey,
                                         boolean testing) {
-        if (androidPayCheckout == null) {
+        if (checkout == null) {
             final GoogleApiClientFactory factory = GoogleApiClientFactory.of(this, testing);
-            androidPayCheckout = new AndroidPayCheckout(factory, new MessageCenter(), this);
+            checkout = new AndroidPayCheckout(factory, new MessageCenter(), this);
         }
-        androidPayCheckout.startCheckout(cart, publicKey);
+        checkout.startCheckout(cart, publicKey);
     }
 
     @Override
-    public void onUpdateShippingAddress(@NonNull PayCart payCart,
-                                        @NonNull List<ShippingMethod> shippingMethods) {
-        if (confirmationView != null) {
-            confirmationView.update(
-                    newWalletFragmentInstaller(),
-                    ConfirmationViewModel.of(payCart, shippingMethods, false)
-            );
-        }
+    public void onUpdateShippingAddress(@NonNull CheckoutInfo checkoutInfo) {
+        updateView(checkoutInfo, false);
     }
 
     @Override
-    public void onSynchronizeShippingAddress(@NonNull PayCart payCart,
-                                             @NonNull List<ShippingMethod> shippingMethods) {
+    public void onSynchronizeShippingAddress(@NonNull CheckoutInfo checkoutInfo) {
         if (confirmationView == null) {
             final View v = LayoutInflater.from(this).inflate(R.layout.view_confirmation, root);
             confirmationView = v.findViewById(R.id.confirmation);
@@ -93,17 +88,45 @@ public class ShopifyUnityPlayerActivity extends UnityPlayerActivity
                     root.removeView(confirmationView);
                     confirmationView = null;
                 }
+                @Override public void onShippingRateChangeClick() {
+                    showShippingDialog();
+                }
             });
         }
-        confirmationView.update(
-                newWalletFragmentInstaller(),
-                ConfirmationViewModel.of(payCart, shippingMethods, true)
+        updateView(checkoutInfo, true);
+    }
+
+    private void updateView(@NonNull CheckoutInfo checkoutInfo, boolean buttonEnabled) {
+        if (confirmationView != null) {
+            final ConfirmationViewModel viewModel = ConfirmationViewModel.of(
+                    checkoutInfo, buttonEnabled
+            );
+            if (viewModel != null) {
+                confirmationView.update(newWalletFragmentInstaller(), viewModel);
+            }
+        }
+    }
+
+    private void showShippingDialog() {
+        if (checkout == null) {
+            return;
+        }
+        final OnShippingMethodSelectListener listener = new OnShippingMethodSelectListener() {
+            @Override
+            public void onShippingMethodSelected(ShippingMethod shippingMethod, int position) {
+                updateView(checkout.getCheckoutInfo(), false);
+                checkout.updateShippingMethod(shippingMethod);
+            }
+        };
+        new ShippingMethodSelectDialog(this).show(
+                checkout.getCheckoutInfo().getShippingMethods(),
+                listener
         );
     }
 
     private WalletFragmentInstaller newWalletFragmentInstaller() {
         @SuppressWarnings("ConstantConditions")
-        final MaskedWallet maskedWallet = androidPayCheckout.getMaskedWallet();
+        final MaskedWallet maskedWallet = checkout.getMaskedWallet();
         return new WalletFragmentInstaller(getFragmentManager(), maskedWallet);
     }
 }
