@@ -34,7 +34,7 @@ namespace <%= namespace %>.SDK {
             }
             string detail = null;
             if (dataJSON.ContainsKey(DETAIL)) {
-                amount = dataJSON[DETAIL].ToString();
+                detail = dataJSON[DETAIL].ToString();
             }
             return new ShippingMethod(label, amount, identifier, detail);
         }
