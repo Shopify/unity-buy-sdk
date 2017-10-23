@@ -5,6 +5,10 @@ namespace <%= namespace %>.SDK {
 
     [Serializable]
     public class SummaryItem: Serializable {
+
+        protected const string LABEL = "Label";
+        protected const string AMOUNT = "Amount";
+
         #pragma warning disable 0414
         public string Label;
         public string Amount;
@@ -17,8 +21,8 @@ namespace <%= namespace %>.SDK {
 
         public override object ToJson() {
             var dict = new Dictionary<string, object>();
-            dict["Label"] = Label;
-            dict["Amount"] = Amount;
+            dict[LABEL] = Label;
+            dict[AMOUNT] = Amount;
             return dict;
         }
     }
