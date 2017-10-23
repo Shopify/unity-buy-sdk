@@ -1,6 +1,7 @@
 package com.shopify.unity.buy.androidpay.view.widget;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
@@ -13,8 +14,6 @@ import com.shopify.unity.buy.models.ShippingMethod;
 
 import java.text.NumberFormat;
 
-import static com.shopify.unity.buy.androidpay.view.widget.ShippingMethodSelectDialog.OnShippingMethodSelectListener;
-
 /**
  * Custom view that shows shipping information.
  */
@@ -25,11 +24,11 @@ public final class ShippingRatesView extends ConstraintLayout {
     private static final NumberFormat CURRENCY_FORMAT = NumberFormat.getCurrencyInstance();
 
     /** Shipping line description label. */
-    private TextView shippingLine;
+    private TextView shippingLineView;
     /** Shipping price label. */
-    private TextView price;
-
-    private ShippingRatesViewModel viewModel;
+    private TextView priceView;
+    /** Change shipping method label. */
+    private View changeView;
 
     public ShippingRatesView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -38,41 +37,41 @@ public final class ShippingRatesView extends ConstraintLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        shippingLine = findViewById(R.id.shipping_line);
-        price = findViewById(R.id.price);
-        findViewById(R.id.change).setOnClickListener(new OnClickListener() {
-            @Override public void onClick(View view) {
-                onChangeClick();
-            }
-        });
+        shippingLineView = findViewById(R.id.shipping_line);
+        priceView = findViewById(R.id.price);
+        changeView = findViewById(R.id.change);
+    }
+
+    public void setListener(@Nullable final Listener listener) {
+        if (listener != null) {
+            changeView.setOnClickListener(new OnClickListener() {
+                @Override public void onClick(View view) {
+                    listener.onShippingRateChangeClick();
+                }
+            });
+        } else {
+            changeView.setOnClickListener(null);
+        }
     }
 
     public void update(ShippingRatesViewModel shippingRatesViewModel) {
-        viewModel = shippingRatesViewModel;
         final ShippingMethod currentShippingMethod =
                 shippingRatesViewModel.getCurrentShippingMethod();
-        shippingLine.setText(currentShippingMethod.label);
-        price.setText(CURRENCY_FORMAT.format(currentShippingMethod.amount));
+        shippingLineView.setText(currentShippingMethod.label);
+        priceView.setText(CURRENCY_FORMAT.format(currentShippingMethod.amount));
     }
 
     @VisibleForTesting
-    TextView getShippingLine() {
-        return shippingLine;
+    TextView getShippingLineView() {
+        return shippingLineView;
     }
 
     @VisibleForTesting
-    TextView getPrice() {
-        return price;
+    TextView getPriceView() {
+        return priceView;
     }
 
-    private void onChangeClick() {
-        new ShippingMethodSelectDialog(getContext()).show(viewModel.shippingMethods,
-                new OnShippingMethodSelectListener() {
-                    @Override
-                    public void onShippingMethodSelected(ShippingMethod shippingMethod, int position) {
-                        update(new ShippingRatesViewModel(viewModel.shippingMethods, position));
-                    }
-                });
-        // TODO show shipping method selection dialog
+    public interface Listener {
+        void onShippingRateChangeClick();
     }
 }

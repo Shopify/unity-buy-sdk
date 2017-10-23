@@ -53,6 +53,7 @@ public class MessageCenter {
     public enum Method {
         ON_NATIVE_MESSAGE("OnNativeMessage"),
         ON_UPDATE_SHIPPING_ADDRESS("OnUpdateShippingAddress"),
+        ON_UPDATE_SHIPPING_LINE("OnUpdateShippingLine"),
         ON_ERROR("OnError"),
         ON_CANCEL("OnCancel"),
         ON_COMPLETE("OnComplete");

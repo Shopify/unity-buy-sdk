@@ -46,12 +46,12 @@ import java.util.Locale;
 /**
  * Bottom sheet that presents a list of available shipping methods during checkout confirmation.
  */
-final class ShippingMethodSelectDialog extends BottomSheetDialog {
+public final class ShippingMethodSelectDialog extends BottomSheetDialog {
 
     /** The {@link RecyclerView} that holds the list of available shipping methods. */
     private final RecyclerView recyclerView;
 
-    ShippingMethodSelectDialog(@NonNull Context context) {
+    public ShippingMethodSelectDialog(@NonNull Context context) {
         super(context, R.style.BuyTheme_ShippingMethodDialog);
         setContentView(R.layout.shipping_rate_list);
         final Toolbar toolbar = findViewById(R.id.toolbar);
@@ -73,7 +73,7 @@ final class ShippingMethodSelectDialog extends BottomSheetDialog {
      * @param shippingMethods a list of {@link ShippingMethod ShippingMethods} to populate it
      * @param onShippingMethodSelectListener shipping method selection callback
      */
-    void show(@NonNull List<ShippingMethod> shippingMethods,
+    public void show(@NonNull List<ShippingMethod> shippingMethods,
               @Nullable final OnShippingMethodSelectListener onShippingMethodSelectListener) {
         final ShippingMethodsAdapter adapter = new ShippingMethodsAdapter(shippingMethods,
                 new OnShippingMethodSelectListener() {

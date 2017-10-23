@@ -25,30 +25,38 @@ namespace <%= namespace %>.SDK.Android {
             });
         }
 
-        private void RespondToUpdateAddressSuccessForMessage(NativeMessage message) {
-            var shippingMethods = GetShippingMethods();
-
-            if (shippingMethods.Count > 0) {
-                // Set the first shipping method as the default
-                CartState.SetShippingLine(shippingMethods[0].Identifier, (ShopifyError error) => {
-                    if (error == null) {
-                        message.Respond(GetAndroidPayEventResponse().ToJsonString());
-                    } else {
-                        // TODO
-                    }
-                });
-            } else {
-                // TODO
-            }
-        }
-
         public void OnUpdateShippingLine(string serializedMessage) {
+            var message = NativeMessage.CreateFromJSON(serializedMessage);
+            var contentDictionary = (Dictionary<string, object>) Json.Deserialize(message.Content);
+            var shippingMethod = ShippingMethod.CreateFromJson(contentDictionary);
+            UpdateShippingLine(shippingMethod, message);
         }
 
         public void OnError(string serializedMessage) {
         }
 
         public void OnCancel(string serializedMessage) {
+        }
+
+        private void RespondToUpdateAddressSuccessForMessage(NativeMessage message) {
+            var shippingMethods = GetShippingMethods();
+
+            if (shippingMethods.Count > 0) {
+                // Set the first shipping method as the default
+                UpdateShippingLine(shippingMethods[0], message);
+            } else {
+                // TODO
+            }
+        }
+
+        private void UpdateShippingLine(ShippingMethod shippingMethod, NativeMessage message) {
+            CartState.SetShippingLine(shippingMethod.Identifier, (ShopifyError error) => {
+                    if (error == null) {
+                        message.Respond(GetAndroidPayEventResponse().ToJsonString());
+                    } else {
+                        // TODO
+                    }
+                });
         }
     }
 }

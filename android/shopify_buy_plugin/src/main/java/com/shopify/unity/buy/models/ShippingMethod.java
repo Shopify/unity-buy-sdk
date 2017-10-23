@@ -13,12 +13,13 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Model class that represents a shipping method in the checkout process.
  */
 
-public final class ShippingMethod implements Parcelable {
+public final class ShippingMethod implements JsonSerializable, Parcelable {
 
     /** JSON name for the <i>identifier</i> attribute. */
     public static final String IDENTIFIER = "Identifier";
@@ -113,6 +114,16 @@ public final class ShippingMethod implements Parcelable {
     }
 
     @Override
+    public String toJsonString() throws JSONException {
+        return new JSONObject()
+                .put(IDENTIFIER, identifier)
+                .put(DETAIL, detail)
+                .put(LABEL, label)
+                .put(AMOUNT, amount)
+                .toString();
+    }
+
+    @Override
     public int describeContents() {
         return 0;
     }
@@ -123,5 +134,22 @@ public final class ShippingMethod implements Parcelable {
         parcel.writeString(detail);
         parcel.writeString(label);
         parcel.writeString(amount.toString());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(identifier, detail, label, amount);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ShippingMethod)) {
+            return false;
+        }
+        ShippingMethod other = (ShippingMethod) obj;
+        return Objects.equals(this.identifier, other.identifier)
+                && Objects.equals(this.detail, other.detail)
+                && Objects.equals(this.label, other.label)
+                && Objects.equals(this.amount, other.amount);
     }
 }
