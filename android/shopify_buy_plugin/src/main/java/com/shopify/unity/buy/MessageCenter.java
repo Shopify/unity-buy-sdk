@@ -32,7 +32,7 @@ public class MessageCenter {
         if (callbacks != null) {
             callbacksInWaiting.put(msg.identifier, callbacks);
         }
-        UnityPlayer.UnitySendMessage(unityDelegateObjectName, method.name, msg.toJsonString());
+        UnityPlayer.UnitySendMessage(unityDelegateObjectName, method.name, msg.toJson().toString());
     }
 
     @SuppressWarnings("unused")

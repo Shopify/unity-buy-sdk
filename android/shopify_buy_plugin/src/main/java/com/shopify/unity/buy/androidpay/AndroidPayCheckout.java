@@ -71,22 +71,17 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
     }
 
     public void updateShippingMethod(@NonNull ShippingMethod shippingMethod) {
-        try {
-            checkoutInfo = CheckoutInfo
-                    .from(checkoutInfo)
-                    .currentShippingMethod(shippingMethod)
-                    .build();
-            final String jsonStr = shippingMethod.toJsonString();
-            final UnityMessage msg = UnityMessage.fromAndroid(jsonStr);
-            messageCenter.sendMessageTo(Method.ON_UPDATE_SHIPPING_LINE, msg, new MessageCallback() {
-                @Override public void onResponse(String jsonResponse) {
-                    AndroidPayCheckout.this.onResponseReceived(jsonResponse);
-                }
-            });
-        } catch (JSONException e) {
-            Logger.error("Failed to convert ShippingMethod into a JSON String.");
-            e.printStackTrace();
-        }
+        checkoutInfo = CheckoutInfo
+                .from(checkoutInfo)
+                .currentShippingMethod(shippingMethod)
+                .build();
+        final String jsonStr = shippingMethod.toJson().toString();
+        final UnityMessage msg = UnityMessage.fromAndroid(jsonStr);
+        messageCenter.sendMessageTo(Method.ON_UPDATE_SHIPPING_LINE, msg, new MessageCallback() {
+            @Override public void onResponse(String jsonResponse) {
+                AndroidPayCheckout.this.onResponseReceived(jsonResponse);
+            }
+        });
     }
 
     public void resume() {
@@ -177,7 +172,7 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
         this.maskedWallet = maskedWallet;
         final UserAddress address = maskedWallet.getBuyerShippingAddress();
         final MailingAddressInput input = new MailingAddressInput(address);
-        final UnityMessage msg = UnityMessage.fromAndroid(input.toJsonString());
+        final UnityMessage msg = UnityMessage.fromAndroid(input.toJson().toString());
         messageCenter.sendMessageTo(Method.ON_UPDATE_SHIPPING_ADDRESS, msg, callback);
     }
 

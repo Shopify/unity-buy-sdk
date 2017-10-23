@@ -28,7 +28,7 @@ public class MailingAddressInputTest {
                 "administrativeArea", "locality", "countryCode", "postalCode", "sortingCode", "phoneNumber", false, "companyName", "emailAddress");
 
         MailingAddressInput mailingAddress = new MailingAddressInput(userAddress);
-        String jsonString = mailingAddress.toJsonString();
+        String jsonString = mailingAddress.toJson().toString();
         MailingAddressInput outputMailingAddress = MailingAddressInput.fromJsonString(jsonString);
 
         assertEquals(mailingAddress.address1, outputMailingAddress.address1);

@@ -5,9 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.MathContext;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -33,7 +31,7 @@ public class PricingLineItemsTest {
         assertEquals(items.taxPrice, BigDecimal.valueOf(1.23));
         assertEquals(items.totalPrice, BigDecimal.valueOf(6.46));
 
-        String resultJsonString = items.toJsonString();
+        String resultJsonString = items.toJson().toString();
         assertEquals(resultJsonString, jsonString);
     }
 }

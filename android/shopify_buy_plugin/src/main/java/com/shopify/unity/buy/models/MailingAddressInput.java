@@ -74,22 +74,22 @@ public class MailingAddressInput implements JsonSerializable {
         this.zip = zip;
     }
 
-    public String toJsonString() {
-        JSONObject obj = new JSONObject();
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
         try {
-            obj.put(ADDRESS_1, address1);
-            obj.put(ADDRESS_2, address2);
-            obj.put(CITY, city);
-            obj.put(COUNTRY, country);
-            obj.put(FIRST_NAME, firstName);
-            obj.put(LAST_NAME, lastName);
-            obj.put(PHONE, phone);
-            obj.put(PROVINCE, province);
-            obj.put(ZIP, zip);
+            json.put(ADDRESS_1, address1)
+                .put(ADDRESS_2, address2)
+                .put(CITY, city)
+                .put(COUNTRY, country)
+                .put(FIRST_NAME, firstName)
+                .put(LAST_NAME, lastName)
+                .put(PHONE, phone)
+                .put(PROVINCE, province)
+                .put(ZIP, zip);
         } catch (JSONException e) {
             Log.e("ShopifyBuyPlugin", "Failed to convert MailingAddressInput into a JSON String.");
             e.printStackTrace();
         }
-        return obj.toString();
+        return json;
     }
 }
