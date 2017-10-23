@@ -13,8 +13,8 @@ import com.shopify.buy3.pay.PayCart;
 import com.shopify.unity.buy.MessageCenter;
 import com.shopify.unity.buy.UnityMessage;
 import com.shopify.unity.buy.models.AndroidPayEventResponse;
+import com.shopify.unity.buy.models.CheckoutInfo;
 import com.shopify.unity.buy.models.PricingLineItems;
-import com.shopify.unity.buy.models.ShippingMethod;
 import com.shopify.unity.buy.utils.TestHelpers;
 
 import org.junit.Before;
@@ -39,7 +39,6 @@ import static com.shopify.unity.buy.MessageCenter.Method.ON_UPDATE_SHIPPING_ADDR
 import static com.shopify.unity.buy.androidpay.AndroidPayCheckout.Listener;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyListOf;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
@@ -104,7 +103,7 @@ public class AndroidPayCheckoutTest {
         checkout.handleWalletResponse(REQUEST_CODE_CHANGE_MASKED_WALLET, Activity.RESULT_OK, mockIntent);
 
         assertEquals(maskedWallet, checkout.getMaskedWallet());
-        verify(listener).onSynchronizeShippingAddress(any(PayCart.class), anyListOf(ShippingMethod.class));
+        verify(listener).onSynchronizeShippingAddress(any(CheckoutInfo.class));
     }
 
     @Test
