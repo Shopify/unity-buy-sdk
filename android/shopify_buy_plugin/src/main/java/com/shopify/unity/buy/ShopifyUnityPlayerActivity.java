@@ -20,8 +20,6 @@ import com.shopify.unity.buy.models.CheckoutInfo;
 import com.shopify.unity.buy.models.ShippingMethod;
 import com.unity3d.player.UnityPlayerActivity;
 
-import static com.shopify.unity.buy.androidpay.view.widget.ShippingMethodSelectDialog.OnShippingMethodSelectListener;
-
 public class ShopifyUnityPlayerActivity extends UnityPlayerActivity
         implements AndroidPayCheckout.Listener {
 
@@ -111,7 +109,8 @@ public class ShopifyUnityPlayerActivity extends UnityPlayerActivity
         if (checkout == null) {
             return;
         }
-        final OnShippingMethodSelectListener listener = new OnShippingMethodSelectListener() {
+        final ShippingMethodSelectDialog.OnShippingMethodSelectListener listener =
+                new ShippingMethodSelectDialog.OnShippingMethodSelectListener() {
             @Override
             public void onShippingMethodSelected(ShippingMethod shippingMethod, int position) {
                 updateView(checkout.getCheckoutInfo(), false);
