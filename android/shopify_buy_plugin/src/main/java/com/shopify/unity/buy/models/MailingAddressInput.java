@@ -43,23 +43,22 @@ public class MailingAddressInput implements JsonSerializable {
         this.zip = payAddress.zip;
     }
 
-    static MailingAddressInput fromJsonString(String json) throws JSONException {
-        JSONObject obj = new JSONObject(json);
-        String address1 = obj.getString("address1");
-        String address2 = obj.getString("address2");
-        String city = obj.getString("city");
-        String country = obj.getString("country");
-        String firstName = obj.getString("firstName");
-        String lastName = obj.getString("lastName");
-        String phone = obj.getString("phone");
-        String province = obj.getString("province");
-        String zip = obj.getString("zip");
+    static MailingAddressInput fromJson(JSONObject json) throws JSONException {
+        String address1 = json.getString("address1");
+        String address2 = json.getString("address2");
+        String city = json.getString("city");
+        String country = json.getString("country");
+        String firstName = json.getString("firstName");
+        String lastName = json.getString("lastName");
+        String phone = json.getString("phone");
+        String province = json.getString("province");
+        String zip = json.getString("zip");
 
         return new MailingAddressInput(address1, address2, city, country, firstName, lastName, phone, province, zip);
     }
 
     //CHECKSTYLE:OFF
-    private MailingAddressInput(String address1, String address2, String city,
+    protected MailingAddressInput(String address1, String address2, String city,
                                 String country, String firstName, String lastName,
                                 String phone, String province, String zip) {
         //CHECKSTLYE:ON

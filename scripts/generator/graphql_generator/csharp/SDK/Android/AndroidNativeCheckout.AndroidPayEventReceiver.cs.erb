@@ -11,6 +11,9 @@ namespace <%= namespace %>.SDK.Android {
     #endif
 
     public partial class AndroidNativeCheckout : IAndroidPayEventReceiver {
+
+        private delegate void AndroidPayEventHandlerCompletion(AndroidPayCheckoutResponse.Status status);
+
         public void OnUpdateShippingAddress(string serializedMessage) {
             var message = NativeMessage.CreateFromJSON(serializedMessage);
             var contentDictionary = (Dictionary<string, object>) Json.Deserialize(message.Content);
@@ -30,6 +33,49 @@ namespace <%= namespace %>.SDK.Android {
             var contentDictionary = (Dictionary<string, object>) Json.Deserialize(message.Content);
             var shippingMethod = ShippingMethod.CreateFromJson(contentDictionary);
             UpdateShippingLine(shippingMethod, message);
+        }
+
+        public void OnConfirmCheckout(string serializedMessage) {
+            var checkout = CartState.CurrentCheckout;
+            var message = NativeMessage.CreateFromJSON(serializedMessage);
+            var amount  = checkout.totalPrice();
+            var payment = new NativePayment(message.Content);
+            var tokenizedPaymentInput = new TokenizedPaymentInput(
+                amount: amount,
+                billingAddress: payment.BillingAddress,
+                idempotencyKey: payment.TransactionIdentifier,
+                paymentData: payment.PaymentData,
+                identifier: payment.Identifier,
+                type: "android_pay"
+            );
+
+            CartState.SetEmailAddress(payment.Email, (ShopifyError error) => {
+                if (error == null) {
+                    PerformCheckout(checkout, tokenizedPaymentInput, message);
+                } else {
+                    AndroidPayCheckoutResponse.Status status = AndroidPayCheckoutResponse.Status.Failure;
+                    message.Respond(new AndroidPayCheckoutResponse(status).ToJsonString());
+                }
+            });
+        }
+
+        private void PerformCheckout(Checkout checkout, TokenizedPaymentInput tokenizedPaymentInput,
+                NativeMessage message) {
+            CartState.CheckoutWithTokenizedPayment(tokenizedPaymentInput, (ShopifyError error) => {
+                AndroidPayCheckoutResponse.Status status = error == null
+                        ? AndroidPayCheckoutResponse.Status.Success
+                        : AndroidPayCheckoutResponse.Status.Failure;
+                message.Respond(new AndroidPayCheckoutResponse(status).ToJsonString());
+            });
+        }
+
+        private void SetFinalCheckoutFieldsForPayment(NativePayment payment, Checkout checkout,
+                CompletionCallback callback) {
+            ShippingFields? shippingFields = null;
+            if (checkout.requiresShipping()) {
+                shippingFields = new ShippingFields(payment.ShippingAddress, payment.ShippingIdentifier);
+            }
+            CartState.SetFinalCheckoutFields(payment.Email, shippingFields, callback);
         }
 
         public void OnError(string serializedMessage) {

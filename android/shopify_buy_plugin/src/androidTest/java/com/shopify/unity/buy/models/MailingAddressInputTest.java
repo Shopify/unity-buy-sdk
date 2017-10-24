@@ -6,6 +6,7 @@ import android.support.test.runner.AndroidJUnit4;
 import com.google.android.gms.identity.intents.model.UserAddress;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -29,7 +30,7 @@ public class MailingAddressInputTest {
 
         MailingAddressInput mailingAddress = new MailingAddressInput(userAddress);
         String jsonString = mailingAddress.toJson().toString();
-        MailingAddressInput outputMailingAddress = MailingAddressInput.fromJsonString(jsonString);
+        MailingAddressInput outputMailingAddress = MailingAddressInput.fromJson(new JSONObject(jsonString));
 
         assertEquals(mailingAddress.address1, outputMailingAddress.address1);
         assertEquals(mailingAddress.address2, outputMailingAddress.address2);

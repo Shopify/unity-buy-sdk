@@ -12,13 +12,17 @@ import com.google.android.gms.wallet.FullWallet;
 import com.google.android.gms.wallet.MaskedWallet;
 import com.shopify.buy3.pay.PayCart;
 import com.shopify.buy3.pay.PayHelper;
+import com.shopify.buy3.pay.PaymentToken;
 import com.shopify.unity.buy.MessageCenter;
 import com.shopify.unity.buy.UnityMessage;
 import com.shopify.unity.buy.models.AndroidPayEventResponse;
 import com.shopify.unity.buy.models.CheckoutInfo;
 import com.shopify.unity.buy.models.MailingAddressInput;
+import com.shopify.unity.buy.models.NativePayment;
 import com.shopify.unity.buy.models.PricingLineItems;
+import com.shopify.unity.buy.models.ShippingContact;
 import com.shopify.unity.buy.models.ShippingMethod;
+import com.shopify.unity.buy.models.TokenData;
 import com.shopify.unity.buy.utils.Logger;
 import com.shopify.unity.buy.utils.WalletErrorFormatter;
 
@@ -43,7 +47,6 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
     @NonNull private final GoogleApiClient googleApiClient;
     @Nullable private String publicKey;
     @Nullable private MaskedWallet maskedWallet;
-    @Nullable private FullWallet fullWallet;
 
     // Unity stuff
     @NonNull private final MessageCenter messageCenter;
@@ -84,18 +87,17 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
         });
     }
 
+    public void confirmCheckout() {
+        Logger.debug("Confirming checkout...");
+        requestFullWallet(checkoutInfo.getPayCart());
+    }
+
     public void resume() {
         googleApiClient.connect();
     }
 
     public void suspend() {
         googleApiClient.disconnect();
-    }
-
-    @VisibleForTesting
-    @NonNull
-    CheckoutState getCurrentCheckoutState() {
-        return currentCheckoutState;
     }
 
     @Override
@@ -144,8 +146,21 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
         });
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void onFullWallet(FullWallet fullWallet) {
-        updateFullWallet(fullWallet);
+        Logger.debug("Full wallet received");
+        final PaymentToken paymentToken = PayHelper.extractPaymentToken(fullWallet, publicKey);
+        final UserAddress shippingAddress = fullWallet.getBuyerShippingAddress();
+        final String email = fullWallet.getEmail();
+        final NativePayment paymentInput = NativePayment
+                .newBuilder()
+                .billingContact(new MailingAddressInput(fullWallet.getBuyerBillingAddress()))
+                .shippingContact(new ShippingContact(shippingAddress, email))
+                .identifier(paymentToken.publicKeyHash)
+                .tokenData(new TokenData(paymentToken.token))
+                .build();
+        final UnityMessage msg = UnityMessage.fromAndroid(paymentInput.toJson().toString());
+        messageCenter.sendMessageTo(Method.ON_CONFIRM_CHECKOUT, msg);
     }
 
     private void onWalletError(int requestCode, int errorCode) {
@@ -176,16 +191,6 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
         messageCenter.sendMessageTo(Method.ON_UPDATE_SHIPPING_ADDRESS, msg, callback);
     }
 
-    @Nullable
-    public FullWallet getFullWallet() {
-        return fullWallet;
-    }
-
-    private void updateFullWallet(@Nullable FullWallet fullWallet) {
-        Logger.debug("Full wallet received");
-        this.fullWallet = fullWallet;
-    }
-
     @NonNull
     public CheckoutInfo getCheckoutInfo() {
         return checkoutInfo;
@@ -204,9 +209,9 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
                     AndroidPayEventResponse.fromJsonString(jsonResponse);
 
             checkoutInfo = CheckoutInfo.from(checkoutInfo)
-                    .payCart(payCartFromEventResponse(response))
-                    .shippingMethods(response.shippingMethods)
-                    .build();
+                                       .payCart(payCartFromEventResponse(response))
+                                       .shippingMethods(response.shippingMethods)
+                                       .build();
 
             listener.onSynchronizeShippingAddress(checkoutInfo);
         } catch (JSONException e) {
@@ -223,14 +228,14 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
     @VisibleForTesting PayCart payCartFromEventResponse(AndroidPayEventResponse response) {
         final PricingLineItems items = response.pricingLineItems;
         return PayCart.builder()
-                .merchantName(response.merchantName)
-                .currencyCode(response.currencyCode)
-                .shippingAddressRequired(response.requiresShipping)
-                .subtotal(items.subtotal)
-                .shippingPrice(items.shippingPrice)
-                .taxPrice(items.taxPrice)
-                .totalPrice(items.totalPrice)
-                .build();
+                      .merchantName(response.merchantName)
+                      .currencyCode(response.currencyCode)
+                      .shippingAddressRequired(response.requiresShipping)
+                      .subtotal(items.subtotal)
+                      .shippingPrice(items.shippingPrice)
+                      .taxPrice(items.taxPrice)
+                      .totalPrice(items.totalPrice)
+                      .build();
     }
 
     /**
@@ -240,7 +245,11 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
      */
     private void requestFullWallet(PayCart cart) {
         Logger.debug("Requesting full wallet...");
-        PayHelper.requestFullWallet(googleApiClient, cart, maskedWallet);
+        if (maskedWallet != null) {
+            PayHelper.requestFullWallet(googleApiClient, cart, maskedWallet);
+        } else {
+            Logger.error("Can't request full wallet before requesting masked wallet!");
+        }
     }
 
     public interface Listener {

@@ -66,7 +66,7 @@ public final class CheckoutInfo {
     public static class Builder {
 
         @Nullable private PayCart payCart;
-        @NonNull private List<ShippingMethod> shippingMethods;
+        @NonNull private List<ShippingMethod> shippingMethods = new ArrayList<>();
         @Nullable private ShippingMethod currentShippingMethod;
 
         private Builder() {
