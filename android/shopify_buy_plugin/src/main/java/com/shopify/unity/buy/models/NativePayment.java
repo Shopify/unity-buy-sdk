@@ -20,11 +20,20 @@ public final class NativePayment implements JsonSerializable {
     private static final String TOKEN_DATA = "TokenData";
 
     @NonNull public final MailingAddressInput billingContact;
-    @NonNull public final ShippingContact shippingContact;
-    @Nullable public final String identifier;
+    @Nullable public final ShippingContact shippingContact;
+    @NonNull public final String identifier;
     @NonNull public final TokenData tokenData;
 
     private NativePayment(Builder builder) {
+        if (builder.billingContact == null) {
+            throw new IllegalArgumentException("Missing billingContact field");
+        }
+        if (builder.identifier == null) {
+            throw new IllegalArgumentException("Missing identifier field");
+        }
+        if (builder.tokenData == null) {
+            throw new IllegalArgumentException("Missing tokenData field");
+        }
         billingContact = builder.billingContact;
         shippingContact = builder.shippingContact;
         identifier = builder.identifier;
@@ -39,9 +48,11 @@ public final class NativePayment implements JsonSerializable {
     public JSONObject toJson() {
         final JSONObject json = new JSONObject();
         try {
-            json.put(BILLING_CONTACT, billingContact.toJson())
-                .put(SHIPPING_CONTACT, shippingContact.toJson())
-                .put(IDENTIFIER, identifier)
+            json.put(BILLING_CONTACT, billingContact.toJson());
+            if (shippingContact != null) {
+                json.put(SHIPPING_CONTACT, shippingContact.toJson());
+            }
+            json.put(IDENTIFIER, identifier)
                 .put(TOKEN_DATA, tokenData.toJson());
         } catch (JSONException e) {
             final String className = getClass().getSimpleName();

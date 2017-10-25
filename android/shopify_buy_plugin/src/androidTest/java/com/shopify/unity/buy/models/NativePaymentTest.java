@@ -58,6 +58,38 @@ public class NativePaymentTest {
         assertEquals(tokenData, nativePayment.tokenData);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void newValidatesBillingContact() throws Exception {
+        TokenData tokenData = new TokenData("token");
+         NativePayment
+                .newBuilder()
+                .shippingContact(shippingContact)
+                .identifier("identifier")
+                .tokenData(tokenData)
+                .build();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void newValidatesIdentifier() throws Exception {
+        TokenData tokenData = new TokenData("token");
+        NativePayment
+                .newBuilder()
+                .billingContact(billingContact)
+                .shippingContact(shippingContact)
+                .tokenData(tokenData)
+                .build();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void newValidatesTokenData() throws Exception {
+        NativePayment
+                .newBuilder()
+                .billingContact(billingContact)
+                .shippingContact(shippingContact)
+                .identifier("identifier")
+                .build();
+    }
+
     @Test
     public void toJson() throws Exception {
         NativePayment nativePayment = NativePayment
