@@ -43,23 +43,22 @@ public class MailingAddressInput implements JsonSerializable {
         this.zip = payAddress.zip;
     }
 
-    static MailingAddressInput fromJsonString(String json) throws JSONException {
-        JSONObject obj = new JSONObject(json);
-        String address1 = obj.getString("address1");
-        String address2 = obj.getString("address2");
-        String city = obj.getString("city");
-        String country = obj.getString("country");
-        String firstName = obj.getString("firstName");
-        String lastName = obj.getString("lastName");
-        String phone = obj.getString("phone");
-        String province = obj.getString("province");
-        String zip = obj.getString("zip");
+    static MailingAddressInput fromJson(JSONObject json) throws JSONException {
+        String address1 = json.getString("address1");
+        String address2 = json.getString("address2");
+        String city = json.getString("city");
+        String country = json.getString("country");
+        String firstName = json.getString("firstName");
+        String lastName = json.getString("lastName");
+        String phone = json.getString("phone");
+        String province = json.getString("province");
+        String zip = json.getString("zip");
 
         return new MailingAddressInput(address1, address2, city, country, firstName, lastName, phone, province, zip);
     }
 
     //CHECKSTYLE:OFF
-    private MailingAddressInput(String address1, String address2, String city,
+    protected MailingAddressInput(String address1, String address2, String city,
                                 String country, String firstName, String lastName,
                                 String phone, String province, String zip) {
         //CHECKSTLYE:ON
@@ -74,22 +73,22 @@ public class MailingAddressInput implements JsonSerializable {
         this.zip = zip;
     }
 
-    public String toJsonString() {
-        JSONObject obj = new JSONObject();
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
         try {
-            obj.put(ADDRESS_1, address1);
-            obj.put(ADDRESS_2, address2);
-            obj.put(CITY, city);
-            obj.put(COUNTRY, country);
-            obj.put(FIRST_NAME, firstName);
-            obj.put(LAST_NAME, lastName);
-            obj.put(PHONE, phone);
-            obj.put(PROVINCE, province);
-            obj.put(ZIP, zip);
+            json.put(ADDRESS_1, address1)
+                .put(ADDRESS_2, address2)
+                .put(CITY, city)
+                .put(COUNTRY, country)
+                .put(FIRST_NAME, firstName)
+                .put(LAST_NAME, lastName)
+                .put(PHONE, phone)
+                .put(PROVINCE, province)
+                .put(ZIP, zip);
         } catch (JSONException e) {
             Log.e("ShopifyBuyPlugin", "Failed to convert MailingAddressInput into a JSON String.");
             e.printStackTrace();
         }
-        return obj.toString();
+        return json;
     }
 }

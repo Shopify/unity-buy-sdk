@@ -250,7 +250,7 @@ namespace <%= namespace %>.SDK.iOS {
             var checkout = CartState.CurrentCheckout;
             var message = NativeMessage.CreateFromJSON(serializedMessage);
             var amount  = checkout.totalPrice();
-            var payment = new ApplePayPayment(message.Content);
+            var payment = new NativePayment(message.Content);
             var tokenizedPaymentInput = new TokenizedPaymentInput(amount: amount, billingAddress: payment.BillingAddress, idempotencyKey: payment.TransactionIdentifier, paymentData: payment.PaymentData, type: "apple_pay");
 
             Action performCheckout = () => {
@@ -290,7 +290,7 @@ namespace <%= namespace %>.SDK.iOS {
             }
         }
 
-        private void SetFinalCheckoutFieldsForPayment(ApplePayPayment payment, Checkout checkout, ApplePayEventHandlerCompletion callback) {
+        private void SetFinalCheckoutFieldsForPayment(NativePayment payment, Checkout checkout, ApplePayEventHandlerCompletion callback) {
 
             ShippingFields? shippingFields = null;
             if (checkout.requiresShipping()) {

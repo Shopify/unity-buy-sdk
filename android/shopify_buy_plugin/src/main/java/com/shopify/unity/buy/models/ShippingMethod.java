@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.shopify.unity.buy.utils.BigDecimalConverter;
+import com.shopify.unity.buy.utils.Logger;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -114,13 +115,19 @@ public final class ShippingMethod implements JsonSerializable, Parcelable {
     }
 
     @Override
-    public String toJsonString() throws JSONException {
-        return new JSONObject()
-                .put(IDENTIFIER, identifier)
+    public JSONObject toJson() {
+        final JSONObject json = new JSONObject();
+        try {
+            json.put(IDENTIFIER, identifier)
                 .put(DETAIL, detail)
                 .put(LABEL, label)
-                .put(AMOUNT, amount)
-                .toString();
+                .put(AMOUNT, amount);
+        } catch (JSONException e) {
+            final String className = getClass().getSimpleName();
+            Logger.error("Failed to convert " + className + " into a JSON String.");
+            e.printStackTrace();
+        }
+        return json;
     }
 
     @Override

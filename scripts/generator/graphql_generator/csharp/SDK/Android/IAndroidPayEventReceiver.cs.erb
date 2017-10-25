@@ -7,6 +7,7 @@ namespace <%= namespace %>.SDK.Android {
     public interface IAndroidPayEventReceiver {
         void OnUpdateShippingAddress(string serializedMessage);
         void OnUpdateShippingLine(string serializedMessage);
+        void OnConfirmCheckout(string serializedMessage);
         void OnError(string serializedMessage);
         void OnCancel(string serializedMessage);
     }
