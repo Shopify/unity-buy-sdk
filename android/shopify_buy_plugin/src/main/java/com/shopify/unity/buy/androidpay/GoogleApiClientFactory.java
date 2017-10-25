@@ -7,7 +7,6 @@ import com.google.android.gms.wallet.Wallet;
 import com.google.android.gms.wallet.WalletConstants;
 
 import static com.google.android.gms.common.api.GoogleApiClient.Builder;
-import static com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 
 /**
  * @author Flavio Faria
@@ -27,7 +26,7 @@ public class GoogleApiClientFactory {
         this.useTestingEnvironment = useTestingEnvironment;
     }
 
-    GoogleApiClient newGoogleApiClient(ConnectionCallbacks connectionCallbacks) {
+    GoogleApiClient newGoogleApiClient() {
         final int environment = useTestingEnvironment
                 ? WalletConstants.ENVIRONMENT_SANDBOX
                 : WalletConstants.ENVIRONMENT_PRODUCTION;
@@ -37,7 +36,6 @@ public class GoogleApiClientFactory {
                         .setEnvironment(environment)
                         .setTheme(WalletConstants.THEME_DARK)
                         .build())
-                .addConnectionCallbacks(connectionCallbacks)
                 .build();
     }
 }
