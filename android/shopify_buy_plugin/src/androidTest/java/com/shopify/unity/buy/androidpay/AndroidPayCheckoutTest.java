@@ -15,8 +15,10 @@ import com.shopify.unity.buy.UnityMessage;
 import com.shopify.unity.buy.models.AndroidPayEventResponse;
 import com.shopify.unity.buy.models.CheckoutInfo;
 import com.shopify.unity.buy.models.PricingLineItems;
+import com.shopify.unity.buy.models.ShippingMethod;
 import com.shopify.unity.buy.utils.TestHelpers;
 
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -77,6 +79,28 @@ public class AndroidPayCheckoutTest {
     public void testGoogleClientDisconnectsOnSuspend() {
         checkout.suspend();
         verify(mockGoogleClient, atMost(1)).disconnect();
+    }
+
+    @Test
+    public void testUpdateShippingMethod() throws Exception {
+        ShippingMethod shippingMethod = new ShippingMethod(
+                "identifier",
+                "detail",
+                "label",
+                BigDecimal.ZERO
+        );
+        checkout.updateShippingMethod(shippingMethod);
+        ArgumentCaptor<UnityMessage> msgCaptor = ArgumentCaptor.forClass(UnityMessage.class);
+        verify(messageCenter).sendMessageTo(
+                eq(Method.ON_UPDATE_SHIPPING_LINE),
+                msgCaptor.capture(),
+                any(MessageCallback.class)
+        );
+        JSONObject json = new JSONObject(msgCaptor.getValue().content);
+        assertEquals("identifier", json.getString("Identifier"));
+        assertEquals("detail", json.getString("Detail"));
+        assertEquals("label", json.getString("Label"));
+        assertEquals(BigDecimal.ZERO, BigDecimal.valueOf(json.getInt("Amount")));
     }
 
     @Test

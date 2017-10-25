@@ -1,11 +1,10 @@
-#if UNITY_IOS
-namespace <%= namespace %>.SDK.iOS {
+namespace <%= namespace %>.SDK {
     using System.Collections;
     using System.Collections.Generic;
     using <%= namespace %>;
     using <%= namespace %>.MiniJSON;
 
-    public class ApplePayPayment {
+    public class NativePayment {
 
         private enum PaymentField {
             BillingContact,
@@ -16,7 +15,8 @@ namespace <%= namespace %>.SDK.iOS {
 
         private enum TokenField {
             PaymentData,
-            TransactionIdentifier
+            TransactionIdentifier,
+            Identifier
         }
 
         readonly public MailingAddressInput BillingAddress;
@@ -24,9 +24,10 @@ namespace <%= namespace %>.SDK.iOS {
         readonly public string Email;
         readonly public string ShippingIdentifier;
         readonly public string TransactionIdentifier;
+        readonly public string Identifier;
         readonly public string PaymentData;
 
-        public ApplePayPayment(string stringJson) {
+        public NativePayment(string stringJson) {
             var dictionary = (Dictionary<string, object>)Json.Deserialize(stringJson);
 
             // Billing Address
@@ -48,6 +49,11 @@ namespace <%= namespace %>.SDK.iOS {
             // Transaction Identifier
             var tokenDictionary = (Dictionary<string, object>)dictionary[PaymentField.TokenData.ToString("G")];
             TransactionIdentifier = (string)tokenDictionary[TokenField.TransactionIdentifier.ToString("G")];
+            
+            // Identifier (Android Pay only)
+            if (tokenDictionary.ContainsKey(TokenField.Identifier.ToString("G"))) {
+                Identifier = (string)tokenDictionary[TokenField.Identifier.ToString("G")];
+            }
 
             // Payment Data
             // Payment Data can be null when running on a simulator
@@ -60,4 +66,4 @@ namespace <%= namespace %>.SDK.iOS {
         }
     }
 }
-#endif
+

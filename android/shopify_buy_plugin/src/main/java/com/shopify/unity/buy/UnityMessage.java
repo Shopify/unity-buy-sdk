@@ -38,16 +38,14 @@ public final class UnityMessage implements JsonSerializable {
     }
 
     @Override
-    public String toJsonString() {
-
-        JSONObject json = new JSONObject();
-
+    public JSONObject toJson() {
+        final JSONObject json = new JSONObject();
         try {
-            json.put(IDENTIFIER_KEY, identifier);
-            json.put(CONTENT_KEY, content);
+            json.put(IDENTIFIER_KEY, identifier)
+                .put(CONTENT_KEY, content);
         } catch (JSONException e) {
-            throw new IllegalStateException("UnityMessage is not JsonSerializable");
+            e.printStackTrace();
         }
-        return json.toString();
+        return json;
     }
 }

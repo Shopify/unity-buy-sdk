@@ -32,7 +32,8 @@ public class MessageCenter {
         if (callbacks != null) {
             callbacksInWaiting.put(msg.identifier, callbacks);
         }
-        UnityPlayer.UnitySendMessage(unityDelegateObjectName, method.name, msg.toJsonString());
+        final String msgStr = msg.toJson().toString();
+        UnityPlayer.UnitySendMessage(unityDelegateObjectName, method.name, msgStr);
     }
 
     @SuppressWarnings("unused")
@@ -54,6 +55,7 @@ public class MessageCenter {
         ON_NATIVE_MESSAGE("OnNativeMessage"),
         ON_UPDATE_SHIPPING_ADDRESS("OnUpdateShippingAddress"),
         ON_UPDATE_SHIPPING_LINE("OnUpdateShippingLine"),
+        ON_CONFIRM_CHECKOUT("OnConfirmCheckout"),
         ON_ERROR("OnError"),
         ON_CANCEL("OnCancel"),
         ON_COMPLETE("OnComplete");

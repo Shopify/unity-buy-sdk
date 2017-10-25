@@ -19,6 +19,10 @@ namespace <%= namespace %>.SDK.Android {
             Receiver.OnUpdateShippingLine(serializedMessage);
         }
 
+        public void OnConfirmCheckout(string serializedMessage) {
+            Receiver.OnConfirmCheckout(serializedMessage);
+        }
+
         public void OnError(string serializedMessage ) {
             Receiver.OnError(serializedMessage);
         }
