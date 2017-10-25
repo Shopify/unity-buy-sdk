@@ -65,7 +65,7 @@ public class TestHelpers {
 
         @Override
         public boolean matches(MailingAddressInput mailingAddressInput) {
-            return expected.toJsonString().equals(mailingAddressInput.toJsonString());
+            return expected.toJson().equals(mailingAddressInput.toJson());
         }
     }
 }

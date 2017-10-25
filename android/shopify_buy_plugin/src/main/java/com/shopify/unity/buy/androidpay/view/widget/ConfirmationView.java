@@ -49,13 +49,19 @@ public final class ConfirmationView extends LinearLayout {
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onClose();
+                    listener.onCloseButtonClick();
                 }
             });
             shippingRatesView.setListener(listener);
+            confirmView.setOnClickListener(new OnClickListener() {
+                @Override public void onClick(View v) {
+                    listener.onConfirmOrderClick();
+                }
+            });
         } else {
             toolbar.setNavigationOnClickListener(null);
             shippingRatesView.setListener(null);
+            confirmView.setOnClickListener(null);
         }
     }
 
@@ -78,6 +84,7 @@ public final class ConfirmationView extends LinearLayout {
     }
 
     public interface Listener extends ShippingRatesView.Listener {
-        void onClose();
+        void onCloseButtonClick();
+        void onConfirmOrderClick();
     }
 }

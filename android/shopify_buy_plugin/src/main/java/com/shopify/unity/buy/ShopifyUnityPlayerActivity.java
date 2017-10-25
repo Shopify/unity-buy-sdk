@@ -21,10 +21,10 @@ import com.shopify.unity.buy.models.ShippingMethod;
 import com.unity3d.player.UnityPlayerActivity;
 
 public class ShopifyUnityPlayerActivity extends UnityPlayerActivity
-        implements AndroidPayCheckout.Listener {
+        implements AndroidPayCheckout.Listener, ConfirmationView.Listener {
 
     @Nullable private AndroidPayCheckout checkout;
-    private ConfirmationView confirmationView;
+    @Nullable private ConfirmationView confirmationView;
     private ViewGroup root;
 
     @Override
@@ -80,16 +80,7 @@ public class ShopifyUnityPlayerActivity extends UnityPlayerActivity
         if (confirmationView == null) {
             final View v = LayoutInflater.from(this).inflate(R.layout.view_confirmation, root);
             confirmationView = v.findViewById(R.id.confirmation);
-            //noinspection ConstantConditions
-            confirmationView.setListener(new ConfirmationView.Listener() {
-                @Override public void onClose() {
-                    root.removeView(confirmationView);
-                    confirmationView = null;
-                }
-                @Override public void onShippingRateChangeClick() {
-                    showShippingDialog();
-                }
-            });
+            confirmationView.setListener(this);
         }
         updateView(checkoutInfo, true);
     }
@@ -127,5 +118,28 @@ public class ShopifyUnityPlayerActivity extends UnityPlayerActivity
         @SuppressWarnings("ConstantConditions")
         final MaskedWallet maskedWallet = checkout.getMaskedWallet();
         return new WalletFragmentInstaller(getFragmentManager(), maskedWallet);
+    }
+
+    @Override
+    public void onShippingRateChangeClick() {
+        showShippingDialog();
+    }
+
+    @Override
+    public void onCloseButtonClick() {
+        closeConfirmationScreen();
+    }
+
+    @Override
+    public void onConfirmOrderClick() {
+        if (checkout != null) {
+            checkout.confirmCheckout();
+        }
+        closeConfirmationScreen();
+    }
+
+    private void closeConfirmationScreen() {
+        root.removeView(confirmationView);
+        confirmationView = null;
     }
 }

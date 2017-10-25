@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.shopify.unity.buy.utils.BigDecimalConverter;
+import com.shopify.unity.buy.utils.Logger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,9 +25,9 @@ public final class PricingLineItems implements JsonSerializable {
     @Nullable public final BigDecimal shippingPrice;
 
     public PricingLineItems(@NonNull BigDecimal subtotal,
-                             @NonNull BigDecimal taxPrice,
-                             @NonNull BigDecimal totalPrice,
-                             @Nullable BigDecimal shippingPrice) {
+                            @NonNull BigDecimal taxPrice,
+                            @NonNull BigDecimal totalPrice,
+                            @Nullable BigDecimal shippingPrice) {
         this.totalPrice = totalPrice.setScale(2, RoundingMode.HALF_EVEN);
         this.subtotal = subtotal.setScale(2, RoundingMode.HALF_EVEN);
         this.taxPrice = taxPrice.setScale(2, RoundingMode.HALF_EVEN);
@@ -56,16 +57,20 @@ public final class PricingLineItems implements JsonSerializable {
     }
 
     @Override
-    public String toJsonString() throws JSONException {
+    public JSONObject toJson() {
         JSONObject json = new JSONObject();
-        json.put(SUBTOTAL, subtotal.toString());
-        json.put(TAX_PRICE, taxPrice.toString());
-        json.put(TOTAL_PRICE, totalPrice.toString());
-
-        if (shippingPrice != null) {
-            json.put(SHIPPING_PRICE, shippingPrice.doubleValue());
+        try {
+            json.put(SUBTOTAL, subtotal.toString())
+                .put(TAX_PRICE, taxPrice.toString())
+                .put(TOTAL_PRICE, totalPrice.toString());
+            if (shippingPrice != null) {
+                json.put(SHIPPING_PRICE, shippingPrice.doubleValue());
+            }
+        } catch (JSONException e) {
+            final String className = getClass().getSimpleName();
+            Logger.error("Failed to convert " + className + " into a JSON String.");
+            e.printStackTrace();
         }
-
-        return json.toString();
+        return json;
     }
 }

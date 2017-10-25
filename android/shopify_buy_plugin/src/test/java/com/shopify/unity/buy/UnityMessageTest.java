@@ -23,11 +23,11 @@ public class UnityMessageTest {
         final String expectedContent = "expectedContent";
 
         UnityMessage messageA = UnityMessage.fromAndroid(expectedContent);
-        String messageAJsonString = messageA.toJsonString();
+        String messageAJsonString = messageA.toJson().toString();
         JSONObject jsonA = new JSONObject(messageAJsonString);
 
         UnityMessage messageB = UnityMessage.fromAndroid(expectedContent);
-        String messageBJsonString = messageB.toJsonString();
+        String messageBJsonString = messageB.toJson().toString();
         JSONObject jsonB = new JSONObject(messageBJsonString);
 
         assertTrue(jsonA.has(identifierKey));
