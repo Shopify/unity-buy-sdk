@@ -69,15 +69,6 @@ namespace <%= namespace %>.SDK.Android {
             });
         }
 
-        private void SetFinalCheckoutFieldsForPayment(NativePayment payment, Checkout checkout,
-                CompletionCallback callback) {
-            ShippingFields? shippingFields = null;
-            if (checkout.requiresShipping()) {
-                shippingFields = new ShippingFields(payment.ShippingAddress, payment.ShippingIdentifier);
-            }
-            CartState.SetFinalCheckoutFields(payment.Email, shippingFields, callback);
-        }
-
         public void OnError(string serializedMessage) {
         }
 
