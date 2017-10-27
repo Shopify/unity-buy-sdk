@@ -5,7 +5,7 @@ namespace <%= namespace %>.SDK {
     /// <summary>
     /// A class describing an error that has occurred within the Shopify Unity Buy SDK.
     /// </summary>
-    public class ShopifyError {
+    public class ShopifyError : Serializable {
         public static explicit operator ShopifyError(TopLevelResponse response) {
             if (response.HTTPError != null) {
                 return new ShopifyError(ShopifyError.ErrorType.HTTP, response.HTTPError);
@@ -48,6 +48,13 @@ namespace <%= namespace %>.SDK {
         public ShopifyError(ErrorType type, string description) {
             this.Type = type;
             this.Description = description;
+        }
+
+        public override object ToJson() {
+            var dict = new Dictionary<string, object>();
+            dict["ErrorType"] = Type.ToString();
+            dict["Description"] = Description;
+            return dict;
         }
     }
 }

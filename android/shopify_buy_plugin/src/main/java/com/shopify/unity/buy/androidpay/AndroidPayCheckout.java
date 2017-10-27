@@ -22,6 +22,7 @@ import com.shopify.unity.buy.models.NativePayment;
 import com.shopify.unity.buy.models.PricingLineItems;
 import com.shopify.unity.buy.models.ShippingContact;
 import com.shopify.unity.buy.models.ShippingMethod;
+import com.shopify.unity.buy.models.ShopifyError;
 import com.shopify.unity.buy.models.TokenData;
 import com.shopify.unity.buy.utils.Logger;
 import com.shopify.unity.buy.utils.WalletErrorFormatter;
@@ -40,7 +41,8 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
     @VisibleForTesting enum CheckoutState {
         READY,
         REQUESTING_MASKED_WALLET,
-        RECEIVED_MASKED_WALLET
+        RECEIVED_MASKED_WALLET,
+        UPDATED_SHIPPING_ADDRESS,
     }
 
     // Android Pay stuff
@@ -60,20 +62,33 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
     public AndroidPayCheckout(@NonNull GoogleApiClientFactory googleApiClientFactory,
                               @NonNull MessageCenter messageCenter,
                               @NonNull Listener listener) {
-        googleApiClient = googleApiClientFactory.newGoogleApiClient(this);
+        googleApiClient = googleApiClientFactory.newGoogleApiClient();
         this.messageCenter = messageCenter;
         this.listener = listener;
     }
 
+    /**
+     * Resets this checkout to a fresh state.
+     */
+    private void reset() {
+        googleApiClient.unregisterConnectionCallbacks(this);
+        googleApiClient.disconnect();
+        publicKey = null;
+        maskedWallet = null;
+        currentCheckoutState = CheckoutState.READY;
+        checkoutInfo = CheckoutInfo.fresh();
+    }
+
     public void startCheckout(@NonNull PayCart cart, @NonNull String publicKey) {
+        reset();
+        googleApiClient.registerConnectionCallbacks(this);
         checkoutInfo = CheckoutInfo.from(checkoutInfo).payCart(cart).build();
         this.publicKey = publicKey;
-        if (!googleApiClient.isConnected()) {
-            googleApiClient.connect();
-        }
+        googleApiClient.connect();
     }
 
     public void updateShippingMethod(@NonNull ShippingMethod shippingMethod) {
+        final ShippingMethod oldShippingMethod = checkoutInfo.getCurrentShippingMethod();
         checkoutInfo = CheckoutInfo
                 .from(checkoutInfo)
                 .currentShippingMethod(shippingMethod)
@@ -83,6 +98,13 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
         messageCenter.sendMessageTo(Method.ON_UPDATE_SHIPPING_LINE, msg, new MessageCallback() {
             @Override public void onResponse(String jsonResponse) {
                 AndroidPayCheckout.this.onResponseReceived(jsonResponse);
+            }
+            @Override public void onError(ShopifyError error) {
+                checkoutInfo = CheckoutInfo // Reverts back to the old shipping method
+                        .from(checkoutInfo)
+                        .currentShippingMethod(oldShippingMethod)
+                        .build();
+                listener.onUpdateShippingMethodFail(error);
             }
         });
     }
@@ -110,8 +132,10 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
     }
 
     @Override
-    public void onConnectionSuspended(int i) {
-        // TODO
+    public void onConnectionSuspended(int cause) {
+        if (cause == CAUSE_NETWORK_LOST) {
+            listener.onConnectionLost();
+        }
     }
 
     public void handleWalletResponse(int requestCode, int resultCode, Intent data) {
@@ -138,10 +162,19 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
         if (currentCheckoutState == CheckoutState.REQUESTING_MASKED_WALLET) {
             currentCheckoutState = CheckoutState.RECEIVED_MASKED_WALLET;
         }
-        listener.onUpdateShippingAddress(checkoutInfo);
-        updateMaskedWallet(maskedWallet, new MessageCallback() {
+        Logger.debug("Masked wallet received");
+        this.maskedWallet = maskedWallet;
+        updateShippingAddress(maskedWallet, new MessageCallback() {
             @Override public void onResponse(String jsonResponse) {
                 AndroidPayCheckout.this.onResponseReceived(jsonResponse);
+                currentCheckoutState = CheckoutState.UPDATED_SHIPPING_ADDRESS;
+            }
+            @Override public void onError(ShopifyError error) {
+                if (currentCheckoutState != CheckoutState.RECEIVED_MASKED_WALLET) {
+                    // User explicitly updated the shipping address
+                    listener.onUpdateShippingAddressFail(error);
+                }
+                reset();
             }
         });
     }
@@ -181,10 +214,8 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
         return maskedWallet;
     }
 
-    private void updateMaskedWallet(@NonNull MaskedWallet maskedWallet,
-                                    @Nullable MessageCallback callback) {
-        Logger.debug("Masked wallet received");
-        this.maskedWallet = maskedWallet;
+    private void updateShippingAddress(@NonNull MaskedWallet maskedWallet,
+                                       @Nullable MessageCallback callback) {
         final UserAddress address = maskedWallet.getBuyerShippingAddress();
         final MailingAddressInput input = new MailingAddressInput(address);
         final UnityMessage msg = UnityMessage.fromAndroid(input.toJson().toString());
@@ -213,7 +244,7 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
                                        .shippingMethods(response.shippingMethods)
                                        .build();
 
-            listener.onSynchronizeShippingAddress(checkoutInfo);
+            listener.onSynchronizeCheckoutInfo(checkoutInfo);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -253,7 +284,9 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
     }
 
     public interface Listener {
-        void onUpdateShippingAddress(@NonNull CheckoutInfo checkoutInfo);
-        void onSynchronizeShippingAddress(@NonNull CheckoutInfo checkoutInfo);
+        void onConnectionLost();
+        void onUpdateShippingAddressFail(@NonNull ShopifyError error);
+        void onUpdateShippingMethodFail(@NonNull ShopifyError error);
+        void onSynchronizeCheckoutInfo(@NonNull CheckoutInfo checkoutInfo);
     }
 }

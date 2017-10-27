@@ -18,12 +18,12 @@ namespace <%= namespace %>.SDK.Android {
             var message = NativeMessage.CreateFromJSON(serializedMessage);
             var contentDictionary = (Dictionary<string, object>) Json.Deserialize(message.Content);
             var mailingAddressInput = new MailingAddressInput(contentDictionary);
-
             CartState.SetShippingAddress(mailingAddressInput, (ShopifyError error) => {
                 if (error == null) {
                     RespondToUpdateAddressSuccessForMessage(message);
                 } else {
-                    // TODO
+                    RespondError(message, error);
+                    OnFailure(error);
                 }
             });
         }
@@ -48,13 +48,12 @@ namespace <%= namespace %>.SDK.Android {
                 identifier: payment.Identifier,
                 type: "android_pay"
             );
-
             CartState.SetEmailAddress(payment.Email, (ShopifyError error) => {
                 if (error == null) {
                     PerformCheckout(checkout, tokenizedPaymentInput, message);
                 } else {
-                    AndroidPayCheckoutResponse.Status status = AndroidPayCheckoutResponse.Status.Failure;
-                    message.Respond(new AndroidPayCheckoutResponse(status).ToJsonString());
+                    RespondError(message, error);
+                    OnFailure(error);
                 }
             });
         }
@@ -62,27 +61,34 @@ namespace <%= namespace %>.SDK.Android {
         private void PerformCheckout(Checkout checkout, TokenizedPaymentInput tokenizedPaymentInput,
                 NativeMessage message) {
             CartState.CheckoutWithTokenizedPayment(tokenizedPaymentInput, (ShopifyError error) => {
-                AndroidPayCheckoutResponse.Status status = error == null
-                        ? AndroidPayCheckoutResponse.Status.Success
-                        : AndroidPayCheckoutResponse.Status.Failure;
-                message.Respond(new AndroidPayCheckoutResponse(status).ToJsonString());
+                if (error == null) {
+                    AndroidPayCheckoutResponse.Status status = AndroidPayCheckoutResponse.Status.Success;
+                    message.Respond(new AndroidPayCheckoutResponse(status).ToJsonString());
+                    OnSuccess();
+                } else {
+                    AndroidPayCheckoutResponse.Status status = AndroidPayCheckoutResponse.Status.Failure;
+                    message.Respond(new AndroidPayCheckoutResponse(status).ToJsonString());
+                    OnFailure(error);
+                }
             });
         }
 
         public void OnError(string serializedMessage) {
+            OnFailure(new ShopifyError(
+                    ShopifyError.ErrorType.NativePaymentProcessingError,
+                    serializedMessage
+                ));
         }
 
         public void OnCancel(string serializedMessage) {
+            OnCancelled();
         }
 
         private void RespondToUpdateAddressSuccessForMessage(NativeMessage message) {
             var shippingMethods = GetShippingMethods();
-
             if (shippingMethods.Count > 0) {
                 // Set the first shipping method as the default
                 UpdateShippingLine(shippingMethods[0], message);
-            } else {
-                // TODO
             }
         }
 
@@ -91,9 +97,14 @@ namespace <%= namespace %>.SDK.Android {
                     if (error == null) {
                         message.Respond(GetAndroidPayEventResponse().ToJsonString());
                     } else {
-                        // TODO
+                        RespondError(message, error);
+                        OnFailure(error);
                     }
                 });
+        }
+
+        private void RespondError(NativeMessage message, ShopifyError error) {
+            message.Respond(error.ToJsonString());
         }
     }
 }

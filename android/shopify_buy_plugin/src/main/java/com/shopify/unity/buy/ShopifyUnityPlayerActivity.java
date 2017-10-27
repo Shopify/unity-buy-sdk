@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.wallet.MaskedWallet;
 import com.shopify.buy3.pay.PayCart;
@@ -18,6 +19,7 @@ import com.shopify.unity.buy.androidpay.view.widget.ShippingMethodSelectDialog;
 import com.shopify.unity.buy.androidpay.view.widget.WalletFragmentInstaller;
 import com.shopify.unity.buy.models.CheckoutInfo;
 import com.shopify.unity.buy.models.ShippingMethod;
+import com.shopify.unity.buy.models.ShopifyError;
 import com.unity3d.player.UnityPlayerActivity;
 
 public class ShopifyUnityPlayerActivity extends UnityPlayerActivity
@@ -71,12 +73,29 @@ public class ShopifyUnityPlayerActivity extends UnityPlayerActivity
     }
 
     @Override
-    public void onUpdateShippingAddress(@NonNull CheckoutInfo checkoutInfo) {
-        updateView(checkoutInfo, false);
+    public void onConnectionLost() {
+        closeConfirmationScreen();
     }
 
     @Override
-    public void onSynchronizeShippingAddress(@NonNull CheckoutInfo checkoutInfo) {
+    public void onUpdateShippingAddressFail(@NonNull ShopifyError error) {
+        if (checkout != null) {
+            updateView(checkout.getCheckoutInfo(), true);
+        }
+        closeConfirmationScreen(); // Can't revert address on screen, payment flow reset required
+        Toast.makeText(this, R.string.confirmation_address_error, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onUpdateShippingMethodFail(@NonNull ShopifyError error) {
+        if (checkout != null) {
+            updateView(checkout.getCheckoutInfo(), true);
+        }
+        Toast.makeText(this, R.string.confirmation_method_error, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onSynchronizeCheckoutInfo(@NonNull CheckoutInfo checkoutInfo) {
         if (confirmationView == null) {
             final View v = LayoutInflater.from(this).inflate(R.layout.view_confirmation, root);
             confirmationView = v.findViewById(R.id.confirmation);
@@ -104,8 +123,8 @@ public class ShopifyUnityPlayerActivity extends UnityPlayerActivity
                 new ShippingMethodSelectDialog.OnShippingMethodSelectListener() {
             @Override
             public void onShippingMethodSelected(ShippingMethod shippingMethod, int position) {
-                updateView(checkout.getCheckoutInfo(), false);
                 checkout.updateShippingMethod(shippingMethod);
+                updateView(checkout.getCheckoutInfo(), false);
             }
         };
         new ShippingMethodSelectDialog(this).show(
