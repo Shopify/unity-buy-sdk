@@ -5,8 +5,12 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.shopify.unity.buy.models.ShopifyError;
 import com.shopify.unity.buy.utils.Logger;
 import com.unity3d.player.UnityPlayer;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,13 +45,24 @@ public class MessageCenter {
         final String msg = "New message from Unity: identifier = " +
                 identifier + ", content = " + content;
         Logger.debug(msg);
-        final MessageCallback callbacks = callbacksInWaiting.remove(identifier);
-        if (callbacks != null) {
+        final MessageCallback callback = callbacksInWaiting.remove(identifier);
+        if (callback != null) {
             MAIN_THREAD_HANDLER.post(new Runnable() {
                 @Override public void run() {
-                    callbacks.onResponse(content);
+                    deliverResult(callback, content);
                 }
             });
+        }
+    }
+
+    private static void deliverResult(MessageCallback callback, String content) {
+        try {
+            Logger.debug(content);
+            final JSONObject json = new JSONObject(content);
+            callback.onError(ShopifyError.fromJson(json));
+        } catch (JSONException ignored) {
+            // If exception thrown, this is not an error.
+            callback.onResponse(content);
         }
     }
 
@@ -69,5 +84,6 @@ public class MessageCenter {
 
     public interface MessageCallback {
         void onResponse(String jsonResponse);
+        void onError(ShopifyError error);
     }
 }

@@ -32,7 +32,6 @@ import org.mockito.stubbing.Answer;
 
 import java.math.BigDecimal;
 
-import static com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import static com.google.android.gms.wallet.WalletConstants.ERROR_CODE_AUTHENTICATION_FAILURE;
 import static com.shopify.buy3.pay.PayHelper.REQUEST_CODE_CHANGE_MASKED_WALLET;
 import static com.shopify.unity.buy.MessageCenter.MessageCallback;
@@ -64,7 +63,7 @@ public class AndroidPayCheckoutTest {
     @Before
     public void setUp() {
         GoogleApiClientFactory factory = mock(GoogleApiClientFactory.class);
-        when(factory.newGoogleApiClient(any(ConnectionCallbacks.class)))
+        when(factory.newGoogleApiClient())
                 .thenReturn(mockGoogleClient);
         checkout = new AndroidPayCheckout(factory, messageCenter, listener);
     }
@@ -127,7 +126,7 @@ public class AndroidPayCheckoutTest {
         checkout.handleWalletResponse(REQUEST_CODE_CHANGE_MASKED_WALLET, Activity.RESULT_OK, mockIntent);
 
         assertEquals(maskedWallet, checkout.getMaskedWallet());
-        verify(listener).onSynchronizeShippingAddress(any(CheckoutInfo.class));
+        verify(listener).onSynchronizeCheckoutInfo(any(CheckoutInfo.class));
     }
 
     @Test
