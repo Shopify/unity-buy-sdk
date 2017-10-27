@@ -10,6 +10,6 @@
     <string name="confirmation_shipping_method_price_not_available">N/A</string>
     <string name="confirmation_shipping_method_select_title">Select Shipping Method</string>
     <string name="confirmation_confirm">Confirm Order</string>
-    <string name="confirmation_address_error">Error updating shipping address</string>
-    <string name="confirmation_method_error">Error updating shipping method</string>
+    <string name="confirmation_address_error">We\'ve encountered an error while updating your shipping address. Please try again.</string>
+    <string name="confirmation_method_error">We\'ve encountered an error while updating your shipping method. Please try again.</string>
 </resources>
