@@ -54,6 +54,9 @@ namespace <%= namespace %>.SDK.Android {
                 #if !SHOPIFY_MONO_UNIT_TEST
                 AndroidPayCheckoutSession.Call("canCheckoutWithAndroidPay", args);
                 #endif
+                if (PendingCanCheckoutWithNativePayCallback != null) {
+                    PendingCanCheckoutWithNativePayCallback(false);
+                }
                 PendingCanCheckoutWithNativePayCallback = callback;
             } else {
                 callback(false);
