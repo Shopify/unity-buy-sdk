@@ -13,4 +13,4 @@ The Unity Buy SDK requires Android games to have a minimum API level of Android 
 
 # iOS
 
-The Unity Buy SDK requires iOS games to have a minimum target SDK of iOS 9 and support Swift 3.
+The Unity Buy SDK requires iOS games to be built using the latest Xcode (9), have a minimum target SDK of iOS 9 and support Swift 3.
