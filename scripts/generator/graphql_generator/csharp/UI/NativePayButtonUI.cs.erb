@@ -1,0 +1,109 @@
+#if !SHOPIFY_MONO_UNIT_TEST
+namespace <%= namespace %>.UI {
+    using UnityEngine;
+    using UnityEngine.UI;
+
+    using System.Runtime.InteropServices;
+    using System.Text;
+    using System;
+
+    /// <summary>
+    /// The Apple Pay payment button style C# enum. See https://developer.apple.com/documentation/passkit/pkpaymentbuttonstyle
+    /// for all available options.
+    /// </summary>
+    public enum ApplePayButtonStyle {
+        WHITE,
+        WHITE_OUTLINE,
+        BLACK
+    }
+
+    /// <summary>
+    /// The Apple Pay payment button type C# enum. See https://developer.apple.com/documentation/passkit/pkpaymentbuttontype
+    /// for all available options.
+    /// </summary>
+    public enum ApplePayButtonType {
+        PLAIN,
+        BUY,
+        SETUP,
+        IN_STORE,
+        DONATE 
+    }
+
+    public class NativePayButtonUI : MonoBehaviour {
+        /// <summary>
+        /// The Apple Pay payment button style. See https://developer.apple.com/documentation/passkit/pkpaymentbuttonstyle
+        /// for all available options.
+        /// </summary>
+        public ApplePayButtonStyle applePayButtonStyle;
+
+        /// <summary>
+        /// The Apple Pay payment button type. See https://developer.apple.com/documentation/passkit/pkpaymentbuttontype
+        /// for all available options.
+        /// </summary>
+        public ApplePayButtonType applePayButtonType;
+
+        /// <summary>
+        /// When set to true, the the Apple Pay button image will include the 10% minimum spacing around the 
+        /// button image required by Apple's design guidelines.
+        /// </summary>
+        public bool includeMinimumSpacingForIOS;
+
+        private Image buttonImage;
+        private Texture2D imageTexture;
+
+        public void Start() {
+            buttonImage = this.gameObject.GetComponent<Image>();
+
+            #if UNITY_IOS
+            GenerateApplePayImage();
+            #elif UNITY_ANDROID
+            GenerateAndroidPayImage();
+            #endif            
+        }
+
+        #if UNITY_IOS
+        [DllImport ("__Internal")]
+        private static extern IntPtr _GenerateApplePayButtonImage(string type, string style, 
+                                                                  float width, float height, 
+                                                                  bool includeMinimumSpacingForIOS);
+
+        private void GenerateApplePayImage() {
+            var rectTransform = this.gameObject.GetComponent<RectTransform>();
+            // Ask iOS to generate us an image of the native Apple Pay button.
+            var imageStringPtr = _GenerateApplePayButtonImage(
+                applePayButtonType.ToString(), 
+                applePayButtonStyle.ToString(), 
+                rectTransform.rect.width, 
+                rectTransform.rect.height,
+                includeMinimumSpacingForIOS
+            );
+
+            string managedBase64ImageString = Marshal.PtrToStringAnsi(imageStringPtr);
+            byte[] imageBytes = System.Convert.FromBase64String(managedBase64ImageString);
+
+            // Create a Texture2D object from the raw byte data from iOS
+            imageTexture = new Texture2D(1, 1);
+            imageTexture.LoadImage(imageBytes);
+            imageTexture.Apply();
+
+            // Free malloc'ed base64 string from iOS
+            Marshal.FreeHGlobal(imageStringPtr);
+
+            // Create Sprite and assign to the image component.
+            buttonImage.sprite = Sprite.Create(
+                imageTexture, 
+                new Rect(0, 0, imageTexture.width, imageTexture.height), 
+                new Vector2(0.5f, 0.5f), 
+                100.0f
+            );
+        }
+        #endif
+
+        #if UNITY_ANDROID
+        private void GenerateAndroidPayImage() {
+            // TODO: Get a render of the Android Pay button for use in Unity.
+        }
+        #endif
+    }
+}
+#endif
