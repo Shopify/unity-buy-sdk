@@ -163,7 +163,6 @@ module GraphQLGenerator
         SDK/iOS/iOSWebCheckout
         SDK/iOS/iOSNativeCheckout
         SDK/iOS/iOSNativeCheckout.ApplePayEventReceiver
-        SDK/iOS/ApplePayPayment
         SDK/NativePayment
         UI/NativePayButtonUI
       ).each do |class_file_name|
