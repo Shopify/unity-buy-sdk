@@ -17,21 +17,7 @@ namespace <%= namespace %>.SDK.Android {
         private String CountryCodeString;
         private AndroidPayEventReceiverBridge AndroidPayEventBridge;
         #if !SHOPIFY_MONO_UNIT_TEST
-        private AndroidJavaObject _androidPayCheckoutSession;
-        private AndroidJavaObject AndroidPayCheckoutSession {
-            get {
-                if (_androidPayCheckoutSession == null) {
-                    const string target = "com.shopify.unity.buy.androidpay.AndroidPayCheckoutSession";
-                    const bool testing = true; // TODO parametrize for 3rd-party devs
-                    _androidPayCheckoutSession = new AndroidJavaObject(
-                        target,
-                        GlobalGameObject.Name,
-                        testing
-                    );
-                }
-                 return _androidPayCheckoutSession;
-            }
-        }
+        private AndroidJavaObject AndroidPayCheckoutSession;
         #endif
 
         private CheckoutSuccessCallback OnSuccess;
@@ -41,6 +27,15 @@ namespace <%= namespace %>.SDK.Android {
 
         public AndroidNativeCheckout(CartState cartState) {
             CartState = cartState;
+            const string target = "com.shopify.unity.buy.androidpay.AndroidPayCheckoutSession";
+            const bool testing = true; // TODO parametrize for 3rd-party devs
+            #if !SHOPIFY_MONO_UNIT_TEST
+            AndroidPayCheckoutSession = new AndroidJavaObject(
+                target,
+                GlobalGameObject.Name,
+                testing
+            );
+            #endif
         }
 
         public bool CanShowPaymentSetup(PaymentSettings paymentSettings) {
@@ -56,7 +51,9 @@ namespace <%= namespace %>.SDK.Android {
                 object[] args = {
                         SerializedPaymentNetworksFromCardBrands(paymentSettings.acceptedCardBrands())
                 };
+                #if !SHOPIFY_MONO_UNIT_TEST
                 AndroidPayCheckoutSession.Call("canCheckoutWithAndroidPay", args);
+                #endif
                 PendingCanCheckoutWithNativePayCallback = callback;
             } else {
                 callback(false);
