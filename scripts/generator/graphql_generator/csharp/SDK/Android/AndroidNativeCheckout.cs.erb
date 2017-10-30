@@ -12,6 +12,7 @@ namespace <%= namespace %>.SDK.Android {
     #endif
 
     public partial class AndroidNativeCheckout : INativeCheckout {
+        private const string ANDROID_CLASS_NAME = "com.shopify.unity.buy.androidpay.AndroidPayCheckoutSession";
         private CartState CartState;
         private String MerchantName;
         private String CountryCodeString;
@@ -27,11 +28,10 @@ namespace <%= namespace %>.SDK.Android {
 
         public AndroidNativeCheckout(CartState cartState) {
             CartState = cartState;
-            const string target = "com.shopify.unity.buy.androidpay.AndroidPayCheckoutSession";
             const bool testing = true; // TODO parametrize for 3rd-party devs
             #if !SHOPIFY_MONO_UNIT_TEST
             AndroidPayCheckoutSession = new AndroidJavaObject(
-                target,
+                ANDROID_CLASS_NAME,
                 GlobalGameObject.Name,
                 testing
             );
