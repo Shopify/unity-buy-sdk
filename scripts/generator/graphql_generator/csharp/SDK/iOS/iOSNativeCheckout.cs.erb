@@ -54,8 +54,9 @@ namespace <%= namespace %>.SDK.iOS {
             if (paymentSettings.supportedDigitalWallets().Contains(DigitalWallet.APPLE_PAY) &&
                 _CanCheckoutWithApplePay(SerializedPaymentNetworksFromCardBrands(paymentSettings.acceptedCardBrands()))) {
                 callback(true);
+            } else {
+                callback(false);
             }
-            callback(false);
         }
 
         /// <summary>
