@@ -261,7 +261,7 @@ namespace <%= namespace %> {
                     if (error != null) {
                         callback(false);
                     } else {
-                        callback(NativeCheckout.CanCheckout(metadata.Value.PaymentSettings));
+                        NativeCheckout.CanCheckout(metadata.Value.PaymentSettings, callback);
                     }
                 });
             } else {

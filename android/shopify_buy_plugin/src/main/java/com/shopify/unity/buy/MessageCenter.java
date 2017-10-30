@@ -73,7 +73,7 @@ public class MessageCenter {
         ON_CONFIRM_CHECKOUT("OnConfirmCheckout"),
         ON_ERROR("OnError"),
         ON_CANCEL("OnCancel"),
-        ON_COMPLETE("OnComplete");
+        ON_CAN_CHECKOUT_WITH_AP_RESULT("OnCanCheckoutWithAndroidPayResult");
 
         private final String name;
 

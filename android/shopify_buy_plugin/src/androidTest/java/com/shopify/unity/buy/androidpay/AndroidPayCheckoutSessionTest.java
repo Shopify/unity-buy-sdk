@@ -8,14 +8,16 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.filters.MediumTest;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.shopify.buy3.pay.PayCart;
 import com.shopify.unity.buy.ShopifyUnityPlayerActivity;
 
+import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -44,28 +46,26 @@ public class AndroidPayCheckoutSessionTest {
     }
 
     @Test
-    public void testCreateSessionWithValidParams() {
+    public void testCartFromUnityWithValidParams() throws JSONException {
         AndroidPayCheckoutSession session = new AndroidPayCheckoutSession(mockActivity, "", true);
-        boolean result = session.checkoutWithAndroidPay(
+        PayCart payCart = session.cartFromUnity(
             "merchantName",
-            "publicKey",
             "{\"totalPrice\":\"6.46\",\"subtotal\":\"5.23\",\"taxPrice\":\"1.23\"}",
             "CAD",
             "CA",
             false);
-
-        assertTrue(result);
+        assertNotNull(payCart);
     }
 
     @Test(expected = NullPointerException.class)
-    public void testCreateSessionWithInvalidParams() {
+    public void testCartFromUnityWithInvalidParams() throws JSONException {
         AndroidPayCheckoutSession session = new AndroidPayCheckoutSession(mockActivity, "", true);
-        session.checkoutWithAndroidPay(
-            null,
-            null,
-            "{\"totalPrice\":\"6.46\",\"subtotal\":\"5.23\",\"taxPrice\":\"1.23\"}",
-            "CAD",
-            "CA",
-            false);
+        PayCart payCart = session.cartFromUnity(
+                null,
+                "{\"totalPrice\":\"6.46\",\"subtotal\":\"5.23\",\"taxPrice\":\"1.23\"}",
+                "CAD",
+                "CA",
+                false);
+        assertNotNull(payCart);
     }
 }
