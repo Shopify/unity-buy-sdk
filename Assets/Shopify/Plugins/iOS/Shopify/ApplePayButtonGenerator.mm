@@ -5,12 +5,24 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+    // Types
+    static char plainType[] = "PLAIN";
+    static char buyType[] = "BUY";
+    static char setupType[] = "SETUP";
+    static char inStoreType[] = "IN_STORE";
+    static char donateType[] = "DONATE";
+    
+    // Styles
+    static char whiteStyle[] = "WHITE";
+    static char blackStyle[] = "BLACK";
+    static char whiteOutlineStyle[] = "WHITE_OUTLINE";
+    
     PKPaymentButtonStyle SBPayButtonStyleFromString(const char *style) {
-        if (strncmp(style, "WHITE", 5) == 0) {
+        if (strncmp(style, whiteStyle, sizeof(whiteStyle)) == 0) {
             return PKPaymentButtonStyleWhite;
-        } else if (strncmp(style, "BLACK", 5) == 0) {
+        } else if (strncmp(style, blackStyle, sizeof(blackStyle)) == 0) {
             return PKPaymentButtonStyleBlack;
-        } else if (strncmp(style, "WHITE_OUTLINE", 11) == 0) {
+        } else if (strncmp(style, whiteOutlineStyle, sizeof(whiteOutlineStyle)) == 0) {
             return PKPaymentButtonStyleWhiteOutline;
         } else {
             return PKPaymentButtonStyleBlack;
@@ -18,15 +30,15 @@ extern "C" {
     }
     
     PKPaymentButtonType SBPayButtonTypeFromString(const char *type) {
-        if (strncmp(type, "PLAIN", 5) == 0) {
+        if (strncmp(type, plainType, sizeof(plainType)) == 0) {
             return PKPaymentButtonTypePlain;
-        } else if (strncmp(type, "BUY", 3) == 0) {
+        } else if (strncmp(type, buyType, sizeof(buyType)) == 0) {
             return PKPaymentButtonTypeBuy;
-        } else if (strncmp(type, "SETUP", 5) == 0) {
+        } else if (strncmp(type, setupType, sizeof(setupType)) == 0) {
             return PKPaymentButtonTypeSetUp;
-        } else if (strncmp(type, "IN_STORE", 6) == 0) {
+        } else if (strncmp(type, inStoreType, sizeof(inStoreType)) == 0) {
             return PKPaymentButtonTypeInStore;
-        } else if (strncmp(type, "DONATE", 6) == 0) {
+        } else if (strncmp(type, donateType, sizeof(donateType)) == 0) {
             return PKPaymentButtonTypeDonate;
         } else {
             return PKPaymentButtonTypePlain;
