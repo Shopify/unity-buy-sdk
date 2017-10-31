@@ -7,7 +7,7 @@ The Unity Buy SDK queries Shopify's [Storefront API](https://help.shopify.com/ap
 ## Table of contents
 
 - [Before you begin](#before-you-begin)
-- [Using the SDK on iOS](#using-the-sdk-on-ios)
+- [Supported build targets](#supported-build-targets)
 - [Initialize the SDK](#initialize-the-sdk)
 - [Query all products](#query-all-products)
 - [Query all collections](#query-all-collections)
