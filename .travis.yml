@@ -41,3 +41,6 @@ before_script:
 
 script:
   - ./scripts/test_android.sh
+
+after_failure:
+  "cat $TRAVIS_BUILD_DIR/android/shopify_buy_plugin/build/reports/lint-results.html"
