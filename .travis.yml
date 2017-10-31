@@ -5,10 +5,13 @@ dist: precise
 android:
   components:
     - tools
-    - platform-tools
-    - build-tools-26.0.0
-    - extra-android-m2repository
     - android-26
+    - build-tools-26.0.0
+    - platform-tools
+    # https://stackoverflow.com/a/40964741/595881
+    - build-tools-26.0.0
+    - android-26
+    - extra-android-m2repository
     - extra-google-m2repository
     - extra-android-support
   licenses:
