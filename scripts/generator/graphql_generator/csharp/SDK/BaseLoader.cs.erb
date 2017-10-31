@@ -29,7 +29,7 @@ namespace <%= namespace %>.SDK {
             _Domain = domain;
 
             SetHeader("Content-Type", "application/graphql");
-            SetHeader("X-SDK-Version", "ShopifyBuy.VERSION");
+            SetHeader("X-SDK-Version", ShopifyBuy.VERSION);
             SetHeader("X-Shopify-Storefront-Access-Token", accessToken);
             SetHeader("X-SDK-Variant", SDKVariantName());
         }
