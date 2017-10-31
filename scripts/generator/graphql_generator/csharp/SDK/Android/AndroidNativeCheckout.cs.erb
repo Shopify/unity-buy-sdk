@@ -93,15 +93,10 @@ namespace <%= namespace %>.SDK.Android {
                     CountryCodeString,
                     requiresShipping
             };
-            if (AndroidPayCheckoutSession.Call<bool>("checkoutWithAndroidPay", args)) {
-                if (AndroidPayEventBridge == null) {
-                    AndroidPayEventBridge = GlobalGameObject.AddComponent<AndroidPayEventReceiverBridge>();
-                    AndroidPayEventBridge.Receiver = this;
-                }
-            } else {
-                // TODO: Create more meaningful error?
-                var error = new ShopifyError(ShopifyError.ErrorType.NativePaymentProcessingError, "Unable to create Android Pay session.");
-                OnFailure(error);
+            AndroidPayCheckoutSession.Call("checkoutWithAndroidPay", args);
+            if (AndroidPayEventBridge == null) {
+                AndroidPayEventBridge = GlobalGameObject.AddComponent<AndroidPayEventReceiverBridge>();
+                AndroidPayEventBridge.Receiver = this;
             }
             #endif
         }

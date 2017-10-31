@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 
 import com.shopify.buy3.pay.PayCart;
-import com.shopify.buy3.pay.PayHelper;
 import com.shopify.unity.buy.MessageCenter;
 import com.shopify.unity.buy.ShopifyUnityPlayerActivity;
 import com.shopify.unity.buy.models.PricingLineItems;
@@ -59,7 +58,7 @@ public final class AndroidPayCheckoutSession {
         }
     }
 
-    public boolean checkoutWithAndroidPay(
+    public void checkoutWithAndroidPay(
             String merchantName,
             String publicKey,
             String pricingLineItemsString,
@@ -67,11 +66,6 @@ public final class AndroidPayCheckoutSession {
             String countryCode,
             boolean requiresShipping
     ) {
-        if (!PayHelper.isAndroidPayEnabledInManifest(rootActivity)) {
-            // TODO: Send unsupported error to Unity
-            return false;
-        }
-
         final String msg = "merchantName = " + merchantName + "\n" +
                 "publicKey = " + publicKey + "\n" +
                 "pricingLineItemsString = " + pricingLineItemsString + "\n" +
@@ -85,10 +79,8 @@ public final class AndroidPayCheckoutSession {
                     countryCode, requiresShipping);
 
             rootActivity.startAndroidPayCheckout(getCheckout(), cart, publicKey);
-            return true;
         } catch (JSONException e) {
             Logger.error("Failed to parse summary items from Unity!");
-            return false;
         }
     }
 
