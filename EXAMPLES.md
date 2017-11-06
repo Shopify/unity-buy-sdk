@@ -383,7 +383,7 @@ On failure, you will receive a `ShopifyError`. There are 3 types of `ShopifyErro
 This error is thrown whenever something goes wrong on the native pay side of the checkout. It is unrecoverable and you should fall back to a different payment method, or allow the user to try going through the process again. The reasons for this error to be thrown depend on the platform:
 
 * **iOS:** will be thrown when Apple Pay fails to generate a token while trying to authenticate the user's card.
-* **Android:** will be thrown for any unrecoverable Android Pay error that is prefixed with `ERROR_` ([see the full list](https://developers.google.com/android/reference/com/google/android/gms/wallet/WalletConstants)), such as _service unavailable_, _unsupported country_ or _authentication error_.
+* **Android:** will be thrown for any unrecoverable Android Pay error that is prefixed with `ERROR_`, such as _service unavailable_, _unsupported country_ or _authentication error_. You can see a full list of errors [here](https://developers.google.com/android/reference/com/google/android/gms/wallet/WalletConstants).
 
 `GraphQL` error will be thrown when there is something wrong with the SDK. This error is unrecoverable and you should fall back to a different payment method.
 
