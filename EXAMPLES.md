@@ -302,7 +302,7 @@ To determine whether the user is able to make a payment with native pay, you can
 
 * `key`
   * **On iOS** is the Merchant ID of your application found on your [Apple Developer Portal](https://developer.apple.com/library/content/ApplePay_Guide/Configuration.html).
-  * **On Android** is a Base64-encoded public key found on _Admin_ > _Apps_ > _Manage private apps_ > _{Your private app}_ > _Storefront API_ > _Configure Mobile Buy SDK settings (optional)_ > _MOBILE BUY SDK (ANDROID)_.
+  * **On Android** is a Base64-encoded public key found on your Shopify admin page. To locate the key, navigate to _Admin_ > _Apps_ > _Manage private apps_ > _{Your private app}_ > _Storefront API_ > _Configure Mobile Buy SDK settings (optional)_ > _MOBILE BUY SDK (ANDROID)_.
 * `CheckoutSuccessCallback` is called when the user has completed a checkout successfully.
 * `CheckoutCancelCallback` is called when the user cancels out of the checkout.
 * `CheckoutFailureCallback` is called when an error was encountered during the checkout. The callback will be passed an instance of `ShopifyError` describing the issue.
