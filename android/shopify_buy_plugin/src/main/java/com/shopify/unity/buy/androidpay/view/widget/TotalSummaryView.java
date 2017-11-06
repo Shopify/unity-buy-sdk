@@ -45,6 +45,11 @@ public final class TotalSummaryView extends ConstraintLayout {
         total = findViewById(R.id.total);
     }
 
+    /**
+     * Updates this view with the passed view model.
+     *
+     * @param totalSummaryViewModel the view model with data to render this view
+     */
     public void update(TotalSummaryViewModel totalSummaryViewModel) {
         subtotal.setText(CURRENCY_FORMAT.format(totalSummaryViewModel.subtotal));
         shipping.setText(CURRENCY_FORMAT.format(totalSummaryViewModel.shipping));

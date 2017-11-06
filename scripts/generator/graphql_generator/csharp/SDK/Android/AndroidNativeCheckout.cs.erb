@@ -12,18 +12,31 @@ namespace <%= namespace %>.SDK.Android {
     #endif
 
     public partial class AndroidNativeCheckout : INativeCheckout {
+
+        /// <value>Android class name used to communicate between Unity and Android.</value>
         private const string ANDROID_CLASS_NAME = "com.shopify.unity.buy.androidpay.AndroidPayCheckoutSession";
+        /// <value>State of the cart for the current checkout.</value>
         private CartState CartState;
+        /// <value>The name of the merchant.</value>
         private String MerchantName;
+        /// <value>The country code for the country where the shop is located.</value>
         private String CountryCodeString;
+        /// <value>Callback instance to receive invocations from the Android plugin.</value>
         private AndroidPayEventReceiverBridge AndroidPayEventBridge;
         #if !SHOPIFY_MONO_UNIT_TEST
+        /// <value>Android object reference to invoke the Android plugin methods.</value>
         private AndroidJavaObject AndroidPayCheckoutSession;
         #endif
 
+        /// <value>External callback for checkout success.</value>
         private CheckoutSuccessCallback OnSuccess;
-        private CheckoutCancelCallback OnCancelled;
+        /// <value>External callback for checkout cancelation.</value>
+        private CheckoutCancelCallback OnCanceled;
+        /// <value>External callback for checkout failure.</value>
         private CheckoutFailureCallback OnFailure;
+        /// <value>Pending external callback for cals to
+        /// <see cref="CanCheckout(PaymentSettings, CanCheckoutWithNativePayCallback)"/>.
+        /// </value>
         private CanCheckoutWithNativePayCallback PendingCanCheckoutWithNativePayCallback;
 
         public AndroidNativeCheckout(CartState cartState) {
@@ -38,14 +51,33 @@ namespace <%= namespace %>.SDK.Android {
             #endif
         }
 
+        /// <summary>
+        /// This method always return <code>false</code> on Android.
+        /// The argument can be <code>null<code>.
+        /// </summary>
+        /// <returns>
+        /// Always <code>false</code>.
+        /// </returns>
         public bool CanShowPaymentSetup(PaymentSettings paymentSettings) {
             return false;
         }
 
+        /// <summary>
+        /// This method is not supported on Android, since
+        /// <see cref="CanShowPaymentSetup(PaymentSettings)"/> always
+        /// returns <code>false</code>.
+        /// </summary>
         public void ShowPaymentSetup() {
-            // TODO
         }
 
+        /// <summary>
+        /// Checks if Android Pay can be used as a checkout method on this device.
+        /// </summary>
+        /// <param name="paymentSettings">
+        /// A <see cref="PaymentSettings"/> object used to read store payment options from.
+        /// <param name="callback">
+        /// A callback object to deliver the response to.
+        /// </param>
         public void CanCheckout(PaymentSettings paymentSettings, CanCheckoutWithNativePayCallback callback) {
             if (paymentSettings.supportedDigitalWallets().Contains(DigitalWallet.ANDROID_PAY)) {
                 object[] args = {
@@ -63,16 +95,34 @@ namespace <%= namespace %>.SDK.Android {
             }
         }
 
+        /// <summary>
+        /// Starts the native checkout flow.
+        /// </summary>
+        /// <param name="key">
+        /// A Base64-encoded Android Pay public key found on the Shopify admin page.
+        /// </param>
+        /// <param name="shopMetadata">
+        /// Some metadata associated with the current shop, such as name and payment settings.
+        /// </param>
+        /// <param name="success">
+        /// Callback to be invoked when the checkout flow is successfully completed.
+        /// </param>
+        /// <param name="canceled">
+        /// Callback to be invoked when the checkout flow is canceled by the user.
+        /// </param>
+        /// <param name="failure">
+        /// Callback to be called when the checkout flow fails.
+        /// </param>
         public void Checkout(
             string key, 
             ShopMetadata shopMetadata,
             CheckoutSuccessCallback success, 
-            CheckoutCancelCallback cancelled, 
+            CheckoutCancelCallback canceled, 
             CheckoutFailureCallback failure
         ) {
             // TODO: Store callbacks and extract items we need from the cart to pass to Android Pay.
             OnSuccess = success;
-            OnCancelled = cancelled;
+            OnCanceled = canceled;
             OnFailure = failure;
 
             var checkout = CartState.CurrentCheckout;
@@ -105,6 +155,9 @@ namespace <%= namespace %>.SDK.Android {
         /// Creates an <see cref="AndroidPayEventResponse"/> object based on the <see cref="CartState"/>
         /// data.
         /// </summary>
+        /// <returns>
+        /// The response object.
+        /// </returns>
         private AndroidPayEventResponse GetAndroidPayEventResponse() {
             var checkout = CartState.CurrentCheckout;
             var pricingLineItems = GetPricingLineItemsFromCheckout(checkout);
@@ -122,6 +175,9 @@ namespace <%= namespace %>.SDK.Android {
         /// <param name="checkout">
         /// A <code>Checkout</code> object to build the <code>PricingLineItems</code> on.
         /// </param>
+        /// <returns>
+        /// The created <code>PricingLineItems</code> object.
+        /// </returns>
         private PricingLineItems GetPricingLineItemsFromCheckout(Checkout checkout) {
             var taxPrice = checkout.totalTax();
             var subtotal = checkout.subtotalPrice();
@@ -139,6 +195,9 @@ namespace <%= namespace %>.SDK.Android {
         /// Creates a list of <see cref="ShippingMethod"/> objects based on the for the
         /// current shipping address set to the <see cref="Checkout"/> object.
         /// </summary>
+        /// <returns>
+        /// The created list of <code>ShippingMethods</code>.
+        /// </returns>
         private List<ShippingMethod> GetShippingMethods() {
             var checkout = CartState.CurrentCheckout;
             var shippingMethods = new List<ShippingMethod>();
@@ -156,6 +215,15 @@ namespace <%= namespace %>.SDK.Android {
             return shippingMethods;
         }
 
+        /// <summary>
+        /// Converts a list of card brands to a JSON array string.
+        /// </summary>
+        /// <param name="cardBrands">
+        /// A list of <see cref="CardBrand"/> objects to be converted to JSON.
+        /// </param>
+        /// <returns>
+        /// The JSON array string with card brands.
+        /// </returns>
         private string SerializedPaymentNetworksFromCardBrands(List<CardBrand> cardBrands) {
             // TODO same as iOS, reuse it.
             var paymentNetworks = PaymentNetwork.NetworksFromCardBrands(cardBrands);

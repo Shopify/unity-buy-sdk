@@ -1,5 +1,6 @@
 package com.shopify.unity.buy;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,11 +22,19 @@ import com.shopify.unity.buy.models.ShippingMethod;
 import com.shopify.unity.buy.models.ShopifyError;
 import com.unity3d.player.UnityPlayerActivity;
 
+/**
+ * {@link Activity} implementation that serves as the main mediator
+ * between {@link AndroidPayCheckout} and {@code Activity} APIs,
+ * such as {@link Activity#onActivityResult(int, int, Intent)}.
+ */
 public class ShopifyUnityPlayerActivity extends UnityPlayerActivity
         implements AndroidPayCheckout.Listener, ConfirmationView.Listener {
 
+    /** Objects that hold checkout logic and forwards checkout changes to Unity. */
     @Nullable private AndroidPayCheckout checkout;
+    /** Confirmation view shown over the game graphics to allow the user to review the checkout */
     @Nullable private ConfirmationView confirmationView;
+    /** View container that will host the {@link #confirmationView} when it's shown. */
     private ViewGroup root;
 
     @Override
@@ -62,6 +71,13 @@ public class ShopifyUnityPlayerActivity extends UnityPlayerActivity
         }
     }
 
+    /**
+     * Starts the checkout flow.
+     *
+     * @param cart the checkout cart
+     * @param publicKey the Base64-encoded public key used by Android Pay
+     *         to encrypt checkout information
+     */
     public void startAndroidPayCheckout(@NonNull AndroidPayCheckout checkout,
                                         @NonNull PayCart cart,
                                         @NonNull String publicKey) {
@@ -101,6 +117,12 @@ public class ShopifyUnityPlayerActivity extends UnityPlayerActivity
         updateView(checkoutInfo, true);
     }
 
+    /**
+     * Creates a new view model and updates the confirmation view.
+     *
+     * @param checkoutInfo the checkout state metadata to extract user-facing information from
+     * @param buttonEnabled determines if the CONFIRM button must be shown as enabled or not
+     */
     private void updateView(@NonNull CheckoutInfo checkoutInfo, boolean buttonEnabled) {
         if (confirmationView != null) {
             final ConfirmationViewModel viewModel = ConfirmationViewModel.of(
@@ -112,6 +134,9 @@ public class ShopifyUnityPlayerActivity extends UnityPlayerActivity
         }
     }
 
+    /**
+     * Shows the shipping methods list dialog.
+     */
     private void showShippingDialog() {
         if (checkout == null) {
             return;
@@ -130,6 +155,12 @@ public class ShopifyUnityPlayerActivity extends UnityPlayerActivity
         );
     }
 
+    /**
+     * Creates a {@link WalletFragmentInstaller} to be provided
+     * to the {@link ConfirmationView}.
+     *
+     * @return the created {@code WalletFragmentInstaller}
+     */
     private WalletFragmentInstaller newWalletFragmentInstaller() {
         @SuppressWarnings("ConstantConditions")
         final MaskedWallet maskedWallet = checkout.getMaskedWallet();
@@ -154,6 +185,9 @@ public class ShopifyUnityPlayerActivity extends UnityPlayerActivity
         closeConfirmationScreen();
     }
 
+    /**
+     * Dismisses the confirmation screen.
+     */
     private void closeConfirmationScreen() {
         root.removeView(confirmationView);
         confirmationView = null;

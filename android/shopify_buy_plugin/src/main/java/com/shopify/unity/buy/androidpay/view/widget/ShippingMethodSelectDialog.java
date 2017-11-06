@@ -102,7 +102,10 @@ public final class ShippingMethodSelectDialog extends BottomSheetDialog {
         }
     }
 
-    protected void enableImmersiveMode() {
+    /**
+     * Hides the system UI components such as the tool bar and the status bar.
+     */
+    private void enableImmersiveMode() {
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION

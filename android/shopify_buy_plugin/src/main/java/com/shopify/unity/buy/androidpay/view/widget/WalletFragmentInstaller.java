@@ -13,26 +13,35 @@ import com.shopify.buy3.pay.PayHelper;
 import com.shopify.unity.buy.R;
 
 /**
- * @author Flavio Faria
+ * Class the wraps the logic of attaching a {@link WalletFragment} to a {@link FragmentManager}.
  */
 
 public final class WalletFragmentInstaller {
 
+    /** The {@link FragmentManager} to attach a {@link WalletFragment} to. */
     private final FragmentManager fragmentManager;
+    /** The {@link MaskedWallet} used to create the {@link WalletFragment}. */
     private final MaskedWallet maskedWallet;
 
+    /**
+     * Creates a new instance of this class.
+     *
+     * @param fragmentManager to attach a {@link WalletFragment} to
+     * @param maskedWallet used rto create the {@code WalletFragment}
+     */
     public WalletFragmentInstaller(FragmentManager fragmentManager, MaskedWallet maskedWallet) {
         this.fragmentManager = fragmentManager;
         this.maskedWallet = maskedWallet;
     }
 
+    /**
+     * Creates and attaches the {@link WalletFragment} to the {@link FragmentManager}.
+     */
     void install() {
         final WalletFragment walletFragment = (WalletFragment) fragmentManager
                 .findFragmentById(R.id.android_pay_layout);
 
-        if (walletFragment != null) {
-            walletFragment.updateMaskedWallet(maskedWallet);
-        } else {
+        if (walletFragment == null) {
             final WalletFragment newWalletFragment = newWalletFragment();
 
             // TODO https://github.com/Shopify/mobile-buy-sdk-android/pull/464
@@ -51,6 +60,9 @@ public final class WalletFragmentInstaller {
         }
     }
 
+    /**
+     * Detaches the {@link WalletFragment} from the {@link FragmentManager}.
+     */
     void uninstall() {
         fragmentManager
                 .beginTransaction()

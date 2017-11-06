@@ -9,21 +9,34 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * @author Flavio Faria
+ * Model class that wraps all information needed to complete a payment.
  */
 
 public final class NativePayment implements JsonSerializable {
 
+    /** JSON name for the <i>billing contact</i> attribute. */
     private static final String BILLING_CONTACT = "BillingContact";
+    /** JSON name for the <i>shipping contact</i> attribute. */
     private static final String SHIPPING_CONTACT = "ShippingContact";
+    /** JSON name for the <i>identifier</i> attribute. */
     private static final String IDENTIFIER = "Identifier";
+    /** JSON name for the <i>token data</i> attribute. */
     private static final String TOKEN_DATA = "TokenData";
 
+    /** The billing contact. */
     @NonNull public final MailingAddressInput billingContact;
+    /** The shipping contact. */
     @Nullable public final ShippingContact shippingContact;
+    /** The identifier needed to complete Android Pay purchases. */
     @NonNull public final String identifier;
+    /** The token information needed to process the payment. */
     @NonNull public final TokenData tokenData;
 
+    /**
+     * Creates a new instance of this class.
+     *
+     * @param builder that holds all fields as a single input argument
+     */
     private NativePayment(Builder builder) {
         if (builder.billingContact == null) {
             throw new IllegalArgumentException("Missing billingContact field");
@@ -40,6 +53,11 @@ public final class NativePayment implements JsonSerializable {
         tokenData = builder.tokenData;
     }
 
+    /**
+     * Creates a new builder that will allow the construction of a new {@link NativePayment} object.
+     *
+     * @return a new {@code NativePayment} builder
+     */
     public static Builder newBuilder() {
         return new Builder();
     }
@@ -62,6 +80,10 @@ public final class NativePayment implements JsonSerializable {
         return json;
     }
 
+    /**
+     * Builder used to easily create {@link NativePayment} objects by chaining
+     * setter calls.
+     */
     public static final class Builder {
 
         private MailingAddressInput billingContact;

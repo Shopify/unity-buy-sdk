@@ -57,11 +57,9 @@ public class MailingAddressInput implements JsonSerializable {
         return new MailingAddressInput(address1, address2, city, country, firstName, lastName, phone, province, zip);
     }
 
-    //CHECKSTYLE:OFF
     protected MailingAddressInput(String address1, String address2, String city,
-                                String country, String firstName, String lastName,
-                                String phone, String province, String zip) {
-        //CHECKSTLYE:ON
+                                 String country, String firstName, String lastName,
+                                 String phone, String province, String zip) {
         this.address1 = address1;
         this.address2 = address2;
         this.city = city;

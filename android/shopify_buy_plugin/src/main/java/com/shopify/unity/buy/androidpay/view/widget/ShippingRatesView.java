@@ -54,6 +54,11 @@ public final class ShippingRatesView extends ConstraintLayout {
         }
     }
 
+    /**
+     * Updates this view with the passed view model.
+     *
+     * @param shippingRatesViewModel the view model with data to render this view
+     */
     public void update(ShippingRatesViewModel shippingRatesViewModel) {
         final ShippingMethod currentShippingMethod =
                 shippingRatesViewModel.getCurrentShippingMethod();
@@ -71,7 +76,14 @@ public final class ShippingRatesView extends ConstraintLayout {
         return priceView;
     }
 
+    /**
+     * Listener interface to observe clicks on the shipping rate selection view.
+     */
     public interface Listener {
+
+        /**
+         * Invoked when the user clicks on the shipping rate selection view.
+         */
         void onShippingRateChangeClick();
     }
 }

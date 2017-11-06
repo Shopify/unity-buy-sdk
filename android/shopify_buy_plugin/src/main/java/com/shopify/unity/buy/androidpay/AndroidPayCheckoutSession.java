@@ -15,10 +15,9 @@ import com.unity3d.player.UnityPlayer;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import static com.shopify.unity.buy.MessageCenter.init;
-
 public final class AndroidPayCheckoutSession {
 
+    private final String unityDelegateObjectName;
     private final ShopifyUnityPlayerActivity rootActivity;
     @Nullable private AndroidPayCheckout checkout;
 
@@ -35,14 +34,14 @@ public final class AndroidPayCheckoutSession {
         this.rootActivity = rootActivity;
         this.testing = testing;
         Logger.setEnabled(testing);
-        init(unityDelegateObjectName);
+        this.unityDelegateObjectName = unityDelegateObjectName;
     }
 
     @NonNull
     private AndroidPayCheckout getCheckout() {
         if (checkout == null) {
             final GoogleApiClientFactory factory = GoogleApiClientFactory.of(rootActivity, testing);
-            checkout = new AndroidPayCheckout(factory, new MessageCenter());
+            checkout = new AndroidPayCheckout(factory, new MessageCenter(unityDelegateObjectName));
         }
         return checkout;
     }
