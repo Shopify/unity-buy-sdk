@@ -7,13 +7,13 @@ The Unity Buy SDK queries Shopify's [Storefront API](https://help.shopify.com/ap
 ## Table of contents
 
 - [Before you begin](#before-you-begin)
-- [Using the SDK on iOS](#using-the-sdk-on-ios)
+- [Supported build targets](#supported-build-targets)
 - [Initialize the SDK](#initialize-the-sdk)
 - [Query all products](#query-all-products)
 - [Query all collections](#query-all-collections)
 - [Build a cart](#build-a-cart)
 - [Web view checkout](#web-view-checkout)
-- [Apple Pay checkout](#apple-pay-checkout)
+- [Native pay checkout (Apple Pay / Android Pay)](#native-pay-checkout)
 - [Custom queries](#custom-queries)
 
 ## Before you begin
@@ -292,15 +292,17 @@ ShopifyBuy.Client().products((products, error) => {
 });
 ```
 
-## Apple Pay checkout
+## Native pay checkout
 
-You can allow users to pay with Apple Pay, providing a seamless checkout experience.
+You can allow users to pay with native pay (Apple Pay or Android Pay, depending on the device OS), providing a seamless checkout experience.
 
-To determine whether the user is able to make a payment with Apple Pay, you can use the `CanCheckoutWithNativePay` method. If the user has this capability, then you can use `CheckoutWithNativePay` to present the Apple Pay authentication interface to the user. If they do not, then you can accept payment using [Web View Checkout](#web-view-checkout).
+To determine whether the user is able to make a payment with native pay, you can use the `CanCheckoutWithNativePay` method. If the user has this capability, then you can use `CheckoutWithNativePay` to present the native pay authentication interface to the user. If they do not, then you can accept payment using [Web View Checkout](#web-view-checkout).
 
 `CheckoutWithNativePay` takes in 4 parameters:
 
-* `key` is the Merchant ID of your application found on your [Apple Developer Portal](https://developer.apple.com/library/content/ApplePay_Guide/Configuration.html)
+* `key`
+  * **On iOS** is the Merchant ID of your application found on your [Apple Developer Portal](https://developer.apple.com/library/content/ApplePay_Guide/Configuration.html).
+  * **On Android** is a Base64-encoded public key found on your Shopify admin page. To locate the key, navigate to _Admin_ > _Apps_ > _Manage private apps_ > _{Your private app}_ > _Storefront API_ > _Configure Mobile Buy SDK settings (optional)_ > _MOBILE BUY SDK (ANDROID)_.
 * `CheckoutSuccessCallback` is called when the user has completed a checkout successfully.
 * `CheckoutCancelCallback` is called when the user cancels out of the checkout.
 * `CheckoutFailureCallback` is called when an error was encountered during the checkout. The callback will be passed an instance of `ShopifyError` describing the issue.
@@ -319,11 +321,18 @@ ShopifyBuy.Client().products((products, error) => {
 
     cart.LineItems.AddOrUpdate(productVariantToCheckout, 1);
 
+    var key = null;
+    #if UNITY_IOS
+    key = "com.merchant.id";
+    #elif UNITY_ANDROID
+    key = "BL9QiRljozDhgfyfVHoK+l1l98fBY0x/in0rCYJxmTfnzJDWsX1+8l4HEa4LO0WeKQlYtuk8zcJtzimTMhr1UL8=";
+    #endif
+
     // Check to see if the user can make a payment through Apple Pay
     cart.CanCheckoutWithNativePay((isNativePayAvailable) => {
         if (isNativePayAvailable) {
             cart.CheckoutWithNativePay(
-                "com.merchant.id",
+                key,
                 success: () => {
                     Debug.Log("User finished purchase/checkout!");
                 },
@@ -340,7 +349,7 @@ ShopifyBuy.Client().products((products, error) => {
 
 ```
 
-### Additional Build Settings
+### Additional build settings (Apple Pay only)
 
 To use Apple Pay, you must also enable **Background fetch** in the Player Settings:
 
@@ -349,13 +358,12 @@ To use Apple Pay, you must also enable **Background fetch** in the Player Settin
 3. Under **Other Settings**, set **Behavior in Background** to **Custom**.
 4. Enable **Background fetch**.
 
-### Enabling Apple Pay on your Store
+### Enabling native pay on your Store
 
-To enable Apple Pay for your store through an app:
+To enable native pay for your store through an app:
 
-1. Add the [Mobile App sales channel](https://help.shopify.com/api/sdks/custom-storefront/mobile-buy-sdk/add-mobile-app-sales-channel) in your Shopify admin.
-2. Enable Apple Pay in the Mobile App settings page.
-
+1. Follow [these instructions](https://help.shopify.com/manual/apps/private-apps#generate-credentials-from-the-shopify-admin) to create a private app in your Shopify admin page.
+1. Enable _Allow this app to access your storefront data using the Storefront API_ flag in your private app configuration.
 ### Notes
 
 `CheckoutWithNativePay` will throw an exception if the device is unable to make a payment through Apple Pay. So it is essential that `CanCheckoutWithNativePay` is used.
@@ -370,13 +378,18 @@ On failure, you will receive a `ShopifyError`. There are 3 types of `ShopifyErro
 
 `HTTP` errors will be thrown when there was an issue connecting or downloading to a required web server.
 
-`NativePaymentProcessingError` will be thrown when Apple Pay fails to generate a token while trying to authenticate the user's card. This error is unrecoverable and you should fall back to a different payment method, or allow the user to try going through the process again.
+`NativePaymentProcessingError`
+
+This error is thrown whenever something goes wrong on the native pay side of the checkout. It is unrecoverable and you should fall back to a different payment method, or allow the user to try going through the process again. The reasons for this error to be thrown depend on the platform:
+
+* **iOS:** will be thrown when Apple Pay fails to generate a token while trying to authenticate the user's card.
+* **Android:** will be thrown for any unrecoverable Android Pay error that is prefixed with `ERROR_`, such as _service unavailable_, _unsupported country_ or _authentication error_. You can see a full list of errors [here](https://developers.google.com/android/reference/com/google/android/gms/wallet/WalletConstants).
 
 `GraphQL` error will be thrown when there is something wrong with the SDK. This error is unrecoverable and you should fall back to a different payment method.
 
 ```csharp
 cart.CheckoutWithNativePay(
-    "com.merchant.id",
+    key,
     success: () => {
        Debug.Log("User finished purchase/checkout!");
     },
@@ -400,7 +413,6 @@ cart.CheckoutWithNativePay(
 ### Extras
 
 You might want to optionally drive users to setup their payment cards with Apple Pay. You can do so by using `CanShowNativePaySetup` and `ShowNativePaySetup`. `CanShowNativePaySetup` lets you know whether the device supports this, and `ShowNativePaySetup` launches the native `Wallet` app prompting the user to set up his or her card.
-
 
 ## Custom queries
 
