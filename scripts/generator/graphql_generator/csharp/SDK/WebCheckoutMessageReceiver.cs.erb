@@ -64,6 +64,7 @@ namespace <%= namespace %>.SDK {
                     var checkout = (Checkout) response.node();
                     if (checkout.completedAt() != null) {
                         OnSuccess();
+                        Destroy(this);
                     } else {
                         OnCancelled();
                     }
