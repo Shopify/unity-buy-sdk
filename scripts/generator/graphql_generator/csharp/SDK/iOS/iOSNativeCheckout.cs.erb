@@ -48,15 +48,15 @@ namespace <%= namespace %>.SDK.iOS {
         /// Checks if the device is capable of paying with Apple Pay and checks if the store's payment provider accepts Apple Pay
         /// </summary>
         /// <param name="paymentSettings">The Shop's payment settings</param>
+        /// <param name="callback">The callback that will deliver the result to tha caller</param>
         /// <returns>True if the device is capable of paying with Apple Pay and the store accepts payments with Apple Pay</returns>
-        public bool CanCheckout(PaymentSettings paymentSettings) {
-
+        public void CanCheckout(PaymentSettings paymentSettings, CanCheckoutWithNativePayCallback callback) {
             if (paymentSettings.supportedDigitalWallets().Contains(DigitalWallet.APPLE_PAY) &&
                 _CanCheckoutWithApplePay(SerializedPaymentNetworksFromCardBrands(paymentSettings.acceptedCardBrands()))) {
-                return true;
+                callback(true);
+            } else {
+                callback(false);
             }
-
-            return false;
         }
 
         /// <summary>

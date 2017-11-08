@@ -11,6 +11,10 @@ namespace <%= namespace %>.SDK.Android {
     public partial class AndroidPayEventReceiverBridge : IAndroidPayEventReceiver { 
         public IAndroidPayEventReceiver Receiver;
 
+        public void OnCanCheckoutWithAndroidPayResult(string serializedMessage) {
+            Receiver.OnCanCheckoutWithAndroidPayResult(serializedMessage);
+        }
+
         public void OnUpdateShippingAddress(string serializedMessage) {
             Receiver.OnUpdateShippingAddress(serializedMessage);
         }

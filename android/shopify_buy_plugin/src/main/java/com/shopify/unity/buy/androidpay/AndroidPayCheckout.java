@@ -10,6 +10,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.identity.intents.model.UserAddress;
 import com.google.android.gms.wallet.FullWallet;
 import com.google.android.gms.wallet.MaskedWallet;
+import com.shopify.buy3.pay.CardNetworkType;
 import com.shopify.buy3.pay.PayCart;
 import com.shopify.buy3.pay.PayHelper;
 import com.shopify.buy3.pay.PaymentToken;
@@ -29,6 +30,16 @@ import com.shopify.unity.buy.utils.WalletErrorFormatter;
 
 import org.json.JSONException;
 
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.Set;
+
+import static com.shopify.buy3.pay.PayHelper.AndroidPayReadyCallback;
+import static com.shopify.buy3.pay.PayHelper.WalletResponseHandler;
+import static com.shopify.buy3.pay.PayHelper.extractPaymentToken;
+import static com.shopify.buy3.pay.PayHelper.requestMaskedWallet;
 import static com.shopify.unity.buy.MessageCenter.MessageCallback;
 import static com.shopify.unity.buy.MessageCenter.Method;
 
@@ -49,6 +60,7 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
     @NonNull private final GoogleApiClient googleApiClient;
     @Nullable private String publicKey;
     @Nullable private MaskedWallet maskedWallet;
+    private Queue<Runnable> connectedTasksQueue = new LinkedList<>();
 
     // Unity stuff
     @NonNull private final MessageCenter messageCenter;
@@ -57,14 +69,12 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
     @NonNull private CheckoutState currentCheckoutState = CheckoutState.READY;
     @NonNull private CheckoutInfo checkoutInfo = CheckoutInfo.fresh();
 
-    @NonNull private final Listener listener;
+    @Nullable private Listener listener;
 
     public AndroidPayCheckout(@NonNull GoogleApiClientFactory googleApiClientFactory,
-                              @NonNull MessageCenter messageCenter,
-                              @NonNull Listener listener) {
+                              @NonNull MessageCenter messageCenter) {
         googleApiClient = googleApiClientFactory.newGoogleApiClient();
         this.messageCenter = messageCenter;
-        this.listener = listener;
     }
 
     /**
@@ -79,8 +89,34 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
         checkoutInfo = CheckoutInfo.fresh();
     }
 
-    public void startCheckout(@NonNull PayCart cart, @NonNull String publicKey) {
+    public void isReadyToPay(@NonNull final List<CardNetworkType> supportedCardNetworks) {
+        googleApiClient.connect();
+        connectedTasksQueue.offer(new Runnable() {
+            @Override public void run() {
+                isReadyToPayInternal(supportedCardNetworks);
+            }
+        });
+    }
+
+    private void isReadyToPayInternal(@NonNull List<CardNetworkType> supportedCardNetworks) {
+        final Set<CardNetworkType> cardNetworkTypes = new HashSet<>(supportedCardNetworks);
+        PayHelper.isReadyToPay(googleApiClient.getContext(), googleApiClient, cardNetworkTypes,
+                new AndroidPayReadyCallback() {
+                    @Override public void onResult(boolean result) {
+                        final UnityMessage msg = UnityMessage.fromAndroid(String.valueOf(result));
+                        messageCenter.sendMessageTo(Method.ON_CAN_CHECKOUT_WITH_AP_RESULT, msg);
+                        if (currentCheckoutState == CheckoutState.READY) {
+                            // This connection has been started solely to check if it's ready to pay
+                            googleApiClient.disconnect();
+                        }
+                    }
+                });
+    }
+
+    public void startCheckout(@NonNull PayCart cart, @NonNull String publicKey,
+                              @NonNull Listener listener) {
         reset();
+        this.listener = listener;
         googleApiClient.registerConnectionCallbacks(this);
         checkoutInfo = CheckoutInfo.from(checkoutInfo).payCart(cart).build();
         this.publicKey = publicKey;
@@ -104,7 +140,9 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
                         .from(checkoutInfo)
                         .currentShippingMethod(oldShippingMethod)
                         .build();
-                listener.onUpdateShippingMethodFail(error);
+                if (listener != null) {
+                    listener.onUpdateShippingMethodFail(error);
+                }
             }
         });
     }
@@ -124,22 +162,28 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+        Runnable task;
+        while ((task = connectedTasksQueue.poll()) != null) {
+            task.run();
+        }
         if (currentCheckoutState == CheckoutState.READY) {
             Logger.debug("Google API Client connected");
             currentCheckoutState = CheckoutState.REQUESTING_MASKED_WALLET;
-            PayHelper.requestMaskedWallet(googleApiClient, checkoutInfo.getPayCart(), publicKey);
+            requestMaskedWallet(googleApiClient, checkoutInfo.getPayCart(), publicKey);
         }
     }
 
     @Override
     public void onConnectionSuspended(int cause) {
         if (cause == CAUSE_NETWORK_LOST) {
-            listener.onConnectionLost();
+            if (listener != null) {
+                listener.onConnectionLost();
+            }
         }
     }
 
     public void handleWalletResponse(int requestCode, int resultCode, Intent data) {
-        PayHelper.handleWalletResponse(requestCode, resultCode, data, new PayHelper.WalletResponseHandler() {
+        PayHelper.handleWalletResponse(requestCode, resultCode, data, new WalletResponseHandler() {
             @Override public void onMaskedWallet(final MaskedWallet maskedWallet) {
                 super.onMaskedWallet(maskedWallet);
                 AndroidPayCheckout.this.onMaskedWallet(maskedWallet);
@@ -172,7 +216,9 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
             @Override public void onError(ShopifyError error) {
                 if (currentCheckoutState != CheckoutState.RECEIVED_MASKED_WALLET) {
                     // User explicitly updated the shipping address
-                    listener.onUpdateShippingAddressFail(error);
+                    if (listener != null) {
+                        listener.onUpdateShippingAddressFail(error);
+                    }
                 }
                 reset();
             }
@@ -182,7 +228,7 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
     @SuppressWarnings("ConstantConditions")
     private void onFullWallet(FullWallet fullWallet) {
         Logger.debug("Full wallet received");
-        final PaymentToken paymentToken = PayHelper.extractPaymentToken(fullWallet, publicKey);
+        final PaymentToken paymentToken = extractPaymentToken(fullWallet, publicKey);
         final UserAddress shippingAddress = fullWallet.getBuyerShippingAddress();
         final String email = fullWallet.getEmail();
         final NativePayment paymentInput = NativePayment
@@ -194,6 +240,7 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
                 .build();
         final UnityMessage msg = UnityMessage.fromAndroid(paymentInput.toJson().toString());
         messageCenter.sendMessageTo(Method.ON_CONFIRM_CHECKOUT, msg);
+        reset();
     }
 
     private void onWalletError(int requestCode, int errorCode) {
@@ -244,7 +291,9 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
                                        .shippingMethods(response.shippingMethods)
                                        .build();
 
-            listener.onSynchronizeCheckoutInfo(checkoutInfo);
+            if (listener != null) {
+                listener.onSynchronizeCheckoutInfo(checkoutInfo);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -261,6 +310,7 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
         return PayCart.builder()
                       .merchantName(response.merchantName)
                       .currencyCode(response.currencyCode)
+                      .countryCode(response.countryCode)
                       .shippingAddressRequired(response.requiresShipping)
                       .subtotal(items.subtotal)
                       .shippingPrice(items.shippingPrice)

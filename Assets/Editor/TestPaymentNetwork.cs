@@ -4,7 +4,7 @@ namespace Shopify.Tests {
     using System.Collections.Generic;
     using NUnit.Framework;
     using Shopify.Unity;
-    using Shopify.Unity.SDK.iOS;
+    using Shopify.Unity.SDK;
     using Shopify.Unity.MiniJSON;
 
     [TestFixture]

@@ -14,6 +14,12 @@ namespace <%= namespace %>.SDK.Android {
 
         private delegate void AndroidPayEventHandlerCompletion(AndroidPayCheckoutResponse.Status status);
 
+        public void OnCanCheckoutWithAndroidPayResult(string serializedMessage) {
+            var message = NativeMessage.CreateFromJSON(serializedMessage);
+            PendingCanCheckoutWithNativePayCallback(bool.Parse(message.Content));
+            PendingCanCheckoutWithNativePayCallback = null;
+        }
+
         public void OnUpdateShippingAddress(string serializedMessage) {
             var message = NativeMessage.CreateFromJSON(serializedMessage);
             var contentDictionary = (Dictionary<string, object>) Json.Deserialize(message.Content);
