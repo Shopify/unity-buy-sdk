@@ -5,10 +5,13 @@ dist: trusty
 android:
   components:
     - tools
-    - platform-tools
-    - build-tools-26.0.0
-    - extra-android-m2repository
     - android-26
+    - build-tools-26.0.0
+    - platform-tools
+    # https://stackoverflow.com/a/40964741/595881
+    - build-tools-26.0.0
+    - android-26
+    - extra-android-m2repository
     - extra-google-m2repository
     - extra-android-support
   licenses:
@@ -42,3 +45,6 @@ before_script:
 
 script:
   - ./scripts/test_android.sh
+
+after_failure:
+  "cat $TRAVIS_BUILD_DIR/android/shopify_buy_plugin/build/reports/lint-results.html"

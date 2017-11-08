@@ -5,6 +5,7 @@ namespace <%= namespace %>.SDK.Android {
     using System.Collections.Generic;
 
     public interface IAndroidPayEventReceiver {
+        void OnCanCheckoutWithAndroidPayResult(string serializedMessage);
         void OnUpdateShippingAddress(string serializedMessage);
         void OnUpdateShippingLine(string serializedMessage);
         void OnConfirmCheckout(string serializedMessage);

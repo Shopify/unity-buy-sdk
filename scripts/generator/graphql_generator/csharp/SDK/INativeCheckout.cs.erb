@@ -18,8 +18,9 @@ namespace <%= namespace %>.SDK {
         /// Check whether the device supports making a native payment given the Shop's payment settings
         /// </summary>
         /// <param name="paymentSettings">The Shop's payment settings</param>
+        /// <param name="callback">The callback that will deliver the result to tha caller</param>
         /// <returns>True if the device supports making a native payment</returns>
-        bool CanCheckout(PaymentSettings paymentSettings);
+        void CanCheckout(PaymentSettings paymentSettings, CanCheckoutWithNativePayCallback callback);
 
         /// <summary>
         /// Display the native payment sheet to perform a native payment

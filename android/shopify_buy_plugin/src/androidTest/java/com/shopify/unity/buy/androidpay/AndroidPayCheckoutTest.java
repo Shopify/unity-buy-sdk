@@ -59,13 +59,26 @@ public class AndroidPayCheckoutTest {
     @Mock private GoogleApiClient mockGoogleClient;
     @Mock private MessageCenter messageCenter;
     @Mock private Listener listener;
+    private PayCart payCart;
 
     @Before
     public void setUp() {
         GoogleApiClientFactory factory = mock(GoogleApiClientFactory.class);
         when(factory.newGoogleApiClient())
                 .thenReturn(mockGoogleClient);
-        checkout = new AndroidPayCheckout(factory, messageCenter, listener);
+        checkout = new AndroidPayCheckout(factory, messageCenter);
+
+        payCart = PayCart
+                .builder()
+                .merchantName("Test Co.")
+                .currencyCode("CAD")
+                .countryCode("CAD")
+                .shippingAddressRequired(false)
+                .subtotal(BigDecimal.valueOf(4.57))
+                .shippingPrice(BigDecimal.valueOf(0))
+                .taxPrice(BigDecimal.valueOf(1.23))
+                .totalPrice(BigDecimal.valueOf(5.80))
+                .build();
     }
 
     @Test
@@ -120,9 +133,10 @@ public class AndroidPayCheckoutTest {
         UserAddress fakedAddress = TestHelpers.buildMockUserAddress();
 
         MaskedWallet maskedWallet = TestHelpers.createMaskedWallet(fakedAddress, fakedAddress,
-            "fakeemail@email.com", "googleTransactionId");
+                "fakeemail@email.com", "googleTransactionId");
         mockIntent.putExtra(WalletConstants.EXTRA_MASKED_WALLET, maskedWallet);
 
+        checkout.startCheckout(payCart, "key", listener);
         checkout.handleWalletResponse(REQUEST_CODE_CHANGE_MASKED_WALLET, Activity.RESULT_OK, mockIntent);
 
         assertEquals(maskedWallet, checkout.getMaskedWallet());

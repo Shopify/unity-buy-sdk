@@ -12,7 +12,6 @@ import android.widget.Toast;
 import com.google.android.gms.wallet.MaskedWallet;
 import com.shopify.buy3.pay.PayCart;
 import com.shopify.unity.buy.androidpay.AndroidPayCheckout;
-import com.shopify.unity.buy.androidpay.GoogleApiClientFactory;
 import com.shopify.unity.buy.androidpay.view.viewmodel.ConfirmationViewModel;
 import com.shopify.unity.buy.androidpay.view.widget.ConfirmationView;
 import com.shopify.unity.buy.androidpay.view.widget.ShippingMethodSelectDialog;
@@ -63,13 +62,11 @@ public class ShopifyUnityPlayerActivity extends UnityPlayerActivity
         }
     }
 
-    public void startAndroidPayCheckout(@NonNull PayCart cart, @NonNull String publicKey,
-                                        boolean testing) {
-        if (checkout == null) {
-            final GoogleApiClientFactory factory = GoogleApiClientFactory.of(this, testing);
-            checkout = new AndroidPayCheckout(factory, new MessageCenter(), this);
-        }
-        checkout.startCheckout(cart, publicKey);
+    public void startAndroidPayCheckout(@NonNull AndroidPayCheckout checkout,
+                                        @NonNull PayCart cart,
+                                        @NonNull String publicKey) {
+        this.checkout = checkout;
+        checkout.startCheckout(cart, publicKey, this);
     }
 
     @Override

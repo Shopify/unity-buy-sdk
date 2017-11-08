@@ -12,17 +12,30 @@ namespace <%= namespace %>.SDK.Android {
     #endif
 
     public partial class AndroidNativeCheckout : INativeCheckout {
+        private const string ANDROID_CLASS_NAME = "com.shopify.unity.buy.androidpay.AndroidPayCheckoutSession";
         private CartState CartState;
         private String MerchantName;
         private String CountryCodeString;
         private AndroidPayEventReceiverBridge AndroidPayEventBridge;
+        #if !SHOPIFY_MONO_UNIT_TEST
+        private AndroidJavaObject AndroidPayCheckoutSession;
+        #endif
 
         private CheckoutSuccessCallback OnSuccess;
         private CheckoutCancelCallback OnCancelled;
         private CheckoutFailureCallback OnFailure;
+        private CanCheckoutWithNativePayCallback PendingCanCheckoutWithNativePayCallback;
 
         public AndroidNativeCheckout(CartState cartState) {
             CartState = cartState;
+            const bool testing = true; // TODO parametrize for 3rd-party devs
+            #if !SHOPIFY_MONO_UNIT_TEST
+            AndroidPayCheckoutSession = new AndroidJavaObject(
+                ANDROID_CLASS_NAME,
+                GlobalGameObject.Name,
+                testing
+            );
+            #endif
         }
 
         public bool CanShowPaymentSetup(PaymentSettings paymentSettings) {
@@ -33,9 +46,21 @@ namespace <%= namespace %>.SDK.Android {
             // TODO
         }
 
-        public bool CanCheckout(PaymentSettings paymentSettings) {
-            // TODO: Invoke methods in the plugin to determine if we can perform Android Pay
-            return true;
+        public void CanCheckout(PaymentSettings paymentSettings, CanCheckoutWithNativePayCallback callback) {
+            if (paymentSettings.supportedDigitalWallets().Contains(DigitalWallet.ANDROID_PAY)) {
+                object[] args = {
+                        SerializedPaymentNetworksFromCardBrands(paymentSettings.acceptedCardBrands())
+                };
+                #if !SHOPIFY_MONO_UNIT_TEST
+                AndroidPayCheckoutSession.Call("canCheckoutWithAndroidPay", args);
+                #endif
+                if (PendingCanCheckoutWithNativePayCallback != null) {
+                    PendingCanCheckoutWithNativePayCallback(false);
+                }
+                PendingCanCheckoutWithNativePayCallback = callback;
+            } else {
+                callback(false);
+            }
         }
 
         public void Checkout(
@@ -60,27 +85,18 @@ namespace <%= namespace %>.SDK.Android {
             var requiresShipping = checkout.requiresShipping();
 
             #if !SHOPIFY_MONO_UNIT_TEST
-            const string target = "com.shopify.unity.buy.androidpay.AndroidPayCheckoutSession";
-            const bool testing = true; // TODO parametrize for 3rd-party devs
-            using (var androidPayCheckoutSession = new AndroidJavaObject(target, GlobalGameObject.Name, testing)) {
-                object[] args = {
-                     MerchantName,
-                     key,
-                     pricingLineItemsString,
-                     currencyCodeString,
-                     CountryCodeString,
-                     requiresShipping
-                };
-                if (androidPayCheckoutSession.Call<bool>("checkoutWithAndroidPay", args)) {
-                    if (AndroidPayEventBridge == null) {
-                        AndroidPayEventBridge = GlobalGameObject.AddComponent<AndroidPayEventReceiverBridge>();
-                        AndroidPayEventBridge.Receiver = this;
-                    }
-                } else {
-                    // TODO: Create more meaningful error?
-                    var error = new ShopifyError(ShopifyError.ErrorType.NativePaymentProcessingError, "Unable to create Android Pay session.");
-                    OnFailure(error);
-                }
+            object[] args = {
+                    MerchantName,
+                    key,
+                    pricingLineItemsString,
+                    currencyCodeString,
+                    CountryCodeString,
+                    requiresShipping
+            };
+            AndroidPayCheckoutSession.Call("checkoutWithAndroidPay", args);
+            if (AndroidPayEventBridge == null) {
+                AndroidPayEventBridge = GlobalGameObject.AddComponent<AndroidPayEventReceiverBridge>();
+                AndroidPayEventBridge.Receiver = this;
             }
             #endif
         }
@@ -138,6 +154,12 @@ namespace <%= namespace %>.SDK.Android {
             }
 
             return shippingMethods;
+        }
+
+        private string SerializedPaymentNetworksFromCardBrands(List<CardBrand> cardBrands) {
+            // TODO same as iOS, reuse it.
+            var paymentNetworks = PaymentNetwork.NetworksFromCardBrands(cardBrands);
+            return Json.Serialize(paymentNetworks);
         }
     }
 }

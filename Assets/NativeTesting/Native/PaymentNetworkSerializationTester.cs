@@ -4,11 +4,7 @@ namespace Shopify.Tests {
     using UnityEngine;
     using Shopify.Unity;
     using Shopify.Unity.MiniJSON;
-
-    #if UNITY_IOS
-    using Shopify.Unity.SDK.iOS;
-    #endif
-
+    using Shopify.Unity.SDK;
     public partial class PaymentNetworkSerializationTester : MonoBehaviour {}
 
     #if UNITY_IOS
