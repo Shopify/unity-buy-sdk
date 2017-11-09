@@ -39,6 +39,10 @@ namespace <%= namespace %>.SDK.Android {
             ShippingMethods = shippingMethods;
         }
 
+        /// <summary>
+        /// Converts this object to a <see cref="Dictionary"/>
+        /// that can be later converted to a JSON representation.
+        /// </summary>
         public override object ToJson() {
             var dict = new Dictionary<string, object>();
             dict["merchantName"] = MerchantName;
