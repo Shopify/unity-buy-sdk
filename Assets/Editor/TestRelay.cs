@@ -39,20 +39,10 @@ namespace Shopify.Tests {
         public static List<QueryRootQuery> queries = new List<QueryRootQuery> {query1, query2};
     }
 
-    class CollectionTestLoader : ILoader {
-        public string Domain {
-            get {
-                return "someshop.myshopify.com";
-            }
-        }
+    class CollectionTestLoader : BaseLoader {
+        public CollectionTestLoader() : base("someshop.myshopify.com", "1234") {}
 
-        public string AccessToken {
-            get {
-                return "1234";
-            }
-        }
-
-        public void Load(string query, LoaderResponseHandler callback) {
+        public override void Load(string query, LoaderResponseHandler callback) {
             if (query == CollectionTestQueries.query1.ToString()) {
                 callback(@"{""data"":{
                     ""shop"": {
@@ -90,6 +80,14 @@ namespace Shopify.Tests {
                     }
                 }}", null);
             }
+        }
+
+        public override void SetHeader(string key, string value) {
+            // No-op
+        }
+
+        public override string SDKVariantName() {
+            return "collection-test-loader";
         }
     }
 
