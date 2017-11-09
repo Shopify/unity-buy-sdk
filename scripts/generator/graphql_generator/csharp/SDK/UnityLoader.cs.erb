@@ -9,34 +9,23 @@ namespace <%= namespace %>.SDK {
 
     internal class LoaderComponent : MonoBehaviour {
         string URL;
-        string AccessToken;
         LoaderResponseHandler Callback;
+        Dictionary<string, string> Headers;
 
         public LoaderComponent SetURL(string url) {
             URL = url;
-
             return this;
         }
 
-        public LoaderComponent SetAccessToken(string accessToken) {
-            AccessToken = accessToken;
-
+        public LoaderComponent SetHeaders(Dictionary<string, string> headers) {
+            Headers = headers;
             return this;
         }
 
-        public void Load(string query, LoaderResponseHandler callback) {
+        public void Load(string query,  LoaderResponseHandler callback) {
             Callback = callback;
-
-            Dictionary<string,string> headers = new Dictionary<string,string>();
-            headers["Content-Type"] = "application/graphql";
-            headers["X-Shopify-Storefront-Access-Token"] = AccessToken;
-            headers["X-SDK-Version"] = ShopifyBuy.VERSION;
-            headers["X-SDK-Variant"] = "unity";
-
             byte[] body = Encoding.ASCII.GetBytes(query);
-
-            WWW w = new WWW(URL, body, headers);
-
+            WWW w = new WWW(URL, body, Headers);
             StartCoroutine(DoWWW(w));
         }
 
@@ -57,45 +46,31 @@ namespace <%= namespace %>.SDK {
     /// <summary>
     /// Performs network communication to send GraphQL queries between Unity and a Shopify GraphQL endpoint.
     /// </summary>
-    public class UnityLoader : ILoader {
-        /// <summary>
-        /// Shopify store domain where the GraphQL endpoint lives.
-        /// </summary>
-        public string Domain {
-            get {
-                return _Domain;
-            }
-        }
-
-        /// <summary>
-        /// Access token used to communicate with the Shopify Store GraphQL endpoint.
-        /// </summary>
-        public string AccessToken {
-            get {
-                return _AccessToken;
-            }
-        }
-
-        string _Domain;
-        string _AccessToken;
+    public class UnityLoader : BaseLoader {
+        private Dictionary<string,string> _Headers = new Dictionary<string,string>();
 
         /// <param name="domain">Shopify store domain that you'd like to query on</param>
         /// <param name="accessToken">access token used to communicate with the Shopify Store</param>
-        public UnityLoader(string domain, string accessToken) {
-            _AccessToken = accessToken;
-            _Domain = domain;
-        }
+        public UnityLoader(string domain, string accessToken) : base(domain, accessToken) {}
 
         /// <summary>
         /// Send a query to the Storefront API.
         /// </summary>
         /// <param name="query">Query that will be sent to the Storefront API</param>
         /// <param name="callback">callback that receives a response</param>
-        public void Load(string query, LoaderResponseHandler callback) {
+        override public void Load(string query, LoaderResponseHandler callback) {
             GlobalGameObject.AddComponent<LoaderComponent>()
             .SetURL("https://" + Domain + "/api/graphql.json")
-            .SetAccessToken(AccessToken)
+            .SetHeaders(_Headers)
             .Load(query, callback);
+        }
+
+        override public void SetHeader(string key, string value) {
+            _Headers[key] = value;
+        }
+
+        override public string SDKVariantName() {
+            return "unity";
         }
     }
 }
