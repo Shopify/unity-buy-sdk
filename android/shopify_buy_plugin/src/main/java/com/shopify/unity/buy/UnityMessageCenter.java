@@ -294,16 +294,6 @@ public class UnityMessageCenter implements MessageCenter {
     }
 
     /**
-     * Callback interface that gets invoked when Unity responds back.
-     */
-    public interface MessageCallback<T> {
-        /** Invoked when a valid response has been sent from Unity. */
-        void onResponse(@NonNull T response);
-        /** Invoked when an error occurs on the Unity side. */
-        void onError(@NonNull ShopifyError error);
-    }
-
-    /**
      * Defines a type converter to parse JSON objects sent by Unity
      * to Java objects manipulated by this plugin.
      *

@@ -24,7 +24,6 @@ package com.shopify.unity.buy;
 
 import android.support.annotation.NonNull;
 
-import com.shopify.unity.buy.UnityMessageCenter.MessageCallback;
 import com.shopify.unity.buy.models.AndroidPayEventResponse;
 import com.shopify.unity.buy.models.MailingAddressInput;
 import com.shopify.unity.buy.models.NativePayment;

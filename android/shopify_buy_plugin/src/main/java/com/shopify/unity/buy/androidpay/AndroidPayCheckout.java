@@ -61,7 +61,8 @@ import static com.shopify.buy3.pay.PayHelper.AndroidPayReadyCallback;
 import static com.shopify.buy3.pay.PayHelper.WalletResponseHandler;
 import static com.shopify.buy3.pay.PayHelper.extractPaymentToken;
 import static com.shopify.buy3.pay.PayHelper.requestMaskedWallet;
-import static com.shopify.unity.buy.UnityMessageCenter.MessageCallback;
+
+import com.shopify.unity.buy.MessageCallback;
 
 /**
  * This class keeps track of the checkout state and wraps all the communication
