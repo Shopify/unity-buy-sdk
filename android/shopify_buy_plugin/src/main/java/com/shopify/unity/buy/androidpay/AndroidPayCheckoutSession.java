@@ -27,8 +27,8 @@ import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 
 import com.shopify.buy3.pay.PayCart;
-import com.shopify.unity.buy.UnityMessageCenter;
 import com.shopify.unity.buy.ShopifyUnityPlayerActivity;
+import com.shopify.unity.buy.UnityMessageCenter;
 import com.shopify.unity.buy.models.PricingLineItems;
 import com.shopify.unity.buy.utils.CardTypeConverter;
 import com.shopify.unity.buy.utils.Logger;

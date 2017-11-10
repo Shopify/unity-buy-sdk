@@ -45,10 +45,18 @@ public class ShippingContact extends MailingAddressInput {
      * @param email the email address fo the shipping contact
      */
     public ShippingContact(MailingAddressInput mailingAddressInput, String email) {
-        super(mailingAddressInput.address1, mailingAddressInput.address2, mailingAddressInput.city,
-                mailingAddressInput.country, mailingAddressInput.firstName,
-                mailingAddressInput.lastName, mailingAddressInput.phone,
-                mailingAddressInput.province, mailingAddressInput.zip);
+        super(newBuilder()
+                .email(email)
+                .address1(mailingAddressInput.address1)
+                .address2(mailingAddressInput.address2)
+                .city(mailingAddressInput.city)
+                .country(mailingAddressInput.country)
+                .firstName(mailingAddressInput.firstName)
+                .lastName(mailingAddressInput.lastName)
+                .phone(mailingAddressInput.phone)
+                .province(mailingAddressInput.province)
+                .zip(mailingAddressInput.zip)
+        );
         this.email = email;
     }
 
@@ -62,7 +70,17 @@ public class ShippingContact extends MailingAddressInput {
         super(userAddress);
         this.email = email;
     }
-    
+
+    /**
+     * Creates a new instance of this class.
+     *
+     * @param builder that holds all fields as a single input argument
+     */
+    private ShippingContact(Builder builder) {
+        super(builder);
+        email = builder.email;
+    }
+
     /**
      * Parses a JSON object into a {@code ShippingContact} object.
      *
@@ -76,6 +94,16 @@ public class ShippingContact extends MailingAddressInput {
         return new ShippingContact(input, json.getString(EMAIL));
     }
 
+    /**
+     * Creates a new builder that will allow the construction of a new
+     * {@link ShippingContact} object.
+     *
+     * @return a new {@code ShippingContact} builder
+     */
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
     public JSONObject toJson() {
         JSONObject json = super.toJson();
         try {
@@ -86,5 +114,28 @@ public class ShippingContact extends MailingAddressInput {
             e.printStackTrace();
         }
         return json;
+    }
+
+
+    /**
+     * Builder used to easily create {@link ShippingContact} objects by chaining
+     * setter calls.
+     */
+    public static final class Builder extends MailingAddressInput.Builder {
+
+        private String email;
+
+        private Builder() {
+        }
+
+        public Builder email(String val) {
+            email = val;
+            return this;
+        }
+
+        @Override
+        public ShippingContact build() {
+            return new ShippingContact(this);
+        }
     }
 }

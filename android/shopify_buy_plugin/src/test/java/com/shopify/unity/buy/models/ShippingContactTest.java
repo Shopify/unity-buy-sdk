@@ -61,20 +61,20 @@ public class ShippingContactTest {
 
     @Test
     public void toJson() throws Exception {
-        ShippingContact shippingContact = new ShippingContact(
-                new MailingAddressInput(
-                        "address1",
-                        "address2",
-                        "city",
-                        "country",
-                        "firstName",
-                        "lastName",
-                        "phone",
-                        "province",
-                        "zip"
-                ),
-                "email"
-        );
+        ShippingContact shippingContact = (ShippingContact) ShippingContact
+                .newBuilder()
+                .email("email")
+                .address1("address1")
+                .address2("address2")
+                .city("city")
+                .country("country")
+                .firstName("firstName")
+                .lastName("lastName")
+                .phone("phone")
+                .province("province")
+                .zip("zip")
+                .build();
+
         JSONObject json = shippingContact.toJson();
         assertEquals("address1", json.getString("address1"));
         assertEquals("address2", json.getString("address2"));

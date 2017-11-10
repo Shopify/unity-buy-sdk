@@ -52,6 +52,37 @@ public class MailingAddressInput implements JsonSerializable {
     public final String province;
     public final String zip;
 
+    static MailingAddressInput fromJson(JSONObject json) throws JSONException {
+        return newBuilder()
+                .address1(json.getString("address1"))
+                .address2(json.getString("address2"))
+                .city(json.getString("city"))
+                .country(json.getString("country"))
+                .firstName(json.getString("firstName"))
+                .lastName(json.getString("lastName"))
+                .phone(json.getString("phone"))
+                .province(json.getString("province"))
+                .zip(json.getString("zip"))
+                .build();
+    }
+
+    /**
+     * Creates a new instance of this class.
+     *
+     * @param builder that holds all fields as a single input argument
+     */
+    MailingAddressInput(Builder builder) {
+        address1 = builder.address1;
+        address2 = builder.address2;
+        city = builder.city;
+        country = builder.country;
+        firstName = builder.firstName;
+        lastName = builder.lastName;
+        phone = builder.phone;
+        province = builder.province;
+        zip = builder.zip;
+    }
+
     public MailingAddressInput(UserAddress userAddress) {
         PayAddress payAddress = PayAddress.fromUserAddress(userAddress);
         this.address1 = payAddress.address1;
@@ -65,32 +96,14 @@ public class MailingAddressInput implements JsonSerializable {
         this.zip = payAddress.zip;
     }
 
-    static MailingAddressInput fromJson(JSONObject json) throws JSONException {
-        String address1 = json.getString("address1");
-        String address2 = json.getString("address2");
-        String city = json.getString("city");
-        String country = json.getString("country");
-        String firstName = json.getString("firstName");
-        String lastName = json.getString("lastName");
-        String phone = json.getString("phone");
-        String province = json.getString("province");
-        String zip = json.getString("zip");
-
-        return new MailingAddressInput(address1, address2, city, country, firstName, lastName, phone, province, zip);
-    }
-
-    protected MailingAddressInput(String address1, String address2, String city,
-                                 String country, String firstName, String lastName,
-                                 String phone, String province, String zip) {
-        this.address1 = address1;
-        this.address2 = address2;
-        this.city = city;
-        this.country = country;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phone = phone;
-        this.province = province;
-        this.zip = zip;
+    /**
+     * Creates a new builder that will allow the construction of a new
+     * {@link MailingAddressInput} object.
+     *
+     * @return a new {@code MailingAddressInput} builder
+     */
+    public static Builder newBuilder() {
+        return new Builder();
     }
 
     public JSONObject toJson() {
@@ -110,5 +123,74 @@ public class MailingAddressInput implements JsonSerializable {
             e.printStackTrace();
         }
         return json;
+    }
+
+    /**
+     * Builder used to easily create {@link MailingAddressInput} objects by chaining
+     * setter calls.
+     */
+    public static class Builder {
+
+        private String address1;
+        private String address2;
+        private String city;
+        private String country;
+        private String firstName;
+        private String lastName;
+        private String phone;
+        private String province;
+        private String zip;
+
+        Builder() {
+        }
+
+        public Builder address1(String val) {
+            address1 = val;
+            return this;
+        }
+
+        public Builder address2(String val) {
+            address2 = val;
+            return this;
+        }
+
+        public Builder city(String val) {
+            city = val;
+            return this;
+        }
+
+        public Builder country(String val) {
+            country = val;
+            return this;
+        }
+
+        public Builder firstName(String val) {
+            firstName = val;
+            return this;
+        }
+
+        public Builder lastName(String val) {
+            lastName = val;
+            return this;
+        }
+
+        public Builder phone(String val) {
+            phone = val;
+            return this;
+        }
+
+        public Builder province(String val) {
+            province = val;
+            return this;
+        }
+
+        public Builder zip(String val) {
+            zip = val;
+            return this;
+        }
+
+        public MailingAddressInput build() {
+            return new MailingAddressInput(this);
+        }
     }
 }

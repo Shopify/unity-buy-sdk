@@ -32,6 +32,7 @@ import com.google.android.gms.identity.intents.model.UserAddress;
 import com.google.android.gms.wallet.MaskedWallet;
 import com.google.android.gms.wallet.WalletConstants;
 import com.shopify.buy3.pay.PayCart;
+import com.shopify.unity.buy.MessageCallback;
 import com.shopify.unity.buy.UnityMessageCenter;
 import com.shopify.unity.buy.models.AndroidPayEventResponse;
 import com.shopify.unity.buy.models.CheckoutInfo;
@@ -56,8 +57,6 @@ import java.math.BigDecimal;
 
 import static com.google.android.gms.wallet.WalletConstants.ERROR_CODE_AUTHENTICATION_FAILURE;
 import static com.shopify.buy3.pay.PayHelper.REQUEST_CODE_CHANGE_MASKED_WALLET;
-
-import com.shopify.unity.buy.MessageCallback;
 import static com.shopify.unity.buy.androidpay.AndroidPayCheckout.Listener;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;

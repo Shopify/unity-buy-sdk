@@ -63,14 +63,16 @@ public class UnityMessageCenter implements MessageCenter {
     static {
         TYPE_CONVERTERS.put(AndroidPayEventResponse.class,
                 new TypeConverter<AndroidPayEventResponse>() {
-                    @Override @NonNull
+                    @Override
+                    @NonNull
                     public AndroidPayEventResponse parse(String json) throws JSONException {
                         return AndroidPayEventResponse.fromJsonString(json);
                     }
                 });
         TYPE_CONVERTERS.put(Void.class,
                 new TypeConverter<Void>() {
-                    @Override @NonNull
+                    @Override
+                    @NonNull
                     public Void parse(String json) throws JSONException {
                         return null;
                     }
