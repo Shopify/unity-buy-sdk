@@ -22,135 +22,73 @@
  */
 package com.shopify.unity.buy;
 
-import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
-import com.shopify.unity.buy.models.ShopifyError;
-import com.shopify.unity.buy.utils.Logger;
-import com.unity3d.player.UnityPlayer;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.shopify.unity.buy.UnityMessageCenter.MessageCallback;
+import com.shopify.unity.buy.models.AndroidPayEventResponse;
+import com.shopify.unity.buy.models.MailingAddressInput;
+import com.shopify.unity.buy.models.NativePayment;
+import com.shopify.unity.buy.models.ShippingMethod;
+import com.shopify.unity.buy.models.WalletError;
 
 /**
- * Android to Unity message gateway.
+ * Java code to platform code message gateway.
  */
-public class MessageCenter {
 
-    /** {@link Handler} used to deliver callbacks on the main thread. */
-    private static final Handler MAIN_THREAD_HANDLER = new Handler(Looper.getMainLooper());
-    /** Maps message identifiers with callbacks so that they can be invoked upon response. */
-    private static final Map<String, MessageCallback> CALLBACKS_IN_WAITING = new HashMap<>();
-    /** Unity identifier used to send messages across the Android-Unity boundary. */
-    private String unityDelegateObjectName;
+public interface MessageCenter {
 
     /**
-     * Creates an instance of this class.
+     * Notifies the platform code that the web checkout form is no longer visible.
+     */
+    void onNativeMessage();
+
+    /**
+     * Notifies the platform code that the shipping address has changed.
      *
-     * @param unityDelegateObjectName Unity identifier used to send messages across
-     *         the Android-Unity boundary
+     * @param input the new shipping address
+     * @param callback to be invoked when the address is updated
      */
-    public MessageCenter(String unityDelegateObjectName) {
-        this.unityDelegateObjectName = unityDelegateObjectName;
-    }
+    void onUpdateShippingAddress(
+            @NonNull MailingAddressInput input,
+            @NonNull MessageCallback<AndroidPayEventResponse> callback
+    );
 
     /**
-     * Sends a message to Unity.
+     * Notifies the platform code that the shipping line has changed.
      *
-     * @param method the method to be invoked on the Unity side
-     * @param msg the message to be sent to Unity
+     * @param shippingMethod the new shipping method
+     * @param callback to be invoked when the line is updated
      */
-    public void sendMessageTo(@NonNull final Method method, @NonNull UnityMessage msg) {
-        sendMessageTo(method, msg, null);
-    }
+    void onUpdateShippingLine(
+            @NonNull ShippingMethod shippingMethod,
+            @NonNull MessageCallback<AndroidPayEventResponse> callback
+    );
 
     /**
-     * Sends a message to Unity.
+     * Notifies the platform code that the user has confirmed the checkout.
      *
-     * @param method the method to be invoked on the Unity side
-     * @param msg the message to be sent to Unity
-     * @param callback the callback to be invoked when a response is received
+     * @param nativePayment the object containing all data to complete the checkout
      */
-    public void sendMessageTo(@NonNull Method method, @NonNull UnityMessage msg,
-                                     @Nullable MessageCallback callback) {
-        if (callback != null) {
-            CALLBACKS_IN_WAITING.put(msg.identifier, callback);
-        }
-        final String msgStr = msg.toJson().toString();
-        UnityPlayer.UnitySendMessage(unityDelegateObjectName, method.name, msgStr);
-    }
+    void onConfirmCheckout(@NonNull NativePayment nativePayment);
 
     /**
-     * Processes a message sent from Unity in response to another one sent from Android.
+     * Notifies the platform code about an error that happened during the native payment.
      *
-     * @param identifier the message identifier
-     * @param content the message content represented in a JSON object
+     * @param walletError the error that happened during the native payment
      */
-    @SuppressWarnings("unused")
-    public static void onUnityResponse(final String identifier, final String content) {
-        final String msg = "New message from Unity: identifier = " +
-                identifier + ", content = " + content;
-        Logger.debug(msg);
-        final MessageCallback callback = CALLBACKS_IN_WAITING.remove(identifier);
-        if (callback != null) {
-            MAIN_THREAD_HANDLER.post(new Runnable() {
-                @Override public void run() {
-                    deliverResult(callback, content);
-                }
-            });
-        }
-    }
+    void onError(@NonNull WalletError walletError);
 
     /**
-     * Invokes the proper callback method according to the {@code content}.
-     * If the {@code content} contains an error, {@link MessageCallback#onError(ShopifyError)}
-     * will be invoked, or {@link MessageCallback#onResponse(String)} otherwise.
+     * Notifies the platform code that the native checkout flow has been canceled.
+     */
+    void onCancel();
+
+    /**
+     * Delivers to the platform code the result of a previous request to check if
+     * native pay is supported.
      *
-     * @param callback the callback to be invoked according to the {@code content}
-     * @param content the JSON message sent from Unity
+     * @param canCheckoutWithAndroidPay {@code true} if native pay is supported,
+     *         {@code false} otherwise
      */
-    private static void deliverResult(MessageCallback callback, String content) {
-        try {
-            Logger.debug(content);
-            final JSONObject json = new JSONObject(content);
-            callback.onError(ShopifyError.fromJson(json));
-        } catch (JSONException ignored) {
-            // If exception thrown, this is not an error.
-            callback.onResponse(content);
-        }
-    }
-
-    /**
-     * Unity API definition with the methods that can be called from Android.
-     */
-    public enum Method {
-        ON_NATIVE_MESSAGE("OnNativeMessage"),
-        ON_UPDATE_SHIPPING_ADDRESS("OnUpdateShippingAddress"),
-        ON_UPDATE_SHIPPING_LINE("OnUpdateShippingLine"),
-        ON_CONFIRM_CHECKOUT("OnConfirmCheckout"),
-        ON_ERROR("OnError"),
-        ON_CANCEL("OnCancel"),
-        ON_CAN_CHECKOUT_WITH_AP_RESULT("OnCanCheckoutWithAndroidPayResult");
-
-        private final String name;
-
-        Method(String name) {
-            this.name = name;
-        }
-    }
-
-    /**
-     * Callback interface that gets invoked when Unity responds back.
-     */
-    public interface MessageCallback {
-        /** Invoked when a valid response has been sent from Unity. */
-        void onResponse(String jsonResponse);
-        /** Invoked when an error occurs on the Unity side. */
-        void onError(ShopifyError error);
-    }
+    void onCanCheckoutWithAndroidPayResult(boolean canCheckoutWithAndroidPay);
 }

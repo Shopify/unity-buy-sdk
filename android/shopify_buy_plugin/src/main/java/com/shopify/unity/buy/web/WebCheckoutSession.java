@@ -26,17 +26,16 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 
 import com.shopify.unity.buy.MessageCenter;
-import com.shopify.unity.buy.UnityMessage;
+import com.shopify.unity.buy.UnityMessageCenter;
 import com.unity3d.player.UnityPlayer;
 
 public class WebCheckoutSession implements WebIntentListener {
 
     private static final String WEB_FRAGMENT_TAG = "webFragment";
-    private static final String NATIVE_WEB_DELEGATE_METHOD_CONTENT = "dismissed";
     private final MessageCenter messageCenter;
 
     public WebCheckoutSession(String unityDelegateObjectName) {
-        messageCenter = new MessageCenter(unityDelegateObjectName);
+        messageCenter = new UnityMessageCenter(unityDelegateObjectName);
     }
 
     public void checkout(String url) {
@@ -51,9 +50,7 @@ public class WebCheckoutSession implements WebIntentListener {
             fragment.setListener(null);
             manager.beginTransaction().remove(fragment).commit();
         }
-
-        UnityMessage dismissedMessage = UnityMessage.fromContent(NATIVE_WEB_DELEGATE_METHOD_CONTENT);
-        messageCenter.sendMessageTo(MessageCenter.Method.ON_NATIVE_MESSAGE, dismissedMessage);
+        messageCenter.onNativeMessage();
     }
 
     private FragmentManager getFragmentManager() {

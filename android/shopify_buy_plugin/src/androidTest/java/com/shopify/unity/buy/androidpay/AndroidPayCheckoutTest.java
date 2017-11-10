@@ -32,15 +32,15 @@ import com.google.android.gms.identity.intents.model.UserAddress;
 import com.google.android.gms.wallet.MaskedWallet;
 import com.google.android.gms.wallet.WalletConstants;
 import com.shopify.buy3.pay.PayCart;
-import com.shopify.unity.buy.MessageCenter;
-import com.shopify.unity.buy.UnityMessage;
+import com.shopify.unity.buy.UnityMessageCenter;
 import com.shopify.unity.buy.models.AndroidPayEventResponse;
 import com.shopify.unity.buy.models.CheckoutInfo;
+import com.shopify.unity.buy.models.MailingAddressInput;
 import com.shopify.unity.buy.models.PricingLineItems;
 import com.shopify.unity.buy.models.ShippingMethod;
+import com.shopify.unity.buy.models.WalletError;
 import com.shopify.unity.buy.utils.TestHelpers;
 
-import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -56,13 +56,10 @@ import java.math.BigDecimal;
 
 import static com.google.android.gms.wallet.WalletConstants.ERROR_CODE_AUTHENTICATION_FAILURE;
 import static com.shopify.buy3.pay.PayHelper.REQUEST_CODE_CHANGE_MASKED_WALLET;
-import static com.shopify.unity.buy.MessageCenter.MessageCallback;
-import static com.shopify.unity.buy.MessageCenter.Method;
-import static com.shopify.unity.buy.MessageCenter.Method.ON_UPDATE_SHIPPING_ADDRESS;
+import static com.shopify.unity.buy.UnityMessageCenter.MessageCallback;
 import static com.shopify.unity.buy.androidpay.AndroidPayCheckout.Listener;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -79,7 +76,7 @@ public class AndroidPayCheckoutTest {
 
     // SUT dependencies
     @Mock private GoogleApiClient mockGoogleClient;
-    @Mock private MessageCenter messageCenter;
+    @Mock private UnityMessageCenter messageCenter;
     @Mock private Listener listener;
     private PayCart payCart;
 
@@ -124,30 +121,23 @@ public class AndroidPayCheckoutTest {
                 BigDecimal.ZERO
         );
         checkout.updateShippingMethod(shippingMethod);
-        ArgumentCaptor<UnityMessage> msgCaptor = ArgumentCaptor.forClass(UnityMessage.class);
-        verify(messageCenter).sendMessageTo(
-                eq(Method.ON_UPDATE_SHIPPING_LINE),
-                msgCaptor.capture(),
-                any(MessageCallback.class)
-        );
-        JSONObject json = new JSONObject(msgCaptor.getValue().content);
-        assertEquals("identifier", json.getString("Identifier"));
-        assertEquals("detail", json.getString("Detail"));
-        assertEquals("label", json.getString("Label"));
-        assertEquals(BigDecimal.ZERO, BigDecimal.valueOf(json.getInt("Amount")));
+        ArgumentCaptor<ShippingMethod> msgCaptor = ArgumentCaptor.forClass(ShippingMethod.class);
+        verify(messageCenter).onUpdateShippingLine(msgCaptor.capture(), any(MessageCallback.class));
+        assertEquals(shippingMethod, msgCaptor.getValue());
     }
 
     @Test
     public void testRunsCallbackOnMaskedWalletRequest() throws Exception {
         doAnswer(new Answer() {
             @Override public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
-                MessageCallback callback = invocationOnMock.getArgument(2);
-                callback.onResponse(TestHelpers.buildAndroidPayEventResponseJson());
+                MessageCallback callback = invocationOnMock.getArgument(1);
+                AndroidPayEventResponse response = AndroidPayEventResponse
+                        .fromJsonString(TestHelpers.buildAndroidPayEventResponseJson());
+                callback.onResponse(response);
                 return null;
             }
-        }).when(messageCenter).sendMessageTo(
-                eq(ON_UPDATE_SHIPPING_ADDRESS),
-                any(UnityMessage.class),
+        }).when(messageCenter).onUpdateShippingAddress(
+                any(MailingAddressInput.class),
                 any(MessageCallback.class)
         );
 
@@ -170,21 +160,13 @@ public class AndroidPayCheckoutTest {
         Intent intent = new Intent();
         intent.putExtra(WalletConstants.EXTRA_ERROR_CODE, ERROR_CODE_AUTHENTICATION_FAILURE);
         checkout.handleWalletResponse(REQUEST_CODE_CHANGE_MASKED_WALLET, Activity.RESULT_OK, intent);
-        ArgumentCaptor<Method> methodCapture = ArgumentCaptor.forClass(Method.class);
-        ArgumentCaptor<UnityMessage> messageCapture = ArgumentCaptor.forClass(UnityMessage.class);
-        verify(messageCenter).sendMessageTo(methodCapture.capture(), messageCapture.capture());
-        assertEquals(Method.ON_ERROR, methodCapture.getValue());
-        assertEquals(messageCapture.getValue().content, "AUTHENTICATION_FAILURE");
+        verify(messageCenter).onError(any(WalletError.class));
     }
 
     @Test
     public void testSendsCancellationToSessionCallbacks() {
         checkout.handleWalletResponse(REQUEST_CODE_CHANGE_MASKED_WALLET, Activity.RESULT_CANCELED, null);
-        ArgumentCaptor<Method> methodCapture = ArgumentCaptor.forClass(Method.class);
-        ArgumentCaptor<UnityMessage> messageCapture = ArgumentCaptor.forClass(UnityMessage.class);
-        verify(messageCenter).sendMessageTo(methodCapture.capture(), messageCapture.capture());
-        assertEquals(Method.ON_CANCEL, methodCapture.getValue());
-        assertEquals(messageCapture.getValue().content, "");
+        verify(messageCenter).onCancel();
     }
 
     @Test
