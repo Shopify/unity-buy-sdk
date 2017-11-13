@@ -38,8 +38,8 @@ import com.shopify.buy3.pay.CardNetworkType;
 import com.shopify.buy3.pay.PayCart;
 import com.shopify.buy3.pay.PayHelper;
 import com.shopify.buy3.pay.PaymentToken;
+import com.shopify.unity.buy.MessageCallback;
 import com.shopify.unity.buy.MessageCenter;
-import com.shopify.unity.buy.UnityMessage;
 import com.shopify.unity.buy.models.AndroidPayEventResponse;
 import com.shopify.unity.buy.models.CheckoutInfo;
 import com.shopify.unity.buy.models.MailingAddressInput;
@@ -49,10 +49,8 @@ import com.shopify.unity.buy.models.ShippingContact;
 import com.shopify.unity.buy.models.ShippingMethod;
 import com.shopify.unity.buy.models.ShopifyError;
 import com.shopify.unity.buy.models.TokenData;
+import com.shopify.unity.buy.models.WalletError;
 import com.shopify.unity.buy.utils.Logger;
-import com.shopify.unity.buy.utils.WalletErrorFormatter;
-
-import org.json.JSONException;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -64,12 +62,10 @@ import static com.shopify.buy3.pay.PayHelper.AndroidPayReadyCallback;
 import static com.shopify.buy3.pay.PayHelper.WalletResponseHandler;
 import static com.shopify.buy3.pay.PayHelper.extractPaymentToken;
 import static com.shopify.buy3.pay.PayHelper.requestMaskedWallet;
-import static com.shopify.unity.buy.MessageCenter.MessageCallback;
-import static com.shopify.unity.buy.MessageCenter.Method;
 
 /**
  * This class keeps track of the checkout state and wraps all the communication
- * between Android Pay and Unity by exposing a simple API.
+ * between Android Pay and the platform code by exposing a simple API.
  */
 
 public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallbacks {
@@ -94,9 +90,9 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
      *  with google API client. */
     private Queue<Runnable> connectedTasksQueue = new LinkedList<>();
 
-    // Unity stuff
+    // Platform stuff
 
-    /** Messaging API that allows communicating with Google. */
+    /** Messaging API that allows communicating with the platform code. */
     @NonNull private final MessageCenter messageCenter;
 
     // Checkout stuff
@@ -131,7 +127,7 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
      * This check will not execute immediately if the connection with google API client
      * has not been established. In this case, it will be postponed to run after
      * {@link #onConnected(Bundle)} is called.
-     * The response will be delivered straight to Unity by calling
+     * The response will be delivered straight to the platform code by calling
      * {@code AndroidNativeCheckout.OnCanCheckoutWithAndroidPayResult()}.
      *
      * @param supportedCardNetworks a list of cards that the shop accepts as payment methods
@@ -152,7 +148,7 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
 
     /**
      * Checks if Android Pay is enabled and ready to use.
-     * The response will be delivered straight to Unity by calling
+     * The response will be delivered straight to the platform code by calling
      * {@code AndroidNativeCheckout.OnCanCheckoutWithAndroidPayResult()}.
      *
      * @param supportedCardNetworks a list of cards that the shop accepts as payment methods
@@ -162,8 +158,7 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
         PayHelper.isReadyToPay(googleApiClient.getContext(), googleApiClient, cardNetworkTypes,
                 new AndroidPayReadyCallback() {
                     @Override public void onResult(boolean result) {
-                        final UnityMessage msg = UnityMessage.fromContent(String.valueOf(result));
-                        messageCenter.sendMessageTo(Method.ON_CAN_CHECKOUT_WITH_AP_RESULT, msg);
+                        messageCenter.onCanCheckoutWithAndroidPayResult(result);
                         if (currentCheckoutState == CheckoutState.READY) {
                             // This connection has been started solely to check if it's ready to pay
                             googleApiClient.disconnect();
@@ -191,9 +186,9 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
     }
 
     /**
-     * Updates the shipping method on the Unity side.
+     * Updates the shipping method on the platform code.
      *
-     * @param shippingMethod the shipping method to be updated on the Unity side
+     * @param shippingMethod the shipping method to be updated on the platform code
      */
     public void updateShippingMethod(@NonNull ShippingMethod shippingMethod) {
         final ShippingMethod oldShippingMethod = checkoutInfo.getCurrentShippingMethod();
@@ -201,22 +196,23 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
                 .from(checkoutInfo)
                 .currentShippingMethod(shippingMethod)
                 .build();
-        final String jsonStr = shippingMethod.toJson().toString();
-        final UnityMessage msg = UnityMessage.fromContent(jsonStr);
-        messageCenter.sendMessageTo(Method.ON_UPDATE_SHIPPING_LINE, msg, new MessageCallback() {
-            @Override public void onResponse(String jsonResponse) {
-                AndroidPayCheckout.this.onResponseReceived(jsonResponse);
-            }
-            @Override public void onError(ShopifyError error) {
-                checkoutInfo = CheckoutInfo // Reverts back to the old shipping method
-                        .from(checkoutInfo)
-                        .currentShippingMethod(oldShippingMethod)
-                        .build();
-                if (listener != null) {
-                    listener.onUpdateShippingMethodFail(error);
-                }
-            }
-        });
+
+        messageCenter.onUpdateShippingLine(
+                shippingMethod,
+                new MessageCallback<AndroidPayEventResponse>() {
+                    @Override public void onResponse(@NonNull AndroidPayEventResponse response) {
+                        AndroidPayCheckout.this.onResponseReceived(response);
+                    }
+                    @Override public void onError(@NonNull ShopifyError error) {
+                        checkoutInfo = CheckoutInfo // Reverts back to the old shipping method
+                                                    .from(checkoutInfo)
+                                                    .currentShippingMethod(oldShippingMethod)
+                                                    .build();
+                        if (listener != null) {
+                            listener.onUpdateShippingMethodFail(error);
+                        }
+                    }
+                });
     }
 
     /**
@@ -306,12 +302,12 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
         }
         Logger.debug("Masked wallet received");
         this.maskedWallet = maskedWallet;
-        updateShippingAddress(maskedWallet, new MessageCallback() {
-            @Override public void onResponse(String jsonResponse) {
-                AndroidPayCheckout.this.onResponseReceived(jsonResponse);
+        updateShippingAddress(maskedWallet, new MessageCallback<AndroidPayEventResponse>() {
+            @Override public void onResponse(@NonNull AndroidPayEventResponse androidPayEventResponse) {
+                AndroidPayCheckout.this.onResponseReceived(androidPayEventResponse);
                 currentCheckoutState = CheckoutState.UPDATED_SHIPPING_ADDRESS;
             }
-            @Override public void onError(ShopifyError error) {
+            @Override public void onError(@NonNull ShopifyError error) {
                 if (currentCheckoutState != CheckoutState.RECEIVED_MASKED_WALLET) {
                     // User explicitly updated the shipping address
                     if (listener != null) {
@@ -341,8 +337,7 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
                 .identifier(paymentToken.publicKeyHash)
                 .tokenData(new TokenData(paymentToken.token))
                 .build();
-        final UnityMessage msg = UnityMessage.fromContent(paymentInput.toJson().toString());
-        messageCenter.sendMessageTo(Method.ON_CONFIRM_CHECKOUT, msg);
+        messageCenter.onConfirmCheckout(paymentInput);
         reset();
     }
 
@@ -351,10 +346,9 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
      * @param errorCode one of the {@code ERROR}-prefixed {@link WalletConstants}
      */
     private void onWalletError(int errorCode) {
-        Logger.debug("Wallet error: " + WalletErrorFormatter.errorStringFromCode(errorCode));
-        final String errorString = WalletErrorFormatter.errorStringFromCode(errorCode);
-        final UnityMessage message = UnityMessage.fromContent(errorString);
-        messageCenter.sendMessageTo(Method.ON_ERROR, message);
+        final WalletError error = WalletError.forWalletErrorCode(errorCode);
+        Logger.debug("Wallet error: " + error);
+        messageCenter.onError(error);
     }
 
     /**
@@ -362,8 +356,7 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
      */
     private void onWalletRequestCancel() {
         Logger.debug("Wallet canceled");
-        final UnityMessage message = UnityMessage.fromContent("");
-        messageCenter.sendMessageTo(Method.ON_CANCEL, message);
+        messageCenter.onCancel();
     }
 
     /**
@@ -377,17 +370,18 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
     }
 
     /**
-     * Sends a message to Unity in order to update the shipping address.
+     * Sends a message to the platform code in order to update the shipping address.
      *
      * @param maskedWallet a {@link MaskedWallet} instance to read the shipping address from
      * @param callback a {@link MessageCallback} to be notified when the update is completed
      */
-    private void updateShippingAddress(@NonNull MaskedWallet maskedWallet,
-                                       @Nullable MessageCallback callback) {
+    private void updateShippingAddress(
+            @NonNull MaskedWallet maskedWallet,
+            @NonNull MessageCallback<AndroidPayEventResponse> callback
+    ) {
         final UserAddress address = maskedWallet.getBuyerShippingAddress();
         final MailingAddressInput input = new MailingAddressInput(address);
-        final UnityMessage msg = UnityMessage.fromContent(input.toJson().toString());
-        messageCenter.sendMessageTo(Method.ON_UPDATE_SHIPPING_ADDRESS, msg, callback);
+        messageCenter.onUpdateShippingAddress(input, callback);
     }
 
     /**
@@ -401,27 +395,19 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
     }
 
     /**
-     * Unity callback method that runs whenever the checkout information
-     * is updated on the Unity side.
+     * Platform code callback method that runs whenever the checkout information
+     * is updated on the platform code side.
      *
-     * @param jsonResponse the {@link AndroidPayEventResponse} represented as a JSON string
+     * @param response the {@link AndroidPayEventResponse} sent from the platform code side.
      */
-    private void onResponseReceived(String jsonResponse) {
-        Logger.debug("New payCart data from Unity: " + jsonResponse);
-        try {
-            final AndroidPayEventResponse response =
-                    AndroidPayEventResponse.fromJsonString(jsonResponse);
-
-            checkoutInfo = CheckoutInfo.from(checkoutInfo)
-                                       .payCart(payCartFromEventResponse(response))
-                                       .shippingMethods(response.shippingMethods)
-                                       .build();
-
-            if (listener != null) {
-                listener.onSynchronizeCheckoutInfo(checkoutInfo);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
+    private void onResponseReceived(AndroidPayEventResponse response) {
+        Logger.debug("New payCart data from platform code: " + response);
+        checkoutInfo = CheckoutInfo.from(checkoutInfo)
+                                   .payCart(payCartFromEventResponse(response))
+                                   .shippingMethods(response.shippingMethods)
+                                   .build();
+        if (listener != null) {
+            listener.onSynchronizeCheckoutInfo(checkoutInfo);
         }
     }
 
@@ -484,7 +470,7 @@ public final class AndroidPayCheckout implements GoogleApiClient.ConnectionCallb
         void onUpdateShippingMethodFail(@NonNull ShopifyError error);
 
         /**
-         * Invoked whenever Unity responds back with up-to-date {@link CheckoutInfo}
+         * Invoked whenever the platform code responds back with up-to-date {@link CheckoutInfo}
          *
          * @param checkoutInfo up-to-date checkout state metadata
          */

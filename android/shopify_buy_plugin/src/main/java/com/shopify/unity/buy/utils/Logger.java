@@ -51,7 +51,7 @@ public final class Logger {
 
     /**
      * If log is enabled, this will log a message at debug level. The log tag will be
-     * in the format of {@code CallingClassName:CallingLine}, (error.g.: {@code MessageCenter:32}).
+     * in the format of {@code CallingClassName:CallingLine}, (error.g.: {@code UnityMessageCenter:32}).
      *
      * @param msg the message to be logged
      */
@@ -63,7 +63,7 @@ public final class Logger {
 
     /**
      * If log is enabled, this will log a message at error level. The log tag will be
-     * in the format of {@code CallingClassName:CallingLine}, (error.g.: {@code MessageCenter:32}).
+     * in the format of {@code CallingClassName:CallingLine}, (error.g.: {@code UnityMessageCenter:32}).
      *
      * @param msg the message to be logged
      */
