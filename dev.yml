@@ -1,0 +1,23 @@
+name: unity-buy-sdk
+
+up:
+  - homebrew:
+    - openssl
+  - ruby: 2.3.3
+  - bundler
+
+commands:
+  generate:
+    syntax:
+      argument: type
+    desc:   'generate classes from erb class templates'
+    run:    scripts/generate.sh
+  package:
+    syntax:
+      argument: type
+    desc:   'Publish a new unitypackage for the sdk'
+    run:    scripts/publish.sh
+  test:
+    run: scripts/test.sh
+  unitytest:
+    run: scripts/test_unity.sh
