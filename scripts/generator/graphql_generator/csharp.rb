@@ -140,6 +140,7 @@ module GraphQLGenerator
         SDK/WebCheckoutMessageReceiver
         SDK/ShippingMethod
         SDK/PaymentNetwork
+        SDK/Editor/UnityEditorLoader
         SDK/Android/AndroidWebCheckout
         SDK/Android/AndroidNativeCheckout
         SDK/Android/AndroidPayCheckoutResponse
