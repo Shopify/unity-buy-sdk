@@ -16,7 +16,7 @@ namespace <%= namespace %>.SDK {
         private static void _RespondToNativeMessage(string identifier, string message) {
             #if !SHOPIFY_MONO_UNIT_TEST
             if (MessageCenter == null) {
-                MessageCenter = new AndroidJavaObject("com.shopify.unity.buy.UnityMessageCenter");
+                MessageCenter = new AndroidJavaObject("com.shopify.buy.UnityMessageCenter");
             }
             MessageCenter.CallStatic("onUnityResponse", identifier, message);
             #endif
