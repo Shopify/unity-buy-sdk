@@ -56,9 +56,6 @@ printf "Version used %s: %s\n" "$1" "$VERSION"
 "$SCRIPTS_ROOT"/generate.sh "$PUBLISH_DESTINATION"
 check "generate"
 
-"$SCRIPTS_ROOT"/build_android.sh 
-check "build_android"
-
 # Run tests just in case
 "$SCRIPTS_ROOT"/test.sh
 check "test"
