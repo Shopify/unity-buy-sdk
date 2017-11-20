@@ -4,6 +4,7 @@ using Shopify.Examples.LineItems;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Shopify.Unity;
 
 namespace Shopify.Examples.Panels {
     public class ShowProductEvent : UnityEvent<Shopify.Unity.Product> {
@@ -49,7 +50,21 @@ namespace Shopify.Examples.Panels {
             }
         }
 
-        public void AddProduct(Shopify.Unity.Product product) {
+        public void SetProducts(IEnumerable<Product> products) {
+            // Figure out how high the content of the scroll view should be to fit all product cells
+            var numberOfProducts = products.Count();
+            var cellHeight = ProductsPanelCellTemplate.RectTransform.sizeDelta.y;
+
+            // Set the height of the content of the scroll view
+            Content.sizeDelta = new Vector2(Content.sizeDelta.x, cellHeight * numberOfProducts);
+
+            // Instantiate all of the individual product rows into the scroll view
+            foreach(var product in products) {
+                AddProduct(product);
+            }
+        }
+
+        private void AddProduct(Product product) {
             // Create instance of the template
             var instance = Instantiate(ProductsPanelCellTemplate);
             // Need to set transform so that scrolling works properly

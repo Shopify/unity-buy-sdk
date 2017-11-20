@@ -3610,7 +3610,6 @@ MonoBehaviour:
   ClickRegionButton: {fileID: 114955002357875814}
   SeparatorLine: {fileID: 114233870519024836}
   BrokenImageIcon: {fileID: 114372851056832718}
-  RectTransform: {fileID: 0}
 --- !u!114 &114429988192376986
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6579,7 +6578,7 @@ Canvas:
   m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
-  m_PixelPerfect: 1
+  m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
@@ -7577,7 +7576,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -45472.5, y: 1023381.9}
+  m_AnchoredPosition: {x: -46762.5, y: 1023534.06}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!224 &224459433084162654
@@ -7940,7 +7939,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -45332, y: 1025559.75}
+  m_AnchoredPosition: {x: -46618, y: 1026332.94}
   m_SizeDelta: {x: 626.5, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!224 &224685981874940452
