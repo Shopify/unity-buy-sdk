@@ -1,4 +1,4 @@
-namespace <%= namespace %>.SDK {
+namespace Shopify.Unity.SDK {
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -384,10 +384,10 @@ namespace <%= namespace %>.SDK {
                     Dictionary<string, string> customAttributes = null;
 
                     try {
-                        List<<%= namespace %>.Attribute> attributes = checkoutLineItem.customAttributes();
+                        List<Shopify.Unity.Attribute> attributes = checkoutLineItem.customAttributes();
                         customAttributes = new Dictionary<string, string>();
 
-                        foreach(<%= namespace %>.Attribute attribute in attributes) {
+                        foreach(Shopify.Unity.Attribute attribute in attributes) {
                             customAttributes[attribute.key()] = attribute.value();
                         }
                     #pragma warning disable 0168

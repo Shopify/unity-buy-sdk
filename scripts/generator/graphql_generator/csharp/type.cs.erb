@@ -1,14 +1,14 @@
 <% isRoot = schema.root_name?(type.name) %>
 <% isQueryRoot = type.name == schema.query_root_name %>
 <% if type.kind == 'INPUT_OBJECT' || type.kind == 'ENUM' %>
-namespace <%= namespace %> {
+namespace Shopify.Unity {
 <% else %>
-namespace <%= namespace %>.GraphQL {
+namespace Shopify.Unity.GraphQL {
 <% end %>
     using System;
     using System.Text;
     using System.Collections.Generic;
-    using <%= namespace %>.SDK;
+    using Shopify.Unity.SDK;
 
     <% case type.kind when 'OBJECT', 'INTERFACE', 'UNION' %>
         <%# the following will define a delegate for lamdas. Each delegate name will be followed by Delegate. eg. ShopDelegate %>
