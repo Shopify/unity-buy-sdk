@@ -10,9 +10,6 @@ namespace Shopify.UIToolkit {
     /// </summary>
     [RequireComponent(typeof(Image))]
     public class RemoteImageLoader : MonoBehaviour {
-
-        public string ImageURL;
-
         private Image _image;
 
         private delegate void RemoteImageCompletionDelegate(Texture2D texture, string error);
@@ -21,20 +18,40 @@ namespace Shopify.UIToolkit {
             _image = gameObject.GetComponent<Image>();
         } 
 
-        public void LoadImage() {
-            LoadImageURL(ImageURL, (texture, error) => {
+        /// <summary>
+        /// Downloads the image located at the given ImageURL. The resulting image will be assigned to 
+        /// the GameObject's Image component.
+        /// </summary>
+        /// <param name="imageURL">URL for the image to download.</param>
+        public void LoadImage(string imageURL) {
+            LoadImage(imageURL, null, null);
+        }
+
+        /// <summary>
+        /// Downloads the image located at the given ImageURL. The resulting image will be assigned to 
+        /// the GameObject's Image component.
+        /// </summary>
+        /// <param name="imageURL">URL for the image to download.</param>
+        /// <param name="success">Callback called when image was successfully downloaded and assigned.</param>
+        /// <param name="failure">Callback called when an error occurs.</param>
+        public void LoadImage(string imageURL, Action success, Action<string> failure) {
+            LoadImageURL(imageURL, (texture, error) => {
                 if (error != null) {
-                    Debug.Log("Failed to download image at " + ImageURL + " Reason: " + error);
+                    Debug.LogWarning("Failed to download image at " + imageURL + " Reason: " + error);
+                    failure(error);
                     return;
                 }
 
                 if (texture == null) {
-                    Debug.Log("Failed to generate texture from image located at " + ImageURL);
+                    Debug.LogWarning("Failed to generate texture from image located at " + imageURL);
+                    failure("Texture not found");
                     return;
                 }
 
                 _image.sprite = SpriteFromTexture(texture);
                 _image.preserveAspect = true;
+
+                success();
             });
         }
 
@@ -49,17 +66,12 @@ namespace Shopify.UIToolkit {
             );
         }
 
-        /// <summary>
-        /// Downloads the given web image located at the URL.
-        /// </summary>
-        /// <param name="url">URL of the image resource to download and cache.</param>
-        /// <param name="completion">Callback called when the download is complete.</param>
-        void LoadImageURL(string url, RemoteImageCompletionDelegate completion) {
+        private void LoadImageURL(string url, RemoteImageCompletionDelegate completion) {
             StartCoroutine(LoadImageURLRoutine(url, completion));
         }
 
         private IEnumerator LoadImageURLRoutine(string url, RemoteImageCompletionDelegate completion) {
-            var www = new WWW(ImageURL);
+            var www = new WWW(url);
 
             yield return www;
 
@@ -70,7 +82,6 @@ namespace Shopify.UIToolkit {
             }
 
             completion(www.texture, null);
-            yield break;
         }
     }
 }

@@ -14,14 +14,19 @@ namespace Shopify.UIToolkit.Test.Integration {
             var gameObject = new GameObject();
             var loader = gameObject.AddComponent<RemoteImageLoader>();
 
-            loader.ImageURL = "https://cdn.shopify.com/s/files/1/2094/7261/products/product-image-305453751.jpg?v=1497377691";
-            loader.LoadImage();
+            bool requestFinished = false;
 
-            var image = gameObject.GetComponent<Image>();
-            while (image.sprite == null) {
+            loader.LoadImage(
+                imageURL: "https://cdn.shopify.com/s/files/1/2094/7261/products/product-image-305453751.jpg?v=1497377691", 
+                success: () => { requestFinished = true; },
+                failure: (e) =>  { requestFinished = true; }
+            );
+
+            while (!requestFinished) {
                 yield return null;
             }
 
+            var image = gameObject.GetComponent<Image>();
             IntegrationTest.Assert(image.sprite != null);
             IntegrationTest.Pass();
         }
