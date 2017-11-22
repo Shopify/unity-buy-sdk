@@ -155,16 +155,15 @@ namespace Shopify.Tests
 
         [Test]
         public void TestCollectionsFirst() {
-            List<Product> products = null;
+            List<Collection> collections = null;
 
             ShopifyBuy.Init(new MockLoader());
-
-            ShopifyBuy.Client().products(callback: (p, error) => {
-                products = p;
+            ShopifyBuy.Client().collections(callback: (c, error) => {
+                collections = c;
                 Assert.IsNull(error);
             }, first: 250);
 
-            Assert.AreEqual(250, products.Count);
+            Assert.AreEqual(250, collections.Count);
         }
 
         [Test]
