@@ -1,25 +1,31 @@
 namespace Shopify.Unity.Tests
 {
     using UnityEngine;
+	using UnityEngine.TestTools;
+	using NUnit.Framework;
     using Shopify.Unity;
+	using System.Collections;
 
-    [IntegrationTest.DynamicTest ("TestScene")]
-    [IntegrationTest.SucceedWithAssertions]
     public class TestGenericQuery : MonoBehaviour {
-        void Start() {
+		[UnityTest]
+		public IEnumerator LoadShopName() {
             ShopifyBuy.Init("351c122017d0f2a957d32ae728ad749c", "graphql.myshopify.com");
+			bool hadResult = false;
 
             ShopifyBuy.Client().Query(
                 (q) => q.shop(s => s
                     .name()
                 ), 
                 (data, error) => {
-                    IntegrationTest.Assert(null == error, "No errors");
-                    IntegrationTest.Assert("graphql" == data.shop().name(), "Shop name was \"graphql\"");
-
-                    IntegrationTest.Pass();
+					hadResult = true;
+					Assert.IsNull(error, "No errors");
+					Assert.AreEqual("graphql", data.shop().name(), "Shop name was \"graphql\"");
                 }
             );
+
+			yield return Utils.GetWaitMaxQueryDuration ();
+
+			Assert.IsTrue (hadResult, Utils.MaxQueryMessage);
         }
     }   
 }
