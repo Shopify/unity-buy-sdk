@@ -1,32 +1,28 @@
 namespace Shopify.UIToolkit.Test.Integration {
 	using UnityEngine;
+    using UnityEngine.UI;
     using UnityEngine.TestTools;
     using System.Collections;
     using Shopify.Unity.SDK;
 
 	[IntegrationTest.DynamicTest("UIToolkitIntegrationTests")]
+    [IntegrationTest.Timeout(10)]
     public class TestRemoteImageLoaderIntegration {
 
         [UnityTest] 
         public IEnumerator TestDownloadImage() {
-            var loader = GlobalGameObject.AddComponent<RemoteImageLoader>();
-            UnityImageLoader networkLoader = new UnityImageLoader();
-            loader.SetImageLoader(networkLoader);
+            var gameObject = new GameObject();
+            var loader = gameObject.AddComponent<RemoteImageLoader>();
 
-            string url = "https://cdn.shopify.com/s/files/1/2094/7261/products/product-image-305453751.jpg?v=1497377691";
+            loader.ImageURL = "https://cdn.shopify.com/s/files/1/2094/7261/products/product-image-305453751.jpg?v=1497377691";
+            loader.LoadImage();
 
-            Texture2D downloadedTexture = null;
-            string returnedError = null;
-            loader.LoadImageURL(url, (texture, error) => {
-                downloadedTexture = texture;
-                returnedError = error;
-            });
-
-            while (downloadedTexture == null) {
+            var image = gameObject.GetComponent<Image>();
+            while (image.sprite == null) {
                 yield return null;
             }
 
-            IntegrationTest.Assert(returnedError == null);
+            IntegrationTest.Assert(image.sprite != null);
             IntegrationTest.Pass();
         }
     }
