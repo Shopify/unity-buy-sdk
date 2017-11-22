@@ -19,6 +19,7 @@ dependencies:
     - "unity/"
 test:
   pre:
+    - brew install mono
     - ./scripts/build.sh
     - ./scripts/activate_license.sh
   override:
