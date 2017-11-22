@@ -59,7 +59,6 @@ publish_destination = ARGV[0]
 GraphQLGenerator::CSharp.new(
   schema,
   publish_destination,
-  namespace: 'Shopify.Unity',
   script_name: script_name,
   custom_scalars: [
     GraphQLGenerator::CSharp::Scalar.new(

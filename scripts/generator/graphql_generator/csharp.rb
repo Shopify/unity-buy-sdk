@@ -20,15 +20,14 @@ module GraphQLGenerator
       end
     end
 
-    attr_reader :scalars, :schema, :namespace, :version, :publish_destination
+    attr_reader :scalars, :schema, :version, :publish_destination
 
-    def initialize(schema, publish_destination, namespace:, custom_scalars: [], script_name: $0)
+    def initialize(schema, publish_destination,  custom_scalars: [], script_name: $0)
       if publish_destination != "asset-store" && publish_destination != "github"
         raise "'publish_destination' is invalid. Valid values are: 'asset-store' or 'github'"
       end
 
       @schema = schema
-      @namespace = namespace
       @script_name = script_name
       @publish_destination = publish_destination
 
