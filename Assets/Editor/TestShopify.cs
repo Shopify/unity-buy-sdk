@@ -102,10 +102,10 @@ namespace Shopify.Tests
             ShopifyBuy.Client().products(callback: (p, error, after) => {
                 products = p;
                 Assert.IsNull(error);
-                Assert.AreEqual((DefaultQueries.MaxProductsSize - 1).ToString(), after);
+                Assert.AreEqual((DefaultQueries.MaxProductPageSize - 1).ToString(), after);
             });
 
-            Assert.AreEqual(DefaultQueries.MaxProductsSize, products.Count);
+            Assert.AreEqual(DefaultQueries.MaxProductPageSize, products.Count);
             Assert.AreEqual("Product0", products[0].title());
             Assert.AreEqual("Product1", products[1].title());
 
@@ -131,10 +131,10 @@ namespace Shopify.Tests
             ShopifyBuy.Client().products(callback: (p, error, after) => {
                 products = p;
                 Assert.IsNull(error);
-                Assert.AreEqual((DefaultQueries.MaxProductsSize - 1).ToString(), after);
-            }, first: DefaultQueries.MaxProductsSize);
+                Assert.AreEqual((DefaultQueries.MaxProductPageSize - 1).ToString(), after);
+            }, first: DefaultQueries.MaxProductPageSize);
 
-            Assert.AreEqual(DefaultQueries.MaxProductsSize, products.Count);
+            Assert.AreEqual(DefaultQueries.MaxProductPageSize, products.Count);
         }
 
         [Test]
@@ -165,12 +165,12 @@ namespace Shopify.Tests
             ShopifyBuy.Client().products(callback: (p, error, after) => {
                 products = p;
                 Assert.IsNull(error);
-                Assert.AreEqual((DefaultQueries.MaxProductsSize * 2 - 1).ToString(), after);
-            }, first: DefaultQueries.MaxProductsSize, after: (DefaultQueries.MaxProductsSize - 1).ToString());
+                Assert.AreEqual((DefaultQueries.MaxProductPageSize * 2 - 1).ToString(), after);
+            }, first: DefaultQueries.MaxProductPageSize, after: (DefaultQueries.MaxProductPageSize - 1).ToString());
 
-            Assert.AreEqual(DefaultQueries.MaxProductsSize, products.Count);
-            Assert.AreEqual(DefaultQueries.MaxProductsSize.ToString(), products[0].id());
-            Assert.AreEqual((DefaultQueries.MaxProductsSize * 2 - 1).ToString(), products[products.Count - 1].id());
+            Assert.AreEqual(DefaultQueries.MaxProductPageSize, products.Count);
+            Assert.AreEqual(DefaultQueries.MaxProductPageSize.ToString(), products[0].id());
+            Assert.AreEqual((DefaultQueries.MaxProductPageSize * 2 - 1).ToString(), products[products.Count - 1].id());
         }
 
         [Test]

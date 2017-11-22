@@ -21,9 +21,9 @@ namespace Shopify.Tests {
 
                 DefaultQueries.products.ShopProducts(
                     query: query,
-                    first: DefaultQueries.MaxProductsSize,
+                    first: DefaultQueries.MaxProductPageSize,
                     imageResolutions: ShopifyClient.DefaultImageResolutions,
-                    after: i > 0 ? (i * DefaultQueries.MaxProductsSize - 1).ToString() : null
+                    after: i > 0 ? (i * DefaultQueries.MaxProductPageSize - 1).ToString() : null
                 );
 
                 string response = String.Format(@"{{
@@ -48,8 +48,8 @@ namespace Shopify.Tests {
         private string GetProductEdges(int page) {
             StringBuilder edges = new StringBuilder();
 
-            for(int i = 0; i < DefaultQueries.MaxProductsSize; i++) {
-                int product = page * DefaultQueries.MaxProductsSize + i;
+            for(int i = 0; i < DefaultQueries.MaxProductPageSize; i++) {
+                int product = page * DefaultQueries.MaxProductPageSize + i;
                 bool imagesHasNextPage = product == 1 || product == 2;
                 bool variantsHasNextPage = product == 2;
 
@@ -127,7 +127,7 @@ namespace Shopify.Tests {
                 GetCollectionsOnProduct(0, product, 1),
                 UtilsMockLoader.GetJSONBool(false),
                 resolutionImageResponses.ToString(),
-                i < DefaultQueries.MaxProductsSize - 1 ? "," : ""));
+                i < DefaultQueries.MaxProductPageSize - 1 ? "," : ""));
             }
 
             return edges.ToString();

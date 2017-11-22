@@ -843,7 +843,7 @@ namespace Shopify.Unity {
                         DefaultQueries.products.ShopProducts(
                             query: query,
                             imageResolutions: DefaultImageResolutions,
-                            first: countToLoad > DefaultQueries.MaxProductsSize ? DefaultQueries.MaxProductsSize : countToLoad,
+                            first: countToLoad > DefaultQueries.MaxProductPageSize ? DefaultQueries.MaxProductPageSize : countToLoad,
                             after: edges != null ? edges[edges.Count - 1].cursor() : after
                         );
                     }
