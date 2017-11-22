@@ -35,42 +35,21 @@ namespace Shopify.UIToolkit {
         }
     }
 
+    public delegate void RemoteImageCompletionDelegate(Texture2D texture, string error);
+
     /// <summary>
-    /// A behaviour that fetches and caches a remote image (JPEG/PNG) from the web.!-- from the web.
+    /// A behaviour that fetches and caches a remote image (JPEG/PNG) from the web.
     /// </summary>
     public class RemoteImageLoader : MonoBehaviour {
 
-        private class HTTPHeaderFields {
+        private static class HTTPHeaderFields {
             public const string LAST_MODIFIED = "Last-Modified";
             public const string STATUS_CODE = "STATUS";
             public const string IF_MODIFIED_SINCE = "If-Modified-Since";
         }
 
-        /// <summary>
-        /// The resulting error after downloading a web image.
-        /// </summary>
-        /// <returns></returns>
-        public string error {
-            get {
-                return _error;
-            }
-        }
-
-        /// <summary>
-        /// The resulting Texture2D web image after downloading from the given URL.
-        /// </summary>
-        /// <returns></returns>
-        public Texture2D texture {
-            get {
-                return _texture;
-            }
-        }
-
         private const int HTTP_STATUS_NOT_MODIFIED = 304;
 
-        private WebImageCache _imageCache;
-        private string _error;
-        private Texture2D _texture;
         private ImageLoader _loader;
 
         public void SetImageLoader(ImageLoader loader) {
@@ -83,7 +62,12 @@ namespace Shopify.UIToolkit {
         /// <param name="url">URL of the image resource to download and cache.</param>
         /// <param name="cache">Determine if the downloaded resource should be cached or not.</param>
         /// <returns>On completion, check texture/error properties for result.</returns>
-        public IEnumerator DownloadImageURL(string url, bool cache = true) {
+
+        public void LoadImageURL(string url, RemoteImageCompletionDelegate completion, bool cache = true) {
+            StartCoroutine(LoadImageURLRoutine(url, completion, cache));
+        }
+
+        private IEnumerator LoadImageURLRoutine(string url, RemoteImageCompletionDelegate completion, bool cache) {
             _loader = _loader != null ? _loader : new UnityImageLoader();
             var imageCache = WebImageCache.SharedCache;
 
@@ -98,7 +82,7 @@ namespace Shopify.UIToolkit {
 
             // Bail out early if we hit an error.
             if (_loader.GetError() != null) {
-                _error = _loader.GetError();
+                completion(null, _loader.GetError());
                 yield return null;
             }
 
@@ -108,9 +92,11 @@ namespace Shopify.UIToolkit {
             if (responseHeaders.ContainsKey(HTTPHeaderFields.STATUS_CODE)) {
                 string statusCodeLine = responseHeaders[HTTPHeaderFields.STATUS_CODE];
                 if (ParseResponseCode(statusCodeLine) == HTTP_STATUS_NOT_MODIFIED) {
-                    CachedWebResource<Texture2D>? resource = _imageCache.TextureResourceForURL(url);
+                    CachedWebResource<Texture2D>? resource = imageCache.TextureResourceForURL(url);
                     if (resource != null) {
-                        _texture = resource.Value.Data;
+                        completion(resource.Value.Data, null);
+                    } else {
+                        completion(null, "Cached texture is missing for URL: " + url);
                     }
                     yield return null;
                 }
@@ -123,9 +109,8 @@ namespace Shopify.UIToolkit {
             Texture2D downloadedTexure = _loader.GetTexture();
             string lastModified = responseHeaders.ContainsKey(HTTPHeaderFields.LAST_MODIFIED) ? responseHeaders[HTTPHeaderFields.LAST_MODIFIED] : null;
             CachedWebResource<Texture2D> textureResource = new CachedWebResource<Texture2D>(lastModified, downloadedTexure);
-
             imageCache.SetTextureResourceForURL(url, textureResource);
-            _texture = downloadedTexure;
+            completion(downloadedTexure, null);
             yield return null;
         }
 
