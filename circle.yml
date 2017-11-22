@@ -22,6 +22,7 @@ test:
     - ./scripts/build.sh
     - ./scripts/activate_license.sh
   override:
+    - ./scripts/test.sh
     - ./scripts/test_unity.sh
     - ./scripts/test_iOS.sh
   post:
