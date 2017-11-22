@@ -1,3 +1,4 @@
+#if !UNITY_IOS
 namespace Shopify.UIToolkit.Test.Integration {
 	using UnityEngine;
     using UnityEngine.UI;
@@ -32,3 +33,4 @@ namespace Shopify.UIToolkit.Test.Integration {
         }
     }
 }
+#endif
