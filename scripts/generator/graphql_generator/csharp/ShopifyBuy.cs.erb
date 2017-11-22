@@ -41,6 +41,7 @@ namespace Shopify.Unity {
         /// 	Debug.Log(products.Count);
         /// });
         /// \endcode
+
         public static ShopifyClient Client() {
             return DefaultClient;
         }
@@ -287,18 +288,24 @@ namespace Shopify.Unity {
         /// </param>
         /// \code
         /// // Example usage querying all products
-        /// ShopifyBuy.Client().products((products, error) => {
+        /// ShopifyBuy.Client().products((products, error, after) => {
         /// 	Debug.Log(products[0].title());
         /// 	Debug.Log(products[1].title());
         /// 	Debug.Log(products.Count);
         /// });
         /// \endcode
-        public void products(ProductsHandler callback, int? first = null, string after = null) {
-            GetProductsList((products, error) => {
+        public void products(ProductsPaginatedHandler callback, int? first = 20, string after = null) {
+            GetProductsList((products, error, afterProductsList) => {
                 if (error != null) {
-                    callback(null, error);
+                    callback(null, error, null);
                 } else {
-                    GetConnectionsForProducts(products, callback);
+                    GetConnectionsForProducts(products, (List<Product> productsWithSubConnections, ShopifyError errorForSubConnections) => {
+                        if (error != null) {
+                            callback(null, error, null);
+                        } else {
+                            callback(productsWithSubConnections, errorForSubConnections, afterProductsList);
+                        }
+                    });
                 }
             }, first: first, after: after);
         }
@@ -815,7 +822,7 @@ namespace Shopify.Unity {
             );
         }
 
-        private void GetProductsList(ProductsHandler callback, int? first = null, string after = null) {
+        private void GetProductsList(ProductsPaginatedHandler callback, int? first = null, string after = null) {
             ConnectionLoader loader = new ConnectionLoader(Loader);
             int countToLoad = first == null ? int.MaxValue : (int) first;
 
@@ -836,7 +843,7 @@ namespace Shopify.Unity {
                         DefaultQueries.products.ShopProducts(
                             query: query,
                             imageResolutions: DefaultImageResolutions,
-                            first: countToLoad > DefaultQueries.MaxPageSize ? DefaultQueries.MaxPageSize : countToLoad,
+                            first: countToLoad > DefaultQueries.MaxProductsSize ? DefaultQueries.MaxProductsSize : countToLoad,
                             after: edges != null ? edges[edges.Count - 1].cursor() : after
                         );
                     }
@@ -849,9 +856,17 @@ namespace Shopify.Unity {
                 (response) => {
                     var error = (ShopifyError)response;
                     if (error != null) {
-                        callback(null, error);
+                        callback(null, error, null);
                     } else {
-                        callback((List<Product>) response.data.shop().products(), null);
+                        string lastCursor = null;
+
+                        if (response.data.shop().products().pageInfo().hasNextPage()) {
+                            List<ProductEdge> productEdges = response.data.shop().products().edges();
+
+                            lastCursor = productEdges[productEdges.Count - 1].cursor();
+                        }
+                        
+                        callback((List<Product>) response.data.shop().products(), error, lastCursor);
                     }
                 }
             );
