@@ -28,7 +28,7 @@ namespace Shopify.Examples.Helpers {
             // For more information on querying products visit
             // https://help.shopify.com/api/sdks/custom-storefront/unity-buy-sdk/getting-started#query-all-products
 
-            ShopifyBuy.Client().products((products, error) => {
+            ShopifyBuy.Client().products((products, error, after) => {
                 if (error != null) {
                     failureCallback();
 

@@ -7,7 +7,7 @@ namespace Shopify.Unity.SDK {
     /// Generates default queries for <see ref="ShopifyClient.products">ShopifyClient.products </see>.
     /// </summary>
     public class DefaultProductQueries {
-        public void ShopProducts(QueryRootQuery query, Dictionary<string,int> imageResolutions, int first = 250, string after = null) {
+        public void ShopProducts(QueryRootQuery query, Dictionary<string,int> imageResolutions, int first = 20, string after = null) {
             query.shop(s => s
                 .products(pc => pc
                     .edges(e => e
