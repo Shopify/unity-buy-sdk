@@ -1,3 +1,4 @@
+#if !SHOPIFY_MONO_UNIT_TEST
 namespace Shopify.Unity.Tests
 {
     using UnityEngine;
@@ -35,3 +36,4 @@ namespace Shopify.Unity.Tests
         }
     }   
 }
+#endif
