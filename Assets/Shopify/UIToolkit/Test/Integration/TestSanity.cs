@@ -1,10 +1,12 @@
 ﻿namespace Shopify.UIToolkit.Test.Integration {
 	using UnityEngine;
+	using UnityEngine.TestTools;
+	using NUnit.Framework;
 
-	[IntegrationTest.DynamicTest("UIToolkitIntegrationTests")]
     public class TestSanity : MonoBehaviour {
+		[Test]
         public void Start() {
-            IntegrationTest.Pass();
+			Assert.Pass ();
         }
     }
 }
