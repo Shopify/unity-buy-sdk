@@ -33,7 +33,7 @@ namespace UnityTest
 
             RunIntegrationTests(targetPlatform, testScenes, otherBuildScenes);
         }
-        
+
         public static void RunIntegrationTests(BuildTarget ? targetPlatform)
         {
             var sceneList = FindTestScenesInProject();
@@ -48,7 +48,7 @@ namespace UnityTest
             else
                 RunInEditor(testScenes,  otherBuildScenes);
         }
-        
+
         private static void BuildAndRun(BuildTarget target, List<string> testScenes, List<string> otherBuildScenes)
         {
             var resultFilePath = GetParameterArgument(k_ResultFileDirParam);
@@ -68,7 +68,7 @@ namespace UnityTest
                 port = port
             };
 
-            if (Application.isWebPlayer)
+            if (Application.platform == RuntimePlatform.WebGLPlayer)
             {
                 config.sendResultsOverNetwork = false;
                 Debug.Log("You can't use WebPlayer as active platform for running integration tests. Switching to Standalone");
@@ -89,7 +89,7 @@ namespace UnityTest
                 EditorApplication.Exit(returnCodeRunError);
                 return;
             }
-             
+
             string previousScenesXml = "";
             var serializer = new System.Xml.Serialization.XmlSerializer(typeof(EditorBuildSettingsScene[]));
             using(StringWriter textWriter = new StringWriter())
@@ -97,7 +97,7 @@ namespace UnityTest
                 serializer.Serialize(textWriter, EditorBuildSettings.scenes);
                 previousScenesXml = textWriter.ToString();
             }
-                
+
             EditorBuildSettings.scenes = (testScenes.Concat(otherBuildScenes).ToList()).Select(s => new EditorBuildSettingsScene(s, true)).ToArray();
             EditorSceneManager.OpenScene(testScenes.First());
             GuiHelper.SetConsoleErrorPause(false);
@@ -109,12 +109,12 @@ namespace UnityTest
                 port = PlatformRunnerConfiguration.TryToGetFreePort(),
                 runInEditor = true
             };
-                    
+
             var settings = new PlayerSettingConfigurator(true);
             settings.AddConfigurationFile(TestRunnerConfigurator.integrationTestsNetwork, string.Join("\n", config.GetConnectionIPs()));
             settings.AddConfigurationFile(TestRunnerConfigurator.testScenesToRun, string.Join ("\n", testScenes.ToArray()));
             settings.AddConfigurationFile(TestRunnerConfigurator.previousScenes, previousScenesXml);
-         
+
             NetworkResultsReceiver.StartReceiver(config);
 
             EditorApplication.isPlaying = true;
@@ -138,7 +138,7 @@ namespace UnityTest
             if (notSupportedPlatforms.Contains(EditorUserBuildSettings.activeBuildTarget.ToString()))
             {
                 Debug.Log("activeBuildTarget can not be  "
-                    + EditorUserBuildSettings.activeBuildTarget + 
+                    + EditorUserBuildSettings.activeBuildTarget +
                     " use buildTarget parameter to open Unity.");
             }
         }
