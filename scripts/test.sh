@@ -19,4 +19,6 @@ MCS_RESULT=$?
 
 if [[ $MCS_RESULT = 0 ]] ; then
     nunit-console test.dll
+else
+  exit $MCS_RESULT
 fi
