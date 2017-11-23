@@ -7,9 +7,9 @@ namespace Shopify.Unity.Tests
 	using System.Collections;
     using System.Collections.Generic;
 
-    public class TestLoad3Collections : MonoBehaviour {
+    public class TestShopifyCollections : MonoBehaviour {
 		[UnityTest]
-		public IEnumerator Load3Collections() {
+		public IEnumerator LoadACollection() {
             ShopifyBuy.Init("351c122017d0f2a957d32ae728ad749c", "graphql.myshopify.com");
 			StoppableWaitForTime waiter = Utils.GetWaitQuery ();
 
