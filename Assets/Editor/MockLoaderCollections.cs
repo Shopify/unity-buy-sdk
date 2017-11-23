@@ -19,8 +19,8 @@ namespace Shopify.Tests {
 
                 DefaultQueries.collections.ShopCollections(
                     query: query, 
-                    first: DefaultQueries.MaxPageSize, 
-                    after: i > 0 ? (i * DefaultQueries.MaxPageSize - 1).ToString() : null,
+                    first: DefaultQueries.MaxCollectionsPageSize, 
+                    after: i > 0 ? (i * DefaultQueries.MaxCollectionsPageSize - 1).ToString() : null,
                     imageResolutions: ShopifyClient.DefaultImageResolutions
                 );
 
@@ -46,8 +46,8 @@ namespace Shopify.Tests {
         private string GetCollectionEdges(int page) {
             StringBuilder edges = new StringBuilder();
 
-            for(int i = 0; i < DefaultQueries.MaxPageSize; i++) {
-                int collection = page * DefaultQueries.MaxPageSize + i;
+            for(int i = 0; i < DefaultQueries.MaxCollectionsPageSize; i++) {
+                int collection = page * DefaultQueries.MaxCollectionsPageSize + i;
                 bool productsHasNextPage = collection == 0;
 
                 StringBuilder resolutionImageResponses = new StringBuilder();
@@ -95,7 +95,7 @@ namespace Shopify.Tests {
                 GetProductOnCollections(0, collection, productsHasNextPage ? DefaultQueries.MaxPageSize : 1), 
                 UtilsMockLoader.GetJSONBool(productsHasNextPage),
                 resolutionImageResponses.ToString(),
-                i < DefaultQueries.MaxPageSize - 1 ? "," : ""));
+                i < DefaultQueries.MaxCollectionsPageSize - 1 ? "," : ""));
             }
 
             return edges.ToString();        
