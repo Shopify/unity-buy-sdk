@@ -10,7 +10,7 @@ namespace Shopify.Unity.Tests
         [UnityTest]
         public IEnumerator LoadShopName() {
             ShopifyBuy.Init("351c122017d0f2a957d32ae728ad749c", "graphql.myshopify.com");
-            StoppableWaitForTime waiter = Utils.GetWaitQuery ();
+            StoppableWaitForTime waiter = Utils.GetWaitQuery();
 
             ShopifyBuy.Client().Query(
                 (q) => q.shop(s => s
