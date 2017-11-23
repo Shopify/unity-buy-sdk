@@ -5,4 +5,4 @@ curl -o $MONO_PKG_FILE $MONO_PKG_URL
 
 sudo installer -pkg $MONO_PKG_FILE -target /
 
-$PATH="$PATH:/Library/Frameworks/Mono.framework/Versions/Current/Commands/"
+export PATH="$PATH:/Library/Frameworks/Mono.framework/Versions/Current/Commands/"
