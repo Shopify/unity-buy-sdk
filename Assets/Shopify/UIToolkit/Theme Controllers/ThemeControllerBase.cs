@@ -30,5 +30,23 @@
             }
         }
         private ShopifyClient _cachedClient;
+
+    /// <summary>
+        /// Shows the shop
+        /// </summary>
+        public void Show() {
+            OnShow();
+        }
+
+
+        /// <summary>
+        /// Hides the shop
+        /// </summary>
+        public void Hide() {
+            OnHide();
+        }
+
+        public abstract void OnShow();
+        public abstract void OnHide();
     }
 }

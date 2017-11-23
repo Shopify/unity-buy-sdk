@@ -5,7 +5,10 @@
 
     [TestFixture]
     public class TestThemeControllerBase {
-        public class MockThemeController : ThemeControllerBase { }
+        public class MockThemeController : ThemeControllerBase {
+            public override void OnHide() {}
+            public override void OnShow() {}
+        }
 
         private const string AccessToken = "351c122017d0f2a957d32ae728ad749c";
         private const string ShopDomain = "graphql.myshopify.com";
