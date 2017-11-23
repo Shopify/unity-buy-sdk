@@ -295,7 +295,7 @@ namespace Shopify.Unity {
         /// });
         /// \endcode
         public void products(ProductsPaginatedHandler callback, int? first = 20, string after = null) {
-            GetProductsList((products, error, afterProductsList) => {
+            GetProductsList((products, error, afterGetProductsList) => {
                 if (error != null) {
                     callback(null, error, null);
                 } else {
@@ -303,7 +303,7 @@ namespace Shopify.Unity {
                         if (error != null) {
                             callback(null, error, null);
                         } else {
-                            callback(productsWithSubConnections, errorForSubConnections, afterProductsList);
+                            callback(productsWithSubConnections, errorForSubConnections, afterGetProductsList);
                         }
                     });
                 }
