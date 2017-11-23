@@ -14,12 +14,12 @@ dependencies:
   pre:
     - xcrun instruments -w "iPhone 6 (11.0) [" || true
   override:
+    - ./scripts/install_mono.sh
     - ./scripts/install_unity.sh
   cache_directories:
     - "unity/"
 test:
   pre:
-    - brew install mono
     - ./scripts/build.sh
     - ./scripts/activate_license.sh
   override:
