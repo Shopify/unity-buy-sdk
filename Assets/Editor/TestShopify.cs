@@ -143,9 +143,10 @@ namespace Shopify.Tests
 
             ShopifyBuy.Init(new MockLoader());
 
-            ShopifyBuy.Client().collections(callback: (c, error) => {
+            ShopifyBuy.Client().collections(callback: (c, error, after) => {
                 collections = c;
                 Assert.IsNull(error);
+                Assert.IsNull(after);
             });
 
             Assert.AreEqual(MockLoaderCollections.CountPages * MockLoader.PageSize, collections.Count);
@@ -161,9 +162,10 @@ namespace Shopify.Tests
             List<Collection> collections = null;
 
             ShopifyBuy.Init(new MockLoader());
-            ShopifyBuy.Client().collections(callback: (c, error) => {
+            ShopifyBuy.Client().collections(callback: (c, error, after) => {
                 collections = c;
                 Assert.IsNull(error);
+                Assert.IsNull(after);
             }, first: 250);
 
             Assert.AreEqual(250, collections.Count);
