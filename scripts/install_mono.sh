@@ -3,4 +3,4 @@ MONO_PKG_FILE="mono_4.8.1.pkg"
 
 curl -o $MONO_PKG_FILE $MONO_PKG_URL
 
-sudo installer -pkg $MONO_PKG_FILE -target /
+sudo installer -pkg $MONO_PKG_FILE
