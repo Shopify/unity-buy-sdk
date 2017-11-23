@@ -7,8 +7,8 @@ namespace Shopify.Unity.Tests {
 		public const float MaxQueryDuration = 1f;
 		public const string MaxQueryMessage = "Query finished in 1 seconds";
 
-		public static WaitForSeconds GetWaitMaxQueryDuration() {
-			return new WaitForSeconds (MaxQueryDuration);
+		public static StoppableWaitForTime GetWaitQuery() {
+			return new StoppableWaitForTime (MaxQueryDuration);
 		}
 
 		public static List<string> GetImageAliases() {

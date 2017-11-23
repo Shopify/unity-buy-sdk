@@ -16,12 +16,12 @@ namespace Shopify.Unity.Tests
 		public IEnumerator RanQueryUsingUnityLoader() {
             string domain = "graphql.myshopify.com";
             string authorization = "351c122017d0f2a957d32ae728ad749c";
-			bool hadResult = false;
+			StoppableWaitForTime waiter = Utils.GetWaitQuery ();
 
             QueryLoader queryLoader = new QueryLoader(new UnityLoader(domain, authorization));
 
             queryLoader.Query(TestQueries.Query, (QueryResponse response) => {
-				hadResult = true;
+				waiter.Stop();
 
 				Assert.IsNull(response.HTTPError, "http errors were not null: " + response.HTTPError);
 				Assert.IsNull(response.errors, "GraphQL errors were null");
@@ -29,9 +29,9 @@ namespace Shopify.Unity.Tests
 				Assert.AreEqual("graphql", response.data.shop().name());
             });
 
-			yield return Utils.GetWaitMaxQueryDuration ();
+			yield return waiter;
 
-			Assert.IsTrue (hadResult, Utils.MaxQueryMessage);
+			Assert.IsTrue (waiter.IsStopped, Utils.MaxQueryMessage);
         }
     }   
 }

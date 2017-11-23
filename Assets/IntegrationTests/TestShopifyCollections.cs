@@ -11,12 +11,12 @@ namespace Shopify.Unity.Tests
 		[UnityTest]
 		public IEnumerator Load3Collections() {
             ShopifyBuy.Init("351c122017d0f2a957d32ae728ad749c", "graphql.myshopify.com");
-			bool hadResult = false;
+			StoppableWaitForTime waiter = Utils.GetWaitQuery ();
 
             ShopifyBuy.Client().collections(
                 first: 1,
                 callback: (collections, error) => {
-					hadResult = true;
+					waiter.Stop();
 
 					Assert.IsNull(error, "No errors");
 					Assert.AreEqual(1, collections.Count, "Loaded 1 collection");
@@ -32,9 +32,9 @@ namespace Shopify.Unity.Tests
                 }
             );
 
-			yield return Utils.GetWaitMaxQueryDuration ();
+			yield return waiter;
 
-			Assert.IsTrue (hadResult, Utils.MaxQueryMessage);
+			Assert.IsTrue (waiter.IsStopped, Utils.MaxQueryMessage);
         }
     }   
 }
