@@ -138,21 +138,22 @@ namespace Shopify.Tests
         }
 
         [Test]
-        public void TestCollectionsAll() {
+        public void TestCollections() {
             List<Collection> collections = null;
 
             ShopifyBuy.Init(new MockLoader());
 
-            ShopifyBuy.Client().collections(callback: (c, error) => {
+            ShopifyBuy.Client().collections(callback: (c, error, after) => {
                 collections = c;
                 Assert.IsNull(error);
+                Assert.AreEqual((DefaultQueries.MaxCollectionsPageSize - 1).ToString(), after);
             });
 
-            Assert.AreEqual(MockLoaderCollections.CountPages * MockLoader.PageSize, collections.Count);
+            Assert.AreEqual(DefaultQueries.MaxCollectionsPageSize, collections.Count);
             Assert.AreEqual("I am collection 0", collections[0].title());
             Assert.AreEqual("I am collection 1", collections[1].title());
 
-            Assert.AreEqual(2 * MockLoader.PageSize, collections[0].products().edges().Count, "First collection has one product");
+            Assert.AreEqual(2 * MockLoader.PageSize, collections[0].products().edges().Count, "First collection has products");
             Assert.AreEqual(1, collections[1].products().edges().Count, "Second collection has one product");
         }
 
@@ -161,12 +162,13 @@ namespace Shopify.Tests
             List<Collection> collections = null;
 
             ShopifyBuy.Init(new MockLoader());
-            ShopifyBuy.Client().collections(callback: (c, error) => {
+            ShopifyBuy.Client().collections(callback: (c, error, after) => {
                 collections = c;
                 Assert.IsNull(error);
-            }, first: 250);
+                Assert.AreEqual((DefaultQueries.MaxCollectionsPageSize - 1).ToString(), after);
+            }, first: DefaultQueries.MaxCollectionsPageSize);
 
-            Assert.AreEqual(250, collections.Count);
+            Assert.AreEqual(DefaultQueries.MaxCollectionsPageSize, collections.Count);
         }
 
         [Test]
