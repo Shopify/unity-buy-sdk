@@ -23,7 +23,7 @@ public class ShopPopup : MonoBehaviour {
     public UnityEvent OnPanelOpen;
     public UnityEvent OnPanelClose;
 
-    // Credentials for access to Shopify store 
+    // Credentials for access to Shopify store
     // For more information about getting an access token visit
     // https://help.shopify.com/api/storefront-api/getting-started#authentication
 
@@ -44,22 +44,12 @@ public class ShopPopup : MonoBehaviour {
     private void Start() {
         // Begin by initializing ShopifyHelper, to make connection to shop
         ShopifyHelper.Init(AccessToken, ShopDomain);
-        // With initialization complete, fetch products
-        ShopifyHelper.FetchProducts(
-            delegate (List<Product> products) {
-                foreach (var product in products) {
-                    // For each of the products received, add them to the products panel
-                    ProductsPanel.AddProduct(product);
-                }
-            },
-            delegate {
-                RenderError("Could not find products.");
-            }
-        );
+        // With initialization complete, initial products panel
+        ProductsPanel.Init();
 
         // Setup event listeners for panels
 
-        // Handle transition to specific product 
+        // Handle transition to specific product
         ProductsPanel.OnShowProduct.AddListener(product => {
             ShowPanel(ProductPanel.gameObject);
             ProductPanel.SetCurrentProduct(product);
@@ -68,6 +58,8 @@ public class ShopPopup : MonoBehaviour {
         // Handle event from click of the close pop up button
         ProductsPanel.OnClosePanel.AddListener(HidePopup);
 
+        ProductsPanel.OnNetworkError.AddListener(() => RenderError("Could not find products."));
+
         // Handle transition back to products list from product view
         ProductPanel.OnReturnToProducts.AddListener(() => ShowPanel(ProductsPanel.gameObject));
         // Handle transition to the cart view
@@ -75,7 +67,7 @@ public class ShopPopup : MonoBehaviour {
         // Handles click of the add to cart button, which transitions to the cart view
         ProductPanel.OnAddProductToCart.AddListener(CartPanel.AddToCart);
 
-        // Handle transition back to products list from cart view 
+        // Handle transition back to products list from cart view
         CartPanel.OnReturnToProducts.AddListener(() => ShowPanel(ProductsPanel.gameObject));
         // Handles a change in cart quanity, in order to update the cart quantity indicators
         CartPanel.OnCartQuantityChanged.AddListener(UpdateCartQuantity);
@@ -84,7 +76,7 @@ public class ShopPopup : MonoBehaviour {
         // Handles a failed checkout by displaying the error
         CartPanel.OnCheckoutFailure.AddListener(RenderError);
 
-        // Handle transition back to products list from empty cart view 
+        // Handle transition back to products list from empty cart view
         EmptyCartPanel.OnReturnToProducts.AddListener(() => ShowPanel(ProductsPanel.gameObject));
 
         // Handle transition to cart view, when view cart button is clicked

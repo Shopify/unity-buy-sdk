@@ -23,7 +23,7 @@ namespace Shopify.Examples.Helpers {
             Initialized = true;
         }
 
-        public static void FetchProducts(Action<List<Product>> successCallback, Action failureCallback) {
+        public static void FetchProducts(Action<List<Product>, string> successCallback, Action failureCallback, string cursor) {
             // Fetch product listing from Shopify
             // For more information on querying products visit
             // https://help.shopify.com/api/sdks/custom-storefront/unity-buy-sdk/getting-started#query-all-products
@@ -35,8 +35,8 @@ namespace Shopify.Examples.Helpers {
                     return;
                 }
 
-                successCallback(products);
-            });
+                successCallback(products, after);
+            }, 5, cursor);
         }
 
         public static Cart CreateCart() {
