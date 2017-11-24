@@ -13,16 +13,6 @@
 
     [TestFixture]
     public class TestSingleProductThemeController {
-        public class MockSingleProductTheme : SingleProductTheme {
-            public override void OnError(ShopifyError error) {}
-            public override void OnLoadingFinished() {}
-            public override void OnLoadingStarted() {}
-            public override void OnPurchaseCancelled() {}
-            public override void OnPurchaseCompleted() {}
-            public override void OnPurchaseStarted() {}
-            public override void OnShouldShowProduct(Product product, ProductVariant[] variants) {}
-        }
-
         private SingleProductThemeController _controller;
         private ISingleProductTheme _theme;
 
