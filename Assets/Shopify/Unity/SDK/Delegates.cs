@@ -19,6 +19,7 @@ namespace Shopify.Unity.SDK {
 
     public delegate void ProductsHandler(List<Product> products, ShopifyError error);
     public delegate void ProductsPaginatedHandler(List<Product> products, ShopifyError error, string after);
+    public delegate void CollectionsHandler(List<Collection> products, ShopifyError error);
     public delegate void CollectionsPaginatedHandler(List<Collection> collections, ShopifyError error, string after);
     public delegate void QueryRootHandler(QueryRoot queryRoot, ShopifyError error);
     public delegate void MutationRootHandler(Mutation mutationRoot, ShopifyError error);

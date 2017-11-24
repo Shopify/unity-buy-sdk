@@ -483,6 +483,60 @@ namespace Shopify.Unity {
         }
 
         /// <summary>
+        /// Generates a query to fetch the specified <c>collections</c> by id from a Shopify store. The generated query will query the following on collections:
+        ///     - id
+        ///     - title
+        ///     - description
+        ///     - descriptionHtml
+        ///     - updatedAt
+        ///     - image
+        ///         - altText
+        ///         - src
+        ///     - products
+        ///         - id
+        ///
+        /// </summary>
+        /// <param name="callback">callback that will receive responses from server</param>
+        /// <param name="first">the list of collection ids you want to receive from the server</param>
+        /// \code
+        /// // Example usage querying two collection ids using a List<string>
+        /// List<string> collectionIds = new List<string>() {
+        ///     "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyNzYwOTk=",
+        ///     "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyNzkwNDM="
+        /// };
+        ///
+        /// ShopifyBuy.Client().collections((collections, error) => {
+        ///     Debug.Log(collections[0].title());
+        ///     Debug.Log(collections[1].title());
+        /// }, collectionIds);
+        /// \endcode
+        public void collections(CollectionsHandler callback, List<string> collectionIds) {
+            QueryRootQuery query = new QueryRootQuery();
+
+            query.nodes(n => n
+                .onCollection((c) => {
+                    DefaultQueries.collections.Collection(c, DefaultImageResolutions);
+                }),
+                ids: collectionIds
+            );
+
+            Loader.Query(query, (response) => {
+                var error = (ShopifyError)response;
+                if (error != null) {
+                    callback(null, error);
+                } else {
+                    List<Collection> collections = new List<Collection>();
+
+                    foreach (Shopify.Unity.Collection collection in response.data.nodes()) {
+                        collections.Add(collection);
+                    }
+
+                    callback(collections, error);
+                }
+            });
+        }
+
+        /// <summary>
         /// Allows you to send custom GraphQL queries to the Storefront API. While having utility functions like <see ref="ShopifyClient.products">products </see>
         /// <see ref="ShopifyClient.collections">collections </see> is useful, the Storefront API has more functionality. This method
         /// allows you to access all the extra functionality that the Storefront API provides.

@@ -18,7 +18,7 @@ namespace Shopify.Unity.Tests
             Clients.GraphQLMany.collections(
                 first: 1,
                 callback: (collections, error, after) => {
-                waiter.Stop();
+                    waiter.Stop();
 
                     Assert.IsNull(error, "No errors");
                     Assert.AreEqual(1, collections.Count, "Loaded 1 collection");
@@ -73,6 +73,39 @@ namespace Shopify.Unity.Tests
             Assert.IsTrue(waiter.IsStopped, "Query did not complete in " + maxDuration + " seconds");
             Assert.IsNull(errorsFromQueries);
             Assert.GreaterOrEqual(AllCollections.Count, maxCollections);
+        }
+
+        public IEnumerator LoadCollectionById() {
+            ShopifyBuy.Init("351c122017d0f2a957d32ae728ad749c", "graphql.myshopify.com");
+            StoppableWaitForTime getFirstCollectionWaiter = Utils.GetWaitQuery ();
+
+            Collection foundCollection = null;
+            ShopifyBuy.Client().collections(
+                first: 1,
+                callback: (collections, error, after) => {
+                    getFirstCollectionWaiter.Stop();
+                    foundCollection = collections[0];
+                }
+            );
+
+            yield return getFirstCollectionWaiter;
+            Assert.IsTrue (getFirstCollectionWaiter.IsStopped, Utils.MaxQueryMessage);
+
+            StoppableWaitForTime getSecondCollectionWaiter = Utils.GetWaitQuery ();
+            var collectionIds = new List<string>() { foundCollection.id() };
+            Collection foundCollectionById = null;
+            ShopifyBuy.Client().collections(
+                collectionIds: collectionIds,
+                callback: (collections, error) => {
+                    getSecondCollectionWaiter.Stop();
+                    foundCollectionById = collections[0];
+                }
+            );
+
+            yield return getSecondCollectionWaiter;
+
+            Assert.IsTrue(getSecondCollectionWaiter.IsStopped, Utils.MaxQueryMessage);
+            Assert.IsTrue(foundCollection.id() == foundCollectionById.id());
         }
     }
 }
