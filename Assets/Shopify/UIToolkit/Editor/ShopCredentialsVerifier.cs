@@ -11,15 +11,15 @@
     /// and drawing a UI to support the feature.
     /// </summary>
     public class ShopCredentialsVerifier {
-        private IShopCredentials _context;
-        private bool _isRequestInProgress;
+        private IShopCredentials _Credentials;
+        private bool _IsRequestInProgress;
 
         /// <summary>
         /// Creates a new verifier
         /// </summary>
         /// <param name="context">The object with credentials</param>
-        public ShopCredentialsVerifier(IShopCredentials context) {
-            _context = context;
+        public ShopCredentialsVerifier(IShopCredentials credentials) {
+            _Credentials = credentials;
         }
 
         /// <summary>
@@ -30,7 +30,7 @@
         public void DrawInspectorGUI(SerializedObject serializedObject) {
             EditorGUILayout.Separator();
 
-            var disableCredentialsForm = _context.CredentialsVerificationState == ShopCredentialsVerificationState.Verified;
+            var disableCredentialsForm = _Credentials.CredentialsVerificationState == ShopCredentialsVerificationState.Verified;
 
             EditorGUI.BeginDisabledGroup(disableCredentialsForm);
             DrawCredentialsForm(serializedObject);
@@ -48,17 +48,17 @@
         /// <param name="onSuccess">Callback called when the credentials are found to be valid</param>
         /// <param name="onFailure">Callback called when the credentials are found to be invalid</param>
         public void VerifyCredentials(Action onSuccess, Action onFailure) {
-            if (_isRequestInProgress) 
+            if (_IsRequestInProgress) 
                 throw new InvalidOperationException("Can't verify credentials when a verification request is already in progress.");
 
-            _isRequestInProgress = true;
+            _IsRequestInProgress = true;
 
             Client().Query((root) => {
                 root.shop((shop) => {
                     shop.name();
                 });
             }, (QueryRoot result, ShopifyError error) => {
-                _isRequestInProgress = false;
+                _IsRequestInProgress = false;
 
                 OnVerificationRequestComplete(result, error);
 
@@ -83,14 +83,14 @@
         /// </summary>
         /// <returns>True if the context's credentials are verified</returns>
         public bool HasVerifiedCredentials() {
-            return _context.CredentialsVerificationState == ShopCredentialsVerificationState.Verified;
+            return _Credentials.CredentialsVerificationState == ShopCredentialsVerificationState.Verified;
         }
 
         /// <summary>
         /// Resets the verification state of the context object
         /// </summary>
         public void ResetVerificationState() {
-            _context.CredentialsVerificationState = ShopCredentialsVerificationState.Unverified;
+            _Credentials.CredentialsVerificationState = ShopCredentialsVerificationState.Unverified;
         }
 
         private void DrawCredentialsForm(SerializedObject serializedObject) {
@@ -99,7 +99,7 @@
         }
 
         private void DrawActionButton() {
-            switch (_context.CredentialsVerificationState) {
+            switch (_Credentials.CredentialsVerificationState) {
                 case ShopCredentialsVerificationState.Invalid:
                     ActionButton("Try Again", VerifyCredentials);
                     break;
@@ -119,22 +119,22 @@
         }
 
         private void DrawMessageBox() {
-            if (_context.CredentialsVerificationState == ShopCredentialsVerificationState.Invalid) {
+            if (_Credentials.CredentialsVerificationState == ShopCredentialsVerificationState.Invalid) {
                 EditorGUILayout.HelpBox("The credentials provided could not be used to connect to your shop.", MessageType.Error);
             }
         }
 
         private ShopifyClient Client() {
-            return new ShopifyClient(new UnityEditorLoader(_context.ShopDomain, _context.AccessToken));
+            return new ShopifyClient(new UnityEditorLoader(_Credentials.ShopDomain, _Credentials.AccessToken));
         }
 
         private void OnVerificationRequestComplete(QueryRoot result, ShopifyError errors) {
-            _isRequestInProgress = false;
+            _IsRequestInProgress = false;
 
             if (errors != null) {
-                _context.CredentialsVerificationState = ShopCredentialsVerificationState.Invalid;
+                _Credentials.CredentialsVerificationState = ShopCredentialsVerificationState.Invalid;
             } else {
-                _context.CredentialsVerificationState = ShopCredentialsVerificationState.Verified;
+                _Credentials.CredentialsVerificationState = ShopCredentialsVerificationState.Verified;
             }
         }
     }
