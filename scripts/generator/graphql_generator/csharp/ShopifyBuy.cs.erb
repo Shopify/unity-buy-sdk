@@ -294,7 +294,11 @@ namespace Shopify.Unity {
         /// 	Debug.Log(products.Count);
         /// });
         /// \endcode
-        public void products(ProductsPaginatedHandler callback, int? first = 20, string after = null) {
+        public void products(ProductsPaginatedHandler callback, int? first = null, string after = null) {
+            if (first == null) {
+                first = DefaultQueries.MaxProductPageSize;
+            }
+
             GetProductsList((products, error, afterGetProductsList) => {
                 if (error != null) {
                     callback(null, error, null);
@@ -464,11 +468,15 @@ namespace Shopify.Unity {
         /// 	Debug.Log(collections.Count);
         /// });
         /// \endcode
-        public void collections(CollectionsHandler callback, int? first = null, string after = null) {
-            GetCollectionsList((collections, error) => {
+        public void collections(CollectionsPaginatedHandler callback, int? first = null, string after = null) {
+            if (first == null) {
+                first = DefaultQueries.MaxCollectionsPageSize;
+            }
+
+            GetCollectionsList((collections, error, afterGetProductsList) => {
                 // Short circuit if we have an error.
                 if (error != null) {
-                    callback(null, error);
+                    callback(null, error, null);
                     return;
                 }
 
@@ -487,7 +495,7 @@ namespace Shopify.Unity {
                 List<Node> nodes = collections.ConvertAll(p => (Node) p);
 
                 loader.QueryConnectionsOnNodes(nodes, connectionInfos, BuildCollectionQueryOnNode, (nodesResult, responseError) => {
-                    callback(nodesResult.ConvertAll(n => (Collection) n), responseError);
+                    callback(nodesResult.ConvertAll(n => (Collection) n), responseError, afterGetProductsList);
                 });
             }, first: first, after: after);
         }
@@ -872,7 +880,7 @@ namespace Shopify.Unity {
             );
         }
 
-        private void GetCollectionsList(CollectionsHandler callback, int? first = null, string after = null) {
+        private void GetCollectionsList(CollectionsPaginatedHandler callback, int? first = null, string after = null) {
             ConnectionLoader loader = new ConnectionLoader(Loader);
             int countToLoad = first == null ? int.MaxValue : (int) first;
 
@@ -906,9 +914,17 @@ namespace Shopify.Unity {
                 (response) => {
                     var error = (ShopifyError)response;
                     if (error != null) {
-                        callback(null, error);
+                        callback(null, error, null);
                     } else {
-                        callback((List<Collection>) response.data.shop().collections(), null);
+                        string lastCursor = null;
+
+                        if (response.data.shop().collections().pageInfo().hasNextPage()) {
+                            List<CollectionEdge> collectionEdges = response.data.shop().collections().edges();
+
+                            lastCursor = collectionEdges[collectionEdges.Count - 1].cursor();
+                        }
+
+                        callback((List<Collection>) response.data.shop().collections(), error, lastCursor);
                     }
                 }
             );
