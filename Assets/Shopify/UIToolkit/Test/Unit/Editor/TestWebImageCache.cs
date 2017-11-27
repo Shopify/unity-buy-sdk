@@ -10,6 +10,9 @@ namespace Shopify.UIToolkit.Test.Unit {
         [TearDown]
         public void Cleanup() {
             WebImageCache.SharedCache.Clear();
+
+            // Reset memory size to default before we close out the test.
+            WebImageCache.SharedCache.SetMemorySizeLimit(WebImageCache.DEFAULT_MEMORY_SIZE_LIMIT);
         }
 
 		[Test]
@@ -50,7 +53,8 @@ namespace Shopify.UIToolkit.Test.Unit {
         }
 
         public void TestReplaceTextureForURL() {
-            WebImageCache cache = new WebImageCache(80000);
+            WebImageCache cache = WebImageCache.SharedCache;
+            cache.SetMemorySizeLimit(80000);
             string url = "myimage.com/image";
             var textureA = new CachedWebResource<Texture2D>("0", new Texture2D(100, 100));
             var textureB = new CachedWebResource<Texture2D>("0", new Texture2D(100, 100));
@@ -65,7 +69,8 @@ namespace Shopify.UIToolkit.Test.Unit {
 
         [Test]
         public void TestSetTextureForURLAtSizeLimit() {
-            WebImageCache cache = new WebImageCache(80000);
+            WebImageCache cache = WebImageCache.SharedCache;
+            cache.SetMemorySizeLimit(80000);
 
             string urlA = "myimage.com/imageA";
             string urlB = "myimage.com/imageB";
@@ -89,6 +94,88 @@ namespace Shopify.UIToolkit.Test.Unit {
             Assert.NotNull(cache.TextureResourceForURL(urlB));
             Assert.NotNull(cache.TextureResourceForURL(urlC));
             Assert.Null(cache.TextureResourceForURL(urlA));
+        }
+
+        [Test]
+        public void TestChangingMemorySizeToLarger() {
+            WebImageCache cache = WebImageCache.SharedCache;
+            cache.SetMemorySizeLimit(80000);
+
+            string urlA = "myimage.com/imageA";
+            string urlB = "myimage.com/imageB";
+
+            var textureA = new CachedWebResource<Texture2D>("0", new Texture2D(100, 100));
+            var textureB = new CachedWebResource<Texture2D>("0", new Texture2D(100, 100));
+
+            cache.SetTextureResourceForURL(urlA, textureA);
+            cache.SetTextureResourceForURL(urlB, textureB);
+
+            Assert.NotNull(cache.TextureResourceForURL(urlA));
+            Assert.NotNull(cache.TextureResourceForURL(urlB));
+            Assert.AreEqual(cache.EstimatedMemorySize, 80000);
+            Assert.AreEqual(cache.MemorySizeLimit, 80000);
+
+            cache.SetMemorySizeLimit(100000);
+
+            // Check that nothing changed since we increased the limit.
+            Assert.NotNull(cache.TextureResourceForURL(urlA));
+            Assert.NotNull(cache.TextureResourceForURL(urlB));
+            Assert.AreEqual(cache.EstimatedMemorySize, 80000);
+            Assert.AreEqual(cache.MemorySizeLimit, 100000);
+        }
+
+        [Test]
+        public void TestChangingMemorySizeToSmaller() {
+            WebImageCache cache = WebImageCache.SharedCache;
+            cache.SetMemorySizeLimit(80000);
+
+            string urlA = "myimage.com/imageA";
+            string urlB = "myimage.com/imageB";
+
+            var textureA = new CachedWebResource<Texture2D>("0", new Texture2D(100, 100));
+            var textureB = new CachedWebResource<Texture2D>("0", new Texture2D(100, 100));
+
+            cache.SetTextureResourceForURL(urlA, textureA);
+            cache.SetTextureResourceForURL(urlB, textureB);
+
+            Assert.NotNull(cache.TextureResourceForURL(urlA));
+            Assert.NotNull(cache.TextureResourceForURL(urlB));
+            Assert.AreEqual(cache.EstimatedMemorySize, 80000);
+            Assert.AreEqual(cache.MemorySizeLimit, 80000);
+
+            cache.SetMemorySizeLimit(50000);
+
+            // Making the cache smaller by an image should evict the oldest one.
+            Assert.IsNull(cache.TextureResourceForURL(urlA));
+            Assert.NotNull(cache.TextureResourceForURL(urlB));
+            Assert.AreEqual(cache.EstimatedMemorySize, 40000);
+            Assert.AreEqual(cache.MemorySizeLimit, 50000);
+
+            cache.SetMemorySizeLimit(0);
+
+            // Making the cache zero should remove anything else!
+            Assert.IsNull(cache.TextureResourceForURL(urlA));
+            Assert.IsNull(cache.TextureResourceForURL(urlB));
+            Assert.AreEqual(cache.EstimatedMemorySize, 0);
+            Assert.AreEqual(cache.MemorySizeLimit, 0);
+        }
+
+        [Test]
+        public void TestClearingCache() {
+            WebImageCache cache = WebImageCache.SharedCache;
+
+            string url = "myimage.com/imageA";
+            var texture = new CachedWebResource<Texture2D>("0", new Texture2D(100, 100));
+
+            cache.SetTextureResourceForURL(url, texture);
+
+            Assert.NotNull(cache.TextureResourceForURL(url));
+            Assert.AreEqual(cache.EstimatedMemorySize, 40000);
+
+            cache.Clear();
+
+            Assert.IsNull(cache.TextureResourceForURL(url));
+            Assert.AreEqual(cache.EstimatedMemorySize, 0);
         }
     }
 }
