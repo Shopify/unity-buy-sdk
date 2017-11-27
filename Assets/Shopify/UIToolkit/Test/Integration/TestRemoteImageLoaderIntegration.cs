@@ -1,12 +1,12 @@
 #if !UNITY_IOS
 namespace Shopify.UIToolkit.Test.Integration {
-	using UnityEngine;
+    using UnityEngine;
     using UnityEngine.UI;
     using UnityEngine.TestTools;
     using System.Collections;
     using Shopify.Unity.SDK;
 
-	[IntegrationTest.DynamicTest("UIToolkitIntegrationTests")]
+    [IntegrationTest.DynamicTest("UIToolkitIntegrationTests")]
     [IntegrationTest.Timeout(10)]
     public class TestRemoteImageLoaderIntegration {
 
