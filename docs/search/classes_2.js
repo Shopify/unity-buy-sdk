@@ -60,6 +60,7 @@ var searchData=
   ['collectionedge',['CollectionEdge',['../class_shopify_1_1_unity_1_1_collection_edge.html',1,'Shopify::Unity']]],
   ['collectionedgequery',['CollectionEdgeQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_collection_edge_query.html',1,'Shopify::Unity::GraphQL']]],
   ['collectionquery',['CollectionQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_collection_query.html',1,'Shopify::Unity::GraphQL']]],
+  ['collectiontheme',['CollectionTheme',['../class_shopify_1_1_u_i_toolkit_1_1_collection_theme.html',1,'Shopify::UIToolkit']]],
   ['comment',['Comment',['../class_shopify_1_1_unity_1_1_comment.html',1,'Shopify::Unity']]],
   ['commentauthor',['CommentAuthor',['../class_shopify_1_1_unity_1_1_comment_author.html',1,'Shopify::Unity']]],
   ['commentauthorquery',['CommentAuthorQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_comment_author_query.html',1,'Shopify::Unity::GraphQL']]],
