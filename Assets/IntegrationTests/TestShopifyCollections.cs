@@ -69,7 +69,6 @@ namespace Shopify.Unity.Tests
 
             yield return waiter;
 
-            Debug.Log(AllCollections[0].title());
             Assert.IsTrue(waiter.IsStopped, "Query did not complete in " + maxDuration + " seconds");
             Assert.IsNull(errorsFromQueries);
             Assert.GreaterOrEqual(AllCollections.Count, maxCollections);
