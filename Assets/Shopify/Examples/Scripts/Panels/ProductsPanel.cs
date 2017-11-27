@@ -29,19 +29,14 @@ namespace Shopify.Examples.Panels {
         public ScrollRect ScrollView;
         public RectTransform Content;
 
-        private RectTransform RectTransform;
-
-        private bool HitEndCursor;
-
-        private string After;
-
-        private bool WasScrolledToBottom;
-        private bool IsScrolledToBottom;
-
-        private int ScrollCount;
+        private RectTransform _rectTransform;
+        private bool _hitEndCursor;
+        private string _after;
+        private bool _wasScrolledToBottom;
+        private bool _fetchEnabled = true;
 
         private void Start() {
-            RectTransform = GetComponent<RectTransform>();
+            _rectTransform = GetComponent<RectTransform>();
             ViewCartButton.onClick.AddListener(() => OnViewCart.Invoke());
             ClosePanelButton.onClick.AddListener(() => OnClosePanel.Invoke());
             ScrollView.onValueChanged.AddListener(OnScrollRectPositionChanged);
@@ -52,20 +47,32 @@ namespace Shopify.Examples.Panels {
             FetchProducts ();
         }
 
+        public void PauseFetching() {
+            _fetchEnabled = false;
+        }
+
+        public void ResumeFetching() {
+            _fetchEnabled = true;
+        }
+
         private void FetchProducts() {
+            if (!_fetchEnabled) {
+                return;
+            }
+
             ShopifyHelper.FetchProducts(
                 delegate (List<Product> products, string cursor) {
                     foreach (var product in products) {
                         // For each of the products received, add them to the products panel
                         AddProduct(product);
                     }
-                    After = cursor;
-                    HitEndCursor = After == null;
+                    _after = cursor;
+                    _hitEndCursor = _after == null;
                 },
                 delegate {
                     OnNetworkError.Invoke();
                 },
-                After
+                _after
             );
         }
 
@@ -73,31 +80,27 @@ namespace Shopify.Examples.Panels {
             var visibleProductViews = _lineItems.Where((x) => {
                 if (x.IsLoaded) return false;
 
-                var productViewLocalPosition = RectTransform.InverseTransformPoint(x.transform.position);
-                return productViewLocalPosition.y > RectTransform.rect.yMin
-                    && productViewLocalPosition.y < RectTransform.rect.yMax;
+                var productViewLocalPosition = _rectTransform.InverseTransformPoint(x.transform.position);
+                return productViewLocalPosition.y > _rectTransform.rect.yMin
+                    && productViewLocalPosition.y < _rectTransform.rect.yMax;
             });
 
             foreach (var productView in visibleProductViews) {
                 productView.Load();
             }
 				
-            IsScrolledToBottom = scrollOffset.y < 0;
-        }
+            bool isScrolledToBottom = scrollOffset.y < 0;
 
-        private void Update() {
-            if (!WasScrolledToBottom && IsScrolledToBottom) {
-                if (ScrollCount > 0 && !HitEndCursor) {
+            if (!_wasScrolledToBottom && isScrolledToBottom) {
+                if (!_hitEndCursor) {
                     FetchProducts ();
                 }
-
-                ScrollCount += 1;
             }
 
-            WasScrolledToBottom = IsScrolledToBottom;
+            _wasScrolledToBottom = isScrolledToBottom;
         }
 
-        public void AddProduct(Shopify.Unity.Product product) {
+        public void AddProduct(Product product) {
             if (_addedProductIds.Contains (product.id ())) {
                 return;
             }

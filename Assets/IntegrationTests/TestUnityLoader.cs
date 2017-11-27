@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 #if UNITY_EDITOR
-=======
-#if !SHOPIFY_MONO_UNIT_TEST
->>>>>>> Product pagination (#387)
 namespace Shopify.Unity.Tests
 {
     using System;

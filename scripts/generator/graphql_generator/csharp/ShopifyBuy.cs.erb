@@ -287,7 +287,22 @@ namespace Shopify.Unity {
         /// products would be loaded after cursor <c>"abc"</c>. If no <c>after</c> is passed the first page of products will be loaded.
         /// </param>
         /// \code
-        public void products(ProductsPaginatedHandler callback, int? first = 20, string after = null) {
+        /// // Example usage querying one page of products after the cursor "abc":
+        /// ShopifyBuy.Client().products((products, error, after) => {
+        ///     Debug.Log(products[0].title());
+        ///     Debug.Log(products[1].title());
+        ///     Debug.Log(products.Count);
+        ///
+        ///     if (after != null) {
+        ///         // more products could be loaded here
+        ///     }
+        /// }, after: "abc");
+        /// \endcode
+        public void products(ProductsPaginatedHandler callback, int? first = null, string after = null) {
+            if (first == null) {
+                first = DefaultQueries.MaxProductPageSize;
+            }
+
             GetProductsList((products, error, afterGetProductsList) => {
                 if (error != null) {
                     callback(null, error, null);
@@ -860,7 +875,7 @@ namespace Shopify.Unity {
 
                             lastCursor = productEdges[productEdges.Count - 1].cursor();
                         }
-
+                        
                         callback((List<Product>) response.data.shop().products(), error, lastCursor);
                     }
                 }

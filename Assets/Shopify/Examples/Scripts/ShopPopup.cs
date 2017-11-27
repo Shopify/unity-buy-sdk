@@ -17,6 +17,8 @@ public class ShopPopup : MonoBehaviour {
     public ViewCartButton ViewCartButton;
     public Button EmptyViewCartButton;
 
+    public AnimationCanvas AnimationCanvas;
+
     public Animator AnimationCanvasAnimator;
     public Animator ErrorPanelAnimator;
 
@@ -83,6 +85,9 @@ public class ShopPopup : MonoBehaviour {
         ViewCartButton.OnClick.AddListener(() => ShowPanel(CartPanel.gameObject));
         // Handle click on empty view cart button, by transitioning to empty cart view
         EmptyViewCartButton.onClick.AddListener(() => ShowPanel(EmptyCartPanel.gameObject));
+
+        AnimationCanvas.OnAnimationStarted.AddListener (() => ProductsPanel.PauseFetching ());
+        AnimationCanvas.OnAnimationStopped.AddListener (() => ProductsPanel.ResumeFetching ());
     }
 
     private void RenderError(string errorMessage) {
