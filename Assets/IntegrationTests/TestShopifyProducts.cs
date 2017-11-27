@@ -13,10 +13,9 @@ namespace Shopify.Unity.Tests
     public class TestShopifyProducts : MonoBehaviour {
         [UnityTest]
         public IEnumerator Load3Products() {
-            ShopifyBuy.Init("351c122017d0f2a957d32ae728ad749c", "graphql.myshopify.com");
             StoppableWaitForTime waiter = Utils.GetWaitQuery ();
 
-            ShopifyBuy.Client().products(
+            Clients.GraphQL.products(
                 first: 3,
                 callback: (products, error, after) => {
                     waiter.Stop();
@@ -53,10 +52,9 @@ namespace Shopify.Unity.Tests
 
         [UnityTest]
         public IEnumerator LoadProductsById() {
-            ShopifyBuy.Init("351c122017d0f2a957d32ae728ad749c", "graphql.myshopify.com");
             StoppableWaitForTime waiter = Utils.GetWaitQuery ();
 
-            ShopifyBuy.Client().products(
+            Clients.GraphQL.products(
                 (products, error) => {
                     waiter.Stop();
 
@@ -93,7 +91,6 @@ namespace Shopify.Unity.Tests
 
         [UnityTest]
         public IEnumerator Loads20ProductsInLessThan6Seconds() {
-            ShopifyBuy.Init("43b7fef8bd2f27f1d645586b72c9b825", "graphql-many-products.myshopify.com");
             float maxDuration = 6f;
             int maxProducts = 20;
             StoppableWaitForTime waiter = new StoppableWaitForTime (maxDuration);
@@ -103,7 +100,7 @@ namespace Shopify.Unity.Tests
             Action<string> loadPage = null;
 
             loadPage = (string after) => {
-                ShopifyBuy.Client().products((products, errors, afterProductsLoaded) => {
+                Clients.GraphQLMany.products((products, errors, afterProductsLoaded) => {
                     if (products != null) {
                         AllProducts.AddRange(products);
                     }

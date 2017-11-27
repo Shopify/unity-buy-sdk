@@ -9,10 +9,9 @@ namespace Shopify.Unity.Tests
     public class TestGenericQuery : MonoBehaviour {
         [UnityTest]
         public IEnumerator LoadShopName() {
-            ShopifyBuy.Init("351c122017d0f2a957d32ae728ad749c", "graphql.myshopify.com");
             StoppableWaitForTime waiter = Utils.GetWaitQuery();
 
-            ShopifyBuy.Client().Query(
+            Clients.GraphQL.Query(
                 (q) => q.shop(s => s
                     .name()
                 ), 

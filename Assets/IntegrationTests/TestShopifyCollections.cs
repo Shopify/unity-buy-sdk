@@ -12,10 +12,9 @@ namespace Shopify.Unity.Tests
     public class TestShopifyCollections : MonoBehaviour {
         [UnityTest]
         public IEnumerator LoadACollection() {
-            ShopifyBuy.Init("43b7fef8bd2f27f1d645586b72c9b825", "graphql-many-products.myshopify.com");
             StoppableWaitForTime waiter = Utils.GetWaitQuery ();
 
-            ShopifyBuy.Client().collections(
+            Clients.GraphQLMany.collections(
                 first: 1,
                 callback: (collections, error, after) => {
                 waiter.Stop();
@@ -41,7 +40,6 @@ namespace Shopify.Unity.Tests
 
         [UnityTest]
         public IEnumerator LoadAllCollections() {
-            ShopifyBuy.Init("43b7fef8bd2f27f1d645586b72c9b825", "graphql-many-products.myshopify.com");
             float maxDuration = 6f;
             int maxCollections = 13;
             StoppableWaitForTime waiter = new StoppableWaitForTime (maxDuration);
@@ -51,7 +49,7 @@ namespace Shopify.Unity.Tests
             Action<string> loadPage = null;
 
             loadPage = (string after) => {
-                ShopifyBuy.Client().collections((collections, errors, afterCollectionsLoaded) => {
+                Clients.GraphQLMany.collections((collections, errors, afterCollectionsLoaded) => {
                     if (collections != null) {
                         AllCollections.AddRange(collections);
                     }
@@ -71,6 +69,7 @@ namespace Shopify.Unity.Tests
 
             yield return waiter;
 
+            Debug.Log(AllCollections[0].title());
             Assert.IsTrue(waiter.IsStopped, "Query did not complete in " + maxDuration + " seconds");
             Assert.IsNull(errorsFromQueries);
             Assert.GreaterOrEqual(AllCollections.Count, maxCollections);
