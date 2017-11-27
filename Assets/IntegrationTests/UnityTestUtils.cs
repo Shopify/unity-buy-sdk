@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Shopify.Unity.Tests {
-    public class Utils {
+    public class UnityTestUtils {
         public const float MaxQueryDuration = 1f;
-        public const string MaxQueryMessage = "Query finished in 1 seconds";
+        public static string MaxQueryMessage {
+            get { return string.Format("Query failed to complete in {0} second", MaxQueryDuration); }
+        }
 
         public static StoppableWaitForTime GetWaitQuery() {
             return new StoppableWaitForTime (MaxQueryDuration);

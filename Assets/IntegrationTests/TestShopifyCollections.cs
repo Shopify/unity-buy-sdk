@@ -11,7 +11,7 @@ namespace Shopify.Unity.Tests
         [UnityTest]
         public IEnumerator LoadACollection() {
             ShopifyBuy.Init("351c122017d0f2a957d32ae728ad749c", "graphql.myshopify.com");
-            StoppableWaitForTime waiter = Utils.GetWaitQuery ();
+            var waiter = UnityTestUtils.GetWaitQuery ();
 
             ShopifyBuy.Client().collections(
                 first: 1,
@@ -22,9 +22,9 @@ namespace Shopify.Unity.Tests
                     Assert.AreEqual(1, collections.Count, "Loaded 1 collection");
                     Assert.AreEqual("Home page", collections[0].title(), "First collection is: Home page");
 
-                    List<string> aliases = Utils.GetImageAliases();
+                    var aliases = UnityTestUtils.GetImageAliases();
 
-                    foreach(string alias in aliases) {
+                    foreach(var alias in aliases) {
                         // this will throw an exception if image was not queried with alias
                         // no collections in our test store have values
                         collections[0].image(alias);
@@ -34,7 +34,7 @@ namespace Shopify.Unity.Tests
 
             yield return waiter;
 
-            Assert.IsTrue (waiter.IsStopped, Utils.MaxQueryMessage);
+            Assert.IsTrue (waiter.IsStopped, UnityTestUtils.MaxQueryMessage);
         }
     }
 }

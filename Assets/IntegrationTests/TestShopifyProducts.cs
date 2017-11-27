@@ -12,7 +12,7 @@ namespace Shopify.Unity.Tests
         [UnityTest]
         public IEnumerator Load3Products() {
             ShopifyBuy.Init("351c122017d0f2a957d32ae728ad749c", "graphql.myshopify.com");
-            StoppableWaitForTime waiter = Utils.GetWaitQuery ();
+            var waiter = UnityTestUtils.GetWaitQuery ();
 
             ShopifyBuy.Client().products(
                 first: 3,
@@ -24,15 +24,15 @@ namespace Shopify.Unity.Tests
                     Assert.AreEqual("Snare Boot", products[0].title(), "Title product 0: Snare Boot");
                     Assert.AreEqual("Neptune Boot", products[1].title(), "Title product 1: Neptune Boot");
 
-                    List<string> aliases = Utils.GetImageAliases();
+                    var aliases = UnityTestUtils.GetImageAliases();
                     
-                    foreach(string imageAlias in aliases) {
+                    foreach(var imageAlias in aliases) {
                         Assert.IsNotNull(products[0].images(imageAlias), string.Format("images alias {0} was queried", imageAlias));
                     }
 
-                    List<ProductVariant> variants = (List<ProductVariant>) products[0].variants();
+                    var variants = (List<ProductVariant>) products[0].variants();
                     
-                    foreach(string imageAlias in aliases) {
+                    foreach(var imageAlias in aliases) {
                         // this will throw an exception if not queried
                         variants[0].image(imageAlias);
                     }
@@ -46,7 +46,7 @@ namespace Shopify.Unity.Tests
 
             yield return waiter;
 
-            Assert.IsTrue (waiter.IsStopped, Utils.MaxQueryMessage);
+            Assert.IsTrue (waiter.IsStopped, UnityTestUtils.MaxQueryMessage);
         }
 
         [UnityTest]
@@ -63,15 +63,15 @@ namespace Shopify.Unity.Tests
                     Assert.AreEqual("Arena Zip Boot", products[0].title(), "Title product 0: Snare Boot");
                     Assert.AreEqual("Pin Boot", products[1].title(), "Title product 1: Neptune Boot");
 
-                    List<string> aliases = Utils.GetImageAliases();
+                    var aliases = UnityTestUtils.GetImageAliases();
 
-                    foreach(string imageAlias in aliases) {
+                    foreach(var imageAlias in aliases) {
                         Assert.IsNotNull(products[0].images(imageAlias), string.Format("images alias {0} was queried", imageAlias));
                     }
 
-                    List<ProductVariant> variants = (List<ProductVariant>) products[0].variants();
+                    var variants = (List<ProductVariant>) products[0].variants();
 
-                    foreach(string imageAlias in aliases) {
+                    foreach(var imageAlias in aliases) {
                         // this will throw an exception if not queried
                         variants[0].image(imageAlias);
                     }
@@ -84,9 +84,9 @@ namespace Shopify.Unity.Tests
                 "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyODE0NzU=", "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyODQyOTE="
             );
 
-            yield return Utils.GetWaitQuery ();
+            yield return UnityTestUtils.GetWaitQuery ();
 
-            Assert.IsTrue (hadResult, Utils.MaxQueryMessage);
+            Assert.IsTrue (hadResult, UnityTestUtils.MaxQueryMessage);
         }
     }   
 }

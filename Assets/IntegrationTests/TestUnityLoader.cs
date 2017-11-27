@@ -16,11 +16,11 @@ namespace Shopify.Unity.Tests
         public IEnumerator RanQueryUsingUnityLoader() {
             string domain = "graphql.myshopify.com";
             string authorization = "351c122017d0f2a957d32ae728ad749c";
-            StoppableWaitForTime waiter = Utils.GetWaitQuery ();
+            var waiter = UnityTestUtils.GetWaitQuery ();
 
-            QueryLoader queryLoader = new QueryLoader(new UnityLoader(domain, authorization));
+            var queryLoader = new QueryLoader(new UnityLoader(domain, authorization));
 
-            queryLoader.Query(TestQueries.Query, (QueryResponse response) => {
+            queryLoader.Query(TestQueries.Query, (response) => {
                 waiter.Stop();
 
                 Assert.IsNull(response.HTTPError, "http errors were not null: " + response.HTTPError);
@@ -31,7 +31,7 @@ namespace Shopify.Unity.Tests
 
             yield return waiter;
 
-            Assert.IsTrue (waiter.IsStopped, Utils.MaxQueryMessage);
+            Assert.IsTrue (waiter.IsStopped, UnityTestUtils.MaxQueryMessage);
         }
     }   
 }
