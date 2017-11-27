@@ -1,14 +1,13 @@
 #if !UNITY_IOS
 namespace Shopify.UIToolkit.Test.Integration {
+    using System.Collections;
     using UnityEngine;
     using UnityEngine.UI;
     using UnityEngine.TestTools;
-    using System.Collections;
     using Shopify.Unity.SDK;
+    using NUnit.Framework;
 
-    [IntegrationTest.DynamicTest("UIToolkitIntegrationTests")]
-    [IntegrationTest.Timeout(10)]
-    public class TestRemoteImageLoaderIntegration {
+    public class TestRemoteImageLoaderIntegration : MonoBehaviour {
 
         [UnityTest] 
         public IEnumerator TestDownloadImage() {
@@ -28,8 +27,7 @@ namespace Shopify.UIToolkit.Test.Integration {
             }
 
             var image = gameObject.GetComponent<Image>();
-            IntegrationTest.Assert(image.sprite != null);
-            IntegrationTest.Pass();
+            Assert.NotNull(image.sprite);
         }
     }
 }
