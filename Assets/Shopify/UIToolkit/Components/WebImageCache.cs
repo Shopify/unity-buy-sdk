@@ -26,7 +26,9 @@
         /// </summary>
         public const int DEFAULT_MEMORY_SIZE_LIMIT = 20971520; // 20 MB in bytes
 
-        private Dictionary<string, CachedWebResource<Texture2D>> _urlTextureCache = new Dictionary<string, CachedWebResource<Texture2D>>();
+        private Dictionary<string, CachedWebResource<Texture2D>> _urlTextureCache = 
+            new Dictionary<string, CachedWebResource<Texture2D>>();
+
         private LinkedList<string> _recentlyUsed = new LinkedList<string>();
 
         private static WebImageCache _sharedCache;
@@ -54,7 +56,39 @@
         /// <returns></returns>
         public int EstimatedMemorySize { get; private set; }
 
-        public WebImageCache(int memorySizeLimit) {
+        /// <summary>
+        /// Returns the number of entries in the cache.
+        /// </summary>
+        /// <returns>Number of entries in the cache.</returns>
+        public int Count {
+            get {
+                return _urlTextureCache.Count;
+            }
+        }
+
+        /// <summary>
+        /// Sets the size limit in bytes that we can store in the cache.
+        /// </summary>
+        /// <param name="newLimit">New size limit in bytes.</param>
+        public void SetMemorySizeLimit(int newLimit) {
+            Debug.Assert(newLimit >= 0, "Size limit must be greater or equal to 0.");
+
+            // If we're bigger than the new limit then make some room by evicting all of the oldest resources
+            // from the cache.
+            while (EstimatedMemorySize > newLimit) {
+                var oldestNode = _recentlyUsed.Last;
+                var oldestUsedTexture = _urlTextureCache[oldestNode.Value].Data;
+                var oldestUsedTextureSize = EstimateMemoryFootprintForTexture(oldestUsedTexture);
+
+                _urlTextureCache.Remove(oldestNode.Value);
+                _recentlyUsed.RemoveLast();
+                EstimatedMemorySize -= oldestUsedTextureSize;
+            }
+
+            MemorySizeLimit = newLimit;
+        }
+
+        private WebImageCache(int memorySizeLimit) {
             MemorySizeLimit = memorySizeLimit;
         }
 
@@ -93,6 +127,7 @@
                 var oldestNode = _recentlyUsed.Last;
                 var oldestUsedTexture = _urlTextureCache[oldestNode.Value].Data;
                 var oldestUsedTextureSize = EstimateMemoryFootprintForTexture(oldestUsedTexture);
+
                 _urlTextureCache.Remove(oldestNode.Value);
                 _recentlyUsed.RemoveLast();
                 nextMemoryFootprint -= oldestUsedTextureSize;
@@ -125,9 +160,23 @@
         }
 
         private int EstimateMemoryFootprintForTexture(Texture2D texture) {
-            // Since we're only dealing with JPEG (RGB24) or PNG (ARGB32) formats, we can assume 4 bytes per.
-            // We can also assume these images will only have a single mipmap level.
-            return texture.width * texture.height * 4;
+            // We can assume these images will only have a single mipmap level.
+            return texture.width * texture.height * StrideForTextureFormat(texture.format);
+        }
+
+        private int StrideForTextureFormat(TextureFormat format) {
+            switch (format) {
+                // Non-alpha channel format (JPEG)
+                case TextureFormat.RGB24:
+                    return 3;
+                // Alpha channel formats (PNG)
+                case TextureFormat.ARGB32:
+                    return 4;
+                case TextureFormat.RGBA32:
+                    return 4;
+                default:
+                    return 4;
+            }
         }
 
         private void PromoteURL(string url) {
