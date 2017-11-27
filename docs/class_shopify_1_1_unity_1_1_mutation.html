@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Unity Buy SDK: Shopify.Unity.Mutation Class Reference</title>
+<title>Shopify SDK for Unity: Shopify.Unity.Mutation Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Unity Buy SDK
+   <div id="projectname">Shopify SDK for Unity
    </div>
   </td>
  </tr>
@@ -862,6 +862,7 @@ Dictionary&lt; string, object &gt;&#160;</td><td class="memItemRight" valign="bo
 </div><div class="memdoc">
 
 <p>Renews a customer access token. </p>
+<p>Access token renewal must happen <em>before</em> a token expires. If a token has already expired, a new one should be created instead via <code>customerAccessTokenCreate</code>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">alias</td><td>If the original field queried was queried using an alias, then pass the matching string. </td></tr>
