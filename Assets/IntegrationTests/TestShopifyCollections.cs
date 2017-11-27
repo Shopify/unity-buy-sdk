@@ -15,7 +15,7 @@ namespace Shopify.Unity.Tests
 
             ShopifyBuy.Client().collections(
                 first: 1,
-                callback: (collections, error) => {
+                callback: (collections, error, after) => {
                 waiter.Stop();
 
                     Assert.IsNull(error, "No errors");

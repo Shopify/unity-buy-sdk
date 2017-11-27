@@ -8,7 +8,7 @@ namespace Shopify.Unity.SDK {
     /// </summary>
     public class DefaultQueries {
         public static readonly int MaxPageSize = 250;
-        public static readonly int MaxProductPageSize = 20;
+        public static readonly int MaxProductPageSize = 10;
         public static readonly int MaxCollectionsPageSize = 40;
 
         public static DefaultProductQueries products = new DefaultProductQueries();
