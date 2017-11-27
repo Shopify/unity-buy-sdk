@@ -20,9 +20,11 @@ To check your the project's dependencies run:
 $ scripts/check_setup.sh
 ```
 
-## Building the Unity Buy SDK
+## Building the Shopify SDK for Unity
 
-Before you can start developing on the SDK you'll need to run the code generator. Under the hood, the Unity Buy SDK works on top of GraphQL. In order to query Shopify, we generate a GraphQL client based on the [Storefront API](https://help.shopify.com/api-storefront-api) introspection schema.
+As an alternative to downloading the Unity package, you have the option to build from source and import that into your project.
+
+Before you can start developing on the SDK you'll need to run the code generator. Under the hood, the Shopify SDK for Unity works on top of GraphQL. In order to query Shopify, we generate a GraphQL client based on the [Storefront API](https://help.shopify.com/api-storefront-api) introspection schema.
 
 To build the GraphQL client, run the following command:
 ```bash

@@ -7,13 +7,13 @@ namespace <%= namespace %> {
     using <%= namespace %>.GraphQL;
 
     /// <summary>
-    /// Is the main entry point for the Unity Buy SDK. Using <see ref="ShopifyBuy.Client" /> you'll
+    /// Is the main entry point for the Shopify SDK for Unity. Using <see ref="ShopifyBuy.Client" /> you'll
     /// create a client which can create queries on the Storefront API. <see ref="ShopifyClient">ShopifyClient </see>
     /// can also be used to create a <see ref="Cart">Cart </see>.
     /// </summary>
     public class ShopifyBuy {
         /// <summary>
-        /// Version of the Unity Buy SDK.
+        /// Version of the Shopify SDK for Unity.
         /// </summary>
         /// \code
         /// // Example that checks the SDK version
@@ -76,7 +76,7 @@ namespace <%= namespace %> {
         /// <param name="accessToken">access token that was generated for your store</param>
         /// <param name="domain">domain of your Shopify store</param>
         /// \code
-        /// // Example that initializes the Unity Buy SDK
+        /// // Example that initializes the Shopify SDK for Unity
         /// string accessToken = "b8d417759a62f7b342f3735dbe86b322";
         /// string shopDomain = "unity-buy-sdk.myshopify.com";
         ///
@@ -97,8 +97,8 @@ namespace <%= namespace %> {
 
         /// <summary>
         /// Typically not used, but it is possible to create a <see ref="ShopifyClient">ShopifyClient </see> by passing an instance
-        /// that implements <see ref="ILoader">ILoader </see>. <see ref="ILoader">ILoaders </see> handle network communicationication with
-        /// the Storefront API. This functionality is useful if you'd like to use the Unity Buy SDK in a C# environment
+        /// that implements <see ref="ILoader">ILoader</see>. <see ref="ILoader">ILoaders</see> handle network communicationication with
+        /// the Storefront API. This functionality is useful if you'd like to use the Shopify SDK for Unity in a C# environment
         /// outside of Unity. The <c>domain</c> string used to access specific initialized clients is inferred from
         /// <see ref="ILoader">ILoader.Domain</see> which can be used to request a specific client.
         /// </summary>
@@ -219,11 +219,11 @@ namespace <%= namespace %> {
         /// <summary>
         /// It is possible to instantiate a <see ref="ShopifyClient">ShopifyClient </see> by passing an instance
         /// that implements <see ref="ILoader">ILoader </see>. <see ref="ILoader">ILoaders </see> handle network communication with
-        /// the Storefront API. This functionality is useful if you'd like to use the Unity Buy SDK in a C# environment
+        /// the Storefront API. This functionality is useful if you'd like to use the Shopify SDK for Unity in a C# environment
         /// outside of Unity. The <c>domain</c> string is inferred from <see ref="ILoader">ILoaders </see> which can be used
         /// to request a specific client.
         /// </summary>
-        /// <param name="loader">a loader which will handle network communicationication with the Storefront API</param>
+        /// <param name="loader">a loader which will handle network communication with the Storefront API</param>
         /// \code
         /// // Example that initializes a new ShopifyClient using a custom loader for another C# platform
         /// string accessToken = "b8d417759a62f7b342f3735dbe86b322";

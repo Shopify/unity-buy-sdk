@@ -3,6 +3,7 @@ var searchData=
   ['pageinfo',['PageInfo',['../class_shopify_1_1_unity_1_1_page_info.html',1,'Shopify::Unity']]],
   ['pageinfoquery',['PageInfoQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_page_info_query.html',1,'Shopify::Unity::GraphQL']]],
   ['payment',['Payment',['../class_shopify_1_1_unity_1_1_payment.html',1,'Shopify::Unity']]],
+  ['paymentnetwork',['PaymentNetwork',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_payment_network.html',1,'Shopify::Unity::SDK']]],
   ['paymentquery',['PaymentQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_payment_query.html',1,'Shopify::Unity::GraphQL']]],
   ['paymentsettings',['PaymentSettings',['../class_shopify_1_1_unity_1_1_payment_settings.html',1,'Shopify::Unity']]],
   ['paymentsettingsquery',['PaymentSettingsQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_payment_settings_query.html',1,'Shopify::Unity::GraphQL']]],
