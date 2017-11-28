@@ -1,4 +1,5 @@
-﻿namespace Shopify.UIToolkit.Test.Integration {
+﻿#if UNITY_EDITOR
+namespace Shopify.UIToolkit.Test.Integration {
 	using UnityEngine;
 	using UnityEngine.TestTools;
 	using NUnit.Framework;
@@ -10,3 +11,4 @@
         }
     }
 }
+#endif

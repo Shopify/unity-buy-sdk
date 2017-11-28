@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 namespace Shopify.Unity.Tests
 {
     using UnityEngine;
@@ -38,3 +39,4 @@ namespace Shopify.Unity.Tests
         }
     }
 }
+#endif
