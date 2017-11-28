@@ -30,7 +30,7 @@ namespace Shopify.UIToolkit.Test.Integration {
                 WWW www = new WWW(imageURL);
                 yield return www;
                 var texture = www.texture;
-                var resource = new CachedWebResource<Texture2D>(DateTime.Now.ToShortTimeString(), texture);
+                var resource = new CachedWebImage(DateTime.Now.ToShortTimeString(), texture);
                 cache.SetTextureResourceForURL(imageURL, resource);
             }
 
@@ -47,7 +47,7 @@ namespace Shopify.UIToolkit.Test.Integration {
                 WWW www = new WWW(imageURL);
                 yield return www;
                 var texture = www.texture;
-                var resource = new CachedWebResource<Texture2D>(DateTime.Now.ToShortTimeString(), texture);
+                var resource = new CachedWebImage(DateTime.Now.ToShortTimeString(), texture);
                 cache.SetTextureResourceForURL(imageURL, resource);
             }
 

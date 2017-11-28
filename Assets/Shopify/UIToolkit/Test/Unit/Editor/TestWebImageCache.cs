@@ -26,7 +26,7 @@ namespace Shopify.UIToolkit.Test.Unit {
             WebImageCache cache = WebImageCache.SharedCache;
             string mockURL = "myimage.com/image";
             Texture2D mockTexture = new Texture2D(100, 100);
-            var mockResource = new CachedWebResource<Texture2D>("0", mockTexture);
+            var mockResource = new CachedWebImage("0", mockTexture);
 
             cache.SetTextureResourceForURL(mockURL, mockResource);
 
@@ -39,11 +39,11 @@ namespace Shopify.UIToolkit.Test.Unit {
             WebImageCache cache = WebImageCache.SharedCache;
             string mockURL = "myimage.com/image";
             Texture2D mockTexture = new Texture2D(100, 100);
-            var mockResource = new CachedWebResource<Texture2D>("0", mockTexture);
+            var mockResource = new CachedWebImage("0", mockTexture);
 
             cache.SetTextureResourceForURL(mockURL, mockResource);
 
-            Assert.NotNull(cache.TextureResourceForURL(mockURL).Value.Data);
+            Assert.NotNull(cache.TextureResourceForURL(mockURL).Data);
             Assert.AreEqual(cache.EstimatedMemorySize, 40000);
 
             cache.RemoveURL(mockURL);
@@ -56,8 +56,8 @@ namespace Shopify.UIToolkit.Test.Unit {
             WebImageCache cache = WebImageCache.SharedCache;
             cache.SetMemorySizeLimit(80000);
             string url = "myimage.com/image";
-            var textureA = new CachedWebResource<Texture2D>("0", new Texture2D(100, 100));
-            var textureB = new CachedWebResource<Texture2D>("0", new Texture2D(100, 100));
+            var textureA = new CachedWebImage("0", new Texture2D(100, 100));
+            var textureB = new CachedWebImage("0", new Texture2D(100, 100));
 
             cache.SetTextureResourceForURL(url, textureA);
             Assert.AreEqual(cache.TextureResourceForURL(url), textureA);
@@ -76,9 +76,9 @@ namespace Shopify.UIToolkit.Test.Unit {
             string urlB = "myimage.com/imageB";
             string urlC = "myimage.com/imageC";
 
-            var textureA = new CachedWebResource<Texture2D>("0", new Texture2D(100, 100));
-            var textureB = new CachedWebResource<Texture2D>("0", new Texture2D(100, 100));
-            var textureC = new CachedWebResource<Texture2D>("0", new Texture2D(100, 100));
+            var textureA = new CachedWebImage("0", new Texture2D(100, 100));
+            var textureB = new CachedWebImage("0", new Texture2D(100, 100));
+            var textureC = new CachedWebImage("0", new Texture2D(100, 100));
 
             cache.SetTextureResourceForURL(urlA, textureA);
             cache.SetTextureResourceForURL(urlB, textureB);
@@ -104,8 +104,8 @@ namespace Shopify.UIToolkit.Test.Unit {
             string urlA = "myimage.com/imageA";
             string urlB = "myimage.com/imageB";
 
-            var textureA = new CachedWebResource<Texture2D>("0", new Texture2D(100, 100));
-            var textureB = new CachedWebResource<Texture2D>("0", new Texture2D(100, 100));
+            var textureA = new CachedWebImage("0", new Texture2D(100, 100));
+            var textureB = new CachedWebImage("0", new Texture2D(100, 100));
 
             cache.SetTextureResourceForURL(urlA, textureA);
             cache.SetTextureResourceForURL(urlB, textureB);
@@ -132,8 +132,8 @@ namespace Shopify.UIToolkit.Test.Unit {
             string urlA = "myimage.com/imageA";
             string urlB = "myimage.com/imageB";
 
-            var textureA = new CachedWebResource<Texture2D>("0", new Texture2D(100, 100));
-            var textureB = new CachedWebResource<Texture2D>("0", new Texture2D(100, 100));
+            var textureA = new CachedWebImage("0", new Texture2D(100, 100));
+            var textureB = new CachedWebImage("0", new Texture2D(100, 100));
 
             cache.SetTextureResourceForURL(urlA, textureA);
             cache.SetTextureResourceForURL(urlB, textureB);
@@ -165,7 +165,7 @@ namespace Shopify.UIToolkit.Test.Unit {
             WebImageCache cache = WebImageCache.SharedCache;
 
             string url = "myimage.com/imageA";
-            var texture = new CachedWebResource<Texture2D>("0", new Texture2D(100, 100));
+            var texture = new CachedWebImage("0", new Texture2D(100, 100));
 
             cache.SetTextureResourceForURL(url, texture);
 
