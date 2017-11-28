@@ -246,7 +246,7 @@ namespace Shopify.Unity {
         }
 
         /// <summary>
-        /// Generates a query to receive all <c>products</c> from a Shopify store. The generated query will query the following on products:
+        /// Generates a query to receive on page of <c>products</c> from a Shopify store. The generated query will query the following on products:
         ///     - id
         ///     - title
         ///     - descriptionHtml
@@ -276,23 +276,27 @@ namespace Shopify.Unity {
         ///         - title
         ///         - updatedAt
         ///
-        /// Note that <c>shop.products</c> is a Connection (GraphQL paginated data structure). <see ref="ShopifyClient.products">products </see>
-        /// will load all pages of products by default unless a value is passed for the <c>first</c> param.
+        /// Note that <c>shop.products</c> is a Connection (GraphQL paginated data structure).
+        ///
+        /// <c>first</c> will define the page size. <c>after</c> will be the cursor for the next page.
         /// </summary>
-        /// <param name="callback">callback that will receive responses from server</param>
+        /// <param name="callback">callback that will receive responses from server. This callback also can receive <c>ShopifyError</c> or <c>null</c> if no error happened. The callback also receives <c>after</c> will be the cursor for the next page.</param>
         /// <param name="first">can be used to limit how many products are returned. For instance 10 would return only 10 products</param>
         /// <param name="after">
-        /// This is an advanced feature but when querying Relay Connections a cursor is returned which can be used to determine
-        /// where paginated loading begins. For example, when used with <c>first: 10</c> and <c>after: "abc"</c>, only the first 10
-        /// products would be loaded after cursor <c>"abc"</c>.
+        /// is used to load subsequent pages. Basically it's a cursor variable to define what page to load next. For example, when used with <c>first: 10</c> and <c>after: "abc"</c>, only the first 10
+        /// products would be loaded after cursor <c>"abc"</c>. If no <c>after</c> is passed the first page of products will be loaded.
         /// </param>
         /// \code
-        /// // Example usage querying all products
+        /// // Example usage querying one page of products after the cursor "abc":
         /// ShopifyBuy.Client().products((products, error, after) => {
-        /// 	Debug.Log(products[0].title());
-        /// 	Debug.Log(products[1].title());
-        /// 	Debug.Log(products.Count);
-        /// });
+        ///     Debug.Log(products[0].title());
+        ///     Debug.Log(products[1].title());
+        ///     Debug.Log(products.Count);
+        ///
+        ///     if (after != null) {
+        ///         // more products could be loaded here
+        ///     }
+        /// }, after: "abc");
         /// \endcode
         public void products(ProductsPaginatedHandler callback, int? first = null, string after = null) {
             if (first == null) {
@@ -346,7 +350,7 @@ namespace Shopify.Unity {
         ///         - updatedAt
         ///
         /// </summary>
-        /// <param name="callback">callback that will receive responses from server</param>
+        /// <param name="callback">callback that will receive responses or errors from server</param>
         /// <param name="firstProductId">you must pass in at least one product id to query</param>
         /// <param name="otherProductIds">
         /// after the first product id you can pass in as many product ids as you'd like.
@@ -439,7 +443,7 @@ namespace Shopify.Unity {
         }
 
         /// <summary>
-        /// Generates a query to receive all <c>collections</c> from a Shopify store. The generated query will query the following on collections:
+        /// Generates a query to receive a page of <c>collections</c> from a Shopify store. The generated query will query the following on collections:
         ///     - id
         ///     - title
         ///     - description
@@ -452,14 +456,12 @@ namespace Shopify.Unity {
         ///         - id
         ///
         /// Note that <c>shop.collections</c> is a Connection (GraphQL paginated data structure). <see ref="ShopifyClient.collections">collections </see>
-        /// will load all pages of collections by default unless a value is passed for the <c>first</c> param.
         /// </summary>
         /// <param name="callback">callback that will receive responses from server</param>
         /// <param name="first">can be used to limit how many products are returned. For instance 10 would return only 10 collections</param>
         /// <param name="after">
-        /// This is an advanced feature but when querying Relay Connections a cursor is returned which can be used to determine
-        /// where paginated loading begins. For example, when used with <c>first: 10</c> and <c>after: "abc"</c>, only the first 10
-        /// products would be loaded after cursor <c>"abc"</c>.
+        /// is used to load subsequent pages. Basically it's a cursor variable to define what page to load next. For example, when used with <c>first: 10</c> and <c>after: "abc"</c>, only the first 10
+        /// collections would be loaded after cursor <c>"abc"</c>. If no <c>after</c> is passed the first page of collections will be loaded.
         /// </param>
         /// \code
         /// // Example that queries all collections on a shop
