@@ -4,7 +4,7 @@
     using Shopify.Unity.SDK;
     using UnityEngine;
 
-    public abstract class ThemeBase : MonoBehaviour {
+    public abstract class ThemeBase : MonoBehaviour, IThemeBase {
         /// <summary>
         /// Called when the controller has started loading data from shopify.
         /// Themes can use this to know when to show loading states or spinners.

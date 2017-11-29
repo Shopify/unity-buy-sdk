@@ -4,7 +4,7 @@
     /// <summary>
     /// Override this class to create a theme that sells a single product
     /// </summary>
-    public abstract class SingleProductTheme : ThemeBase {
+    public abstract class SingleProductTheme : ThemeBase, ISingleProductTheme {
         /// <summary>
         /// Called when the theme should show information about the product it's selling
         /// </summary>
