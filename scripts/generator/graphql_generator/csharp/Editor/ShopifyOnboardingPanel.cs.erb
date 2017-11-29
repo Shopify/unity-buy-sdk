@@ -34,7 +34,7 @@ namespace Shopify.Unity.SDK {
 
         private void OnEnable() {
             minSize = new Vector2(DesiredWindowWidth, DesiredWindowHeight);
-            titleContent = new GUIContent("Shopify Buy SDK");
+            titleContent = new GUIContent("Shopify SDK for Unity");
             position = new Rect(position.xMin, position.yMin, DesiredWindowWidth, DesiredWindowHeight);
             Styles = new ShopifyEditorStyleHelper();
         }
@@ -61,7 +61,7 @@ namespace Shopify.Unity.SDK {
             GUILayout.Label("Generate additional revenue with an in-game store", Styles.HeadingStyle);
 
             GUILayout.Label(
-                "Start selling merchandise directly inside your game with the Shopify In-Game Buy SDK.",
+                "Start selling merchandise directly inside your game with the Shopify SDK for Unity.",
                 Styles.AccentBody
             );
 
