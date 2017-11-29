@@ -21,6 +21,11 @@ namespace Shopify.UIToolkit.Test.Unit {
             _editor.View = Substitute.For<ISingleProductThemeControllerEditorView>();
         }
 
+        [TearDown]
+        public void TearDown() {
+            GlobalGameObject.Destroy();
+        }
+
         [Test]
         public void TestBindsThemeOnEnable() {
             var theme = GlobalGameObject.AddComponent<DebugSingleProductTheme>();
@@ -39,7 +44,6 @@ namespace Shopify.UIToolkit.Test.Unit {
         [Test]
         public void TestBoundThemeDoesNotDrawHelpBox() {
             _controller.Theme = GlobalGameObject.AddComponent<DebugSingleProductTheme>();
-            Assert.IsNotNull(_controller.Theme);
             _editor.OnInspectorGUI();
             _editor.View.DidNotReceive().ShowThemeHelp();
         }

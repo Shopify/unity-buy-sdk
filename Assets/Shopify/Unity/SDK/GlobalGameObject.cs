@@ -15,7 +15,11 @@ namespace Shopify.Unity.SDK {
             }
         }
 
-        public static T AddComponent<T>() where T : Component {
+        public static void Destroy() {
+            MonoBehaviour.DestroyImmediate(GameObject);
+        }
+
+        public static T AddComponent<T>() where T: Component {
             if (GameObject == null) {
                 GameObject = new GameObject("Shopify");
             }
