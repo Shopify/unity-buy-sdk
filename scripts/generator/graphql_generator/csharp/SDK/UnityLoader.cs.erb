@@ -39,7 +39,12 @@ namespace Shopify.Unity.SDK {
             }
 
             w.Dispose();
+
+            #if UNITY_EDITOR
+            MonoBehaviour.DestroyImmediate(this);
+            #else
             MonoBehaviour.Destroy(this);
+            #endif
         }
     }
 
