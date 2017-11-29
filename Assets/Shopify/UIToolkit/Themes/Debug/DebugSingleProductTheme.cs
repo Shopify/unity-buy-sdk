@@ -6,32 +6,32 @@
     using UnityEngine;
 
     [AddComponentMenu("Shopify/Debug/Debug Theme Controller")]
-    public class DebugSingleProductTheme : SingleProductTheme {
-        public override void OnError(ShopifyError error) {
+    public class DebugSingleProductTheme : MonoBehaviour, ISingleProductTheme {
+        public void OnError(ShopifyError error) {
             LogEvent("OnError", error);
         }
 
-        public override void OnLoadingFinished() {
+        public void OnLoadingFinished() {
             LogEvent("OnLoadingFinished");
         }
 
-        public override void OnLoadingStarted() {
+        public void OnLoadingStarted() {
             LogEvent("OnLoadingStarted");
         }
 
-        public override void OnPurchaseCancelled() {
+        public void OnPurchaseCancelled() {
             LogEvent("OnPurchaseCancelled");
         }
 
-        public override void OnPurchaseCompleted() {
+        public void OnPurchaseCompleted() {
             LogEvent("OnPurchaseCompleted");
         }
 
-        public override void OnPurchaseStarted() {
+        public void OnPurchaseStarted() {
             LogEvent("OnPurchaseStarted");
         }
 
-        public override void OnShouldShowProduct(Product product, ProductVariant[] variants) {
+        public void OnShouldShowProduct(Product product, ProductVariant[] variants) {
             LogEvent("OnShouldShowProduct", product, variants);
         }
 
