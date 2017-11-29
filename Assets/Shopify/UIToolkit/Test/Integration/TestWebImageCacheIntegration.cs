@@ -30,7 +30,7 @@ namespace Shopify.UIToolkit.Test.Integration {
             foreach (var imageURL in TenMBInImages) {
                 WWW www = new WWW(imageURL);
                 yield return www;
-                cache.SetTextureForURL(imageURL, www.texture, DateTime.Now);
+                cache.SetTextureForURL(imageURL, www.texture, "");
             }
 
             Assert.AreEqual(cache.Count, 6);
@@ -45,7 +45,7 @@ namespace Shopify.UIToolkit.Test.Integration {
             foreach (var imageURL in TenMBInImages) {
                 WWW www = new WWW(imageURL);
                 yield return www;
-                cache.SetTextureForURL(imageURL, www.texture, DateTime.Now);
+                cache.SetTextureForURL(imageURL, www.texture, "");
             }
 
             Assert.AreEqual(cache.Count, 3);

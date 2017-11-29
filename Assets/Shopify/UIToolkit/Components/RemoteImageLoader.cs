@@ -10,9 +10,17 @@ namespace Shopify.UIToolkit {
     /// </summary>
     [RequireComponent(typeof(Image))]
     public class RemoteImageLoader : MonoBehaviour {
+
+        /// <summary>
+        /// When true, downloaded images will be cached.
+        /// </summary>
+        public bool UseCache;
+
         private Image _image;
 
         private delegate void RemoteImageCompletionDelegate(Texture2D texture, string error);
+
+        private WebImageCache _imageCache = WebImageCache.SharedCache;
 
         void Start() {
             _image = gameObject.GetComponent<Image>();
@@ -67,7 +75,11 @@ namespace Shopify.UIToolkit {
         }
 
         private void LoadImageURL(string url, RemoteImageCompletionDelegate completion) {
-            StartCoroutine(LoadImageURLRoutine(url, completion));
+            if (UseCache) {
+                StartCoroutine(CachedLoadImageURLRoutine(url, completion));
+            } else {
+                StartCoroutine(LoadImageURLRoutine(url, completion));
+            }
         }
 
         private IEnumerator LoadImageURLRoutine(string url, RemoteImageCompletionDelegate completion) {
@@ -83,6 +95,68 @@ namespace Shopify.UIToolkit {
 
             completion(www.texture, null);
         }
+
+        /// <summary>
+        /// Loads an image from the provided URL if we don't have one in the cache or if it's new. Results are cached
+        /// so subsequent images are not downloaded from the web.
+        /// </summary>
+        /// <param name="url">URL to fetch image from.</param>
+        /// <param name="completion">Callback invoked with the cached or downloaded texture.</param>
+        /// <returns></returns>
+        private IEnumerator CachedLoadImageURLRoutine(string url, RemoteImageCompletionDelegate completion) {
+            var requestHeaders = new Dictionary<string, string>();
+            var cachedResource = _imageCache.TextureResourceForURL(url);
+            if (cachedResource != null) {
+                requestHeaders["If-Modified-Since"] = cachedResource.LastModified;
+            }
+
+            var www = new WWW(url, null, requestHeaders);
+
+            yield return www;
+
+            // Bail out early if we hit an error.
+            if (www.error != null) {
+                completion(null, www.error);
+                yield break;
+            }
+
+            // If the image hasn't changed then return the cached version. Otherwise, remove
+            // the entry for this URL so we can insert a new image.
+            var responseHeaders = www.responseHeaders;
+            if (responseHeaders.ContainsKey("STATUS")) {
+                string statusCodeLine = responseHeaders["STATUS"];
+                if (ParseResponseCode(statusCodeLine) == 304) {
+                    if (cachedResource != null) {
+                        completion(cachedResource.texture, null);
+                    } else {
+                        completion(null, "Cached texture is missing for URL: " + url);
+                    }
+
+                    yield break;
+                }
+            } else {
+                _imageCache.RemoveKey(url);
+            }
+
+            // Cache the image.
+            var texture = www.texture;
+            string lastModifiedString = responseHeaders.ContainsKey("Last-Modified") ? responseHeaders["Last-Modified"] : null;
+            _imageCache.SetTextureForURL(url, texture, lastModifiedString);
+            completion(texture, null);
+        }
+
+        /// <summary>
+        /// Parses the 'Status XXX' HTTP header field for the status code number.
+        /// </summary>
+        /// <param name="statusLine">HTTP STATUS field</param>
+        /// <returns>HTTP Status code</returns>
+        private static int ParseResponseCode(string statusLine) {
+            int ret = 0;
+            string[] components = statusLine.Split(' ');
+            int.TryParse(components[1], out ret);
+            return ret;
+        }
+
     }
 }
 

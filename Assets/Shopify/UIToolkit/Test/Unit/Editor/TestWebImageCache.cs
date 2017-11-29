@@ -27,7 +27,7 @@ namespace Shopify.UIToolkit.Test.Unit {
             WebImageCache cache = WebImageCache.SharedCache;
             string mockURL = "myimage.com/image";
             Texture2D mockTexture = new Texture2D(100, 100);
-            cache.SetTextureForURL(mockURL, mockTexture, DateTime.Now);
+            cache.SetTextureForURL(mockURL, mockTexture, "");
 
             Assert.NotNull(cache.TextureResourceForURL(mockURL));
             Assert.AreEqual(cache.EstimatedMemorySize, 40000);
@@ -38,7 +38,7 @@ namespace Shopify.UIToolkit.Test.Unit {
             WebImageCache cache = WebImageCache.SharedCache;
             string mockURL = "myimage.com/image";
             Texture2D mockTexture = new Texture2D(100, 100);
-            cache.SetTextureForURL(mockURL, mockTexture, DateTime.Now);
+            cache.SetTextureForURL(mockURL, mockTexture, "");
 
             Assert.NotNull(cache.TextureResourceForURL(mockURL).texture);
             Assert.AreEqual(cache.EstimatedMemorySize, 40000);
@@ -56,9 +56,9 @@ namespace Shopify.UIToolkit.Test.Unit {
             var textureA = new Texture2D(100, 100);
             var textureB = new Texture2D(100, 100);
 
-            cache.SetTextureForURL(url, textureA, DateTime.Now);
+            cache.SetTextureForURL(url, textureA, "");
             Assert.AreEqual(cache.TextureResourceForURL(url).texture, textureA);
-            cache.SetTextureForURL(url, textureB, DateTime.Now);
+            cache.SetTextureForURL(url, textureB, "");
             Assert.AreEqual(cache.TextureResourceForURL(url).texture, textureB);
 
             Assert.AreEqual(cache.EstimatedMemorySize, 40000);
@@ -77,14 +77,14 @@ namespace Shopify.UIToolkit.Test.Unit {
             var textureB = new Texture2D(100, 100);
             var textureC = new Texture2D(100, 100);
 
-            cache.SetTextureForURL(urlA, textureA, DateTime.Now);
-            cache.SetTextureForURL(urlB, textureB, DateTime.Now);
+            cache.SetTextureForURL(urlA, textureA, "");
+            cache.SetTextureForURL(urlB, textureB, "");
 
             Assert.NotNull(cache.TextureResourceForURL(urlA));
             Assert.NotNull(cache.TextureResourceForURL(urlB));
             Assert.AreEqual(cache.EstimatedMemorySize, 80000);
 
-            cache.SetTextureForURL(urlC, textureC, DateTime.Now);
+            cache.SetTextureForURL(urlC, textureC, "");
 
             // Make sure we're still at our limit and that url A got evicted.
             Assert.AreEqual(cache.EstimatedMemorySize, 80000);
@@ -104,8 +104,8 @@ namespace Shopify.UIToolkit.Test.Unit {
             var textureA = new Texture2D(100, 100);
             var textureB = new Texture2D(100, 100);
 
-            cache.SetTextureForURL(urlA, textureA, DateTime.Now);
-            cache.SetTextureForURL(urlB, textureB, DateTime.Now);
+            cache.SetTextureForURL(urlA, textureA, "");
+            cache.SetTextureForURL(urlB, textureB, "");
 
             Assert.NotNull(cache.TextureResourceForURL(urlA));
             Assert.NotNull(cache.TextureResourceForURL(urlB));
@@ -132,8 +132,8 @@ namespace Shopify.UIToolkit.Test.Unit {
             var textureA = new Texture2D(100, 100);
             var textureB = new Texture2D(100, 100);
 
-            cache.SetTextureForURL(urlA, textureA, DateTime.Now);
-            cache.SetTextureForURL(urlB, textureB, DateTime.Now);
+            cache.SetTextureForURL(urlA, textureA, "");
+            cache.SetTextureForURL(urlB, textureB, "");
 
             Assert.NotNull(cache.TextureResourceForURL(urlA));
             Assert.NotNull(cache.TextureResourceForURL(urlB));
@@ -164,7 +164,7 @@ namespace Shopify.UIToolkit.Test.Unit {
             string url = "myimage.com/imageA";
             var texture = new Texture2D(100, 100);
 
-            cache.SetTextureForURL(url, texture, DateTime.Now);
+            cache.SetTextureForURL(url, texture, "");
 
             Assert.NotNull(cache.TextureResourceForURL(url));
             Assert.AreEqual(cache.EstimatedMemorySize, 40000);
