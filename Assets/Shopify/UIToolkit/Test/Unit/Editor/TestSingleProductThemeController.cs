@@ -38,7 +38,7 @@
             _controller.ProductGID = "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyODE0NzU=";
             _controller.Show();
 
-            var callbackCalled = false;
+            var waiter = new EditorTimeoutWaiter();
 
             _theme.When((x) => {
                 x.OnShouldShowProduct(Arg.Any<Product>(), Arg.Any<ProductVariant[]>());
@@ -49,10 +49,10 @@
                 Assert.AreEqual("Arena Zip Boot", product.title());
                 Assert.AreEqual(10, productVariants.Length);
 
-                callbackCalled = true;
+                waiter.Complete();
             });
 
-            while (!callbackCalled) {
+            while (waiter.Await()) {
                yield return null;
             }
         }
@@ -89,17 +89,17 @@
             _controller.ProductGID = "notevenclose";
             _controller.Show();
 
-            var callbackCalled = false;
+            var waiter = new EditorTimeoutWaiter();
 
             _theme.When((x) => {
                 x.OnError(Arg.Any<ShopifyError>());
             }).Do((x) => {
                 var error = x.Args()[0] as ShopifyError;
                 Assert.AreEqual(ShopifyError.ErrorType.GraphQL, error.Type);
-                callbackCalled = true;
+                waiter.Complete();
             });
 
-            while (!callbackCalled) {
+            while (!waiter.Await()) {
                yield return null;
             }
 

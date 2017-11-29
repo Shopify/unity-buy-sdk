@@ -1,5 +1,7 @@
 ﻿namespace Shopify.UIToolkit.Test.Unit {
     using NUnit.Framework;
+    using Shopify.Tests;
+    using Shopify.Unity.SDK;
     using UnityEngine;
     using UnityEngine.TestTools;
 
@@ -10,14 +12,11 @@
             public override void OnShow() {}
         }
 
-        private const string AccessToken = "351c122017d0f2a957d32ae728ad749c";
-        private const string ShopDomain = "graphql.myshopify.com";
-
         private MockThemeController _themeController;
 
         [SetUp]
         public void Setup() {
-            _themeController = new GameObject("mock").AddComponent<MockThemeController>();
+            _themeController = GlobalGameObject.AddComponent<MockThemeController>();
         }
 
         [TearDown]
@@ -27,19 +26,19 @@
 
         [Test]
         public void TestCreatesClientWithProperCredentials() {
-            _themeController.AccessToken = AccessToken;
-            _themeController.ShopDomain = ShopDomain;
+            _themeController.AccessToken = Utils.TestAccessToken;
+            _themeController.ShopDomain = Utils.TestShopDomain;
 
             var client = _themeController.Client;
 
-            Assert.AreEqual(AccessToken, client.AccessToken);
-            Assert.AreEqual(ShopDomain, client.Domain);
+            Assert.AreEqual(Utils.TestAccessToken, client.AccessToken);
+            Assert.AreEqual(Utils.TestShopDomain, client.Domain);
         }
 
         [Test]
         public void TestCachesClientInstance() {
-            _themeController.AccessToken = AccessToken;
-            _themeController.ShopDomain = ShopDomain;
+            _themeController.AccessToken = Utils.TestAccessToken;
+            _themeController.ShopDomain = Utils.TestShopDomain;
 
             var client = _themeController.Client;
             var clientOnNextCall = _themeController.Client;
@@ -49,8 +48,8 @@
 
         [Test]
         public void TestClearsCachedClientIfAccessTokenChanges() {
-            _themeController.AccessToken = AccessToken;
-            _themeController.ShopDomain = ShopDomain;
+            _themeController.AccessToken = Utils.TestAccessToken;
+            _themeController.ShopDomain = Utils.TestShopDomain;
 
             var client = _themeController.Client;
 
@@ -64,8 +63,8 @@
 
         [Test]
         public void TestClearsCachedClientIfShopDomainChanges() {
-            _themeController.AccessToken = AccessToken;
-            _themeController.ShopDomain = ShopDomain;
+            _themeController.AccessToken = Utils.TestAccessToken;
+            _themeController.ShopDomain = Utils.TestShopDomain;
 
             var client = _themeController.Client;
 
