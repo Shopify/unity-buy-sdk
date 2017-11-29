@@ -7,16 +7,29 @@
     /// <summary>
     /// A cacheable image downloaed from the web stored as a Texture2D object.
     /// </summary>
-    public class CachedWebImage : CachedWebResource {
-        Texture2D texture {
+    public class CacheableWebImage : ICacheable {
+        public Texture2D texture {
             get {
                 return (Texture2D) Data;
             }
         }
 
-        public CachedWebImage(string lastModifiedTimestamp, Texture2D data) : base(lastModifiedTimestamp, data) {}
+        public readonly DateTime Timestamp;
 
-        public override int SizeOnDisk() {
+        public object Data {
+            get {
+                return _data;
+            }
+        }
+
+        private object _data;
+
+        public CacheableWebImage(Texture2D data, DateTime timestamp) {
+            _data = data;
+            Timestamp = timestamp;
+        }
+
+        public int SizeInBytes() {
             return texture.width * texture.height * StrideForTextureFormat(texture.format);
         }
 
@@ -39,11 +52,11 @@
     /// <summary>
     /// This class implements a LRU cache for images (PNG/JPEG) that were downloaded from the web.
     /// </summary>
-    public class WebImageCache : LRUCache<CachedWebImage> {
+    public class WebImageCache : LRUCache<CacheableWebImage> {
         private static WebImageCache _sharedCache;
 
         /// <summary>
-        /// Shared WebImageCache instanced.
+        /// Shared WebImageCache instance.
         /// </summary>
         /// <returns>A singleton instance of the WebImageCache.</returns>
         public static WebImageCache SharedCache {
@@ -55,12 +68,29 @@
 
         private WebImageCache(int memoryLimit) : base(memoryLimit) {}
 
-        public void SetTextureResourceForURL(string url, CachedWebImage resource) {
-            SetResourceForURL(url, resource);
+        /// <summary>
+        /// Sets the given texture to the cached keyed by the URL and associates the timestamp with 
+        /// this image.
+        /// </summary>
+        /// <param name="url">URL the image was fetched from.</param>
+        /// <param name="texture">Texture2D instance of the downloaded image.</param>
+        /// <param name="timestamp">Timestamp of when the image as last modified.</param>
+        public void SetTextureForURL(string url, Texture2D texture, DateTime timestamp) {
+            var webImage = new CacheableWebImage(texture, timestamp);
+            SetResourceForKey(url, webImage);
         }
 
-        public CachedWebImage TextureResourceForURL(string url) {
-            return ResourceForURL(url);
+        /// <summary>
+        /// Returns a CacheableWebImage object that contains the texture and last modified timestamp.
+        /// </summary>
+        /// <param name="url">URL key to look for in the image cache.</param>
+        /// <returns>CacheableWebImage associated with the given URL.</returns>
+        public CacheableWebImage TextureResourceForURL(string url) {
+            try {
+                return ResourceForKey(url);
+            } catch {
+                return null;
+            }
         }
     }
  }
