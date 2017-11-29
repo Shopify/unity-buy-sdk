@@ -1,22 +1,23 @@
 #if UNITY_EDITOR
 namespace Shopify.Unity.Tests
 {
+    using System;
     using UnityEngine;
     using UnityEngine.TestTools;
     using NUnit.Framework;
     using Shopify.Unity;
+    using Shopify.Unity.SDK;
     using System.Collections;
     using System.Collections.Generic;
 
     public class TestShopifyCollections : MonoBehaviour {
         [UnityTest]
         public IEnumerator LoadACollection() {
-            ShopifyBuy.Init("351c122017d0f2a957d32ae728ad749c", "graphql.myshopify.com");
             StoppableWaitForTime waiter = Utils.GetWaitQuery ();
 
-            ShopifyBuy.Client().collections(
+            Clients.GraphQLMany.collections(
                 first: 1,
-                callback: (collections, error) => {
+                callback: (collections, error, after) => {
                 waiter.Stop();
 
                     Assert.IsNull(error, "No errors");
@@ -36,6 +37,42 @@ namespace Shopify.Unity.Tests
             yield return waiter;
 
             Assert.IsTrue (waiter.IsStopped, Utils.MaxQueryMessage);
+        }
+
+        [UnityTest]
+        public IEnumerator LoadAllCollections() {
+            float maxDuration = 6f;
+            int maxCollections = 13;
+            StoppableWaitForTime waiter = new StoppableWaitForTime (maxDuration);
+            ShopifyError errorsFromQueries = null;
+            List<Collection> AllCollections = new List<Collection>();
+
+            Action<string> loadPage = null;
+
+            loadPage = (string after) => {
+                Clients.GraphQLMany.collections((collections, errors, afterCollectionsLoaded) => {
+                    if (collections != null) {
+                        AllCollections.AddRange(collections);
+                    }
+
+                    if (errors != null) {
+                        errorsFromQueries = errors;
+                        waiter.Stop();
+                    } else if (afterCollectionsLoaded == null || AllCollections.Count >= maxCollections) {
+                        waiter.Stop();
+                    } else {
+                        loadPage(afterCollectionsLoaded);
+                    }
+                }, after: after);
+            };
+
+            loadPage(null);
+
+            yield return waiter;
+
+            Assert.IsTrue(waiter.IsStopped, "Query did not complete in " + maxDuration + " seconds");
+            Assert.IsNull(errorsFromQueries);
+            Assert.GreaterOrEqual(AllCollections.Count, maxCollections);
         }
     }
 }

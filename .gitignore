@@ -27,6 +27,7 @@ test.log
 buildIOS.log
 export.log
 Shopify-iOS-Tests/
+Assets/InitTestScene*
 
 ####### Unity
 /[Ll]ibrary/
