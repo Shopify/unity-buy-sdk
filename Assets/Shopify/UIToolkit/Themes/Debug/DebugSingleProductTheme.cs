@@ -7,6 +7,7 @@
 
     [AddComponentMenu("Shopify/Debug/Debug Theme Controller")]
     public class DebugSingleProductTheme : MonoBehaviour, ISingleProductTheme {
+
         public void OnError(ShopifyError error) {
             LogEvent("OnError", error);
         }
@@ -33,6 +34,10 @@
 
         public void OnShouldShowProduct(Product product, ProductVariant[] variants) {
             LogEvent("OnShouldShowProduct", product, variants);
+        }
+
+        public void OnCartQuantityChanged(int newQuantity) {
+            LogEvent("OnCartQuantityChanged", newQuantity);
         }
 
         private void LogEvent(string eventName, params object[] args) {

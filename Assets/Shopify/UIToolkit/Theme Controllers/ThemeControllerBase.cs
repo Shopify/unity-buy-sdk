@@ -2,8 +2,11 @@
     using UnityEngine;
     using Shopify.Unity;
     using Shopify.Unity.SDK;
+    using System.Linq;
 
     public abstract class ThemeControllerBase : MonoBehaviour {
+        public IThemeBase Theme;
+
         /// <summary>
         /// The Shop Domain to connect to, in the form of "myshop.myshopify.com"
         /// </summary>
@@ -76,5 +79,64 @@
 
         public abstract void OnShow();
         public abstract void OnHide();
+        /// <summary>
+        /// The active cart that the controller is using.
+        /// </summary>
+        /// <returns>The Cart</returns>
+        public Cart Cart { get { return Client.Cart(); } }
+
+        private int TotalItemsInCart() {
+            return Cart.LineItems.All().Sum((x) => (int) x.Quantity);
+        }
+
+        /// <summary>
+        /// Adds a variant to the cart
+        /// </summary>
+        /// <param name="variant">The variant to add to the cart</param>
+        public void AddVariantToCart(ProductVariant variant) {
+            var existingItem = Cart.LineItems.Get(variant);
+            var newQuantity = existingItem == null ? 1 : existingItem.Quantity + 1;
+            Cart.LineItems.AddOrUpdate(variant, newQuantity);
+            Theme.OnCartQuantityChanged(TotalItemsInCart());
+        }
+
+        /// <summary>
+        /// Removes a variant from the cart.
+        /// </summary>
+        /// <param name="variant">The variant to remove from the cart</param>
+        public void RemoveVariantFromCart(ProductVariant variant) {
+            var existingItem = Cart.LineItems.Get(variant);
+            if (existingItem == null) return;
+            var newQuantity = existingItem.Quantity - 1;
+
+            if (newQuantity == 0) {
+                Cart.LineItems.Delete(variant);
+            } else {
+                Cart.LineItems.AddOrUpdate(variant, newQuantity);
+            }
+            Theme.OnCartQuantityChanged(TotalItemsInCart());
+        }
+
+        /// <summary>
+        /// Sets the variant to the specified quantity in the cart.
+        /// </summary>
+        /// <param name="variant">The variant to modify</param>
+        /// <param name="quantity">The desired quantity</param>
+        public void UpdateVariantInCart(ProductVariant variant, int quantity) {
+            if (quantity <= 0) {
+                Cart.LineItems.Delete(variant);
+            } else {
+                Cart.LineItems.AddOrUpdate(variant, quantity);
+            }
+            Theme.OnCartQuantityChanged(TotalItemsInCart());
+        }
+
+        /// <summary>
+        /// Clears all items from the cart
+        /// </summary>
+        public void ClearCart() {
+            Cart.Reset();
+            Theme.OnCartQuantityChanged(0);
+        }
     }
 }

@@ -42,5 +42,12 @@
         /// In this case you should always show a UI for cancelling the purchase in-game.
         /// </summary>
         void OnPurchaseCompleted();
+
+        /// <summary>
+        /// Called when the total quantity of items in the cart changes.
+        /// Useful for when showing a badge next to the cart button for example.
+        /// </summary>
+        /// <param name="newQuantity">The new number of items in the cart</param>
+        void OnCartQuantityChanged(int newQuantity);
     }
 }

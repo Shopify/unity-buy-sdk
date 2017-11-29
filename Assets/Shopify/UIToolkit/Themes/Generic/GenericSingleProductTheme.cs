@@ -29,6 +29,10 @@
             throw new System.NotImplementedException();
         }
 
+        void IThemeBase.OnCartQuantityChanged(int newQuantity) {
+            throw new System.NotImplementedException();
+        }
+
         void ISingleProductTheme.OnShouldShowProduct(Product product, ProductVariant[] variants) {
             throw new System.NotImplementedException();
         }
