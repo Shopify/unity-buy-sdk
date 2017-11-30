@@ -4,8 +4,9 @@
     using System;
 
     [CustomEditor(typeof(SingleProductThemeController))]
-    public class SingleProductThemeControllerEditor : BaseThemeControllerEditor {
+    public class SingleProductThemeControllerEditor : ThemeControllerEditorBase {
         public ISingleProductThemeControllerEditorView View;
+
         public SingleProductThemeController Target {
             get {
                 return target as SingleProductThemeController;

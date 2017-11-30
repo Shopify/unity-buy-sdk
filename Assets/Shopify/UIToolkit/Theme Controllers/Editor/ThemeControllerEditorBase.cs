@@ -8,7 +8,7 @@ namespace Shopify.UIToolkit.Editor {
     /// <summary>
     /// Base/common functionality for all of our ThemeController editor scripts.
     /// </summary>
-    public class BaseThemeControllerEditor : Editor {
+    public class ThemeControllerEditorBase : Editor {
 
         private ShopCredentialsVerifier _verifier {
             get {
@@ -19,12 +19,13 @@ namespace Shopify.UIToolkit.Editor {
             }
         }
 
+        private ShopCredentialsVerifier _cachedVerifier;
+
         private IShopCredentials _credentials {
             get {
                 return target as IShopCredentials;
             }
         }
-        private ShopCredentialsVerifier _cachedVerifier;
 
         public override void OnInspectorGUI() {
             _verifier.DrawInspectorGUI(serializedObject);
