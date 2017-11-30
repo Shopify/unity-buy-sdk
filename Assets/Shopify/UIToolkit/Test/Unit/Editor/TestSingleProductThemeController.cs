@@ -57,7 +57,6 @@
             }
         }
 
-        /* TODO: Fix bug where exception is thrown when productGID is valid but not found on shop
         [UnityTest]
         public IEnumerator TestShowCallsOnErrorWhenProductDoesntExist() {
             _controller.ProductGID = "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0LzEzNTI1NDIzOQ==";
@@ -70,8 +69,8 @@
             }).Do((x) => {
                 var error = x.Args()[0] as ShopifyError;
 
-                Assert.AreEqual(ShopifyError.ErrorType.GraphQL, error.Type);
-                Assert.AreEqual("", error.Description);
+                Assert.AreEqual(ShopifyError.ErrorType.UserError, error.Type);
+                Assert.AreEqual("Product not found", error.Description);
 
                 callbackCalled = true;
             });
@@ -82,7 +81,6 @@
 
             _theme.DidNotReceive().OnShouldShowProduct(Arg.Any<Product>(), Arg.Any<ProductVariant[]>());
         }
-        */
 
         [UnityTest]
         public IEnumerator TestShowPropogatesErrorsToThemeOnError() {

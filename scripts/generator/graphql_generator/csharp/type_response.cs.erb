@@ -181,6 +181,7 @@ namespace Shopify.Unity {
             var nodes = new List<Node>();
 
             foreach (var obj in objects) {
+                if (obj == null) continue;
                 nodes.Add(UnknownNode.Create((Dictionary<string,object>) obj));
             }
 
