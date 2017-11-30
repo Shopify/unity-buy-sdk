@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 namespace Shopify.UIToolkit.Test.Integration {
     using System;
     using System.Collections;
@@ -57,3 +58,4 @@ namespace Shopify.UIToolkit.Test.Integration {
         }
     }
 }
+#endif
