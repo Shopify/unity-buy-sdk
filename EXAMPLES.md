@@ -9,8 +9,8 @@ The Shopify SDK for Unity queries Shopify's [Storefront API](https://help.shopif
 - [Before you begin](#before-you-begin)
 - [Supported build targets](#supported-build-targets)
 - [Initialize the SDK](#initialize-the-sdk)
-- [Query all products](#query-all-products)
-- [Query all collections](#query-all-collections)
+- [Query Products](#query-products)
+- [Query Collections](#query-collections)
 - [Build a cart](#build-a-cart)
 - [Web view checkout](#web-view-checkout)
 - [Native pay checkout (Apple Pay / Android Pay)](#native-pay-checkout)
@@ -41,9 +41,9 @@ ShopifyBuy.Init(accessToken, shopDomain);
 
 After you initialize the SDK, you can use `ShopifyBuy.Client()` to query Shopify. You need to initialize the SDK only once.
 
-## Query all products
+## Query Products
 
-The following example shows how to query all products in your Shopify store:
+The following example shows how to query two pages of products in your Shopify store:
 
 ```cs
 using Shopify.Unity;
@@ -57,7 +57,7 @@ void Start () {
     ShopifyBuy.Init(accessToken, shopDomain);
 
     // The following queries the shop for all products
-    ShopifyBuy.Client().products((products, error) => {
+    ShopifyBuy.Client().products((products, error, after) => {
         if (error != null) {
             Debug.Log(error.Description);
 
@@ -65,29 +65,42 @@ void Start () {
             // An HTTP error is actually Unity's WWW.error
             case ShopifyError.ErrorType.HTTP:
                 break;
-            // Although it's unlikely, an invalid GraphQL query might be sent.
-            // Report an issue to https://github.com/shopify/unity-buy-sdk/issues
+                // Although it's unlikely, an invalid GraphQL query might be sent.
+                // Report an issue to https://github.com/shopify/unity-buy-sdk/issues
             case ShopifyError.ErrorType.GraphQL:
                 break;
             };
         } else {
-            // products is a List<Product>
-            Debug.Log("Your shop has " + products.Count + " products");
-            Debug.Log("==================================================");
+            Debug.Log("Here is the first page of products:");
 
+            // products is a List<Product>
             foreach(Product product in products) {
                 Debug.Log("Product Title: " + product.title());
                 Debug.Log("Product Description: " + product.descriptionHtml());
                 Debug.Log("--------");
+            }
+
+            if (after != null) {
+                Debug.Log("Here is the second page of products:");
+
+                ShopifyBuy.Client().products((products2, error2, after2) => {
+                    foreach(Product product in products2) {
+                        Debug.Log("Product Title: " + product.title());
+                        Debug.Log("Product Description: " + product.descriptionHtml());
+                        Debug.Log("--------");
+                    }
+                });
+            } else {
+                Debug.Log("There was only one page of products.");
             }
         }
     });
 }
 ```
 
-## Query all collections
+## Query Collections
 
-The following example shows how to query all collections in your Shopify store:
+The following example shows how to query one page of collections in your Shopify store:
 
 ```cs
 using Shopify.Unity;
@@ -100,7 +113,7 @@ void Start () {
     ShopifyBuy.Init(accessToken, shopDomain);
 
     // Queries all collections on shop
-    ShopifyBuy.Client().collections((collections, error) => {
+    ShopifyBuy.Client().collections((collections, error, after) => {
         if (error != null) {
             Debug.Log(error.Description);
 
@@ -115,10 +128,9 @@ void Start () {
             };
 
         } else {
-            // collections is a List<Collection>
-            Debug.Log("Your shop has " + collections.Count + " collections");
-            Debug.Log("==================================================");
+            Debug.Log("Loaded the first page of collections:");
 
+            // collections is a List<Collection>
             foreach(Collection collection in collections) {
                 Debug.Log("Collection title: " + collection.title());
                 Debug.Log("Collection updated at: " + collection.updatedAt());
@@ -128,6 +140,12 @@ void Start () {
                 foreach(Product product in products) {
                     Debug.Log("Collection contains a product with the following id: " + product.id());
                 }
+            }
+
+            if (after != null) {
+                Debug.Log("We also have a second page of products");
+            } else {
+                Debug.Log("We don't have a second page of products");
             }
         }
     });
