@@ -32,6 +32,10 @@
             LogEvent("OnPurchaseStarted");
         }
 
+        public void OnPurchaseFailed(ShopifyError error) {
+            LogEvent("OnPurchaseFailed", error);
+        }
+
         public void OnShouldShowProduct(Product product, ProductVariant[] variants) {
             LogEvent("OnShouldShowProduct", product, variants);
         }
