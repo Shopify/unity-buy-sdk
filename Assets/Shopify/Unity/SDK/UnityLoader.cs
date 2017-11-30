@@ -79,5 +79,10 @@ namespace Shopify.Unity.SDK {
         }
     }
 
+    public class UnityLoaderProvider : ILoaderProvider {
+        BaseLoader ILoaderProvider.GetLoader(string accessToken, string domain) {
+            return new UnityLoader(domain, accessToken);
+        }
+    }
 }
 #endif
