@@ -83,88 +83,15 @@ module GraphQLGenerator
     def save(path)
       path_graphql = "#{path}/GraphQL"
 
-      begin
-        Dir.mkdir(path_graphql)
-      rescue Errno::EEXIST
-      end
+      Dir.mkdir(path) rescue Errno::EEXIST
+      Dir.mkdir(path_graphql) rescue Errno::EEXIST
 
       Dir["#{path}/**/*.cs"].reject{ |f| f[%r{Vendor/}] }.each do |file|
         FileUtils.rm(file)
       end
 
       %w(
-        ShopifyBuy
-        Cart
-        CartState
-        Editor/ShopifyOnboardingPanel
-        Editor/ShopifyEditorStyleHelper
-        Editor/BuildPipeline/iOSPostProcessor
-        Editor/BuildPipeline/ExtendedPBXProject
-        SDK/Arguments
-        SDK/InputBase
-        SDK/InputValueToString
-        SDK/CastUtils
-        SDK/CartLineItems
-        SDK/ValidationUtils
-        SDK/AbstractResponse
-        SDK/NoQueryException
-        SDK/ObservableDictionary
-        SDK/AliasException
-        SDK/InvalidServerResponseException
-        SDK/DefaultQueries
-        SDK/DefaultProductQueries
-        SDK/DefaultCollectionQueries
-        SDK/DefaultCheckoutQueries
-        SDK/DefaultShopQueries
-        SDK/Delegates
-        SDK/GlobalGameObject
-        SDK/QueryLoader
-        SDK/ConnectionLoader
-        SDK/UnityLoader
-        SDK/UnityTimeout
-        SDK/TopLevelResponse
-        SDK/ShopifyError
-        SDK/MutationResponse
-        SDK/ResponseMergeUtil
-        SDK/MergeCheckout
-        SDK/QueryResponse
-        SDK/BaseLoader
-        SDK/Log
-        SDK/NativeMessage
-        SDK/UnityWebCheckout
-        SDK/Serializable
-        SDK/SummaryItem
-        SDK/INativeCheckout
-        SDK/WebCheckout
-        SDK/WebCheckoutMessageReceiver
-        SDK/ShippingMethod
-        SDK/PaymentNetwork
-        SDK/Editor/UnityEditorLoader
-        SDK/Android/AndroidWebCheckout
-        SDK/Android/AndroidNativeCheckout
-        SDK/Android/AndroidPayCheckoutResponse
-        SDK/Android/AndroidPayEventResponse
-        SDK/Android/PricingLineItems
-        SDK/Android/AndroidPayEventReceiverBridge
-        SDK/Android/AndroidNativeCheckout.AndroidPayEventReceiver
-        SDK/Android/IAndroidPayEventReceiver
-        SDK/Android/NativeMessage.Android
-        SDK/iOS/ApplePayAuthorizationStatus
-        SDK/iOS/IApplePayEventReceiver
-        SDK/iOS/ApplePayEventReceiverBridge
-        SDK/iOS/ApplePayEventResponse
-        SDK/iOS/ApplePayError
-        SDK/iOS/ApplePayAddressInvalidError
-        SDK/iOS/ApplePayShippingAddressInvalidError
-        SDK/iOS/ApplePayBillingAddressInvalidError
-        SDK/iOS/ApplePayContactInvalidError
-        SDK/iOS/ApplePayShippingAddressUnservicableError
-        SDK/iOS/NativeMessage.iOS
-        SDK/iOS/iOSWebCheckout
-        SDK/iOS/iOSNativeCheckout
-        SDK/iOS/iOSNativeCheckout.ApplePayEventReceiver
-        SDK/NativePayment
-        UI/NativePayButtonUI
+        VersionInformation
       ).each do |class_file_name|
         directory = "#{path}/#{File.dirname(class_file_name)}"
 
@@ -173,7 +100,7 @@ module GraphQLGenerator
         end
 
         erb = CSharp::erb_for(File.expand_path("../csharp/#{class_file_name}.cs.erb", __FILE__))
-        File.write("#{path}/#{class_file_name}.cs", reformat(erb.result(binding)))
+        File.write("#{directory}/#{class_file_name}.cs", reformat(erb.result(binding)))
       end
 
       # output type definitions

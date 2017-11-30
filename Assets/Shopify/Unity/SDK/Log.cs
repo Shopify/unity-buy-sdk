@@ -1,0 +1,13 @@
+namespace Shopify.Unity.SDK {
+#if !SHOPIFY_MONO_UNIT_TEST
+    using UnityEngine;
+#endif
+
+    public class Log {
+        public static void DeprecatedQueryField(string typeName, string fieldName, string deprecationReason) {
+#if !SHOPIFY_MONO_UNIT_TEST
+            Debug.LogWarning("The field `" + typeName + "." + fieldName + "` is deprecated with the following deprecation message:\n" + deprecationReason);
+#endif
+        }
+    }
+}

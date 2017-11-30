@@ -218,14 +218,14 @@ namespace Shopify.Tests
         public void TestHasVersionNumber() {
             Regex version = new Regex(@"\d+\.\d+\.\d+");
 
-            Assert.IsTrue(version.IsMatch(ShopifyBuy.VERSION));
+            Assert.IsTrue(version.IsMatch(VersionInformation.VERSION));
         }
 
         [Test]
         public void TestHasVersionNumberWithPublishDestination() {
             Regex version = new Regex(@"^\d+\.\d+\.\d+(-github|-asset-store)$");
 
-            Assert.IsTrue(version.IsMatch(ShopifyBuy.VERSION));
+            Assert.IsTrue(version.IsMatch(VersionInformation.VERSION));
         }
 
         [Test]
