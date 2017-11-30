@@ -4,6 +4,5 @@
 
         string GetShopDomain();
         string GetAccessToken();
-
     }
 }

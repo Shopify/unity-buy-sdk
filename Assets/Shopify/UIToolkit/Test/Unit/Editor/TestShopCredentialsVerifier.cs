@@ -106,6 +106,32 @@
             Assert.IsTrue(failureCallbackCalled);
         }
 
+        [UnityTest]
+        public IEnumerator TestVerifierFailsForBlankDomain() {
+            _ObjectWithCredentials.CredentialsVerificationState = ShopCredentialsVerificationState.Unverified;
+            _ObjectWithCredentials.AccessToken = "  ";
+            _ObjectWithCredentials.ShopDomain = "  ";
+
+            var requestComplete = false;
+            var failureCallbackCalled = false;
+
+            _Verifier.VerifyCredentials(() => {
+                requestComplete = true;
+                failureCallbackCalled = false;
+            }, () => {
+                requestComplete = true;
+                failureCallbackCalled = true;
+            });
+
+            while (requestComplete != true) {
+                yield return null;
+            }
+
+            Assert.IsFalse(_Verifier.HasVerifiedCredentials());
+            Assert.IsTrue(_ObjectWithCredentials.CredentialsVerificationState == ShopCredentialsVerificationState.Unverified);
+            Assert.IsTrue(failureCallbackCalled);
+        }
+
         [Test]
         public void TestResetCredentialsResetsInvalidState() {
             _ObjectWithCredentials.CredentialsVerificationState = ShopCredentialsVerificationState.Invalid;
