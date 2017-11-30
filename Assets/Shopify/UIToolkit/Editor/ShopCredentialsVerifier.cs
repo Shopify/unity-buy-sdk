@@ -53,7 +53,14 @@
 
             _IsRequestInProgress = true;
 
-            Client().Query((root) => {
+            var client = MakeClient();
+            if (client == null) {
+                _IsRequestInProgress = false;
+                onFailure();
+                return;
+            }
+
+            client.Query((root) => {
                 root.shop((shop) => {
                     shop.name();
                 });
@@ -124,8 +131,12 @@
             }
         }
 
-        private ShopifyClient Client() {
-            return new ShopifyClient(new UnityEditorLoader(_Credentials.ShopDomain, _Credentials.AccessToken));
+        private ShopifyClient MakeClient() {
+            if (_Credentials.GetShopDomain().Trim().Length == 0) {
+                return null;
+            }
+
+            return new ShopifyClient(new UnityEditorLoader(_Credentials.GetShopDomain(), _Credentials.GetAccessToken()));
         }
 
         private void OnVerificationRequestComplete(QueryRoot result, ShopifyError errors) {

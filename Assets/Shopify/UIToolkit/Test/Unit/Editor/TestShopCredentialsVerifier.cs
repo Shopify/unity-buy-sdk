@@ -14,6 +14,14 @@
             public ShopCredentialsVerificationState CredentialsVerificationState { get; set; }
             public string ShopDomain { get; set; }
             public string AccessToken { get; set; }
+
+            public string GetShopDomain() {
+                return ShopDomain;
+            }
+
+            public string GetAccessToken() {
+                return AccessToken;
+            }
         }
 
         private ShopCredentialsVerifier _Verifier;

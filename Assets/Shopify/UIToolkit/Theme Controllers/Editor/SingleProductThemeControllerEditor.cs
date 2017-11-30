@@ -4,7 +4,7 @@
     using System;
 
     [CustomEditor(typeof(SingleProductThemeController))]
-    public class SingleProductThemeControllerEditor : Editor {
+    public class SingleProductThemeControllerEditor : BaseThemeControllerEditor {
         public ISingleProductThemeControllerEditorView View;
         public SingleProductThemeController Target {
             get {
@@ -20,6 +20,8 @@
         }
 
         public override void OnInspectorGUI() {
+            base.OnInspectorGUI();
+
             if (Target.Theme == null) {
                 View.ShowThemeHelp();
                 return;

@@ -4,7 +4,9 @@
     using Shopify.Unity.SDK;
     using System.Linq;
 
-    public abstract class ThemeControllerBase : MonoBehaviour {
+    public abstract class ThemeControllerBase : MonoBehaviour, IShopCredentials {
+
+        [HideInInspector]
         public IThemeBase Theme;
 
         /// <summary>
@@ -45,6 +47,17 @@
         }
         private ILoaderProvider _loaderProvider = new UnityLoaderProvider();
 
+        public string GetShopDomain() {
+            return ShopDomain;
+        }
+
+        public string GetAccessToken() {
+            return AccessToken;
+        }
+
+        [HideInInspector]
+        public ShopCredentialsVerificationState CredentialsVerificationState { get; set; }
+
         /// <summary>
         /// The client that the controller is using to make requests against the SDK.
         /// </summary>
@@ -58,10 +71,6 @@
             }
         }
         private ShopifyClient _cachedClient;
-
-        private void InvalidateClient() {
-            _cachedClient = null;
-        }
 
         /// <summary>
         /// Shows the shop
