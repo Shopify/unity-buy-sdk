@@ -5,9 +5,9 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// An interface for defining a data cache.
+    /// An interface for defining a cache.
     /// </summary>
-    public interface DataCache<T> {
+    public interface Cache<T> {
         /// <summary>
         /// The estimated size limit in bytes of how much memory we want to use for the cache (readonly).
         /// </summary>

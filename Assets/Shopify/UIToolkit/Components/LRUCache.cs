@@ -12,7 +12,7 @@
     /// <summary>
     /// A cache that uses a Least Recently Used (LRU) heurstic for evicting items.
     /// </summary>
-    public abstract class LRUCache<T> : DataCache<T> where T: ICacheable {
+    public abstract class LRUCache<T> : Cache<T> where T: ICacheable {
         /// <summary>
         /// The default estimated memory size limit in bytes.
         /// </summary>

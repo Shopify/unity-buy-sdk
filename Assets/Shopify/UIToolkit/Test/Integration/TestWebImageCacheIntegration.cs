@@ -54,7 +54,6 @@ namespace Shopify.UIToolkit.Test.Integration {
             Assert.NotNull(cache.TextureResourceForURL(TenMBInImages[3]));
             Assert.NotNull(cache.TextureResourceForURL(TenMBInImages[4]));
             Assert.NotNull(cache.TextureResourceForURL(TenMBInImages[5]));
-            Debug.Log(cache.EstimatedMemorySize);
         }
     }
 }
