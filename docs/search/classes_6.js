@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['iloader',['ILoader',['../interface_shopify_1_1_unity_1_1_s_d_k_1_1_i_loader.html',1,'Shopify::Unity::SDK']]],
   ['image',['Image',['../class_shopify_1_1_unity_1_1_image.html',1,'Shopify::Unity']]],
   ['imageconnection',['ImageConnection',['../class_shopify_1_1_unity_1_1_image_connection.html',1,'Shopify::Unity']]],
   ['imageconnectionquery',['ImageConnectionQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_image_connection_query.html',1,'Shopify::Unity::GraphQL']]],

@@ -1211,6 +1211,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Renews a customer access token. </p>
+<p>Access token renewal must happen <em>before</em> a token expires. If a token has already expired, a new one should be created instead via <code>customerAccessTokenCreate</code>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">customerAccessToken</td><td>The access token used to identify the customer. </td></tr>
