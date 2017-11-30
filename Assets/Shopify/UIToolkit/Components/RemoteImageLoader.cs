@@ -12,9 +12,9 @@ namespace Shopify.UIToolkit {
     public class RemoteImageLoader : MonoBehaviour {
 
         /// <summary>
-        /// When true, downloaded images will be cached.
+        /// When true, downloaded images will be cached. Defaults to true.
         /// </summary>
-        public bool UseCache;
+        public bool UseCache = true;
 
         private Image _image;
 
@@ -96,13 +96,6 @@ namespace Shopify.UIToolkit {
             completion(www.texture, null);
         }
 
-        /// <summary>
-        /// Loads an image from the provided URL if we don't have one in the cache or if it's new. Results are cached
-        /// so subsequent images are not downloaded from the web.
-        /// </summary>
-        /// <param name="url">URL to fetch image from.</param>
-        /// <param name="completion">Callback invoked with the cached or downloaded texture.</param>
-        /// <returns></returns>
         private IEnumerator CachedLoadImageURLRoutine(string url, RemoteImageCompletionDelegate completion) {
             var requestHeaders = new Dictionary<string, string>();
             var cachedResource = _imageCache.TextureResourceForURL(url);
