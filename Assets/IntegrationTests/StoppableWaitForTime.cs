@@ -9,6 +9,16 @@ namespace Shopify.Unity.Tests {
             }
         }
 
+        public float CurrentDuration {
+            get {
+                if (_IsStopped) {
+                    return DurationToStop;
+                } else {
+                    return Time.time - StartTime;
+                }
+            }
+        }
+
         public float DurationToStop {
             get {
                 return StopTime - StartTime;

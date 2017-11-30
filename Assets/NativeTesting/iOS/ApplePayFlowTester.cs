@@ -77,7 +77,7 @@
         }
 
         private void SetDefaultCartProducts(Action completion) {
-            Client.products((products, error) => {
+            Client.products((products, error, after) => {
                 List<ProductVariant> productVariants = (List<ProductVariant>) products[0].variants();
                 CurrentCart.LineItems.AddOrUpdate(productVariants[0], 1);
                 completion();
