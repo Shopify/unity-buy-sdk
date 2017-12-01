@@ -72,4 +72,4 @@ GraphQLGenerator::CSharp.new(
       custom_cast: ->(value) { "Convert.ToDecimal(#{value})" },
     ),
   ]
-).save("#{ROOT_DIR}/Assets/Shopify/Unity");
+).save("#{ROOT_DIR}/Assets/Shopify/Unity/Generated/");

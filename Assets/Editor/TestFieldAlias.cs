@@ -90,7 +90,7 @@ namespace Shopify.Tests
             Dictionary<string,object> dataJSON = (Dictionary<string,object>) Json.Deserialize(stringJSON);
             
             QueryRoot response = new QueryRoot(dataJSON);
-            
+        
             Assert.AreEqual("1", response.node(alias: "aliasName").id());
         }
 
