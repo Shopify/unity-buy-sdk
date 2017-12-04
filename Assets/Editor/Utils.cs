@@ -1,3 +1,4 @@
+#if !SHOPIFY_MONO_UNIT_TEST
 namespace Shopify.Tests {
     using System;
     using System.Linq;
@@ -15,3 +16,4 @@ namespace Shopify.Tests {
         }
     }
 }
+#endif
