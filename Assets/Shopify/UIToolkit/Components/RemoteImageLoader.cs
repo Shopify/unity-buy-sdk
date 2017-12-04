@@ -118,7 +118,7 @@ namespace Shopify.UIToolkit {
             var responseHeaders = www.responseHeaders;
             if (responseHeaders.ContainsKey("STATUS")) {
                 string statusCodeLine = responseHeaders["STATUS"];
-                if (ParseResponseCode(statusCodeLine) == 304) {
+                if (HTTPUtils.ParseResponseCode(statusCodeLine) == 304) {
                     if (cachedResource != null) {
                         completion(cachedResource.texture, null);
                     } else {
@@ -137,19 +137,6 @@ namespace Shopify.UIToolkit {
             _imageCache.SetTextureForURL(url, texture, lastModifiedString);
             completion(texture, null);
         }
-
-        /// <summary>
-        /// Parses the 'Status XXX' HTTP header field for the status code number.
-        /// </summary>
-        /// <param name="statusLine">HTTP STATUS field</param>
-        /// <returns>HTTP Status code</returns>
-        private static int ParseResponseCode(string statusLine) {
-            int ret = 0;
-            string[] components = statusLine.Split(' ');
-            int.TryParse(components[1], out ret);
-            return ret;
-        }
-
     }
 }
 
