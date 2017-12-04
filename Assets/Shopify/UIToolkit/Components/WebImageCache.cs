@@ -14,7 +14,7 @@
             }
         }
 
-        public readonly DateTime Timestamp;
+        public readonly string LastModified;
 
         public object Data {
             get {
@@ -24,9 +24,9 @@
 
         private object _data;
 
-        public CacheableWebImage(Texture2D data, DateTime timestamp) {
+        public CacheableWebImage(Texture2D data, string timestamp) {
             _data = data;
-            Timestamp = timestamp;
+            LastModified = timestamp;
         }
 
         public int SizeInBytes() {
@@ -74,9 +74,9 @@
         /// </summary>
         /// <param name="url">URL the image was fetched from.</param>
         /// <param name="texture">Texture2D instance of the downloaded image.</param>
-        /// <param name="timestamp">Timestamp of when the image as last modified.</param>
-        public void SetTextureForURL(string url, Texture2D texture, DateTime timestamp) {
-            var webImage = new CacheableWebImage(texture, timestamp);
+        /// <param name="lastModified">Timestamp of when the image as last modified.</param>
+        public void SetTextureForURL(string url, Texture2D texture, string lastModified) {
+            var webImage = new CacheableWebImage(texture, lastModified);
             SetResourceForKey(url, webImage);
         }
 
