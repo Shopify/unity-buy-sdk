@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 namespace Shopify.UIToolkit.Test.Integration {
     using System;
     using System.Collections;
@@ -29,9 +30,7 @@ namespace Shopify.UIToolkit.Test.Integration {
             foreach (var imageURL in TenMBInImages) {
                 WWW www = new WWW(imageURL);
                 yield return www;
-                var texture = www.texture;
-                var resource = new CachedWebResource<Texture2D>(DateTime.Now.ToShortTimeString(), texture);
-                cache.SetTextureResourceForURL(imageURL, resource);
+                cache.SetTextureForURL(imageURL, www.texture, DateTime.Now);
             }
 
             Assert.AreEqual(cache.Count, 6);
@@ -46,9 +45,7 @@ namespace Shopify.UIToolkit.Test.Integration {
             foreach (var imageURL in TenMBInImages) {
                 WWW www = new WWW(imageURL);
                 yield return www;
-                var texture = www.texture;
-                var resource = new CachedWebResource<Texture2D>(DateTime.Now.ToShortTimeString(), texture);
-                cache.SetTextureResourceForURL(imageURL, resource);
+                cache.SetTextureForURL(imageURL, www.texture, DateTime.Now);
             }
 
             Assert.AreEqual(cache.Count, 3);
@@ -58,7 +55,7 @@ namespace Shopify.UIToolkit.Test.Integration {
             Assert.NotNull(cache.TextureResourceForURL(TenMBInImages[3]));
             Assert.NotNull(cache.TextureResourceForURL(TenMBInImages[4]));
             Assert.NotNull(cache.TextureResourceForURL(TenMBInImages[5]));
-            Debug.Log(cache.EstimatedMemorySize);
         }
     }
 }
+#endif
