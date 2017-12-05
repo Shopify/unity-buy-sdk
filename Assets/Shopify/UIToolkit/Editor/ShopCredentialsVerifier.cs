@@ -53,9 +53,13 @@
 
             _IsRequestInProgress = true;
 
-            var client = MakeClient();
-            if (client == null) {
+            ShopifyClient client;
+            try {
+                client = Client();
+            } catch (ArgumentException e) {
+                Debug.LogWarning(e);
                 _IsRequestInProgress = false;
+                _Credentials.CredentialsVerificationState = ShopCredentialsVerificationState.Invalid;
                 onFailure();
                 return;
             }
@@ -131,11 +135,7 @@
             }
         }
 
-        private ShopifyClient MakeClient() {
-            if (_Credentials.GetShopDomain().Trim().Length == 0) {
-                return null;
-            }
-
+        private ShopifyClient Client() {
             return new ShopifyClient(new UnityEditorLoader(_Credentials.GetShopDomain(), _Credentials.GetAccessToken()));
         }
 

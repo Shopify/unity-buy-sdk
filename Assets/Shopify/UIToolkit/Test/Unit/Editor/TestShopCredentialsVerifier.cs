@@ -128,7 +128,7 @@
             }
 
             Assert.IsFalse(_Verifier.HasVerifiedCredentials());
-            Assert.IsTrue(_ObjectWithCredentials.CredentialsVerificationState == ShopCredentialsVerificationState.Unverified);
+            Assert.IsTrue(_ObjectWithCredentials.CredentialsVerificationState == ShopCredentialsVerificationState.Invalid);
             Assert.IsTrue(failureCallbackCalled);
         }
 
