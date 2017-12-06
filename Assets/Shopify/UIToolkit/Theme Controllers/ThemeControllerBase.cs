@@ -79,11 +79,16 @@
 
         public abstract void OnShow();
         public abstract void OnHide();
+
         /// <summary>
         /// The active cart that the controller is using.
         /// </summary>
         /// <returns>The Cart</returns>
-        public Cart Cart { get { return Client.Cart(); } }
+        public Cart Cart { 
+            get { 
+                return Client.Cart(); 
+            } 
+        }
 
         private int TotalItemsInCart() {
             return Cart.LineItems.All().Sum((x) => (int) x.Quantity);
