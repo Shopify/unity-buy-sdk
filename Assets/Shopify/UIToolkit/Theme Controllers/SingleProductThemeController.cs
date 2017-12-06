@@ -1,9 +1,9 @@
 ﻿namespace Shopify.UIToolkit {
-    using System.Collections;
     using System.Collections.Generic;
+    using System.Collections;
     using System.Linq;
-    using Shopify.Unity;
     using Shopify.Unity.SDK;
+    using Shopify.Unity;
     using UnityEngine;
 
     [AddComponentMenu("Shopify/Theme Controllers/Single Product Theme Controller")]
@@ -22,6 +22,11 @@
         private void OnProductsLoaded(List<Product> products, ShopifyError error) {
             if (error != null) {
                 Theme.OnError(error);
+                return;
+            }
+
+            if (products.Count == 0) {
+                Theme.OnError(new ShopifyError(ShopifyError.ErrorType.UserError, "Product not found"));
                 return;
             }
 
