@@ -5,6 +5,7 @@
 
     [CustomEditor(typeof(SingleProductThemeController))]
     public class SingleProductThemeControllerEditor : Editor {
+        public ISingleProductThemeControllerEditorView View;
         public SingleProductThemeController Target {
             get {
                 return target as SingleProductThemeController;
@@ -12,24 +13,17 @@
         }
 
         public void OnEnable() {
+            if (Target == null) return;
+
+            View = new SingleProductThemeControllerEditorView();
             BindThemeIfPresent();
         }
 
         public override void OnInspectorGUI() {
             if (Target.Theme == null) {
-                ShowThemeHelp();
+                View.ShowThemeHelp();
                 return;
             }
-        }
-
-        private void ShowThemeHelp() {
-            var message = @"
-Theme Controllers require a theme to function.
-
-Override SingleProductTheme with your own custom script and add it to this class to continue.
-            ";
-
-            EditorGUILayout.HelpBox(message, MessageType.Warning);
         }
 
         private void BindThemeIfPresent() {
