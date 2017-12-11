@@ -10,20 +10,19 @@
 
     public interface IProductPickerView {
         void DrawProductLoadingState(SerializedObject serializedObject);
-        void DrawProductPicker(SerializedObject serializedObject);
+        void DrawProductPicker(SerializedObject serializedObject, Dictionary<string, string> productNameToGIDMap);
         void DrawProductLoadingError(SerializedObject serializedObject);
         void DrawShopHasNoProductsState(SerializedObject serializedObject);
     }
 
-    public class ProductPicker : IProductPickerView {
-        private class ProductNameToGIDMapEntry {
-            public string ProductName;
-            public string ProductGID;
-        }
+    public interface IProductPickerController {
+        void OnShouldRefreshProductList();
+    }
 
-        public IProductPickerView View;
-        private static List<ProductNameToGIDMapEntry> _cachedProductNameToGIDMap;
-        private List<ProductNameToGIDMapEntry> _productNameToGIDMap;
+    public class ProductPicker : IProductPickerController {
+        private IProductPickerView _view;
+        private static Dictionary<string, string> _cachedProductNameToGIDMap;
+        private Dictionary<string, string> _productNameToGIDMap;
         private ShopifyClient _client;
         private ShopifyError _error;
 
@@ -31,29 +30,29 @@
             return _productNameToGIDMap != null || _error != null;
         }
 
-        public ProductPicker(ShopifyClient client) {
+        public ProductPicker(ShopifyClient client, IProductPickerView view = null) {
+            _view = view ?? new ProductPickerView(this);
             _client = client;
-            View = this;
             LoadProducts();
         }
 
         public void DrawInspectorGUI(SerializedObject serializedObject) {
             if (_error != null) {
-                View.DrawProductLoadingError(serializedObject);
+                _view.DrawProductLoadingError(serializedObject);
                 return;
             }
 
             if (!ProductsFinishedLoading()) {
-                View.DrawProductLoadingState(serializedObject);
+                _view.DrawProductLoadingState(serializedObject);
                 return;
             }
 
             if (_productNameToGIDMap.Count == 0) {
-                View.DrawShopHasNoProductsState(serializedObject);
+                _view.DrawShopHasNoProductsState(serializedObject);
                 return;
             }
 
-            View.DrawProductPicker(serializedObject);
+            _view.DrawProductPicker(serializedObject, _productNameToGIDMap);
         }
 
         public void LoadProducts() {
@@ -61,17 +60,33 @@
                 _productNameToGIDMap = _cachedProductNameToGIDMap;
             }
 
-            _client.products((products, error) => {
+            LoadAllProducts();
+        }
+
+        public void OnShouldRefreshProductList() {
+            RefreshProducts();
+        }
+
+        private void LoadAllProducts(string lastPageAfter = null, List<Product> allProducts = null) {
+            allProducts = allProducts ?? new List<Product>();
+
+            _client.products((products, error, after) => {
                 if (error != null) {
                     OnFailedToLoadProducts(error);
                     return;
                 }
 
-                OnLoadedProducts(products);
-            });
+                if (after == null) {
+                    OnLoadedProducts(products);
+                    return;
+                }
+
+                allProducts.AddRange(products);
+                LoadAllProducts(after, allProducts);
+            }, after: lastPageAfter);
         }
 
-        public void RefreshProducts() {
+        private void RefreshProducts() {
             _error = null;
             _productNameToGIDMap = null;
             _cachedProductNameToGIDMap = null;
@@ -84,72 +99,70 @@
         }
 
         private void OnLoadedProducts(List<Product> products) {
-            _productNameToGIDMap = new List<ProductNameToGIDMapEntry>();
+            _productNameToGIDMap = new Dictionary<string, string>();
 
             foreach(var product in products) {
-                _productNameToGIDMap.Add(
-                    new ProductNameToGIDMapEntry() {
-                        ProductName = product.title(),
-                        ProductGID = product.title(),
-                    });
+                _productNameToGIDMap[product.title()] = product.id();
             }
 
             _cachedProductNameToGIDMap = _productNameToGIDMap;
         }
+    }
 
-        #region IProductPickerView
+    public class ProductPickerView : IProductPickerView {
+        private IProductPickerController _controller;
 
-        void IProductPickerView.DrawProductLoadingState(SerializedObject serializedObject) {
+        public ProductPickerView(IProductPickerController controller) {
+            _controller = controller;
+        }
+
+        public void DrawProductLoadingState(SerializedObject serializedObject) {
             EditorGUILayout.LabelField("Loading Products...");
         }
 
-        void IProductPickerView.DrawProductLoadingError(SerializedObject serializedObject) {
+        public void DrawProductLoadingError(SerializedObject serializedObject) {
             EditorGUILayout.HelpBox("Could not load products from the connected shop.", MessageType.Error);
 
             if (GUILayout.Button("Reload Products")) {
-                RefreshProducts();
+                _controller.OnShouldRefreshProductList();
             }
         }
 
-        void IProductPickerView.DrawShopHasNoProductsState(SerializedObject serializedObject) {
+        public void DrawShopHasNoProductsState(SerializedObject serializedObject) {
             EditorGUILayout.HelpBox("The connected shop has no products published for the Shopify SDK.", MessageType.Error);
 
             if (GUILayout.Button("Reload Products")) {
-                RefreshProducts();
+                _controller.OnShouldRefreshProductList();
             }
         }
 
-        void IProductPickerView.DrawProductPicker(SerializedObject serializedObject) {
+        public void DrawProductPicker(SerializedObject serializedObject, Dictionary<string, string> productNameToGIDMap) {
             GUILayout.Label("Product");
             EditorGUILayout.BeginHorizontal();
 
-            var selectedProduct = _productNameToGIDMap.FirstOrDefault(
-                (x) => {
-                    return serializedObject.FindProperty("ProductGID").stringValue == x.ProductGID;
-                }
-            );
+            var selectedProduct = productNameToGIDMap.FirstOrDefault((x) => {
+                    return serializedObject.FindProperty("ProductGID").stringValue == x.Value;
+            });
 
-            var selectedIndex = _productNameToGIDMap.IndexOf(selectedProduct);
+            var productNameToGIDList = productNameToGIDMap.ToList();
 
-
+            var selectedIndex = productNameToGIDList.IndexOf(selectedProduct);
             EditorGUI.BeginChangeCheck();
 
             var newIndex = EditorGUILayout.Popup(
                 selectedIndex, 
-                _productNameToGIDMap.Select((x) => x.ProductName).ToArray()
+                productNameToGIDList.Select((x) => x.Key).ToArray()
             );
 
             if (EditorGUI.EndChangeCheck()) {
-                serializedObject.FindProperty("ProductGID").stringValue = _productNameToGIDMap[newIndex].ProductGID;
+                serializedObject.FindProperty("ProductGID").stringValue = productNameToGIDList[newIndex].Value;
             }
 
             if (GUILayout.Button("Refresh", EditorStyles.miniButton, GUILayout.ExpandWidth(false))) {
-                RefreshProducts();
+                _controller.OnShouldRefreshProductList();
             }
 
             EditorGUILayout.EndHorizontal();
         }
-
-        #endregion
     }
 }

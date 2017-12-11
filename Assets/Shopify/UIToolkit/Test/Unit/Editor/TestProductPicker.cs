@@ -22,26 +22,25 @@
         [SetUp]
         public void Setup() {
             _client = new ShopifyClient(new UnityEditorLoader(ShopDomain, AccessToken));
-            _picker = new ProductPicker(_client);
-
             _view = Substitute.For<IProductPickerView>();
-            _picker.View = _view;
+            _picker = new ProductPicker(_client, _view);
+
         }
 
         [Test]
         public void TestProductPickerRendersLoadingWhenNoProductsAvailable() {
-            _picker.RefreshProducts();
+            _picker.OnShouldRefreshProductList();
             _picker.DrawInspectorGUI(null);
 
             _view.DidNotReceive().DrawProductLoadingError(null);
-            _view.DidNotReceive().DrawProductPicker(null);
+            _view.DidNotReceive().DrawProductPicker(null, Arg.Any<Dictionary<string, string>>());
             _view.DidNotReceive().DrawShopHasNoProductsState(null);
             _view.Received().DrawProductLoadingState(null);
         }
 
         [UnityTest]
         public IEnumerator TestProductPickerRendersProductPickerAfterLoadingProducts() {
-            _picker.RefreshProducts();
+            _picker.OnShouldRefreshProductList();
 
             while(!_picker.ProductsFinishedLoading()) {
                 yield return null;
@@ -52,18 +51,15 @@
             _view.DidNotReceive().DrawProductLoadingState(null);
             _view.DidNotReceive().DrawProductLoadingError(null);
             _view.DidNotReceive().DrawShopHasNoProductsState(null);
-            _view.Received().DrawProductPicker(null);
+            _view.Received().DrawProductPicker(null, Arg.Any<Dictionary<string, string>>());
         }
 
         [UnityTest]
         public IEnumerator TestProductPickerRendersErrorWhenError() {
             _client = new ShopifyClient(new UnityEditorLoader(ShopDomain, "badbadbad"));
-            _picker = new ProductPicker(_client);
-
             _view = Substitute.For<IProductPickerView>();
-            _picker.View = _view;
-
-            _picker.RefreshProducts();
+            _picker = new ProductPicker(_client, _view);
+            _picker.OnShouldRefreshProductList();
 
             while(!_picker.ProductsFinishedLoading()) {
                 yield return null;
@@ -71,7 +67,7 @@
 
             _picker.DrawInspectorGUI(null);
 
-            _view.DidNotReceive().DrawProductPicker(null);
+            _view.DidNotReceive().DrawProductPicker(null, Arg.Any<Dictionary<string, string>>());
             _view.DidNotReceive().DrawProductLoadingState(null);
             _view.DidNotReceive().DrawShopHasNoProductsState(null);
             _view.Received().DrawProductLoadingError(null);
