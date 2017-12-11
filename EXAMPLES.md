@@ -154,7 +154,7 @@ void Start () {
 
 In this example, if you called `product.title()` then an exception would be thrown. Since the Shopify SDK for Unity is built on GraphQL queries, when `collections` are queried using this method only `id` is queried on `Product`. To learn which fields are queried using this method, see `DefaultQueries.cs`.
 
-You can also make more complex requests using custom queries (see below).
+You can also make more complex requests using [custom queries](#custom-queries).
 
 ## Build a cart
 
