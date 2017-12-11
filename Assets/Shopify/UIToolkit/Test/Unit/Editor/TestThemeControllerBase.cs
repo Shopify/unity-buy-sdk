@@ -75,5 +75,20 @@
             Assert.AreNotSame(client, clientOnNextCall);
             Assert.AreEqual("other.myshopify.com", clientOnNextCall.Domain);
         }
+
+        [Test]
+        public void TestClearsCachedClientIfLoaderProviderChanges() {
+            _themeController.AccessToken = Utils.TestAccessToken;
+            _themeController.ShopDomain = Utils.TestShopDomain;
+
+            var client = _themeController.Client;
+
+            var loaderProvider = new UnityLoaderProvider();
+            _themeController.LoaderProvider = loaderProvider;
+
+            var clientOnNextCall = _themeController.Client;
+
+            Assert.AreNotSame(client, clientOnNextCall);
+        }
     }
 }
