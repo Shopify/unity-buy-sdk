@@ -19,6 +19,7 @@ namespace Shopify.UIToolkit.Test.Unit {
             _editor = Editor.CreateEditor(_controller) as SingleProductThemeControllerEditor;
 
             _editor.View = Substitute.For<ISingleProductThemeControllerEditorView>();
+            _editor.CredentialsView = Substitute.For<IShopCredentialsView>();
         }
 
         [TearDown]

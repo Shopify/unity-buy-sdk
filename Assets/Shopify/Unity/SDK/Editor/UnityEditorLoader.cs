@@ -1,5 +1,6 @@
 #if !SHOPIFY_MONO_UNIT_TEST
 namespace Shopify.Unity.SDK.Editor {
+    using System;
     using System.Collections.Generic;
     using System.Collections;
     using System.Text;
@@ -12,12 +13,16 @@ namespace Shopify.Unity.SDK.Editor {
     /// </summary>
     public class UnityEditorLoader : BaseLoader {
         public UnityEditorLoader(string domain, string accessToken) : base(domain, accessToken) {
-                EditorApplication.update += Update;
+            if (domain.Trim().Length == 0) {
+                throw new ArgumentException("Domain is invalid. Make sure that it is not empty/blank.");
             }
 
-            ~UnityEditorLoader() {
-                EditorApplication.update -= Update;
-            }
+            EditorApplication.update += Update;
+        }
+
+        ~UnityEditorLoader() {
+            EditorApplication.update -= Update;
+        }
 
         #region Interface
 

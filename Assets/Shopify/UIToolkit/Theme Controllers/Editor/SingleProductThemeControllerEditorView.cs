@@ -6,6 +6,8 @@ namespace Shopify.UIToolkit.Editor {
     }
 
     public class SingleProductThemeControllerEditorView : ISingleProductThemeControllerEditorView {
+        private ShopCredentialsView CredentialsView;
+
         public void ShowThemeHelp() {
             var message = @"
 Theme Controllers require a theme to function.

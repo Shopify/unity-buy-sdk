@@ -14,6 +14,14 @@
             public ShopCredentialsVerificationState CredentialsVerificationState { get; set; }
             public string ShopDomain { get; set; }
             public string AccessToken { get; set; }
+
+            public string GetShopDomain() {
+                return ShopDomain;
+            }
+
+            public string GetAccessToken() {
+                return AccessToken;
+            }
         }
 
         private ShopCredentialsVerifier _Verifier;
@@ -77,6 +85,32 @@
             _ObjectWithCredentials.CredentialsVerificationState = ShopCredentialsVerificationState.Unverified;
             _ObjectWithCredentials.AccessToken = "???";
             _ObjectWithCredentials.ShopDomain = "nope.myshopify.com";
+
+            var requestComplete = false;
+            var failureCallbackCalled = false;
+
+            _Verifier.VerifyCredentials(() => {
+                requestComplete = true;
+                failureCallbackCalled = false;
+            }, () => {
+                requestComplete = true;
+                failureCallbackCalled = true;
+            });
+
+            while (requestComplete != true) {
+                yield return null;
+            }
+
+            Assert.IsFalse(_Verifier.HasVerifiedCredentials());
+            Assert.IsTrue(_ObjectWithCredentials.CredentialsVerificationState == ShopCredentialsVerificationState.Invalid);
+            Assert.IsTrue(failureCallbackCalled);
+        }
+
+        [UnityTest]
+        public IEnumerator TestVerifierFailsForBlankDomain() {
+            _ObjectWithCredentials.CredentialsVerificationState = ShopCredentialsVerificationState.Unverified;
+            _ObjectWithCredentials.AccessToken = "  ";
+            _ObjectWithCredentials.ShopDomain = "  ";
 
             var requestComplete = false;
             var failureCallbackCalled = false;
