@@ -4,8 +4,26 @@
     using System;
 
     [CustomEditor(typeof(SingleProductThemeController))]
-    public class SingleProductThemeControllerEditor : ThemeControllerEditorBase {
+    public class SingleProductThemeControllerEditor : Editor {
         public ISingleProductThemeControllerEditorView View;
+        public IShopCredentialsView CredentialsView;
+
+        private ShopCredentialsVerifier _verifier {
+            get {
+                if (_cachedVerifier == null) {
+                    _cachedVerifier = new ShopCredentialsVerifier(_credentials);
+                }
+                return _cachedVerifier;
+            }
+        }
+
+        private ShopCredentialsVerifier _cachedVerifier;
+
+        private IShopCredentials _credentials {
+            get {
+                return target as IShopCredentials;
+            }
+        }
 
         public SingleProductThemeController Target {
             get {
@@ -17,11 +35,12 @@
             if (Target == null) return;
 
             View = new SingleProductThemeControllerEditorView();
+            CredentialsView = new ShopCredentialsView(_verifier);
             BindThemeIfPresent();
         }
 
         public override void OnInspectorGUI() {
-            base.OnInspectorGUI();
+            CredentialsView.DrawInspectorGUI(serializedObject);
 
             if (Target.Theme == null) {
                 View.ShowThemeHelp();

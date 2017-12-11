@@ -72,6 +72,10 @@
         }
         private ShopifyClient _cachedClient;
 
+        private void InvalidateClient() {
+            _cachedClient = null;
+        }
+
         /// <summary>
         /// Shows the shop
         /// </summary>
