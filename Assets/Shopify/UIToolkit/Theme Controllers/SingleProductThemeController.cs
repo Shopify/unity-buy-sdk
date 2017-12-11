@@ -8,7 +8,16 @@
 
     [AddComponentMenu("Shopify/Theme Controllers/Single Product Theme Controller")]
     public class SingleProductThemeController : ThemeControllerBase {
-        public ISingleProductTheme Theme;
+        public new ISingleProductTheme Theme { 
+            get { 
+                return base.Theme as ISingleProductTheme; 
+            }
+
+            set {
+                base.Theme = value;
+            } 
+        }
+
         public string ProductGID;
 
         public override void OnHide() {

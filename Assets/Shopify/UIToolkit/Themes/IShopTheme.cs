@@ -22,13 +22,6 @@
         void OnShouldShowCart(CheckoutLineItem[] lineItems);
 
         /// <summary>
-        /// Called when the total number of items in the cart has updated. 
-        /// Good for showing a badge on the cart button, for example.
-        /// </summary>
-        /// <param name="newQuantity">The new quantity of items in the cart</param>
-        void OnCartQuantityChanged(int newQuantity);
-
-        /// <summary>
         /// Called when the Items in the cart are updated. 
         /// Useful if your cart is always displayed, for example, if it is in a sidebar.
         /// </summary>
