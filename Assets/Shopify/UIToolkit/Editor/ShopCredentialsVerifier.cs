@@ -34,6 +34,7 @@
             DrawMessageBox();
             DrawActionButton();
             EditorGUILayout.Separator();
+            serializedObject.ApplyModifiedProperties();
         }
 
         private void DrawCredentialsForm(SerializedObject serializedObject) {
