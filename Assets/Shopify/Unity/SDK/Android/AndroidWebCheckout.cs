@@ -33,10 +33,9 @@ namespace Shopify.Unity.SDK.Android {
 
         public override void Checkout(string checkoutURL, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
 #if !SHOPIFY_MONO_UNIT_TEST
-            using(var webCheckoutSession = new AndroidJavaObject(WebCheckoutSessionClassName, GetNativeMessageReceiverName())) {
+            using(var webCheckoutSession = new AndroidJavaObject(WebCheckoutSessionClassName, GetNativeMessageReceiverName(), checkoutURL)) {
                 SetupWebCheckoutMessageReceiver(success, cancelled, failure);
-                object[] args = { checkoutURL };
-                webCheckoutSession.Call("checkout", args);
+                webCheckoutSession.Call("checkout");
             }
 #endif
         }
