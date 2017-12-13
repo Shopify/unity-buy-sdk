@@ -86,8 +86,9 @@ printf "Exporting the unitypackage at: %s\n" "$UNITY_PACKAGE"
     -logFile "$UNITY_LOG_PATH" \
     -importPackage "ThirdParty/play-services-resolver-1.2.54.0.unitypackage" \
     -projectPath "$PROJECT_ROOT" \
-    -exportPackage Assets/Shopify Assets/PlayServicesResolver "$UNITY_PACKAGE" \
-    -quit
+    -executeMethod "Publishing.PublishFromCommandLine" \
+    -quit \
+    $UNITY_PACKAGE
 
 PUBLISH_SUCCESS=$?
 
