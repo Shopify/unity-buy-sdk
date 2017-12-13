@@ -56,7 +56,7 @@ void Start () {
     // Init only needs to be called once
     ShopifyBuy.Init(accessToken, shopDomain);
 
-    // The following queries the shop for all products
+    // Queries one page of products
     ShopifyBuy.Client().products((products, error, after) => {
         if (error != null) {
             Debug.Log(error.Description);
@@ -83,13 +83,14 @@ void Start () {
             if (after != null) {
                 Debug.Log("Here is the second page of products:");
 
+                // Queries second page of products, as after is passed
                 ShopifyBuy.Client().products((products2, error2, after2) => {
                     foreach(Product product in products2) {
                         Debug.Log("Product Title: " + product.title());
                         Debug.Log("Product Description: " + product.descriptionHtml());
                         Debug.Log("--------");
                     }
-                });
+                }, after);
             } else {
                 Debug.Log("There was only one page of products.");
             }
@@ -112,7 +113,7 @@ void Start () {
 
     ShopifyBuy.Init(accessToken, shopDomain);
 
-    // Queries all collections on shop
+    // Queries one page of collections
     ShopifyBuy.Client().collections((collections, error, after) => {
         if (error != null) {
             Debug.Log(error.Description);
