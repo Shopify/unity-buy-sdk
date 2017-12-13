@@ -170,7 +170,7 @@ void Start () {
 
     ShopifyBuy.Init(accessToken, shopDomain);
 
-    ShopifyBuy.Client().products((products, error) => {
+    ShopifyBuy.Client().products((products, error, after) => {
         Cart cart = ShopifyBuy.Client().Cart();
 
         List<ProductVariant> firstProductVariants = (List<ProductVariant>) products[0].variants();
@@ -182,11 +182,11 @@ void Start () {
 
         // AddOrUpdate is overloaded to accept either a ProductVariant or a Product and the options which describe a particular variant. For example, here we are adding the variant with corresponding options
         Dictionary<string, string> options = new Dictionary<string, string>() {
-            {"size", "small"},
-            {"color", "red"}
+            {"Size", "S"},
+            {"Color", "Ash"}
         };
 
-        cart.LineItems.AddOrUpdate(products[0], 1, options);
+        cart.LineItems.AddOrUpdate(products[0], options, 1);
     });
 }
 ```
