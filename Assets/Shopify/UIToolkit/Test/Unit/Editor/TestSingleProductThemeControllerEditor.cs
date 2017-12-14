@@ -1,11 +1,10 @@
-namespace Shopify.UIToolkit.Test.Unit {
-    using UnityEngine.TestTools;
-    using UnityEditor;
+namespace Shopify.UIToolkit.Editor {
     using UnityEngine;
+    using UnityEditor;
+    using UnityEngine.TestTools;
+    using NSubstitute;
     using NUnit.Framework;
     using Shopify.UIToolkit.Editor;
-    using Shopify.UIToolkit.Themes;
-    using NSubstitute;
     using Shopify.Unity.SDK;
 
     [TestFixture]
@@ -17,9 +16,7 @@ namespace Shopify.UIToolkit.Test.Unit {
         public void Setup() {
             _controller = GlobalGameObject.AddComponent<SingleProductThemeController>();
             _editor = Editor.CreateEditor(_controller) as SingleProductThemeControllerEditor;
-
             _editor.View = Substitute.For<ISingleProductThemeControllerEditorView>();
-            _editor.CredentialsView = Substitute.For<IShopCredentialsView>();
         }
 
         [TearDown]
@@ -28,25 +25,27 @@ namespace Shopify.UIToolkit.Test.Unit {
         }
 
         [Test]
-        public void TestBindsThemeOnEnable() {
-            var theme = GlobalGameObject.AddComponent<DebugSingleProductTheme>();
-            Assert.IsNull(_controller.Theme);
+        public void TestNotVerifiedCredentialsDoesNotShowProductPicker() {
+            _controller.CredentialsVerificationState = ShopCredentialsVerificationState.Unverified;
             _editor.OnEnable();
-            Assert.AreEqual(_controller.Theme, theme);
+            _editor.OnInspectorGUI();
+            _editor.View.DidNotReceive().DrawProductPicker();
         }
 
         [Test]
-        public void TestNullThemeDrawsHelpBox() {
-            Assert.IsNull(_controller.Theme);
+        public void TestVerifiedCredentialsDoesShowProductPicker() {
+            _controller.CredentialsVerificationState = ShopCredentialsVerificationState.Verified;
+            _editor.OnEnable();
             _editor.OnInspectorGUI();
-            _editor.View.Received().ShowThemeHelp();
+            _editor.View.Received().DrawProductPicker();
         }
 
         [Test]
-        public void TestBoundThemeDoesNotDrawHelpBox() {
-            _controller.Theme = GlobalGameObject.AddComponent<DebugSingleProductTheme>();
+        public void TestInvalidCredentialsDoesNotShowProductPicker() {
+            _controller.CredentialsVerificationState = ShopCredentialsVerificationState.Invalid;
+            _editor.OnEnable();
             _editor.OnInspectorGUI();
-            _editor.View.DidNotReceive().ShowThemeHelp();
+            _editor.View.DidNotReceive().DrawProductPicker();
         }
     }
 }
