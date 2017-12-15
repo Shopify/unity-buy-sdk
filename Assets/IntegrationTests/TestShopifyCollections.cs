@@ -11,6 +11,13 @@ namespace Shopify.Unity.Tests
     using System.Collections.Generic;
 
     public class TestShopifyCollections : MonoBehaviour {
+        [SetUp]
+        public void Setup() {
+            #if (SHOPIFY_TEST)
+            ShopifyBuy.Reset();
+            #endif
+        }
+
         [UnityTest]
         public IEnumerator LoadACollection() {
             StoppableWaitForTime waiter = Utils.GetWaitQuery ();
@@ -75,37 +82,32 @@ namespace Shopify.Unity.Tests
             Assert.GreaterOrEqual(AllCollections.Count, maxCollections);
         }
 
-        public IEnumerator LoadCollectionById() {
-            ShopifyBuy.Init("351c122017d0f2a957d32ae728ad749c", "graphql.myshopify.com");
-            StoppableWaitForTime getFirstCollectionWaiter = Utils.GetWaitQuery ();
+        [UnityTest]
+        public IEnumerator LoadCollectionsById() {
+            ShopifyBuy.Init("43b7fef8bd2f27f1d645586b72c9b825", "graphql-many-products.myshopify.com");
 
-            Collection foundCollection = null;
-            ShopifyBuy.Client().collections(
-                first: 1,
-                callback: (collections, error, after) => {
-                    getFirstCollectionWaiter.Stop();
-                    foundCollection = collections[0];
-                }
-            );
+            StoppableWaitForTime waiter = Utils.GetWaitQuery ();
+            var collectionIds = new List<string>() { 
+                "Z2lkOi8vc2hvcGlmeS9Db2xsZWN0aW9uLzUzNTk4NjE3OA==",
+                "Z2lkOi8vc2hvcGlmeS9Db2xsZWN0aW9uLzUzOTYyMzQyNg=="
+            };
 
-            yield return getFirstCollectionWaiter;
-            Assert.IsTrue (getFirstCollectionWaiter.IsStopped, Utils.MaxQueryMessage);
-
-            StoppableWaitForTime getSecondCollectionWaiter = Utils.GetWaitQuery ();
-            var collectionIds = new List<string>() { foundCollection.id() };
-            Collection foundCollectionById = null;
+            List<Collection> foundCollections = null;
             ShopifyBuy.Client().collections(
                 collectionIds: collectionIds,
                 callback: (collections, error) => {
-                    getSecondCollectionWaiter.Stop();
-                    foundCollectionById = collections[0];
+                    waiter.Stop();
+                    foundCollections = collections;
                 }
             );
 
-            yield return getSecondCollectionWaiter;
+            yield return waiter;
 
-            Assert.IsTrue(getSecondCollectionWaiter.IsStopped, Utils.MaxQueryMessage);
-            Assert.IsTrue(foundCollection.id() == foundCollectionById.id());
+            Assert.IsTrue(waiter.IsStopped, Utils.MaxQueryMessage);
+
+            for (var i = 0; i < collectionIds.Count; i++) {
+                Assert.AreEqual(collectionIds[i], foundCollections[i].id());
+            }
         }
     }
 }
