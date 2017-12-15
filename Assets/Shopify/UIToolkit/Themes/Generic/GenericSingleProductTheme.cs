@@ -1,40 +1,70 @@
 ﻿namespace Shopify.UIToolkit.Themes {
+    using System.Linq;
     using Shopify.Unity;
     using Shopify.Unity.SDK;
     using UnityEngine;
+    using UnityEngine.UI;
 
     [RequireComponent(typeof(SingleProductThemeController))]
     public class GenericSingleProductTheme : MonoBehaviour, ISingleProductTheme {
+        [Header("Dependencies")]
+        public SingleProductThemeController Controller;
+
+        [Header("UI Bindings")]
+        public Text ProductTitleLabel;
+        public Text PriceLabel;
+        public Text ProductDescriptionLabel;
+
+        private ProductVariant _selectedVariant;
+        private Product _product;
+
+        public void Start() {
+            if (isActiveAndEnabled) {
+                Controller.Show();
+            } else {
+                Controller.Hide();
+            }
+        }
+
         void IThemeBase.OnError(ShopifyError error) {
-            throw new System.NotImplementedException();
         }
 
         void IThemeBase.OnLoadingFinished() {
-            throw new System.NotImplementedException();
         }
 
         void IThemeBase.OnLoadingStarted() {
-            throw new System.NotImplementedException();
         }
 
         void IThemeBase.OnPurchaseCancelled() {
-            throw new System.NotImplementedException();
         }
 
         void IThemeBase.OnPurchaseCompleted() {
-            throw new System.NotImplementedException();
         }
 
         void IThemeBase.OnPurchaseStarted() {
-            throw new System.NotImplementedException();
         }
 
         void IThemeBase.OnCartQuantityChanged(int newQuantity) {
-            throw new System.NotImplementedException();
         }
 
         void ISingleProductTheme.OnShouldShowProduct(Product product, ProductVariant[] variants) {
-            throw new System.NotImplementedException();
+            SetProduct(product);
+            SetSelectedVariant(variants.First());
+        }
+
+        private void SetSelectedVariant(ProductVariant variant) {
+            _selectedVariant = variant;
+            PriceLabel.text = FormatCurrency(_selectedVariant.price());
+        }
+
+        private void SetProduct(Product product) {
+            _product = product;
+            ProductTitleLabel.text = product.title();
+            ProductDescriptionLabel.text = product.description();
+        }
+
+        private string FormatCurrency(decimal amount) {
+            return string.Format("{0:0.00}$", amount);
         }
     }
 }

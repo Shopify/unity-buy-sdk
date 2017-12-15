@@ -562,6 +562,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b86263e7d3f1a4e60bffe007061204a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Controller: {fileID: 114346451688662800}
+  ProductTitleLabel: {fileID: 114509370295913458}
+  PriceLabel: {fileID: 114393331082579320}
+  ProductDescriptionLabel: {fileID: 114583351462297736}
 --- !u!114 &114190788694155634
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -721,8 +725,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12c43038611a2480c88850b66d13058f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShopDomain: 
-  AccessToken: 
+  _shopDomain: 
+  _accessToken: 
   ProductGID: 
 --- !u!114 &114353907232653506
 MonoBehaviour:

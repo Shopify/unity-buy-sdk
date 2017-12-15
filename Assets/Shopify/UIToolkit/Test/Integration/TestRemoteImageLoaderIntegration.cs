@@ -7,7 +7,7 @@ namespace Shopify.UIToolkit.Test.Integration {
     using Shopify.Unity.SDK;
     using NUnit.Framework;
 
-    public class TestRemoteImageLoaderIntegration : MonoBehaviour {
+    public class TestRemoteImageLoaderIntegration {
 
         [TearDown]
         public void Cleanup() {
