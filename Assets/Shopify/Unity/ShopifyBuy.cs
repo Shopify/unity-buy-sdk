@@ -483,7 +483,42 @@ namespace Shopify.Unity {
         }
 
         /// <summary>
-        /// Generates a query to fetch the specified <c>collections</c> by id from a Shopify store. The generated query will query the following on collections:
+        /// Generates a query to receive selected <c>collections</c> from a Shopify store. 
+        /// The generated query will query the following on collections:
+        ///     - id
+        ///     - title
+        ///     - description
+        ///     - descriptionHtml
+        ///     - updatedAt
+        ///     - image
+        ///         - altText
+        ///         - src
+        ///     - products
+        ///         - id
+        ///
+        /// </summary>
+        /// <param name="callback">callback that will receive responses or errors from server</param>
+        /// <param name="firstCollectionId">you must pass in at least one collection id to query</param>
+        /// <param name="otherCollectionIds">
+        /// after the first collection id you can pass in as many collection ids as you'd like.
+        /// </param>
+        /// \code
+        /// // Example usage querying two collection ids using a List<string>
+        /// ShopifyBuy.Client().collections((collections, error) => {
+        ///     Debug.Log(collections[0].title());
+        ///     Debug.Log(collections[1].title());
+        /// }, "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyNzYwOTk=", "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyNzkwNDM=");
+        /// \endcode
+        public void collections(CollectionsHandler callback, string firstCollectionId, params string[] otherCollectionIds) {
+            List<string> collectionIds = new List<string> ();
+            collectionIds.Add (firstCollectionId);
+            collectionIds.AddRange (otherCollectionIds);
+            collections(callback, collectionIds);
+        }
+
+        /// <summary>
+        /// Generates a query to fetch the specified <c>collections</c> by id from a Shopify store. 
+        /// The generated query will query the following on collections:
         ///     - id
         ///     - title
         ///     - description
@@ -497,7 +532,7 @@ namespace Shopify.Unity {
         ///
         /// </summary>
         /// <param name="callback">callback that will receive responses from server</param>
-        /// <param name="first">the list of collection ids you want to receive from the server</param>
+        /// <param name="collectionIds">the list of collection ids you want to receive from the server</param>
         /// \code
         /// // Example usage querying two collection ids using a List<string>
         /// List<string> collectionIds = new List<string>() {
