@@ -2,6 +2,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using Shopify.Unity.SDK;
+    using Shopify.Unity;
     using UnityEngine;
 
     public interface IThemeBase {

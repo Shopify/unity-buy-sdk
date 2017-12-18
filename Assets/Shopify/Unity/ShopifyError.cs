@@ -1,5 +1,6 @@
-namespace Shopify.Unity.SDK {
+namespace Shopify.Unity {
     using System.Collections.Generic;
+    using Shopify.Unity.SDK;
     using MiniJSON;
 
     /// <summary>
