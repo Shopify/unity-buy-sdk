@@ -194,6 +194,20 @@ namespace Shopify.Unity.SDK {
             }
         }
 
+        /// <summary>
+        /// Adds or updates a line item using a <see ref="ProductVariant">ProductVariant </see> id. Note that a remote
+        /// query will be used to verify the string based variantId.
+        /// </summary>
+        /// <param name="variantId">id of a <see ref="ProductVariant">ProductVariant </see> which will be used to create or update a line item</param>
+        /// <param name="quantity">the number of items you'd like to order for variantId</param>
+        /// <param name="customAttributes">can be used to define extra information for this line item</param>
+        /// \code
+        /// // Example that updates the quantity of items to be purchased to 3.
+        /// // If no line item exists for `variantId`, then a new line item is created
+        /// Cart cart = ShopifyBuy.Client().Cart();
+        ///
+        /// cart.LineItems.AddOrUpdate("Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8xMTI0Mzc=", 3);
+        /// \endcode
         public void AddOrUpdate(string variantId, long? quantity = null, Dictionary<string, string> customAttributes = null) {
             QueryRoot response = null;
 
