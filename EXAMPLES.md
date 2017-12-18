@@ -181,14 +181,6 @@ void Start () {
         // In this case, the cart will have 3 copies of the variant.
         cart.LineItems.AddOrUpdate(firstProductFirstVariant, 3);
 
-        // AddOrUpdate is overloaded to accept either a ProductVariant or a Product and the options which describe a particular variant. For example, here we are adding the variant with corresponding options
-        Dictionary<string, string> options = new Dictionary<string, string>() {
-            {"Size", "S"},
-            {"Color", "Ash"}
-        };
-
-        cart.LineItems.AddOrUpdate(products[0], options, 1);
-
         // The following will output the variant id which was selected by the above options
         Debug.Log("First line item's variant id is: " + cart.LineItems.All()[0].VariantId);
     });
@@ -225,7 +217,7 @@ void Start () {
 
     ShopifyBuy.Init(accessToken, shopDomain);
 
-    ShopifyBuy.Client().products((products, error) => {
+    ShopifyBuy.Client().products((products, error, after) => {
         Cart cart = ShopifyBuy.Client().Cart();
 
         Product firstProduct = products[0];
@@ -249,7 +241,7 @@ void Start () {
         // You might, for instance, have drop downs where users can select relevant options.
         Dictionary<string,string> selectedOptions = new Dictionary<string,string>() {
             {"Size", "M"},
-            {"Color", "White"}
+            {"Color", "Ash"}
         };
 
         // Create a line item based on the selected options for a product
