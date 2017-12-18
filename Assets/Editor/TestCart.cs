@@ -232,6 +232,30 @@ namespace Shopify.Tests
         }
 
         [Test]
+        public void AddOrUpdateWithVariantId() {
+            ShopifyBuy.Init(new MockLoader());
+
+            string variantId1 = "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8xMTI0Mzc=";
+
+            Cart cart = ShopifyBuy.Client().Cart();
+
+            cart.LineItems.AddOrUpdate(variantId1, 100);
+
+            Assert.AreEqual(100, cart.LineItems.Get(variantId1).Quantity, "variant 20756129155 Quantity is 100 after change");
+
+            NoMatchingVariantException exception = null;
+
+            try {
+                cart.LineItems.AddOrUpdate("error", 100);
+            } catch (NoMatchingVariantException e) {
+                exception = e;
+            }
+
+            Assert.IsNotNull(exception);
+            Assert.AreEqual("Could not `AddOrUpdate` line item as no matching variant could be found for given id", exception.Message);
+        }
+
+        [Test]
         public void AddEditRemoveViaSelectedOptions() {
             ShopifyBuy.Init(new MockLoader());
 

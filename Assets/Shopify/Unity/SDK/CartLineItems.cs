@@ -58,13 +58,10 @@ namespace Shopify.Unity.SDK {
         private ObservableDictionary<string, string> _CustomAttributes;
         private OnCartLineItemChange OnChange;
 
-        public CartLineItem(ProductVariant variant, OnCartLineItemChange onChange, long quantity = 1, IDictionary<string, string> customAttributes = null) :
-            this(variant.id(), variant.price(), onChange, quantity, customAttributes) { }
-
-        public CartLineItem(string variantId, decimal variantPrice, OnCartLineItemChange onChange, long quantity = 1, IDictionary<string, string> customAttributes = null) {
-            _VariantId = variantId;
+        public CartLineItem(ProductVariant variant, OnCartLineItemChange onChange, long quantity = 1, IDictionary<string, string> customAttributes = null) {
+            _VariantId = variant.id();
             _Quantity = quantity;
-            _Price = variantPrice;
+            _Price = variant.price();
             OnChange = onChange;
 
             if (customAttributes != null) {
@@ -171,11 +168,7 @@ namespace Shopify.Unity.SDK {
         /// cart.LineItems.AddOrUpdate(variant, 3);
         /// \endcode
         public void AddOrUpdate(ProductVariant variant, long? quantity = null, Dictionary<string, string> customAttributes = null) {
-            AddOrUpdate(variant.id(), variant.price(), quantity, customAttributes);
-        }
-
-        public void AddOrUpdate(string variantId, decimal variantPrice, long? quantity = null, Dictionary<string, string> customAttributes = null) {
-            CartLineItem input = Get(variantId);
+            CartLineItem input = Get(variant.id());
 
             if (input != null) {
                 if (quantity != null) {
@@ -192,14 +185,36 @@ namespace Shopify.Unity.SDK {
 
                 LineItems.Add(
                     new CartLineItem(
-                        variantId: variantId,
-                        variantPrice: variantPrice,
+                        variant: variant,
                         onChange: OnLineItemChange,
                         quantity: (long) quantity,
                         customAttributes : customAttributes
                     )
                 );
             }
+        }
+
+        public void AddOrUpdate(string variantId, long? quantity = null, Dictionary<string, string> customAttributes = null) {
+            QueryRoot response = null;
+
+            ShopifyBuy.Client().Query(
+                (q) => q.node(n => n
+                    .onProductVariant(p => p
+                        .id()
+                        .price()
+                    ),
+                    id: variantId
+                ),
+                (data, error) => {
+                    if (error != null) {
+                        throw new NoMatchingVariantException("Could not `AddOrUpdate` line item as no matching variant could be found for given id");
+                    } else {
+                        response = data;
+
+                        AddOrUpdate((ProductVariant)response.node(), quantity, customAttributes);
+                    }
+                }
+            );
         }
 
         /// <summary>

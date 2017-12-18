@@ -13,6 +13,7 @@ namespace Shopify.Tests {
             SetupQueriesOnShopProducts();
             SetupQueriesOnNodeForImageConnections();
             SetupQueriesOnNodesForProducts();
+            SetupQueriesOnNodeForProductVariant();
         }
 
         private void SetupQueriesOnShopProducts() {
@@ -226,6 +227,64 @@ namespace Shopify.Tests {
                     }}
                 }}
             }}", GetImageNodes(2, DefaultQueries.MaxPageSize), UtilsMockLoader.GetJSONBool(false));
+
+            AddResponse(query, response);
+        }
+
+        public void SetupQueriesOnNodeForProductVariant() {
+            // OK response
+            QueryRootQuery query = new QueryRootQuery();
+
+            query.node(n => n
+                .onProductVariant(p => p
+                    .id()
+                    .price()
+                ),
+                id: "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8xMTI0Mzc="
+            );
+
+            string response = String.Format(@"{{
+                  ""data"": {{
+                    ""node"": {{
+                      ""__typename"": ""ProductVariant"",
+                      ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8xMTI0Mzc="",
+                      ""price"": ""399.00""
+                    }}
+                  }}
+                }}"
+            );
+
+            AddResponse(query, response);
+
+            // Error response
+            query = new QueryRootQuery();
+
+            query.node(n => n
+                .onProductVariant(p => p
+                    .id()
+                    .price()
+                ),
+                id: "error"
+            );
+
+            response = String.Format(@"{{
+              ""errors"": [
+                {{
+                  ""message"": ""Argument 'id' on Field 'node' has an invalid value. Expected type 'ID!'."",
+                  ""locations"": [
+                    {{
+                      ""line"": 3,
+                      ""column"": 2
+                    }}
+                  ],
+                  ""fields"": [
+                    ""query"",
+                    ""node"",
+                    ""id""
+                  ]
+                }}
+              ]
+            }}");
 
             AddResponse(query, response);
         }
