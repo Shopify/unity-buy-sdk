@@ -3,27 +3,52 @@ namespace Shopify.Unity.SDK {
     using System.Collections.ObjectModel;
     using System;
 
+    /// <summary>
+    /// A line item on an order. A line item is defined by a variant id and the quantity of that variant that
+    /// you'll be ordering. Custom Attributes are used to define customizations or any additional meta data
+    /// on the line item.
+    /// </summary>
     public class CartLineItem {
+        /// <summary>
+        /// Will convert a CartLineItem to a CheckoutLineItemInput. These are used internally by the sdk
+        /// for the checkout process
+        /// </summary>
+        /// <param name="lineItem">The CartLineItem to be converted</param>
         public static explicit operator CheckoutLineItemInput(CartLineItem lineItem) {
             return lineItem.GetCheckoutLineItemInput();
         }
 
+        /// <summary>
+        /// Will convert a CartLineItem to a CheckoutLineItemUpdateInput. These are used internally by the sdk
+        /// for the checkout process
+        /// </summary>
+        /// <param name="lineItem">The CartLineItem to be converted</param>
         public static explicit operator CheckoutLineItemUpdateInput(CartLineItem lineItem) {
             return lineItem.GetCheckoutLineItemUpdateInput();
         }
 
+        /// <summary>
+        /// All products have variants which are used to create orders. eg. A variant id could be associated
+        /// to a Small Blue T-Shirt where another variant id could be associated to a Large Red T-Shirt.
+        /// </summary>
         public string VariantId {
             get {
                 return _VariantId;
             }
         }
 
+        /// <summary>
+        /// The product variant’s price.
+        /// </summary>
         public decimal Price {
             get {
                 return _Price;
             }
         }
 
+        /// <summary>
+        /// The quantity or count of items for the line item. eg. 3 Red T-Shirts
+        /// </summary>
         public long Quantity {
             get {
                 return _Quantity;
@@ -37,6 +62,10 @@ namespace Shopify.Unity.SDK {
             }
         }
 
+        /// <summary>
+        /// Custom Attributes for the line item. Custom attributes are used to add customization information
+        /// or meta data to a line item.
+        /// </summary>
         public IDictionary<string, string> CustomAttributes {
             get {
                 return _CustomAttributes;
@@ -51,13 +80,25 @@ namespace Shopify.Unity.SDK {
             }
         }
 
+        /// <summary>
+        /// The ID variable is used internally by the SDK and will be used to associate checkout line item's 
+        /// to CartLineItem's.
+        /// </summary>
         public string ID = null;
+
         private string _VariantId;
         private long _Quantity;
         private decimal _Price;
         private ObservableDictionary<string, string> _CustomAttributes;
         private OnCartLineItemChange OnChange;
-
+        
+        /// <summary>
+        /// Used internally by the SDK to construct a CartLineItem.
+        /// </summary>
+        /// <param name="variant">The variant this CartLineItem will be associated to</param>
+        /// <param name="onChange">This function will be called whenever the CartLineItem is modified</param>
+        /// <param name="quantity">The count of items to be ordered</param>
+        /// <param name="customAttributes">Custom attributes for this line item used to customize and add meta data</param>
         public CartLineItem(ProductVariant variant, OnCartLineItemChange onChange, long quantity = 1, IDictionary<string, string> customAttributes = null) {
             _VariantId = variant.id();
             _Quantity = quantity;
@@ -69,6 +110,10 @@ namespace Shopify.Unity.SDK {
             }
         }
 
+        /// <summary>
+        /// Will convert this CartLineItem to a CheckoutLineItemInput. This is used internally by the sdk
+        /// for the checkout process
+        /// </summary>
         public CheckoutLineItemInput GetCheckoutLineItemInput() {
             return new CheckoutLineItemInput(
                 quantity: Quantity,
@@ -77,6 +122,10 @@ namespace Shopify.Unity.SDK {
             );
         }
 
+        /// <summary>
+        /// Will convert this CartLineItem to a CheckoutLineItemUpdateInput. This is used internally by the sdk
+        /// for the checkout process
+        /// </summary>
         public CheckoutLineItemUpdateInput GetCheckoutLineItemUpdateInput() {
             return new CheckoutLineItemUpdateInput(
                 id: ID,
@@ -86,6 +135,10 @@ namespace Shopify.Unity.SDK {
             );
         }
 
+        /// <summary>
+        /// Will convert the CustomAttributes dictionary to a list of AttributeInput. This is used internally
+        /// by the sdk for the checkout process
+        /// </summary>
         private List<AttributeInput> GetAttributeInputs() {
             List<AttributeInput> attributes = null;
 
