@@ -28,10 +28,10 @@ Coming Soon:
 
 ## Documentation
 
+- [Example code snippets](EXAMPLES.md)
 - [Information about the Unity SDK](https://help.shopify.com/api/sdks/custom-storefront/unity-buy-sdk)
 - [How to obtain a storefront access token](https://help.shopify.com/api/storefront-api/getting-started#obtaining-a-storefront-access-token)
 - [SDK API Documentation](https://shopify.github.io/unity-buy-sdk/)
-- [Example code snippets](EXAMPLES.md)
 - [How to contribute](CONTRIBUTING.md)
 - [How to Test](TESTING.md)
 
