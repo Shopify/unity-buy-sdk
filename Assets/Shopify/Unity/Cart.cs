@@ -144,6 +144,9 @@ namespace Shopify.Unity {
             State.Reset();
         }
 
+        /// <summary>
+        /// Returns the current sub total for the cart
+        /// </summary>
         public decimal Subtotal() {
             return State.Subtotal();
         }
