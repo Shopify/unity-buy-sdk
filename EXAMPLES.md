@@ -188,6 +188,9 @@ void Start () {
         };
 
         cart.LineItems.AddOrUpdate(products[0], options, 1);
+
+        // The following will output the variant id which was selected by the above options
+        Debug.Log("First line item's variant id is: " + cart.LineItems.All()[0].VariantId);
     });
 }
 ```
