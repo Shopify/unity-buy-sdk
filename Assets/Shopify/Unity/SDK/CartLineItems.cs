@@ -58,10 +58,13 @@ namespace Shopify.Unity.SDK {
         private ObservableDictionary<string, string> _CustomAttributes;
         private OnCartLineItemChange OnChange;
 
-        public CartLineItem(ProductVariant variant, OnCartLineItemChange onChange, long quantity = 1, IDictionary<string, string> customAttributes = null) {
-            _VariantId = variant.id();
+        public CartLineItem(ProductVariant variant, OnCartLineItemChange onChange, long quantity = 1, IDictionary<string, string> customAttributes = null) :
+            this(variant.id(), variant.price(), onChange, quantity, customAttributes) { }
+
+        public CartLineItem(string variantId, decimal variantPrice, OnCartLineItemChange onChange, long quantity = 1, IDictionary<string, string> customAttributes = null) {
+            _VariantId = variantId;
             _Quantity = quantity;
-            _Price = variant.price();
+            _Price = variantPrice;
             OnChange = onChange;
 
             if (customAttributes != null) {
@@ -168,7 +171,11 @@ namespace Shopify.Unity.SDK {
         /// cart.LineItems.AddOrUpdate(variant, 3);
         /// \endcode
         public void AddOrUpdate(ProductVariant variant, long? quantity = null, Dictionary<string, string> customAttributes = null) {
-            CartLineItem input = Get(variant.id());
+            AddOrUpdate(variant.id(), variant.price(), quantity, customAttributes);
+        }
+
+        public void AddOrUpdate(string variantId, decimal variantPrice, long? quantity = null, Dictionary<string, string> customAttributes = null) {
+            CartLineItem input = Get(variantId);
 
             if (input != null) {
                 if (quantity != null) {
@@ -185,7 +192,8 @@ namespace Shopify.Unity.SDK {
 
                 LineItems.Add(
                     new CartLineItem(
-                        variant: variant,
+                        variantId: variantId,
+                        variantPrice: variantPrice,
                         onChange: OnLineItemChange,
                         quantity: (long) quantity,
                         customAttributes : customAttributes
