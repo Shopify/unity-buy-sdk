@@ -3,54 +3,51 @@
     using UnityEditor;
     using System;
 
+    public interface ISingleProductThemeControllerEditorView : IBaseThemeControllerEditorView {
+        void DrawProductPicker();
+    }
+
     [CustomEditor(typeof(SingleProductThemeController))]
-    public class SingleProductThemeControllerEditor : Editor {
-        public ISingleProductThemeControllerEditorView View;
-        public IShopCredentialsView CredentialsView;
-
-        private ShopCredentialsVerifier _verifier {
+    public class SingleProductThemeControllerEditor : BaseThemeControllerEditor, ISingleProductThemeControllerEditorView {
+        public new SingleProductThemeController Target {
             get {
-                if (_cachedVerifier == null) {
-                    _cachedVerifier = new ShopCredentialsVerifier(_credentials);
-                }
-                return _cachedVerifier;
+                return (SingleProductThemeController) target;
             }
         }
 
-        private ShopCredentialsVerifier _cachedVerifier;
-
-        private IShopCredentials _credentials {
+        public new ISingleProductThemeControllerEditorView View {
             get {
-                return target as IShopCredentials;
+                return (ISingleProductThemeControllerEditorView) base.View;
+            }
+
+            set {
+                base.View = value;
             }
         }
 
-        public SingleProductThemeController Target {
+        public override void OnEnable() {
+            base.OnEnable();
+            View = View ?? this;
+        }
+
+        private ProductPicker _productPicker {
             get {
-                return target as SingleProductThemeController;
+                _cachedPicker = _cachedPicker ?? new ProductPicker(Client);
+                return _cachedPicker;
             }
         }
+        private ProductPicker _cachedPicker;
 
-        public void OnEnable() {
-            if (Target == null) return;
-
-            View = new SingleProductThemeControllerEditorView();
-            CredentialsView = new ShopCredentialsView(_verifier);
-            BindThemeIfPresent();
+        public override void OnShowConfiguration() {
+            View.DrawProductPicker();
         }
 
-        public override void OnInspectorGUI() {
-            CredentialsView.DrawInspectorGUI(serializedObject);
-
-            if (Target.Theme == null) {
-                View.ShowThemeHelp();
-                return;
-            }
+        protected override void OnClientChanged() {
+            _productPicker.Client = Client;
         }
 
-        private void BindThemeIfPresent() {
-            if (Target.Theme != null) return;
-            Target.Theme = Target.GetComponent<ISingleProductTheme>();
+        void ISingleProductThemeControllerEditorView.DrawProductPicker() {
+            _productPicker.DrawInspectorGUI(serializedObject);
         }
     }
 }

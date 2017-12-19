@@ -25,7 +25,7 @@
         public void DrawInspectorGUI(SerializedObject serializedObject) {
             EditorGUILayout.Separator();
 
-            var disableCredentialsForm = _verifier.Credentials.CredentialsVerificationState == ShopCredentialsVerificationState.Verified;
+            var disableCredentialsForm = _verifier.HasVerifiedCredentials();
 
             EditorGUI.BeginDisabledGroup(disableCredentialsForm);
             DrawCredentialsForm(serializedObject);
@@ -37,8 +37,8 @@
         }
 
         private void DrawCredentialsForm(SerializedObject serializedObject) {
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("ShopDomain"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("AccessToken"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_shopDomain"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_accessToken"));
         }
 
         private void DrawActionButton() {
@@ -73,6 +73,9 @@
     /// and drawing a UI to support the feature.
     /// </summary>
     public class ShopCredentialsVerifier {
+        public delegate void OnCredentialsStateChangedHandler();
+        public event OnCredentialsStateChangedHandler OnCredentialsStateChanged;
+
         public IShopCredentials Credentials { private set; get; }
 
         private bool _IsRequestInProgress;
@@ -103,7 +106,7 @@
             } catch (ArgumentException e) {
                 Debug.LogWarning(e);
                 _IsRequestInProgress = false;
-                Credentials.CredentialsVerificationState = ShopCredentialsVerificationState.Invalid;
+                UpdateVerificationState(ShopCredentialsVerificationState.Invalid);
                 onFailure();
                 return;
             }
@@ -145,7 +148,12 @@
         /// Resets the verification state of the context object
         /// </summary>
         public void ResetVerificationState() {
-            Credentials.CredentialsVerificationState = ShopCredentialsVerificationState.Unverified;
+            UpdateVerificationState(ShopCredentialsVerificationState.Unverified);
+        }
+
+        private void UpdateVerificationState(ShopCredentialsVerificationState newState) {
+            Credentials.CredentialsVerificationState = newState;
+            if (OnCredentialsStateChanged != null) OnCredentialsStateChanged();
         }
 
         private ShopifyClient Client() {
@@ -156,9 +164,9 @@
             _IsRequestInProgress = false;
 
             if (errors != null) {
-                Credentials.CredentialsVerificationState = ShopCredentialsVerificationState.Invalid;
+                UpdateVerificationState(ShopCredentialsVerificationState.Invalid);
             } else {
-                Credentials.CredentialsVerificationState = ShopCredentialsVerificationState.Verified;
+                UpdateVerificationState(ShopCredentialsVerificationState.Verified);
             }
         }
     }

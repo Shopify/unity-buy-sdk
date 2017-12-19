@@ -20,10 +20,10 @@
     }
 
     public class ProductPicker : IProductPickerController {
+        public ShopifyClient Client;
         private IProductPickerView _view;
         private static Dictionary<string, string> _cachedProductNameToGIDMap;
         private Dictionary<string, string> _productNameToGIDMap;
-        private ShopifyClient _client;
         private ShopifyError _error;
 
         public bool ProductsFinishedLoading() {
@@ -32,7 +32,7 @@
 
         public ProductPicker(ShopifyClient client, IProductPickerView view = null) {
             _view = view ?? new ProductPickerView(this);
-            _client = client;
+            Client = client;
             LoadProducts();
         }
 
@@ -70,7 +70,7 @@
         private void LoadAllProducts(string lastPageAfter = null, List<Product> allProducts = null) {
             allProducts = allProducts ?? new List<Product>();
 
-            _client.products((products, error, after) => {
+            Client.products((products, error, after) => {
                 if (error != null) {
                     OnFailedToLoadProducts(error);
                     return;
