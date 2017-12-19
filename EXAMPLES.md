@@ -90,7 +90,7 @@ void Start () {
                         Debug.Log("Product Description: " + product.descriptionHtml());
                         Debug.Log("--------");
                     }
-                }, after);
+                }, after: after);
             } else {
                 Debug.Log("There was only one page of products.");
             }
@@ -283,7 +283,7 @@ start a web view that contains the checkout for the cart.
 
 ...
 
-ShopifyBuy.Client().products((products, error) => {
+ShopifyBuy.Client().products((products, error, after) => {
     var cart = ShopifyBuy.Client().Cart();
     var firstProduct = products[0];
     var firstProductVariants = (List<ProductVariant>) firstProduct.variants();
