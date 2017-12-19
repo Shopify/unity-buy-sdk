@@ -483,6 +483,95 @@ namespace Shopify.Unity {
         }
 
         /// <summary>
+        /// Generates a query to receive selected <c>collections</c> from a Shopify store. 
+        /// The generated query will query the following on collections:
+        ///     - id
+        ///     - title
+        ///     - description
+        ///     - descriptionHtml
+        ///     - updatedAt
+        ///     - image
+        ///         - altText
+        ///         - src
+        ///     - products
+        ///         - id
+        ///
+        /// </summary>
+        /// <param name="callback">callback that will receive responses or errors from server</param>
+        /// <param name="firstCollectionId">you must pass in at least one collection id to query</param>
+        /// <param name="otherCollectionIds">
+        /// after the first collection id you can pass in as many collection ids as you'd like.
+        /// </param>
+        /// \code
+        /// // Example usage querying two collection ids using a List<string>
+        /// ShopifyBuy.Client().collections((collections, error) => {
+        ///     Debug.Log(collections[0].title());
+        ///     Debug.Log(collections[1].title());
+        /// }, "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyNzYwOTk=", "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyNzkwNDM=");
+        /// \endcode
+        public void collections(CollectionsHandler callback, string firstCollectionId, params string[] otherCollectionIds) {
+            List<string> collectionIds = new List<string> ();
+            collectionIds.Add (firstCollectionId);
+            collectionIds.AddRange (otherCollectionIds);
+            collections(callback, collectionIds);
+        }
+
+        /// <summary>
+        /// Generates a query to fetch the specified <c>collections</c> by id from a Shopify store. 
+        /// The generated query will query the following on collections:
+        ///     - id
+        ///     - title
+        ///     - description
+        ///     - descriptionHtml
+        ///     - updatedAt
+        ///     - image
+        ///         - altText
+        ///         - src
+        ///     - products
+        ///         - id
+        ///
+        /// </summary>
+        /// <param name="callback">callback that will receive responses from server</param>
+        /// <param name="collectionIds">the list of collection ids you want to receive from the server</param>
+        /// \code
+        /// // Example usage querying two collection ids using a List<string>
+        /// List<string> collectionIds = new List<string>() {
+        ///     "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyNzYwOTk=",
+        ///     "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyNzkwNDM="
+        /// };
+        ///
+        /// ShopifyBuy.Client().collections((collections, error) => {
+        ///     Debug.Log(collections[0].title());
+        ///     Debug.Log(collections[1].title());
+        /// }, collectionIds);
+        /// \endcode
+        public void collections(CollectionsHandler callback, List<string> collectionIds) {
+            QueryRootQuery query = new QueryRootQuery();
+
+            query.nodes(n => n
+                .onCollection((c) => {
+                    DefaultQueries.collections.Collection(c, DefaultImageResolutions);
+                }),
+                ids: collectionIds
+            );
+
+            Loader.Query(query, (response) => {
+                var error = (ShopifyError)response;
+                if (error != null) {
+                    callback(null, error);
+                } else {
+                    List<Collection> collections = new List<Collection>();
+
+                    foreach (Shopify.Unity.Collection collection in response.data.nodes()) {
+                        collections.Add(collection);
+                    }
+
+                    callback(collections, error);
+                }
+            });
+        }
+
+        /// <summary>
         /// Allows you to send custom GraphQL queries to the Storefront API. While having utility functions like <see ref="ShopifyClient.products">products </see>
         /// <see ref="ShopifyClient.collections">collections </see> is useful, the Storefront API has more functionality. This method
         /// allows you to access all the extra functionality that the Storefront API provides.

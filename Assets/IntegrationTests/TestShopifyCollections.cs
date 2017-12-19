@@ -11,6 +11,13 @@ namespace Shopify.Unity.Tests
     using System.Collections.Generic;
 
     public class TestShopifyCollections : MonoBehaviour {
+        [SetUp]
+        public void Setup() {
+            #if (SHOPIFY_TEST)
+            ShopifyBuy.Reset();
+            #endif
+        }
+
         [UnityTest]
         public IEnumerator LoadACollection() {
             StoppableWaitForTime waiter = Utils.GetWaitQuery ();
@@ -18,7 +25,7 @@ namespace Shopify.Unity.Tests
             Clients.GraphQLMany.collections(
                 first: 1,
                 callback: (collections, error, after) => {
-                waiter.Stop();
+                    waiter.Stop();
 
                     Assert.IsNull(error, "No errors");
                     Assert.AreEqual(1, collections.Count, "Loaded 1 collection");
@@ -73,6 +80,34 @@ namespace Shopify.Unity.Tests
             Assert.IsTrue(waiter.IsStopped, "Query did not complete in " + maxDuration + " seconds");
             Assert.IsNull(errorsFromQueries);
             Assert.GreaterOrEqual(AllCollections.Count, maxCollections);
+        }
+
+        [UnityTest]
+        public IEnumerator LoadCollectionsById() {
+            ShopifyBuy.Init("43b7fef8bd2f27f1d645586b72c9b825", "graphql-many-products.myshopify.com");
+
+            StoppableWaitForTime waiter = Utils.GetWaitQuery ();
+            var collectionIds = new List<string>() { 
+                "Z2lkOi8vc2hvcGlmeS9Db2xsZWN0aW9uLzUzNTk4NjE3OA==",
+                "Z2lkOi8vc2hvcGlmeS9Db2xsZWN0aW9uLzUzOTYyMzQyNg=="
+            };
+
+            List<Collection> foundCollections = null;
+            ShopifyBuy.Client().collections(
+                collectionIds: collectionIds,
+                callback: (collections, error) => {
+                    waiter.Stop();
+                    foundCollections = collections;
+                }
+            );
+
+            yield return waiter;
+
+            Assert.IsTrue(waiter.IsStopped, Utils.MaxQueryMessage);
+
+            for (var i = 0; i < collectionIds.Count; i++) {
+                Assert.AreEqual(collectionIds[i], foundCollections[i].id());
+            }
         }
     }
 }
