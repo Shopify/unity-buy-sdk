@@ -50,8 +50,6 @@ using Shopify.Unity;
 using Shopify.Unity.SDK;
 
 void Start () {
-    const int productsPerPage = 10;
-
     string accessToken = "b8d417759a62f7b342f3735dbe86b322";
     string shopDomain = "unity-buy-sdk.myshopify.com";
 
@@ -92,12 +90,12 @@ void Start () {
                         Debug.Log("Product Description: " + product.descriptionHtml());
                         Debug.Log("--------");
                     }
-                }, productsPerPage, after);
+                }, after: after);
             } else {
                 Debug.Log("There was only one page of products.");
             }
         }
-    }, productsPerPage);
+    });
 }
 ```
 
