@@ -78,6 +78,7 @@ fi
 printf "Exporting the unitypackage at: %s\n" "$UNITY_PACKAGE"
 
 # create the new unitypackage
+UNITY_PACKAGE=$UNITY_PACKAGE \
 "$UNITY_PATH" \
     -gvh_disable \
     -batchmode \
