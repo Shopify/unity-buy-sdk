@@ -9,7 +9,7 @@ The Shopify SDK for Unity allows Unity developers to query and sell products fro
 - [Features](#features)
 - [Documentation](#documentation)
 - [Using the Shopify SDK for Unity](#using-the-shopify-sdk-for-unity)
-- [Examples](#examples)
+- [Examples](EXAMPLES.md)
 - [Supported build targets](#supported-build-targets)
 
 ## Features
