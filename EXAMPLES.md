@@ -12,15 +12,19 @@ The Shopify SDK for Unity queries Shopify's [Storefront API](https://help.shopif
 - [Query Products](#query-products)
 - [Query Collections](#query-collections)
 - [Build a cart](#build-a-cart)
-- [Web view checkout](#web-view-checkout)
-- [Native pay checkout (Apple Pay / Android Pay)](#native-pay-checkout)
+- [Build a cart based on selected options](#build-a-cart-based-on-selected-options)
+- [Checkout with a checkout link](#checkout-with-a-checkout-link)
+- [Checkout with a Web View](#checkout-with-a-web-view)
+- [Checkout with Native Pay (Apple Pay / Android Pay)](#checkout-with-native-pay-apple-pay--android-pay)
 - [Custom queries](#custom-queries)
 
 ## Before you begin
 
 Before you can start using the Shopify SDK for Unity, you need:
 
-- a Shopify store with at least one product
+- a Shopify store with at least one product. If you do not have a Shopify store you have two options:
+    + [Sign up as a Shopify Partner to create a test store](https://www.shopify.ca/partners)
+    + Start testing the SDK using our test store. (domain and access token listed below)
 - [a storefront access token for your app](https://help.shopify.com/api/storefront-api/getting-started#obtaining-a-storefront-access-token)
 - [to install the Shopify SDK for Unity into your Unity project](README.md#using-the-unity-buy-sdk-in-unity)
 
@@ -181,7 +185,7 @@ void Start () {
         // In this case, the cart will have 3 copies of the variant.
         cart.LineItems.AddOrUpdate(firstProductFirstVariant, 3);
 
-        // The following will output the variant id which was selected by the above options
+        // The following will output the variant id which was setup using the first product variant
         Debug.Log("First line item's variant id is: " + cart.LineItems.All()[0].VariantId);
     });
 }
@@ -203,7 +207,7 @@ To get a line item do the following:
 LineItemInput lineItem = cart.LineItems.Get(firstProductFirstVariant);
 ```
 
-### Cart line items based on selected options
+### Build a cart based on selected options
 
 In Shopify, a product can have many options. These options map to **variants** of a product. The following example shows how to create line items in a cart based on selected product variants:
 
@@ -247,7 +251,42 @@ void Start () {
         // Create a line item based on the selected options for a product
         cart.LineItems.AddOrUpdate(firstProduct, selectedOptions, 1);
 
-        // Checkout the selected product
+        // The following will output the variant id which was selected by the above options
+        Debug.Log("First line item's variant id is: " + cart.LineItems.All()[0].VariantId);
+    });
+}
+```
+
+If you want to `Delete` or `Get` a line item, then use the following:
+
+```cs
+cart.LineItems.Get(firstProduct, selectedOptions);
+cart.LineItems.Delete(firstProduct, selectedOptions);
+```
+
+## Checkout with a checkout link
+
+```cs
+using Shopify.Unity;
+using Shopify.Unity.SDK;
+
+void Start () {
+    string accessToken = "b8d417759a62f7b342f3735dbe86b322";
+    string shopDomain = "unity-buy-sdk.myshopify.com";
+
+    ShopifyBuy.Init(accessToken, shopDomain);
+
+    ShopifyBuy.Client().products((products, error, after) => {
+        Cart cart = ShopifyBuy.Client().Cart();
+
+        List<ProductVariant> firstProductVariants = (List<ProductVariant>) products[0].variants();
+        ProductVariant firstProductFirstVariant = firstProductVariants[0];
+
+        // The following example adds a line item using the first products first variant.
+        // In this case, the cart will have 3 copies of the variant.
+        cart.LineItems.AddOrUpdate(firstProductFirstVariant, 3);
+
+        // Checkout with the url in the Device Browser
         cart.GetWebCheckoutLink(
             success: (link) => {
                 Application.OpenURL(link);
@@ -260,14 +299,7 @@ void Start () {
 }
 ```
 
-If you want to `Delete` or `Get` a line item, then use the following:
-
-```cs
-cart.LineItems.Get(firstProduct, selectedOptions);
-cart.LineItems.Delete(firstProduct, selectedOptions);
-```
-
-## Web view checkout
+## Checkout with a Web View
 
 After creating an instance of `Cart` and adding items to it, you can use the `CheckoutWithWebView` method to
 start a web view that contains the checkout for the cart.
@@ -306,11 +338,11 @@ ShopifyBuy.Client().products((products, error, after) => {
 });
 ```
 
-## Native pay checkout
+## Checkout with Native Pay (Apple Pay / Android Pay)
 
-You can allow users to pay with native pay (Apple Pay or Android Pay, depending on the device OS), providing a seamless checkout experience.
+You can allow users to pay with Apple Pay or Android Pay (coming soon), depending on the device OS, providing a seamless checkout experience.
 
-To determine whether the user is able to make a payment with native pay, you can use the `CanCheckoutWithNativePay` method. If the user has this capability, then you can use `CheckoutWithNativePay` to present the native pay authentication interface to the user. If they do not, then you can accept payment using [Web View Checkout](#web-view-checkout).
+To determine whether the user is able to make a payment with Native Pay, you can use the `CanCheckoutWithNativePay` method. If the user has this capability, then you can use `CheckoutWithNativePay` to present the native pay authentication interface to the user. If they do not, then you can accept payment using [Web View Checkout](#checkout-with-a-web-view).
 
 `CheckoutWithNativePay` takes in 4 parameters:
 

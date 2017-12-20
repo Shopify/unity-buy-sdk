@@ -8,23 +8,24 @@ The Shopify SDK for Unity allows Unity developers to query and sell products fro
 
 - [Features](#features)
 - [Documentation](#documentation)
-- [Using the Shopify SDK for Unity in Unity](#using-the-shopify-sdk-for-unity-in-unity)
+- [Using the Shopify SDK for Unity](#using-the-shopify-sdk-for-unity)
 - [Supported build targets](#supported-build-targets)
 - [Examples](#examples)
 
 ## Features
 
-- Query products
-- Query collections
-- Create a cart
-- Check out via weblink
-- Checkouts via Apple Pay and Safari Web View
-- Checkouts via Android Chrome Custom Tab
-- Make custom GraphQL queries using the [Storefront API](https://help.shopify.com/api/storefront-api)
+- [Query products](EXAMPLES.md#query-products)
+- [Query collections](EXAMPLES.md#query-collections)
+- [Build a cart](EXAMPLES.md#build-a-cart)
+- [Check out via weblink](EXAMPLES.md#checkout-with-a-checkout-link)
+- [Checkouts via Safari Web View](EXAMPLES.md#checkout-with-a-web-view)
+- [Checkouts via Apple Pay](EXAMPLES.md#checkout-with-native-pay-apple-pay--android-pay)
+- [Checkouts via Android Chrome Custom Tab](EXAMPLES.md#checkout-with-a-web-view)
+- [Make custom GraphQL queries using the Storefront API](EXAMPLES.md#custom-queries)
 
 Coming Soon:
 
-- Checkouts via Android Pay
+- [Checkouts via Android Pay](EXAMPLES.md#checkout-with-native-pay-apple-pay--android-pay)
 
 ## Documentation
 
@@ -35,7 +36,7 @@ Coming Soon:
 - [How to contribute](CONTRIBUTING.md)
 - [How to Test](TESTING.md)
 
-## Using the Shopify SDK for Unity in Unity
+## Using the Shopify SDK for Unity
 
 By following the steps below you'll install the Shopify SDK for Unity into your Unity project using the [shopify-buy.unitypackage](https://github.com/Shopify/unity-buy-sdk/raw/master/shopify-buy.unitypackage):
 
