@@ -46,20 +46,26 @@ namespace Shopify.UIToolkit {
             LoadImageURL(imageURL, (texture, error) => {
                 if (error != null) {
                     Debug.LogWarning("Failed to download image at " + imageURL + " Reason: " + error);
-                    failure(error);
+                    if (failure != null) {
+                        failure(error);
+                    }
                     return;
                 }
 
                 if (texture == null) {
                     Debug.LogWarning("Failed to generate texture from image located at " + imageURL);
-                    failure("Texture not found");
+                    if (failure != null) {
+                        failure("Texture not found");
+                    }
                     return;
                 }
 
                 _image.sprite = SpriteFromTexture(texture);
                 _image.preserveAspect = true;
 
-                success();
+                if (success != null) {
+                    success();
+                }
             });
         }
 

@@ -18,6 +18,9 @@
         public GameObject VariantDropdownMenu;
         public GameObject VariantPicker;
         public GameObject VariantPickerTitle;
+        public GameObject ActiveImage;
+        public GameObject ImageContainer;
+        public GameObject ImageHolderTemplate;
 
         private SelectionPicker _selectionPicker;
         private SingleProductThemeController _controller;
@@ -66,9 +69,10 @@
         void ISingleProductTheme.OnShouldShowProduct(Product product, ProductVariant[] variants) {
             Title.GetComponent<Text>().text = product.title();
             Description.GetComponent<Text>().text = product.description();
-            SetupVariantOptions(variants);
 
+            SetupVariantOptions(variants);
             UpdateDetailsUsingVariant(variants[0]);
+            SetupPreviewImages(product);
         }
 
         public void ShowProductVariantSelection() {
@@ -79,6 +83,29 @@
             VariantDropdownMenu.SetActive(false);
             var wrappedVariant = (ProductVariantOption)_selectionPicker.SelectedItem;
             UpdateDetailsUsingVariant(wrappedVariant.ProductVariant);
+        }
+
+        public void SelectImage(Button button) {
+            ActiveImage.GetComponent<UnityEngine.UI.Image>().sprite = button.image.sprite;
+        }
+
+        private void SetupPreviewImages(Product product) {
+            var images = (List<Shopify.Unity.Image>)product.images();
+            if (images.Count == 0) {
+                // TODO: Hide image area?
+                return;
+            }
+
+            ActiveImage.GetComponent<RemoteImageLoader>().LoadImage(images[0].src(), () => {
+                ActiveImage.GetComponent<UnityEngine.UI.Image>().enabled = true;
+            }, null);
+
+            foreach (var image in images) {
+                var imageHolder = Instantiate(ImageHolderTemplate, ImageContainer.transform.position, Quaternion.identity);
+                imageHolder.SetActive(true);
+                imageHolder.GetComponent<ProductImageHolder>().LoadImage(image.src()); 
+                imageHolder.transform.SetParent(ImageContainer.transform, false);
+            }
         }
 
         /// <summary>
