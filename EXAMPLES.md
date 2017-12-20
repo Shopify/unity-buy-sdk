@@ -30,7 +30,7 @@ Before you can start using the Shopify SDK for Unity, you need:
 
 ## Supported build targets
 
-See [Build Target Requirements](BUILDTARGETS.md) for information on setting up the SDK on iOS and Android
+See [Build Target Requirements](README.md#supported-build-targets) for information on setting up the SDK on iOS and Android
 
 ## Initialize the SDK
 

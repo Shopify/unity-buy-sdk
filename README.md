@@ -46,8 +46,21 @@ By following the steps below you'll install the Shopify SDK for Unity into your 
 
 When you are ready to build for a specific platform, please read the [Supported build targets](#supported-build-targets) section to know how to configure your `Player Settings` and `Build Settings` in Unity
 
-## Supported build targets 
-See [Build Target Requirements](BUILDTARGETS.md) for supported target platforms and requirements.
+## Supported build targets
+
+The Shopify SDK for Unity should work on all platforms which support Unity's `Application.OpenURL`. However we've made it much easier for users to checkout on iOS and Android. Below we list out more details about each of these platforms
+
+### iOS
+
+The Shopify SDK for Unity requires iOS applications to be built using the Xcode 9 and above, have a minimum target SDK of iOS 9 and support Swift 3.
+
+To target iOS see the [iOS Build Details](BUILDDETAILS.md#ios)
+
+### Android
+
+The Shopify SDK for Unity requires Android applications to have a minimum API level of Android 4.4 'Kit Kat' (API Level 19).
+
+To target Android see the [Android Build Details](BUILDDETAILS.md#android)
 
 ## Examples
 Checkout our [Example Guide](EXAMPLES.md).
