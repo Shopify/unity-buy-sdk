@@ -55,13 +55,13 @@ The Shopify SDK for Unity should work on all platforms which support Unity's `Ap
 
 ### iOS
 
-The Shopify SDK for Unity requires iOS applications to be built using the Xcode 9 and above, have a minimum target SDK of iOS 9 and support Swift 3.
+> The Shopify SDK for Unity requires iOS applications to be built using the Xcode 9 and above, have a minimum target SDK of iOS 9 and support Swift 3.
 
 To target iOS see the [iOS Build Details](BUILDDETAILS.md#ios)
 
 ### Android
 
-The Shopify SDK for Unity requires Android applications to have a minimum API level of Android 4.4 'Kit Kat' (API Level 19).
+> The Shopify SDK for Unity requires Android applications to have a minimum API level of Android 4.4 'Kit Kat' (API Level 19).
 
 To target Android see the [Android Build Details](BUILDDETAILS.md#android)
 
