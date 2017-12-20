@@ -74,7 +74,7 @@ public class Publishing {
     }
 
     public static void PublishFromCommandLine() {
-        var packageName = System.Environment.GetCommandLineArgs().First();
+        var packageName = System.Environment.GetEnvironmentVariable("UNITY_PACKAGE");
         Publish(packageName);
     }
 
