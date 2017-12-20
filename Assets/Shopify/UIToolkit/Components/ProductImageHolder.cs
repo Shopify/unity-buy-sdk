@@ -9,12 +9,7 @@ namespace Shopify.UIToolkit {
         public Image BrokenImageIcon;
 
         public void LoadImage(string src) {
-            ForegroundButton.gameObject.GetComponent<RemoteImageLoader>().LoadImage(
-                src, 
-                success: () => {
-                },
-                failure: null
-            );
+            ForegroundButton.gameObject.GetComponent<RemoteImageLoader>().LoadImage(src);
         }
     }
 }
