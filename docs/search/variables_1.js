@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['defaultimageresolutions',['DefaultImageResolutions',['../class_shopify_1_1_unity_1_1_shopify_client.html#a70cbce1c143468ca162cc79d26043843',1,'Shopify::Unity::ShopifyClient']]],
-  ['description',['Description',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_shopify_error.html#aac78776ecbf2bfddb4576abc898ac291',1,'Shopify::Unity::SDK::ShopifyError']]]
+  ['default_5fmemory_5fsize_5flimit',['DEFAULT_MEMORY_SIZE_LIMIT',['../class_shopify_1_1_u_i_toolkit_1_1_l_r_u_cache.html#a70b32ed52641f118d1d600962521997e',1,'Shopify::UIToolkit::LRUCache']]],
+  ['defaultimageresolutions',['DefaultImageResolutions',['../class_shopify_1_1_unity_1_1_shopify_client.html#a2e46f625c4a52da98572d69336aec95f',1,'Shopify::Unity::ShopifyClient']]],
+  ['description',['Description',['../class_shopify_1_1_unity_1_1_shopify_error.html#a324e76b239b16440706db01d98297368',1,'Shopify::Unity::ShopifyError']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['shopdomain',['ShopDomain',['../class_shopify_1_1_u_i_toolkit_1_1_theme_controller_base.html#abb44d4b97398455dc0d973145889d915',1,'Shopify::UIToolkit::ThemeControllerBase']]]
+  ['type',['Type',['../class_shopify_1_1_unity_1_1_shopify_error.html#a987a998ee0069785468f9d6f0da6d567',1,'Shopify::Unity::ShopifyError']]]
 ];

@@ -1,5 +1,8 @@
 var searchData=
 [
+  ['icacheable',['ICacheable',['../interface_shopify_1_1_u_i_toolkit_1_1_i_cacheable.html',1,'Shopify::UIToolkit']]],
+  ['icollectiontheme',['ICollectionTheme',['../interface_shopify_1_1_u_i_toolkit_1_1_i_collection_theme.html',1,'Shopify::UIToolkit']]],
+  ['iloaderprovider',['ILoaderProvider',['../interface_shopify_1_1_unity_1_1_s_d_k_1_1_i_loader_provider.html',1,'Shopify::Unity::SDK']]],
   ['image',['Image',['../class_shopify_1_1_unity_1_1_image.html',1,'Shopify::Unity']]],
   ['imageconnection',['ImageConnection',['../class_shopify_1_1_unity_1_1_image_connection.html',1,'Shopify::Unity']]],
   ['imageconnectionquery',['ImageConnectionQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_image_connection_query.html',1,'Shopify::Unity::GraphQL']]],
@@ -10,5 +13,13 @@ var searchData=
   ['inativecheckout',['INativeCheckout',['../interface_shopify_1_1_unity_1_1_s_d_k_1_1_i_native_checkout.html',1,'Shopify::Unity::SDK']]],
   ['inputbase',['InputBase',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_input_base.html',1,'Shopify::Unity::SDK']]],
   ['inputvaluetostring',['InputValueToString',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_input_value_to_string.html',1,'Shopify::Unity::SDK']]],
-  ['invalidserverresponseexception',['InvalidServerResponseException',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_invalid_server_response_exception.html',1,'Shopify::Unity::SDK']]]
+  ['invalidserverresponseexception',['InvalidServerResponseException',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_invalid_server_response_exception.html',1,'Shopify::Unity::SDK']]],
+  ['iproductpickercontroller',['IProductPickerController',['../interface_shopify_1_1_u_i_toolkit_1_1_editor_1_1_i_product_picker_controller.html',1,'Shopify::UIToolkit::Editor']]],
+  ['iproductpickerview',['IProductPickerView',['../interface_shopify_1_1_u_i_toolkit_1_1_editor_1_1_i_product_picker_view.html',1,'Shopify::UIToolkit::Editor']]],
+  ['ishopcredentials',['IShopCredentials',['../interface_shopify_1_1_u_i_toolkit_1_1_i_shop_credentials.html',1,'Shopify::UIToolkit']]],
+  ['ishopcredentialsview',['IShopCredentialsView',['../interface_shopify_1_1_u_i_toolkit_1_1_editor_1_1_i_shop_credentials_view.html',1,'Shopify::UIToolkit::Editor']]],
+  ['ishoptheme',['IShopTheme',['../interface_shopify_1_1_u_i_toolkit_1_1_i_shop_theme.html',1,'Shopify::UIToolkit']]],
+  ['isingleproducttheme',['ISingleProductTheme',['../interface_shopify_1_1_u_i_toolkit_1_1_i_single_product_theme.html',1,'Shopify::UIToolkit']]],
+  ['isingleproductthemecontrollereditorview',['ISingleProductThemeControllerEditorView',['../interface_shopify_1_1_u_i_toolkit_1_1_editor_1_1_i_single_product_theme_controller_editor_view.html',1,'Shopify::UIToolkit::Editor']]],
+  ['ithemebase',['IThemeBase',['../interface_shopify_1_1_u_i_toolkit_1_1_i_theme_base.html',1,'Shopify::UIToolkit']]]
 ];

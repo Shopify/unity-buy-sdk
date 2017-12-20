@@ -19,7 +19,7 @@ var searchData=
   ['gq',['GQ',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a8d36b361a4794422c70681586a957350',1,'Shopify::Unity']]],
   ['gr',['GR',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7af214a7d42e0de5875d55189e01e2e187',1,'Shopify::Unity']]],
   ['grams',['GRAMS',['../namespace_shopify_1_1_unity.html#a9c80a62d5cdcbf5c90b26b9a827a6932a6d525c6a044f07d4176f1a615c304c50',1,'Shopify::Unity']]],
-  ['graphql',['GraphQL',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_shopify_error.html#a94dc5ddb72ebea40c5181e01b8b6e066a524de3d2ade4544176f60702b36fbfdf',1,'Shopify::Unity::SDK::ShopifyError']]],
+  ['graphql',['GraphQL',['../class_shopify_1_1_unity_1_1_shopify_error.html#a2bcff1633886cd81a955ead359f113c3a524de3d2ade4544176f60702b36fbfdf',1,'Shopify::Unity::ShopifyError']]],
   ['gs',['GS',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a71a75a167c33c58bfb561764255c880a',1,'Shopify::Unity']]],
   ['gt',['GT',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7acd6a9bd2a175104eed40f0d33a8b4020',1,'Shopify::Unity']]],
   ['gtq',['GTQ',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba7542616795c2eb9363971960a03be6d0',1,'Shopify::Unity']]],

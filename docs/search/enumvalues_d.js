@@ -2,7 +2,7 @@ var searchData=
 [
   ['na',['NA',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7ad4cd0dabcf4caa22ad92fab40844c786',1,'Shopify::Unity']]],
   ['nad',['NAD',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba5086565b5604071b2d45d42afcb0d3e9',1,'Shopify::Unity']]],
-  ['nativepaymentprocessingerror',['NativePaymentProcessingError',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_shopify_error.html#a94dc5ddb72ebea40c5181e01b8b6e066a94ade1a948703e0772dab28788f3d1d7',1,'Shopify::Unity::SDK::ShopifyError']]],
+  ['nativepaymentprocessingerror',['NativePaymentProcessingError',['../class_shopify_1_1_unity_1_1_shopify_error.html#a2bcff1633886cd81a955ead359f113c3a94ade1a948703e0772dab28788f3d1d7',1,'Shopify::Unity::ShopifyError']]],
   ['nc',['NC',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a90581d96b500fd2d3fd701a583409cb8',1,'Shopify::Unity']]],
   ['ne',['NE',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7adc33066c3993e0d50896e533fd692ce0',1,'Shopify::Unity']]],
   ['nf',['NF',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a227dc251e1411f6b6fffcd1c30486f4d',1,'Shopify::Unity']]],

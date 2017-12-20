@@ -1,5 +1,7 @@
 var searchData=
 [
+  ['cache',['Cache',['../interface_shopify_1_1_u_i_toolkit_1_1_cache.html',1,'Shopify::UIToolkit']]],
+  ['cacheablewebimage',['CacheableWebImage',['../class_shopify_1_1_u_i_toolkit_1_1_cacheable_web_image.html',1,'Shopify::UIToolkit']]],
   ['cameraanimation',['CameraAnimation',['../class_components_1_1_camera_animation.html',1,'Components']]],
   ['cart',['Cart',['../class_shopify_1_1_unity_1_1_cart.html',1,'Shopify::Unity']]],
   ['cartlineitem',['CartLineItem',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html',1,'Shopify::Unity::SDK']]],
@@ -60,7 +62,6 @@ var searchData=
   ['collectionedge',['CollectionEdge',['../class_shopify_1_1_unity_1_1_collection_edge.html',1,'Shopify::Unity']]],
   ['collectionedgequery',['CollectionEdgeQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_collection_edge_query.html',1,'Shopify::Unity::GraphQL']]],
   ['collectionquery',['CollectionQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_collection_query.html',1,'Shopify::Unity::GraphQL']]],
-  ['collectiontheme',['CollectionTheme',['../class_shopify_1_1_u_i_toolkit_1_1_collection_theme.html',1,'Shopify::UIToolkit']]],
   ['comment',['Comment',['../class_shopify_1_1_unity_1_1_comment.html',1,'Shopify::Unity']]],
   ['commentauthor',['CommentAuthor',['../class_shopify_1_1_unity_1_1_comment_author.html',1,'Shopify::Unity']]],
   ['commentauthorquery',['CommentAuthorQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_comment_author_query.html',1,'Shopify::Unity::GraphQL']]],
