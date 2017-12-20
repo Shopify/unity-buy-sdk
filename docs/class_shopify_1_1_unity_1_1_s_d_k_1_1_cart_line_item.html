@@ -72,49 +72,351 @@ $(function() {
 <div class="title">Shopify.Unity.SDK.CartLineItem Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>A line item on an order. A line item is defined by a variant id and the quantity of that variant that you'll be ordering. Custom Attributes are used to define customizations or any additional meta data on the line item.  
+ <a href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a3db400978076b1b9f703d804a12f21b3"><td class="memItemLeft" align="right" valign="top"><a id="a3db400978076b1b9f703d804a12f21b3"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>CartLineItem</b> (<a class="el" href="class_shopify_1_1_unity_1_1_product_variant.html">ProductVariant</a> variant, OnCartLineItemChange onChange, long quantity=1, IDictionary&lt; string, string &gt; customAttributes=null)</td></tr>
+<tr class="memitem:a3db400978076b1b9f703d804a12f21b3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html#a3db400978076b1b9f703d804a12f21b3">CartLineItem</a> (<a class="el" href="class_shopify_1_1_unity_1_1_product_variant.html">ProductVariant</a> variant, OnCartLineItemChange onChange, long quantity=1, IDictionary&lt; string, string &gt; customAttributes=null)</td></tr>
+<tr class="memdesc:a3db400978076b1b9f703d804a12f21b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used internally by the <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a> to construct a <a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html" title="A line item on an order. A line item is defined by a variant id and the quantity of that variant that...">CartLineItem</a>.  <a href="#a3db400978076b1b9f703d804a12f21b3">More...</a><br /></td></tr>
 <tr class="separator:a3db400978076b1b9f703d804a12f21b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21e91bdf9a6000c1d31e16f7fbba4843"><td class="memItemLeft" align="right" valign="top"><a id="a21e91bdf9a6000c1d31e16f7fbba4843"></a>
-<a class="el" href="class_shopify_1_1_unity_1_1_checkout_line_item_input.html">CheckoutLineItemInput</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetCheckoutLineItemInput</b> ()</td></tr>
+<tr class="memitem:a21e91bdf9a6000c1d31e16f7fbba4843"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_checkout_line_item_input.html">CheckoutLineItemInput</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html#a21e91bdf9a6000c1d31e16f7fbba4843">GetCheckoutLineItemInput</a> ()</td></tr>
+<tr class="memdesc:a21e91bdf9a6000c1d31e16f7fbba4843"><td class="mdescLeft">&#160;</td><td class="mdescRight">Will convert this <a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html" title="A line item on an order. A line item is defined by a variant id and the quantity of that variant that...">CartLineItem</a> to a <a class="el" href="class_shopify_1_1_unity_1_1_checkout_line_item_input.html" title="Specifies the input fields to create a line item on a checkout. ">CheckoutLineItemInput</a>. This is used internally by the sdk for the checkout process  <a href="#a21e91bdf9a6000c1d31e16f7fbba4843">More...</a><br /></td></tr>
 <tr class="separator:a21e91bdf9a6000c1d31e16f7fbba4843"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af66f23b4d153db528e7fe538a0ae3a17"><td class="memItemLeft" align="right" valign="top"><a id="af66f23b4d153db528e7fe538a0ae3a17"></a>
-<a class="el" href="class_shopify_1_1_unity_1_1_checkout_line_item_update_input.html">CheckoutLineItemUpdateInput</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetCheckoutLineItemUpdateInput</b> ()</td></tr>
+<tr class="memitem:af66f23b4d153db528e7fe538a0ae3a17"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_checkout_line_item_update_input.html">CheckoutLineItemUpdateInput</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html#af66f23b4d153db528e7fe538a0ae3a17">GetCheckoutLineItemUpdateInput</a> ()</td></tr>
+<tr class="memdesc:af66f23b4d153db528e7fe538a0ae3a17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Will convert this <a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html" title="A line item on an order. A line item is defined by a variant id and the quantity of that variant that...">CartLineItem</a> to a <a class="el" href="class_shopify_1_1_unity_1_1_checkout_line_item_update_input.html" title="Specifies the input fields to update a line item on the checkout. ">CheckoutLineItemUpdateInput</a>. This is used internally by the sdk for the checkout process  <a href="#af66f23b4d153db528e7fe538a0ae3a17">More...</a><br /></td></tr>
 <tr class="separator:af66f23b4d153db528e7fe538a0ae3a17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ab02e3d4abc8670e50b2a0f83b3d1248a"><td class="memItemLeft" align="right" valign="top"><a id="ab02e3d4abc8670e50b2a0f83b3d1248a"></a>
-static&#160;</td><td class="memItemRight" valign="bottom"><b>operator CheckoutLineItemInput</b> (<a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html">CartLineItem</a> lineItem)</td></tr>
+<tr class="memitem:ab02e3d4abc8670e50b2a0f83b3d1248a"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html#ab02e3d4abc8670e50b2a0f83b3d1248a">operator CheckoutLineItemInput</a> (<a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html">CartLineItem</a> lineItem)</td></tr>
+<tr class="memdesc:ab02e3d4abc8670e50b2a0f83b3d1248a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Will convert a <a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html" title="A line item on an order. A line item is defined by a variant id and the quantity of that variant that...">CartLineItem</a> to a <a class="el" href="class_shopify_1_1_unity_1_1_checkout_line_item_input.html" title="Specifies the input fields to create a line item on a checkout. ">CheckoutLineItemInput</a>. These are used internally by the sdk for the checkout process  <a href="#ab02e3d4abc8670e50b2a0f83b3d1248a">More...</a><br /></td></tr>
 <tr class="separator:ab02e3d4abc8670e50b2a0f83b3d1248a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4cb189fbceac59ef24a5a3e1c424151c"><td class="memItemLeft" align="right" valign="top"><a id="a4cb189fbceac59ef24a5a3e1c424151c"></a>
-static&#160;</td><td class="memItemRight" valign="bottom"><b>operator CheckoutLineItemUpdateInput</b> (<a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html">CartLineItem</a> lineItem)</td></tr>
+<tr class="memitem:a4cb189fbceac59ef24a5a3e1c424151c"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html#a4cb189fbceac59ef24a5a3e1c424151c">operator CheckoutLineItemUpdateInput</a> (<a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html">CartLineItem</a> lineItem)</td></tr>
+<tr class="memdesc:a4cb189fbceac59ef24a5a3e1c424151c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Will convert a <a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html" title="A line item on an order. A line item is defined by a variant id and the quantity of that variant that...">CartLineItem</a> to a <a class="el" href="class_shopify_1_1_unity_1_1_checkout_line_item_update_input.html" title="Specifies the input fields to update a line item on the checkout. ">CheckoutLineItemUpdateInput</a>. These are used internally by the sdk for the checkout process  <a href="#a4cb189fbceac59ef24a5a3e1c424151c">More...</a><br /></td></tr>
 <tr class="separator:a4cb189fbceac59ef24a5a3e1c424151c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a31a17b5688eeb063fc54412e01298d5d"><td class="memItemLeft" align="right" valign="top"><a id="a31a17b5688eeb063fc54412e01298d5d"></a>
-string&#160;</td><td class="memItemRight" valign="bottom"><b>ID</b> = null</td></tr>
+<tr class="memitem:a31a17b5688eeb063fc54412e01298d5d"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html#a31a17b5688eeb063fc54412e01298d5d">ID</a> = null</td></tr>
+<tr class="memdesc:a31a17b5688eeb063fc54412e01298d5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ID variable is used internally by the <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a> and will be used to associate checkout line item's to <a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html" title="A line item on an order. A line item is defined by a variant id and the quantity of that variant that...">CartLineItem</a>'s.  <a href="#a31a17b5688eeb063fc54412e01298d5d">More...</a><br /></td></tr>
 <tr class="separator:a31a17b5688eeb063fc54412e01298d5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:a94b26591159fb60f5c21c2559d88d9fb"><td class="memItemLeft" align="right" valign="top"><a id="a94b26591159fb60f5c21c2559d88d9fb"></a>
-string&#160;</td><td class="memItemRight" valign="bottom"><b>VariantId</b><code> [get]</code></td></tr>
+<tr class="memitem:a94b26591159fb60f5c21c2559d88d9fb"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html#a94b26591159fb60f5c21c2559d88d9fb">VariantId</a><code> [get]</code></td></tr>
+<tr class="memdesc:a94b26591159fb60f5c21c2559d88d9fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">All products have variants which are used to create orders. eg. A variant id could be associated to a Small Blue T-Shirt where another variant id could be associated to a Large Red T-Shirt.  <a href="#a94b26591159fb60f5c21c2559d88d9fb">More...</a><br /></td></tr>
 <tr class="separator:a94b26591159fb60f5c21c2559d88d9fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7fcb8e546674ec7bd2121b8b4b2b007"><td class="memItemLeft" align="right" valign="top"><a id="aa7fcb8e546674ec7bd2121b8b4b2b007"></a>
-decimal&#160;</td><td class="memItemRight" valign="bottom"><b>Price</b><code> [get]</code></td></tr>
+<tr class="memitem:aa7fcb8e546674ec7bd2121b8b4b2b007"><td class="memItemLeft" align="right" valign="top">decimal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html#aa7fcb8e546674ec7bd2121b8b4b2b007">Price</a><code> [get]</code></td></tr>
+<tr class="memdesc:aa7fcb8e546674ec7bd2121b8b4b2b007"><td class="mdescLeft">&#160;</td><td class="mdescRight">The product variant’s price.  <a href="#aa7fcb8e546674ec7bd2121b8b4b2b007">More...</a><br /></td></tr>
 <tr class="separator:aa7fcb8e546674ec7bd2121b8b4b2b007"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94cdb0b0b467d60b4674530f7e347515"><td class="memItemLeft" align="right" valign="top"><a id="a94cdb0b0b467d60b4674530f7e347515"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>Quantity</b><code> [get, set]</code></td></tr>
+<tr class="memitem:a94cdb0b0b467d60b4674530f7e347515"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html#a94cdb0b0b467d60b4674530f7e347515">Quantity</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a94cdb0b0b467d60b4674530f7e347515"><td class="mdescLeft">&#160;</td><td class="mdescRight">The quantity or count of items for the line item. eg. 3 Red T-Shirts  <a href="#a94cdb0b0b467d60b4674530f7e347515">More...</a><br /></td></tr>
 <tr class="separator:a94cdb0b0b467d60b4674530f7e347515"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9cbb8cc226f513b0d02b4f58402173e1"><td class="memItemLeft" align="right" valign="top"><a id="a9cbb8cc226f513b0d02b4f58402173e1"></a>
-IDictionary&lt; string, string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>CustomAttributes</b><code> [get, set]</code></td></tr>
+<tr class="memitem:a9cbb8cc226f513b0d02b4f58402173e1"><td class="memItemLeft" align="right" valign="top">IDictionary&lt; string, string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html#a9cbb8cc226f513b0d02b4f58402173e1">CustomAttributes</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a9cbb8cc226f513b0d02b4f58402173e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Custom Attributes for the line item. Custom attributes are used to add customization information or meta data to a line item.  <a href="#a9cbb8cc226f513b0d02b4f58402173e1">More...</a><br /></td></tr>
 <tr class="separator:a9cbb8cc226f513b0d02b4f58402173e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>A line item on an order. A line item is defined by a variant id and the quantity of that variant that you'll be ordering. Custom Attributes are used to define customizations or any additional meta data on the line item. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a3db400978076b1b9f703d804a12f21b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3db400978076b1b9f703d804a12f21b3">&#9670;&nbsp;</a></span>CartLineItem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Shopify.Unity.SDK.CartLineItem.CartLineItem </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_shopify_1_1_unity_1_1_product_variant.html">ProductVariant</a>&#160;</td>
+          <td class="paramname"><em>variant</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">OnCartLineItemChange&#160;</td>
+          <td class="paramname"><em>onChange</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long&#160;</td>
+          <td class="paramname"><em>quantity</em> = <code>1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">IDictionary&lt; string, string &gt;&#160;</td>
+          <td class="paramname"><em>customAttributes</em> = <code>null</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Used internally by the <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a> to construct a <a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html" title="A line item on an order. A line item is defined by a variant id and the quantity of that variant that...">CartLineItem</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">variant</td><td>The variant this <a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html" title="A line item on an order. A line item is defined by a variant id and the quantity of that variant that...">CartLineItem</a> will be associated to</td></tr>
+    <tr><td class="paramname">onChange</td><td>This function will be called whenever the <a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html" title="A line item on an order. A line item is defined by a variant id and the quantity of that variant that...">CartLineItem</a> is modified</td></tr>
+    <tr><td class="paramname">quantity</td><td>The count of items to be ordered</td></tr>
+    <tr><td class="paramname">customAttributes</td><td>Custom attributes for this line item used to customize and add meta data</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a21e91bdf9a6000c1d31e16f7fbba4843"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21e91bdf9a6000c1d31e16f7fbba4843">&#9670;&nbsp;</a></span>GetCheckoutLineItemInput()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_shopify_1_1_unity_1_1_checkout_line_item_input.html">CheckoutLineItemInput</a> Shopify.Unity.SDK.CartLineItem.GetCheckoutLineItemInput </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Will convert this <a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html" title="A line item on an order. A line item is defined by a variant id and the quantity of that variant that...">CartLineItem</a> to a <a class="el" href="class_shopify_1_1_unity_1_1_checkout_line_item_input.html" title="Specifies the input fields to create a line item on a checkout. ">CheckoutLineItemInput</a>. This is used internally by the sdk for the checkout process </p>
+
+</div>
+</div>
+<a id="af66f23b4d153db528e7fe538a0ae3a17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af66f23b4d153db528e7fe538a0ae3a17">&#9670;&nbsp;</a></span>GetCheckoutLineItemUpdateInput()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_shopify_1_1_unity_1_1_checkout_line_item_update_input.html">CheckoutLineItemUpdateInput</a> Shopify.Unity.SDK.CartLineItem.GetCheckoutLineItemUpdateInput </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Will convert this <a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html" title="A line item on an order. A line item is defined by a variant id and the quantity of that variant that...">CartLineItem</a> to a <a class="el" href="class_shopify_1_1_unity_1_1_checkout_line_item_update_input.html" title="Specifies the input fields to update a line item on the checkout. ">CheckoutLineItemUpdateInput</a>. This is used internally by the sdk for the checkout process </p>
+
+</div>
+</div>
+<a id="ab02e3d4abc8670e50b2a0f83b3d1248a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab02e3d4abc8670e50b2a0f83b3d1248a">&#9670;&nbsp;</a></span>operator CheckoutLineItemInput()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Shopify.Unity.SDK.CartLineItem.operator <a class="el" href="class_shopify_1_1_unity_1_1_checkout_line_item_input.html">CheckoutLineItemInput</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html">CartLineItem</a>&#160;</td>
+          <td class="paramname"><em>lineItem</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Will convert a <a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html" title="A line item on an order. A line item is defined by a variant id and the quantity of that variant that...">CartLineItem</a> to a <a class="el" href="class_shopify_1_1_unity_1_1_checkout_line_item_input.html" title="Specifies the input fields to create a line item on a checkout. ">CheckoutLineItemInput</a>. These are used internally by the sdk for the checkout process </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lineItem</td><td>The <a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html" title="A line item on an order. A line item is defined by a variant id and the quantity of that variant that...">CartLineItem</a> to be converted</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a4cb189fbceac59ef24a5a3e1c424151c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4cb189fbceac59ef24a5a3e1c424151c">&#9670;&nbsp;</a></span>operator CheckoutLineItemUpdateInput()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Shopify.Unity.SDK.CartLineItem.operator <a class="el" href="class_shopify_1_1_unity_1_1_checkout_line_item_update_input.html">CheckoutLineItemUpdateInput</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html">CartLineItem</a>&#160;</td>
+          <td class="paramname"><em>lineItem</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Will convert a <a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html" title="A line item on an order. A line item is defined by a variant id and the quantity of that variant that...">CartLineItem</a> to a <a class="el" href="class_shopify_1_1_unity_1_1_checkout_line_item_update_input.html" title="Specifies the input fields to update a line item on the checkout. ">CheckoutLineItemUpdateInput</a>. These are used internally by the sdk for the checkout process </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lineItem</td><td>The <a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html" title="A line item on an order. A line item is defined by a variant id and the quantity of that variant that...">CartLineItem</a> to be converted</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a31a17b5688eeb063fc54412e01298d5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31a17b5688eeb063fc54412e01298d5d">&#9670;&nbsp;</a></span>ID</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">string Shopify.Unity.SDK.CartLineItem.ID = null</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The ID variable is used internally by the <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a> and will be used to associate checkout line item's to <a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html" title="A line item on an order. A line item is defined by a variant id and the quantity of that variant that...">CartLineItem</a>'s. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="a9cbb8cc226f513b0d02b4f58402173e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9cbb8cc226f513b0d02b4f58402173e1">&#9670;&nbsp;</a></span>CustomAttributes</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">IDictionary&lt;string, string&gt; Shopify.Unity.SDK.CartLineItem.CustomAttributes</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Custom Attributes for the line item. Custom attributes are used to add customization information or meta data to a line item. </p>
+
+</div>
+</div>
+<a id="aa7fcb8e546674ec7bd2121b8b4b2b007"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7fcb8e546674ec7bd2121b8b4b2b007">&#9670;&nbsp;</a></span>Price</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">decimal Shopify.Unity.SDK.CartLineItem.Price</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The product variant’s price. </p>
+
+</div>
+</div>
+<a id="a94cdb0b0b467d60b4674530f7e347515"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94cdb0b0b467d60b4674530f7e347515">&#9670;&nbsp;</a></span>Quantity</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">long Shopify.Unity.SDK.CartLineItem.Quantity</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The quantity or count of items for the line item. eg. 3 Red T-Shirts </p>
+
+</div>
+</div>
+<a id="a94b26591159fb60f5c21c2559d88d9fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94b26591159fb60f5c21c2559d88d9fb">&#9670;&nbsp;</a></span>VariantId</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">string Shopify.Unity.SDK.CartLineItem.VariantId</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>All products have variants which are used to create orders. eg. A variant id could be associated to a Small Blue T-Shirt where another variant id could be associated to a Large Red T-Shirt. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>Assets/Shopify/Unity/SDK/CartLineItems.cs</li>
 </ul>

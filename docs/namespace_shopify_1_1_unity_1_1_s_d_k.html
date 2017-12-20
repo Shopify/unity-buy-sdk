@@ -88,6 +88,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An abstract base that must be defined by classes that will perform network communication.  <a href="class_shopify_1_1_unity_1_1_s_d_k_1_1_base_loader.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html">CartLineItem</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A line item on an order. A line item is defined by a variant id and the quantity of that variant that you'll be ordering. Custom Attributes are used to define customizations or any additional meta data on the line item.  <a href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_items.html">CartLineItems</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is used to add, update, or delete line items in a <a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a> .  <a href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_items.html#details">More...</a><br /></td></tr>
@@ -113,6 +114,8 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates default queries for <a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html" title="ShopifyClient  is the entry point to communicate with the Shopify Storefront API. ShopifyClient  also...">ShopifyClient</a>.  <a href="class_shopify_1_1_unity_1_1_s_d_k_1_1_default_shop_queries.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_global_game_object.html">GlobalGameObject</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_shopify_1_1_unity_1_1_s_d_k_1_1_i_loader_provider.html">ILoaderProvider</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_shopify_1_1_unity_1_1_s_d_k_1_1_i_native_checkout.html">INativeCheckout</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -157,9 +160,6 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_shipping_method.html">ShippingMethod</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_shopify_error.html">ShopifyError</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A class describing an error that has occurred within the <a class="el" href="namespace_shopify.html">Shopify</a> <a class="el" href="namespace_shopify_1_1_unity.html">Unity</a> Buy <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a>.  <a href="class_shopify_1_1_unity_1_1_s_d_k_1_1_shopify_error.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_summary_item.html">SummaryItem</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>TimeoutComponent</b></td></tr>
@@ -169,6 +169,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_unity_loader.html">UnityLoader</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs network communication to send <a class="el" href="namespace_shopify_1_1_unity_1_1_graph_q_l.html">GraphQL</a> queries between <a class="el" href="namespace_shopify_1_1_unity.html">Unity</a> and a <a class="el" href="namespace_shopify.html">Shopify</a> <a class="el" href="namespace_shopify_1_1_unity_1_1_graph_q_l.html">GraphQL</a> endpoint.  <a href="class_shopify_1_1_unity_1_1_s_d_k_1_1_unity_loader.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_unity_loader_provider.html">UnityLoaderProvider</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_unity_timeout.html">UnityTimeout</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -194,7 +196,7 @@ delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>BuildQueryOn
 delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>BuildQueryOnEdgesNodeDelegate</b> (object node, string after)</td></tr>
 <tr class="separator:a1d2e467ad7d0d99214a0995d4e2d8287"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14cbd89a4f810a0803314a253ec1c4b9"><td class="memItemLeft" align="right" valign="top"><a id="a14cbd89a4f810a0803314a253ec1c4b9"></a>
-delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>ResponseNodeHandler</b> (List&lt; <a class="el" href="interface_shopify_1_1_unity_1_1_node.html">Node</a> &gt; nodes, <a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_shopify_error.html">ShopifyError</a> error)</td></tr>
+delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>ResponseNodeHandler</b> (List&lt; <a class="el" href="interface_shopify_1_1_unity_1_1_node.html">Node</a> &gt; nodes, <a class="el" href="class_shopify_1_1_unity_1_1_shopify_error.html">ShopifyError</a> error)</td></tr>
 <tr class="separator:a14cbd89a4f810a0803314a253ec1c4b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96460dafd1704c70ae2af3a424221f80"><td class="memItemLeft" align="right" valign="top"><a id="a96460dafd1704c70ae2af3a424221f80"></a>
 delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>LoaderResponseHandler</b> (string response, string error)</td></tr>
@@ -212,22 +214,22 @@ delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>MutationResp
 delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>MergeFieldDelegate</b> (string field, Dictionary&lt; string, object &gt; into, Dictionary&lt; string, object &gt; responseA, Dictionary&lt; string, object &gt; responseB)</td></tr>
 <tr class="separator:ad9e0e0a49af07c26d43378f467114a3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58800cac43036d68d9e0cbf7378f0663"><td class="memItemLeft" align="right" valign="top"><a id="a58800cac43036d68d9e0cbf7378f0663"></a>
-delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>ProductsHandler</b> (List&lt; <a class="el" href="class_shopify_1_1_unity_1_1_product.html">Product</a> &gt; products, <a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_shopify_error.html">ShopifyError</a> error)</td></tr>
+delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>ProductsHandler</b> (List&lt; <a class="el" href="class_shopify_1_1_unity_1_1_product.html">Product</a> &gt; products, <a class="el" href="class_shopify_1_1_unity_1_1_shopify_error.html">ShopifyError</a> error)</td></tr>
 <tr class="separator:a58800cac43036d68d9e0cbf7378f0663"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6dfebe594f01f0712b7c353ce9a2964"><td class="memItemLeft" align="right" valign="top"><a id="ab6dfebe594f01f0712b7c353ce9a2964"></a>
-delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>ProductsPaginatedHandler</b> (List&lt; <a class="el" href="class_shopify_1_1_unity_1_1_product.html">Product</a> &gt; products, <a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_shopify_error.html">ShopifyError</a> error, string after)</td></tr>
+delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>ProductsPaginatedHandler</b> (List&lt; <a class="el" href="class_shopify_1_1_unity_1_1_product.html">Product</a> &gt; products, <a class="el" href="class_shopify_1_1_unity_1_1_shopify_error.html">ShopifyError</a> error, string after)</td></tr>
 <tr class="separator:ab6dfebe594f01f0712b7c353ce9a2964"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af402d5f829b8c944092324878f13e695"><td class="memItemLeft" align="right" valign="top"><a id="af402d5f829b8c944092324878f13e695"></a>
-delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>CollectionsPaginatedHandler</b> (List&lt; <a class="el" href="class_shopify_1_1_unity_1_1_collection.html">Collection</a> &gt; collections, <a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_shopify_error.html">ShopifyError</a> error, string after)</td></tr>
+delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>CollectionsPaginatedHandler</b> (List&lt; <a class="el" href="class_shopify_1_1_unity_1_1_collection.html">Collection</a> &gt; collections, <a class="el" href="class_shopify_1_1_unity_1_1_shopify_error.html">ShopifyError</a> error, string after)</td></tr>
 <tr class="separator:af402d5f829b8c944092324878f13e695"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0e3e83f51011116cc2b36b91f25d290"><td class="memItemLeft" align="right" valign="top"><a id="ad0e3e83f51011116cc2b36b91f25d290"></a>
-delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>QueryRootHandler</b> (<a class="el" href="class_shopify_1_1_unity_1_1_query_root.html">QueryRoot</a> queryRoot, <a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_shopify_error.html">ShopifyError</a> error)</td></tr>
+delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>QueryRootHandler</b> (<a class="el" href="class_shopify_1_1_unity_1_1_query_root.html">QueryRoot</a> queryRoot, <a class="el" href="class_shopify_1_1_unity_1_1_shopify_error.html">ShopifyError</a> error)</td></tr>
 <tr class="separator:ad0e3e83f51011116cc2b36b91f25d290"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a50e36952b486743215596ea35f292205"><td class="memItemLeft" align="right" valign="top"><a id="a50e36952b486743215596ea35f292205"></a>
-delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>MutationRootHandler</b> (<a class="el" href="class_shopify_1_1_unity_1_1_mutation.html">Mutation</a> mutationRoot, <a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_shopify_error.html">ShopifyError</a> error)</td></tr>
+delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>MutationRootHandler</b> (<a class="el" href="class_shopify_1_1_unity_1_1_mutation.html">Mutation</a> mutationRoot, <a class="el" href="class_shopify_1_1_unity_1_1_shopify_error.html">ShopifyError</a> error)</td></tr>
 <tr class="separator:a50e36952b486743215596ea35f292205"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68fc193440cc61dccf8f3c751c5e595b"><td class="memItemLeft" align="right" valign="top"><a id="a68fc193440cc61dccf8f3c751c5e595b"></a>
-delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>ShopMetadataHandler</b> (<a class="el" href="struct_shopify_1_1_unity_1_1_shop_metadata.html">ShopMetadata</a>? metadata, <a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_shopify_error.html">ShopifyError</a> error)</td></tr>
+delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>ShopMetadataHandler</b> (<a class="el" href="struct_shopify_1_1_unity_1_1_shop_metadata.html">ShopMetadata</a>? metadata, <a class="el" href="class_shopify_1_1_unity_1_1_shopify_error.html">ShopifyError</a> error)</td></tr>
 <tr class="separator:a68fc193440cc61dccf8f3c751c5e595b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa21b8202fce16ac45c912c3b4f8d421d"><td class="memItemLeft" align="right" valign="top"><a id="aa21b8202fce16ac45c912c3b4f8d421d"></a>
 delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>OnCartLineItemChange</b> ()</td></tr>
@@ -245,7 +247,7 @@ delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>CanShowNativ
 delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>CheckoutSuccessCallback</b> ()</td></tr>
 <tr class="separator:a603e6da2f98561bf6a95e004a098ee52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa6a23fdb6ed89ca89f5e0f6e09fc0e60"><td class="memItemLeft" align="right" valign="top"><a id="aa6a23fdb6ed89ca89f5e0f6e09fc0e60"></a>
-delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>CheckoutFailureCallback</b> (<a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_shopify_error.html">ShopifyError</a> error)</td></tr>
+delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>CheckoutFailureCallback</b> (<a class="el" href="class_shopify_1_1_unity_1_1_shopify_error.html">ShopifyError</a> error)</td></tr>
 <tr class="separator:aa6a23fdb6ed89ca89f5e0f6e09fc0e60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16448cf02c2d9ff1a7fdc17a4064ece4"><td class="memItemLeft" align="right" valign="top"><a id="a16448cf02c2d9ff1a7fdc17a4064ece4"></a>
 delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>CheckoutCancelCallback</b> ()</td></tr>
@@ -254,10 +256,10 @@ delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>CheckoutCanc
 delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>GetWebCheckoutLinkSuccessCallback</b> (string url)</td></tr>
 <tr class="separator:a00a7feb32c2e5148de42766661d9f89f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af8e06c904835f234e8d5f7b135b7d50a"><td class="memItemLeft" align="right" valign="top"><a id="af8e06c904835f234e8d5f7b135b7d50a"></a>
-delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>GetWebCheckoutLinkFailureCallback</b> (<a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_shopify_error.html">ShopifyError</a> error)</td></tr>
+delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>GetWebCheckoutLinkFailureCallback</b> (<a class="el" href="class_shopify_1_1_unity_1_1_shopify_error.html">ShopifyError</a> error)</td></tr>
 <tr class="separator:af8e06c904835f234e8d5f7b135b7d50a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5e7f71d2840b8ddd8a79fc6dae1dc97"><td class="memItemLeft" align="right" valign="top"><a id="ad5e7f71d2840b8ddd8a79fc6dae1dc97"></a>
-delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>CompletionCallback</b> (<a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_shopify_error.html">ShopifyError</a> error)</td></tr>
+delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>CompletionCallback</b> (<a class="el" href="class_shopify_1_1_unity_1_1_shopify_error.html">ShopifyError</a> error)</td></tr>
 <tr class="separator:ad5e7f71d2840b8ddd8a79fc6dae1dc97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->

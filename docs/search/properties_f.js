@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['usererrors',['UserErrors',['../class_shopify_1_1_unity_1_1_cart.html#a121532d836129b43005e6c3903a8dfec',1,'Shopify::Unity::Cart']]]
+  ['test',['test',['../class_shopify_1_1_unity_1_1_credit_card_payment_input.html#aceedaa1b33685474ce169a13c3df0eee',1,'Shopify.Unity.CreditCardPaymentInput.test()'],['../class_shopify_1_1_unity_1_1_tokenized_payment_input.html#a91a4563988a7db4ba08aeb411b49ed6c',1,'Shopify.Unity.TokenizedPaymentInput.test()']]],
+  ['type',['type',['../class_shopify_1_1_unity_1_1_tokenized_payment_input.html#adbab8c60923b6b6d396e3517b805314c',1,'Shopify::Unity::TokenizedPaymentInput']]]
 ];

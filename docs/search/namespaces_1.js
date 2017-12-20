@@ -1,7 +1,7 @@
 var searchData=
 [
   ['android',['Android',['../namespace_shopify_1_1_unity_1_1_s_d_k_1_1_android.html',1,'Shopify::Unity::SDK']]],
-  ['editor',['Editor',['../namespace_shopify_1_1_unity_1_1_s_d_k_1_1_editor.html',1,'Shopify::Unity::SDK']]],
+  ['editor',['Editor',['../namespace_shopify_1_1_u_i_toolkit_1_1_editor.html',1,'Shopify.UIToolkit.Editor'],['../namespace_shopify_1_1_unity_1_1_s_d_k_1_1_editor.html',1,'Shopify.Unity.SDK.Editor']]],
   ['examples',['Examples',['../namespace_shopify_1_1_examples.html',1,'Shopify']]],
   ['graphql',['GraphQL',['../namespace_shopify_1_1_unity_1_1_graph_q_l.html',1,'Shopify::Unity']]],
   ['helpers',['Helpers',['../namespace_shopify_1_1_examples_1_1_helpers.html',1,'Shopify::Examples']]],
@@ -15,6 +15,7 @@ var searchData=
   ['shopify',['Shopify',['../namespace_shopify.html',1,'']]],
   ['shopifysdkexamplestandardassets',['ShopifySDKExampleStandardAssets',['../namespace_shopify_s_d_k_example_standard_assets.html',1,'']]],
   ['test',['Test',['../namespace_shopify_1_1_u_i_toolkit_1_1_test.html',1,'Shopify::UIToolkit']]],
+  ['themes',['Themes',['../namespace_shopify_1_1_u_i_toolkit_1_1_themes.html',1,'Shopify::UIToolkit']]],
   ['ui',['UI',['../namespace_shopify_1_1_unity_1_1_u_i.html',1,'Shopify::Unity']]],
   ['uitoolkit',['UIToolkit',['../namespace_shopify_1_1_u_i_toolkit.html',1,'Shopify']]],
   ['unit',['Unit',['../namespace_shopify_1_1_u_i_toolkit_1_1_test_1_1_unit.html',1,'Shopify::UIToolkit::Test']]],
