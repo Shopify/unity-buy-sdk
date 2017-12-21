@@ -1,5 +1,6 @@
 ﻿namespace Shopify.UIToolkit {
     using UnityEngine;
+    using UnityEditor;
     using Shopify.Unity;
     using Shopify.Unity.SDK;
     using System.Linq;
@@ -13,25 +14,47 @@
         /// The Shop Domain to connect to, in the form of "myshop.myshopify.com"
         /// </summary>
         public string ShopDomain {
-            get { return _shopDomain; }
+            get { 
+                if (_shopDomain == null) {
+                    _shopDomain = EditorPrefs.GetString(ShopDomainEditorPrefsKey);
+                }
+                return _shopDomain; 
+            }
             set {
                 _shopDomain = value;
                 InvalidateClient();
+                EditorPrefs.SetString(ShopDomainEditorPrefsKey, value);
             }
         }
         [SerializeField] private string _shopDomain;
+        private string ShopDomainEditorPrefsKey {
+            get {
+                return GetInstanceID() + ":shopDomain";
+            }
+        }
 
         /// <summary>
         /// The Storefront Access Token used to authenticate with the connected shop
         /// </summary>
         public string AccessToken {
-            get { return _accessToken; }
+            get { 
+                if (_accessToken == null) {
+                    _accessToken = EditorPrefs.GetString(AccessTokenEditorPrefsKey);
+                }
+                return _accessToken; 
+            }
             set {
                 _accessToken = value;
                 InvalidateClient();
+                EditorPrefs.SetString(AccessTokenEditorPrefsKey, value);
             }
         }
         [SerializeField] private string _accessToken;
+        private string AccessTokenEditorPrefsKey {
+            get {
+                return GetInstanceID() + ":accessToken";
+            }
+        }
 
         /// <summary>
         /// What loader provider this controller uses to create the loader.
