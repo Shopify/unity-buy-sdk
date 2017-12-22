@@ -51,7 +51,6 @@ The following example shows how to query two pages of products in your Shopify s
 
 ```cs
 using Shopify.Unity;
-using Shopify.Unity.SDK;
 
 void Start () {
     string accessToken = "b8d417759a62f7b342f3735dbe86b322";
@@ -109,7 +108,6 @@ The following example shows how to query one page of collections in your Shopify
 
 ```cs
 using Shopify.Unity;
-using Shopify.Unity.SDK;
 
 void Start () {
     string accessToken = "b8d417759a62f7b342f3735dbe86b322";
@@ -167,7 +165,6 @@ The following example shows how to create a cart and add line items to the cart 
 
 ```cs
 using Shopify.Unity;
-using Shopify.Unity.SDK;
 
 void Start () {
     string accessToken = "b8d417759a62f7b342f3735dbe86b322";
@@ -213,7 +210,6 @@ In Shopify, a product can have many options. These options map to **variants** o
 
 ```cs
 using Shopify.Unity;
-using Shopify.Unity.SDK;
 
 void Start () {
     string accessToken = "b8d417759a62f7b342f3735dbe86b322";
@@ -268,7 +264,6 @@ cart.LineItems.Delete(firstProduct, selectedOptions);
 
 ```cs
 using Shopify.Unity;
-using Shopify.Unity.SDK;
 
 void Start () {
     string accessToken = "b8d417759a62f7b342f3735dbe86b322";
@@ -507,7 +502,6 @@ The following example shows how to build a custom query in C# that matches the G
 
 ```cs
 using Shopify.Unity;
-using Shopify.Unity.SDK;
 
 void Start () {
     string accessToken = "b8d417759a62f7b342f3735dbe86b322";
