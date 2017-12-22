@@ -1,6 +1,7 @@
 var searchData=
 [
   ['baseloader',['BaseLoader',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_base_loader.html',1,'Shopify::Unity::SDK']]],
+  ['basethemecontrollereditor',['BaseThemeControllerEditor',['../class_shopify_1_1_u_i_toolkit_1_1_editor_1_1_base_theme_controller_editor.html',1,'Shopify::UIToolkit::Editor']]],
   ['blog',['Blog',['../class_shopify_1_1_unity_1_1_blog.html',1,'Shopify::Unity']]],
   ['blogconnection',['BlogConnection',['../class_shopify_1_1_unity_1_1_blog_connection.html',1,'Shopify::Unity']]],
   ['blogconnectionquery',['BlogConnectionQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_blog_connection_query.html',1,'Shopify::Unity::GraphQL']]],
