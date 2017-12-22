@@ -95,6 +95,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1941463abfeb8bed64f1d2d01c918528"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#a1941463abfeb8bed64f1d2d01c918528">collections</a> (CollectionsPaginatedHandler callback, int? first=null, string after=null)</td></tr>
 <tr class="memdesc:a1941463abfeb8bed64f1d2d01c918528"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a query to receive a page of <code>collections</code> from a <a class="el" href="namespace_shopify.html">Shopify</a> store. The generated query will query the following on collections:  <a href="#a1941463abfeb8bed64f1d2d01c918528">More...</a><br /></td></tr>
 <tr class="separator:a1941463abfeb8bed64f1d2d01c918528"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf9caa1b8b857c6d729daef25201ae8a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#abf9caa1b8b857c6d729daef25201ae8a">collections</a> (CollectionsHandler callback, string firstCollectionId, params string[] otherCollectionIds)</td></tr>
+<tr class="memdesc:abf9caa1b8b857c6d729daef25201ae8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a query to receive selected <code>collections</code> from a <a class="el" href="namespace_shopify.html">Shopify</a> store. The generated query will query the following on collections:  <a href="#abf9caa1b8b857c6d729daef25201ae8a">More...</a><br /></td></tr>
+<tr class="separator:abf9caa1b8b857c6d729daef25201ae8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91c844e19ae9f41d02c4a308221e555a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#a91c844e19ae9f41d02c4a308221e555a">collections</a> (CollectionsHandler callback, List&lt; string &gt; collectionIds)</td></tr>
+<tr class="memdesc:a91c844e19ae9f41d02c4a308221e555a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a query to fetch the specified <code>collections</code> by id from a <a class="el" href="namespace_shopify.html">Shopify</a> store. The generated query will query the following on collections:  <a href="#a91c844e19ae9f41d02c4a308221e555a">More...</a><br /></td></tr>
+<tr class="separator:a91c844e19ae9f41d02c4a308221e555a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e81f60efd90f09f46e744aedc176618"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_shopify_client.html#a6e81f60efd90f09f46e744aedc176618">Query</a> (<a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_query_root_query.html">QueryRootQuery</a> query, QueryRootHandler callback)</td></tr>
 <tr class="memdesc:a6e81f60efd90f09f46e744aedc176618"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to send custom <a class="el" href="namespace_shopify_1_1_unity_1_1_graph_q_l.html">GraphQL</a> queries to the Storefront API. While having utility functions like products collections is useful, the Storefront API has more functionality. This method allows you to access all the extra functionality that the Storefront API provides.  <a href="#a6e81f60efd90f09f46e744aedc176618">More...</a><br /></td></tr>
 <tr class="separator:a6e81f60efd90f09f46e744aedc176618"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -244,7 +250,7 @@ Properties</h2></td></tr>
 </div>
 </div>
 <a id="a1941463abfeb8bed64f1d2d01c918528"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1941463abfeb8bed64f1d2d01c918528">&#9670;&nbsp;</a></span>collections()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1941463abfeb8bed64f1d2d01c918528">&#9670;&nbsp;</a></span>collections() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -310,6 +316,135 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 <div class="fragment"><div class="line"><span class="comment">// Example that queries all collections on a shop</span></div><div class="line">ShopifyBuy.Client().collections((<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a1941463abfeb8bed64f1d2d01c918528">collections</a>, error) =&gt; {</div><div class="line">    Debug.Log(<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a1941463abfeb8bed64f1d2d01c918528">collections</a>[0].title());</div><div class="line">    Debug.Log(<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a1941463abfeb8bed64f1d2d01c918528">collections</a>.Count);</div><div class="line">});</div></div><!-- fragment --> 
+</div>
+</div>
+<a id="abf9caa1b8b857c6d729daef25201ae8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf9caa1b8b857c6d729daef25201ae8a">&#9670;&nbsp;</a></span>collections() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Shopify.Unity.ShopifyClient.collections </td>
+          <td>(</td>
+          <td class="paramtype">CollectionsHandler&#160;</td>
+          <td class="paramname"><em>callback</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>firstCollectionId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">params string []&#160;</td>
+          <td class="paramname"><em>otherCollectionIds</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Generates a query to receive selected <code>collections</code> from a <a class="el" href="namespace_shopify.html">Shopify</a> store. The generated query will query the following on collections: </p>
+<ul>
+<li>id</li>
+<li>title</li>
+<li>description</li>
+<li>descriptionHtml</li>
+<li>updatedAt</li>
+<li>image<ul>
+<li>altText</li>
+<li>src</li>
+</ul>
+</li>
+<li>products<ul>
+<li>id</li>
+</ul>
+</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">callback</td><td>callback that will receive responses or errors from server</td></tr>
+    <tr><td class="paramname">firstCollectionId</td><td>you must pass in at least one collection id to query</td></tr>
+    <tr><td class="paramname">otherCollectionIds</td><td>after the first collection id you can pass in as many collection ids as you'd like. </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="fragment"><div class="line"><span class="comment">// Example usage querying two collection ids using a List&lt;string&gt;</span></div><div class="line">ShopifyBuy.Client().collections((<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a1941463abfeb8bed64f1d2d01c918528">collections</a>, error) =&gt; {</div><div class="line">    Debug.Log(<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a1941463abfeb8bed64f1d2d01c918528">collections</a>[0].title());</div><div class="line">    Debug.Log(<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a1941463abfeb8bed64f1d2d01c918528">collections</a>[1].title());</div><div class="line">}, <span class="stringliteral">&quot;Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyNzYwOTk=&quot;</span>, <span class="stringliteral">&quot;Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyNzkwNDM=&quot;</span>);</div></div><!-- fragment --> 
+</div>
+</div>
+<a id="a91c844e19ae9f41d02c4a308221e555a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91c844e19ae9f41d02c4a308221e555a">&#9670;&nbsp;</a></span>collections() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Shopify.Unity.ShopifyClient.collections </td>
+          <td>(</td>
+          <td class="paramtype">CollectionsHandler&#160;</td>
+          <td class="paramname"><em>callback</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">List&lt; string &gt;&#160;</td>
+          <td class="paramname"><em>collectionIds</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Generates a query to fetch the specified <code>collections</code> by id from a <a class="el" href="namespace_shopify.html">Shopify</a> store. The generated query will query the following on collections: </p>
+<ul>
+<li>id</li>
+<li>title</li>
+<li>description</li>
+<li>descriptionHtml</li>
+<li>updatedAt</li>
+<li>image<ul>
+<li>altText</li>
+<li>src</li>
+</ul>
+</li>
+<li>products<ul>
+<li>id</li>
+</ul>
+</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">callback</td><td>callback that will receive responses from server</td></tr>
+    <tr><td class="paramname">collectionIds</td><td>the list of collection ids you want to receive from the server</td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="fragment"><div class="line"><span class="comment">// Example usage querying two collection ids using a List&lt;string&gt;</span></div><div class="line">List&lt;string&gt; collectionIds = <span class="keyword">new</span> List&lt;string&gt;() {</div><div class="line">    <span class="stringliteral">&quot;Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyNzYwOTk=&quot;</span>,</div><div class="line">    <span class="stringliteral">&quot;Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyNzkwNDM=&quot;</span></div><div class="line">};</div><div class="line"></div><div class="line">ShopifyBuy.Client().collections((<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a1941463abfeb8bed64f1d2d01c918528">collections</a>, error) =&gt; {</div><div class="line">    Debug.Log(<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a1941463abfeb8bed64f1d2d01c918528">collections</a>[0].title());</div><div class="line">    Debug.Log(<a class="code" href="class_shopify_1_1_unity_1_1_shopify_client.html#a1941463abfeb8bed64f1d2d01c918528">collections</a>[1].title());</div><div class="line">}, collectionIds);</div></div><!-- fragment --> 
 </div>
 </div>
 <a id="a805d42ebf200226225df69f1bdf97af0"></a>

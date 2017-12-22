@@ -25,7 +25,6 @@ var searchData=
   ['showproductevent',['ShowProductEvent',['../class_shopify_1_1_examples_1_1_panels_1_1_show_product_event.html',1,'Shopify::Examples::Panels']]],
   ['singleproductthemecontroller',['SingleProductThemeController',['../class_shopify_1_1_u_i_toolkit_1_1_single_product_theme_controller.html',1,'Shopify::UIToolkit']]],
   ['singleproductthemecontrollereditor',['SingleProductThemeControllerEditor',['../class_shopify_1_1_u_i_toolkit_1_1_editor_1_1_single_product_theme_controller_editor.html',1,'Shopify::UIToolkit::Editor']]],
-  ['singleproductthemecontrollereditorview',['SingleProductThemeControllerEditorView',['../class_shopify_1_1_u_i_toolkit_1_1_editor_1_1_single_product_theme_controller_editor_view.html',1,'Shopify::UIToolkit::Editor']]],
   ['stringconnection',['StringConnection',['../class_shopify_1_1_unity_1_1_string_connection.html',1,'Shopify::Unity']]],
   ['stringconnectionquery',['StringConnectionQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_string_connection_query.html',1,'Shopify::Unity::GraphQL']]],
   ['stringedge',['StringEdge',['../class_shopify_1_1_unity_1_1_string_edge.html',1,'Shopify::Unity']]],

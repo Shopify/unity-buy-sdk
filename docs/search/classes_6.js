@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['ibasethemecontrollereditorview',['IBaseThemeControllerEditorView',['../interface_shopify_1_1_u_i_toolkit_1_1_editor_1_1_i_base_theme_controller_editor_view.html',1,'Shopify::UIToolkit::Editor']]],
   ['icacheable',['ICacheable',['../interface_shopify_1_1_u_i_toolkit_1_1_i_cacheable.html',1,'Shopify::UIToolkit']]],
   ['icollectiontheme',['ICollectionTheme',['../interface_shopify_1_1_u_i_toolkit_1_1_i_collection_theme.html',1,'Shopify::UIToolkit']]],
   ['iloaderprovider',['ILoaderProvider',['../interface_shopify_1_1_unity_1_1_s_d_k_1_1_i_loader_provider.html',1,'Shopify::Unity::SDK']]],
