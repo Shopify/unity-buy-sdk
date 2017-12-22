@@ -1,6 +1,5 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.google.android.gms:play-services-wallet:9.8.0" />
     <androidPackage spec="com.android.support:appcompat-v7:26.0.0" />
     <androidPackage spec="com.android.support:customtabs:26.0.0" />
     <androidPackage spec="com.android.support:design:26.0.0" />
