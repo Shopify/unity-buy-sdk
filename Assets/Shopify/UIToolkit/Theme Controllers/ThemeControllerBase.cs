@@ -6,8 +6,18 @@
 
     public abstract class ThemeControllerBase : MonoBehaviour, IShopCredentials {
 
-        [HideInInspector]
-        public IThemeBase Theme;
+        public IThemeBase Theme {
+            get {
+                _cachedTheme = _cachedTheme ?? GetComponent<IThemeBase>();
+                return _cachedTheme;
+            }
+
+            set {
+                _cachedTheme = value;
+            }
+        }
+
+        private IThemeBase _cachedTheme;
 
         /// <summary>
         /// The Shop Domain to connect to, in the form of "myshop.myshopify.com"
