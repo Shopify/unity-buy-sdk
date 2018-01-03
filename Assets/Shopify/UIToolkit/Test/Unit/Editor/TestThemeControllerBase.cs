@@ -13,8 +13,8 @@
     [TestFixture]
     public class TestThemeControllerBase {
         public class MockThemeController : ThemeControllerBase {
-            public override void OnHide() {}
-            public override void OnShow() {}
+            protected override void OnHide() {}
+            protected override void OnShow() {}
         }
 
         private MockThemeController _themeController;

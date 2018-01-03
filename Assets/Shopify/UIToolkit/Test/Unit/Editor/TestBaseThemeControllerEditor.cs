@@ -11,17 +11,14 @@ namespace Shopify.UIToolkit.Test.Unit {
     [TestFixture]
     public class TestBaseThemeControllerEditor {
         public class MockThemeController : ThemeControllerBase {
-            public override void OnHide() {
-            }
+            protected override void OnHide() {}
 
-            public override void OnShow() {
-            }
+            protected override void OnShow() {}
         }
 
         [CustomEditor(typeof(MockThemeController))]
         public class MockThemeControllerEditor : BaseThemeControllerEditor {
-            public override void OnShowConfiguration() {
-            }
+            public override void OnShowConfiguration() {}
         }
 
         private BaseThemeControllerEditor _editor;

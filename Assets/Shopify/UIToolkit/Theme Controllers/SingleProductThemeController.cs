@@ -15,16 +15,14 @@
 
             set {
                 base.Theme = value;
-            } 
+            }
         }
 
         public string ProductGID;
 
-        public override void OnHide() {
-            throw new System.NotImplementedException();
-        }
+        protected override void OnHide() {}
 
-        public override void OnShow() {
+        protected override void OnShow() {
             Client.products(OnProductsLoaded, ProductGID);
         }
 

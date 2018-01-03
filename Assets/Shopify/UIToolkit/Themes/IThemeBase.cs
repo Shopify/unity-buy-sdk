@@ -7,6 +7,16 @@
 
     public interface IThemeBase {
         /// <summary>
+        /// Called when the controller was told to show the shopping experience to the user.
+        /// </summary>
+        void OnShow();
+
+        /// <summary>
+        /// Called when the controller is told to dismiss the shopping experience and return to the game.
+        /// </summary>
+        void OnHide();
+
+        /// <summary>
         /// Called when the controller has started loading data from shopify.
         /// Themes can use this to know when to show loading states or spinners.
         /// </summary>
