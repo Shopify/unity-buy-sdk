@@ -8,6 +8,7 @@ require 'graphql_schema'
 require_relative './graphql_generator/csharp'
 
 domain = "app.shopify.com"
+shared_storefront_api_key = '4a6c829ec3cb12ef9004bf8ed27adf12' # this is the public key
 schema_filename = nil
 ROOT_DIR = File.expand_path("../../..", __FILE__)
 GENERATOR_DIR = File.expand_path("..", __FILE__)
@@ -40,11 +41,13 @@ if domain
 
   schema_filename = CACHED_SCHEMA_FILENAME
 
+  schema_endpoint = "https://#{domain}/services/graphql/introspection/storefront?api_client_api_key=#{shared_storefront_api_key}"
+
   begin
-    body = Net::HTTP.get(URI("https://#{domain}/services/ping/storefront_graphql_schema"))
+    body = Net::HTTP.get(URI(schema_endpoint))
     File.write(schema_filename, JSON.pretty_generate(JSON.parse(body)))
   rescue
-    puts "Could not load schema from: https://#{domain}/services/ping/storefront_graphql_schema"
+    puts "Could not load schema from: #{schema_endpoint}, using cached file..."
     puts "Using cached file"
     schema_filename = CACHED_SCHEMA_FILENAME
     domain = nil
