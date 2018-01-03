@@ -39,6 +39,8 @@ do
 
     printf "Could not get license, retrying in ${sleep_duration} seconds...\n"
 
+    cat "$UNITY_LICENSE_LOG_PATH"
+
     sleep $sleep_duration
 
     retries=$[$retries+1]
