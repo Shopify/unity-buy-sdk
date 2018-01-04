@@ -103,5 +103,51 @@
 
             _shop.DidNotReceive().OnProductLoaded(Arg.Any<Product>(), Arg.Any<ProductVariant[]>());
         }
+
+        [UnityTest]
+        public IEnumerator TestOnLoadingStarted() {
+            var waiter = new EditorTimeoutWaiter();
+            var didCall = false;
+
+            _theme.When((x) => {
+                x.OnLoadingStarted();
+            }).Do((x) => {
+                didCall = true;
+
+                waiter.Complete();
+            });
+
+            _controller.ProductGID = "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyODE0NzU=";
+            _controller.Show();
+
+            while (waiter.Await()) {
+               yield return null;
+            }
+
+            Assert.IsTrue(didCall);
+        }
+
+        [UnityTest]
+        public IEnumerator TestOnLoadingFinished() {
+            var waiter = new EditorTimeoutWaiter();
+            var didCall = false;
+
+            _theme.When((x) => {
+                x.OnLoadingFinished();
+            }).Do((x) => {
+                didCall = true;
+
+                waiter.Complete();
+            });
+
+            _controller.ProductGID = "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyODE0NzU=";
+            _controller.Show();
+
+            while (waiter.Await()) {
+               yield return null;
+            }
+
+            Assert.IsTrue(didCall);
+        }
     }
 }
