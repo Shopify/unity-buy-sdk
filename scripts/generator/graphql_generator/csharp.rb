@@ -274,7 +274,8 @@ module GraphQLGenerator
     end
 
     def deprecation_doc_for(item)
-      "/// \\deprecated #{item.deprecation_reason}\n" if item.deprecated?
+      return if item.deprecation_reason.nil?
+      "/// \\deprecated #{item.deprecation_reason.split("\n").map{|part| part.strip }.join("\n/// ")}\n"
     end
 
     def summary_doc(description)
