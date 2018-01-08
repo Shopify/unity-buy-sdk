@@ -48,7 +48,7 @@ namespace Shopify.Unity.GraphQL {
                 <%= docs_query_field(field) %>
                 public <%= type.classify_name %>Query <%= escape_reserved_word(field.name) %>(<%= field_args(field) %>) {
                     <% if field.deprecated? %>
-                    Log.DeprecatedQueryField("<%= type.name %>", "<%= field.name %>", "<%= field.deprecation_reason %>");
+                    Log.DeprecatedQueryField("<%= type.name %>", "<%= field.name %>", "<%= field.deprecation_reason.gsub(/\n/, "\\n") %>");
                     <% end %>
 
                     <%# now we we want to handle generating arguments %>
