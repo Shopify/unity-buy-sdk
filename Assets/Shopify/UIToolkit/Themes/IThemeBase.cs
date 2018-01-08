@@ -45,6 +45,14 @@
         void OnPurchaseCompleted();
 
         /// <summary>
+        /// Called when an ongoing purchase fails to complete.
+        /// This can occur if the cart is invalid and a checkout cannot be created from it.
+        /// If it's a native payment (ie: Apple Pay), then this can also occur if the 
+        /// payment fails to process. 
+        /// </summary>
+        void OnPurchaseFailed(ShopifyError error);
+
+        /// <summary>
         /// Called when the total quantity of items in the cart changes.
         /// Useful for when showing a badge next to the cart button for example.
         /// </summary>

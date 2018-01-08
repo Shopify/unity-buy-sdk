@@ -29,6 +29,10 @@
             throw new System.NotImplementedException();
         }
 
+        void IThemeBase.OnPurchaseFailed(ShopifyError error) {
+            throw new System.NotImplementedException();
+        }
+
         void IThemeBase.OnCartQuantityChanged(int newQuantity) {
             throw new System.NotImplementedException();
         }

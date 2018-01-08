@@ -156,5 +156,33 @@
             Cart.Reset();
             Theme.OnCartQuantityChanged(0);
         }
+
+        /// <summary>
+        /// Start a purchase with the current cart.
+        /// </summary>
+        /// <param name="mode">How do you want to make the purchase? Native, Web or Auto</param>
+        /// <param name="nativePayKey">Vendor-specific key to be passed to Native purchase methods</param>
+        public void StartPurchase(CheckoutMode mode, string nativePayKey = null) {
+            Theme.OnPurchaseStarted();
+            switch (mode) {
+                case CheckoutMode.Native:
+                    Cart.CheckoutWithNativePay(nativePayKey, Theme.OnPurchaseCompleted, Theme.OnPurchaseCancelled, Theme.OnPurchaseFailed);
+                    break;
+
+                case CheckoutMode.Web:
+                    Cart.CheckoutWithWebView(Theme.OnPurchaseCompleted, Theme.OnPurchaseCancelled, Theme.OnPurchaseFailed);
+                    break;
+
+                case CheckoutMode.Auto:
+                    Cart.CanCheckoutWithNativePay((canCheckoutWithNativePay) => {
+                        if (canCheckoutWithNativePay) {
+                            Cart.CheckoutWithNativePay(nativePayKey, Theme.OnPurchaseCompleted, Theme.OnPurchaseCancelled, Theme.OnPurchaseFailed);
+                        } else {
+                            Cart.CheckoutWithWebView(Theme.OnPurchaseCompleted, Theme.OnPurchaseCancelled, Theme.OnPurchaseFailed);
+                        }
+                    });
+                    break;
+            }
+        }
     }
 }
