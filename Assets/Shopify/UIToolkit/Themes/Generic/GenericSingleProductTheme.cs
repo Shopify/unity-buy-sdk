@@ -12,13 +12,15 @@
     [RequireComponent(typeof(SingleProductThemeController))]
     public class GenericSingleProductTheme : MonoBehaviour, ISingleProductTheme {
 
-        public GameObject Title;
-        public GameObject Price;
-        public GameObject Description;
+        public Text Title;
+        public Text Price;
+        public Text Description;
+        public Text VariantPickerTitle;
+
+        public UnityEngine.UI.Image ActiveImage;
+
         public GameObject VariantDropdownMenu;
         public GameObject VariantPicker;
-        public GameObject VariantPickerTitle;
-        public GameObject ActiveImage;
         public GameObject ImageContainer;
         public GameObject ImageHolderTemplate;
 
@@ -67,8 +69,8 @@
         }
 
         void ISingleProductTheme.OnShouldShowProduct(Product product, ProductVariant[] variants) {
-            Title.GetComponent<Text>().text = product.title();
-            Description.GetComponent<Text>().text = product.description();
+            Title.text = product.title();
+            Description.text = product.description();
 
             SetupVariantOptions(variants);
             UpdateDetailsUsingVariant(variants[0]);
@@ -86,7 +88,7 @@
         }
 
         public void SelectImage(Button button) {
-            ActiveImage.GetComponent<UnityEngine.UI.Image>().sprite = button.image.sprite;
+            ActiveImage.sprite = button.image.sprite;
         }
 
         private void SetupPreviewImages(Product product) {
@@ -97,10 +99,10 @@
             }
 
             ActiveImage.GetComponent<RemoteImageLoader>().LoadImage(images[0].src(), () => {
-                ActiveImage.GetComponent<UnityEngine.UI.Image>().enabled = true;
+                ActiveImage.enabled = true;
             }, null);
 
-            foreach (var image in images) {
+            foreach (var image in images.Take(3)) {
                 var imageHolder = Instantiate(ImageHolderTemplate, ImageContainer.transform.position, Quaternion.identity);
                 imageHolder.SetActive(true);
                 imageHolder.GetComponent<ProductImageHolder>().LoadImage(image.src()); 
@@ -128,10 +130,10 @@
         }
 
         private void UpdateDetailsUsingVariant(ProductVariant variant) {
-            VariantPickerTitle.GetComponent<Text>().text = StringFromVariant(variant);
+            VariantPickerTitle.text = StringFromVariant(variant);
 
             // TODO: Probably needs to be properly localized using CultureInfo.
-            Price.GetComponent<Text>().text = "$" + variant.price().ToString();
+            Price.text = "$" + variant.price().ToString();
         }
 
         /// <summary>
