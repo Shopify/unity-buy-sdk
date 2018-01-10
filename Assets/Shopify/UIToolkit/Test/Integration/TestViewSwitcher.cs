@@ -9,6 +9,7 @@ namespace Shopify.UIToolkit.Test.Integration {
 
     [TestFixture] 
     public class TestViewSwitcher {
+        public const float AnimationDuration = 0.1f;
         public GameObject ViewSwitcherPrefab;
         public ViewSwitcher Subject;
 
@@ -17,6 +18,7 @@ namespace Shopify.UIToolkit.Test.Integration {
             var fixture = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Shopify/UIToolkit/Components/ViewSwitcher/View Switcher Example.prefab");
             ViewSwitcherPrefab = GameObject.Instantiate(fixture, Vector3.zero, Quaternion.identity);
             Subject = ViewSwitcherPrefab.GetComponentInChildren<ViewSwitcher>();
+            Subject.AnimationDuration = AnimationDuration;
         }
 
         [TearDown]
@@ -110,9 +112,9 @@ namespace Shopify.UIToolkit.Test.Integration {
             yield return null;
 
             Subject.PushView(Subject.Views[1]);
-            yield return new WaitForSeconds(ViewSwitcher.AnimationDuration + 0.1f);
+            yield return new WaitForSeconds(AnimationDuration + 0.1f);
             Subject.GoBack();
-            yield return new WaitForSeconds(ViewSwitcher.AnimationDuration + 0.1f);
+            yield return new WaitForSeconds(AnimationDuration + 0.1f);
 
             Assert.IsTrue(Subject.Views[0].gameObject.activeInHierarchy);
             Assert.IsFalse(Subject.Views[1].gameObject.activeInHierarchy);
