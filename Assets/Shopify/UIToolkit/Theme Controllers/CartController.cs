@@ -17,7 +17,7 @@ namespace Shopify.UIToolkit {
         public QuantityChangeEvent OnQuantityChange = new QuantityChangeEvent();
         public UnityEvent OnPurchaseComplete = new UnityEvent();
         public UnityEvent OnPurhcaseCancelled = new UnityEvent();
-        public PurchaseFailedEvent OnPurhcaseFailed = new PurchaseFailedEvent();
+        public PurchaseFailedEvent OnPurhchaseFailed = new PurchaseFailedEvent();
 
         public CartController(Cart cart) {
             SetCart(cart);
@@ -97,19 +97,19 @@ namespace Shopify.UIToolkit {
             
             switch (mode) {
                 case CheckoutMode.Native:
-                    Cart.CheckoutWithNativePay(nativePayKey, OnPurchaseComplete.Invoke, OnPurhcaseCancelled.Invoke, OnPurhcaseFailed.Invoke);
+                    Cart.CheckoutWithNativePay(nativePayKey, OnPurchaseComplete.Invoke, OnPurhcaseCancelled.Invoke, OnPurhchaseFailed.Invoke);
                     break;
 
                 case CheckoutMode.Web:
-                    Cart.CheckoutWithWebView(OnPurchaseComplete.Invoke, OnPurhcaseCancelled.Invoke, OnPurhcaseFailed.Invoke);
+                    Cart.CheckoutWithWebView(OnPurchaseComplete.Invoke, OnPurhcaseCancelled.Invoke, OnPurhchaseFailed.Invoke);
                     break;
 
                 case CheckoutMode.Auto:
                     Cart.CanCheckoutWithNativePay((canCheckoutWithNativePay) => {
                         if (canCheckoutWithNativePay) {
-                            Cart.CheckoutWithNativePay(nativePayKey, OnPurchaseComplete.Invoke, OnPurhcaseCancelled.Invoke, OnPurhcaseFailed.Invoke);
+                            Cart.CheckoutWithNativePay(nativePayKey, OnPurchaseComplete.Invoke, OnPurhcaseCancelled.Invoke, OnPurhchaseFailed.Invoke);
                         } else {
-                            Cart.CheckoutWithWebView(OnPurchaseComplete.Invoke, OnPurhcaseCancelled.Invoke, OnPurhcaseFailed.Invoke);
+                            Cart.CheckoutWithWebView(OnPurchaseComplete.Invoke, OnPurhcaseCancelled.Invoke, OnPurhchaseFailed.Invoke);
                         }
                     });
                     break;
