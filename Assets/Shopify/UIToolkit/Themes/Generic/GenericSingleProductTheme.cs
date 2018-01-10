@@ -94,7 +94,6 @@
         private void SetupPreviewImages(Product product) {
             var images = (List<Shopify.Unity.Image>)product.images();
             if (images.Count == 0) {
-                // TODO: Hide image area?
                 return;
             }
 
