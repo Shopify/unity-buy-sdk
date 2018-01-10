@@ -37,7 +37,7 @@
             throw new System.NotImplementedException();
         }
 
-        void ISingleProductShop.OnShouldShowProduct(Product product, ProductVariant[] variants) {
+        void ISingleProductShop.OnProductLoaded(Product product, ProductVariant[] variants) {
             throw new System.NotImplementedException();
         }
     }
