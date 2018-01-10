@@ -28,7 +28,6 @@
             _verifier = new ShopCredentialsVerifier((IShopCredentials) Target);
             _verifier.OnCredentialsStateChanged += OnCredentialsChanged;
             _credentialsVerifierView = new ShopCredentialsView(_verifier);
-            BindThemeIfPresent();
         }
 
         public override void OnInspectorGUI() {
@@ -48,11 +47,6 @@
         /// Overriden by an implementor to add configurations under the credentials verifier.
         /// </summary>
         public abstract void OnShowConfiguration();
-
-        private void BindThemeIfPresent() {
-            if (Target.Theme != null) return;
-            Target.Theme = Target.GetComponent<IThemeBase>();
-        }
 
         private void OnCredentialsChanged() {
             _cachedClient = null;

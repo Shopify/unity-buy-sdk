@@ -40,14 +40,6 @@ namespace Shopify.UIToolkit.Test.Unit {
         }
 
         [Test]
-        public void TestBindsThemeOnEnable() {
-            var theme = GlobalGameObject.AddComponent<DebugSingleProductTheme>();
-            Assert.IsNull(_controller.Theme);
-            _editor.OnEnable();
-            Assert.AreEqual(_controller.Theme, theme);
-        }
-
-        [Test]
         public void TestNullThemeDrawsHelpBox() {
             Assert.IsNull(_controller.Theme);
             _editor.OnInspectorGUI();
@@ -56,7 +48,7 @@ namespace Shopify.UIToolkit.Test.Unit {
 
         [Test]
         public void TestBoundThemeDoesNotDrawHelpBox() {
-            _controller.Theme = GlobalGameObject.AddComponent<DebugSingleProductTheme>();
+            GlobalGameObject.AddComponent<DebugSingleProductTheme>();
             _editor.OnInspectorGUI();
             _editor.View.DidNotReceive().DrawThemeHelp();
         }
