@@ -4,6 +4,7 @@ namespace Shopify.UIToolkit {
     using Shopify.Unity.SDK;
     using System.Linq;
 
+    [System.Serializable]
     public class CartController {
         [System.Serializable]
         public class QuantityChangeEvent : UnityEvent<int> {}
