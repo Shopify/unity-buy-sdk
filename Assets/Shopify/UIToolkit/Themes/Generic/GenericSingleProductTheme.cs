@@ -5,6 +5,16 @@
 
     [RequireComponent(typeof(SingleProductThemeController))]
     public class GenericSingleProductTheme : MonoBehaviour, ISingleProductTheme {
+        public Animator Animator;
+
+        void IThemeBase.OnShow() {
+            Animator.SetBool("Shown", true);
+        }
+
+        void IThemeBase.OnHide() {
+            Animator.SetBool("Shown", false);
+        }
+
         void IThemeBase.OnError(ShopifyError error) {
             throw new System.NotImplementedException();
         }

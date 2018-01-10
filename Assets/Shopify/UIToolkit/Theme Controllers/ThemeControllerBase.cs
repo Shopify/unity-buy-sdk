@@ -87,21 +87,23 @@
         }
 
         /// <summary>
-        /// Shows the shop
+        /// Shows the shopping experience
         /// </summary>
         public void Show() {
             OnShow();
+            Theme.OnShow();
         }
 
         /// <summary>
-        /// Hides the shop
+        /// Hides the shopping experience
         /// </summary>
         public void Hide() {
             OnHide();
+            Theme.OnHide();
         }
 
-        public abstract void OnShow();
-        public abstract void OnHide();
+        protected abstract void OnShow();
+        protected abstract void OnHide();
 
         /// <summary>
         /// The active cart that the controller is using.

@@ -8,6 +8,14 @@
     [AddComponentMenu("Shopify/Debug/Debug Theme Controller")]
     public class DebugSingleProductTheme : MonoBehaviour, ISingleProductTheme {
 
+        public void OnShow() {
+            LogEvent("OnShow");
+        }
+
+        public void OnHide() {
+            LogEvent("OnHide");
+        }
+
         public void OnError(ShopifyError error) {
             LogEvent("OnError", error);
         }
