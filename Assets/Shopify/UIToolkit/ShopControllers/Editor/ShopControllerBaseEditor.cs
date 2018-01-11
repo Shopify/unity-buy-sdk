@@ -51,6 +51,7 @@
         private void OnCredentialsChanged() {
             _cachedClient = null;
             OnClientChanged();
+            Repaint();
         }
 
         protected virtual void OnClientChanged() { }

@@ -20,6 +20,9 @@
     }
 
     public class ProductPicker : IProductPickerController {
+        public delegate void ProductListUpdatedHandler();
+        public event ProductListUpdatedHandler OnProductListUpdated;
+
         public ShopifyClient Client;
         private IProductPickerView _view;
         private static Dictionary<string, string> _cachedProductNameToGIDMap;
@@ -58,6 +61,7 @@
         public void LoadProducts() {
             if (_cachedProductNameToGIDMap != null) {
                 _productNameToGIDMap = _cachedProductNameToGIDMap;
+                if (OnProductListUpdated != null) OnProductListUpdated();
             }
 
             LoadAllProducts();
@@ -106,6 +110,8 @@
             }
 
             _cachedProductNameToGIDMap = _productNameToGIDMap;
+
+            if (OnProductListUpdated != null) OnProductListUpdated();
         }
     }
 
