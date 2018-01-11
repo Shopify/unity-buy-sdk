@@ -1,4 +1,4 @@
-﻿namespace Shopify.UIToolkit.Test.Unit {
+namespace Shopify.UIToolkit.Test.Unit {
     using NUnit.Framework;
     using Shopify.Tests;
     using Shopify.Unity.SDK;
@@ -92,7 +92,7 @@
                 yield return null;
             }
 
-            _shopController.AddVariantToCart(_variants.First());
+            _shopController.Cart.AddVariant(_variants.First());
             Assert.AreEqual(1, _shopController.Cart.LineItems.Get(_variants.First()).Quantity);
             _shop.Received().OnCartQuantityChanged(1);
         }
@@ -106,7 +106,7 @@
 
             _shopController.Cart.LineItems.AddOrUpdate(_variants.First(), 5);
 
-            _shopController.AddVariantToCart(_variants.First());
+            _shopController.Cart.AddVariant(_variants.First());
             Assert.AreEqual(6, _shopController.Cart.LineItems.Get(_variants.First()).Quantity);
             _shop.Received().OnCartQuantityChanged(6);
         }
@@ -118,7 +118,7 @@
                 yield return null;
             }
 
-            _shopController.RemoveVariantFromCart(_variants.First());
+            _shopController.Cart.RemoveVariant(_variants.First());
             Assert.IsNull(_shopController.Cart.LineItems.Get(_variants.First()));
         }
 
@@ -130,7 +130,7 @@
             }
 
             _shopController.Cart.LineItems.AddOrUpdate(_variants.First(), 5);
-            _shopController.RemoveVariantFromCart(_variants.First());
+            _shopController.Cart.RemoveVariant(_variants.First());
             Assert.AreEqual(4, _shopController.Cart.LineItems.Get(_variants.First()).Quantity);
             _shop.Received().OnCartQuantityChanged(4);
         }
@@ -143,7 +143,7 @@
             }
 
             _shopController.Cart.LineItems.AddOrUpdate(_variants.First(), 1);
-            _shopController.RemoveVariantFromCart(_variants.First());
+            _shopController.Cart.RemoveVariant(_variants.First());
             Assert.IsNull(_shopController.Cart.LineItems.Get(_variants.First()));
             _shop.Received().OnCartQuantityChanged(0);
         }
@@ -156,7 +156,7 @@
             }
 
             _shopController.Cart.LineItems.AddOrUpdate(_variants.First(), 3);
-            _shopController.UpdateVariantInCart(_variants.First(), 1);
+            _shopController.Cart.UpdateVariant(_variants.First(), 1);
             Assert.AreEqual(1, _shopController.Cart.LineItems.Get(_variants.First()).Quantity);
             _shop.Received().OnCartQuantityChanged(1);
         }
@@ -169,7 +169,7 @@
             }
 
             _shopController.Cart.LineItems.AddOrUpdate(_variants.First(), 1);
-            _shopController.UpdateVariantInCart(_variants.First(), 0);
+            _shopController.Cart.UpdateVariant(_variants.First(), 0);
             Assert.IsNull(_shopController.Cart.LineItems.Get(_variants.First()));
             _shop.Received().OnCartQuantityChanged(0);
         }
@@ -181,7 +181,7 @@
                 yield return null;
             }
 
-            _shopController.UpdateVariantInCart(_variants.First(), 1);
+            _shopController.Cart.UpdateVariant(_variants.First(), 1);
             Assert.AreEqual(1, _shopController.Cart.LineItems.Get(_variants.First()).Quantity);
             _shop.Received().OnCartQuantityChanged(1);
         }
@@ -193,10 +193,10 @@
                 yield return null;
             }
 
-            _shopController.UpdateVariantInCart(_variants.First(), 1);
-            _shopController.UpdateVariantInCart(_variants[1], 2);
+            _shopController.Cart.UpdateVariant(_variants.First(), 1);
+            _shopController.Cart.UpdateVariant(_variants[1], 2);
 
-            _shopController.ClearCart();
+            _shopController.Cart.ClearCart();
             Assert.AreEqual(0, _shopController.Cart.LineItems.All().Count);
             _shop.Received().OnCartQuantityChanged(0);
         }
