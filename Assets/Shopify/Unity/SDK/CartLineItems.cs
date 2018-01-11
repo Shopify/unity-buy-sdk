@@ -57,7 +57,7 @@ namespace Shopify.Unity.SDK {
             set {
                 if (_Quantity != value) {
                     _Quantity = value;
-                    OnChange(this);
+                    OnChange(CartLineItems.LineItemChangeType.update, this);
                 }
             }
         }
@@ -73,10 +73,10 @@ namespace Shopify.Unity.SDK {
 
             set {
                 if (value != null) {
-                    _CustomAttributes = new ObservableDictionary<string, string>(value, () => { OnChange(this); });
+                    _CustomAttributes = new ObservableDictionary<string, string>(value, () => { OnChange(CartLineItems.LineItemChangeType.update, this); });
                 }
 
-                OnChange(this);
+                OnChange(CartLineItems.LineItemChangeType.update, this);
             }
         }
 
@@ -90,7 +90,7 @@ namespace Shopify.Unity.SDK {
         private long _Quantity;
         private decimal _Price;
         private ObservableDictionary<string, string> _CustomAttributes;
-        private OnCartLineItemChange OnChange;
+        private LineItemChangeHandler OnChange;
         
         /// <summary>
         /// Used internally by the SDK to construct a CartLineItem.
@@ -99,14 +99,14 @@ namespace Shopify.Unity.SDK {
         /// <param name="onChange">This function will be called whenever the CartLineItem is modified</param>
         /// <param name="quantity">The count of items to be ordered</param>
         /// <param name="customAttributes">Custom attributes for this line item used to customize and add meta data</param>
-        public CartLineItem(ProductVariant variant, OnCartLineItemChange onChange, long quantity = 1, IDictionary<string, string> customAttributes = null) {
+        public CartLineItem(ProductVariant variant, LineItemChangeHandler onChange, long quantity = 1, IDictionary<string, string> customAttributes = null) {
             _VariantId = variant.id();
             _Quantity = quantity;
             _Price = variant.price();
             OnChange = onChange;
 
             if (customAttributes != null) {
-                CustomAttributes = new ObservableDictionary<string, string>(customAttributes, () => { OnChange(this); });
+                CustomAttributes = new ObservableDictionary<string, string>(customAttributes, () => { OnChange(CartLineItems.LineItemChangeType.update, this); });
             }
         }
 
@@ -505,11 +505,11 @@ namespace Shopify.Unity.SDK {
             return variantOut;
         }
 
-        private void OnLineItemChange(CartLineItem item) {
+        private void OnLineItemChange(LineItemChangeType type, CartLineItem item) {
             _IsSaved = false;
 
             if (OnChange != null) {
-                OnChange(LineItemChangeType.update, item);
+                OnChange(type, item);
             }
         }
     }

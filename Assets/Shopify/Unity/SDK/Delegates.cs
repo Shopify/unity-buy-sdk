@@ -26,7 +26,6 @@ namespace Shopify.Unity.SDK {
 
     public delegate void ShopMetadataHandler(ShopMetadata? metadata, ShopifyError error);
 
-    public delegate void OnCartLineItemChange(CartLineItem lineItem);
     public delegate void LineItemChangeHandler(CartLineItems.LineItemChangeType type, CartLineItem lineItem);
 
     public delegate bool PollUpdatedHandler(QueryRoot updatedQueryRoot);
