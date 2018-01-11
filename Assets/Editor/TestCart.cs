@@ -64,6 +64,70 @@ namespace Shopify.Tests
         }
 
         [Test]
+        public void TestLineItemEventsAddUpdateDelete() {
+            ShopifyBuy.Init(new MockLoader());
+
+            var cart = ShopifyBuy.Client().Cart();
+            var updateTypes = new List<CartLineItems.LineItemChangeType>();
+            var updatedLineItems = new List<CartLineItem>();
+            var id1 = "variant-id-1";
+            var id2 = "variant-id-2";
+            var variant2 = CreateProductVariant(id2);
+
+            cart.LineItems.OnChange += (eventType, lineItem) => {
+                updateTypes.Add(eventType);
+                updatedLineItems.Add(lineItem);
+            };
+
+            cart.LineItems.AddOrUpdate(CreateProductVariant(id1), 33);
+            cart.LineItems.AddOrUpdate(variant2, 2);
+            cart.LineItems.Delete(id1);
+            cart.LineItems.AddOrUpdate(variant2, 55);
+
+            Assert.AreEqual(4, updateTypes.Count);
+            Assert.AreEqual(CartLineItems.LineItemChangeType.add, updateTypes[0]);
+            Assert.AreEqual(CartLineItems.LineItemChangeType.add, updateTypes[1]);
+            Assert.AreEqual(CartLineItems.LineItemChangeType.remove, updateTypes[2]);
+            Assert.AreEqual(CartLineItems.LineItemChangeType.update, updateTypes[3]);
+
+            Assert.AreEqual(id1, updatedLineItems[0].VariantId);
+            Assert.AreEqual(id2, updatedLineItems[1].VariantId);
+            Assert.AreEqual(id1, updatedLineItems[2].VariantId);
+            Assert.AreEqual(id2, updatedLineItems[3].VariantId);
+        }
+
+        [Test]
+        public void TestLineItemEventsReset() {
+            ShopifyBuy.Init(new MockLoader());
+
+            var cart = ShopifyBuy.Client().Cart();
+            var updateTypes = new List<CartLineItems.LineItemChangeType>();
+            var updatedLineItems = new List<CartLineItem>();
+            var id1 = "variant-id-1";
+            var id2 = "variant-id-2";
+
+            cart.LineItems.OnChange += (eventType, lineItem) => {
+                updateTypes.Add(eventType);
+                updatedLineItems.Add(lineItem);
+            };
+
+            cart.LineItems.AddOrUpdate(CreateProductVariant(id1), 33);
+            cart.LineItems.AddOrUpdate(CreateProductVariant(id2), 2);
+            cart.LineItems.Reset();
+
+            Assert.AreEqual(4, updateTypes.Count);
+            Assert.AreEqual(CartLineItems.LineItemChangeType.add, updateTypes[0]);
+            Assert.AreEqual(CartLineItems.LineItemChangeType.add, updateTypes[1]);
+            Assert.AreEqual(CartLineItems.LineItemChangeType.remove, updateTypes[2]);
+            Assert.AreEqual(CartLineItems.LineItemChangeType.remove, updateTypes[3]);
+
+            Assert.AreEqual(id1, updatedLineItems[0].VariantId);
+            Assert.AreEqual(id2, updatedLineItems[1].VariantId);
+            Assert.AreEqual(id2, updatedLineItems[2].VariantId);
+            Assert.AreEqual(id1, updatedLineItems[3].VariantId);
+        }
+
+        [Test]
         public void TestSubtotal() {
             ShopifyBuy.Init(new MockLoader());
 

@@ -227,16 +227,12 @@ namespace Shopify.Unity.SDK {
             CartLineItem lineItem = Get(variant.id());
 
             if (lineItem != null) {
-                if (quantity != null) {
+                if (quantity != null && lineItem.Quantity != (long) quantity) {
                     lineItem.Quantity = (long) quantity;
                 }
 
                 if (customAttributes != null) {
                     lineItem.CustomAttributes = customAttributes;
-                }
-
-                if (OnChange != null) {
-                    OnChange(LineItemChangeType.update, lineItem);
                 }
             } else {
                 if (quantity == null) {
@@ -379,10 +375,8 @@ namespace Shopify.Unity.SDK {
                 CartLineItem lineItemRemoved = LineItems[idxToDelete];
                 LineItems.RemoveAt(idxToDelete);
 
-                if (lineItemRemoved.ID != null) {
-                    if (OnChange != null) {
-                        OnChange(LineItemChangeType.remove, lineItemRemoved);
-                    }
+                if (OnChange != null) {
+                    OnChange(LineItemChangeType.remove, lineItemRemoved);
                 }
 
                 return true;
