@@ -97,6 +97,30 @@ namespace Shopify.Tests
         }
 
         [Test]
+        public void TestManualLineItemChangesCallEvents() {
+            ShopifyBuy.Init(new MockLoader());
+
+            var cart = ShopifyBuy.Client().Cart();
+            var updateTypes = new List<CartLineItems.LineItemChangeType>();
+            var id1 = "variant-id-1";
+           
+            cart.LineItems.OnChange += (eventType, lineItem) => {
+                updateTypes.Add(eventType);
+            };
+
+            cart.LineItems.AddOrUpdate(CreateProductVariant(id1), 33);
+            cart.LineItems.Get(id1).Quantity = 4;
+            cart.LineItems.Get(id1).CustomAttributes = new Dictionary<string, string>();
+            cart.LineItems.Get(id1).CustomAttributes["fancy"] = "thing";
+            
+            Assert.AreEqual(4, updateTypes.Count);
+            Assert.AreEqual(CartLineItems.LineItemChangeType.add, updateTypes[0]);
+            Assert.AreEqual(CartLineItems.LineItemChangeType.update, updateTypes[1]);
+            Assert.AreEqual(CartLineItems.LineItemChangeType.update, updateTypes[2]);
+            Assert.AreEqual(CartLineItems.LineItemChangeType.update, updateTypes[3]);
+        }
+
+        [Test]
         public void TestLineItemEventsReset() {
             ShopifyBuy.Init(new MockLoader());
 
