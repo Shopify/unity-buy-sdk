@@ -260,7 +260,7 @@ namespace Shopify.Unity {
         ///
         /// <c>first</c> will define the page size. <c>after</c> will be the cursor for the next page.
         /// </summary>
-        /// <param name="callback">callback that will receive responses from server. This callback also can receive <c>ShopifyError</c> or <c>null</c> if no error happened. The callback also receives <c>after</c> will be the cursor for the next page.</param>
+        /// <param name="callback">callback that will receive responses from server. This callback also can receive <c>ShopifyError</c> or <c>null</c> if no error happened. The callback also receives <c>after</c> will be the cursor for the next page. If the callback's after parameter is null, there are no more pages to fetch.</param>
         /// <param name="first">can be used to limit how many products are returned. For instance 10 would return only 10 products</param>
         /// <param name="after">
         /// is used to load subsequent pages. Basically it's a cursor variable to define what page to load next. For example, when used with <c>first: 10</c> and <c>after: "abc"</c>, only the first 10
