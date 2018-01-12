@@ -41,7 +41,7 @@
             var waiter = new EditorTimeoutWaiter();
 
             _shop.When((x) => {
-                x.OnShouldShowProduct(Arg.Any<Product>(), Arg.Any<ProductVariant[]>());
+                x.OnProductLoaded(Arg.Any<Product>(), Arg.Any<ProductVariant[]>());
             }).Do((x) => {
                 var product = x.Args()[0] as Product;
                 var productVariants = x.Args()[1] as ProductVariant[];
@@ -79,7 +79,7 @@
                yield return null;
             }
 
-            _shop.DidNotReceive().OnShouldShowProduct(Arg.Any<Product>(), Arg.Any<ProductVariant[]>());
+            _shop.DidNotReceive().OnProductLoaded(Arg.Any<Product>(), Arg.Any<ProductVariant[]>());
         }
 
         [UnityTest]
@@ -101,7 +101,7 @@
                yield return null;
             }
 
-            _shop.DidNotReceive().OnShouldShowProduct(Arg.Any<Product>(), Arg.Any<ProductVariant[]>());
+            _shop.DidNotReceive().OnProductLoaded(Arg.Any<Product>(), Arg.Any<ProductVariant[]>());
         }
     }
 }

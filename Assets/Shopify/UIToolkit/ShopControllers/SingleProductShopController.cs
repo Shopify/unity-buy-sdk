@@ -41,7 +41,7 @@
 
             var product = products[0];
             var variants = product.variants().edges().Select((x) => x.node()).ToArray();
-            Shop.OnShouldShowProduct(product, variants);
+            Shop.OnProductLoaded(product, variants);
         }
     }
 }

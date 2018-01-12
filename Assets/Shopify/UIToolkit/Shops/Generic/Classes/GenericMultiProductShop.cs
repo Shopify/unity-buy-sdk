@@ -5,14 +5,6 @@
     using UnityEngine;
 
     public class GenericMultiProductShop : MonoBehaviour, IMultiProductShop {
-        void IMultiProductShop.OnCartItemsChanged(CheckoutLineItem[] lineItems) {
-            throw new System.NotImplementedException();
-        }
-
-        void IMultiProductShop.OnCollectionFilterChanged(Collection collection) {
-            throw new System.NotImplementedException();
-        }
-
         void IShop.OnCartQuantityChanged(int newQuantity) {
             throw new System.NotImplementedException();
         }
@@ -26,10 +18,6 @@
         }
 
         void IShop.OnLoadingStarted() {
-            throw new System.NotImplementedException();
-        }
-
-        void IMultiProductShop.OnProductListChanged(Product[] products) {
             throw new System.NotImplementedException();
         }
 
@@ -49,19 +37,11 @@
             throw new System.NotImplementedException();
         }
 
-        void IMultiProductShop.OnShouldShowCart(CheckoutLineItem[] lineItems) {
+        void IMultiProductShop.OnCartItemsChanged(CheckoutLineItem[] lineItems) {
             throw new System.NotImplementedException();
         }
 
-        void IMultiProductShop.OnShouldShowCollectionList(Collection[] collections) {
-            throw new System.NotImplementedException();
-        }
-
-        void IMultiProductShop.OnShouldShowProductDetails(Product product, ProductVariant[] variants) {
-            throw new System.NotImplementedException();
-        }
-
-        void IMultiProductShop.ShouldShowProductList(Product[] products) {
+        void IMultiProductShop.OnProductsLoaded(Product[] products, int cursor) {
             throw new System.NotImplementedException();
         }
     }

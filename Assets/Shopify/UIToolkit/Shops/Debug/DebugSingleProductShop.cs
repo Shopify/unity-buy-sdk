@@ -36,8 +36,8 @@
             LogEvent("OnPurchaseFailed", error);
         }
 
-        public void OnShouldShowProduct(Product product, ProductVariant[] variants) {
-            LogEvent("OnShouldShowProduct", product, variants);
+        public void OnProductLoaded(Product product, ProductVariant[] variants) {
+            LogEvent("OnProductLoaded", product, variants);
         }
 
         public void OnCartQuantityChanged(int newQuantity) {

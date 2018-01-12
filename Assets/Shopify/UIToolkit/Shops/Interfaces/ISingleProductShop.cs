@@ -6,10 +6,10 @@
     /// </summary>
     public interface ISingleProductShop : IShop {
         /// <summary>
-        /// Called when the shop should show information about the product it's selling
+        /// Called when the controller is finished loading the product that the shop is selling.
         /// </summary>
-        /// <param name="product">The product that should be displayed</param>
-        /// <param name="variants">The variants of the product that should be displayed</param>
-        void OnShouldShowProduct(Product product, ProductVariant[] variants);
+        /// <param name="product">The product that was loaded</param>
+        /// <param name="variants">The variants of the product that was loaded</param>
+        void OnProductLoaded(Product product, ProductVariant[] variants);
     }
 }
