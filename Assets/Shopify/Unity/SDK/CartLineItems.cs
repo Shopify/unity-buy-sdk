@@ -429,10 +429,10 @@ namespace Shopify.Unity.SDK {
         /// Deletes all line items
         /// </summary>
         public void Reset() {
-            if (OnChange != null) {
-                for(int i = LineItems.Count - 1; i >= 0; i--) {
-                    var lineItem = LineItems[i];
-                    LineItems.RemoveAt(i);
+            for(int i = LineItems.Count - 1; i >= 0; i--) {
+                var lineItem = LineItems[i];
+                LineItems.RemoveAt(i);
+                if (OnChange != null) {
                     OnChange(LineItemChangeType.remove, lineItem);
                 }
             }
