@@ -32,7 +32,13 @@
 
         private ProductPicker _productPicker {
             get {
-                _cachedPicker = _cachedPicker ?? new ProductPicker(Client);
+                if (_cachedPicker == null) {
+                    _cachedPicker = new ProductPicker(Client);
+                    _cachedPicker.OnProductListUpdated += () => {
+                        Repaint();
+                    };
+                }
+
                 return _cachedPicker;
             }
         }
