@@ -12,20 +12,17 @@
     [RequireComponent(typeof(SingleProductThemeController))]
     public class GenericSingleProductTheme : MonoBehaviour, ISingleProductTheme {
 
-        public GameObject Title;
-        public GameObject Price;
-        public GameObject Description;
-        public GameObject VariantDropdownMenu;
-        public GameObject VariantPicker;
-        public GameObject VariantPickerTitle;
+        public Text Title;
+        public Text Price;
+        public Text Description;
 
-        private SelectionPicker _selectionPicker;
+        public Dropdown VariantDropdownMenu;
+
         private SingleProductThemeController _controller;
 
         private const string SingleVariantTitle = "Default Title";
 
         void Awake() {
-            _selectionPicker = VariantDropdownMenu.GetComponent<SelectionPicker>();
             _controller = GetComponent<SingleProductThemeController>();
             _controller.Theme = this;
             _controller.OnShow();
@@ -71,56 +68,34 @@
             UpdateDetailsUsingVariant(variants[0]);
         }
 
-        public void ShowProductVariantSelection() {
-            VariantDropdownMenu.SetActive(true);
-        }
-
-        public void HideProductVariantSelection() {
-            VariantDropdownMenu.SetActive(false);
-            var wrappedVariant = (ProductVariantOption)_selectionPicker.SelectedItem;
-            UpdateDetailsUsingVariant(wrappedVariant.ProductVariant);
-        }
-
         /// <summary>
         /// Constructs the selection picker's item list from this product's variants.
         /// </summary>
         /// <param name="variants">Current product's variants.</param>
         private void SetupVariantOptions(ProductVariant[] variants) {
             if (HasNoProductVariants(variants)) {
-                VariantPicker.SetActive(false);
+                VariantDropdownMenu.gameObject.SetActive(false);
             } else {
-                var wrappedVariants = variants.Select(variant => new ProductVariantOption(variant));
+                VariantDropdownMenu.gameObject.SetActive(true);
+                VariantDropdownMenu.options.Clear();
 
-                _selectionPicker.Title = String.Join(" / ", AvailableOptionNamesFromVariants(variants));
-                _selectionPicker.Items = wrappedVariants.ToArray(); 
-                _selectionPicker.onSelectOption.AddListener(HideProductVariantSelection);
-                _selectionPicker.Build();
-
-                VariantPicker.SetActive(true);
+                var options = DropdownOptionsFromVariants(variants);
+                VariantDropdownMenu.AddOptions(options);
             }
+        }
+
+        private List<UnityEngine.UI.Dropdown.OptionData> DropdownOptionsFromVariants(ProductVariant[] variants) {
+            var optionDatas = new List<UnityEngine.UI.Dropdown.OptionData>();
+            foreach (var variant in variants) {
+                var option = new Dropdown.OptionData();
+                option.text = StringFromVariant(variant);
+                optionDatas.Add(option);
+            }
+            return optionDatas;
         }
 
         private void UpdateDetailsUsingVariant(ProductVariant variant) {
-            VariantPickerTitle.GetComponent<Text>().text = StringFromVariant(variant);
-
-            // TODO: Probably needs to be properly localized using CultureInfo.
-            Price.GetComponent<Text>().text = "$" + variant.price().ToString();
-        }
-
-        /// <summary>
-        /// Pulls out only the names of the selectable options from the first variant's SelectableOptions.
-        /// </summary>
-        /// <param name="variants">ProductVariants</param>
-        /// <returns>String array of names of options.</returns>
-        private string[] AvailableOptionNamesFromVariants(ProductVariant[] variants) {
-            if (variants.Length == 0) {
-                return new string[0];
-            }
-
-            return variants[0].selectedOptions().Aggregate(new List<string>(), (accum, option) => {
-                accum.Add(option.name());
-                return accum;
-            }).ToArray();
+            Price.text = "$" + variant.price().ToString();
         }
 
         /// <summary>
@@ -151,22 +126,6 @@
                 return option.name() + ": " + option.value();
             });
             return String.Join("  ", strings.ToArray());
-        }
-    }
-
-    /// <summary>
-    /// A wrapper object that contains a ProductVariant that is used for the selection picker.
-    /// </summary>
-    public class ProductVariantOption : ISelectionPickerItem {
-        public readonly ProductVariant ProductVariant;
-        public string Title {
-            get {
-                return ProductVariant.title();
-            }
-        }
-
-        public ProductVariantOption(ProductVariant variant) {
-            ProductVariant = variant;
         }
     }
 }
