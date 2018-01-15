@@ -21,8 +21,8 @@
         public Dropdown VariantDropdownMenu;
 
         [HeaderAttribute("Images")]
+        public GameObject ProductImageViewArea;
         public ProductImageHolder ProductImageHolderTemplate;
-
         public GameObject ProductImageContainer;
         public RemoteImageLoader ActiveImage;
 
@@ -30,46 +30,37 @@
 
         private const string SingleVariantTitle = "Default Title";
 
+        #region Mono Behaviour
+        
         void Awake() {
             _controller = GetComponent<SingleProductShopController>();
             _controller.Shop = this;
             _controller.OnShow();
         }
 
-        void IShop.OnLoadingStarted() {
+        #endregion
 
-        }
+        #region IShop Interface
 
-        void IShop.OnLoadingFinished() {
+        void IShop.OnLoadingStarted() {}
 
-        }
+        void IShop.OnLoadingFinished() {}
 
-        void IShop.OnError(ShopifyError error) {
+        void IShop.OnError(ShopifyError error) {}
 
-        }
+        void IShop.OnPurchaseStarted() {}
 
-        void IShop.OnPurchaseStarted() {
-        }
+        void IShop.OnPurchaseCancelled() {}
 
-        void IShop.OnPurchaseCancelled() {
+        void IShop.OnPurchaseCompleted() {}
 
-        }
+        void IShop.OnPurchaseFailed(ShopifyError error) {}
 
-        void IShop.OnPurchaseCompleted() {
-
-        }
-
-        void IShop.OnPurchaseFailed(ShopifyError error) {
-
-        }
-
-        void IShop.OnCartQuantityChanged(int newQuantity) {
-
-        }
+        void IShop.OnCartQuantityChanged(int newQuantity) {}
 
         void ISingleProductShop.OnProductLoaded(Product product, ProductVariant[] variants) {
-            Title.GetComponent<Text>().text = product.title();
-            Description.GetComponent<Text>().text = product.description();
+            Title.text = product.title();
+            Description.text = product.description();
             SetupVariantOptions(variants);
 
             UpdateDetailsUsingVariant(variants[0]);
@@ -78,9 +69,21 @@
             UpdateProductImages(images);
         }
 
+        #endregion
+
+        #region Events
+
         public void OnSelectProductImage(Sprite sprite) {
             ActiveImage.GetComponent<UnityEngine.UI.Image>().sprite = sprite;
         }
+
+        public void OnSelectedVariant(ProductVariant variant) {
+            UpdateDetailsUsingVariant(variant);
+        }
+
+        #endregion
+
+        #region Helpers
 
         /// <summary>
         /// Constructs the selection picker's item list from this product's variants.
@@ -96,6 +99,9 @@
                 var options = DropdownOptionsFromVariants(variants);
                 VariantDropdownMenu.AddOptions(options);
                 VariantDropdownMenu.RefreshShownValue();
+                VariantDropdownMenu.onValueChanged.AddListener((value) => { 
+                    OnSelectedVariant(variants[VariantDropdownMenu.value]);
+                });
             }
         }
 
@@ -115,7 +121,10 @@
 
         private void UpdateProductImages(Shopify.Unity.Image[] images) {
             if (images.Length == 0) {
+                ProductImageViewArea.SetActive(false);
                 return;
+            } else {
+                ProductImageViewArea.SetActive(true);
             }
 
             foreach (var image in images) {
@@ -126,7 +135,8 @@
                 productImage.LoadImage(image.src());
             }
 
-            ActiveImage.LoadImage(images[0].src(),
+            ActiveImage.LoadImage(
+                imageURL: images[0].src(),
                 success:() => { ActiveImage.GetComponent<UnityEngine.UI.Image>().enabled = true; },
                 failure: null
             );
@@ -161,5 +171,7 @@
             });
             return String.Join("  ", strings.ToArray());
         }
+
+        #endregion
     }
 }

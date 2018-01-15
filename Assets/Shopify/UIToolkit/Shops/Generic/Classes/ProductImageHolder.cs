@@ -7,19 +7,21 @@ namespace Shopify.UIToolkit {
         public delegate void ProductImageOnSelect(Sprite sprite);
 
         public Button ProductImageButton;
+        public Image ProductImage;
+        public RemoteImageLoader ProductImageLoader;
         public Image BrokenImageIcon;
 
         public ProductImageOnSelect OnSelectedImage;
 
         void Start() {
             ProductImageButton.onClick.AddListener(() => {
-                OnSelectedImage(ProductImageButton.GetComponent<Image>().sprite);
+                OnSelectedImage(ProductImage.sprite);
             });
         }
 
         public void LoadImage(string src) {
-            var remoteImageLoader = ProductImageButton.gameObject.GetComponent<RemoteImageLoader>();
-            remoteImageLoader.LoadImage(src, 
+            ProductImageLoader.LoadImage(
+                imageURL: src, 
                 success: () => {
                     ProductImageButton.GetComponent<Image>().enabled = true;
                 },
