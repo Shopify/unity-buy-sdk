@@ -1,5 +1,4 @@
 namespace Shopify.UIToolkit {
-    using System;
     using UnityEngine.Events;
     using Shopify.Unity;
     using Shopify.Unity.SDK;
@@ -21,8 +20,11 @@ namespace Shopify.UIToolkit {
         public PurchaseFailedEvent OnPurhchaseFailed = new PurchaseFailedEvent();
 
         public CartController(Cart cart) {
+            SetCart(cart);
+        }
+
+        public void SetCart(Cart cart) {
             Cart = cart;
-            Cart.LineItems.OnChange += OnLineItemsChange;
         }
 
         public CartLineItems LineItems {
@@ -39,6 +41,8 @@ namespace Shopify.UIToolkit {
             var existingItem = Cart.LineItems.Get(variant);
             var newQuantity = existingItem == null ? 1 : existingItem.Quantity + 1;
             Cart.LineItems.AddOrUpdate(variant, newQuantity);
+
+            OnQuantityChange.Invoke(TotalItemsInCart());
         }
 
         /// <summary>
@@ -52,6 +56,8 @@ namespace Shopify.UIToolkit {
             } else {
                 Cart.LineItems.AddOrUpdate(variant, quantity);
             }
+
+            OnQuantityChange.Invoke(TotalItemsInCart());
         }
 
         /// <summary>
@@ -68,6 +74,8 @@ namespace Shopify.UIToolkit {
             } else {
                 Cart.LineItems.AddOrUpdate(variant, newQuantity);
             }
+
+            OnQuantityChange.Invoke(TotalItemsInCart());
         }
 
         /// <summary>
@@ -75,6 +83,8 @@ namespace Shopify.UIToolkit {
         /// </summary>
         public void ClearCart() {
             Cart.Reset();
+
+            OnQuantityChange.Invoke(0);
         }
 
         /// <summary>
@@ -104,10 +114,6 @@ namespace Shopify.UIToolkit {
                     });
                     break;
             }
-        }
-
-        private void OnLineItemsChange(CartLineItems.LineItemChangeType type, CartLineItem lineItem) {
-            OnQuantityChange.Invoke(TotalItemsInCart());
         }
 
         private int TotalItemsInCart() {
