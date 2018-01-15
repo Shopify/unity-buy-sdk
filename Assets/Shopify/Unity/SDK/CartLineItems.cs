@@ -57,7 +57,7 @@ namespace Shopify.Unity.SDK {
             set {
                 if (_Quantity != value) {
                     _Quantity = value;
-                    OnChange(CartLineItems.LineItemChangeType.update, this);
+                    OnChange(CartLineItems.LineItemChangeType.Update, this);
                 }
             }
         }
@@ -73,10 +73,10 @@ namespace Shopify.Unity.SDK {
 
             set {
                 if (value != null) {
-                    _CustomAttributes = new ObservableDictionary<string, string>(value, () => { OnChange(CartLineItems.LineItemChangeType.update, this); });
+                    _CustomAttributes = new ObservableDictionary<string, string>(value, () => { OnChange(CartLineItems.LineItemChangeType.Update, this); });
                 }
 
-                OnChange(CartLineItems.LineItemChangeType.update, this);
+                OnChange(CartLineItems.LineItemChangeType.Update, this);
             }
         }
 
@@ -106,7 +106,7 @@ namespace Shopify.Unity.SDK {
             OnChange = onChange;
 
             if (customAttributes != null) {
-                CustomAttributes = new ObservableDictionary<string, string>(customAttributes, () => { OnChange(CartLineItems.LineItemChangeType.update, this); });
+                CustomAttributes = new ObservableDictionary<string, string>(customAttributes, () => { OnChange(CartLineItems.LineItemChangeType.Update, this); });
             }
         }
 
@@ -162,9 +162,9 @@ namespace Shopify.Unity.SDK {
     /// </summary>
     public class CartLineItems {
         public enum LineItemChangeType {
-            add,
-            remove,
-            update
+            Add,
+            Remove,
+            Update
         }
 
         public event LineItemChangeHandler OnChange;
@@ -249,7 +249,7 @@ namespace Shopify.Unity.SDK {
                 LineItems.Add(lineItem);
 
                 if (OnChange != null) {
-                    OnChange(LineItemChangeType.add, lineItem);
+                    OnChange(LineItemChangeType.Add, lineItem);
                 }
             }
         }
@@ -376,7 +376,7 @@ namespace Shopify.Unity.SDK {
                 LineItems.RemoveAt(idxToDelete);
 
                 if (OnChange != null) {
-                    OnChange(LineItemChangeType.remove, lineItemRemoved);
+                    OnChange(LineItemChangeType.Remove, lineItemRemoved);
                 }
 
                 return true;
@@ -433,7 +433,7 @@ namespace Shopify.Unity.SDK {
                 var lineItem = LineItems[i];
                 LineItems.RemoveAt(i);
                 if (OnChange != null) {
-                    OnChange(LineItemChangeType.remove, lineItem);
+                    OnChange(LineItemChangeType.Remove, lineItem);
                 }
             }
         }

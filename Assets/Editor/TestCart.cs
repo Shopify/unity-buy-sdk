@@ -85,10 +85,10 @@ namespace Shopify.Tests
             cart.LineItems.AddOrUpdate(variant2, 55);
 
             Assert.AreEqual(4, updateTypes.Count);
-            Assert.AreEqual(CartLineItems.LineItemChangeType.add, updateTypes[0]);
-            Assert.AreEqual(CartLineItems.LineItemChangeType.add, updateTypes[1]);
-            Assert.AreEqual(CartLineItems.LineItemChangeType.remove, updateTypes[2]);
-            Assert.AreEqual(CartLineItems.LineItemChangeType.update, updateTypes[3]);
+            Assert.AreEqual(CartLineItems.LineItemChangeType.Add, updateTypes[0]);
+            Assert.AreEqual(CartLineItems.LineItemChangeType.Add, updateTypes[1]);
+            Assert.AreEqual(CartLineItems.LineItemChangeType.Remove, updateTypes[2]);
+            Assert.AreEqual(CartLineItems.LineItemChangeType.Update, updateTypes[3]);
 
             Assert.AreEqual(id1, updatedLineItems[0].VariantId);
             Assert.AreEqual(id2, updatedLineItems[1].VariantId);
@@ -114,10 +114,10 @@ namespace Shopify.Tests
             cart.LineItems.Get(id1).CustomAttributes["fancy"] = "thing";
             
             Assert.AreEqual(4, updateTypes.Count);
-            Assert.AreEqual(CartLineItems.LineItemChangeType.add, updateTypes[0]);
-            Assert.AreEqual(CartLineItems.LineItemChangeType.update, updateTypes[1]);
-            Assert.AreEqual(CartLineItems.LineItemChangeType.update, updateTypes[2]);
-            Assert.AreEqual(CartLineItems.LineItemChangeType.update, updateTypes[3]);
+            Assert.AreEqual(CartLineItems.LineItemChangeType.Add, updateTypes[0]);
+            Assert.AreEqual(CartLineItems.LineItemChangeType.Update, updateTypes[1]);
+            Assert.AreEqual(CartLineItems.LineItemChangeType.Update, updateTypes[2]);
+            Assert.AreEqual(CartLineItems.LineItemChangeType.Update, updateTypes[3]);
         }
 
         [Test]
@@ -140,10 +140,10 @@ namespace Shopify.Tests
             cart.LineItems.Reset();
 
             Assert.AreEqual(4, updateTypes.Count);
-            Assert.AreEqual(CartLineItems.LineItemChangeType.add, updateTypes[0]);
-            Assert.AreEqual(CartLineItems.LineItemChangeType.add, updateTypes[1]);
-            Assert.AreEqual(CartLineItems.LineItemChangeType.remove, updateTypes[2]);
-            Assert.AreEqual(CartLineItems.LineItemChangeType.remove, updateTypes[3]);
+            Assert.AreEqual(CartLineItems.LineItemChangeType.Add, updateTypes[0]);
+            Assert.AreEqual(CartLineItems.LineItemChangeType.Add, updateTypes[1]);
+            Assert.AreEqual(CartLineItems.LineItemChangeType.Remove, updateTypes[2]);
+            Assert.AreEqual(CartLineItems.LineItemChangeType.Remove, updateTypes[3]);
 
             Assert.AreEqual(id1, updatedLineItems[0].VariantId);
             Assert.AreEqual(id2, updatedLineItems[1].VariantId);

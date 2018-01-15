@@ -321,7 +321,7 @@ namespace Shopify.Unity {
 
         private void OnLineItemChange(CartLineItems.LineItemChangeType type, CartLineItem lineItem) {
             switch(type) {
-                case CartLineItems.LineItemChangeType.remove:
+                case CartLineItems.LineItemChangeType.Remove:
                     DeletedLineItems.Add(lineItem.ID);
                 break;
             }
