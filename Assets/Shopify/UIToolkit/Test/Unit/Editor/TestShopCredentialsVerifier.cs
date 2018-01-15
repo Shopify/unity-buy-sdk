@@ -11,7 +11,7 @@
         private const string _ValidShopDomain = "graphql.myshopify.com";
         private const string _ValidAccessToken = "351c122017d0f2a957d32ae728ad749c";
 
-        private class MockShopCredentials : IShopCredentials {
+        private class MockShopCredentials : IShopController {
             public ShopCredentialsVerificationState CredentialsVerificationState { get; set; }
             public string ShopDomain { get; set; }
             public string AccessToken { get; set; }
@@ -23,6 +23,9 @@
             public string GetAccessToken() {
                 return AccessToken;
             }
+
+            public void Load() {}
+            public void UnLoad() {}
         }
 
         private ShopCredentialsVerifier _Verifier;
