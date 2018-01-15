@@ -57,7 +57,7 @@ namespace Shopify.Unity.SDK {
             set {
                 if (_Quantity != value) {
                     _Quantity = value;
-                    OnChange();
+                    OnChange(CartLineItems.LineItemChangeType.Update, this);
                 }
             }
         }
@@ -73,10 +73,10 @@ namespace Shopify.Unity.SDK {
 
             set {
                 if (value != null) {
-                    _CustomAttributes = new ObservableDictionary<string, string>(value, () => { OnChange(); });
+                    _CustomAttributes = new ObservableDictionary<string, string>(value, () => { OnChange(CartLineItems.LineItemChangeType.Update, this); });
                 }
 
-                OnChange();
+                OnChange(CartLineItems.LineItemChangeType.Update, this);
             }
         }
 
@@ -90,7 +90,7 @@ namespace Shopify.Unity.SDK {
         private long _Quantity;
         private decimal _Price;
         private ObservableDictionary<string, string> _CustomAttributes;
-        private OnCartLineItemChange OnChange;
+        private LineItemChangeHandler OnChange;
         
         /// <summary>
         /// Used internally by the SDK to construct a CartLineItem.
@@ -99,14 +99,14 @@ namespace Shopify.Unity.SDK {
         /// <param name="onChange">This function will be called whenever the CartLineItem is modified</param>
         /// <param name="quantity">The count of items to be ordered</param>
         /// <param name="customAttributes">Custom attributes for this line item used to customize and add meta data</param>
-        public CartLineItem(ProductVariant variant, OnCartLineItemChange onChange, long quantity = 1, IDictionary<string, string> customAttributes = null) {
+        public CartLineItem(ProductVariant variant, LineItemChangeHandler onChange, long quantity = 1, IDictionary<string, string> customAttributes = null) {
             _VariantId = variant.id();
             _Quantity = quantity;
             _Price = variant.price();
             OnChange = onChange;
 
             if (customAttributes != null) {
-                CustomAttributes = new ObservableDictionary<string, string>(customAttributes, () => { OnChange(); });
+                CustomAttributes = new ObservableDictionary<string, string>(customAttributes, () => { OnChange(CartLineItems.LineItemChangeType.Update, this); });
             }
         }
 
@@ -161,6 +161,14 @@ namespace Shopify.Unity.SDK {
     /// Is used to add, update, or delete line items in a <see ref="Cart">Cart </see>.
     /// </summary>
     public class CartLineItems {
+        public enum LineItemChangeType {
+            Add,
+            Remove,
+            Update
+        }
+
+        public event LineItemChangeHandler OnChange;
+
         public static List<CheckoutLineItemInput> ConvertToCheckoutLineItemInput(List<CartLineItem> lineItems) {
             var converter = new Converter<CartLineItem, CheckoutLineItemInput>((lineItem) => {
                     return lineItem.GetCheckoutLineItemInput();
@@ -201,11 +209,6 @@ namespace Shopify.Unity.SDK {
 
         private bool _IsSaved = false;
         private List<CartLineItem> LineItems = new List<CartLineItem>();
-        private Action<string> OnDeleteLineItem;
-
-        public CartLineItems(Action<string> onDeleteLineItem) {
-            OnDeleteLineItem = onDeleteLineItem;
-        }
 
         /// <summary>
         /// Adds or updates a line item using a <see ref="ProductVariant">ProductVariant </see>.
@@ -221,29 +224,33 @@ namespace Shopify.Unity.SDK {
         /// cart.LineItems.AddOrUpdate(variant, 3);
         /// \endcode
         public void AddOrUpdate(ProductVariant variant, long? quantity = null, Dictionary<string, string> customAttributes = null) {
-            CartLineItem input = Get(variant.id());
+            CartLineItem lineItem = Get(variant.id());
 
-            if (input != null) {
-                if (quantity != null) {
-                    input.Quantity = (long) quantity;
+            if (lineItem != null) {
+                if (quantity != null && lineItem.Quantity != (long) quantity) {
+                    lineItem.Quantity = (long) quantity;
                 }
 
                 if (customAttributes != null) {
-                    input.CustomAttributes = customAttributes;
+                    lineItem.CustomAttributes = customAttributes;
                 }
             } else {
                 if (quantity == null) {
                     quantity = 1;
                 }
 
-                LineItems.Add(
-                    new CartLineItem(
-                        variant: variant,
-                        onChange: OnLineItemChange,
-                        quantity: (long) quantity,
-                        customAttributes : customAttributes
-                    )
+                lineItem = new CartLineItem(
+                    variant: variant,
+                    onChange: OnLineItemChange,
+                    quantity: (long) quantity,
+                    customAttributes : customAttributes
                 );
+
+                LineItems.Add(lineItem);
+
+                if (OnChange != null) {
+                    OnChange(LineItemChangeType.Add, lineItem);
+                }
             }
         }
 
@@ -368,8 +375,8 @@ namespace Shopify.Unity.SDK {
                 CartLineItem lineItemRemoved = LineItems[idxToDelete];
                 LineItems.RemoveAt(idxToDelete);
 
-                if (lineItemRemoved.ID != null) {
-                    OnDeleteLineItem(lineItemRemoved.ID);
+                if (OnChange != null) {
+                    OnChange(LineItemChangeType.Remove, lineItemRemoved);
                 }
 
                 return true;
@@ -416,6 +423,19 @@ namespace Shopify.Unity.SDK {
             }
 
             return Delete(variantId);
+        }
+
+        /// <summary>
+        /// Deletes all line items
+        /// </summary>
+        public void Reset() {
+            for(int i = LineItems.Count - 1; i >= 0; i--) {
+                var lineItem = LineItems[i];
+                LineItems.RemoveAt(i);
+                if (OnChange != null) {
+                    OnChange(LineItemChangeType.Remove, lineItem);
+                }
+            }
         }
 
         public void UpdateLineItemsFromCheckoutLineItems(List<CheckoutLineItem> checkoutLineItems) {
@@ -485,8 +505,12 @@ namespace Shopify.Unity.SDK {
             return variantOut;
         }
 
-        private void OnLineItemChange() {
+        private void OnLineItemChange(LineItemChangeType type, CartLineItem item) {
             _IsSaved = false;
+
+            if (OnChange != null) {
+                OnChange(type, item);
+            }
         }
     }
 }

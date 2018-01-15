@@ -43,11 +43,12 @@ namespace Shopify.Unity {
 
         public CartState(ShopifyClient client) {
             Client = client;
-            _LineItems = new CartLineItems(OnDeleteLineItem);
+            _LineItems = new CartLineItems();
+            _LineItems.OnChange += OnLineItemChange;
         }
 
         public void Reset() {
-            _LineItems = new CartLineItems(OnDeleteLineItem);
+            _LineItems.Reset();
             _UserErrors = null;
             DeletedLineItems.Clear();
             CurrentCheckout = null;
@@ -318,8 +319,12 @@ namespace Shopify.Unity {
             callback(error);
         }
 
-        private void OnDeleteLineItem(string lineItemId) {
-            DeletedLineItems.Add(lineItemId);
+        private void OnLineItemChange(CartLineItems.LineItemChangeType type, CartLineItem lineItem) {
+            switch(type) {
+                case CartLineItems.LineItemChangeType.Remove:
+                    DeletedLineItems.Add(lineItem.ID);
+                break;
+            }
         }
 
         private delegate void CheckoutPollQuery(QueryRootQuery query, string checkoutId);
