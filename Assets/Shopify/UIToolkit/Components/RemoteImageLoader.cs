@@ -55,7 +55,7 @@ namespace Shopify.UIToolkit {
                 if (texture == null) {
                     Debug.LogWarning("Failed to generate texture from image located at " + imageURL);
                     if (failure != null) {
-                        failure(error);
+                        failure("Texture not found");
                     }
                     return;
                 }

@@ -12,11 +12,19 @@
     [RequireComponent(typeof(SingleProductShopController))]
     public class GenericSingleProductShop : MonoBehaviour, ISingleProductShop {
 
+        [HeaderAttribute("Text Fields")]
         public Text Title;
         public Text Price;
         public Text Description;
 
+        [HeaderAttribute("Variant Selection")]
         public Dropdown VariantDropdownMenu;
+
+        [HeaderAttribute("Images")]
+        public ProductImageHolder ProductImageHolderTemplate;
+
+        public GameObject ProductImageContainer;
+        public RemoteImageLoader ActiveImage;
 
         private SingleProductShopController _controller;
 
@@ -65,6 +73,13 @@
             SetupVariantOptions(variants);
 
             UpdateDetailsUsingVariant(variants[0]);
+
+            var images = product.images().edges().Select((x) => x.node()).ToArray();
+            UpdateProductImages(images);
+        }
+
+        public void OnSelectProductImage(Sprite sprite) {
+            ActiveImage.GetComponent<UnityEngine.UI.Image>().sprite = sprite;
         }
 
         /// <summary>
@@ -96,6 +111,25 @@
 
         private void UpdateDetailsUsingVariant(ProductVariant variant) {
             Price.text = "$" + variant.price().ToString();
+        }
+
+        private void UpdateProductImages(Shopify.Unity.Image[] images) {
+            if (images.Length == 0) {
+                return;
+            }
+
+            foreach (var image in images) {
+                var productImage = Instantiate(ProductImageHolderTemplate);
+                productImage.transform.SetParent(ProductImageContainer.transform, false);
+                productImage.gameObject.SetActive(true);
+                productImage.OnSelectedImage = OnSelectProductImage;
+                productImage.LoadImage(image.src());
+            }
+
+            ActiveImage.LoadImage(images[0].src(),
+                success:() => { ActiveImage.GetComponent<UnityEngine.UI.Image>().enabled = true; },
+                failure: null
+            );
         }
 
         /// <summary>
