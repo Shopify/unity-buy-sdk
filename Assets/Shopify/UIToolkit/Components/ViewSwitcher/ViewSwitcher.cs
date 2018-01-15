@@ -22,32 +22,33 @@
         /// </summary>
         public RectTransform Container;
 
-        /// <summary>
-        /// A registry of views that you will want to switch between
-        /// </summary>
-        public RectTransform[] Views;
-
+        private List<RectTransform> _views = new List<RectTransform>();
         private Stack<RectTransform> _viewStack = new Stack<RectTransform>();
 
-        public void Start() {
-            _viewStack.Push(Views[0]);
+        /// <summary>
+        /// Called to add a view to the view switcher heirarchy and configure it for switching
+        /// </summary>
+        /// <param name="view">The view to register</param>
+        public void RegisterView(RectTransform view) {
+            _views.Add(view);
+            view.transform.SetParent(Container, false);
 
-            for (int i = 1; i < Views.Length; i++) {
-                Views[i].gameObject.SetActive(false);
+            if (_views.Count == 1) {
+                _viewStack.Push(view);
+                view.gameObject.SetActive(true);
+            } else {
+                view.gameObject.SetActive(false);
             }
         }
 
+
         /// <summary>
-        /// Pushes a new view, making it the active view
+        /// Pushes a view to the top of the stack, making it the active view
         /// </summary>
         /// <param name="view">The rect transform of the UI that you want to push as a new view</param>
         public void PushView(RectTransform view) {
-            if (!System.Array.Exists(Views, (x) => x == view)) {
+            if (!_views.Contains(view)) {
                 throw new System.ArgumentException("View was not registered with ViewSwitcher before being pushed");
-            }
-
-            if (view.parent != Container) {
-                throw new System.ArgumentException("View was not a child of the ViewSwitcher's container transform");
             }
 
             if (_viewStack.Peek() == view) return;
@@ -74,6 +75,10 @@
         /// <returns>True if there are enough views to navigate backwards</returns>
         public bool CanNavigateBack() {
             return _viewStack.Count > 1;
+        }
+
+        public RectTransform ActiveView() {
+            return _viewStack.Peek();
         }
 
         private IEnumerator AnimateInView(RectTransform view) {
