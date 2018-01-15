@@ -1,4 +1,5 @@
 namespace Shopify.UIToolkit {
+    using System;
     using UnityEngine.Events;
     using Shopify.Unity;
     using Shopify.Unity.SDK;
@@ -20,10 +21,6 @@ namespace Shopify.UIToolkit {
         public PurchaseFailedEvent OnPurhchaseFailed = new PurchaseFailedEvent();
 
         public CartController(Cart cart) {
-            SetCart(cart);
-        }
-
-        public void SetCart(Cart cart) {
             Cart = cart;
             Cart.LineItems.OnChange += OnLineItemsChange;
         }
