@@ -26,9 +26,7 @@
         public GameObject ProductImageContainer;
         public RemoteImageLoader ActiveImage;
 
-        private ProductVariant[] _productVariants;
-        private SingleProductShopController _controller;
-        private ProductVariant _currentSelectedVariant {
+        public ProductVariant CurrentSelectedVariant {
             get {
                 if (_productVariants == null) {
                     return null;
@@ -37,6 +35,9 @@
                 return _productVariants[VariantDropdownMenu.value];
             }
         }
+
+        private ProductVariant[] _productVariants;
+        private SingleProductShopController _controller;
 
         private const string SingleVariantTitle = "Default Title";
 
@@ -94,7 +95,7 @@
         }
 
         public void OnAddToCart() {
-            _controller.Cart.AddVariant(_currentSelectedVariant);
+            _controller.Cart.AddVariant(CurrentSelectedVariant);
         }
 
         #endregion
