@@ -3,6 +3,17 @@ namespace Shopify.UIToolkit {
     using Shopify.Unity;
     using Shopify.Unity.SDK;
     using System.Linq;
+    using System.Collections.Generic;
+
+    public struct CartItem {
+        public ProductVariant Variant;
+        public long Quantity;
+
+        public CartItem(ProductVariant variant, long quantity) {
+            Variant = variant;
+            Quantity = quantity;
+        }
+    }
 
     [System.Serializable]
     public class CartController {
@@ -12,12 +23,18 @@ namespace Shopify.UIToolkit {
         [System.Serializable]
         public class PurchaseFailedEvent : UnityEvent<ShopifyError> {}
 
+        [System.Serializable]
+        public class CartItemsChangeEvent : UnityEvent<List<CartItem>> {}
+
         private Cart Cart;
         public UnityEvent OnPurchaseStarted = new UnityEvent();
         public QuantityChangeEvent OnQuantityChange = new QuantityChangeEvent();
+        public CartItemsChangeEvent OnCartItemsChange = new CartItemsChangeEvent();
         public UnityEvent OnPurchaseComplete = new UnityEvent();
         public UnityEvent OnPurhcaseCancelled = new UnityEvent();
         public PurchaseFailedEvent OnPurhchaseFailed = new PurchaseFailedEvent();
+
+        private Dictionary<string, ProductVariant> _idsToVariants = new Dictionary<string, ProductVariant>();
 
         public CartController(Cart cart) {
             SetCart(cart);
@@ -25,11 +42,22 @@ namespace Shopify.UIToolkit {
 
         public void SetCart(Cart cart) {
             Cart = cart;
+            _idsToVariants = new Dictionary<string, ProductVariant>();
         }
 
         public CartLineItems LineItems {
             get {
                 return Cart.LineItems;
+            }
+        }
+
+        public List<CartItem> CartItems {
+            get {
+                var items = new List<CartItem>();
+                foreach (var lineItem in LineItems.All()) {
+                    items.Add(new CartItem(_idsToVariants[lineItem.VariantId], lineItem.Quantity));
+                }
+                return items; 
             }
         }
 
@@ -42,7 +70,12 @@ namespace Shopify.UIToolkit {
             var newQuantity = existingItem == null ? 1 : existingItem.Quantity + 1;
             Cart.LineItems.AddOrUpdate(variant, newQuantity);
 
+            if (!_idsToVariants.ContainsKey(variant.id())) {
+                _idsToVariants.Add(variant.id(), variant);
+            }
+
             OnQuantityChange.Invoke(TotalItemsInCart());
+            OnCartItemsChange.Invoke(CartItems);
         }
 
         /// <summary>
@@ -53,11 +86,16 @@ namespace Shopify.UIToolkit {
         public void UpdateVariant(ProductVariant variant, int quantity) {
             if (quantity <= 0) {
                 Cart.LineItems.Delete(variant);
+                _idsToVariants.Remove(variant.id());
             } else {
                 Cart.LineItems.AddOrUpdate(variant, quantity);
+                if (!_idsToVariants.ContainsKey(variant.id())) {
+                    _idsToVariants.Add(variant.id(), variant);
+                }
             }
 
             OnQuantityChange.Invoke(TotalItemsInCart());
+            OnCartItemsChange.Invoke(CartItems);
         }
 
         /// <summary>
@@ -71,11 +109,16 @@ namespace Shopify.UIToolkit {
 
             if (newQuantity == 0) {
                 Cart.LineItems.Delete(variant);
+                _idsToVariants.Remove(variant.id());
             } else {
                 Cart.LineItems.AddOrUpdate(variant, newQuantity);
+                if (!_idsToVariants.ContainsKey(variant.id())) {
+                    _idsToVariants.Add(variant.id(), variant);
+                }
             }
 
             OnQuantityChange.Invoke(TotalItemsInCart());
+            OnCartItemsChange.Invoke(CartItems);
         }
 
         /// <summary>
@@ -83,8 +126,9 @@ namespace Shopify.UIToolkit {
         /// </summary>
         public void ClearCart() {
             Cart.Reset();
-
+            _idsToVariants.Clear();
             OnQuantityChange.Invoke(0);
+            OnCartItemsChange.Invoke(CartItems);
         }
 
         /// <summary>
