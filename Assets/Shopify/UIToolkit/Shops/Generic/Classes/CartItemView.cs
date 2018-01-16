@@ -7,6 +7,9 @@ namespace Shopify.UIToolkit {
     using UnityEngine;
     using UnityEngine.UI;
 
+    /// <summary>
+    /// A View Model for converting the CartItem data into a format for the CartItemView component.
+    /// </summary>
     public struct CartItemViewModel {
         public readonly string Title;
         public readonly string VariantDescription;
@@ -35,6 +38,9 @@ namespace Shopify.UIToolkit {
         }
     }
 
+    /// <summary>
+    /// Behaviour for linking all the pieces of the cart list item together.
+    /// </summary>
     public class CartItemView : MonoBehaviour {
         public RemoteImageLoader ImageLoader;
         public Text TitleLabel;

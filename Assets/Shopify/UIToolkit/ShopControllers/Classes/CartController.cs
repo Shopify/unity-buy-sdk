@@ -5,6 +5,10 @@ namespace Shopify.UIToolkit {
     using System.Linq;
     using System.Collections.Generic;
 
+    /// <summary>
+    // A wrapper struct that encapsulates the information we want from a CartLineItem (Quantity) and the
+    // ProductVariant it has to help with constructing the UI for the cart.
+    /// </summary>
     public struct CartItem {
         public ProductVariant Variant;
         public long Quantity;
