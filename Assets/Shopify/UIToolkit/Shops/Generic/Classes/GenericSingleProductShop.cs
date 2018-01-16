@@ -38,10 +38,6 @@
             throw new System.NotImplementedException();
         }
 
-        void IShop.OnCartItemsChanged(List<CartItem> cartItems) {
-            throw new System.NotImplementedException();
-        }
-
         void ISingleProductShop.OnProductLoaded(Product product, ProductVariant[] variants) {
             throw new System.NotImplementedException();
         }

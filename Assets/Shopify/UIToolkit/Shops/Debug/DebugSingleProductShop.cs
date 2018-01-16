@@ -45,10 +45,6 @@
             LogEvent("OnCartQuantityChanged", newQuantity);
         }
 
-        public void OnCartItemsChanged(List<CartItem> cartItems) {
-            LogEvent("OnCartItemsChanged", cartItems);
-        }
-
         private void LogEvent(string eventName, params object[] args) {
             var eventString = new StringBuilder();
             eventString.AppendFormat("[DebugShop] {0} called", eventName);

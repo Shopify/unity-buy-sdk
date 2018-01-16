@@ -1,5 +1,6 @@
 ﻿namespace Shopify.UIToolkit {
     using Shopify.Unity;
+    using System.Collections.Generic;
 
     public interface IMultiProductShop : IShop {
         /// <summary>
@@ -20,6 +21,6 @@
         /// Called when the Items in the cart have updated. 
         /// </summary>
         /// <param name="lineItems">The new line items in the cart</param>
-        void OnCartItemsChanged(CheckoutLineItem[] lineItems);
+        void OnCartItemsChanged(List<CartItem> lineItems);
     }
 }

@@ -32,10 +32,6 @@
             throw new System.NotImplementedException();
         }
 
-        void IShop.OnCartItemsChanged(List<CartItem> cartItems) {
-            _cartView.OnCartItemsChanged(cartItems);
-        }
-
         void IShop.OnError(ShopifyError error) {
             Debug.Log(error.Description);
         }
@@ -68,7 +64,9 @@
             _productListView.OnProductsLoaded(products);
         }
 
-        void IMultiProductShop.OnCartItemsChanged(CheckoutLineItem[] lineItems) { }
+        void IMultiProductShop.OnCartItemsChanged(List<CartItem> cartItems) {
+            _cartView.OnCartItemsChanged(cartItems);
+        }
 
         #endregion
 
