@@ -1,5 +1,6 @@
 ﻿namespace Shopify.UIToolkit.Shops {
     using System.Linq;
+    using System.Collections.Generic;
     using System.Text;
     using Shopify.Unity;
     using Shopify.Unity.SDK;
@@ -42,6 +43,10 @@
 
         public void OnCartQuantityChanged(int newQuantity) {
             LogEvent("OnCartQuantityChanged", newQuantity);
+        }
+
+        public void OnCartItemsChanged(List<CartItem> cartItems) {
+            LogEvent("OnCartItemsChanged", cartItems);
         }
 
         private void LogEvent(string eventName, params object[] args) {

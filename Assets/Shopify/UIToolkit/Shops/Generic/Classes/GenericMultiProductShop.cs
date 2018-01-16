@@ -32,6 +32,10 @@
             throw new System.NotImplementedException();
         }
 
+        void IShop.OnCartItemsChanged(List<CartItem> cartItems) {
+            _cartView.OnCartItemsChanged(cartItems);
+        }
+
         void IShop.OnError(ShopifyError error) {
             Debug.Log(error.Description);
         }
@@ -72,13 +76,13 @@
         public Animator Animator;
 
         [Header("Templates")]
-        public CartView CartViewPrefab;
+        public GenericCartView CartViewPrefab;
         public ProductListView ProductListViewPrefab;
         public ProductDetailsView ProductDetailsViewPrefab;
 
         [Header("Views")]
         public ViewSwitcher ViewSwitcher;
-        private CartView _cartView;
+        private GenericCartView _cartView;
         private ProductListView _productListView;
         private ProductDetailsView _productDetailsView;
         private GenericMultiProductShopView _activeView;
@@ -90,7 +94,7 @@
         public void InitializeViews() {
             _productListView = Instantiate<ProductListView>(ProductListViewPrefab);
             _productDetailsView = Instantiate<ProductDetailsView>(ProductDetailsViewPrefab);
-            _cartView = Instantiate<CartView>(CartViewPrefab);
+            _cartView = Instantiate<GenericCartView>(CartViewPrefab);
 
             _productListView.Shop = this;
             _productDetailsView.Shop = this;

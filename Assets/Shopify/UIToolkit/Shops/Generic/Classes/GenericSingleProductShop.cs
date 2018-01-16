@@ -1,6 +1,7 @@
 ﻿namespace Shopify.UIToolkit.Shops {
     using Shopify.Unity;
     using Shopify.Unity.SDK;
+    using System.Collections.Generic;
     using UnityEngine;
 
     [RequireComponent(typeof(SingleProductShopController))]
@@ -34,6 +35,10 @@
         }
 
         void IShop.OnCartQuantityChanged(int newQuantity) {
+            throw new System.NotImplementedException();
+        }
+
+        void IShop.OnCartItemsChanged(List<CartItem> cartItems) {
             throw new System.NotImplementedException();
         }
 

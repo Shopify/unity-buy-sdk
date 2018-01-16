@@ -48,7 +48,7 @@ namespace Shopify.UIToolkit {
         public Text VariantLabel;
         public Text QuantityLabel;
 
-        public void SetCartLineItemViewModel(CartItemViewModel model) {
+        public void SetCartItemViewModel(CartItemViewModel model) {
             TitleLabel.text = model.Title;
             PriceLabel.text = model.PriceText;
 

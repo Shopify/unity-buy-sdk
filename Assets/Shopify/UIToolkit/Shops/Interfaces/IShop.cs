@@ -58,5 +58,12 @@
         /// </summary>
         /// <param name="newQuantity">The new number of items in the cart</param>
         void OnCartQuantityChanged(int newQuantity);
+
+        /// <summary>
+        /// Called when anything changes with the items that are in the cart. For example,
+        /// adding/removing/updating an item in your cart will trigger this.
+        /// </summary>
+        /// <param name="cartItems">List of cart items in the cart</param>
+        void OnCartItemsChanged(List<CartItem> cartItems);
     }
 }

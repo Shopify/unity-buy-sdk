@@ -1,4 +1,4 @@
-namespace Shopify.UIToolkit {
+namespace Shopify.UIToolkit.Shops.Generic {
     using UnityEngine;
     using UnityEngine.UI;
     using Shopify.Unity;
@@ -6,8 +6,7 @@ namespace Shopify.UIToolkit {
     using System.Collections.Generic;
     using System;
 
-    public class GenericCartView : MonoBehaviour {
-        public IShop Shop;
+    public class GenericCartView : GenericMultiProductShopView {
         public CartItemView CartItemTemplate;
         public ScrollRect CartItemList;
 
@@ -24,10 +23,9 @@ namespace Shopify.UIToolkit {
         #endregion
 
         #region Events
-        void OnQuantityChanged(int quantity) {
-        }
+        void OnQuantityChanged(int quantity) {}
 
-        void OnCartItemsChanged(List<CartItem> cartItems) {
+        public void OnCartItemsChanged(List<CartItem> cartItems) {
             UpdateCartList(cartItems);
         }
 
@@ -43,6 +41,7 @@ namespace Shopify.UIToolkit {
             foreach (var cartItem in cartItems) {
                 var model = new CartItemViewModel(cartItem);
                 var itemView = Instantiate(CartItemTemplate);
+                itemView.SetCartItemViewModel(model);
                 itemView.transform.SetParent(_scrollContent.transform, false);
                 itemView.gameObject.SetActive(true);
             }
