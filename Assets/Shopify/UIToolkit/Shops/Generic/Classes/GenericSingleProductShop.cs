@@ -149,7 +149,7 @@
                 productImage.transform.SetParent(ProductImageContainer.transform, false);
                 productImage.gameObject.SetActive(true);
                 productImage.OnSelectedImage = OnSelectProductImage;
-                productImage.LoadImage(image.src());
+                productImage.LoadImage(image.transformedSrc());
             }
 
             ActiveImage.LoadImage(
