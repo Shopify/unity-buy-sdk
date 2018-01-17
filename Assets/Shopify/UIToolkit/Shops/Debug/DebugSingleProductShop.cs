@@ -1,6 +1,5 @@
 ﻿namespace Shopify.UIToolkit.Shops {
     using System.Linq;
-    using System.Collections.Generic;
     using System.Text;
     using Shopify.Unity;
     using Shopify.Unity.SDK;

@@ -664,7 +664,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Animator: {fileID: 95220150430138724}
-  CartViewPrefab: {fileID: 114880581619720320, guid: 4cb6ef5432c0a41bca84fd81fe696098,
+  CartViewPrefab: {fileID: 114083855067137410, guid: 0945126c2a3a449e4a274d56d2f41187,
     type: 2}
   ProductListViewPrefab: {fileID: 114507206102692150, guid: fa3cfa3cf86854f8693d1d9cae5f66a4,
     type: 2}

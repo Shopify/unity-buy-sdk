@@ -1,7 +1,6 @@
 ﻿namespace Shopify.UIToolkit.Shops {
     using Shopify.Unity;
     using Shopify.Unity.SDK;
-    using System.Collections.Generic;
     using UnityEngine;
 
     [RequireComponent(typeof(SingleProductShopController))]

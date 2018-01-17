@@ -28,10 +28,10 @@ namespace Shopify.UIToolkit {
 
             string imageURL;
             try {
-                imageURL = variant.image().src();
+                imageURL = variant.image().transformedSrc();
             } catch (NullReferenceException) {
                 var images = (List<Shopify.Unity.Image>)product.images();
-                imageURL = images[0].src();
+                imageURL = images[0].transformedSrc();
             }
 
             ImageURL = imageURL;

@@ -74,13 +74,13 @@
         public Animator Animator;
 
         [Header("Templates")]
-        public GenericCartView CartViewPrefab;
+        public CartView CartViewPrefab;
         public ProductListView ProductListViewPrefab;
         public ProductDetailsView ProductDetailsViewPrefab;
 
         [Header("Views")]
         public ViewSwitcher ViewSwitcher;
-        private GenericCartView _cartView;
+        private CartView _cartView;
         private ProductListView _productListView;
         private ProductDetailsView _productDetailsView;
         private GenericMultiProductShopView _activeView;
@@ -92,7 +92,7 @@
         public void InitializeViews() {
             _productListView = Instantiate<ProductListView>(ProductListViewPrefab);
             _productDetailsView = Instantiate<ProductDetailsView>(ProductDetailsViewPrefab);
-            _cartView = Instantiate<GenericCartView>(CartViewPrefab);
+            _cartView = Instantiate<CartView>(CartViewPrefab);
 
             _productListView.Shop = this;
             _productDetailsView.Shop = this;

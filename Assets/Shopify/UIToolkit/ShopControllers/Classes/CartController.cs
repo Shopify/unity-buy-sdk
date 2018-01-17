@@ -73,10 +73,7 @@ namespace Shopify.UIToolkit {
             var existingItem = Cart.LineItems.Get(variant);
             var newQuantity = existingItem == null ? 1 : existingItem.Quantity + 1;
             Cart.LineItems.AddOrUpdate(variant, newQuantity);
-
-            if (!_idsToVariants.ContainsKey(variant.id())) {
-                _idsToVariants.Add(variant.id(), variant);
-            }
+            CacheVariantByID(variant);
 
             OnQuantityChange.Invoke(TotalItemsInCart());
             OnCartItemsChange.Invoke(CartItems);
@@ -90,12 +87,10 @@ namespace Shopify.UIToolkit {
         public void UpdateVariant(ProductVariant variant, int quantity) {
             if (quantity <= 0) {
                 Cart.LineItems.Delete(variant);
-                _idsToVariants.Remove(variant.id());
+                RemoveVariantByIDFromCache(variant.id());
             } else {
                 Cart.LineItems.AddOrUpdate(variant, quantity);
-                if (!_idsToVariants.ContainsKey(variant.id())) {
-                    _idsToVariants.Add(variant.id(), variant);
-                }
+                CacheVariantByID(variant);
             }
 
             OnQuantityChange.Invoke(TotalItemsInCart());
@@ -113,12 +108,10 @@ namespace Shopify.UIToolkit {
 
             if (newQuantity == 0) {
                 Cart.LineItems.Delete(variant);
-                _idsToVariants.Remove(variant.id());
+                RemoveVariantByIDFromCache(variant.id());
             } else {
                 Cart.LineItems.AddOrUpdate(variant, newQuantity);
-                if (!_idsToVariants.ContainsKey(variant.id())) {
-                    _idsToVariants.Add(variant.id(), variant);
-                }
+                CacheVariantByID(variant);
             }
 
             OnQuantityChange.Invoke(TotalItemsInCart());
@@ -166,6 +159,16 @@ namespace Shopify.UIToolkit {
 
         private int TotalItemsInCart() {
             return Cart.LineItems.All().Sum((x) => (int) x.Quantity);
+        }
+
+        private void CacheVariantByID(ProductVariant variant) {
+            if (!_idsToVariants.ContainsKey(variant.id())) {
+                _idsToVariants.Add(variant.id(), variant);
+            }
+        }
+
+        private void RemoveVariantByIDFromCache(string variantId) {
+            _idsToVariants.Remove(variantId);
         }
     }
 }

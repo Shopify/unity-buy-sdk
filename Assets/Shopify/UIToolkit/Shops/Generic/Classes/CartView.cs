@@ -6,13 +6,19 @@ namespace Shopify.UIToolkit.Shops.Generic {
     using System.Collections.Generic;
     using System;
 
-    public class GenericCartView : GenericMultiProductShopView {
+    public class CartView : GenericMultiProductShopView {
         public CartItemView CartItemTemplate;
         public ScrollRect CartItemList;
 
         private RectTransform _scrollContent {
             get {
                 return CartItemList.content;
+            }
+        }
+
+        private new GenericMultiProductShop Shop {
+            get {
+                return Shop as GenericMultiProductShop;
             }
         }
 
