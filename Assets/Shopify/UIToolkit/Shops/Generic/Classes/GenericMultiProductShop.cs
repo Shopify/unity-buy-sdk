@@ -64,7 +64,9 @@
             _productListView.OnProductsLoaded(products);
         }
 
-        void IMultiProductShop.OnCartItemsChanged(CheckoutLineItem[] lineItems) { }
+        void IMultiProductShop.OnCartItemsChanged(List<CartItem> cartItems) {
+            _cartView.OnCartItemsChanged(cartItems);
+        }
 
         #endregion
 
