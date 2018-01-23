@@ -9,6 +9,7 @@ namespace Shopify.UIToolkit.Shops.Generic {
     public class CartView : GenericMultiProductShopView {
         public CartItemView CartItemTemplate;
         public ScrollRect CartItemList;
+        public Text EmptyLabel;
 
         private RectTransform _scrollContent {
             get {
@@ -42,6 +43,15 @@ namespace Shopify.UIToolkit.Shops.Generic {
         private void UpdateCartList(List<CartItem> cartItems) {
             foreach (Transform child in _scrollContent) {
                 GameObject.Destroy(child);
+            }
+
+            if (cartItems.Count == 0) {
+                CartItemList.gameObject.SetActive(false);
+                EmptyLabel.gameObject.SetActive(true);
+                return;
+            } else {
+                CartItemList.gameObject.SetActive(true);
+                EmptyLabel.gameObject.SetActive(false);
             }
 
             foreach (var cartItem in cartItems) {
