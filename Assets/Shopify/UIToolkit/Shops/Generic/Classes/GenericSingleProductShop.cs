@@ -57,8 +57,16 @@
             throw new System.NotImplementedException(); 
         }
 
-        void IShop.OnCartQuantityChanged(int newQuantity) {
-            throw new System.NotImplementedException(); 
+        void IShop.OnCartQuantityChanged(int totalNumberOfCartItems) {
+            throw new System.NotImplementedException();
+        }
+
+        void IShop.OnCartItemsChanged(List<CartItem> cartItems) {
+            throw new System.NotImplementedException();
+        }
+
+        void IShop.UpdateCartQuantityForVariant(ProductVariant variant, long quantity) {
+            throw new System.NotImplementedException();
         }
 
         void ISingleProductShop.OnProductLoaded(Product product, ProductVariant[] variants) {

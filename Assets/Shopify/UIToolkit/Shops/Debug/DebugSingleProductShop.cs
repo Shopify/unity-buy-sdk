@@ -1,6 +1,7 @@
 ﻿namespace Shopify.UIToolkit.Shops {
     using System.Linq;
     using System.Text;
+    using System.Collections.Generic;
     using Shopify.Unity;
     using Shopify.Unity.SDK;
     using UnityEngine;
@@ -40,8 +41,16 @@
             LogEvent("OnProductLoaded", product, variants);
         }
 
-        public void OnCartQuantityChanged(int newQuantity) {
-            LogEvent("OnCartQuantityChanged", newQuantity);
+        void IShop.OnCartQuantityChanged(int totalNumberOfCartItems) {
+            LogEvent("OnCartQuantityChanged", totalNumberOfCartItems);
+        }
+
+        void IShop.OnCartItemsChanged(List<CartItem> cartItems) {
+            LogEvent("OnCartItemsChanged");
+        }
+
+        void IShop.UpdateCartQuantityForVariant(ProductVariant variant, long quantity) {
+            LogEvent("UpdateCartQuantityForVariant");
         }
 
         private void LogEvent(string eventName, params object[] args) {

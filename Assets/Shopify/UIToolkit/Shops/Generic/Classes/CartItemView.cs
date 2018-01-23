@@ -1,67 +1,71 @@
 namespace Shopify.UIToolkit {
     using Shopify.Unity;
     using Shopify.Unity.SDK;
+    using Shopify.UIToolkit.Shops.Generic;
     using System.Collections.Generic;
     using System.Linq;
     using System;
     using UnityEngine;
+    using UnityEngine.Events;
     using UnityEngine.UI;
-
-    /// <summary>
-    /// A View Model for converting the CartItem data into a format for the CartItemView component.
-    /// </summary>
-    public struct CartItemViewModel {
-        public readonly string Title;
-        public readonly string VariantDescription;
-        public readonly string PriceText;
-        public readonly string QuantityText;
-        public readonly string ImageURL;
-
-        public CartItemViewModel(CartItem cartItem) {
-            var variant = cartItem.Variant;
-            var product = variant.product();
-
-            Title = product.title();
-            VariantDescription = variant.title();
-            PriceText = string.Format("${0}", variant.price());
-            QuantityText = cartItem.Quantity.ToString();
-
-            string imageURL;
-            try {
-                imageURL = variant.image().transformedSrc();
-            } catch (NullReferenceException) {
-                var images = (List<Shopify.Unity.Image>)product.images();
-                imageURL = images[0].transformedSrc();
-            }
-
-            ImageURL = imageURL;
-        }
-    }
 
     /// <summary>
     /// Behaviour for linking all the pieces of the cart list item together.
     /// </summary>
     public class CartItemView : MonoBehaviour {
+        [HideInInspector]
+        public GenericMultiProductShop Shop;
+
+        [Header("View Properties")]
         public RemoteImageLoader ImageLoader;
         public Text TitleLabel;
         public Text PriceLabel;
         public Text VariantLabel;
         public Text QuantityLabel;
+        public Button DecreaseQuantityButton;
+        public Button IncreaseQuantityButton;
 
-        public void SetCartItemViewModel(CartItemViewModel model) {
-            TitleLabel.text = model.Title;
-            PriceLabel.text = model.PriceText;
+        private CartItem _item;
+        private ProductVariant _variant {
+            get {
+                return _item.Variant;
+            }
+        }
 
-            VariantLabel.gameObject.SetActive(model.VariantDescription == null);
-            VariantLabel.text = model.VariantDescription;
-            QuantityLabel.text = model.QuantityText;
+        public void SetCartItem(CartItem item) {
+            _item = item;
 
-            if (model.ImageURL != null) {
-                ImageLoader.LoadImage(model.ImageURL);
+            var product = _variant.product();
+
+            TitleLabel.text = product.title();
+            VariantLabel.gameObject.SetActive(_variant.title() == null);
+            VariantLabel.text = _variant.title();
+
+            PriceLabel.text = string.Format("${0}", _variant.price());
+            QuantityLabel.text = item.Quantity.ToString();
+
+            string imageURL;
+            try {
+                imageURL = _variant.image().transformedSrc();
+            } catch (NullReferenceException) {
+                var images = (List<Shopify.Unity.Image>)product.images();
+                imageURL = images[0].transformedSrc();
+            }
+
+            if (imageURL != null) {
+                ImageLoader.LoadImage(imageURL);
                 ImageLoader.gameObject.SetActive(true);
             } else {
                 ImageLoader.gameObject.SetActive(false);
             }
+        }
+
+        public void DecreaseQuantity() {
+            Shop.UpdateCartQuantityForVariant(_variant, _item.Quantity - 1);
+        }
+
+        public void IncreaseQuantity() {
+            Shop.UpdateCartQuantityForVariant(_variant, _item.Quantity + 1);
         }
     }
 }

@@ -38,10 +38,6 @@
 
         #region Shop Controller Events
 
-        void IShop.OnCartQuantityChanged(int newQuantity) {
-            throw new System.NotImplementedException();
-        }
-
         void IShop.OnError(ShopifyError error) {
             Debug.Log(error.Description);
         }
@@ -70,13 +66,21 @@
             throw new System.NotImplementedException();
         }
 
+        void IShop.OnCartQuantityChanged(int totalNumberOfCartItems) {
+            throw new System.NotImplementedException();
+        }
+
+        void IShop.OnCartItemsChanged(List<CartItem> cartItems) {
+            _cartView.OnCartItemsChanged(cartItems);
+        }
+
+        public void UpdateCartQuantityForVariant(ProductVariant variant, long quantity) {
+            _controller.Cart.UpdateVariant(variant, quantity);
+        }
+
         void IMultiProductShop.OnProductsLoaded(Product[] products, string after) {
             _productCache.Add(products, after);
             _productListView.OnProductsLoaded(products);
-        }
-
-        void IMultiProductShop.OnCartItemsChanged(List<CartItem> cartItems) {
-            _cartView.OnCartItemsChanged(cartItems);
         }
 
         #endregion

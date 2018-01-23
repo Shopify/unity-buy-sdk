@@ -84,7 +84,7 @@ namespace Shopify.UIToolkit {
         /// </summary>
         /// <param name="variant">The variant to modify</param>
         /// <param name="quantity">The desired quantity</param>
-        public void UpdateVariant(ProductVariant variant, int quantity) {
+        public void UpdateVariant(ProductVariant variant, long quantity) {
             if (quantity <= 0) {
                 Cart.LineItems.Delete(variant);
                 RemoveVariantByIDFromCache(variant.id());

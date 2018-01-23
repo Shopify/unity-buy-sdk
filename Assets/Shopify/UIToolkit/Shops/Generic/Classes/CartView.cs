@@ -45,9 +45,9 @@ namespace Shopify.UIToolkit.Shops.Generic {
             }
 
             foreach (var cartItem in cartItems) {
-                var model = new CartItemViewModel(cartItem);
                 var itemView = Instantiate(CartItemTemplate);
-                itemView.SetCartItemViewModel(model);
+                itemView.Shop = Shop;
+                itemView.SetCartItem(cartItem);
                 itemView.transform.SetParent(_scrollContent.transform, false);
                 itemView.gameObject.SetActive(true);
             }
