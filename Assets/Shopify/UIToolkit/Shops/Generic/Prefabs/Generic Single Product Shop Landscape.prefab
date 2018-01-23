@@ -553,6 +553,7 @@ GameObject:
   - component: {fileID: 114590915328506886}
   - component: {fileID: 114520223430125614}
   - component: {fileID: 114931156454964050}
+  - component: {fileID: 114943990256441754}
   m_Layer: 5
   m_Name: Generic Single Product Shop Landscape
   m_TagString: Untagged
@@ -1598,8 +1599,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114931156454964050}
-        m_MethodName: OnAddToCart
+      - m_Target: {fileID: 114943990256441754}
+        m_MethodName: NotifyOnAddToCartClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1739,14 +1740,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b93e54d41dcf14f41b79224dedde38f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Title: {fileID: 114256265485528394}
-  Price: {fileID: 114959914432544306}
-  Description: {fileID: 114117319328384372}
-  VariantDropdownMenu: {fileID: 114848363938069104}
-  ProductImageViewArea: {fileID: 1235734219332914}
-  ProductImageHolderTemplate: {fileID: 114421396957676202}
-  ProductImageContainer: {fileID: 1814328084251656}
-  ActiveImage: {fileID: 114409062201655740}
+  ViewBindings: {fileID: 114943990256441754}
 --- !u!114 &114932231261010510
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1774,6 +1768,30 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114943990256441754
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1895394906983660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e2f0bd79f1504d929b109daecc79d10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Title: {fileID: 114256265485528394}
+  Price: {fileID: 114959914432544306}
+  Description: {fileID: 114117319328384372}
+  VariantDropdownMenu: {fileID: 114848363938069104}
+  ProductImageViewArea: {fileID: 1235734219332914}
+  ProductImageHolderTemplate: {fileID: 114421396957676202}
+  ProductImageContainer: {fileID: 1814328084251656}
+  ActiveImage: {fileID: 114409062201655740}
+  OnAddToCartClicked:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
 --- !u!114 &114951074373174364
 MonoBehaviour:
   m_ObjectHideFlags: 1
