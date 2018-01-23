@@ -1,8 +1,23 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 068531cdc4a1842ebbf2854ed51c6953
 timeCreated: 1515774439
 licenseType: Free
 MonoImporter:
+=======
+<<<<<<< HEAD
+guid: 674a4b8a66ed942849c9adb72f9975cb
+timeCreated: 1515791296
+licenseType: Pro
+MonoImporter:
+  externalObjects: {}
+=======
+guid: 6e57be8fe35d74347a1c229d50b8260d
+timeCreated: 1515781272
+licenseType: Free
+MonoImporter:
+>>>>>>> Added back in image selection code and updated prefab
+>>>>>>> Added back in image selection code and updated prefab
   serializedVersion: 2
   defaultReferences: []
   executionOrder: 0

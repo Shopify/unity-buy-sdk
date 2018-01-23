@@ -104,7 +104,7 @@ namespace Shopify.Examples.Panels {
                 var instanceImage = instance.ForegroundButton.GetComponent<Image>();
                 StartCoroutine(
                     ImageHelper.AssignImage(
-                        image.src(),
+                        image.transformedSrc(),
                         instanceImage,
                         instance.BrokenImageIcon
                     )
@@ -114,7 +114,7 @@ namespace Shopify.Examples.Panels {
                 instance.transform.position += new Vector3(offset, 0, 0);
                 var instanceButton = instance.ForegroundButton.GetComponent<Button>();
                 instanceButton.onClick.AddListener(() =>
-                   StartCoroutine(ImageHelper.AssignImage(image.src(), ProductImage))
+                   StartCoroutine(ImageHelper.AssignImage(image.transformedSrc(), ProductImage))
                 );
 
                 offset += 100;
