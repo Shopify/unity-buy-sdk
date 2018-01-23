@@ -6,12 +6,15 @@ namespace Shopify.UIToolkit.Shops {
     using System.Linq;
     using UnityEngine;
     using UnityEngine.UI;
+    using UnityEngine.Events;
 
     public class MultiProductListItem : MonoBehaviour {
         public RemoteImageLoader ImageLoader;
         public Text TitleLabel;
         public Text PriceLabel;
         public Text DescriptionLabel;
+
+        [HideInInspector] public UnityEvent OnClick = new UnityEvent();
 
         private const int MaxDescriptionCharacters = 80;
 
@@ -27,5 +30,10 @@ namespace Shopify.UIToolkit.Shops {
                 ImageLoader.LoadImage(images.First().src());
             }
         }
+
+        public void DispatchOnClick() {
+            OnClick.Invoke();
+        }
+
     }
 }
