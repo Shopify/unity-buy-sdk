@@ -5,14 +5,17 @@
     using UnityEngine;
 
     public class MultiProductShopController : ShopControllerBase {
-        public new IMultiProductShop Shop { 
-            get { 
-                return base.Shop as IMultiProductShop; 
+        private string cursor = null;
+        private bool allProductsLoaded = false;
+
+        public new IMultiProductShop Shop {
+            get {
+                return base.Shop as IMultiProductShop;
             }
 
             set {
                 base.Shop = value;
-            } 
+            }
         }
 
         public override void OnHide() {
@@ -20,7 +23,15 @@
         }
 
         public override void OnShow() {
-            Client.products(OnProductsLoaded);
+            LoadMoreProducts ();
+        }
+
+        public void LoadMoreProducts() {
+            if (allProductsLoaded) {
+                return;
+            }
+
+            Client.products(OnProductsLoaded, after: cursor);
         }
 
         private void OnProductsLoaded(List<Product> products, ShopifyError error, string after) {
@@ -32,6 +43,12 @@
             if (products.Count == 0) {
                 Shop.OnError(new ShopifyError(ShopifyError.ErrorType.UserError, "Product not found"));
                 return;
+            }
+
+            if (string.IsNullOrEmpty(after)) {
+                allProductsLoaded = true;
+            } else {
+                cursor = after;
             }
 
             Shop.OnProductsLoaded(products.ToArray(), after);

@@ -152,5 +152,9 @@
             CloseButton.gameObject.SetActive(!canNavigateBack);
             BackButton.gameObject.SetActive(canNavigateBack);
         }
+
+        public void LoadMoreProducts() {
+            _controller.LoadMoreProducts ();
+        }
     }
 }
