@@ -5,9 +5,11 @@
     using Shopify.UIToolkit;
     using UnityEngine;
     using UnityEngine.UI;
+    using System.Linq;
 
     public interface IGenericMultiProductShop {
-
+        void AddItemToCart(ProductVariant variant);
+        void ViewProductDetails(Product product, ProductVariant[] variants);
     }
 
     [RequireComponent(typeof(MultiProductShopController))]
@@ -129,11 +131,12 @@
             gameObject.SetActive(false);
         }
 
-        public void ViewProductDetails(Product product) {
+        public void ViewProductDetails(Product product, ProductVariant[] variants) {
             if (_activeView == _productDetailsView) return;
             ViewSwitcher.PushView(_productDetailsView.RectTransform);
             _activeView = _productDetailsView;
             OnViewChanged();
+            _productDetailsView.FillWithProductAndVariants(product, variants);
         }
 
         public void OpenCart() {
@@ -147,6 +150,10 @@
             ViewSwitcher.GoBack();
             _activeView = ViewSwitcher.ActiveView().GetComponent<GenericMultiProductShopView>();
             OnViewChanged();
+        }
+
+        public void AddItemToCart(ProductVariant variant) {
+            _controller.Cart.AddVariant(variant);
         }
 
         private void OnViewChanged() {
