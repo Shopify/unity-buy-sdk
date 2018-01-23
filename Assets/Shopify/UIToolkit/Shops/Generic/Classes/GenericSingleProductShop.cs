@@ -53,21 +53,37 @@
 
         #region IShop Interface
 
-        void IShop.OnLoadingStarted() {}
+        void IShop.OnLoadingStarted() {
+            throw new System.NotImplementedException(); 
+        }
 
-        void IShop.OnLoadingFinished() {}
+        void IShop.OnLoadingFinished() {
+            throw new System.NotImplementedException(); 
+        }
 
-        void IShop.OnError(ShopifyError error) {}
+        void IShop.OnError(ShopifyError error) {
+            throw new System.NotImplementedException(); 
+        }
 
-        void IShop.OnPurchaseStarted() {}
+        void IShop.OnPurchaseStarted() {
+            throw new System.NotImplementedException(); 
+        }
 
-        void IShop.OnPurchaseCancelled() {}
+        void IShop.OnPurchaseCancelled() {
+            throw new System.NotImplementedException(); 
+        }
 
-        void IShop.OnPurchaseCompleted() {}
+        void IShop.OnPurchaseCompleted() {
+            throw new System.NotImplementedException(); 
+        }
 
-        void IShop.OnPurchaseFailed(ShopifyError error) {}
+        void IShop.OnPurchaseFailed(ShopifyError error) {
+            throw new System.NotImplementedException(); 
+        }
 
-        void IShop.OnCartQuantityChanged(int newQuantity) {}
+        void IShop.OnCartQuantityChanged(int newQuantity) {
+            throw new System.NotImplementedException(); 
+        }
 
         void ISingleProductShop.OnProductLoaded(Product product, ProductVariant[] variants) {
             _productVariants = variants;
