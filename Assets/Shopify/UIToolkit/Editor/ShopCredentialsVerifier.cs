@@ -25,7 +25,7 @@
         public void DrawInspectorGUI(SerializedObject serializedObject) {
             EditorGUILayout.Separator();
 
-            var disableCredentialsForm = _verifier.HasVerifiedCredentials();
+            var disableCredentialsForm = _verifier.HasVerifiedCredentials() || _verifier.RequestInProgress;
 
             EditorGUI.BeginDisabledGroup(disableCredentialsForm);
             DrawCredentialsForm(serializedObject);
@@ -43,6 +43,13 @@
         }
 
         private void DrawActionButton() {
+            if (_verifier.RequestInProgress) {
+                EditorGUI.BeginDisabledGroup(true);
+                ActionButton("Verifying...", () => { });
+                EditorGUI.EndDisabledGroup();
+                return;
+            }
+
             switch (_verifier.Credentials.CredentialsVerificationState) {
                 case ShopCredentialsVerificationState.Invalid:
                     ActionButton("Try Again", _verifier.VerifyCredentials);
@@ -79,7 +86,7 @@
 
         public IShopCredentials Credentials { private set; get; }
 
-        private bool _IsRequestInProgress;
+        public bool RequestInProgress { get; private set; }
 
         /// <summary>
         /// Creates a new verifier
@@ -96,37 +103,35 @@
         /// <param name="onSuccess">Callback called when the credentials are found to be valid</param>
         /// <param name="onFailure">Callback called when the credentials are found to be invalid</param>
         public void VerifyCredentials(Action onSuccess, Action onFailure) {
-            if (_IsRequestInProgress) 
-                throw new InvalidOperationException("Can't verify credentials when a verification request is already in progress.");
-
-            _IsRequestInProgress = true;
+            RequestInProgress = true;
 
             ShopifyClient client;
+
             try {
                 client = Client();
-            } catch (ArgumentException e) {
-                Debug.LogWarning(e);
-                _IsRequestInProgress = false;
+
+                client.Query((root) => {
+                    root.shop((shop) => {
+                        shop.name();
+                    });
+                }, (QueryRoot result, ShopifyError error) => {
+                    RequestInProgress = false;
+
+                    OnVerificationRequestComplete(result, error);
+
+                    if (error != null) {
+                        onFailure();
+                    } else {
+                        onSuccess();
+                    }
+                });
+            } catch (Exception e) {
+                Debug.LogError(e);
+                RequestInProgress = false;
                 UpdateVerificationState(ShopCredentialsVerificationState.Invalid);
                 onFailure();
                 return;
             }
-
-            client.Query((root) => {
-                root.shop((shop) => {
-                    shop.name();
-                });
-            }, (QueryRoot result, ShopifyError error) => {
-                _IsRequestInProgress = false;
-
-                OnVerificationRequestComplete(result, error);
-
-                if (error != null) {
-                    onFailure();
-                } else {
-                    onSuccess();
-                }
-            });
         }
 
         /// <summary>
@@ -162,7 +167,7 @@
         }
 
         private void OnVerificationRequestComplete(QueryRoot result, ShopifyError errors) {
-            _IsRequestInProgress = false;
+            RequestInProgress = false;
 
             if (errors != null) {
                 UpdateVerificationState(ShopCredentialsVerificationState.Invalid);

@@ -4,6 +4,7 @@
     using NUnit.Framework;
     using UnityEngine.TestTools;
     using Shopify.UIToolkit.Editor;
+    using System.Text.RegularExpressions;
 
     [TestFixture]
     public class TestShopCredentialsVerifier {
@@ -108,6 +109,8 @@
 
         [UnityTest]
         public IEnumerator TestVerifierFailsForBlankDomain() {
+            LogAssert.Expect(LogType.Error, new Regex(@"Domain is invalid\. Make sure that it is not empty\/blank\."));
+
             _ObjectWithCredentials.CredentialsVerificationState = ShopCredentialsVerificationState.Unverified;
             _ObjectWithCredentials.AccessToken = "  ";
             _ObjectWithCredentials.ShopDomain = "  ";
@@ -130,6 +133,8 @@
             Assert.IsFalse(_Verifier.HasVerifiedCredentials());
             Assert.IsTrue(_ObjectWithCredentials.CredentialsVerificationState == ShopCredentialsVerificationState.Invalid);
             Assert.IsTrue(failureCallbackCalled);
+
+
         }
 
         [Test]
