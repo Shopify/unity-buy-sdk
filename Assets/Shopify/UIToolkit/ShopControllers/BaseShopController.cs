@@ -99,6 +99,7 @@ namespace Shopify.UIToolkit {
             _cachedCart.OnPurhcaseCancelled.AddListener(Shop.OnPurchaseCancelled);
             _cachedCart.OnPurchaseComplete.AddListener(Shop.OnPurchaseCompleted);
             _cachedCart.OnPurhchaseFailed.AddListener(Shop.OnPurchaseFailed);
+            _cachedCart.OnCartItemsChange.AddListener(Shop.OnCartItemsChanged);
             _cachedCart.OnQuantityChange.AddListener(Shop.OnCartQuantityChanged);
         }
 

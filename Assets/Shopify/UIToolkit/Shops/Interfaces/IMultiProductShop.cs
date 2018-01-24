@@ -16,11 +16,5 @@
         /// at the end of the fetched page.
         /// </param>
         void OnProductsLoaded(Product[] products, string after);
-
-        /// <summary>
-        /// Called when the Items in the cart have updated. 
-        /// </summary>
-        /// <param name="lineItems">The new line items in the cart</param>
-        void OnCartItemsChanged(List<CartItem> lineItems);
     }
 }
