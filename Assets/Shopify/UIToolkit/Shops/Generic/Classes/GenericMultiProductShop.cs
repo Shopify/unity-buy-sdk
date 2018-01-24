@@ -115,6 +115,8 @@
         }
 
         public void Show() {
+            Debug.Log("Show");
+
             if (_waitForHiddenAndDeactivateRoutine != null) {
                 StopCoroutine(_waitForHiddenAndDeactivateRoutine);
             }
