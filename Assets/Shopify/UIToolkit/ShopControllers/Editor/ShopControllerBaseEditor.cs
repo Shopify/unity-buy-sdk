@@ -10,6 +10,7 @@
     public interface IShopControllerBaseEditorView {
         void DrawShopCredentialsVerifier();
         void DrawShopHelp();
+        void DrawPaymentProperties();
     }
 
     public abstract class ShopControllerBaseEditor : Editor, IShopControllerBaseEditorView {
@@ -35,17 +36,12 @@
                 View.DrawShopHelp();
             }
 
-            EditorGUILayout.LabelField("Store Properties", EditorStyles.boldLabel);
-
             View.DrawShopCredentialsVerifier();
             if (_verifier.HasVerifiedCredentials()) {
                 OnShowConfiguration();
             }
 
-            #if UNITY_IOS
-            EditorGUILayout.LabelField("Payment Properties", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_appleMerchantID"));
-            #endif
+            View.DrawPaymentProperties();
 
             serializedObject.ApplyModifiedProperties();
         }
@@ -72,6 +68,7 @@
         private ShopifyClient _cachedClient;
 
         void IShopControllerBaseEditorView.DrawShopCredentialsVerifier() {
+            EditorGUILayout.LabelField("Store Properties", EditorStyles.boldLabel);
             _credentialsVerifierView.DrawInspectorGUI(serializedObject);
         }
 
@@ -82,6 +79,13 @@ Implement ISingleProductShop with your own custom script and add it to this game
             ";
 
             EditorGUILayout.HelpBox(message, MessageType.Warning);
+        }
+
+        void IShopControllerBaseEditorView.DrawPaymentProperties() {
+            #if UNITY_IOS
+            EditorGUILayout.LabelField("Payment Properties", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_appleMerchantID"));
+            #endif
         }
     }
 }
