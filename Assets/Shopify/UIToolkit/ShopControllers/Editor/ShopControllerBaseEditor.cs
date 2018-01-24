@@ -40,6 +40,8 @@
                 OnShowConfiguration();
             }
 
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_appleMerchantID"));
+
             serializedObject.ApplyModifiedProperties();
         }
 

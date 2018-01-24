@@ -28,6 +28,7 @@ namespace Shopify.UIToolkit {
                 InvalidateClient();
             }
         }
+        [Header("Store Properties")]
         [SerializeField] private string _shopDomain;
 
         /// <summary>
@@ -41,6 +42,16 @@ namespace Shopify.UIToolkit {
             }
         }
         [SerializeField] private string _accessToken;
+
+        /// <summary>
+        /// The Apple Merchant ID for processing Apple Pay payments.
+        /// </summary>
+        public string AppleMerchantID {
+            set { Cart.AppleMerchantID = value; } 
+            get { return Cart.AppleMerchantID; }
+        }
+        [Header("Payment Properties")]
+        [SerializeField] private string _appleMerchantID;
 
         /// <summary>
         /// What loader provider this controller uses to create the loader.
