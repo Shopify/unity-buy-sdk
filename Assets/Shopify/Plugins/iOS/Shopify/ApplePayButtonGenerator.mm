@@ -47,9 +47,6 @@ extern "C" {
     
     // Helper method for making a copy of a C String.
     const char* cStringCopy(const char* string, size_t length) {
-        if (string == NULL)
-            return NULL;
-        
         char* res = (char*)malloc((length + 1) * sizeof(char));
         strncpy(res, string, length + 1);
         return res;
@@ -92,6 +89,10 @@ extern "C" {
         // We create a malloc'ed copy of the string here so we can manually release the memory associated
         // with it on the Unity side using Marshal.FreeHGlobal.
         const char *utf8String = [byteArray UTF8String];
+        if (utf8String == NULL) {
+            return NULL;
+        }
+        
         return cStringCopy(utf8String, strlen(utf8String));
     }
 #ifdef __cplusplus
