@@ -1,4 +1,5 @@
-﻿namespace Shopify.Tests {
+﻿#if SHOPIFY_IOS_TEST
+namespace Shopify.Tests {
     using System.Collections;
     using System.Collections.Generic;
     using System.Runtime.InteropServices;
@@ -26,3 +27,4 @@
         }
     }
 }
+#endif
