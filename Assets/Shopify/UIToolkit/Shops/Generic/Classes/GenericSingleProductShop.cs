@@ -9,13 +9,14 @@
     using System.Collections.Generic;
     using System.Globalization;
     using Shopify.UIToolkit.Shops.Generic;
+    using System.Collections;
 
     [RequireComponent(typeof(SingleProductShopController))]
     public class GenericSingleProductShop : MonoBehaviour, ISingleProductShop {
+        public Animator Animator;
         public ProductDetailsViewBindings ViewBindings;
 
         private SingleProductShopController _controller;
-
 
         #region Mono Behaviour
         
@@ -72,11 +73,29 @@
 
         #region events
 
+        public void Show() {
+            gameObject.SetActive(true);
+            Animator.Play("Show", 0);
+        }
+
+        public void Hide() {
+            Animator.Play("Hide", 0);
+
+            if (_waitForHiddenAndDeactivateRoutine != null) StopCoroutine(_waitForHiddenAndDeactivateRoutine);
+            _waitForHiddenAndDeactivateRoutine = StartCoroutine(WaitForHiddenAndDeactivate());
+        }
+
         public void OnBuyNowClicked(ProductVariant variant) {
             _controller.Cart.AddVariant(variant);
             _controller.Cart.StartPurchase(CheckoutMode.Auto);
         }
 
         #endregion
+
+        private Coroutine _waitForHiddenAndDeactivateRoutine;
+        private IEnumerator WaitForHiddenAndDeactivate() {
+            yield return new WaitUntil(() => Animator.GetCurrentAnimatorStateInfo(0).IsName("Hidden"));
+            gameObject.SetActive(false);
+        }
     }
 }
