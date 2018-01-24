@@ -5,9 +5,6 @@
     using UnityEngine;
 
     public class MultiProductShopController : ShopControllerBase {
-        private string cursor = null;
-        private bool allProductsLoaded = false;
-
         public new IMultiProductShop Shop {
             get {
                 return base.Shop as IMultiProductShop;
@@ -23,14 +20,10 @@
         }
 
         public override void OnShow() {
-            LoadMoreProducts ();
+            LoadMoreProducts();
         }
 
-        public void LoadMoreProducts() {
-            if (allProductsLoaded) {
-                return;
-            }
-
+        public void LoadMoreProducts(string cursor = null) {
             Client.products(OnProductsLoaded, after: cursor);
         }
 
@@ -43,12 +36,6 @@
             if (products.Count == 0) {
                 Shop.OnError(new ShopifyError(ShopifyError.ErrorType.UserError, "Product not found"));
                 return;
-            }
-
-            if (string.IsNullOrEmpty(after)) {
-                allProductsLoaded = true;
-            } else {
-                cursor = after;
             }
 
             Shop.OnProductsLoaded(products.ToArray(), after);
