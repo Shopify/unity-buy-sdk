@@ -131,6 +131,8 @@
 
         public void Hide() {
             Animator.Play("Hide", 0);
+
+            if (_waitForHiddenAndDeactivateRoutine != null) StopCoroutine(_waitForHiddenAndDeactivateRoutine);
             _waitForHiddenAndDeactivateRoutine = StartCoroutine(WaitForHiddenAndDeactivate());
         }
 
