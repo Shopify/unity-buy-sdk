@@ -60,7 +60,7 @@ namespace Shopify.Examples.Panels {
 
             VariantsDropdown.AddOptions(options);
 
-            // Only need to show the variants dropdown if there are more than one variant to choose from		
+            // Only need to show the variants dropdown if there are more than one variant to choose from
             VariantsDropdown.gameObject.SetActive(variants.Count > 1);
 
             // Show the appropriately positioned description text
@@ -71,7 +71,7 @@ namespace Shopify.Examples.Panels {
 
             // Assign the first product image to the main product image display
             var images = (List<Shopify.Unity.Image>)product.images();
-            StartCoroutine(ImageHelper.AssignImage(images[0].src(), ProductImage));
+            StartCoroutine(ImageHelper.AssignImage(images[0].transformedSrc(), ProductImage));
 
             RenderVariantImages(images);
 
@@ -122,7 +122,7 @@ namespace Shopify.Examples.Panels {
         }
 
         private void HandleDropdownChange(int option) {
-            // Change the current variant to what has been selected 
+            // Change the current variant to what has been selected
             var variants = (List<Shopify.Unity.ProductVariant>)CurrentProduct.variants();
             var variant = variants[VariantsDropdown.value];
             CurrentVariant = variant;
@@ -131,10 +131,10 @@ namespace Shopify.Examples.Panels {
 
             // If the variant has a particular image
             try {
-                imageSrc = variant.image().src();
+                imageSrc = variant.image().transformedSrc();
             } catch (NullReferenceException) {
                 var images = (List<Shopify.Unity.Image>)CurrentProduct.images();
-                imageSrc = images.First().src();
+                imageSrc = images.First().transformedSrc();
             }
 
             StartCoroutine(ImageHelper.AssignImage(imageSrc, ProductImage));
