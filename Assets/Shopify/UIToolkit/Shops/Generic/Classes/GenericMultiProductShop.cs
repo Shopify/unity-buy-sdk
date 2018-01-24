@@ -15,11 +15,19 @@
     [RequireComponent(typeof(MultiProductShopController))]
     public class GenericMultiProductShop : MonoBehaviour, IMultiProductShop, IGenericMultiProductShop {
         private MultiProductShopController _controller;
+        private ProductCache _productCache;
+
+        public ProductCache ProductCache {
+            get {
+                return _productCache;
+            }
+        }
 
         #region MonoBehaviour
 
         private void Awake() {
             _controller = GetComponent<MultiProductShopController>();
+            _productCache = new ProductCache();
         }
 
         private void Start() {
@@ -63,6 +71,7 @@
         }
 
         void IMultiProductShop.OnProductsLoaded(Product[] products, string after) {
+            _productCache.Add(products, after);
             _productListView.OnProductsLoaded(products);
         }
 
@@ -160,6 +169,10 @@
             var canNavigateBack = ViewSwitcher.CanNavigateBack();
             CloseButton.gameObject.SetActive(!canNavigateBack);
             BackButton.gameObject.SetActive(canNavigateBack);
+        }
+
+        public void LoadMoreProducts() {
+            _controller.LoadMoreProducts (_productCache.Cursor);
         }
     }
 }
