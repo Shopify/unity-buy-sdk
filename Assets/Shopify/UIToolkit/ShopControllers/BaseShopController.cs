@@ -28,7 +28,6 @@ namespace Shopify.UIToolkit {
                 InvalidateClient();
             }
         }
-        [Header("Store Properties")]
         [SerializeField] private string _shopDomain;
 
         /// <summary>
@@ -43,14 +42,6 @@ namespace Shopify.UIToolkit {
         }
         [SerializeField] private string _accessToken;
 
-        /// <summary>
-        /// The Apple Merchant ID for processing Apple Pay payments.
-        /// </summary>
-        public string AppleMerchantID {
-            set { Cart.AppleMerchantID = value; } 
-            get { return Cart.AppleMerchantID; }
-        }
-        [Header("Payment Properties")]
         [SerializeField] private string _appleMerchantID;
 
         /// <summary>
@@ -104,7 +95,7 @@ namespace Shopify.UIToolkit {
 
         private void SetupClientAndCart() {
             _cachedClient = new ShopifyClient(LoaderProvider.GetLoader(AccessToken, ShopDomain));
-            _cachedCart = new CartController(_cachedClient.Cart());
+            _cachedCart = new CartController(_cachedClient.Cart(), _appleMerchantID);
             
             _cachedCart.OnPurchaseStarted.AddListener(Shop.OnPurchaseStarted);
             _cachedCart.OnPurhcaseCancelled.AddListener(Shop.OnPurchaseCancelled);

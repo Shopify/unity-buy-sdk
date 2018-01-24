@@ -40,13 +40,12 @@ namespace Shopify.UIToolkit {
         public UnityEvent OnPurhcaseCancelled = new UnityEvent();
         public PurchaseFailedEvent OnPurhchaseFailed = new PurchaseFailedEvent();
 
-        [HideInInspector]
-        public string AppleMerchantID;
-
         private Dictionary<string, ProductVariant> _idsToVariants = new Dictionary<string, ProductVariant>();
+        private string _appleMerchantID;
 
-        public CartController(Cart cart) {
+        public CartController(Cart cart, string appleMerchantID) {
             SetCart(cart);
+            _appleMerchantID = appleMerchantID;
         }
 
         public void SetCart(Cart cart) {
@@ -171,7 +170,7 @@ namespace Shopify.UIToolkit {
 
         private string NativePayKeyForCurrentPlatform() {
             #if UNITY_IOS
-            return AppleMerchantID;
+            return _appleMerchantID;
             #else
             return null;
             #endif

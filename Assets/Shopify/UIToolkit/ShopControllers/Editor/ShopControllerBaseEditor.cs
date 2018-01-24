@@ -35,12 +35,17 @@
                 View.DrawShopHelp();
             }
 
+            EditorGUILayout.LabelField("Store Properties", EditorStyles.boldLabel);
+
             View.DrawShopCredentialsVerifier();
             if (_verifier.HasVerifiedCredentials()) {
                 OnShowConfiguration();
             }
 
+            #if UNITY_IOS
+            EditorGUILayout.LabelField("Payment Properties", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_appleMerchantID"));
+            #endif
 
             serializedObject.ApplyModifiedProperties();
         }
