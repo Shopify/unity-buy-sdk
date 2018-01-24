@@ -27,7 +27,7 @@ namespace Shopify.Unity.SDK {
                 .id()
                 .image(pci => pci
                     .altText()
-                    .src()
+                    .transformedSrc()
                 )
                 .title()
                 .description()
@@ -41,7 +41,7 @@ namespace Shopify.Unity.SDK {
                 collection
                     .image(pci => pci
                         .altText()
-                        .src(),
+                        .transformedSrc(),
                         maxWidth : imageResolutions[alias],
                         maxHeight : imageResolutions[alias],
                         alias : alias

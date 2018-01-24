@@ -92,7 +92,7 @@ namespace Shopify.Unity.SDK {
         public void Image(ImageQuery image) {
             image
                 .altText()
-                .src();
+                .transformedSrc();
         }
 
         public void ProductVariant(ProductVariantQuery variant, Dictionary<string, int> imageResolutions) {
@@ -101,7 +101,7 @@ namespace Shopify.Unity.SDK {
                 .availableForSale()
                 .image(pnvi => pnvi
                     .altText()
-                    .src()
+                    .transformedSrc()
                 )
                 .price()
                 .title()
@@ -116,7 +116,7 @@ namespace Shopify.Unity.SDK {
                 variant.image(
                     pnvi => pnvi
                     .altText()
-                    .src(),
+                    .transformedSrc(),
                     maxWidth : imageResolutions[alias], maxHeight : imageResolutions[alias], alias : alias
                 );
             }

@@ -136,10 +136,10 @@ namespace Shopify.Unity {
         ///
         /// \code{.cs}
         /// // Returns an image source url whose dimensions are never greater than 100px
-        /// string srcSmallImage = productVariant.image("small").src();
+        /// string srcSmallImage = productVariant.image("small").transformedSrc();
         ///
         /// // Returns an image source url whose dimensions are never greater than 1024px
-        /// string src1024Image = productVariant.image("resolution_1024").src();
+        /// string src1024Image = productVariant.image("resolution_1024").transformedSrc();
         /// \endcode
         /// </summary>
         public static Dictionary<string, int> DefaultImageResolutions = new Dictionary<string, int> () { { "pico", 16 }, { "icon", 32 }, { "thumb", 50 }, { "small", 100 }, { "compact", 160 }, { "medium", 240 }, { "large", 480 }, { "grande", 600 }, { "resolution_1024", 1024 }, { "resolution_2048", 2048 }
@@ -483,7 +483,7 @@ namespace Shopify.Unity {
         }
 
         /// <summary>
-        /// Generates a query to receive selected <c>collections</c> from a Shopify store. 
+        /// Generates a query to receive selected <c>collections</c> from a Shopify store.
         /// The generated query will query the following on collections:
         ///     - id
         ///     - title
@@ -517,7 +517,7 @@ namespace Shopify.Unity {
         }
 
         /// <summary>
-        /// Generates a query to fetch the specified <c>collections</c> by id from a Shopify store. 
+        /// Generates a query to fetch the specified <c>collections</c> by id from a Shopify store.
         /// The generated query will query the following on collections:
         ///     - id
         ///     - title

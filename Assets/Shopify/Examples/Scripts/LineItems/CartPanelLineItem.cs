@@ -49,10 +49,10 @@ namespace Shopify.Examples.LineItems {
             Price.text = variant.price().ToString("C");
 
             try {
-                _imageSrc = variant.image().src();
+                _imageSrc = variant.image().transformedSrc();
             } catch (NullReferenceException) {
                 var images = (List<Shopify.Unity.Image>)product.images();
-                _imageSrc = images[0].src();
+                _imageSrc = images[0].transformedSrc();
             }
 
             _currentVariant = variant;
