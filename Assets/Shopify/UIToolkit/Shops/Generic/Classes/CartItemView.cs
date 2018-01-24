@@ -22,9 +22,7 @@ namespace Shopify.UIToolkit {
         public Text PriceLabel;
         public Text VariantLabel;
         public Text QuantityLabel;
-        public Button DecreaseQuantityButton;
-        public Button IncreaseQuantityButton;
-
+        
         private CartItem _item;
         private ProductVariant _variant {
             get {
