@@ -42,5 +42,9 @@ namespace Shopify.UIToolkit {
                 _products.Add(product);
             }
         }
+
+        public Product Get(int index) {
+            return _products[index];
+        }
     }
 }
