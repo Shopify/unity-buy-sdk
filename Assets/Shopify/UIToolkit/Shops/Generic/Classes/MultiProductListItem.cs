@@ -27,7 +27,7 @@ namespace Shopify.UIToolkit.Shops {
 
             var images = (List<Shopify.Unity.Image>)product.images();
             if (images.Count > 0) {
-                ImageLoader.LoadImage(images.First().src());
+                ImageLoader.LoadImage(images.First().transformedSrc());
             }
         }
 

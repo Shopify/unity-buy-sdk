@@ -110,12 +110,12 @@
                 productImage.transform.SetParent(ProductImageContainer.transform, false);
                 productImage.gameObject.SetActive(true);
                 productImage.OnSelectedImage = OnSelectProductImage;
-                productImage.LoadImage(image.src());
+                productImage.LoadImage(image.transformedSrc());
                 _displayedProductImages.Add(productImage);
             }
 
             ActiveImage.LoadImage(
-                imageURL: images[0].src(),
+                imageURL: images[0].transformedSrc(),
                 success: () => { ActiveImage.GetComponent<UnityEngine.UI.Image>().enabled = true; },
                 failure: null
             );
