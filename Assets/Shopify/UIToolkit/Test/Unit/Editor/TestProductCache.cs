@@ -55,6 +55,21 @@ namespace Shopify.UIToolkit.Test.Unit {
             Assert.AreEqual(_productCache.Complete, true);
             Assert.AreEqual(_productCache.Count, 1);
         }
+
+        [Test]
+        public void TestGet() {
+            Dictionary<string, object> dataJSON = new Dictionary<string, object>() {
+                {"title", "yoloswag"}
+            };
+
+            Product[] products = new Product[] {
+                new Product(dataJSON)
+            };
+
+            _productCache.Add(products, null);
+
+            Assert.AreEqual(_productCache.Get(0).title(), "yoloswag");
+        }
     }
 }
 #endif
