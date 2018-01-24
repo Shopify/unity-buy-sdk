@@ -18,7 +18,6 @@
 		private bool loadingMore;
 		private bool firstLoad = true;
 
-        private List<Product> _products = new List<Product> ();
         private List<MultiProductListItem> _scrollPoolElements = new List<MultiProductListItem> ();
 
         public ContentRegion contentRegion;
@@ -28,8 +27,6 @@
 
 			RectTransform rtt = (RectTransform)ListItemTemplate.transform;
 			elementWidth = rtt.rect.width;
-
-
 
 			for (int i = 0; i < potentiallyVisibleElements; i++) {
 				var element = Instantiate (ListItemTemplate, content.transform);
@@ -42,10 +39,6 @@
 		}
 
         public void OnProductsLoaded(Product[] products) {
-            foreach (var product in products) {
-                _products.Add(product);
-            }
-
 			if (firstLoad) {
 				for (int i = 0; i < potentiallyVisibleElements; i++) {
 					_scrollPoolElements[i].SetProduct (products [i]);
@@ -54,11 +47,9 @@
 				firstLoad = false;
 			}
 
-			contentRegion.endOffset = -elementWidth * (_products.Count - 5);
+			contentRegion.endOffset = -elementWidth * (shop.ProductCache.Count - 5);
 
 			loadingMore = false;
-
-			Debug.Log ("_products.Count " + _products.Count);
         }
 
 		private void ScrollDat(bool clipStart, bool clipEnd) {
@@ -67,13 +58,8 @@
 			}
 
             if ((elementWidth*(dataOffset+1)) + content.transform.localPosition.x <= 0.001) {
-                if (potentiallyVisibleElements + dataOffset >= _products.Count - 1) {
-					// if (!loadingMore) {
-					// 	GenericMultiProductShop shop = (GenericMultiProductShop)this.Shop;
-					// 	shop.LoadMoreProducts ();
-
-					// 	loadingMore = true;
-					// }
+                if (potentiallyVisibleElements + dataOffset >= shop.ProductCache.Count - 1) {
+					LoadMoreProducts();
 
                     return;
                 } else {
@@ -84,7 +70,7 @@
                     _scrollPoolElements.Remove (firstElement);
                     _scrollPoolElements.Add (firstElement);
                     firstElement.transform.localPosition = new Vector3 (lastElementX + elementWidth, 0, 0);
-                    firstElement.SetProduct (_products [potentiallyVisibleElements + dataOffset]);
+                    firstElement.SetProduct (shop.ProductCache.Get(potentiallyVisibleElements + dataOffset));
                 }
             }
 
@@ -99,11 +85,23 @@
                     _scrollPoolElements.Remove (lastElement);
                     _scrollPoolElements.Insert (0, lastElement);
                     lastElement.transform.localPosition = new Vector3 (firstElementX - elementWidth, 0, 0);
-                    lastElement.SetProduct (_products [dataOffset]);
+                    lastElement.SetProduct (shop.ProductCache.Get(dataOffset));
                 }
             }
+        }
 
+        private void LoadMoreProducts() {
+            if (loadingMore) {
+                return;
+            }
 
+            shop.LoadMoreProducts();
+
+            loadingMore = true;
+        }
+
+        private GenericMultiProductShop shop {
+            get { return (GenericMultiProductShop)this.Shop; }
         }
 
         private RectTransform _scrollContentRect {
