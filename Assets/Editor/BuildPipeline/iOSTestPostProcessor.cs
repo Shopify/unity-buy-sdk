@@ -1,5 +1,4 @@
 #if UNITY_EDITOR && UNITY_IOS
-#define SHOPIFY_IOS_TEST
 namespace Shopify.Unity.Editor.BuildPipeline {
     using UnityEngine;
     using UnityEditor;
