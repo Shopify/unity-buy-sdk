@@ -64,8 +64,6 @@ namespace Shopify.Unity.UI {
         private void GenerateNativePayImage() {
         #if UNITY_IOS
             GenerateApplePayImage();
-        #elif UNITY_ANDROID
-            GenerateAndroidPayImage();
         #endif
         }
 
@@ -107,12 +105,6 @@ namespace Shopify.Unity.UI {
                 new Vector2(0.5f, 0.5f),
                 100.0f
             );
-        }
-#endif
-
-#if UNITY_ANDROID
-        private void GenerateAndroidPayImage(RectTransform rectTransform) {
-            // TODO: Get a render of the Android Pay button for use in Unity.
         }
 #endif
     }
