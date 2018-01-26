@@ -11,66 +11,55 @@
         public ScrollRect ListView;
         public GameObject content;
 
-        private const int potentiallyVisibleElements = 6;
+        private const int potentiallyVisibleElements = 5;
         private float elementWidth;
         private int dataOffset = 0;
 
-		private bool loadingMore;
-		private bool firstLoad = true;
+        private bool loadingMore;
+        private bool firstLoad = true;
 
         private List<MultiProductListItem> _scrollPoolElements = new List<MultiProductListItem> ();
 
         public ContentRegion contentRegion;
 
-		public void Awake() {
-			contentRegion.OnScroll.AddListener (ScrollDat);
+        public void Awake() {
+            contentRegion.OnScroll.AddListener (OnScroll);
 
-			RectTransform rtt = (RectTransform)ListItemTemplate.transform;
-			elementWidth = rtt.rect.width;
+            RectTransform rtt = (RectTransform)ListItemTemplate.transform;
+            elementWidth = rtt.rect.width;
 
-			for (int i = 0; i < potentiallyVisibleElements; i++) {
-				var element = Instantiate (ListItemTemplate, content.transform);
-				element.gameObject.SetActive(true);
-				RectTransform rt = (RectTransform)element.transform;
-
-				element.transform.localPosition = new Vector2 (rt.rect.width * i, 0);
-				_scrollPoolElements.Add (element);
-			}
-		}
-
-        public void OnProductsLoaded(Product[] products) {
-			if (firstLoad) {
-				for (int i = 0; i < potentiallyVisibleElements; i++) {
-					_scrollPoolElements[i].SetProduct (products [i]);
-				}
-
-				firstLoad = false;
-			}
-
-			contentRegion.endOffset = -elementWidth * (shop.ProductCache.Count - 5);
-
-			loadingMore = false;
+            for (int i = 0; i < potentiallyVisibleElements; i++) {
+                var element = Instantiate (ListItemTemplate, content.transform);
+                element.gameObject.SetActive(true);
+                element.transform.localPosition = new Vector2 (elementWidth * i, 0);
+                _scrollPoolElements.Add (element);
+            }
         }
 
-		private void ScrollDat(bool clipStart, bool clipEnd) {
-			if (clipEnd) {
+        public void OnProductsLoaded(Product[] products) {
+            if (firstLoad) {
+                for (int i = 0; i < potentiallyVisibleElements; i++) {
+                    _scrollPoolElements[i].SetProduct (products [i]);
+                }
 
-			}
+                firstLoad = false;
+            }
 
+            contentRegion.endOffset = -elementWidth * (shop.ProductCache.Count - 5);
+
+            loadingMore = false;
+        }
+
+        private void OnScroll() {
             if ((elementWidth*(dataOffset+1)) + content.transform.localPosition.x <= 0.001) {
                 if (potentiallyVisibleElements + dataOffset >= shop.ProductCache.Count - 1) {
-					LoadMoreProducts();
+                    LoadMoreProducts();
 
                     return;
                 } else {
                     dataOffset += 1;
 
-                    var firstElement = _scrollPoolElements [0];
-                    var lastElementX = _scrollPoolElements [_scrollPoolElements.Count - 1].transform.localPosition.x;
-                    _scrollPoolElements.Remove (firstElement);
-                    _scrollPoolElements.Add (firstElement);
-                    firstElement.transform.localPosition = new Vector3 (lastElementX + elementWidth, 0, 0);
-                    firstElement.SetProduct (shop.ProductCache.Get(potentiallyVisibleElements + dataOffset));
+                    SwapElements(0, _scrollPoolElements.Count - 1, potentiallyVisibleElements + dataOffset);
                 }
             }
 
@@ -80,14 +69,17 @@
                 } else {
                     dataOffset -= 1;
 
-                    var firstElementX = _scrollPoolElements [0].transform.localPosition.x;
-                    var lastElement = _scrollPoolElements [_scrollPoolElements.Count - 1];
-                    _scrollPoolElements.Remove (lastElement);
-                    _scrollPoolElements.Insert (0, lastElement);
-                    lastElement.transform.localPosition = new Vector3 (firstElementX - elementWidth, 0, 0);
-                    lastElement.SetProduct (shop.ProductCache.Get(dataOffset));
+                    SwapElements(_scrollPoolElements.Count - 1, 0, dataOffset);
                 }
             }
+        }
+
+        private void SwapElements(int fromIndex, int toIndex, int cacheOffset) {
+            var element = _scrollPoolElements [fromIndex];
+            _scrollPoolElements.Remove(element);
+            _scrollPoolElements.Insert(toIndex, element);
+            element.transform.localPosition = new Vector3 ((toIndex + dataOffset) * elementWidth, 0, 0);
+            element.SetProduct (shop.ProductCache.Get(cacheOffset));
         }
 
         private void LoadMoreProducts() {
