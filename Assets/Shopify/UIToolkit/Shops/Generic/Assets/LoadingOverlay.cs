@@ -1,4 +1,4 @@
-﻿namespace Shopify.UIToolkit.Themes {
+﻿namespace Shopify.UIToolkit.Shops {
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
