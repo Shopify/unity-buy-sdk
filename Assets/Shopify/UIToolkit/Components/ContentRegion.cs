@@ -1,16 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
 
-public class ScrollEvent : UnityEvent<bool, bool>
-{
-}
-
 public class ContentRegion : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 
-	public ScrollEvent OnScroll = new ScrollEvent();
+    public UnityEvent OnScroll = new UnityEvent();
 
     private bool isMouseDown = false;
     private Vector3 startMousePosition;
@@ -31,29 +28,16 @@ public class ContentRegion : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
 
     void Update () {
         if (isMouseDown) {
-			bool clipStart = false;
-			bool clipEnd = false;
-
             Vector3 currentPosition = Input.mousePosition;
 
             Vector3 diff = currentPosition - startMousePosition;
-            float newX = startPosition.x + diff.x;
-
-            if (newX > 0) {
-                newX = 0;
-				clipStart = true;
-            }
-
-            if (newX < endOffset) {
-                newX = endOffset;
-				clipEnd = true;
-            }
+            float newX = Math.Max(Math.Min(startPosition.x + diff.x, 0), endOffset);
 
             Vector3 pos = new Vector3(newX, 0, 0);
 
             transform.localPosition = pos;
 
-			OnScroll.Invoke (clipStart, clipEnd);
+            OnScroll.Invoke();
         }
     }
 }
