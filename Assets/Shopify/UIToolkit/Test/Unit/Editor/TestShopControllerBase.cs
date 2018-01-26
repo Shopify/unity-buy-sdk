@@ -92,7 +92,7 @@ namespace Shopify.UIToolkit.Test.Unit {
                 yield return null;
             }
 
-            _shopController.Cart.AddVariant(_variants.First());
+            _shopController.Cart.AddVariant(_variants.First(), _product);
             Assert.AreEqual(1, _shopController.Cart.LineItems.Get(_variants.First()).Quantity);
             _shop.Received().OnCartQuantityChanged(1);
         }
@@ -106,7 +106,7 @@ namespace Shopify.UIToolkit.Test.Unit {
 
             _shopController.Cart.LineItems.AddOrUpdate(_variants.First(), 5);
 
-            _shopController.Cart.AddVariant(_variants.First());
+            _shopController.Cart.AddVariant(_variants.First(), _product);
             Assert.AreEqual(6, _shopController.Cart.LineItems.Get(_variants.First()).Quantity);
             _shop.Received().OnCartQuantityChanged(6);
         }
@@ -118,7 +118,7 @@ namespace Shopify.UIToolkit.Test.Unit {
                 yield return null;
             }
 
-            _shopController.Cart.RemoveVariant(_variants.First());
+            _shopController.Cart.RemoveVariant(_variants.First(), _product);
             Assert.IsNull(_shopController.Cart.LineItems.Get(_variants.First()));
         }
 
@@ -130,7 +130,7 @@ namespace Shopify.UIToolkit.Test.Unit {
             }
 
             _shopController.Cart.LineItems.AddOrUpdate(_variants.First(), 5);
-            _shopController.Cart.RemoveVariant(_variants.First());
+            _shopController.Cart.RemoveVariant(_variants.First(), _product);
             Assert.AreEqual(4, _shopController.Cart.LineItems.Get(_variants.First()).Quantity);
             _shop.Received().OnCartQuantityChanged(4);
         }
@@ -143,7 +143,7 @@ namespace Shopify.UIToolkit.Test.Unit {
             }
 
             _shopController.Cart.LineItems.AddOrUpdate(_variants.First(), 1);
-            _shopController.Cart.RemoveVariant(_variants.First());
+            _shopController.Cart.RemoveVariant(_variants.First(), _product);
             Assert.IsNull(_shopController.Cart.LineItems.Get(_variants.First()));
             _shop.Received().OnCartQuantityChanged(0);
         }
@@ -156,7 +156,7 @@ namespace Shopify.UIToolkit.Test.Unit {
             }
 
             _shopController.Cart.LineItems.AddOrUpdate(_variants.First(), 3);
-            _shopController.Cart.UpdateVariant(_variants.First(), 1);
+            _shopController.Cart.UpdateVariant(_variants.First(), _product, 1);
             Assert.AreEqual(1, _shopController.Cart.LineItems.Get(_variants.First()).Quantity);
             _shop.Received().OnCartQuantityChanged(1);
         }
@@ -169,7 +169,7 @@ namespace Shopify.UIToolkit.Test.Unit {
             }
 
             _shopController.Cart.LineItems.AddOrUpdate(_variants.First(), 1);
-            _shopController.Cart.UpdateVariant(_variants.First(), 0);
+            _shopController.Cart.UpdateVariant(_variants.First(), _product, 0);
             Assert.IsNull(_shopController.Cart.LineItems.Get(_variants.First()));
             _shop.Received().OnCartQuantityChanged(0);
         }
@@ -181,7 +181,7 @@ namespace Shopify.UIToolkit.Test.Unit {
                 yield return null;
             }
 
-            _shopController.Cart.UpdateVariant(_variants.First(), 1);
+            _shopController.Cart.UpdateVariant(_variants.First(), _product, 1);
             Assert.AreEqual(1, _shopController.Cart.LineItems.Get(_variants.First()).Quantity);
             _shop.Received().OnCartQuantityChanged(1);
         }
@@ -193,8 +193,8 @@ namespace Shopify.UIToolkit.Test.Unit {
                 yield return null;
             }
 
-            _shopController.Cart.UpdateVariant(_variants.First(), 1);
-            _shopController.Cart.UpdateVariant(_variants[1], 2);
+            _shopController.Cart.UpdateVariant(_variants.First(), _product, 1);
+            _shopController.Cart.UpdateVariant(_variants[1], _product, 2);
 
             _shopController.Cart.ClearCart();
             Assert.AreEqual(0, _shopController.Cart.LineItems.All().Count);
@@ -202,10 +202,12 @@ namespace Shopify.UIToolkit.Test.Unit {
         }
 
         private List<ProductVariant> _variants;
+        private Product _product;
         private EditorTimeoutWaiter LoadProductVariantsFromShop() {
             var waiter = new EditorTimeoutWaiter(5f);
             _shopController.Client.products((products, error, after) => {
                 _variants = new List<ProductVariant>();
+                _product = products[0];
                 foreach (var product in products) {
                     _variants.AddRange(product.variants().edges().Select((x) => x.node()));
                 }

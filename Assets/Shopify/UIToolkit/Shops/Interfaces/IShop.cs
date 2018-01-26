@@ -68,7 +68,8 @@
         /// Call to update the quantity of the given variant in the cart.
         /// </summary>
         /// <param name="variant">Variant object that is currently in the user's Cart.</param>
+        /// <param name="product">The product that the variant belongs to.</param>
         /// <param name="quantity">The quantity value to change the cart item to.</param>
-        void UpdateCartQuantityForVariant(ProductVariant variant, long quantity);
+        // void UpdateCartQuantityForVariant(ProductVariant variant, Product product, long quantity);
     }
 }
