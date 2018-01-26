@@ -44,6 +44,8 @@
             }
         }
 
+        public Product Product { private set; get; }
+
         private ProductVariant[] _productVariants;
         private List<ProductImageHolder> _displayedProductImages = new List<ProductImageHolder>();
 
@@ -54,6 +56,7 @@
         /// <param name="variants">The ProductVariants of that product</param>
         public void FillWithProductWithVariants(Product product, ProductVariant[] variants) {
             _productVariants = variants;
+            Product = product;
 
             Title.text = product.title();
             Description.text = product.description();

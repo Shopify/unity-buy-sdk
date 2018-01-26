@@ -8,8 +8,9 @@
     using System.Linq;
 
     public interface IGenericMultiProductShop {
-        void AddItemToCart(ProductVariant variant);
+        void AddItemToCart(ProductVariant variant, Product product);
         void ViewProductDetails(Product product, ProductVariant[] variants);
+        void UpdateCartQuantityForVariant(ProductVariant variant, Product product, long quantity);
     }
 
     [RequireComponent(typeof(MultiProductShopController))]
@@ -67,15 +68,10 @@
         }
 
         void IShop.OnCartQuantityChanged(int totalNumberOfCartItems) {
-            throw new System.NotImplementedException();
         }
 
         void IShop.OnCartItemsChanged(List<CartItem> cartItems) {
             _cartView.OnCartItemsChanged(cartItems);
-        }
-
-        public void UpdateCartQuantityForVariant(ProductVariant variant, long quantity) {
-            _controller.Cart.UpdateVariant(variant, quantity);
         }
 
         void IMultiProductShop.OnProductsLoaded(Product[] products, string after) {
@@ -167,8 +163,12 @@
             OnViewChanged();
         }
 
-        public void AddItemToCart(ProductVariant variant) {
-            _controller.Cart.AddVariant(variant);
+        public void AddItemToCart(ProductVariant variant, Product product) {
+            _controller.Cart.AddVariant(variant, product);
+        }
+
+        public void UpdateCartQuantityForVariant(ProductVariant variant, Product product, long quantity) {
+            _controller.Cart.UpdateVariant(variant, product, quantity);
         }
 
         public void PerformWebCheckout() {
