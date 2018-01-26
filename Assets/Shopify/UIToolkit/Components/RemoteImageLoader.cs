@@ -18,16 +18,16 @@ namespace Shopify.UIToolkit {
 
         private Image _image;
 
-        private delegate void RemoteImageCompletionDelegate(Texture2D texture, string error);
+        private delegate void RemoteImageLoadedDelegate(Texture2D texture, string error);
 
         private WebImageCache _imageCache = WebImageCache.SharedCache;
 
         void Start() {
             _image = gameObject.GetComponent<Image>();
-        } 
+        }
 
         /// <summary>
-        /// Downloads the image located at the given ImageURL. The resulting image will be assigned to 
+        /// Downloads the image located at the given ImageURL. The resulting image will be assigned to
         /// the GameObject's Image component.
         /// </summary>
         /// <param name="imageURL">URL for the image to download.</param>
@@ -36,7 +36,7 @@ namespace Shopify.UIToolkit {
         }
 
         /// <summary>
-        /// Downloads the image located at the given ImageURL. The resulting image will be assigned to 
+        /// Downloads the image located at the given ImageURL. The resulting image will be assigned to
         /// the GameObject's Image component.
         /// </summary>
         /// <param name="imageURL">URL for the image to download.</param>
@@ -80,32 +80,33 @@ namespace Shopify.UIToolkit {
             );
         }
 
-        private void LoadImageURL(string url, RemoteImageCompletionDelegate completion) {
+        private void LoadImageURL(string url, RemoteImageLoadedDelegate onImageLoaded) {
             if (UseCache) {
-                StartCoroutine(CachedLoadImageURLRoutine(url, completion));
+                StartCoroutine(CachedLoadImageURLRoutine(url, onImageLoaded));
             } else {
-                StartCoroutine(LoadImageURLRoutine(url, completion));
+                StartCoroutine(LoadImageURLRoutine(url, onImageLoaded));
             }
         }
 
-        private IEnumerator LoadImageURLRoutine(string url, RemoteImageCompletionDelegate completion) {
+        private IEnumerator LoadImageURLRoutine(string url, RemoteImageLoadedDelegate onImageLoaded) {
             var www = new WWW(url);
 
             yield return www;
 
             // Bail out early if we hit an error.
             if (www.error != null) {
-                completion(null, www.error);
+                onImageLoaded(null, www.error);
                 yield break;
             }
 
-            completion(www.texture, null);
+            onImageLoaded(www.texture, null);
         }
 
-        private IEnumerator CachedLoadImageURLRoutine(string url, RemoteImageCompletionDelegate completion) {
+        private IEnumerator CachedLoadImageURLRoutine(string url, RemoteImageLoadedDelegate onImageLoaded) {
             var requestHeaders = new Dictionary<string, string>();
             var cachedResource = _imageCache.TextureResourceForURL(url);
             if (cachedResource != null) {
+                onImageLoaded(cachedResource.texture, null);
                 requestHeaders["If-Modified-Since"] = cachedResource.LastModified;
             }
 
@@ -115,7 +116,7 @@ namespace Shopify.UIToolkit {
 
             // Bail out early if we hit an error.
             if (www.error != null) {
-                completion(null, www.error);
+                onImageLoaded(null, www.error);
                 yield break;
             }
 
@@ -125,12 +126,6 @@ namespace Shopify.UIToolkit {
             if (responseHeaders.ContainsKey("STATUS")) {
                 string statusCodeLine = responseHeaders["STATUS"];
                 if (HTTPUtils.ParseResponseCode(statusCodeLine) == 304) {
-                    if (cachedResource != null) {
-                        completion(cachedResource.texture, null);
-                    } else {
-                        completion(null, "Cached texture is missing for URL: " + url);
-                    }
-
                     yield break;
                 }
             } else {
@@ -141,7 +136,7 @@ namespace Shopify.UIToolkit {
             var texture = www.texture;
             string lastModifiedString = responseHeaders.ContainsKey("Last-Modified") ? responseHeaders["Last-Modified"] : null;
             _imageCache.SetTextureForURL(url, texture, lastModifiedString);
-            completion(texture, null);
+            onImageLoaded(texture, null);
         }
     }
 }
