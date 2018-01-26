@@ -19,16 +19,21 @@
         }
 
         private ShopCredentialsVerifier _verifier;
-        private IShopCredentialsView _credentialsVerifierView;
         public IShopControllerBaseEditorView View;
+        public ShopifyClient Client {
+            get {
+                _cachedClient = _cachedClient ?? new ShopifyClient(new UnityEditorLoader(Target.Credentials.Domain, Target.Credentials.AccessToken));
+                return _cachedClient;
+            }
+        }
+        private ShopifyClient _cachedClient;
 
         public virtual void OnEnable() {
             if (Target == null) return;
 
             View = View ?? this;
-            _verifier = new ShopCredentialsVerifier((IShopCredentials) Target);
-            _verifier.OnCredentialsStateChanged += OnCredentialsChanged;
-            _credentialsVerifierView = new ShopCredentialsView(_verifier);
+            _verifier = new ShopCredentialsVerifier(Target.Credentials);
+            _verifier.OnCredentialsStateShouldChange += OnCredentialsStateShouldChange;
         }
 
         public override void OnInspectorGUI() {
@@ -37,11 +42,11 @@
             }
 
             View.DrawShopCredentialsVerifier();
+
             if (_verifier.HasVerifiedCredentials()) {
                 OnShowConfiguration();
+                View.DrawPaymentProperties();
             }
-
-            View.DrawPaymentProperties();
 
             serializedObject.ApplyModifiedProperties();
         }
@@ -51,26 +56,17 @@
         /// </summary>
         public abstract void OnShowConfiguration();
 
-        private void OnCredentialsChanged() {
+        private void OnCredentialsStateShouldChange(ShopCredentials.VerificationState newState) {
+            Undo.RecordObject(Target, "Credentials Verification State Changed");
+
+            Target.Credentials.State = newState;
+
             _cachedClient = null;
             OnClientChanged();
             Repaint();
         }
 
         protected virtual void OnClientChanged() { }
-
-        public ShopifyClient Client {
-            get {
-                _cachedClient = _cachedClient ?? new ShopifyClient(new UnityEditorLoader(Target.ShopDomain, Target.AccessToken));
-                return _cachedClient;
-            }
-        }
-        private ShopifyClient _cachedClient;
-
-        void IShopControllerBaseEditorView.DrawShopCredentialsVerifier() {
-            EditorGUILayout.LabelField("Store Properties", EditorStyles.boldLabel);
-            _credentialsVerifierView.DrawInspectorGUI(serializedObject);
-        }
 
         void IShopControllerBaseEditorView.DrawShopHelp() {
             var message = @"
@@ -86,6 +82,54 @@ Implement ISingleProductShop with your own custom script and add it to this game
             EditorGUILayout.LabelField("Payment Properties", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_appleMerchantID"));
             #endif
+        }
+
+        void IShopControllerBaseEditorView.DrawShopCredentialsVerifier() {
+            EditorGUILayout.Separator();
+
+            var disableCredentialsForm = _verifier.HasVerifiedCredentials() || _verifier.RequestInProgress;
+
+            EditorGUI.BeginDisabledGroup(disableCredentialsForm);
+
+            EditorGUI.BeginChangeCheck();
+            var newDomain = EditorGUILayout.TextField("Shop Domain", Target.Credentials.Domain);
+            var newAccessToken = EditorGUILayout.TextField("Access Token", Target.Credentials.AccessToken);
+
+            if (EditorGUI.EndChangeCheck()) {
+                Undo.RecordObject(Target, "Changed Shop Credentials");
+                Target.Credentials = new ShopCredentials(newDomain, newAccessToken);
+                _verifier.Credentials = Target.Credentials;
+            }
+
+            EditorGUI.EndDisabledGroup();
+
+            if (_verifier.Credentials.State == ShopCredentials.VerificationState.Invalid) {
+                EditorGUILayout.HelpBox("The credentials provided could not be used to connect to your shop.", MessageType.Error);
+            }
+
+            if (_verifier.RequestInProgress) {
+                EditorGUI.BeginDisabledGroup(true);
+                ActionButton("Verifying...", () => { });
+                EditorGUI.EndDisabledGroup();
+            } else {
+                switch (Target.Credentials.State) {
+                    case ShopCredentials.VerificationState.Invalid:
+                        ActionButton("Try Again", _verifier.VerifyCredentials);
+                        break;
+                    case ShopCredentials.VerificationState.Verified:
+                        ActionButton("Use Different Credentials", _verifier.ResetVerificationState);
+                        break;
+                    case ShopCredentials.VerificationState.Unverified:
+                        ActionButton("Verify Credentials", _verifier.VerifyCredentials);
+                        break;
+                }
+            }
+        }
+
+        private void ActionButton(string label, System.Action onClick) {
+            if (GUILayout.Button(label)) {
+                onClick.Invoke();
+            }
         }
     }
 }

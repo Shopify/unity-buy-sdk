@@ -30,6 +30,7 @@ namespace Shopify.UIToolkit.Test.Unit {
         [SetUp]
         public void Setup() {
             _controller = GlobalGameObject.AddComponent<MockShopController>();
+            _controller.Credentials = new ShopCredentials();
             _editor = Editor.CreateEditor(_controller) as ShopControllerBaseEditor;
             _editor.View = Substitute.For<IShopControllerBaseEditorView>();
         }
@@ -54,13 +55,14 @@ namespace Shopify.UIToolkit.Test.Unit {
         }
 
         [Test]
-        public void TestCredentialsViewDrawn() {
+        public void TestCredentialsViewDrawnWhenCredentialsValid() {
             _editor.OnInspectorGUI();
             _editor.View.Received().DrawShopCredentialsVerifier();
         }
 
         [Test]
         public void TestPaymentPropertiesViewDraw() {
+            _controller.Credentials.State = ShopCredentials.VerificationState.Verified;
             _editor.OnInspectorGUI();
             _editor.View.Received().DrawPaymentProperties();
         }

@@ -23,8 +23,7 @@ namespace Shopify.UIToolkit.Test.Unit {
         [SetUp]
         public void Setup() {
             _shopController = GlobalGameObject.AddComponent<MockShopController>();
-            _shopController.AccessToken = Utils.TestAccessToken;
-            _shopController.ShopDomain = Utils.TestShopDomain;
+            _shopController.Credentials = new ShopCredentials(Utils.TestShopDomain, Utils.TestAccessToken);
 
             _shop = Substitute.For<IShop>();
             _shopController.Shop = _shop;
@@ -47,33 +46,8 @@ namespace Shopify.UIToolkit.Test.Unit {
         }
 
         [Test]
-        public void TestClearsCachedClientIfAccessTokenChanges() {
-            var client = _shopController.Client;
-
-            _shopController.AccessToken = "1234";
-
-            var clientOnNextCall = _shopController.Client;
-
-            Assert.AreNotSame(client, clientOnNextCall);
-            Assert.AreEqual("1234", clientOnNextCall.AccessToken);
-        }
-
-        [Test]
-        public void TestClearsCachedClientIfShopDomainChanges() {
-            var client = _shopController.Client;
-
-            _shopController.ShopDomain = "other.myshopify.com";
-
-            var clientOnNextCall = _shopController.Client;
-
-            Assert.AreNotSame(client, clientOnNextCall);
-            Assert.AreEqual("other.myshopify.com", clientOnNextCall.Domain);
-        }
-
-        [Test]
         public void TestClearsCachedClientIfLoaderProviderChanges() {
-            _shopController.AccessToken = Utils.TestAccessToken;
-            _shopController.ShopDomain = Utils.TestShopDomain;
+            _shopController.Credentials = new ShopCredentials(Utils.TestShopDomain, Utils.TestAccessToken);
 
             var client = _shopController.Client;
 
@@ -81,7 +55,14 @@ namespace Shopify.UIToolkit.Test.Unit {
             _shopController.LoaderProvider = loaderProvider;
 
             var clientOnNextCall = _shopController.Client;
+            Assert.AreNotSame(client, clientOnNextCall);
+        }
 
+        public void TestClearsCachedClientIfCredentialsChange() {
+            _shopController.Credentials = new ShopCredentials(Utils.TestShopDomain, Utils.TestAccessToken);
+            var client = _shopController.Client;
+            _shopController.Credentials = new ShopCredentials("", "");
+            var clientOnNextCall = _shopController.Client;
             Assert.AreNotSame(client, clientOnNextCall);
         }
 
