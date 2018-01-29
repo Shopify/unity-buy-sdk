@@ -58,6 +58,19 @@ namespace Shopify.Unity.Editor.BuildPipeline {
         }
 
         /// <summary>
+        /// Adds the single file to the test target.
+        /// </summary>
+        /// <param name="localFilepath">Local filepath to the file to add to test target.</param>
+        /// <exception cref="DirectoryNotFoundException">Given directory does not have a valid path</exception>
+        /// <exception cref="SecurityException">The caller does not have the required permission.</exception>
+        /// <exception cref="UnauthorizedAccessException">The caller does not have the required permission.</exception>
+        public void AddFileToMainTarget(string filepath) {
+            var localFilepath = filepath.Replace(BuildPath, "").Substring(1);
+            string fileGuid = FindFileGuidByProjectPath(localFilepath);
+            AddFileToBuild(UnityTargetGuid, fileGuid);
+        }
+
+        /// <summary>
         /// Returns an array of all the Target GUIDs
         /// </summary>
         public string[] GetAllTargetGuids() {
