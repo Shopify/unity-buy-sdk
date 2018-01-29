@@ -13,6 +13,8 @@ namespace Shopify.UIToolkit.Shops.Generic {
 
         private List<CartItem> _cartItems = new List<CartItem>();
 
+        private List<CartItemView> _cartItemViews = new List<CartItemView>();
+
         private RectTransform _scrollContent {
             get {
                 return CartItemList.content;
@@ -24,19 +26,35 @@ namespace Shopify.UIToolkit.Shops.Generic {
         void Awake() {}
 
         void OnEnable() {
-            InvalidateListView();
+            UpdateList();
         }
 
         #endregion
 
         #region Events
+
         void OnQuantityChanged(int quantity) {}
 
         public void OnCartItemsChanged(List<CartItem> cartItems) {
+            var diff = cartItems.Count - _cartItems.Count;
+            while (diff < 0) {
+                var lastIndex = _cartItemViews.Count - 1;
+                var itemView = _cartItemViews[lastIndex];
+                GameObject.Destroy(itemView.gameObject);
+                _cartItemViews.RemoveAt(lastIndex);
+                diff += 1;
+            }
+
+            while (diff > 0) {
+                var itemView = InstantiateCartItemView();
+                _cartItemViews.Add(itemView);
+                diff -= 1;
+            }
+
             _cartItems = cartItems;
 
             if (gameObject.active) {
-                InvalidateListView();
+                UpdateList();
             }
         }
 
@@ -50,13 +68,7 @@ namespace Shopify.UIToolkit.Shops.Generic {
 
         #endregion
 
-        #region Helpers
-
-        private void InvalidateListView() {
-            foreach (Transform child in _scrollContent) {
-                GameObject.Destroy(child.gameObject);
-            }
-
+        private void UpdateList() {
             if (_cartItems.Count == 0) {
                 CartItemList.gameObject.SetActive(false);
                 EmptyLabel.gameObject.SetActive(true);
@@ -66,13 +78,23 @@ namespace Shopify.UIToolkit.Shops.Generic {
                 EmptyLabel.gameObject.SetActive(false);
             }
 
-            foreach (var cartItem in _cartItems) {
-                var itemView = Instantiate(CartItemTemplate);
-                itemView.gameObject.SetActive(true);
-                itemView.transform.SetParent(_scrollContent.transform, false);
-                itemView.SetCartItem(cartItem);
-                itemView.OnQuantityChange.AddListener(UpdateQuantity);
+            for (var i = 0; i < _cartItems.Count; i++) {
+                var item = _cartItems[i];
+                var itemView = _cartItemViews[i];
+                itemView.SetCartItem(item);
             }
+        }
+
+        #endregion
+
+        #region Helpers
+
+        private CartItemView InstantiateCartItemView() {
+            var itemView = Instantiate(CartItemTemplate);
+            itemView.gameObject.SetActive(true);
+            itemView.transform.SetParent(_scrollContent.transform, false);
+            itemView.OnQuantityChange.AddListener(UpdateQuantity);
+            return itemView;
         }
 
         private void UpdateQuantity(ProductVariant variant, Product product, long quantity) {
