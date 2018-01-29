@@ -15,12 +15,12 @@
             }
         }
 
-        public override void OnHide() {
-            throw new System.NotImplementedException();
+        public override void Load() {
+            LoadMoreProducts();
         }
 
-        public override void OnShow() {
-            LoadMoreProducts();
+        public override void Unload() {
+            Client.products(OnProductsLoaded);
         }
 
         public void LoadMoreProducts(string cursor = null) {

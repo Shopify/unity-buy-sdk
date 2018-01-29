@@ -26,7 +26,7 @@
             if (Target == null) return;
 
             View = View ?? this;
-            _verifier = new ShopCredentialsVerifier((IShopCredentials) Target);
+            _verifier = new ShopCredentialsVerifier((IShopController) Target);
             _verifier.OnCredentialsStateChanged += OnCredentialsChanged;
             _credentialsVerifierView = new ShopCredentialsView(_verifier);
         }

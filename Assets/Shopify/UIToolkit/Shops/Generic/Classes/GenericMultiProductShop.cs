@@ -1,4 +1,4 @@
-﻿namespace Shopify.UIToolkit.Shops.Generic {
+namespace Shopify.UIToolkit.Shops.Generic {
     using System.Collections;
     using System.Collections.Generic;
     using Shopify.Unity;
@@ -119,7 +119,7 @@
             Animator.Play("Show", 0);
 
             //Temporary, until we refactor
-            _controller.Show();
+            _controller.Load();
         }
 
         public void Hide() {

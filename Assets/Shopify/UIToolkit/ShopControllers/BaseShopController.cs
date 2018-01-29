@@ -4,7 +4,7 @@ namespace Shopify.UIToolkit {
     using Shopify.Unity.SDK;
     using System.Linq;
 
-    public abstract class ShopControllerBase : MonoBehaviour, IShopCredentials {
+    public abstract class ShopControllerBase : MonoBehaviour, IShopController {
         public IShop Shop {
             get {
                 _cachedShop = _cachedShop ?? GetComponent<IShop>();
@@ -111,21 +111,8 @@ namespace Shopify.UIToolkit {
             _cachedClient = null;
         }
 
-        /// <summary>
-        /// Shows the shop
-        /// </summary>
-        public void Show() {
-            OnShow();
-        }
-
-        /// <summary>
-        /// Hides the shop
-        /// </summary>
-        public void Hide() {
-            OnHide();
-        }
-
-        public abstract void OnShow();
-        public abstract void OnHide();
+       
+        public abstract void Load();
+        public abstract void Unload();
     }
 }

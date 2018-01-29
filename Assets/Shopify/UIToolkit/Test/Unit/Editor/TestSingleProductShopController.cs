@@ -36,7 +36,7 @@
         [UnityTest]
         public IEnumerator TestShowLoadsProductAndTellsShop() {
             _controller.ProductGID = "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUyODE0NzU=";
-            _controller.Show();
+            _controller.Load();
 
             var waiter = new EditorTimeoutWaiter();
 
@@ -60,7 +60,7 @@
         [UnityTest]
         public IEnumerator TestShowCallsOnErrorWhenProductDoesntExist() {
             _controller.ProductGID = "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0LzEzNTI1NDIzOQ==";
-            _controller.Show();
+            _controller.Load();
 
             var callbackCalled = false;
 
@@ -85,7 +85,7 @@
         [UnityTest]
         public IEnumerator TestShowPropogatesErrorsToShopOnError() {
             _controller.ProductGID = "notevenclose";
-            _controller.Show();
+            _controller.Load();
 
             var waiter = new EditorTimeoutWaiter();
 

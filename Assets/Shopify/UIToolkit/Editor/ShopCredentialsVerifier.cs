@@ -84,7 +84,7 @@
         public delegate void OnCredentialsStateChangedHandler();
         public event OnCredentialsStateChangedHandler OnCredentialsStateChanged;
 
-        public IShopCredentials Credentials { private set; get; }
+        public IShopController Credentials { private set; get; }
 
         public bool RequestInProgress { get; private set; }
 
@@ -92,7 +92,7 @@
         /// Creates a new verifier
         /// </summary>
         /// <param name="context">The object with credentials</param>
-        public ShopCredentialsVerifier(IShopCredentials credentials) {
+        public ShopCredentialsVerifier(IShopController credentials) {
             Credentials = credentials;
         }
 

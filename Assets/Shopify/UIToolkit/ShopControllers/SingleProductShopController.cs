@@ -20,12 +20,12 @@
 
         public string ProductGID;
 
-        public override void OnHide() {
-            throw new System.NotImplementedException();
+        public override void Load() {
+            Client.products(OnProductsLoaded, ProductGID);
         }
 
-        public override void OnShow() {
-            Client.products(OnProductsLoaded, ProductGID);
+        public override void UnLoad() {
+            throw new System.NotImplementedException();
         }
 
         private void OnProductsLoaded(List<Product> products, ShopifyError error) {
