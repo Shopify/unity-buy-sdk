@@ -2,6 +2,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using Shopify.Unity;
+    using Shopify.Unity.SDK;
     using Shopify.UIToolkit;
     using UnityEngine;
     using UnityEngine.UI;
@@ -13,6 +14,7 @@
         void UpdateCartQuantityForVariant(ProductVariant variant, Product product, long quantity);
         void PerformNativeCheckout();
         void PerformWebCheckout();
+        void CanCheckoutWithNativePay(CanCheckoutWithNativePayCallback callback);
     }
 
     [RequireComponent(typeof(MultiProductShopController))]
@@ -170,6 +172,10 @@
 
         public void UpdateCartQuantityForVariant(ProductVariant variant, Product product, long quantity) {
             _controller.Cart.UpdateVariant(variant, product, quantity);
+        }
+
+        public void CanCheckoutWithNativePay(CanCheckoutWithNativePayCallback callback) {
+            _controller.Cart.CanCheckoutWithNativePay(callback);
         }
 
         public void PerformWebCheckout() {

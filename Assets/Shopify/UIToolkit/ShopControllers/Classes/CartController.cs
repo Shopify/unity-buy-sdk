@@ -150,6 +150,10 @@ namespace Shopify.UIToolkit {
             OnCartItemsChange.Invoke(CartItems);
         }
 
+        public void CanCheckoutWithNativePay(CanCheckoutWithNativePayCallback callback) {
+            Cart.CanCheckoutWithNativePay(callback);
+        }
+
         /// <summary>
         /// Start a purchase with the current cart.
         /// </summary>
