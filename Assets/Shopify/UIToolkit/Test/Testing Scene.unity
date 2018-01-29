@@ -1009,6 +1009,21 @@ Prefab:
       propertyPath: m_Color.a
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114181622364359872, guid: 02f344bb75a2c41118130e84058362d4,
+        type: 2}
+      propertyPath: _appleMerchantID
+      value: merchant.com.shopify.unity.shoppingdemo
+      objectReference: {fileID: 0}
+    - target: {fileID: 114181622364359872, guid: 02f344bb75a2c41118130e84058362d4,
+        type: 2}
+      propertyPath: _accessToken
+      value: 351c122017d0f2a957d32ae728ad749c
+      objectReference: {fileID: 0}
+    - target: {fileID: 114181622364359872, guid: 02f344bb75a2c41118130e84058362d4,
+        type: 2}
+      propertyPath: _shopDomain
+      value: graphql.myshopify.com
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 02f344bb75a2c41118130e84058362d4, type: 2}
   m_IsPrefabParent: 0
@@ -1446,6 +1461,11 @@ Prefab:
         type: 2}
       propertyPath: m_SizeDelta.y
       value: 620
+      objectReference: {fileID: 0}
+    - target: {fileID: 224262928804705484, guid: 3e505d1857f2f40e9bf20972c1398f34,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3e505d1857f2f40e9bf20972c1398f34, type: 2}

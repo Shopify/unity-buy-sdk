@@ -2,6 +2,7 @@ namespace Shopify.UIToolkit.Shops.Generic {
     using UnityEngine;
     using UnityEngine.UI;
     using Shopify.Unity;
+    using Shopify.Unity.UI;
     using Shopify.Unity.SDK;
     using System.Collections.Generic;
     using System;
@@ -10,6 +11,7 @@ namespace Shopify.UIToolkit.Shops.Generic {
         public CartItemView CartItemTemplate;
         public ScrollRect CartItemList;
         public Text EmptyLabel;
+        public NativePayButtonUI NativePayButton;
 
         private List<CartItem> _cartItems = new List<CartItem>();
 
@@ -65,8 +67,6 @@ namespace Shopify.UIToolkit.Shops.Generic {
         public void PerformNativeCheckout() {
             Shop.PerformNativeCheckout();
         }
-
-        #endregion
 
         private void UpdateList() {
             if (_cartItems.Count == 0) {
