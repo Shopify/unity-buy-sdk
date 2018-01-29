@@ -5,7 +5,7 @@ namespace Shopify.UIToolkit.Test.Integration {
     using NUnit.Framework;
     using UnityEngine.TestTools;
     using System.Collections;
-    using Shopify.UIToolkit.Themes;
+    using Shopify.UIToolkit.Shops;
 
     [TestFixture]
     public class TestLoadingOverlay {
