@@ -45,7 +45,7 @@
                 firstLoad = false;
             }
 
-            contentRegion.endOffset = -elementWidth * (shop.ProductCache.Count - 5);
+            contentRegion.endOffset = -elementWidth * (shop.ProductCache.Count - potentiallyVisibleElements);
 
             loadingMore = false;
         }
@@ -92,8 +92,8 @@
             loadingMore = true;
         }
 
-        private GenericMultiProductShop shop {
-            get { return (GenericMultiProductShop)this.Shop; }
+        private new GenericMultiProductShop shop {
+            get { return Shop as GenericMultiProductShop; }
         }
 
         private RectTransform _scrollContentRect {
