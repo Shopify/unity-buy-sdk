@@ -63,12 +63,5 @@
         /// </summary>
         /// <param name="lineItems">The new line items in the cart</param>
         void OnCartItemsChanged(List<CartItem> lineItems);
-
-        /// <summary>
-        /// Call to update the quantity of the given variant in the cart.
-        /// </summary>
-        /// <param name="variant">Variant object that is currently in the user's Cart.</param>
-        /// <param name="quantity">The quantity value to change the cart item to.</param>
-        void UpdateCartQuantityForVariant(ProductVariant variant, long quantity);
     }
 }

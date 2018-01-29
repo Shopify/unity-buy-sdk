@@ -13,8 +13,8 @@ namespace Shopify.UIToolkit {
     /// Behaviour for linking all the pieces of the cart list item together.
     /// </summary>
     public class CartItemView : MonoBehaviour {
-        [HideInInspector]
-        public GenericMultiProductShop Shop;
+        public class QuantityChangeEvent : UnityEvent<ProductVariant, Product, long> {};
+        public QuantityChangeEvent OnQuantityChange = new QuantityChangeEvent();
 
         [Header("View Properties")]
         public RemoteImageLoader ImageLoader;
@@ -30,40 +30,45 @@ namespace Shopify.UIToolkit {
             }
         }
 
+        private Product _product {
+            get {
+                return _item.Product;
+            }
+        }
+
+        private string _imageURL;
+
         public void SetCartItem(CartItem item) {
             _item = item;
 
-            var product = _variant.product();
-
-            TitleLabel.text = product.title();
+            TitleLabel.text = _product.title();
             VariantLabel.gameObject.SetActive(_variant.title() == null);
             VariantLabel.text = _variant.title();
 
             PriceLabel.text = string.Format("${0}", _variant.price());
             QuantityLabel.text = item.Quantity.ToString();
 
-            string imageURL;
             try {
-                imageURL = _variant.image().transformedSrc();
+                _imageURL = _variant.image().transformedSrc();
             } catch (NullReferenceException) {
-                var images = (List<Shopify.Unity.Image>)product.images();
-                imageURL = images[0].transformedSrc();
+                var images = (List<Shopify.Unity.Image>)_product.images();
+                _imageURL = images[0].transformedSrc();
             }
 
-            if (imageURL != null) {
-                ImageLoader.LoadImage(imageURL);
+            if (_imageURL != null) {
                 ImageLoader.gameObject.SetActive(true);
+                ImageLoader.LoadImage(_imageURL);
             } else {
                 ImageLoader.gameObject.SetActive(false);
             }
         }
 
         public void DecreaseQuantity() {
-            Shop.UpdateCartQuantityForVariant(_variant, _item.Quantity - 1);
+            OnQuantityChange.Invoke(_variant, _product, _item.Quantity - 1);
         }
 
         public void IncreaseQuantity() {
-            Shop.UpdateCartQuantityForVariant(_variant, _item.Quantity + 1);
+            OnQuantityChange.Invoke(_variant, _product, _item.Quantity + 1);
         }
     }
 }

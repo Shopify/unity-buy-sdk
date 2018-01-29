@@ -6,6 +6,7 @@ namespace Shopify.UIToolkit {
     using System;
     using System.Linq;
     using System.Collections.Generic;
+    using UnityEngine;
 
     /// <summary>
     // A wrapper struct that encapsulates the information we want from a CartLineItem (Quantity) and the
@@ -13,9 +14,11 @@ namespace Shopify.UIToolkit {
     /// </summary>
     public struct CartItem {
         public ProductVariant Variant;
+        public Product Product;
         public long Quantity;
 
-        public CartItem(ProductVariant variant, long quantity) {
+        public CartItem(ProductVariant variant, Product product, long quantity) {
+            Product = product;
             Variant = variant;
             Quantity = quantity;
         }
@@ -40,8 +43,19 @@ namespace Shopify.UIToolkit {
         public UnityEvent OnPurhcaseCancelled = new UnityEvent();
         public PurchaseFailedEvent OnPurhchaseFailed = new PurchaseFailedEvent();
 
-        private Dictionary<string, ProductVariant> _idsToVariants = new Dictionary<string, ProductVariant>();
         private string _appleMerchantID;
+
+        private struct ProductAndVariantPair {
+            public readonly Product Product;
+            public readonly ProductVariant Variant;
+
+            public ProductAndVariantPair(Product product, ProductVariant variant) {
+                Product = product;
+                Variant = variant;
+            }
+        }
+
+        private Dictionary<string, ProductAndVariantPair> _idsToProductPairs = new Dictionary<string, ProductAndVariantPair>();
 
         public CartController(Cart cart, string appleMerchantID) {
             SetCart(cart);
@@ -50,7 +64,7 @@ namespace Shopify.UIToolkit {
 
         public void SetCart(Cart cart) {
             Cart = cart;
-            _idsToVariants = new Dictionary<string, ProductVariant>();
+            _idsToProductPairs.Clear();
         }
 
         public CartLineItems LineItems {
@@ -63,7 +77,8 @@ namespace Shopify.UIToolkit {
             get {
                 var items = new List<CartItem>();
                 foreach (var lineItem in LineItems.All()) {
-                    items.Add(new CartItem(_idsToVariants[lineItem.VariantId], lineItem.Quantity));
+                    var pair = _idsToProductPairs[lineItem.VariantId];
+                    items.Add(new CartItem(pair.Variant, pair.Product, lineItem.Quantity));
                 }
                 return items; 
             }
@@ -73,11 +88,12 @@ namespace Shopify.UIToolkit {
         /// Adds a variant to the cart
         /// </summary>
         /// <param name="variant">The variant to add to the cart</param>
-        public void AddVariant(ProductVariant variant) {
+        /// <param name="product">The product the variant belongs to</param>
+        public void AddVariant(ProductVariant variant, Product product) {
             var existingItem = Cart.LineItems.Get(variant);
             var newQuantity = existingItem == null ? 1 : existingItem.Quantity + 1;
             Cart.LineItems.AddOrUpdate(variant, newQuantity);
-            CacheVariantByID(variant);
+            CacheProductVariantPair(variant, product);
 
             OnQuantityChange.Invoke(TotalItemsInCart());
             OnCartItemsChange.Invoke(CartItems);
@@ -87,14 +103,15 @@ namespace Shopify.UIToolkit {
         /// Sets the variant to the specified quantity in the cart.
         /// </summary>
         /// <param name="variant">The variant to modify</param>
+        /// <param name="product">The product the variant belongs to</param>
         /// <param name="quantity">The desired quantity</param>
-        public void UpdateVariant(ProductVariant variant, long quantity) {
+        public void UpdateVariant(ProductVariant variant, Product product, long quantity) {
             if (quantity <= 0) {
                 Cart.LineItems.Delete(variant);
-                RemoveVariantByIDFromCache(variant.id());
+                RemoveProductVariantPairByIDFromCache(variant.id());
             } else {
                 Cart.LineItems.AddOrUpdate(variant, quantity);
-                CacheVariantByID(variant);
+                CacheProductVariantPair(variant, product);
             }
 
             OnQuantityChange.Invoke(TotalItemsInCart());
@@ -105,17 +122,18 @@ namespace Shopify.UIToolkit {
         /// Removes a variant from the cart.
         /// </summary>
         /// <param name="variant">The variant to remove from the cart</param>
-        public void RemoveVariant(ProductVariant variant) {
+        /// <param name="product">The product the variant belongs to</param>
+        public void RemoveVariant(ProductVariant variant, Product product) {
             var existingItem = Cart.LineItems.Get(variant);
             if (existingItem == null) return;
             var newQuantity = existingItem.Quantity - 1;
 
             if (newQuantity == 0) {
                 Cart.LineItems.Delete(variant);
-                RemoveVariantByIDFromCache(variant.id());
+                RemoveProductVariantPairByIDFromCache(variant.id());
             } else {
                 Cart.LineItems.AddOrUpdate(variant, newQuantity);
-                CacheVariantByID(variant);
+                CacheProductVariantPair(variant, product);
             }
 
             OnQuantityChange.Invoke(TotalItemsInCart());
@@ -127,7 +145,7 @@ namespace Shopify.UIToolkit {
         /// </summary>
         public void ClearCart() {
             Cart.Reset();
-            _idsToVariants.Clear();
+            _idsToProductPairs.Clear();
             OnQuantityChange.Invoke(0);
             OnCartItemsChange.Invoke(CartItems);
         }
@@ -180,14 +198,15 @@ namespace Shopify.UIToolkit {
             return Cart.LineItems.All().Sum((x) => (int) x.Quantity);
         }
 
-        private void CacheVariantByID(ProductVariant variant) {
-            if (!_idsToVariants.ContainsKey(variant.id())) {
-                _idsToVariants.Add(variant.id(), variant);
+        private void CacheProductVariantPair(ProductVariant variant, Product product) {
+            if (!_idsToProductPairs.ContainsKey(variant.id())) {
+                var pair = new ProductAndVariantPair(product, variant);
+                _idsToProductPairs.Add(variant.id(), pair);
             }
         }
 
-        private void RemoveVariantByIDFromCache(string variantId) {
-            _idsToVariants.Remove(variantId);
+        private void RemoveProductVariantPairByIDFromCache(string variantId) {
+            _idsToProductPairs.Remove(variantId);
         }
     }
 }

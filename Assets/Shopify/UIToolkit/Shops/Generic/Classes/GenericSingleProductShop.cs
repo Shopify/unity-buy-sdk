@@ -66,14 +66,10 @@
             throw new System.NotImplementedException();
         }
 
-        void IShop.UpdateCartQuantityForVariant(ProductVariant variant, long quantity) {
-            throw new System.NotImplementedException();
-        }
-
         void ISingleProductShop.OnProductLoaded(Product product, ProductVariant[] variants) {
             ViewBindings.FillWithProductWithVariants(product, variants);
             ViewBindings.OnAddToCartClicked.AddListener(() => {
-                OnBuyNowClicked(ViewBindings.CurrentSelectedVariant);
+                OnBuyNowClicked(ViewBindings.CurrentSelectedVariant, product);
             });
         }
 
@@ -93,8 +89,8 @@
             _waitForHiddenAndDeactivateRoutine = StartCoroutine(WaitForHiddenAndDeactivate());
         }
 
-        public void OnBuyNowClicked(ProductVariant variant) {
-            _controller.Cart.AddVariant(variant);
+        public void OnBuyNowClicked(ProductVariant variant, Product product) {
+            _controller.Cart.AddVariant(variant, product);
             _controller.Cart.StartPurchase(CheckoutMode.Auto);
         }
 

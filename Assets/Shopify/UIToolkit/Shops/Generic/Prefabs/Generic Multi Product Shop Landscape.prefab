@@ -409,7 +409,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Animator: {fileID: 95706937973668058}
-  CartViewPrefab: {fileID: 114083855067137410, guid: 0945126c2a3a449e4a274d56d2f41187,
+  CartViewPrefab: {fileID: 114666573156626056, guid: 3e505d1857f2f40e9bf20972c1398f34,
     type: 2}
   ProductListViewPrefab: {fileID: 114507206102692150, guid: fa3cfa3cf86854f8693d1d9cae5f66a4,
     type: 2}
@@ -1028,7 +1028,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -540}
+  m_AnchoredPosition: {x: 1534, y: -703}
   m_SizeDelta: {x: 1000, y: 720}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224581996954171592

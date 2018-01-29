@@ -12,7 +12,7 @@
 
         public void Start() {
             ViewBindings.OnAddToCartClicked.AddListener(() => {
-                Shop.AddItemToCart(ViewBindings.CurrentSelectedVariant);
+                Shop.AddItemToCart(ViewBindings.CurrentSelectedVariant, ViewBindings.Product);
             });
         }
 

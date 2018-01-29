@@ -2,6 +2,7 @@ namespace Shopify.UIToolkit.Shops.Generic {
     using UnityEngine;
     using UnityEngine.UI;
     using Shopify.Unity;
+    using Shopify.Unity.UI;
     using Shopify.Unity.SDK;
     using System.Collections.Generic;
     using System;
@@ -10,6 +11,11 @@ namespace Shopify.UIToolkit.Shops.Generic {
         public CartItemView CartItemTemplate;
         public ScrollRect CartItemList;
         public Text EmptyLabel;
+        public NativePayButtonUI NativePayButton;
+
+        private List<CartItem> _cartItems = new List<CartItem>();
+
+        private List<CartItemView> _cartItemViews = new List<CartItemView>();
 
         private RectTransform _scrollContent {
             get {
@@ -17,23 +23,41 @@ namespace Shopify.UIToolkit.Shops.Generic {
             }
         }
 
-        private new GenericMultiProductShop Shop {
-            get {
-                return Shop as GenericMultiProductShop;
-            }
-        }
-
         #region MonoBehaviour
 
         void Awake() {}
 
+        void OnEnable() {
+            UpdateList();
+        }
+
         #endregion
 
         #region Events
+
         void OnQuantityChanged(int quantity) {}
 
         public void OnCartItemsChanged(List<CartItem> cartItems) {
-            UpdateCartList(cartItems);
+            var diff = cartItems.Count - _cartItems.Count;
+            while (diff < 0) {
+                var lastIndex = _cartItemViews.Count - 1;
+                var itemView = _cartItemViews[lastIndex];
+                GameObject.Destroy(itemView.gameObject);
+                _cartItemViews.RemoveAt(lastIndex);
+                diff += 1;
+            }
+
+            while (diff > 0) {
+                var itemView = InstantiateCartItemView();
+                _cartItemViews.Add(itemView);
+                diff -= 1;
+            }
+
+            _cartItems = cartItems;
+
+            if (gameObject.active) {
+                UpdateList();
+            }
         }
 
         public void PerformWebCheckout() {
@@ -44,16 +68,8 @@ namespace Shopify.UIToolkit.Shops.Generic {
             Shop.PerformNativeCheckout();
         }
 
-        #endregion
-
-        #region Helpers
-
-        private void UpdateCartList(List<CartItem> cartItems) {
-            foreach (Transform child in _scrollContent) {
-                GameObject.Destroy(child);
-            }
-
-            if (cartItems.Count == 0) {
+        private void UpdateList() {
+            if (_cartItems.Count == 0) {
                 CartItemList.gameObject.SetActive(false);
                 EmptyLabel.gameObject.SetActive(true);
                 return;
@@ -62,13 +78,27 @@ namespace Shopify.UIToolkit.Shops.Generic {
                 EmptyLabel.gameObject.SetActive(false);
             }
 
-            foreach (var cartItem in cartItems) {
-                var itemView = Instantiate(CartItemTemplate);
-                itemView.Shop = Shop;
-                itemView.SetCartItem(cartItem);
-                itemView.transform.SetParent(_scrollContent.transform, false);
-                itemView.gameObject.SetActive(true);
+            for (var i = 0; i < _cartItems.Count; i++) {
+                var item = _cartItems[i];
+                var itemView = _cartItemViews[i];
+                itemView.SetCartItem(item);
             }
+        }
+
+        #endregion
+
+        #region Helpers
+
+        private CartItemView InstantiateCartItemView() {
+            var itemView = Instantiate(CartItemTemplate);
+            itemView.gameObject.SetActive(true);
+            itemView.transform.SetParent(_scrollContent.transform, false);
+            itemView.OnQuantityChange.AddListener(UpdateQuantity);
+            return itemView;
+        }
+
+        private void UpdateQuantity(ProductVariant variant, Product product, long quantity) {
+            Shop.UpdateCartQuantityForVariant(variant, product, quantity);
         }
         
         #endregion

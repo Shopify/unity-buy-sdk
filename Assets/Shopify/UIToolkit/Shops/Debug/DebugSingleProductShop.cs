@@ -49,10 +49,6 @@
             LogEvent("OnCartItemsChanged");
         }
 
-        void IShop.UpdateCartQuantityForVariant(ProductVariant variant, long quantity) {
-            LogEvent("UpdateCartQuantityForVariant");
-        }
-
         private void LogEvent(string eventName, params object[] args) {
             var eventString = new StringBuilder();
             eventString.AppendFormat("[DebugShop] {0} called", eventName);
