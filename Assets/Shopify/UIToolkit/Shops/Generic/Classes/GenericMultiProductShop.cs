@@ -61,7 +61,10 @@
 
         void IShop.OnPurchaseStarted() {}
 
-        void IShop.OnCartQuantityChanged(int totalNumberOfCartItems) {}
+        void IShop.OnCartQuantityChanged(int totalNumberOfCartItems) {
+            BadgeView.gameObject.SetActive(totalNumberOfCartItems > 0);
+            BadgeView.SetCount(totalNumberOfCartItems);
+        }
 
         void IShop.OnCartItemsChanged(List<CartItem> cartItems) {
             _cartView.OnCartItemsChanged(cartItems);
@@ -84,6 +87,7 @@
 
         [Header("Views")]
         public ViewSwitcher ViewSwitcher;
+        public CartBadgeView BadgeView;
         private CartView _cartView;
         private ProductListView _productListView;
         private ProductDetailsView _productDetailsView;
