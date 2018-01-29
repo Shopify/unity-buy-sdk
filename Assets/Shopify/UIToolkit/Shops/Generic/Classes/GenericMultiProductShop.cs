@@ -71,6 +71,10 @@
         }
 
         void IMultiProductShop.OnProductsLoaded(Product[] products, string after) {
+            if (_productCache.Complete) {
+                return;
+            }
+
             _productCache.Add(products, after);
             _productListView.OnProductsLoaded(products);
         }
@@ -183,6 +187,10 @@
         }
 
         public void LoadMoreProducts() {
+            if (_productCache.Complete) {
+                return;
+            }
+
             _controller.LoadMoreProducts (_productCache.Cursor);
         }
     }
