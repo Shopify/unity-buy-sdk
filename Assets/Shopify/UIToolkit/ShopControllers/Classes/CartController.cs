@@ -46,8 +46,13 @@ namespace Shopify.UIToolkit {
         private string _appleMerchantID;
 
         private struct ProductAndVariantPair {
-            public Product product;
-            public ProductVariant variant;
+            public readonly Product Product;
+            public readonly ProductVariant Variant;
+
+            public ProductAndVariantPair(Product product, ProductVariant variant) {
+                Product = product;
+                Variant = variant;
+            }
         }
 
         private Dictionary<string, ProductAndVariantPair> _idsToProductPairs = new Dictionary<string, ProductAndVariantPair>();
@@ -59,7 +64,7 @@ namespace Shopify.UIToolkit {
 
         public void SetCart(Cart cart) {
             Cart = cart;
-            _idsToProductPairs = new Dictionary<string, ProductAndVariantPair>();
+            _idsToProductPairs.Clear();
         }
 
         public CartLineItems LineItems {
@@ -73,7 +78,7 @@ namespace Shopify.UIToolkit {
                 var items = new List<CartItem>();
                 foreach (var lineItem in LineItems.All()) {
                     var pair = _idsToProductPairs[lineItem.VariantId];
-                    items.Add(new CartItem(pair.variant, pair.product, lineItem.Quantity));
+                    items.Add(new CartItem(pair.Variant, pair.Product, lineItem.Quantity));
                 }
                 return items; 
             }
@@ -195,9 +200,7 @@ namespace Shopify.UIToolkit {
 
         private void CacheProductVariantPair(ProductVariant variant, Product product) {
             if (!_idsToProductPairs.ContainsKey(variant.id())) {
-                var pair = new ProductAndVariantPair();
-                pair.product = product;
-                pair.variant = variant;
+                var pair = new ProductAndVariantPair(product, variant);
                 _idsToProductPairs.Add(variant.id(), pair);
             }
         }
