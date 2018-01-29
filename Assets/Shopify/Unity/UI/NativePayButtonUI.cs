@@ -47,17 +47,24 @@ namespace Shopify.Unity.UI {
         /// </summary>
         public bool includeMinimumSpacingForIOS;
 
+        private RectTransform rectTransform;
         private Image buttonImage;
         private Texture2D imageTexture;
 
         public void Start() {
             buttonImage = this.gameObject.GetComponent<Image>();
+            rectTransform = this.gameObject.GetComponent<RectTransform>();
+            GenerateNativePayImage();
+        }
 
-#if UNITY_IOS
+        public void OnRectTransformDimensionsChange() {
+            GenerateNativePayImage();
+        }
+
+        private void GenerateNativePayImage() {
+        #if UNITY_IOS
             GenerateApplePayImage();
-#elif UNITY_ANDROID
-            GenerateAndroidPayImage();
-#endif
+        #endif
         }
 
 #if UNITY_IOS
@@ -67,7 +74,6 @@ namespace Shopify.Unity.UI {
             bool includeMinimumSpacingForIOS);
 
         private void GenerateApplePayImage() {
-            var rectTransform = this.gameObject.GetComponent<RectTransform>();
             // Ask iOS to generate us an image of the native Apple Pay button.
             var imageStringPtr = _GenerateApplePayButtonImage(
                 applePayButtonType.ToString(),
@@ -78,6 +84,10 @@ namespace Shopify.Unity.UI {
             );
 
             string managedBase64ImageString = Marshal.PtrToStringAnsi(imageStringPtr);
+            if (managedBase64ImageString == null) {
+                return;
+            }
+
             byte[] imageBytes = System.Convert.FromBase64String(managedBase64ImageString);
 
             // Create a Texture2D object from the raw byte data from iOS
@@ -95,12 +105,6 @@ namespace Shopify.Unity.UI {
                 new Vector2(0.5f, 0.5f),
                 100.0f
             );
-        }
-#endif
-
-#if UNITY_ANDROID
-        private void GenerateAndroidPayImage() {
-            // TODO: Get a render of the Android Pay button for use in Unity.
         }
 #endif
     }

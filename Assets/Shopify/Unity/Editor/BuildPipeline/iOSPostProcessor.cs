@@ -71,10 +71,14 @@ namespace Shopify.Unity.Editor.BuildPipeline {
         /// Sets the correct target for Shopify Tests
         private static void SetCorrectTestsTarget(ExtendedPBXProject project) {
             string testPath = Path.Combine(project.BuildPath, "Libraries/Shopify/Plugins/iOS/Shopify/BuyTests/");
+            string testerPath = Path.Combine(project.BuildPath, "Libraries/Shopify/Plugins/iOS/Shopify/BuyTests/UnityTestHelpers/Tester.mm");
             var testDirectory = new DirectoryInfo(testPath);
 
             try {
                 project.SetFilesInDirectoryToTestTarget(testDirectory);
+
+                // Re-add Tester.mm file to main target to allow Tester.cs to find it's DllImport.
+                project.AddFileToMainTarget(testerPath);
             } catch (Exception e) {
                 Debug.Log(e.Message);
             }
