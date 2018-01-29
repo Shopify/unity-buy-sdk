@@ -25,6 +25,7 @@
         }
 
         public override void OnShow() {
+            Theme.OnLoadingStarted();
             Client.products(OnProductsLoaded, ProductGID);
         }
 
@@ -38,6 +39,8 @@
                 Shop.OnError(new ShopifyError(ShopifyError.ErrorType.UserError, "Product not found"));
                 return;
             }
+
+            Theme.OnLoadingFinished();
 
             var product = products[0];
             var variants = product.variants().edges().Select((x) => x.node()).ToArray();
