@@ -1,7 +1,9 @@
 namespace Shopify.UIToolkit {
+    using UnityEngine;
     using UnityEngine.Events;
     using Shopify.Unity;
     using Shopify.Unity.SDK;
+    using System;
     using System.Linq;
     using System.Collections.Generic;
 
@@ -39,9 +41,11 @@ namespace Shopify.UIToolkit {
         public PurchaseFailedEvent OnPurhchaseFailed = new PurchaseFailedEvent();
 
         private Dictionary<string, ProductVariant> _idsToVariants = new Dictionary<string, ProductVariant>();
+        private string _appleMerchantID;
 
-        public CartController(Cart cart) {
+        public CartController(Cart cart, string appleMerchantID) {
             SetCart(cart);
+            _appleMerchantID = appleMerchantID;
         }
 
         public void SetCart(Cart cart) {
@@ -132,10 +136,17 @@ namespace Shopify.UIToolkit {
         /// Start a purchase with the current cart.
         /// </summary>
         /// <param name="mode">How do you want to make the purchase? Native, Web or Auto</param>
-        /// <param name="nativePayKey">Vendor-specific key to be passed to Native purchase methods</param>
-        public void StartPurchase(CheckoutMode mode, string nativePayKey = null) {
+        public void StartPurchase(CheckoutMode mode) {
+
+            // Validate that the developer has given us the proper native payment key for the platform.
+            var nativePayKey = NativePayKeyForCurrentPlatform();
+            if ((mode == CheckoutMode.Native || mode == CheckoutMode.Auto) && nativePayKey == null) {
+                throw new ArgumentException("Missing native payment key for current platform or platform does not support native pay.");
+                return;
+            }
+
             OnPurchaseStarted.Invoke();
-            
+
             switch (mode) {
                 case CheckoutMode.Native:
                     Cart.CheckoutWithNativePay(nativePayKey, OnPurchaseComplete.Invoke, OnPurhcaseCancelled.Invoke, OnPurhchaseFailed.Invoke);
@@ -155,6 +166,14 @@ namespace Shopify.UIToolkit {
                     });
                     break;
             }
+        }
+
+        private string NativePayKeyForCurrentPlatform() {
+            #if UNITY_IOS
+            return _appleMerchantID;
+            #else
+            return null;
+            #endif
         }
 
         private int TotalItemsInCart() {

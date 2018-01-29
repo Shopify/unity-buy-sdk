@@ -171,6 +171,14 @@
             _controller.Cart.AddVariant(variant);
         }
 
+        public void PerformWebCheckout() {
+            _controller.Cart.StartPurchase(CheckoutMode.Web);
+        }
+
+        public void PerformNativeCheckout() {
+            _controller.Cart.StartPurchase(CheckoutMode.Native);
+        }
+
         private void OnViewChanged() {
             var canNavigateBack = ViewSwitcher.CanNavigateBack();
             CloseButton.gameObject.SetActive(!canNavigateBack);

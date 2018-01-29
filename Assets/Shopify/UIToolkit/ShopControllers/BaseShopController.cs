@@ -42,6 +42,8 @@ namespace Shopify.UIToolkit {
         }
         [SerializeField] private string _accessToken;
 
+        [SerializeField] private string _appleMerchantID;
+
         /// <summary>
         /// What loader provider this controller uses to create the loader.
         /// You can change this if you require a special kind of request loader
@@ -93,7 +95,7 @@ namespace Shopify.UIToolkit {
 
         private void SetupClientAndCart() {
             _cachedClient = new ShopifyClient(LoaderProvider.GetLoader(AccessToken, ShopDomain));
-            _cachedCart = new CartController(_cachedClient.Cart());
+            _cachedCart = new CartController(_cachedClient.Cart(), _appleMerchantID);
             
             _cachedCart.OnPurchaseStarted.AddListener(Shop.OnPurchaseStarted);
             _cachedCart.OnPurhcaseCancelled.AddListener(Shop.OnPurchaseCancelled);

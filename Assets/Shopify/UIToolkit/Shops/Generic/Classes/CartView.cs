@@ -36,6 +36,14 @@ namespace Shopify.UIToolkit.Shops.Generic {
             UpdateCartList(cartItems);
         }
 
+        public void PerformWebCheckout() {
+            Shop.PerformWebCheckout();
+        }
+
+        public void PerformNativeCheckout() {
+            Shop.PerformNativeCheckout();
+        }
+
         #endregion
 
         #region Helpers

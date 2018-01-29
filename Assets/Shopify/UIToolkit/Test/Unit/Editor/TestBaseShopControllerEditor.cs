@@ -58,5 +58,11 @@ namespace Shopify.UIToolkit.Test.Unit {
             _editor.OnInspectorGUI();
             _editor.View.Received().DrawShopCredentialsVerifier();
         }
+
+        [Test]
+        public void TestPaymentPropertiesViewDraw() {
+            _editor.OnInspectorGUI();
+            _editor.View.Received().DrawPaymentProperties();
+        }
     }
 }
