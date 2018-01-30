@@ -159,14 +159,7 @@ namespace Shopify.UIToolkit {
         /// </summary>
         /// <param name="mode">How do you want to make the purchase? Native, Web or Auto</param>
         public void StartPurchase(CheckoutMode mode) {
-
-            // Validate that the developer has given us the proper native payment key for the platform.
             var nativePayKey = NativePayKeyForCurrentPlatform();
-            if ((mode == CheckoutMode.Native || mode == CheckoutMode.Auto) && nativePayKey == null) {
-                throw new ArgumentException("Missing native payment key for current platform or platform does not support native pay.");
-                return;
-            }
-
             OnPurchaseStarted.Invoke();
 
             switch (mode) {
