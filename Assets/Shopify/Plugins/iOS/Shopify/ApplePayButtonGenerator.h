@@ -5,8 +5,7 @@
 extern "C" {
 #endif
     const char* _GenerateApplePayButtonImage(const char *type, const char* style, 
-                                             float width, float height,
-                                             bool includeMinimumSpacingForIOS);
+                                             float width, float height);
 #ifdef __cplusplus
 }
 #endif
