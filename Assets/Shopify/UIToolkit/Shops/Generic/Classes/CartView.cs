@@ -25,7 +25,11 @@ namespace Shopify.UIToolkit.Shops.Generic {
 
         #region MonoBehaviour
 
-        void Awake() {}
+        void Awake() {
+            Shop.CanCheckoutWithNativePay((canCheckout) => {
+                NativePayButton.gameObject.SetActive(canCheckout);
+            });
+        }
 
         void OnEnable() {
             UpdateList();

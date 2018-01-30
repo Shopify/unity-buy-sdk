@@ -41,12 +41,6 @@ namespace Shopify.Unity.UI {
         /// </summary>
         public ApplePayButtonType applePayButtonType;
 
-        /// <summary>
-        /// When set to true, the the Apple Pay button image will include the 10% minimum spacing around the 
-        /// button image required by Apple's design guidelines.
-        /// </summary>
-        public bool includeMinimumSpacingForIOS;
-
         private RectTransform rectTransform;
         private Image buttonImage;
         private Texture2D imageTexture;
@@ -70,8 +64,7 @@ namespace Shopify.Unity.UI {
 #if UNITY_IOS
         [DllImport("__Internal")]
         private static extern IntPtr _GenerateApplePayButtonImage(string type, string style,
-            float width, float height,
-            bool includeMinimumSpacingForIOS);
+            float width, float height);
 
         private void GenerateApplePayImage() {
             // Ask iOS to generate us an image of the native Apple Pay button.
@@ -79,8 +72,7 @@ namespace Shopify.Unity.UI {
                 applePayButtonType.ToString(),
                 applePayButtonStyle.ToString(),
                 rectTransform.rect.width,
-                rectTransform.rect.height,
-                includeMinimumSpacingForIOS
+                rectTransform.rect.height
             );
 
             string managedBase64ImageString = Marshal.PtrToStringAnsi(imageStringPtr);
