@@ -39,7 +39,12 @@
         public void OnProductsLoaded(Product[] products) {
             if (firstLoad) {
                 for (int i = 0; i < potentiallyVisibleElements; i++) {
-                    _scrollPoolElements[i].SetProduct (products [i]);
+                    var element = _scrollPoolElements[i];
+                    var product = products[i];
+                    element.SetProduct(product);
+                    element.OnClick.AddListener(() => {
+                        Shop.ViewProductDetails(product, product.variants().edges().Select((x) => x.node()).ToArray());
+                    });
                 }
 
                 firstLoad = false;
@@ -79,7 +84,12 @@
             _scrollPoolElements.Remove(element);
             _scrollPoolElements.Insert(toIndex, element);
             element.transform.localPosition = new Vector3 ((toIndex + dataOffset) * elementWidth, 0, 0);
-            element.SetProduct (shop.ProductCache.Get(cacheOffset));
+
+            var product = shop.ProductCache.Get(cacheOffset);
+            element.SetProduct (product);
+            element.OnClick.AddListener(() => {
+                Shop.ViewProductDetails(product, product.variants().edges().Select((x) => x.node()).ToArray());
+            });
         }
 
         private void LoadMoreProducts() {
