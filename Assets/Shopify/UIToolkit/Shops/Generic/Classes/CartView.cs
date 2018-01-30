@@ -27,7 +27,7 @@ namespace Shopify.UIToolkit.Shops.Generic {
 
         void Awake() {
             Shop.CanCheckoutWithNativePay((canCheckout) => {
-                NativePayButton.gameObject.SetActive(!canCheckout);
+                NativePayButton.gameObject.SetActive(canCheckout);
             });
         }
 
