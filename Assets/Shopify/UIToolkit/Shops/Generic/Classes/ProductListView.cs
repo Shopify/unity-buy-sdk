@@ -38,20 +38,26 @@
         public void OnProductsLoaded(Product[] products) {
             if (firstLoad) {
                 for (int i = 0; i < potentiallyVisibleElements; i++) {
-                    _scrollPoolElements[i].SetProduct (products [i]);
+                    var element = _scrollPoolElements[i];
+                    var product = products[i];
+                    var variants = product.variants().edges().Select((x) => x.node()).ToArray();
+                    element.SetProduct(product);
+                    element.OnClick.AddListener(() => {
+                        Shop.ViewProductDetails(product, variants);
+                    });
                 }
 
                 firstLoad = false;
             }
 
-            contentRegion.endOffset = -elementWidth * (shop.ProductCache.Count - potentiallyVisibleElements);
+            contentRegion.endOffset = -elementWidth * (Shop.ProductCache.Count - potentiallyVisibleElements);
 
             loadingMore = false;
         }
 
         private void OnScroll() {
             if ((elementWidth*(dataOffset+1)) + content.transform.localPosition.x <= 0.001) {
-                if (potentiallyVisibleElements + dataOffset >= shop.ProductCache.Count - 1) {
+                if (potentiallyVisibleElements + dataOffset >= Shop.ProductCache.Count - 1) {
                     LoadMoreProducts();
 
                     return;
@@ -78,7 +84,13 @@
             _scrollPoolElements.Remove(element);
             _scrollPoolElements.Insert(toIndex, element);
             element.transform.localPosition = new Vector3 ((toIndex + dataOffset) * elementWidth, 0, 0);
-            element.SetProduct (shop.ProductCache.Get(cacheOffset));
+
+            var product = Shop.ProductCache.Get(cacheOffset) ;
+            var variants = product.variants().edges().Select((x) => x.node()).ToArray();
+            element.SetProduct (Shop.ProductCache.Get(cacheOffset));
+            element.OnClick.AddListener(() => {
+                Shop.ViewProductDetails(product, variants);
+            });
         }
 
         private void LoadMoreProducts() {
@@ -86,13 +98,9 @@
                 return;
             }
 
-            shop.LoadMoreProducts();
+            Shop.LoadMoreProducts();
 
             loadingMore = true;
-        }
-
-        private new GenericMultiProductShop shop {
-            get { return Shop as GenericMultiProductShop; }
         }
     }
 }

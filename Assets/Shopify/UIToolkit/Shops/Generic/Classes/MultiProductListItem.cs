@@ -34,6 +34,5 @@ namespace Shopify.UIToolkit.Shops {
         public void DispatchOnClick() {
             OnClick.Invoke();
         }
-
     }
 }
