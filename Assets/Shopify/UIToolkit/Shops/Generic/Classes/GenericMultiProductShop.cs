@@ -64,7 +64,15 @@
         void IShop.OnPurchaseStarted() {}
 
         void IShop.OnCartQuantityChanged(int totalNumberOfCartItems) {
-            BadgeView.gameObject.SetActive(totalNumberOfCartItems > 0);
+            var badgeAnimator = BadgeView.gameObject.GetComponent<Animator>();
+            var oldCount = BadgeView.Count;
+            if (oldCount == 0 && totalNumberOfCartItems > 0) {
+                badgeAnimator.Play("Show");
+            } else if (totalNumberOfCartItems > 0) {
+                badgeAnimator.Play("Adding");
+            } else if (totalNumberOfCartItems == 0) {
+                badgeAnimator.Play("Hide");
+            }
             BadgeView.SetCount(totalNumberOfCartItems);
         }
 
