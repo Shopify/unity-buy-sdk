@@ -42,29 +42,17 @@
             throw new System.NotImplementedException(); 
         }
 
-        void IShop.OnPurchaseStarted() {
-            throw new System.NotImplementedException(); 
-        }
+        void IShop.OnPurchaseStarted() {}
 
-        void IShop.OnPurchaseCancelled() {
-            throw new System.NotImplementedException(); 
-        }
+        void IShop.OnPurchaseCancelled() {}
 
-        void IShop.OnPurchaseCompleted() {
-            throw new System.NotImplementedException(); 
-        }
+        void IShop.OnPurchaseCompleted() {}
 
-        void IShop.OnPurchaseFailed(ShopifyError error) {
-            throw new System.NotImplementedException(); 
-        }
+        void IShop.OnPurchaseFailed(ShopifyError error) {}
 
-        void IShop.OnCartQuantityChanged(int totalNumberOfCartItems) {
-            throw new System.NotImplementedException();
-        }
+        void IShop.OnCartQuantityChanged(int totalNumberOfCartItems) {}
 
-        void IShop.OnCartItemsChanged(List<CartItem> cartItems) {
-            throw new System.NotImplementedException();
-        }
+        void IShop.OnCartItemsChanged(List<CartItem> cartItems) {}
 
         void ISingleProductShop.OnProductLoaded(Product product, ProductVariant[] variants) {
             ViewBindings.FillWithProductWithVariants(product, variants);
