@@ -261,8 +261,8 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
 --- !u!114 &114227866491975652
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -311,14 +311,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1636201769921328}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b51d258eb08214e5d823fdf5b3913a2b, type: 3}
+  m_Script: {fileID: 11500000, guid: f94e5f6ba792244c6814fa9bcd9ea092, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OnScroll:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
   endOffset: 0
 --- !u!114 &114412370725493008
 MonoBehaviour:
@@ -424,7 +424,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ListItemTemplate: {fileID: 114207326514047082}
-  ListView: {fileID: 0}
   content: {fileID: 1636201769921328}
   contentRegion: {fileID: 114408807997176240}
 --- !u!114 &114523030993175802

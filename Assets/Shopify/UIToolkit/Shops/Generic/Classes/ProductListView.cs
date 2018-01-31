@@ -8,7 +8,6 @@
 
     public class ProductListView : GenericMultiProductShopView {
         public MultiProductListItem ListItemTemplate;
-        public ScrollRect ListView;
         public GameObject content;
 
         private const int potentiallyVisibleElements = 5;
@@ -94,14 +93,6 @@
 
         private new GenericMultiProductShop shop {
             get { return Shop as GenericMultiProductShop; }
-        }
-
-        private RectTransform _scrollContentRect {
-            get { return ListView.content; }
-        }
-
-        private RectTransform _viewportRect {
-            get { return ListView.viewport; }
         }
     }
 }
