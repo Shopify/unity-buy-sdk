@@ -22,9 +22,7 @@
             _shop = Substitute.For<ISingleProductShop>();
 
             _controller.Shop = _shop;
-
-            _controller.ShopDomain = Utils.TestShopDomain;
-            _controller.AccessToken = Utils.TestAccessToken;
+            _controller.Credentials = new ShopCredentials(Utils.TestShopDomain, Utils.TestAccessToken);
         }
 
         [Test]

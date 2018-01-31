@@ -869,9 +869,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12c43038611a2480c88850b66d13058f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shopDomain: graphql.myshopify.com
-  _accessToken: 351c122017d0f2a957d32ae728ad749c
-  ProductGID: Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0LzQ0NjQ1OTA4NDgz
+  _Credentials:
+    State: 2
+    _AccessToken: 351c122017d0f2a957d32ae728ad749c
+    _Domain: graphql.myshopify.com
+  _appleMerchantID: 
+  ProductGID: Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0Lzk4OTUzMTg1MzE=
 --- !u!114 &114130043684132340
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2264,7 +2267,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 19.999975, y: -20.000034}
+  m_AnchoredPosition: {x: 19.99997, y: -20.000034}
   m_SizeDelta: {x: 323.63635, y: 590}
   m_Pivot: {x: -0.00000007636845, y: 0.99999994}
 --- !u!224 &224117744143453136
@@ -2740,8 +2743,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 500, y: -45}
-  m_SizeDelta: {x: 760, y: 50}
+  m_AnchoredPosition: {x: 550, y: -45}
+  m_SizeDelta: {x: 860, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224727456222106714
 RectTransform:
@@ -2779,7 +2782,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 959.975, y: -540}
+  m_AnchoredPosition: {x: 1533.975, y: -703}
   m_SizeDelta: {x: 1000, y: 720}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224803724492436134

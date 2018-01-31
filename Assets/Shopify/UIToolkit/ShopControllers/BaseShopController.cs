@@ -4,7 +4,19 @@ namespace Shopify.UIToolkit {
     using Shopify.Unity.SDK;
     using System.Linq;
 
-    public abstract class ShopControllerBase : MonoBehaviour, IShopCredentials {
+    public abstract class ShopControllerBase : MonoBehaviour {
+        [SerializeField] private ShopCredentials _Credentials = new ShopCredentials();
+        public ShopCredentials Credentials {
+            get {
+                return _Credentials;
+            }
+
+            set {
+                _Credentials = value;
+                InvalidateClient();
+            }
+        }
+
         public IShop Shop {
             get {
                 _cachedShop = _cachedShop ?? GetComponent<IShop>();
@@ -17,30 +29,6 @@ namespace Shopify.UIToolkit {
         }
 
         private IShop _cachedShop;
-
-        /// <summary>
-        /// The Shop Domain to connect to, in the form of "myshop.myshopify.com"
-        /// </summary>
-        public string ShopDomain {
-            get { return _shopDomain; }
-            set {
-                _shopDomain = value;
-                InvalidateClient();
-            }
-        }
-        [SerializeField] private string _shopDomain;
-
-        /// <summary>
-        /// The Storefront Access Token used to authenticate with the connected shop
-        /// </summary>
-        public string AccessToken {
-            get { return _accessToken; }
-            set {
-                _accessToken = value;
-                InvalidateClient();
-            }
-        }
-        [SerializeField] private string _accessToken;
 
         [SerializeField] private string _appleMerchantID;
 
@@ -57,17 +45,6 @@ namespace Shopify.UIToolkit {
             }
         }
         private ILoaderProvider _loaderProvider = new UnityLoaderProvider();
-
-        public string GetShopDomain() {
-            return ShopDomain;
-        }
-
-        public string GetAccessToken() {
-            return AccessToken;
-        }
-
-        [HideInInspector]
-        public ShopCredentialsVerificationState CredentialsVerificationState { get; set; }
 
         /// <summary>
         /// The client that the controller is using to make requests against the SDK.
@@ -94,22 +71,20 @@ namespace Shopify.UIToolkit {
         }
 
         private void SetupClientAndCart() {
-            _cachedClient = new ShopifyClient(LoaderProvider.GetLoader(AccessToken, ShopDomain));
+            _cachedClient = new ShopifyClient(LoaderProvider.GetLoader(Credentials.AccessToken, Credentials.Domain));
             _cachedCart = new CartController(_cachedClient.Cart(), _appleMerchantID);
             
             _cachedCart.OnPurchaseStarted.AddListener(Shop.OnPurchaseStarted);
-            _cachedCart.OnPurhcaseCancelled.AddListener(Shop.OnPurchaseCancelled);
+            _cachedCart.OnPurchaseCancelled.AddListener(Shop.OnPurchaseCancelled);
             _cachedCart.OnPurchaseComplete.AddListener(Shop.OnPurchaseCompleted);
-            _cachedCart.OnPurhchaseFailed.AddListener(Shop.OnPurchaseFailed);
+            _cachedCart.OnPurchaseFailed.AddListener(Shop.OnPurchaseFailed);
             _cachedCart.OnCartItemsChange.AddListener(Shop.OnCartItemsChanged);
+            _cachedCart.OnPurchaseFailed.AddListener(Shop.OnPurchaseFailed);
             _cachedCart.OnQuantityChange.AddListener(Shop.OnCartQuantityChanged);
         }
 
-        private CartController _cachedCart;
 
-        private void InvalidateClient() {
-            _cachedClient = null;
-        }
+        private CartController _cachedCart;
 
         /// <summary>
         /// Shows the shop
@@ -123,6 +98,10 @@ namespace Shopify.UIToolkit {
         /// </summary>
         public void Hide() {
             OnHide();
+        }
+
+        public void InvalidateClient() {
+            _cachedClient = null;
         }
 
         public abstract void OnShow();

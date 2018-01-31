@@ -1,4 +1,4 @@
-namespace Shopify.UIToolkit.Editor {
+namespace Shopify.UIToolkit.Test.Unit {
     using UnityEngine;
     using UnityEditor;
     using UnityEngine.TestTools;
@@ -15,6 +15,8 @@ namespace Shopify.UIToolkit.Editor {
         [SetUp]
         public void Setup() {
             _controller = GlobalGameObject.AddComponent<SingleProductShopController>();
+            _controller.Credentials = new ShopCredentials("","");
+
             _editor = Editor.CreateEditor(_controller) as SingleProductShopControllerEditor;
             _editor.View = Substitute.For<ISingleProductShopControllerEditorView>();
         }
@@ -26,7 +28,7 @@ namespace Shopify.UIToolkit.Editor {
 
         [Test]
         public void TestNotVerifiedCredentialsDoesNotShowProductPicker() {
-            _controller.CredentialsVerificationState = ShopCredentialsVerificationState.Unverified;
+            _controller.Credentials.State = ShopCredentials.VerificationState.Unverified;
             _editor.OnEnable();
             _editor.OnInspectorGUI();
             _editor.View.DidNotReceive().DrawProductPicker();
@@ -34,7 +36,7 @@ namespace Shopify.UIToolkit.Editor {
 
         [Test]
         public void TestVerifiedCredentialsDoesShowProductPicker() {
-            _controller.CredentialsVerificationState = ShopCredentialsVerificationState.Verified;
+            _controller.Credentials.State = ShopCredentials.VerificationState.Verified;
             _editor.OnEnable();
             _editor.OnInspectorGUI();
             _editor.View.Received().DrawProductPicker();
@@ -42,7 +44,7 @@ namespace Shopify.UIToolkit.Editor {
 
         [Test]
         public void TestInvalidCredentialsDoesNotShowProductPicker() {
-            _controller.CredentialsVerificationState = ShopCredentialsVerificationState.Invalid;
+            _controller.Credentials.State = ShopCredentials.VerificationState.Invalid;
             _editor.OnEnable();
             _editor.OnInspectorGUI();
             _editor.View.DidNotReceive().DrawProductPicker();

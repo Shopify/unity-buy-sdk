@@ -6,93 +6,21 @@
     using Shopify.Unity.SDK;
     using Shopify.Unity.SDK.Editor;
 
-    public interface IShopCredentialsView {
-        void DrawInspectorGUI(SerializedObject serializedObject);
-    }
-
-    public class ShopCredentialsView : IShopCredentialsView {
-        private ShopCredentialsVerifier _verifier;
-
-        public ShopCredentialsView(ShopCredentialsVerifier verifier) {
-            _verifier = verifier;
-        }
-
-        /// <summary>
-        /// Draws the GUI for the verifier, should be called from an editor
-        /// in OnInspectorGUI
-        /// </summary>
-        /// <param name="serializedObject">The serialized version of the object provided as the context</param>
-        public void DrawInspectorGUI(SerializedObject serializedObject) {
-            EditorGUILayout.Separator();
-
-            var disableCredentialsForm = _verifier.HasVerifiedCredentials() || _verifier.RequestInProgress;
-
-            EditorGUI.BeginDisabledGroup(disableCredentialsForm);
-            DrawCredentialsForm(serializedObject);
-            EditorGUI.EndDisabledGroup();
-
-            DrawMessageBox();
-            DrawActionButton();
-            EditorGUILayout.Separator();
-            serializedObject.ApplyModifiedProperties();
-        }
-
-        private void DrawCredentialsForm(SerializedObject serializedObject) {
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_shopDomain"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_accessToken"));
-        }
-
-        private void DrawActionButton() {
-            if (_verifier.RequestInProgress) {
-                EditorGUI.BeginDisabledGroup(true);
-                ActionButton("Verifying...", () => { });
-                EditorGUI.EndDisabledGroup();
-                return;
-            }
-
-            switch (_verifier.Credentials.CredentialsVerificationState) {
-                case ShopCredentialsVerificationState.Invalid:
-                    ActionButton("Try Again", _verifier.VerifyCredentials);
-                    break;
-                case ShopCredentialsVerificationState.Verified:
-                    ActionButton("Use Different Credentials", _verifier.ResetVerificationState);
-                    break;
-                case ShopCredentialsVerificationState.Unverified:
-                    ActionButton("Verify Credentials", _verifier.VerifyCredentials);
-                    break;
-            }
-        }
-
-        private void ActionButton(string label, Action onClick) {
-            if (GUILayout.Button(label)) {
-                onClick.Invoke();
-            }
-        }
-
-        private void DrawMessageBox() {
-            if (_verifier.Credentials.CredentialsVerificationState == ShopCredentialsVerificationState.Invalid) {
-                EditorGUILayout.HelpBox("The credentials provided could not be used to connect to your shop.", MessageType.Error);
-            }
-        }
-    }
-
     /// <summary>
-    /// A helper for the editor that allows verifying shop credentials
-    /// and drawing a UI to support the feature.
+    /// A helper for the editor that allows verifying shop credentials.
     /// </summary>
     public class ShopCredentialsVerifier {
-        public delegate void OnCredentialsStateChangedHandler();
-        public event OnCredentialsStateChangedHandler OnCredentialsStateChanged;
+        public delegate void OnCredentialsStateChangedHandler(ShopCredentials.VerificationState newState);
+        public event OnCredentialsStateChangedHandler OnCredentialsStateShouldChange;
 
-        public IShopCredentials Credentials { private set; get; }
-
+        public ShopCredentials Credentials { get; set; }
         public bool RequestInProgress { get; private set; }
 
         /// <summary>
         /// Creates a new verifier
         /// </summary>
         /// <param name="context">The object with credentials</param>
-        public ShopCredentialsVerifier(IShopCredentials credentials) {
+        public ShopCredentialsVerifier(ShopCredentials credentials) {
             Credentials = credentials;
         }
 
@@ -128,7 +56,7 @@
             } catch (Exception e) {
                 Debug.LogError(e);
                 RequestInProgress = false;
-                UpdateVerificationState(ShopCredentialsVerificationState.Invalid);
+                UpdateVerificationState(ShopCredentials.VerificationState.Invalid);
                 onFailure();
                 return;
             }
@@ -147,32 +75,31 @@
         /// </summary>
         /// <returns>True if the context's credentials are verified</returns>
         public bool HasVerifiedCredentials() {
-            return Credentials.CredentialsVerificationState == ShopCredentialsVerificationState.Verified;
+            return Credentials.State == ShopCredentials.VerificationState.Verified;
         }
 
         /// <summary>
         /// Resets the verification state of the context object
         /// </summary>
         public void ResetVerificationState() {
-            UpdateVerificationState(ShopCredentialsVerificationState.Unverified);
+            UpdateVerificationState(ShopCredentials.VerificationState.Unverified);
         }
 
-        private void UpdateVerificationState(ShopCredentialsVerificationState newState) {
-            Credentials.CredentialsVerificationState = newState;
-            if (OnCredentialsStateChanged != null) OnCredentialsStateChanged();
+        private void UpdateVerificationState(ShopCredentials.VerificationState newState) {
+            if (OnCredentialsStateShouldChange != null) OnCredentialsStateShouldChange(newState);
         }
 
         private ShopifyClient Client() {
-            return new ShopifyClient(new UnityEditorLoader(Credentials.GetShopDomain(), Credentials.GetAccessToken()));
+            return new ShopifyClient(new UnityEditorLoader(Credentials.Domain, Credentials.AccessToken));
         }
 
         private void OnVerificationRequestComplete(QueryRoot result, ShopifyError errors) {
             RequestInProgress = false;
 
             if (errors != null) {
-                UpdateVerificationState(ShopCredentialsVerificationState.Invalid);
+                UpdateVerificationState(ShopCredentials.VerificationState.Invalid);
             } else {
-                UpdateVerificationState(ShopCredentialsVerificationState.Verified);
+                UpdateVerificationState(ShopCredentials.VerificationState.Verified);
             }
         }
     }

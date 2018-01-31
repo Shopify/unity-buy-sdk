@@ -8,58 +8,42 @@
 
     [TestFixture]
     public class TestShopCredentialsVerifier {
-        private const string _ValidShopDomain = "graphql.myshopify.com";
+        private const string _ValidDomain = "graphql.myshopify.com";
         private const string _ValidAccessToken = "351c122017d0f2a957d32ae728ad749c";
-
-        private class MockShopCredentials : IShopCredentials {
-            public ShopCredentialsVerificationState CredentialsVerificationState { get; set; }
-            public string ShopDomain { get; set; }
-            public string AccessToken { get; set; }
-
-            public string GetShopDomain() {
-                return ShopDomain;
-            }
-
-            public string GetAccessToken() {
-                return AccessToken;
-            }
-        }
-
         private ShopCredentialsVerifier _Verifier;
-        private MockShopCredentials _ObjectWithCredentials;
 
         [SetUp]
         public void Setup() {
-            _ObjectWithCredentials = new MockShopCredentials();
-            _ObjectWithCredentials.AccessToken = "";
-            _ObjectWithCredentials.ShopDomain = "";
-            _ObjectWithCredentials.CredentialsVerificationState = ShopCredentialsVerificationState.Unverified;
-            _Verifier = new ShopCredentialsVerifier(_ObjectWithCredentials);
+            _Verifier = new ShopCredentialsVerifier(new ShopCredentials("", ""));
         }
 
         [Test]
         public void TestHasVerifiedCredentialsFalseWhenCredentialsUnverified() {
-            _ObjectWithCredentials.CredentialsVerificationState = ShopCredentialsVerificationState.Unverified;
+            _Verifier.Credentials.State = ShopCredentials.VerificationState.Unverified;
             Assert.IsFalse(_Verifier.HasVerifiedCredentials());
         }
 
         [Test]
         public void TestHasVerifiedCredentialsFalseWhenCredentialsInvalid() {
-            _ObjectWithCredentials.CredentialsVerificationState = ShopCredentialsVerificationState.Invalid;
+            _Verifier.Credentials.State = ShopCredentials.VerificationState.Invalid;
             Assert.IsFalse(_Verifier.HasVerifiedCredentials());
         }
 
         [Test]
         public void TestHasVerifiedCredentialsTrueWhenCredentialsValid() {
-            _ObjectWithCredentials.CredentialsVerificationState = ShopCredentialsVerificationState.Verified;
+            _Verifier.Credentials.State = ShopCredentials.VerificationState.Verified;
             Assert.IsTrue(_Verifier.HasVerifiedCredentials());
         }
 
         [UnityTest]
         public IEnumerator TestCanVerifyValidCredentials() {
-            _ObjectWithCredentials.CredentialsVerificationState = ShopCredentialsVerificationState.Unverified;
-            _ObjectWithCredentials.AccessToken = _ValidAccessToken;
-            _ObjectWithCredentials.ShopDomain = _ValidShopDomain;
+            _Verifier = new ShopCredentialsVerifier(new ShopCredentials(_ValidDomain, _ValidAccessToken));
+
+            var state = ShopCredentials.VerificationState.Unverified;
+
+            _Verifier.OnCredentialsStateShouldChange += (newState) => {
+                state = newState;
+            };
 
             var requestComplete = false;
             var successCallbackCalled = false;
@@ -76,16 +60,19 @@
                 yield return null;
             }
 
-            Assert.IsTrue(_Verifier.HasVerifiedCredentials());
-            Assert.IsTrue(_ObjectWithCredentials.CredentialsVerificationState == ShopCredentialsVerificationState.Verified);
+            Assert.AreEqual(ShopCredentials.VerificationState.Verified, state);
             Assert.IsTrue(successCallbackCalled);
         }
 
         [UnityTest]
-        public IEnumerator TestCanInvalidateInvalidCredentials() {
-            _ObjectWithCredentials.CredentialsVerificationState = ShopCredentialsVerificationState.Unverified;
-            _ObjectWithCredentials.AccessToken = "???";
-            _ObjectWithCredentials.ShopDomain = "nope.myshopify.com";
+        public IEnumerator TestTellsListenerWhenCredentialsAreInvalid() {
+            _Verifier = new ShopCredentialsVerifier(new ShopCredentials("nope.myshopify.com", "???"));
+
+            var state = ShopCredentials.VerificationState.Unverified;
+
+            _Verifier.OnCredentialsStateShouldChange += (newState) => {
+                state = newState;
+            };
 
             var requestComplete = false;
             var failureCallbackCalled = false;
@@ -102,18 +89,20 @@
                 yield return null;
             }
 
-            Assert.IsFalse(_Verifier.HasVerifiedCredentials());
-            Assert.IsTrue(_ObjectWithCredentials.CredentialsVerificationState == ShopCredentialsVerificationState.Invalid);
+            Assert.AreEqual(ShopCredentials.VerificationState.Invalid, state);
             Assert.IsTrue(failureCallbackCalled);
         }
 
         [UnityTest]
         public IEnumerator TestVerifierFailsForBlankDomain() {
             LogAssert.Expect(LogType.Error, new Regex(@"Domain is invalid\. Make sure that it is not empty\/blank\."));
+            _Verifier = new ShopCredentialsVerifier(new ShopCredentials(" ", " "));
 
-            _ObjectWithCredentials.CredentialsVerificationState = ShopCredentialsVerificationState.Unverified;
-            _ObjectWithCredentials.AccessToken = "  ";
-            _ObjectWithCredentials.ShopDomain = "  ";
+            var state = ShopCredentials.VerificationState.Unverified;
+
+            _Verifier.OnCredentialsStateShouldChange += (newState) => {
+                state = newState;
+            };
 
             var requestComplete = false;
             var failureCallbackCalled = false;
@@ -130,25 +119,36 @@
                 yield return null;
             }
 
-            Assert.IsFalse(_Verifier.HasVerifiedCredentials());
-            Assert.IsTrue(_ObjectWithCredentials.CredentialsVerificationState == ShopCredentialsVerificationState.Invalid);
+            Assert.AreEqual(ShopCredentials.VerificationState.Invalid, state);
             Assert.IsTrue(failureCallbackCalled);
-
-
         }
 
         [Test]
         public void TestResetCredentialsResetsInvalidState() {
-            _ObjectWithCredentials.CredentialsVerificationState = ShopCredentialsVerificationState.Invalid;
+            var state = ShopCredentials.VerificationState.Unverified;
+
+            _Verifier.OnCredentialsStateShouldChange += (newState) => {
+                state = newState;
+            };
+
+            _Verifier.Credentials.State = ShopCredentials.VerificationState.Invalid;
             _Verifier.ResetVerificationState();
-            Assert.IsTrue(_ObjectWithCredentials.CredentialsVerificationState == ShopCredentialsVerificationState.Unverified);
+
+            Assert.AreEqual(ShopCredentials.VerificationState.Unverified, state);
         }
 
         [Test]
         public void TestResetCredentialsResetsVerifiedState() {
-            _ObjectWithCredentials.CredentialsVerificationState = ShopCredentialsVerificationState.Verified; 
+            var state = ShopCredentials.VerificationState.Unverified;
+
+            _Verifier.OnCredentialsStateShouldChange += (newState) => {
+                state = newState;
+            };
+
+            _Verifier.Credentials.State = ShopCredentials.VerificationState.Verified;
             _Verifier.ResetVerificationState();
-            Assert.IsTrue(_ObjectWithCredentials.CredentialsVerificationState == ShopCredentialsVerificationState.Unverified);
+
+            Assert.AreEqual(ShopCredentials.VerificationState.Unverified, state);
         }
     }
 }

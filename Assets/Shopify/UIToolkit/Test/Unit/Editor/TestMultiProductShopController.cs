@@ -23,8 +23,7 @@ namespace Shopify.UIToolkit.Test.Unit {
 
             _controller.Shop = _shop;
 
-            _controller.ShopDomain = Utils.TestShopDomain;
-            _controller.AccessToken = Utils.TestAccessToken;
+            _controller.Credentials = new ShopCredentials(Utils.TestShopDomain, Utils.TestAccessToken);
         }
     }
 }

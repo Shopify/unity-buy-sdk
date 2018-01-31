@@ -40,8 +40,8 @@ namespace Shopify.UIToolkit {
         public QuantityChangeEvent OnQuantityChange = new QuantityChangeEvent();
         public CartItemsChangeEvent OnCartItemsChange = new CartItemsChangeEvent();
         public UnityEvent OnPurchaseComplete = new UnityEvent();
-        public UnityEvent OnPurhcaseCancelled = new UnityEvent();
-        public PurchaseFailedEvent OnPurhchaseFailed = new PurchaseFailedEvent();
+        public UnityEvent OnPurchaseCancelled = new UnityEvent();
+        public PurchaseFailedEvent OnPurchaseFailed = new PurchaseFailedEvent();
 
         private string _appleMerchantID;
 
@@ -171,19 +171,19 @@ namespace Shopify.UIToolkit {
 
             switch (mode) {
                 case CheckoutMode.Native:
-                    Cart.CheckoutWithNativePay(nativePayKey, OnPurchaseComplete.Invoke, OnPurhcaseCancelled.Invoke, OnPurhchaseFailed.Invoke);
+                    Cart.CheckoutWithNativePay(nativePayKey, OnPurchaseComplete.Invoke, OnPurchaseCancelled.Invoke, OnPurchaseFailed.Invoke);
                     break;
 
                 case CheckoutMode.Web:
-                    Cart.CheckoutWithWebView(OnPurchaseComplete.Invoke, OnPurhcaseCancelled.Invoke, OnPurhchaseFailed.Invoke);
+                    Cart.CheckoutWithWebView(OnPurchaseComplete.Invoke, OnPurchaseCancelled.Invoke, OnPurchaseFailed.Invoke);
                     break;
 
                 case CheckoutMode.Auto:
                     Cart.CanCheckoutWithNativePay((canCheckoutWithNativePay) => {
                         if (canCheckoutWithNativePay) {
-                            Cart.CheckoutWithNativePay(nativePayKey, OnPurchaseComplete.Invoke, OnPurhcaseCancelled.Invoke, OnPurhchaseFailed.Invoke);
+                            Cart.CheckoutWithNativePay(nativePayKey, OnPurchaseComplete.Invoke, OnPurchaseCancelled.Invoke, OnPurchaseFailed.Invoke);
                         } else {
-                            Cart.CheckoutWithWebView(OnPurchaseComplete.Invoke, OnPurhcaseCancelled.Invoke, OnPurhchaseFailed.Invoke);
+                            Cart.CheckoutWithWebView(OnPurchaseComplete.Invoke, OnPurchaseCancelled.Invoke, OnPurchaseFailed.Invoke);
                         }
                     });
                     break;
