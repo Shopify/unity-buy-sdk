@@ -5,6 +5,7 @@
     using Shopify.Unity;
     using UnityEngine;
     using UnityEngine.UI;
+    using UnityEngine.Events;
 
     public class ProductListView : GenericMultiProductShopView {
         public MultiProductListItem ListItemTemplate;
@@ -40,11 +41,8 @@
                 for (int i = 0; i < potentiallyVisibleElements; i++) {
                     var element = _scrollPoolElements[i];
                     var product = products[i];
-                    var variants = product.variants().edges().Select((x) => x.node()).ToArray();
                     element.SetProduct(product);
-                    element.OnClick.AddListener(() => {
-                        Shop.ViewProductDetails(product, variants);
-                    });
+                    element.OnClick = ViewProductDetail(product);
                 }
 
                 firstLoad = false;
@@ -82,19 +80,23 @@
         }
 
         private void SwapElements(int fromIndex, int toIndex, int cacheOffset) {
-            var element = _scrollPoolElements [fromIndex];
+            var element = _scrollPoolElements[fromIndex];
             _scrollPoolElements.Remove(element);
             _scrollPoolElements.Insert(toIndex, element);
 
             var rect = (RectTransform)element.transform;
             rect.anchoredPosition = new Vector3 ((toIndex + dataOffset) * elementWidth, 0, 0);
 
-            var product = Shop.ProductCache.Get(cacheOffset) ;
-            var variants = product.variants().edges().Select((x) => x.node()).ToArray();
-            element.SetProduct (Shop.ProductCache.Get(cacheOffset));
-            element.OnClick.AddListener(() => {
+            var product = Shop.ProductCache.Get(cacheOffset);
+            element.SetProduct(product);
+            element.OnClick = ViewProductDetail(product);
+        }
+
+        private UnityAction ViewProductDetail(Product product) {
+            return () => {
+                var variants = product.variants().edges().Select((x) => x.node()).ToArray();
                 Shop.ViewProductDetails(product, variants);
-            });
+            };
         }
     }
 }
