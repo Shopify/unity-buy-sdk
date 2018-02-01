@@ -8,6 +8,8 @@
 
     public class ProductListView : GenericMultiProductShopView {
         public MultiProductListItem ListItemTemplate;
+        public ListLoadingView LoadingView;
+
         public GameObject content;
 
         private const int potentiallyVisibleElements = 5;
@@ -23,14 +25,14 @@
 
         public void Awake() {
             contentRegion.OnScroll.AddListener (OnScroll);
-
             RectTransform rtt = (RectTransform)ListItemTemplate.transform;
             elementWidth = rtt.rect.width;
 
             for (int i = 0; i < potentiallyVisibleElements; i++) {
                 var element = Instantiate (ListItemTemplate, content.transform);
+                var rect = (RectTransform)element.transform;
                 element.gameObject.SetActive(true);
-                element.transform.localPosition = new Vector2 (elementWidth * i, 0);
+                rect.anchoredPosition = new Vector2 (elementWidth * i, 0);
                 _scrollPoolElements.Add (element);
             }
         }
@@ -48,6 +50,7 @@
                 }
 
                 firstLoad = false;
+                LoadingView.gameObject.SetActive(false);
             }
 
             contentRegion.endOffset = -elementWidth * (Shop.ProductCache.Count - potentiallyVisibleElements);
@@ -56,7 +59,8 @@
         }
 
         private void OnScroll() {
-            if ((elementWidth*(dataOffset+1)) + content.transform.localPosition.x <= 0.001) {
+            var rectTransform = (RectTransform)content.transform;
+            if ((elementWidth*(dataOffset+1)) + rectTransform.anchoredPosition.x <= 0.001) {
                 if (potentiallyVisibleElements + dataOffset >= Shop.ProductCache.Count - 1) {
                     LoadMoreProducts();
 
