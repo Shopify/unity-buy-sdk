@@ -1247,8 +1247,8 @@ MonoBehaviour:
   OnAddToCartClicked:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &114372334494645266
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2519,7 +2519,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 19.99997, y: -20.000034}
+  m_AnchoredPosition: {x: 19.99997, y: -20.000061}
   m_SizeDelta: {x: 323.63635, y: 590}
   m_Pivot: {x: -0.00000007636845, y: 0.99999994}
 --- !u!224 &224117744143453136
