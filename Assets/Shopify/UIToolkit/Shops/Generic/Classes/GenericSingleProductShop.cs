@@ -23,7 +23,6 @@
         void Awake() {
             _controller = GetComponent<SingleProductShopController>();
             _controller.Shop = this;
-            _controller.OnShow();
         }
 
         #endregion
@@ -31,11 +30,11 @@
         #region IShop Interface
 
         void IShop.OnLoadingStarted() {
-            throw new System.NotImplementedException(); 
+            ViewBindings.SetLoadingOverlayVisible(true);
         }
 
         void IShop.OnLoadingFinished() {
-            throw new System.NotImplementedException(); 
+            ViewBindings.SetLoadingOverlayVisible(false);
         }
 
         void IShop.OnError(ShopifyError error) {
@@ -68,6 +67,7 @@
         public void Show() {
             gameObject.SetActive(true);
             Animator.Play("Show", 0);
+            _controller.Load();
         }
 
         public void Hide() {

@@ -137,7 +137,7 @@
             Animator.Play("Show", 0);
 
             //Temporary, until we refactor
-            _controller.Show();
+            _controller.Load();
         }
 
         public void Hide() {

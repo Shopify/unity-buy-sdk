@@ -20,15 +20,18 @@
 
         public string ProductGID;
 
-        public override void OnHide() {
-            throw new System.NotImplementedException();
+        public override void Unload() {
+
         }
 
-        public override void OnShow() {
+        public override void Load() {
+            Shop.OnLoadingStarted();
             Client.products(OnProductsLoaded, ProductGID);
         }
 
         private void OnProductsLoaded(List<Product> products, ShopifyError error) {
+            Shop.OnLoadingFinished();
+
             if (error != null) {
                 Shop.OnError(error);
                 return;
@@ -41,6 +44,7 @@
 
             var product = products[0];
             var variants = product.variants().edges().Select((x) => x.node()).ToArray();
+
             Shop.OnProductLoaded(product, variants);
         }
     }

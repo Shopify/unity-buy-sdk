@@ -19,14 +19,18 @@
         public Text Price;
         public Text Description;
 
-        [HeaderAttribute("Variant Selection")]
+        [Header("Variant Selection")]
         public Dropdown VariantDropdownMenu;
 
-        [HeaderAttribute("Images")]
+        [Header("Images")]
         public GameObject ProductImageViewArea;
         public ProductImageHolder ProductImageHolderTemplate;
         public GameObject ProductImageContainer;
         public RemoteImageLoader ActiveImage;
+
+        [Header("Animator")]
+        public Animator LoadingOverlayAnimator;
+
 
         [HideInInspector]
         public UnityEvent OnAddToCartClicked = new UnityEvent();
@@ -78,6 +82,10 @@
 
         public void NotifyOnAddToCartClicked() {
             OnAddToCartClicked.Invoke();
+        }
+
+        public void SetLoadingOverlayVisible(bool visible) {
+            LoadingOverlayAnimator.SetBool("Visible", visible);
         }
 
         private List<UnityEngine.UI.Dropdown.OptionData> DropdownOptionsFromVariants(ProductVariant[] variants) {

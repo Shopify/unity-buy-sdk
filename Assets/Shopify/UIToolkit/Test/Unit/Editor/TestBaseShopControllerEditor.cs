@@ -11,11 +11,8 @@ namespace Shopify.UIToolkit.Test.Unit {
     [TestFixture]
     public class TestShopControllerBaseEditor {
         public class MockShopController : ShopControllerBase {
-            public override void OnHide() {
-            }
-
-            public override void OnShow() {
-            }
+            public override void Unload() {}
+            public override void Load() {}
         }
 
         [CustomEditor(typeof(MockShopController))]
