@@ -15,11 +15,9 @@
             }
         }
 
-        public override void OnHide() {
-            throw new System.NotImplementedException();
-        }
+        public override void Unload() { }
 
-        public override void OnShow() {
+        public override void Load() {
             LoadMoreProducts();
         }
 

@@ -87,24 +87,18 @@ namespace Shopify.UIToolkit {
         private CartController _cachedCart;
 
         /// <summary>
-        /// Shows the shop
+        /// Loads the shop
         /// </summary>
-        public void Show() {
-            OnShow();
-        }
+        public abstract void Load();
 
         /// <summary>
-        /// Hides the shop
+        /// Unloads the shop
         /// </summary>
-        public void Hide() {
-            OnHide();
-        }
+        public abstract void Unload();
 
         public void InvalidateClient() {
             _cachedClient = null;
         }
 
-        public abstract void OnShow();
-        public abstract void OnHide();
     }
 }
