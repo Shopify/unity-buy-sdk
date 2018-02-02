@@ -5,9 +5,11 @@
     using Shopify.Unity;
     using UnityEngine;
     using UnityEngine.UI;
+    using UnityEngine.Events;
 
     public class ProductListView : GenericMultiProductShopView {
         public MultiProductListItem ListItemTemplate;
+
         public ListLoadingView LoadingView;
 
         public GameObject content;
@@ -21,10 +23,7 @@
 
         private List<MultiProductListItem> _scrollPoolElements = new List<MultiProductListItem> ();
 
-        public ContentRegion contentRegion;
-
         public void Awake() {
-            contentRegion.OnScroll.AddListener (OnScroll);
             RectTransform rtt = (RectTransform)ListItemTemplate.transform;
             elementWidth = rtt.rect.width;
 
@@ -42,69 +41,62 @@
                 for (int i = 0; i < potentiallyVisibleElements; i++) {
                     var element = _scrollPoolElements[i];
                     var product = products[i];
-                    var variants = product.variants().edges().Select((x) => x.node()).ToArray();
                     element.SetProduct(product);
-                    element.OnClick.AddListener(() => {
-                        Shop.ViewProductDetails(product, variants);
-                    });
+                    element.OnClick = ViewProductDetail(product);
                 }
 
                 firstLoad = false;
                 LoadingView.gameObject.SetActive(false);
             }
 
-            contentRegion.endOffset = -elementWidth * (Shop.ProductCache.Count - potentiallyVisibleElements);
-
             loadingMore = false;
         }
 
-        private void OnScroll() {
+        public void OnScroll() {
             var rectTransform = (RectTransform)content.transform;
-            if ((elementWidth*(dataOffset+1)) + rectTransform.anchoredPosition.x <= 0.001) {
+            if ((elementWidth * (dataOffset + 1)) + rectTransform.anchoredPosition.x <= 0.001) {
                 if (potentiallyVisibleElements + dataOffset >= Shop.ProductCache.Count - 1) {
-                    LoadMoreProducts();
-
+                    if (!loadingMore && !Shop.ProductCache.Complete) {
+                        Shop.LoadMoreProducts();
+                        loadingMore = true;
+                    }
                     return;
                 } else {
                     dataOffset += 1;
-
                     SwapElements(0, _scrollPoolElements.Count - 1, potentiallyVisibleElements + dataOffset);
+                    rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x + elementWidth, rectTransform.sizeDelta.y);
                 }
             }
 
-            if ((content.transform.localPosition.x / elementWidth) + dataOffset >= 0.001) {
+            if ((rectTransform.anchoredPosition.x / elementWidth) + dataOffset >= 0.001) {
                 if (dataOffset <= 0) {
                     return;
                 } else {
                     dataOffset -= 1;
-
                     SwapElements(_scrollPoolElements.Count - 1, 0, dataOffset);
+                    rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x - elementWidth, rectTransform.sizeDelta.y);
                 }
             }
         }
 
         private void SwapElements(int fromIndex, int toIndex, int cacheOffset) {
-            var element = _scrollPoolElements [fromIndex];
+            var element = _scrollPoolElements[fromIndex];
             _scrollPoolElements.Remove(element);
             _scrollPoolElements.Insert(toIndex, element);
-            element.transform.localPosition = new Vector3 ((toIndex + dataOffset) * elementWidth, 0, 0);
 
-            var product = Shop.ProductCache.Get(cacheOffset) ;
-            var variants = product.variants().edges().Select((x) => x.node()).ToArray();
-            element.SetProduct (Shop.ProductCache.Get(cacheOffset));
-            element.OnClick.AddListener(() => {
-                Shop.ViewProductDetails(product, variants);
-            });
+            var rect = (RectTransform)element.transform;
+            rect.anchoredPosition = new Vector3 ((toIndex + dataOffset) * elementWidth, 0, 0);
+
+            var product = Shop.ProductCache.Get(cacheOffset);
+            element.SetProduct(product);
+            element.OnClick = ViewProductDetail(product);
         }
 
-        private void LoadMoreProducts() {
-            if (loadingMore) {
-                return;
-            }
-
-            Shop.LoadMoreProducts();
-
-            loadingMore = true;
+        private UnityAction ViewProductDetail(Product product) {
+            return () => {
+                var variants = product.variants().edges().Select((x) => x.node()).ToArray();
+                Shop.ViewProductDetails(product, variants);
+            };
         }
     }
 }
