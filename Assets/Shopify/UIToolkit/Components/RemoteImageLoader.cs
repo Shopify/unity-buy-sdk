@@ -4,13 +4,13 @@ namespace Shopify.UIToolkit {
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using UnityEngine.Events;
 
     /// <summary>
     /// A behaviour that fetches a remote image (JPEG/PNG) from the web.
     /// </summary>
     [RequireComponent(typeof(Image))]
     public class RemoteImageLoader : MonoBehaviour {
-
         /// <summary>
         /// When true, downloaded images will be cached. Defaults to true.
         /// </summary>
@@ -71,7 +71,7 @@ namespace Shopify.UIToolkit {
                     }
                     return;
                 }
-                
+
                 _image.sprite = SpriteFromTexture(texture);
                 _image.preserveAspect = true;
 

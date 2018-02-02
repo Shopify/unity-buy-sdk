@@ -23,6 +23,8 @@
         void Awake() {
             _controller = GetComponent<SingleProductShopController>();
             _controller.Shop = this;
+
+            gameObject.SetActive(false);
         }
 
         #endregion

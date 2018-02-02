@@ -36,6 +36,7 @@
         private void Awake() {
             _controller = GetComponent<MultiProductShopController>();
             _productCache = new ProductCache();
+            gameObject.SetActive(false);
         }
 
         private void Start() {
