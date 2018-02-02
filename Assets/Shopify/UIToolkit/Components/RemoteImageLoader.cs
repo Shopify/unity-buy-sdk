@@ -16,11 +16,15 @@ namespace Shopify.UIToolkit {
         /// </summary>
         public bool UseCache = true;
 
+        public bool LoadingInProgress;
+
         private Image _image;
 
         private delegate void RemoteImageLoadedDelegate(Texture2D texture, string error);
 
         private WebImageCache _imageCache = WebImageCache.SharedCache;
+
+        private bool cancelNextLoad;
 
         void Start() {
             _image = gameObject.GetComponent<Image>();
@@ -32,6 +36,7 @@ namespace Shopify.UIToolkit {
         /// </summary>
         /// <param name="imageURL">URL for the image to download.</param>
         public void LoadImage(string imageURL) {
+            LoadingInProgress = true;
             LoadImage(imageURL, null, null);
         }
 
@@ -44,6 +49,13 @@ namespace Shopify.UIToolkit {
         /// <param name="failure">Callback called when an error occurs.</param>
         public void LoadImage(string imageURL, Action success, Action<string> failure) {
             LoadImageURL(imageURL, (texture, error) => {
+                if (cancelNextLoad) {
+                    cancelNextLoad = false;
+                    return;
+                }
+
+                LoadingInProgress = false;
+
                 if (error != null) {
                     Debug.LogWarning("Failed to download image at " + imageURL + " Reason: " + error);
                     if (failure != null) {
@@ -59,7 +71,7 @@ namespace Shopify.UIToolkit {
                     }
                     return;
                 }
-
+                
                 _image.sprite = SpriteFromTexture(texture);
                 _image.preserveAspect = true;
 
@@ -67,6 +79,10 @@ namespace Shopify.UIToolkit {
                     success();
                 }
             });
+        }
+
+        public void CancelPreviousLoad() {
+            cancelNextLoad = true;
         }
 
         private Sprite SpriteFromTexture(Texture2D texture) {

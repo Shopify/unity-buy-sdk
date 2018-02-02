@@ -14,7 +14,7 @@ namespace Shopify.UIToolkit.Shops {
         public Text PriceLabel;
         public Text DescriptionLabel;
 
-        [HideInInspector] public UnityEvent OnClick = new UnityEvent();
+        public UnityAction OnClick;
 
         private const int MaxDescriptionCharacters = 80;
 
@@ -27,13 +27,15 @@ namespace Shopify.UIToolkit.Shops {
 
             var images = (List<Shopify.Unity.Image>)product.images();
             if (images.Count > 0) {
+                if (ImageLoader.LoadingInProgress) {
+                    ImageLoader.CancelPreviousLoad();
+                }
                 ImageLoader.LoadImage(images.First().transformedSrc());
             }
         }
 
         public void DispatchOnClick() {
-            OnClick.Invoke();
+            OnClick();
         }
-
     }
 }

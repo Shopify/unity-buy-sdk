@@ -9,6 +9,9 @@
     using System.Linq;
 
     public interface IGenericMultiProductShop {
+        ProductCache ProductCache { get; }
+        void LoadMoreProducts();
+
         void AddItemToCart(ProductVariant variant, Product product);
         void ViewProductDetails(Product product, ProductVariant[] variants);
         void UpdateCartQuantityForVariant(ProductVariant variant, Product product, long quantity);
