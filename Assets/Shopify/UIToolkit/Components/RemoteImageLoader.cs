@@ -26,7 +26,7 @@ namespace Shopify.UIToolkit {
 
         private bool cancelNextLoad;
 
-        void Start() {
+        void Awake() {
             _image = gameObject.GetComponent<Image>();
         }
 
@@ -72,8 +72,10 @@ namespace Shopify.UIToolkit {
                     return;
                 }
 
-                _image.sprite = SpriteFromTexture(texture);
-                _image.preserveAspect = true;
+                if (texture != null) {
+                    _image.sprite = SpriteFromTexture(texture);
+                    _image.preserveAspect = true;
+                }
 
                 if (success != null) {
                     success();

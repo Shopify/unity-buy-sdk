@@ -9,15 +9,10 @@
 
     public class ProductListView : GenericMultiProductShopView {
         public MultiProductListItem ListItemTemplate;
-
-        public ListLoadingView LoadingView;
-
         public GameObject content;
-
         private const int potentiallyVisibleElements = 5;
         private float elementWidth;
         private int dataOffset = 0;
-
         private bool loadingMore;
         private bool firstLoad = true;
 
@@ -46,7 +41,6 @@
                 }
 
                 firstLoad = false;
-                LoadingView.gameObject.SetActive(false);
             }
 
             loadingMore = false;
@@ -88,6 +82,7 @@
             rect.anchoredPosition = new Vector3 ((toIndex + dataOffset) * elementWidth, 0, 0);
 
             var product = Shop.ProductCache.Get(cacheOffset);
+            
             element.SetProduct(product);
             element.OnClick = ViewProductDetail(product);
         }

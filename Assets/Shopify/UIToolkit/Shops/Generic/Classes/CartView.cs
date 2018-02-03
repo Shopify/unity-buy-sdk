@@ -12,6 +12,7 @@ namespace Shopify.UIToolkit.Shops.Generic {
         public ScrollRect CartItemList;
         public Text EmptyLabel;
         public NativePayButtonUI NativePayButton;
+        public Button CheckoutButton;
 
         private List<CartItem> _cartItems = new List<CartItem>();
 
@@ -25,7 +26,7 @@ namespace Shopify.UIToolkit.Shops.Generic {
 
         #region MonoBehaviour
 
-        void Awake() {
+        void Start() {
             Shop.CanCheckoutWithNativePay((canCheckout) => {
                 NativePayButton.gameObject.SetActive(canCheckout);
             });
@@ -76,10 +77,12 @@ namespace Shopify.UIToolkit.Shops.Generic {
             if (_cartItems.Count == 0) {
                 CartItemList.gameObject.SetActive(false);
                 EmptyLabel.gameObject.SetActive(true);
+                CheckoutButton.interactable = false;
                 return;
             } else {
                 CartItemList.gameObject.SetActive(true);
                 EmptyLabel.gameObject.SetActive(false);
+                CheckoutButton.interactable = true;
             }
 
             for (var i = 0; i < _cartItems.Count; i++) {

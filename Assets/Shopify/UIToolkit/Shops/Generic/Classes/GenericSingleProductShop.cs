@@ -21,9 +21,6 @@
         #region Mono Behaviour
         
         void Awake() {
-            _controller = GetComponent<SingleProductShopController>();
-            _controller.Shop = this;
-
             gameObject.SetActive(false);
         }
 
@@ -67,6 +64,8 @@
         #region events
 
         public void Show() {
+            _controller = _controller ?? GetComponent<SingleProductShopController>();
+            _controller.Shop =  _controller.Shop ?? this;
             gameObject.SetActive(true);
             Animator.Play("Show", 0);
             _controller.Load();

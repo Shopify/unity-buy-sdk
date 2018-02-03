@@ -19,11 +19,8 @@ namespace Shopify.UIToolkit.Shops {
         public UnityAction OnClick;
         private const int MaxDescriptionCharacters = 80;
 
-        public void Start() {
-            Image.color = new Color(1, 1, 1, 0);
-        }
-
         public void SetProduct(Product product) {
+            Image.CrossFadeAlpha(0f, 0.01f, true);
             TitleLabel.text = product.title();
             DescriptionLabel.text = StringHelper.Ellipsisize(product.description(), MaxDescriptionCharacters);
 
@@ -35,9 +32,10 @@ namespace Shopify.UIToolkit.Shops {
                 if (ImageLoader.LoadingInProgress) {
                     ImageLoader.CancelPreviousLoad();
                 }
+
                 ImageLoader.LoadImage(images.First().transformedSrc(), () => {
                     //success
-                    AspectRatioFitter.aspectRatio = Image.sprite.texture.width / Image.sprite.texture.height;
+                    AspectRatioFitter.aspectRatio = (float) Image.sprite.texture.width / Image.sprite.texture.height;
                     Image.CrossFadeAlpha(1f, 0.3f, true);
                 }, (error) => {
                     //failure
