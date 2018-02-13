@@ -64,7 +64,7 @@
 
             Title.text = product.title();
             Description.text = product.description();
-            SetupVariantOptions(variants);
+            SetupVariantOptions();
 
             UpdateDetailsUsingVariant(variants[0]);
 
@@ -153,18 +153,18 @@
         }
 
 
-        private void SetupVariantOptions(ProductVariant[] variants) {
-            if (HasNoProductVariants(variants)) {
+        private void SetupVariantOptions() {
+            if (HasNoProductVariants(_productVariants)) {
                 VariantDropdownMenu.gameObject.SetActive(false);
             } else {
                 VariantDropdownMenu.gameObject.SetActive(true);
                 VariantDropdownMenu.options.Clear();
 
-                var options = DropdownOptionsFromVariants(variants);
+                var options = DropdownOptionsFromVariants(_productVariants);
                 VariantDropdownMenu.AddOptions(options);
                 VariantDropdownMenu.RefreshShownValue();
                 VariantDropdownMenu.onValueChanged.AddListener((value) => {
-                    OnSelectedVariant(variants[VariantDropdownMenu.value]);
+                    OnSelectedVariant(_productVariants[VariantDropdownMenu.value]);
                 });
             }
         }
