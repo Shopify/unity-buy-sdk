@@ -589,11 +589,12 @@ MonoBehaviour:
   ProductImageHolderTemplate: {fileID: 114294542798182354}
   ProductImageContainer: {fileID: 1677243185904168}
   ActiveImage: {fileID: 114686424141890934}
+  LoadingOverlayAnimator: {fileID: 0}
   OnAddToCartClicked:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &114093016613143144
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -746,6 +747,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseCache: 1
+  LoadingInProgress: 0
 --- !u!114 &114166801980149454
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1025,6 +1027,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseCache: 1
+  LoadingInProgress: 0
 --- !u!114 &114285222720920508
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1409,6 +1412,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseCache: 1
+  LoadingInProgress: 0
 --- !u!114 &114706428444924722
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2002,10 +2006,10 @@ RectTransform:
   m_Father: {fileID: 224349052692981550}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0.000011646613, y: 0}
-  m_SizeDelta: {x: 329.0909, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.000000035390258, y: 1}
 --- !u!224 &224665409512659416
 RectTransform:

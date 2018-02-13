@@ -5,6 +5,7 @@
     using UnityEngine;
 
     public class MultiProductShopController : ShopControllerBase {
+        private bool _isLoadingForFirstTime = true;
         public new IMultiProductShop Shop {
             get {
                 return base.Shop as IMultiProductShop;
@@ -18,6 +19,7 @@
         public override void Unload() { }
 
         public override void Load() {
+            Shop.OnLoadingStarted();
             LoadMoreProducts();
         }
 
@@ -26,6 +28,11 @@
         }
 
         private void OnProductsLoaded(List<Product> products, ShopifyError error, string after) {
+            if (_isLoadingForFirstTime) {
+                Shop.OnLoadingFinished();
+                _isLoadingForFirstTime = false;
+            }
+
             if (error != null) {
                 Shop.OnError(error);
                 return;
