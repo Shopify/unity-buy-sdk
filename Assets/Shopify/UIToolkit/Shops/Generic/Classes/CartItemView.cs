@@ -42,7 +42,7 @@ namespace Shopify.UIToolkit {
             _item = item;
 
             TitleLabel.text = _product.title();
-            VariantLabel.gameObject.SetActive(_variant.title() == null);
+            VariantLabel.gameObject.SetActive(_variant.title() != null);
             VariantLabel.text = _variant.title();
 
             PriceLabel.text = string.Format("${0}", _variant.price());
