@@ -69,6 +69,9 @@ namespace Shopify.Unity.SDK {
                         #endif
                     } else {
                         OnCancelled();
+                        #if !SHOPIFY_MONO_UNIT_TEST
+                        Destroy(this);
+                        #endif
                     }
                 }
             });
