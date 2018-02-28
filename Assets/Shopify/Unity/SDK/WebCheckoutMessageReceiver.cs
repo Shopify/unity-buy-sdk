@@ -63,7 +63,10 @@ namespace Shopify.Unity.SDK {
                         Destroy(this);
                         #endif
                     } else {
-                            OnCancelled();
+                        OnCancelled();
+                        #if !SHOPIFY_MONO_UNIT_TEST
+                        Destroy(this);
+                        #endif
                     }
                 }
             });
