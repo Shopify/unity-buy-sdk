@@ -45,13 +45,14 @@ var searchData=
   ['transactionkind',['TransactionKind',['../namespace_shopify_1_1_unity.html#a619f6b3f97836413b365b0680c9a8341',1,'Shopify::Unity']]],
   ['transactionquery',['TransactionQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_transaction_query.html',1,'Shopify.Unity.GraphQL.TransactionQuery'],['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_transaction_query.html#a4a3d59b3d2afb4fefc691d2c5f97130b',1,'Shopify.Unity.GraphQL.TransactionQuery.TransactionQuery()']]],
   ['transactionstatus',['TransactionStatus',['../namespace_shopify_1_1_unity.html#a563254c727c0c2b9c2ba05215b497f18',1,'Shopify::Unity']]],
+  ['transformedsrc',['transformedSrc',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_image_query.html#af6920f391887721d00454b81309e5307',1,'Shopify.Unity.GraphQL.ImageQuery.transformedSrc()'],['../class_shopify_1_1_unity_1_1_image.html#affd296d13ad33e8008a6a748ff46e353',1,'Shopify.Unity.Image.transformedSrc()']]],
   ['try',['TRY',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba59dfb83f7cac4e3c8ee91700ef2ad90d',1,'Shopify::Unity']]],
   ['tt',['TT',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7adf1f3edb9115acb0a1e04209b7a9937b',1,'Shopify::Unity']]],
   ['ttd',['TTD',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba486a950d9ad7a3ded9f6fe8a13803a97',1,'Shopify::Unity']]],
   ['tv',['TV',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a271ddf829afeece44d8732757fba1a66',1,'Shopify::Unity']]],
   ['tw',['TW',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a3d9975706be3087ca199f440b1589b9e',1,'Shopify::Unity']]],
   ['twd',['TWD',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbabb050c779285632f0e532eab4d629b1c',1,'Shopify::Unity']]],
-  ['type',['type',['../class_shopify_1_1_unity_1_1_tokenized_payment_input.html#adbab8c60923b6b6d396e3517b805314c',1,'Shopify.Unity.TokenizedPaymentInput.type()'],['../class_shopify_1_1_unity_1_1_shopify_error.html#a987a998ee0069785468f9d6f0da6d567',1,'Shopify.Unity.ShopifyError.Type()']]],
+  ['type',['Type',['../class_shopify_1_1_unity_1_1_shopify_error.html#a987a998ee0069785468f9d6f0da6d567',1,'Shopify.Unity.ShopifyError.Type()'],['../class_shopify_1_1_unity_1_1_tokenized_payment_input.html#adbab8c60923b6b6d396e3517b805314c',1,'Shopify.Unity.TokenizedPaymentInput.type()']]],
   ['tz',['TZ',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a13c4998a4a401a2431779d247f7d6143',1,'Shopify::Unity']]],
   ['tzs',['TZS',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbaf18304033ca1591873b9752835a31c07',1,'Shopify::Unity']]]
 ];

@@ -321,10 +321,10 @@ Public Member Functions</h2></td></tr>
 <p><a class="el" href="class_shopify_1_1_unity_1_1_image.html" title="Represents an image resource. ">Image</a> associated with the collection. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">maxWidth</td><td><a class="el" href="class_shopify_1_1_unity_1_1_image.html" title="Represents an image resource. ">Image</a> width in pixels between 1 and 2048 </td></tr>
-    <tr><td class="paramname">maxHeight</td><td><a class="el" href="class_shopify_1_1_unity_1_1_image.html" title="Represents an image resource. ">Image</a> height in pixels between 1 and 2048 </td></tr>
-    <tr><td class="paramname">crop</td><td>If specified, crop the image keeping the specified region </td></tr>
-    <tr><td class="paramname">scale</td><td><a class="el" href="class_shopify_1_1_unity_1_1_image.html" title="Represents an image resource. ">Image</a> size multiplier retina displays. Must be between 1 and 3 </td></tr>
+    <tr><td class="paramname">maxWidth</td><td><a class="el" href="class_shopify_1_1_unity_1_1_image.html" title="Represents an image resource. ">Image</a> width in pixels between 1 and 2048. This argument is deprecated: Use <code>maxWidth</code> on <code><a class="el" href="class_shopify_1_1_unity_1_1_image.html#affd296d13ad33e8008a6a748ff46e353" title="The location of the transformed image as a URL. ">Image.transformedSrc</a></code> instead. </td></tr>
+    <tr><td class="paramname">maxHeight</td><td><a class="el" href="class_shopify_1_1_unity_1_1_image.html" title="Represents an image resource. ">Image</a> height in pixels between 1 and 2048. This argument is deprecated: Use <code>maxHeight</code> on <code><a class="el" href="class_shopify_1_1_unity_1_1_image.html#affd296d13ad33e8008a6a748ff46e353" title="The location of the transformed image as a URL. ">Image.transformedSrc</a></code> instead. </td></tr>
+    <tr><td class="paramname">crop</td><td>Crops the image according to the specified region. This argument is deprecated: Use <code>crop</code> on <code><a class="el" href="class_shopify_1_1_unity_1_1_image.html#affd296d13ad33e8008a6a748ff46e353" title="The location of the transformed image as a URL. ">Image.transformedSrc</a></code> instead. </td></tr>
+    <tr><td class="paramname">scale</td><td><a class="el" href="class_shopify_1_1_unity_1_1_image.html" title="Represents an image resource. ">Image</a> size multiplier for high-resolution retina displays. Must be between 1 and 3. This argument is deprecated: Use <code>scale</code> on <code><a class="el" href="class_shopify_1_1_unity_1_1_image.html#affd296d13ad33e8008a6a748ff46e353" title="The location of the transformed image as a URL. ">Image.transformedSrc</a></code> instead. </td></tr>
   </table>
   </dd>
 </dl>
@@ -402,6 +402,17 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>List of products in the collection. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">first</td><td>Returns up to the first <code>n</code> elements from the list. </td></tr>
+    <tr><td class="paramname">after</td><td>Returns the elements that come after the specified cursor. </td></tr>
+    <tr><td class="paramname">last</td><td>Returns up to the last <code>n</code> elements from the list. </td></tr>
+    <tr><td class="paramname">before</td><td>Returns the elements that come before the specified cursor. </td></tr>
+    <tr><td class="paramname">reverse</td><td>Reverse the order of the underlying list. </td></tr>
+    <tr><td class="paramname">sortKey</td><td>Sort the underlying list by the given key. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
