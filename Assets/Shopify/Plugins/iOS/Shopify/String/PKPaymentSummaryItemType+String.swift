@@ -27,17 +27,19 @@
 import Foundation
 import PassKit
 
-extension PKPaymentSummaryItemType: RawRepresentable {
-    
-    public init?(rawValue: String) {
-        switch rawValue {
-        case PKPaymentSummaryItemType.final.rawValue:   self = .final
-        case PKPaymentSummaryItemType.pending.rawValue: self = .pending
-        default: return nil
+extension PKPaymentSummaryItemType {
+
+    public init?(rawStringValue: String) {
+        if (rawStringValue == "Final") {
+            self = .final
+        } else if (rawStringValue == "Pending") {
+            self = .pending
+        } else {
+            return nil
         }
     }
-    
-    public var rawValue: String {
+
+    public var rawStringValue: String {
         switch self {
         case .final:
             return "Final"
@@ -46,3 +48,4 @@ extension PKPaymentSummaryItemType: RawRepresentable {
         }
     }
 }
+
