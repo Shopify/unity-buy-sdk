@@ -102,7 +102,6 @@ var searchData=
   ['szl',['SZL',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba736b36e322b5593697b4927d6d9132ab',1,'Shopify::Unity']]],
   ['test',['Test',['../namespace_shopify_1_1_u_i_toolkit_1_1_test.html',1,'Shopify::UIToolkit']]],
   ['themes',['Themes',['../namespace_shopify_1_1_u_i_toolkit_1_1_themes.html',1,'Shopify::UIToolkit']]],
-  ['ui',['UI',['../namespace_shopify_1_1_unity_1_1_u_i.html',1,'Shopify::Unity']]],
   ['uitoolkit',['UIToolkit',['../namespace_shopify_1_1_u_i_toolkit.html',1,'Shopify']]],
   ['unit',['Unit',['../namespace_shopify_1_1_u_i_toolkit_1_1_test_1_1_unit.html',1,'Shopify::UIToolkit::Test']]],
   ['unity',['Unity',['../namespace_shopify_1_1_unity.html',1,'Shopify']]]

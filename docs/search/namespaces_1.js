@@ -16,7 +16,6 @@ var searchData=
   ['shopifysdkexamplestandardassets',['ShopifySDKExampleStandardAssets',['../namespace_shopify_s_d_k_example_standard_assets.html',1,'']]],
   ['test',['Test',['../namespace_shopify_1_1_u_i_toolkit_1_1_test.html',1,'Shopify::UIToolkit']]],
   ['themes',['Themes',['../namespace_shopify_1_1_u_i_toolkit_1_1_themes.html',1,'Shopify::UIToolkit']]],
-  ['ui',['UI',['../namespace_shopify_1_1_unity_1_1_u_i.html',1,'Shopify::Unity']]],
   ['uitoolkit',['UIToolkit',['../namespace_shopify_1_1_u_i_toolkit.html',1,'Shopify']]],
   ['unit',['Unit',['../namespace_shopify_1_1_u_i_toolkit_1_1_test_1_1_unit.html',1,'Shopify::UIToolkit::Test']]],
   ['unity',['Unity',['../namespace_shopify_1_1_unity.html',1,'Shopify']]]

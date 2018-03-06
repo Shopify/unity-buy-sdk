@@ -23,7 +23,6 @@ var searchData=
   ['images',['images',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_product_query.html#afdb8a98b4a0d0aafe59bdc243b53bd0a',1,'Shopify.Unity.GraphQL.ProductQuery.images()'],['../class_shopify_1_1_unity_1_1_product.html#a254bf6a4a437376b99fc9bc21c26a4c7',1,'Shopify.Unity.Product.images()']]],
   ['in',['IN',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7ac86ee0d9d7ed3e7b4fdbf486fa6c0ebb',1,'Shopify::Unity']]],
   ['inativecheckout',['INativeCheckout',['../interface_shopify_1_1_unity_1_1_s_d_k_1_1_i_native_checkout.html',1,'Shopify::Unity::SDK']]],
-  ['includeminimumspacingforios',['includeMinimumSpacingForIOS',['../class_shopify_1_1_unity_1_1_u_i_1_1_native_pay_button_u_i.html#a0ab0ee22598525a5ecca2b1e44f30c96',1,'Shopify::Unity::UI::NativePayButtonUI']]],
   ['init',['Init',['../class_shopify_1_1_unity_1_1_shopify_buy.html#a72623b45a5034bf418db4107e08c6d58',1,'Shopify.Unity.ShopifyBuy.Init(string accessToken, string domain)'],['../class_shopify_1_1_unity_1_1_shopify_buy.html#a3985faad28b040e2f4e8e68b6d3c6586',1,'Shopify.Unity.ShopifyBuy.Init(BaseLoader loader)']]],
   ['inputbase',['InputBase',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_input_base.html',1,'Shopify::Unity::SDK']]],
   ['inputvaluetostring',['InputValueToString',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_input_value_to_string.html',1,'Shopify::Unity::SDK']]],

@@ -93,9 +93,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a534f9b152704343e44db559b425b8450"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_shopify_1_1_u_i_toolkit_1_1_i_collection_theme.html#a534f9b152704343e44db559b425b8450">OnShouldShowCart</a> (<a class="el" href="class_shopify_1_1_unity_1_1_checkout_line_item.html">CheckoutLineItem</a>[] lineItems)</td></tr>
 <tr class="memdesc:a534f9b152704343e44db559b425b8450"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when the implementor should show the cart UI with the provided line items.  <a href="#a534f9b152704343e44db559b425b8450">More...</a><br /></td></tr>
 <tr class="separator:a534f9b152704343e44db559b425b8450"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaebdaf09841a2de575b286c74ec0a96d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_shopify_1_1_u_i_toolkit_1_1_i_collection_theme.html#aaebdaf09841a2de575b286c74ec0a96d">OnCartQuantityChanged</a> (int newQuantity)</td></tr>
-<tr class="memdesc:aaebdaf09841a2de575b286c74ec0a96d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when the total number of items in the cart has updated. Good for showing a badge on the cart button, for example.  <a href="#aaebdaf09841a2de575b286c74ec0a96d">More...</a><br /></td></tr>
-<tr class="separator:aaebdaf09841a2de575b286c74ec0a96d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:addc45ebc66ea8093fa7b6f5e69eb9fc7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_shopify_1_1_u_i_toolkit_1_1_i_collection_theme.html#addc45ebc66ea8093fa7b6f5e69eb9fc7">OnCartItemsChanged</a> (<a class="el" href="class_shopify_1_1_unity_1_1_checkout_line_item.html">CheckoutLineItem</a>[] lineItems)</td></tr>
 <tr class="memdesc:addc45ebc66ea8093fa7b6f5e69eb9fc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when the Items in the cart are updated. Useful if your cart is always displayed, for example, if it is in a sidebar.  <a href="#addc45ebc66ea8093fa7b6f5e69eb9fc7">More...</a><br /></td></tr>
 <tr class="separator:addc45ebc66ea8093fa7b6f5e69eb9fc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -118,6 +115,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6f6df45b1ff2e69e608929b3e9e524c2 inherit pub_methods_interface_shopify_1_1_u_i_toolkit_1_1_i_theme_base"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_shopify_1_1_u_i_toolkit_1_1_i_theme_base.html#a6f6df45b1ff2e69e608929b3e9e524c2">OnPurchaseCompleted</a> ()</td></tr>
 <tr class="memdesc:a6f6df45b1ff2e69e608929b3e9e524c2 inherit pub_methods_interface_shopify_1_1_u_i_toolkit_1_1_i_theme_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when an ongoing purchase completes. When using the Web purchase method, it's possible this will never be called if the player navigates away from the browser and doesn't complete the purchase. In this case you should always show a UI for cancelling the purchase in-game.  <a href="interface_shopify_1_1_u_i_toolkit_1_1_i_theme_base.html#a6f6df45b1ff2e69e608929b3e9e524c2">More...</a><br /></td></tr>
 <tr class="separator:a6f6df45b1ff2e69e608929b3e9e524c2 inherit pub_methods_interface_shopify_1_1_u_i_toolkit_1_1_i_theme_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6b350c06ba7651cfaeae38bbb0f3cdd inherit pub_methods_interface_shopify_1_1_u_i_toolkit_1_1_i_theme_base"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_shopify_1_1_u_i_toolkit_1_1_i_theme_base.html#ae6b350c06ba7651cfaeae38bbb0f3cdd">OnCartQuantityChanged</a> (int newQuantity)</td></tr>
+<tr class="memdesc:ae6b350c06ba7651cfaeae38bbb0f3cdd inherit pub_methods_interface_shopify_1_1_u_i_toolkit_1_1_i_theme_base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when the total quantity of items in the cart changes. Useful for when showing a badge next to the cart button for example.  <a href="interface_shopify_1_1_u_i_toolkit_1_1_i_theme_base.html#ae6b350c06ba7651cfaeae38bbb0f3cdd">More...</a><br /></td></tr>
+<tr class="separator:ae6b350c06ba7651cfaeae38bbb0f3cdd inherit pub_methods_interface_shopify_1_1_u_i_toolkit_1_1_i_theme_base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A base class for a theme that sells products from a single collection </p>
@@ -145,34 +145,6 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="aaebdaf09841a2de575b286c74ec0a96d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaebdaf09841a2de575b286c74ec0a96d">&#9670;&nbsp;</a></span>OnCartQuantityChanged()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Shopify.UIToolkit.ICollectionTheme.OnCartQuantityChanged </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>newQuantity</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Called when the total number of items in the cart has updated. Good for showing a badge on the cart button, for example. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">newQuantity</td><td>The new quantity of items in the cart</td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Implements <a class="el" href="interface_shopify_1_1_u_i_toolkit_1_1_i_theme_base.html#ae6b350c06ba7651cfaeae38bbb0f3cdd">Shopify.UIToolkit.IThemeBase</a>.</p>
 
 </div>
 </div>

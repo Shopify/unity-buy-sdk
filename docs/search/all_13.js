@@ -52,7 +52,7 @@ var searchData=
   ['tv',['TV',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a271ddf829afeece44d8732757fba1a66',1,'Shopify::Unity']]],
   ['tw',['TW',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a3d9975706be3087ca199f440b1589b9e',1,'Shopify::Unity']]],
   ['twd',['TWD',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbabb050c779285632f0e532eab4d629b1c',1,'Shopify::Unity']]],
-  ['type',['Type',['../class_shopify_1_1_unity_1_1_shopify_error.html#a987a998ee0069785468f9d6f0da6d567',1,'Shopify.Unity.ShopifyError.Type()'],['../class_shopify_1_1_unity_1_1_tokenized_payment_input.html#adbab8c60923b6b6d396e3517b805314c',1,'Shopify.Unity.TokenizedPaymentInput.type()']]],
+  ['type',['type',['../class_shopify_1_1_unity_1_1_tokenized_payment_input.html#adbab8c60923b6b6d396e3517b805314c',1,'Shopify.Unity.TokenizedPaymentInput.type()'],['../class_shopify_1_1_unity_1_1_shopify_error.html#a987a998ee0069785468f9d6f0da6d567',1,'Shopify.Unity.ShopifyError.Type()']]],
   ['tz',['TZ',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a13c4998a4a401a2431779d247f7d6143',1,'Shopify::Unity']]],
   ['tzs',['TZS',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbaf18304033ca1591873b9752835a31c07',1,'Shopify::Unity']]]
 ];
