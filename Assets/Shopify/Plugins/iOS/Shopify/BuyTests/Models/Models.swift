@@ -226,7 +226,7 @@ extension Models {
         json[SummaryItemField.label.rawValue]  = label
         
         if let type = type {
-            json[SummaryItemField.type.rawValue] = type.rawValue as String
+            json[SummaryItemField.type.rawValue] = type.rawStringValue
         }
         
         return json
@@ -239,7 +239,7 @@ extension Models {
         json[ShippingMethodField.identifier.rawValue]  = identifier
         
         if let type = type {
-            json[SummaryItemField.type.rawValue] = type.rawValue as String
+            json[SummaryItemField.type.rawValue] = type.rawStringValue
         }
         
         return json

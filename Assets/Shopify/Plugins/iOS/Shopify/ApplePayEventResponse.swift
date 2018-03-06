@@ -59,7 +59,7 @@ struct ApplePayEventResponse: Deserializable {
         
         /// Parse Authorization Status
         if let authStatusString = json[ResponseKey.authorizationStatus.rawValue] as? String {
-            authorizationStatus = PKPaymentAuthorizationStatus(rawValue: authStatusString)
+            authorizationStatus = PKPaymentAuthorizationStatus(rawStringValue: authStatusString)
         }
         
         /// Parse Summary Items

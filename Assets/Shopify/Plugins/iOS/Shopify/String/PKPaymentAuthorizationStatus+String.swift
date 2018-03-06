@@ -27,47 +27,32 @@
 import Foundation
 import PassKit
 
-extension PKPaymentAuthorizationStatus: RawRepresentable {
-    
-    public init?(rawValue: String) {
-        switch rawValue {
-        case PKPaymentAuthorizationStatus.failure.rawValue: self = .failure
-        case PKPaymentAuthorizationStatus.success.rawValue: self = .success
-        case PKPaymentAuthorizationStatus.invalidShippingContact.rawValue:       self = .invalidShippingContact
-        case PKPaymentAuthorizationStatus.invalidBillingPostalAddress.rawValue:  self = .invalidBillingPostalAddress
-        case PKPaymentAuthorizationStatus.invalidShippingPostalAddress.rawValue: self = .invalidShippingPostalAddress
-        default:
+extension PKPaymentAuthorizationStatus {
+    public init?(rawStringValue: String) {
+        if (rawStringValue == "Failure") {
+            self = .failure
+        } else if (rawStringValue == "Success") {
+            self = .success
+        } else if (rawStringValue == "InvalidShippingContact") {
+            self = .invalidShippingContact
+        } else if (rawStringValue == "InvalidBillingPostalAddress") {
+            self = .invalidBillingPostalAddress
+        } else if (rawStringValue == "InvalidShippingPostalAddress") {
+            self = .invalidShippingPostalAddress
+        } else {
             if #available(iOS 9.2, *) {
-                switch rawValue {
-                case PKPaymentAuthorizationStatus.pinRequired.rawValue:  self = .pinRequired
-                case PKPaymentAuthorizationStatus.pinIncorrect.rawValue: self = .pinIncorrect
-                case PKPaymentAuthorizationStatus.pinLockout.rawValue:   self = .pinLockout
-                default: return nil
+                if (rawStringValue == "PinRequired") {
+                    self = .pinRequired
+                } else if (rawStringValue == "PinIncorrect") {
+                    self = .pinIncorrect
+                } else if (rawStringValue == "PinLockout") {
+                    self = .pinLockout
+                } else {
+                     return nil
                 }
             } else {
                 return nil
             }
-        }
-    }
-    
-    public var rawValue: String {
-        switch self {
-        case .failure:
-            return "Failure"
-        case .success:
-            return "Success"
-        case .invalidBillingPostalAddress:
-            return "InvalidBillingPostalAddress"
-        case .invalidShippingPostalAddress:
-            return "InvalidShippingPostalAddress"
-        case .invalidShippingContact:
-            return "InvalidShippingContact"
-        case .pinRequired:
-            return "PinRequired"
-        case .pinIncorrect:
-            return "PinIncorrect"
-        case .pinLockout:
-            return "PinLockout"
         }
     }
 }
