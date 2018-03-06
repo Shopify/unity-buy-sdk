@@ -11,10 +11,6 @@ namespace Shopify.Unity {
     using Shopify.Unity.SDK.Android;
 #endif
 
-#if UNITY_ANDROID
-    using Shopify.Unity.SDK.Android;
-#endif
-
     /// <summary>
     /// This exception is thrown when interacting with a cart to add, update, or delete line items and no matching
     /// variant could be found.
