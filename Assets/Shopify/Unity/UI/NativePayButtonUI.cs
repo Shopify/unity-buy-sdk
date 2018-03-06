@@ -1,4 +1,4 @@
-#if !SHOPIFY_MONO_UNIT_TEST
+#if !SHOPIFY_MONO_UNIT_TEST && UNITY_IOS
 namespace Shopify.Unity.UI {
     using System.Runtime.InteropServices;
     using System.Text;
@@ -62,12 +62,9 @@ namespace Shopify.Unity.UI {
         }
 
         private void GenerateNativePayImage() {
-        #if UNITY_IOS
             GenerateApplePayImage();
-        #endif
         }
 
-#if UNITY_IOS
         [DllImport("__Internal")]
         private static extern IntPtr _GenerateApplePayButtonImage(string type, string style,
             float width, float height,
@@ -106,7 +103,6 @@ namespace Shopify.Unity.UI {
                 100.0f
             );
         }
-#endif
     }
 }
 #endif
