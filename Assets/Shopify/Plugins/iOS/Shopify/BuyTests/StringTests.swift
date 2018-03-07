@@ -31,58 +31,25 @@ import PassKit
 
 @available(iOS 10.0, *)
 class StringTests : XCTestCase {
-
-    /// Test that all rawValues are unique
-    func testPaymentAuthorizationStatusUnique() {
-        
-        let states: [String] = [
-            PKPaymentAuthorizationStatus.failure.rawValue,
-            PKPaymentAuthorizationStatus.success.rawValue,
-            PKPaymentAuthorizationStatus.invalidBillingPostalAddress.rawValue,
-            PKPaymentAuthorizationStatus.invalidShippingPostalAddress.rawValue,
-            PKPaymentAuthorizationStatus.invalidShippingContact.rawValue,
-            PKPaymentAuthorizationStatus.pinRequired.rawValue,
-            PKPaymentAuthorizationStatus.pinLockout.rawValue,
-            PKPaymentAuthorizationStatus.pinIncorrect.rawValue]
-        
-        XCTAssertEqual(states.count, Set(states).count)
-    }
-    
-    func testPaymentSummaryItemTypeUnique() {
-        let types: [String] = [PKPaymentSummaryItemType.pending.rawValue, PKPaymentSummaryItemType.final.rawValue]
-        XCTAssertEqual(types.count, Set(types).count)
-    }
     
     /// Test that rawValues correspond to the init
     func testPaymentAuthorizationStatusInit() {
+        XCTAssertEqual(PKPaymentAuthorizationStatus.failure, PKPaymentAuthorizationStatus(rawStringValue: "Failure"))
+        XCTAssertEqual(PKPaymentAuthorizationStatus.success, PKPaymentAuthorizationStatus(rawStringValue: "Success"))
+        XCTAssertEqual(PKPaymentAuthorizationStatus.invalidShippingContact, PKPaymentAuthorizationStatus(rawStringValue: "InvalidShippingContact"))
+        XCTAssertEqual(PKPaymentAuthorizationStatus.invalidBillingPostalAddress, PKPaymentAuthorizationStatus(rawStringValue: "InvalidBillingPostalAddress"))
+        XCTAssertEqual(PKPaymentAuthorizationStatus.invalidShippingPostalAddress, PKPaymentAuthorizationStatus(rawStringValue: "InvalidShippingPostalAddress"))
         
-        let assertInitIdempotency = { (status: PKPaymentAuthorizationStatus) in
-            XCTAssertEqual(
-                status,
-                PKPaymentAuthorizationStatus(rawValue: status.rawValue as String),
-                status.rawValue as String)
+        if #available(iOS 9.2, *) {
+            XCTAssertEqual(PKPaymentAuthorizationStatus.pinRequired, PKPaymentAuthorizationStatus(rawStringValue: "PinRequired"))
+            XCTAssertEqual(PKPaymentAuthorizationStatus.pinIncorrect, PKPaymentAuthorizationStatus(rawStringValue: "PinIncorrect"))
+            XCTAssertEqual(PKPaymentAuthorizationStatus.pinLockout, PKPaymentAuthorizationStatus(rawStringValue: "PinLockout"))
         }
-        
-        assertInitIdempotency(.failure)
-        assertInitIdempotency(.success)
-        assertInitIdempotency(.invalidBillingPostalAddress)
-        assertInitIdempotency(.invalidShippingPostalAddress)
-        assertInitIdempotency(.invalidShippingContact)
-        assertInitIdempotency(.pinRequired)
-        assertInitIdempotency(.pinLockout)
-        assertInitIdempotency(.pinIncorrect)
     }
     
     func testPaymentSummaryItemTypeInit() {
-        
-        let assertInitIdempotency = { (status: PKPaymentSummaryItemType) in
-            XCTAssertEqual(
-                status,
-                PKPaymentSummaryItemType(rawValue: status.rawValue as String),
-                status.rawValue as String)
-        }
-
-        assertInitIdempotency(.pending)
-        assertInitIdempotency(.final)
+        XCTAssertEqual(PKPaymentSummaryItemType.final, PKPaymentSummaryItemType(rawStringValue: "Final"))
+        XCTAssertEqual(PKPaymentSummaryItemType.pending, PKPaymentSummaryItemType(rawStringValue: "Pending"))
     }
 }
+

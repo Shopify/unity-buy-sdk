@@ -6,7 +6,6 @@ namespace Shopify.UIToolkit {
     using System;
     using System.Linq;
     using System.Collections.Generic;
-    using UnityEngine;
 
     /// <summary>
     // A wrapper struct that encapsulates the information we want from a CartLineItem (Quantity) and the
@@ -43,7 +42,9 @@ namespace Shopify.UIToolkit {
         public UnityEvent OnPurchaseCancelled = new UnityEvent();
         public PurchaseFailedEvent OnPurchaseFailed = new PurchaseFailedEvent();
 
+        #if UNITY_IOS
         private string _appleMerchantID;
+        #endif
 
         private struct ProductAndVariantPair {
             public readonly Product Product;
@@ -57,9 +58,15 @@ namespace Shopify.UIToolkit {
 
         private Dictionary<string, ProductAndVariantPair> _idsToProductPairs = new Dictionary<string, ProductAndVariantPair>();
 
+        #if UNITY_IOS
         public CartController(Cart cart, string appleMerchantID) {
             SetCart(cart);
             _appleMerchantID = appleMerchantID;
+        }
+        #endif
+
+        public CartController(Cart cart) {
+            SetCart(cart);
         }
 
         public void SetCart(Cart cart) {

@@ -36,8 +36,8 @@ class ApplePayFlowTests: XCTestCase {
     fileprivate let totalLabel = "Test Store"
     
     // These are the shipping methods expected from unity-buy-sdk.myshopify.com
-    fileprivate let standardShippingMethod  = PKShippingMethod(label: "Standard Shipping",  amount: 5.83,  identifier: "shopify-Standard%20Shipping-5.83")
-    fileprivate let expeditedShippingMethod = PKShippingMethod(label: "Expedited Shipping", amount: 15.82, identifier: "shopify-Expedited%20Shipping-15.82")
+    fileprivate let standardShippingMethod  = PKShippingMethod(label: "Standard Shipping",  amount: 5.00,  identifier: "shopify-Standard%20Shipping-5.00")
+    fileprivate let expeditedShippingMethod = PKShippingMethod(label: "Expedited Shipping", amount: 15.00, identifier: "shopify-Expedited%20Shipping-15.00")
     
     // These are part of the summary items that are expected from unity-buy-sdk.myshopify.com after adding
     // the product name "[Test] Ballooning Around Shirt" to the Cart
@@ -76,7 +76,7 @@ class ApplePayFlowTests: XCTestCase {
         let expectedSubtotal = PKPaymentSummaryItem(label: "SUBTOTAL", amount: 25.47)
         let expectedShipping = PKPaymentSummaryItem(label: "SHIPPING", amount: standardShippingMethod.amount)
         let expectedTaxes    = PKPaymentSummaryItem(label: "TAXES",    amount: 2.93)
-        let expectedTotal    = PKPaymentSummaryItem(label: totalLabel, amount: 31.30)
+        let expectedTotal    = PKPaymentSummaryItem(label: totalLabel, amount: 30.47)
         
         let method = Tester.Method.checkout.rawValue
         let checkoutMessage = UnityMessage(content: "", object: Tester.name, method: method)
@@ -140,36 +140,36 @@ class ApplePayFlowTests: XCTestCase {
     
     /// Tests that selecting a shipping method returns the proper summary items for the checkout
     func testSelectShippingMethod() {
-        
+
         let session      = Models.createPaymentSession(requiringShippingAddressFields: true, usingNonDefault: MockAuthorizationController.self)
         let dispatcher   = ApplePayEventDispatcher(receiver: Tester.name)
         session.delegate = dispatcher
         session.presentAuthorizationController()
-        
+
         let selectedMethod = expeditedShippingMethod
 
         let expectation      = self.expectation(description: "MockAuthorizationController.invokeDidSelectShippingMethod failed to complete")
         let expectedSubtotal = PKPaymentSummaryItem(label: "SUBTOTAL", amount: 25.47)
         let expectedShipping = PKPaymentSummaryItem(label: "SHIPPING", amount: expeditedShippingMethod.amount)
         let expectedTaxes    = PKPaymentSummaryItem(label: "TAXES",    amount: 2.93)
-        let expectedTotal    = PKPaymentSummaryItem(label: totalLabel,    amount: 41.29)
-        
+        let expectedTotal    = PKPaymentSummaryItem(label: totalLabel,    amount: 40.47)
+
         let method = Tester.Method.checkoutWithShippingAddress.rawValue
         let checkoutMessage = UnityMessage(content: "", object: Tester.name, method: method)
-        
+
         MessageCenter.send(checkoutMessage) { response in
             MockAuthorizationController.invokeDidSelectShippingMethod(selectedMethod) { status, items in
-                
+
                 XCTAssertEqual(status, PKPaymentAuthorizationStatus.success)
                 XCTAssertEqual(items[0], expectedSubtotal)
                 XCTAssertEqual(items[1], expectedShipping)
                 XCTAssertEqual(items[2], expectedTaxes)
                 XCTAssertEqual(items[3], expectedTotal)
-                
+
                 expectation.fulfill()
             }
         }
-        
+
         self.wait(for: [expectation], timeout: timeout)
     }
     

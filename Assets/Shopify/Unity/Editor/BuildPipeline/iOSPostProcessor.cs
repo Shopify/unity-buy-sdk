@@ -49,7 +49,7 @@ namespace Shopify.Unity.Editor.BuildPipeline {
         }
 
         public static void SetSwiftInterfaceHeader(ExtendedPBXProject project) {
-            var bundleIdentifier = PlayerSettings.iPhoneBundleIdentifier;
+            var bundleIdentifier = PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.iOS);
 
             char[] separator = { '.' };
             var keywords = bundleIdentifier.Split(separator);
