@@ -72,7 +72,12 @@ namespace Shopify.UIToolkit {
 
         private void SetupClientAndCart() {
             _cachedClient = new ShopifyClient(LoaderProvider.GetLoader(Credentials.AccessToken, Credentials.Domain));
+
+            #if UNITY_IOS
             _cachedCart = new CartController(_cachedClient.Cart(), _appleMerchantID);
+            #else
+            _cachedCart = new CartController(_cachedClient.Cart());
+            #endif
             
             _cachedCart.OnPurchaseStarted.AddListener(Shop.OnPurchaseStarted);
             _cachedCart.OnPurchaseCancelled.AddListener(Shop.OnPurchaseCancelled);
