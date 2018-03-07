@@ -422,7 +422,6 @@ extension ApplePayErrorDeserializingTests {
     func testEmailAddressContactInvalidError() {
         
         let field = "EmailAddress"
-        // error
         let expectedError = PKPaymentRequest.paymentContactInvalidError(withContactField: PKContactField.emailAddress, localizedDescription: expectedDescription) as NSError
         
         let createErrorExpectation = contactInvalidErrorExpectation(forField: field)
