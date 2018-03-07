@@ -60,7 +60,7 @@ namespace Shopify.UIToolkit.Shops.Generic {
 
             _cartItems = cartItems;
 
-            if (gameObject.active) {
+            if (gameObject.activeSelf) {
                 UpdateList();
             }
         }

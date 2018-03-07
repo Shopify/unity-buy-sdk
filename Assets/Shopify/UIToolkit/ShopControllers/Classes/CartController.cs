@@ -6,7 +6,6 @@ namespace Shopify.UIToolkit {
     using System;
     using System.Linq;
     using System.Collections.Generic;
-    using UnityEngine;
 
     /// <summary>
     // A wrapper struct that encapsulates the information we want from a CartLineItem (Quantity) and the
