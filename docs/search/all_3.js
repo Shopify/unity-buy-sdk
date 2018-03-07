@@ -2,7 +2,7 @@ var searchData=
 [
   ['datajson',['DataJSON',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_top_level_response.html#a2cf043f27fc65a0bcc883544b0235448',1,'Shopify::Unity::SDK::TopLevelResponse']]],
   ['de',['DE',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a3a52f3c22ed6fcde5bf696a6c02c9e73',1,'Shopify::Unity']]],
-  ['debugsingleproducttheme',['DebugSingleProductTheme',['../class_shopify_1_1_u_i_toolkit_1_1_themes_1_1_debug_single_product_theme.html',1,'Shopify::UIToolkit::Themes']]],
+  ['debugsingleproductshop',['DebugSingleProductShop',['../class_shopify_1_1_u_i_toolkit_1_1_shops_1_1_debug_single_product_shop.html',1,'Shopify::UIToolkit::Shops']]],
   ['default_5fmemory_5fsize_5flimit',['DEFAULT_MEMORY_SIZE_LIMIT',['../class_shopify_1_1_u_i_toolkit_1_1_l_r_u_cache.html#a70b32ed52641f118d1d600962521997e',1,'Shopify::UIToolkit::LRUCache']]],
   ['defaultaddress',['defaultAddress',['../class_shopify_1_1_unity_1_1_customer.html#a5683745817c41266e39457acfaf93647',1,'Shopify.Unity.Customer.defaultAddress()'],['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_customer_query.html#a0e5df092bb3072d9a0114f18a2cf579c',1,'Shopify.Unity.GraphQL.CustomerQuery.defaultAddress()']]],
   ['defaultcheckoutqueries',['DefaultCheckoutQueries',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_default_checkout_queries.html',1,'Shopify::Unity::SDK']]],
@@ -30,7 +30,6 @@ var searchData=
   ['domain',['Domain',['../class_shopify_1_1_unity_1_1_domain.html',1,'Shopify.Unity.Domain'],['../class_shopify_1_1_unity_1_1_s_d_k_1_1_base_loader.html#a240ddea70de762183f8c50979ea0efae',1,'Shopify.Unity.SDK.BaseLoader.Domain()'],['../class_shopify_1_1_unity_1_1_shopify_client.html#a40b0d007c05690925cec36ca15fa30e0',1,'Shopify.Unity.ShopifyClient.Domain()'],['../class_shopify_1_1_unity_1_1_domain.html#a4d7844ed8fd97fae5e76037832698aae',1,'Shopify.Unity.Domain.Domain()']]],
   ['domainquery',['DomainQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_domain_query.html',1,'Shopify.Unity.GraphQL.DomainQuery'],['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_domain_query.html#affabe04420b88051aa131fa6cac5ac05',1,'Shopify.Unity.GraphQL.DomainQuery.DomainQuery()']]],
   ['dop',['DOP',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbaf08692555891e1161c5aef5b2748d7cb',1,'Shopify::Unity']]],
-  ['drawinspectorgui',['DrawInspectorGUI',['../class_shopify_1_1_u_i_toolkit_1_1_editor_1_1_shop_credentials_view.html#aca2fc40994f99469e66199f6c259a58c',1,'Shopify::UIToolkit::Editor::ShopCredentialsView']]],
   ['dz',['DZ',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7afa3c7f2b5daea5f9e813128f962e6ec4',1,'Shopify::Unity']]],
   ['dzd',['DZD',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba76003fa8a8db1c8236e0ce931221b956',1,'Shopify::Unity']]]
 ];

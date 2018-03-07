@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['type',['Type',['../class_shopify_1_1_unity_1_1_shopify_error.html#a987a998ee0069785468f9d6f0da6d567',1,'Shopify::Unity::ShopifyError']]]
+  ['id',['ID',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html#a31a17b5688eeb063fc54412e01298d5d',1,'Shopify::Unity::SDK::CartLineItem']]]
 ];

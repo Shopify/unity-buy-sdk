@@ -20,6 +20,7 @@ var searchData=
   ['versioninformation',['VersionInformation',['../class_shopify_1_1_unity_1_1_version_information.html',1,'Shopify::Unity']]],
   ['vg',['VG',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a4d6d91b1797aad52f98db63d197959a6',1,'Shopify::Unity']]],
   ['viewcartbutton',['ViewCartButton',['../class_components_1_1_view_cart_button.html',1,'Components']]],
+  ['viewswitcher',['ViewSwitcher',['../class_shopify_1_1_u_i_toolkit_1_1_view_switcher.html',1,'Shopify::UIToolkit']]],
   ['visa',['VISA',['../namespace_shopify_1_1_unity.html#a09b6f1a20bdb64d15e3fb8359f7ced9aa93d207a5540aa38f404ae593385a7b64',1,'Shopify::Unity']]],
   ['vn',['VN',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7ae14da64a5617a7f7260ccb29c48fa866',1,'Shopify::Unity']]],
   ['vnd',['VND',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbaf16e25cec4eccab3e643a66a8eccb1cb',1,'Shopify::Unity']]],

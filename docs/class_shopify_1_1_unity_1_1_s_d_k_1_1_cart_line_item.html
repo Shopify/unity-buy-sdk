@@ -78,9 +78,9 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a3db400978076b1b9f703d804a12f21b3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html#a3db400978076b1b9f703d804a12f21b3">CartLineItem</a> (<a class="el" href="class_shopify_1_1_unity_1_1_product_variant.html">ProductVariant</a> variant, OnCartLineItemChange onChange, long quantity=1, IDictionary&lt; string, string &gt; customAttributes=null)</td></tr>
-<tr class="memdesc:a3db400978076b1b9f703d804a12f21b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used internally by the <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a> to construct a <a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html" title="A line item on an order. A line item is defined by a variant id and the quantity of that variant that...">CartLineItem</a>.  <a href="#a3db400978076b1b9f703d804a12f21b3">More...</a><br /></td></tr>
-<tr class="separator:a3db400978076b1b9f703d804a12f21b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47b78f56b06bb7dc51f9ee3c3a2e0b33"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html#a47b78f56b06bb7dc51f9ee3c3a2e0b33">CartLineItem</a> (<a class="el" href="class_shopify_1_1_unity_1_1_product_variant.html">ProductVariant</a> variant, LineItemChangeHandler onChange, long quantity=1, IDictionary&lt; string, string &gt; customAttributes=null)</td></tr>
+<tr class="memdesc:a47b78f56b06bb7dc51f9ee3c3a2e0b33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used internally by the <a class="el" href="namespace_shopify_1_1_unity_1_1_s_d_k.html">SDK</a> to construct a <a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html" title="A line item on an order. A line item is defined by a variant id and the quantity of that variant that...">CartLineItem</a>.  <a href="#a47b78f56b06bb7dc51f9ee3c3a2e0b33">More...</a><br /></td></tr>
+<tr class="separator:a47b78f56b06bb7dc51f9ee3c3a2e0b33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21e91bdf9a6000c1d31e16f7fbba4843"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_checkout_line_item_input.html">CheckoutLineItemInput</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html#a21e91bdf9a6000c1d31e16f7fbba4843">GetCheckoutLineItemInput</a> ()</td></tr>
 <tr class="memdesc:a21e91bdf9a6000c1d31e16f7fbba4843"><td class="mdescLeft">&#160;</td><td class="mdescRight">Will convert this <a class="el" href="class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html" title="A line item on an order. A line item is defined by a variant id and the quantity of that variant that...">CartLineItem</a> to a <a class="el" href="class_shopify_1_1_unity_1_1_checkout_line_item_input.html" title="Specifies the input fields to create a line item on a checkout. ">CheckoutLineItemInput</a>. This is used internally by the sdk for the checkout process  <a href="#a21e91bdf9a6000c1d31e16f7fbba4843">More...</a><br /></td></tr>
 <tr class="separator:a21e91bdf9a6000c1d31e16f7fbba4843"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -121,8 +121,8 @@ Properties</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A line item on an order. A line item is defined by a variant id and the quantity of that variant that you'll be ordering. Custom Attributes are used to define customizations or any additional meta data on the line item. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a3db400978076b1b9f703d804a12f21b3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3db400978076b1b9f703d804a12f21b3">&#9670;&nbsp;</a></span>CartLineItem()</h2>
+<a id="a47b78f56b06bb7dc51f9ee3c3a2e0b33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47b78f56b06bb7dc51f9ee3c3a2e0b33">&#9670;&nbsp;</a></span>CartLineItem()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -139,7 +139,7 @@ Properties</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">OnCartLineItemChange&#160;</td>
+          <td class="paramtype">LineItemChangeHandler&#160;</td>
           <td class="paramname"><em>onChange</em>, </td>
         </tr>
         <tr>

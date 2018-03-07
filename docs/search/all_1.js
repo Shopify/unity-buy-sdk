@@ -4,7 +4,6 @@ var searchData=
   ['balance',['balance',['../class_shopify_1_1_unity_1_1_applied_gift_card.html#a25a5daa15bb9752fb1818534616f01cd',1,'Shopify.Unity.AppliedGiftCard.balance()'],['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_applied_gift_card_query.html#a3df946b00a45d9160a737b99caa9deda',1,'Shopify.Unity.GraphQL.AppliedGiftCardQuery.balance()']]],
   ['bam',['BAM',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba1a7b8a7f177e024e1685e780c47649c6',1,'Shopify::Unity']]],
   ['baseloader',['BaseLoader',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_base_loader.html',1,'Shopify::Unity::SDK']]],
-  ['basethemecontrollereditor',['BaseThemeControllerEditor',['../class_shopify_1_1_u_i_toolkit_1_1_editor_1_1_base_theme_controller_editor.html',1,'Shopify::UIToolkit::Editor']]],
   ['bb',['BB',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a9d3d9048db16a7eee539e93e3618cbe7',1,'Shopify::Unity']]],
   ['bbd',['BBD',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba80e01d9926b54fe729410d78954faada',1,'Shopify::Unity']]],
   ['bd',['BD',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a87a47565be4714701a8bc2354cbaea36',1,'Shopify::Unity']]],

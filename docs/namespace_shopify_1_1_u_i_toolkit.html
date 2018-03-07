@@ -65,6 +65,7 @@ $(function() {
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle">
 <div class="title">Shopify.UIToolkit Namespace Reference</div>  </div>
@@ -82,46 +83,65 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_u_i_toolkit_1_1_cacheable_web_image.html">CacheableWebImage</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A cacheable image downloaed from the web stored as a Texture2D object.  <a href="class_shopify_1_1_u_i_toolkit_1_1_cacheable_web_image.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_u_i_toolkit_1_1_cart_controller.html">CartController</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_shopify_1_1_u_i_toolkit_1_1_cart_item.html">CartItem</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_u_i_toolkit_1_1_cart_item_view.html">CartItemView</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Behaviour for linking all the pieces of the cart list item together.  <a href="class_shopify_1_1_u_i_toolkit_1_1_cart_item_view.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>HTTPUtils</b></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_shopify_1_1_u_i_toolkit_1_1_i_cacheable.html">ICacheable</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_shopify_1_1_u_i_toolkit_1_1_i_collection_theme.html">ICollectionTheme</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A base class for a theme that sells products from a single collection  <a href="interface_shopify_1_1_u_i_toolkit_1_1_i_collection_theme.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_shopify_1_1_u_i_toolkit_1_1_i_multi_product_shop.html">IMultiProductShop</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_shopify_1_1_u_i_toolkit_1_1_i_shop_credentials.html">IShopCredentials</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_shopify_1_1_u_i_toolkit_1_1_i_shop.html">IShop</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_shopify_1_1_u_i_toolkit_1_1_i_shop_theme.html">IShopTheme</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_shopify_1_1_u_i_toolkit_1_1_i_single_product_theme.html">ISingleProductTheme</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override this class to create a theme that sells a single product  <a href="interface_shopify_1_1_u_i_toolkit_1_1_i_single_product_theme.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_shopify_1_1_u_i_toolkit_1_1_i_theme_base.html">IThemeBase</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_shopify_1_1_u_i_toolkit_1_1_i_single_product_shop.html">ISingleProductShop</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override this class to create a shop that sells a single product  <a href="interface_shopify_1_1_u_i_toolkit_1_1_i_single_product_shop.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_u_i_toolkit_1_1_l_r_u_cache.html">LRUCache</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A cache that uses a Least Recently Used (LRU) heurstic for evicting items.  <a href="class_shopify_1_1_u_i_toolkit_1_1_l_r_u_cache.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_u_i_toolkit_1_1_multi_product_shop_controller.html">MultiProductShopController</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_u_i_toolkit_1_1_product_cache.html">ProductCache</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_u_i_toolkit_1_1_product_image_holder.html">ProductImageHolder</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_u_i_toolkit_1_1_remote_image_loader.html">RemoteImageLoader</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A behaviour that fetches a remote image (JPEG/PNG) from the web.  <a href="class_shopify_1_1_u_i_toolkit_1_1_remote_image_loader.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_u_i_toolkit_1_1_single_product_theme_controller.html">SingleProductThemeController</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_u_i_toolkit_1_1_shop_controller_base.html">ShopControllerBase</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_u_i_toolkit_1_1_theme_controller_base.html">ThemeControllerBase</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_u_i_toolkit_1_1_shop_credentials.html">ShopCredentials</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_u_i_toolkit_1_1_single_product_shop_controller.html">SingleProductShopController</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_u_i_toolkit_1_1_variant_selector.html">VariantSelector</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the list of product variant and their respective selectable options that looks like: [{ "selectedOptions": [{ "name": "optionName1", "value": "value1" }, { "name": "optionName2", "value": "value1" }] }, { "selectedOptions": [{ "name": "optionName1", "value": "value2" }, { "name": "optionName2", "value": "value2" }] }] into a map that looks like: { "optionName1": ["value1", "value2", ...], "optionName2": ["value1", "value2", ...], }  <a href="class_shopify_1_1_u_i_toolkit_1_1_variant_selector.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_u_i_toolkit_1_1_view_switcher.html">ViewSwitcher</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A component that allows for switching between multiple UI "views", where a view is different UI that needs to be switched between modally.  <a href="class_shopify_1_1_u_i_toolkit_1_1_view_switcher.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_u_i_toolkit_1_1_web_image_cache.html">WebImageCache</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class implements a LRU cache for images (PNG/JPEG) that were downloaded from the web.  <a href="class_shopify_1_1_u_i_toolkit_1_1_web_image_cache.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a20aaf586804481f49240878a0de50536"><td class="memItemLeft" align="right" valign="top"><a id="a20aaf586804481f49240878a0de50536"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>Image</b> = UnityEngine.UI.Image</td></tr>
+<tr class="separator:a20aaf586804481f49240878a0de50536"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a9515a92946a8b12bf513b4deb18e93f0"><td class="memItemLeft" align="right" valign="top"><a id="a9515a92946a8b12bf513b4deb18e93f0"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>ShopCredentialsVerificationState</b> { <b>Unverified</b>, 
-<b>Invalid</b>, 
-<b>Verified</b>
+<tr class="memitem:a2a42ac91b9df1dc8a658fb60106b74f3"><td class="memItemLeft" align="right" valign="top"><a id="a2a42ac91b9df1dc8a658fb60106b74f3"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>CheckoutMode</b> { <b>Web</b>, 
+<b>Native</b>, 
+<b>Auto</b>
  }</td></tr>
-<tr class="separator:a9515a92946a8b12bf513b4deb18e93f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a2a42ac91b9df1dc8a658fb60106b74f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <address class="footer"><small>

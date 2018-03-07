@@ -4,5 +4,6 @@ var searchData=
   ['getcheckoutlineiteminput',['GetCheckoutLineItemInput',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html#a21e91bdf9a6000c1d31e16f7fbba4843',1,'Shopify::Unity::SDK::CartLineItem']]],
   ['getcheckoutlineitemupdateinput',['GetCheckoutLineItemUpdateInput',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html#af66f23b4d153db528e7fe538a0ae3a17',1,'Shopify::Unity::SDK::CartLineItem']]],
   ['getlist',['GetList',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_input_value_to_string.html#a85551896f4b72b9c5a12f79527837600',1,'Shopify::Unity::SDK::InputValueToString']]],
-  ['getwebcheckoutlink',['GetWebCheckoutLink',['../class_shopify_1_1_unity_1_1_cart.html#a88a9770fb0fd4b5ba5870a9dbbb7b2e5',1,'Shopify::Unity::Cart']]]
+  ['getwebcheckoutlink',['GetWebCheckoutLink',['../class_shopify_1_1_unity_1_1_cart.html#a88a9770fb0fd4b5ba5870a9dbbb7b2e5',1,'Shopify::Unity::Cart']]],
+  ['goback',['GoBack',['../class_shopify_1_1_u_i_toolkit_1_1_view_switcher.html#a3a1b4c1af1923bba3922bf124166a0ee',1,'Shopify::UIToolkit::ViewSwitcher']]]
 ];

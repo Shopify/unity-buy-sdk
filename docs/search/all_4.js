@@ -11,6 +11,7 @@ var searchData=
   ['er',['ER',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a1bd3a0484883ca6deaada8395a8f6e85',1,'Shopify::Unity']]],
   ['errormessage',['errorMessage',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_payment_query.html#a43cd75ec288d57d3c230198c51f185a0',1,'Shopify.Unity.GraphQL.PaymentQuery.errorMessage()'],['../class_shopify_1_1_unity_1_1_payment.html#a808937690326c3deb57a6f8a4b5c0e3a',1,'Shopify.Unity.Payment.errorMessage()']]],
   ['errorpanel',['ErrorPanel',['../class_shopify_1_1_examples_1_1_panels_1_1_error_panel.html',1,'Shopify::Examples::Panels']]],
+  ['errorpopup',['ErrorPopup',['../class_shopify_1_1_u_i_toolkit_1_1_themes_1_1_error_popup.html',1,'Shopify::UIToolkit::Themes']]],
   ['errors',['errors',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_top_level_response.html#abcc0baf76658cd2efdc3326bdfb28704',1,'Shopify::Unity::SDK::TopLevelResponse']]],
   ['errortype',['ErrorType',['../class_shopify_1_1_unity_1_1_shopify_error.html#a2bcff1633886cd81a955ead359f113c3',1,'Shopify::Unity::ShopifyError']]],
   ['es',['ES',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a04c19fa1e772ab66f0aad2efe61f25cd',1,'Shopify::Unity']]],

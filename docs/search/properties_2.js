@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['cart',['Cart',['../class_shopify_1_1_u_i_toolkit_1_1_theme_controller_base.html#a6c33c75cdef450c3cee2740df1134ad5',1,'Shopify::UIToolkit::ThemeControllerBase']]],
-  ['client',['Client',['../class_shopify_1_1_u_i_toolkit_1_1_theme_controller_base.html#a70a37a060f8a3b7e9764d887f3b1f54f',1,'Shopify::UIToolkit::ThemeControllerBase']]],
+  ['client',['Client',['../class_shopify_1_1_u_i_toolkit_1_1_shop_controller_base.html#ad966377faa0fbb0f4af296ec02ee26cc',1,'Shopify::UIToolkit::ShopControllerBase']]],
   ['count',['Count',['../interface_shopify_1_1_u_i_toolkit_1_1_cache.html#acaa4d6a3bd9259ad7a451be11628e492',1,'Shopify.UIToolkit.Cache.Count()'],['../class_shopify_1_1_u_i_toolkit_1_1_l_r_u_cache.html#acf5dfb7f42a4fdce0760a8cb1c5be8f8',1,'Shopify.UIToolkit.LRUCache.Count()']]],
+  ['currentselectedvariant',['CurrentSelectedVariant',['../class_shopify_1_1_u_i_toolkit_1_1_shops_1_1_generic_1_1_product_details_view_bindings.html#a5439cb85288c1d0f74ae2cdf9f58fe3f',1,'Shopify::UIToolkit::Shops::Generic::ProductDetailsViewBindings']]],
   ['customattributes',['customAttributes',['../class_shopify_1_1_unity_1_1_checkout_attributes_update_input.html#a7397a0aec591b5b3d48e44e1347f2789',1,'Shopify.Unity.CheckoutAttributesUpdateInput.customAttributes()'],['../class_shopify_1_1_unity_1_1_checkout_create_input.html#ab7fced31deb09e9a637cba497200f7f6',1,'Shopify.Unity.CheckoutCreateInput.customAttributes()'],['../class_shopify_1_1_unity_1_1_checkout_line_item_input.html#ac782a8577ebf198c0a7006951f58bad8',1,'Shopify.Unity.CheckoutLineItemInput.customAttributes()'],['../class_shopify_1_1_unity_1_1_checkout_line_item_update_input.html#ae3372861b1efe61a3ba1ecb0b5cd33d5',1,'Shopify.Unity.CheckoutLineItemUpdateInput.customAttributes()'],['../class_shopify_1_1_unity_1_1_s_d_k_1_1_cart_line_item.html#a9cbb8cc226f513b0d02b4f58402173e1',1,'Shopify.Unity.SDK.CartLineItem.CustomAttributes()']]]
 ];
