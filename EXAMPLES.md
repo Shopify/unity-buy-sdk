@@ -26,7 +26,7 @@ Before you can start using the Shopify SDK for Unity, you need:
     + [Sign up as a Shopify Partner to create a test store](https://www.shopify.ca/partners)
     + Start testing the SDK using our test store. (domain and access token listed below)
 - [a storefront access token for your app](https://help.shopify.com/api/storefront-api/getting-started#obtaining-a-storefront-access-token)
-- [to install the Shopify SDK for Unity into your Unity project](README.md#using-the-unity-buy-sdk-in-unity)
+- [to install the Shopify SDK for Unity into your Unity project](README.md#using-the-shopify-sdk-for-unity)
 
 ## Supported build targets
 
