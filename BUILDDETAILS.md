@@ -6,22 +6,7 @@ These modifications ensure that the SDK is properly configured for ease of use. 
 
 # Android
 
-The library comes in a form of a `.AAR` file. In doing so we have provided a [mainTemplate.gradle](Assets/Shopify/Plugins/Android/mainTemplate.gradle) that will be used by Unity when creating a Gradle project.
-
-The Gradle file includes the dependencies used by the library. If you would like to use your own Gradle file, add the following dependencies:
-
-```
-dependencies {
-    ...
-
-    compile(name: 'shopify_buy_plugin', ext:'aar')
-
-    compile 'com.android.support:appcompat-v7:26.0.0'
-    compile 'com.android.support:customtabs:26.0.0'
-    compile 'com.shopify.mobilebuysdk:buy3-pay-support:1.0.0'
-    compile 'com.squareup.moshi:moshi:1.5.0'
-}
-```
+The library comes in the form of a `.AAR` file and doesn't require any special handling to build on Android.
 
 # iOS
 

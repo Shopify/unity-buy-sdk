@@ -85,7 +85,7 @@ UNITY_PACKAGE=$UNITY_PACKAGE \
     -nographics \
     -silent-crashes \
     -logFile "$UNITY_LOG_PATH" \
-    -importPackage "ThirdParty/play-services-resolver-1.2.54.0.unitypackage" \
+    -importPackage "ThirdParty/play-services-resolver-1.2.64.0.unitypackage" \
     -projectPath "$PROJECT_ROOT" \
     -executeMethod "Publishing.PublishFromCommandLine" \
     -quit \
