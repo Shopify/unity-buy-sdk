@@ -126,7 +126,9 @@ namespace Shopify.Unity {
             NativeCheckout = new iOSNativeCheckout(State);
 #elif UNITY_ANDROID
             WebCheckout = new AndroidWebCheckout(this, client);
-            NativeCheckout = new AndroidNativeCheckout(State);
+
+            // Android native pay is currently disabled until new payment processor is supported.
+            // NativeCheckout = new AndroidNativeCheckout(State);
 #else
             WebCheckout = null;
             NativeCheckout = null;
