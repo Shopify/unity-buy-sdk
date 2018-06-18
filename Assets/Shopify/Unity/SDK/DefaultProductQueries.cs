@@ -47,21 +47,23 @@ namespace Shopify.Unity.SDK {
         }
 
         public void ImageConnection(ImageConnectionQuery imageConnection, Dictionary<string, int> imageResolutions) {
+            imageConnection
+                .edges(ie => ie
+                    .node(i => AliasedTransformedSrcImages(i.altText().transformedSrc(), imageResolutions))
+                    .cursor()
+                )
+                .pageInfo(pi => pi
+                    .hasNextPage()
+                );
+        }
+
+        public void AliasedTransformedSrcImages(ImageQuery imageQuery, Dictionary<string, int> imageResolutions) {
             foreach (string alias in imageResolutions.Keys) {
-                imageConnection
-                    .edges(ie => ie
-                        .node(i => i
-                            .transformedSrc(
-                                maxWidth: imageResolutions[alias],
-                                maxHeight: imageResolutions[alias],
-                                alias: alias
-                            )
-                        )
-                        .cursor()
-                    )
-                    .pageInfo(pi => pi
-                        .hasNextPage()
-                    );
+                imageQuery.transformedSrc(
+                    maxWidth: imageResolutions[alias],
+                    maxHeight: imageResolutions[alias],
+                    alias: alias
+                );
             }
         }
 
@@ -97,10 +99,7 @@ namespace Shopify.Unity.SDK {
             variant
                 .id()
                 .availableForSale()
-                .image(pnvi => pnvi
-                    .altText()
-                    .transformedSrc()
-                )
+                .image(i => AliasedTransformedSrcImages(i.altText().transformedSrc(), imageResolutions))
                 .price()
                 .title()
                 .weight()
@@ -109,18 +108,6 @@ namespace Shopify.Unity.SDK {
                     .value()
                 )
                 .weightUnit();
-
-            foreach (string alias in imageResolutions.Keys) {
-                variant.image(
-                    pnvi => pnvi
-                    .altText()
-                    .transformedSrc(
-                        maxWidth : imageResolutions[alias],
-                        maxHeight : imageResolutions[alias],
-                        alias: alias
-                    )
-                );
-            }
         }
 
         public void Collection(CollectionQuery collection) {
