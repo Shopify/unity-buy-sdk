@@ -41,30 +41,28 @@ namespace Shopify.Unity.SDK {
                     first : DefaultQueries.MaxPageSize
                 )
                 .images(
-                    ic => ImageConnection(ic),
+                    ic => ImageConnection(ic, imageResolutions),
                     first : DefaultQueries.MaxPageSize
                 );
-
-            foreach (string alias in imageResolutions.Keys) {
-                product.images(
-                    ic => ImageConnection(ic),
-                    first : DefaultQueries.MaxPageSize,
-                    maxWidth : imageResolutions[alias],
-                    maxHeight : imageResolutions[alias],
-                    alias : alias
-                );
-            }
         }
 
-        public void ImageConnection(ImageConnectionQuery imageConnection) {
-            imageConnection
-                .edges(ie => ie
-                    .node(imn => Image(imn))
-                    .cursor()
-                )
-                .pageInfo(pi => pi
-                    .hasNextPage()
-                );
+        public void ImageConnection(ImageConnectionQuery imageConnection, Dictionary<string, int> imageResolutions) {
+            foreach (string alias in imageResolutions.Keys) {
+                imageConnection
+                    .edges(ie => ie
+                        .node(i => i
+                            .transformedSrc(
+                                maxWidth: imageResolutions[alias],
+                                maxHeight: imageResolutions[alias],
+                                alias: alias
+                            )
+                        )
+                        .cursor()
+                    )
+                    .pageInfo(pi => pi
+                        .hasNextPage()
+                    );
+            }
         }
 
         public void ProductVariantConnection(ProductVariantConnectionQuery variantConnection, Dictionary<string, int> imageResolutions) {
@@ -116,8 +114,11 @@ namespace Shopify.Unity.SDK {
                 variant.image(
                     pnvi => pnvi
                     .altText()
-                    .transformedSrc(),
-                    maxWidth : imageResolutions[alias], maxHeight : imageResolutions[alias], alias : alias
+                    .transformedSrc(
+                        maxWidth : imageResolutions[alias],
+                        maxHeight : imageResolutions[alias],
+                        alias: alias
+                    )
                 );
             }
         }

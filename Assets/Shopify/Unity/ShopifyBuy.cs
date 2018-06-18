@@ -136,10 +136,10 @@ namespace Shopify.Unity {
         ///
         /// \code{.cs}
         /// // Returns an image source url whose dimensions are never greater than 100px
-        /// string srcSmallImage = productVariant.image("small").transformedSrc();
+        /// string srcSmallImage = productVariant.image().transformedSrc("small");
         ///
         /// // Returns an image source url whose dimensions are never greater than 1024px
-        /// string src1024Image = productVariant.image("resolution_1024").transformedSrc();
+        /// string src1024Image = productVariant.image().transformedSrc("resolution_1024");
         /// \endcode
         /// </summary>
         public static Dictionary<string, int> DefaultImageResolutions = new Dictionary<string, int> () { { "pico", 16 }, { "icon", 32 }, { "thumb", 50 }, { "small", 100 }, { "compact", 160 }, { "medium", 240 }, { "large", 480 }, { "grande", 600 }, { "resolution_1024", 1024 }, { "resolution_2048", 2048 }
@@ -825,47 +825,31 @@ namespace Shopify.Unity {
         private void GetConnectionsForProducts (List<Product> products, ProductsHandler callback) {
             List<ConnectionQueryInfo> connectionInfos = new List<ConnectionQueryInfo> () {
                 new ConnectionQueryInfo (
-                        getConnection: (p) => ((Product) p).images (),
-                        query: (p, imagesAfter) => {
-                            ((ProductQuery) p).images (ic => DefaultQueries.products.ImageConnection (ic),
-                                first : DefaultQueries.MaxPageSize, after : imagesAfter
-                            );
-                        }
-                    ),
-                    new ConnectionQueryInfo (
-                        getConnection: (p) => ((Product) p).variants (),
-                        query: (p, variantsAfter) => {
-                            ((ProductQuery) p).variants (vc => DefaultQueries.products.ProductVariantConnection (vc, DefaultImageResolutions),
-                                first : DefaultQueries.MaxPageSize, after : variantsAfter
-                            );
-                        }
-                    ),
-                    new ConnectionQueryInfo (
-                        getConnection: (p) => ((Product) p).collections (),
-                        query: (p, collectionsAfter) => {
-                            ((ProductQuery) p).collections (cc => DefaultQueries.products.CollectionConnection (cc),
-                                first : DefaultQueries.MaxPageSize, after : collectionsAfter
-                            );
-                        }
-                    )
-            };
-
-            foreach (string alias in DefaultImageResolutions.Keys) {
-                string currentAlias = alias;
-
-                connectionInfos.Add (new ConnectionQueryInfo (
-                    getConnection: (p) => ((Product) p).images (currentAlias),
+                    getConnection: (p) => ((Product) p).images (),
                     query: (p, imagesAfter) => {
-                        ((ProductQuery) p).images (ic => DefaultQueries.products.ImageConnection (ic),
+                        ((ProductQuery) p).images (ic => DefaultQueries.products.ImageConnection (ic, DefaultImageResolutions),
                             first : DefaultQueries.MaxPageSize,
-                            after : imagesAfter,
-                            maxWidth : DefaultImageResolutions[currentAlias],
-                            maxHeight : DefaultImageResolutions[currentAlias],
-                            alias : currentAlias
+                            after : imagesAfter
                         );
                     }
-                ));
-            }
+                ),
+                new ConnectionQueryInfo (
+                    getConnection: (p) => ((Product) p).variants (),
+                    query: (p, variantsAfter) => {
+                        ((ProductQuery) p).variants (vc => DefaultQueries.products.ProductVariantConnection (vc, DefaultImageResolutions),
+                            first : DefaultQueries.MaxPageSize, after : variantsAfter
+                        );
+                    }
+                ),
+                new ConnectionQueryInfo (
+                    getConnection: (p) => ((Product) p).collections (),
+                    query: (p, collectionsAfter) => {
+                        ((ProductQuery) p).collections (cc => DefaultQueries.products.CollectionConnection (cc),
+                            first : DefaultQueries.MaxPageSize, after : collectionsAfter
+                        );
+                    }
+                )
+            };
 
             ConnectionLoader loader = new ConnectionLoader (Loader);
             List<Node> nodes = products.ConvertAll (p => (Node) p);

@@ -41,10 +41,11 @@ namespace Shopify.Unity.SDK {
                 collection
                     .image(pci => pci
                         .altText()
-                        .transformedSrc(),
-                        maxWidth : imageResolutions[alias],
-                        maxHeight : imageResolutions[alias],
-                        alias : alias
+                        .transformedSrc(
+                            maxWidth : imageResolutions[alias],
+                            maxHeight : imageResolutions[alias],
+                            alias : alias
+                        )
                     );
             }
         }
