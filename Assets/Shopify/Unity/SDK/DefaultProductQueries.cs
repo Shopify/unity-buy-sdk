@@ -41,30 +41,30 @@ namespace Shopify.Unity.SDK {
                     first : DefaultQueries.MaxPageSize
                 )
                 .images(
-                    ic => ImageConnection(ic),
+                    ic => ImageConnection(ic, imageResolutions),
                     first : DefaultQueries.MaxPageSize
                 );
-
-            foreach (string alias in imageResolutions.Keys) {
-                product.images(
-                    ic => ImageConnection(ic),
-                    first : DefaultQueries.MaxPageSize,
-                    maxWidth : imageResolutions[alias],
-                    maxHeight : imageResolutions[alias],
-                    alias : alias
-                );
-            }
         }
 
-        public void ImageConnection(ImageConnectionQuery imageConnection) {
+        public void ImageConnection(ImageConnectionQuery imageConnection, Dictionary<string, int> imageResolutions) {
             imageConnection
                 .edges(ie => ie
-                    .node(imn => Image(imn))
+                    .node(i => AliasedTransformedSrcImages(i.altText().transformedSrc(), imageResolutions))
                     .cursor()
                 )
                 .pageInfo(pi => pi
                     .hasNextPage()
                 );
+        }
+
+        public void AliasedTransformedSrcImages(ImageQuery imageQuery, Dictionary<string, int> imageResolutions) {
+            foreach (string alias in imageResolutions.Keys) {
+                imageQuery.transformedSrc(
+                    maxWidth: imageResolutions[alias],
+                    maxHeight: imageResolutions[alias],
+                    alias: alias
+                );
+            }
         }
 
         public void ProductVariantConnection(ProductVariantConnectionQuery variantConnection, Dictionary<string, int> imageResolutions) {
@@ -99,10 +99,7 @@ namespace Shopify.Unity.SDK {
             variant
                 .id()
                 .availableForSale()
-                .image(pnvi => pnvi
-                    .altText()
-                    .transformedSrc()
-                )
+                .image(i => AliasedTransformedSrcImages(i.altText().transformedSrc(), imageResolutions))
                 .price()
                 .title()
                 .weight()
@@ -111,15 +108,6 @@ namespace Shopify.Unity.SDK {
                     .value()
                 )
                 .weightUnit();
-
-            foreach (string alias in imageResolutions.Keys) {
-                variant.image(
-                    pnvi => pnvi
-                    .altText()
-                    .transformedSrc(),
-                    maxWidth : imageResolutions[alias], maxHeight : imageResolutions[alias], alias : alias
-                );
-            }
         }
 
         public void Collection(CollectionQuery collection) {

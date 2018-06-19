@@ -58,7 +58,7 @@ namespace Shopify.Examples.Panels {
             ClickRegionButton.onClick.AddListener(() => OnClick.Invoke());
 
             if (images.Count > 0) {
-                _imageSrc = images.First().transformedSrc();
+                _imageSrc = images.First().transformedSrc("compact");
             }
         }
     }

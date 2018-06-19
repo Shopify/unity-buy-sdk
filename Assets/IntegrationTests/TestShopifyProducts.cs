@@ -27,18 +27,14 @@ namespace Shopify.Unity.Tests
                     Assert.AreEqual("Neptune Boot", products[1].title(), "Title product 1: Neptune Boot");
 
                     List<string> aliases = Utils.GetImageAliases();
-                    
+
+                    var productImages = (List<Image>)products[0].images();
                     foreach(string imageAlias in aliases) {
-                        Assert.IsNotNull(products[0].images(imageAlias), string.Format("images alias {0} was queried", imageAlias));
+                        Assert.IsNotNull(productImages[0].transformedSrc(imageAlias), string.Format("images alias {0} was queried", imageAlias));
                     }
 
                     List<ProductVariant> variants = (List<ProductVariant>) products[0].variants();
                     
-                    foreach(string imageAlias in aliases) {
-                        // this will throw an exception if not queried
-                        variants[0].image(imageAlias);
-                    }
-
                     // this will throw an exception if not queried
                     variants[0].image();
 
@@ -66,16 +62,12 @@ namespace Shopify.Unity.Tests
 
                     List<string> aliases = Utils.GetImageAliases();
 
+                    var productImages = (List<Image>)products[0].images();
                     foreach(string imageAlias in aliases) {
-                        Assert.IsNotNull(products[0].images(imageAlias), string.Format("images alias {0} was queried", imageAlias));
+                        Assert.IsNotNull(productImages[0].transformedSrc(imageAlias), string.Format("images alias {0} was queried", imageAlias));
                     }
 
                     List<ProductVariant> variants = (List<ProductVariant>) products[0].variants();
-
-                    foreach(string imageAlias in aliases) {
-                        // this will throw an exception if not queried
-                        variants[0].image(imageAlias);
-                    }
 
                     // this will throw an exception if not queried
                     variants[0].image();

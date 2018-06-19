@@ -139,7 +139,7 @@ namespace Shopify.Tests {
             query.node(n => n
                 .onProduct(p => p
                     .id()
-                    .images(ic => DefaultQueries.products.ImageConnection(ic),
+                    .images(ic => DefaultQueries.products.ImageConnection(ic, ShopifyClient.DefaultImageResolutions),
                         first: DefaultQueries.MaxPageSize, after: "image249"
                     )
                 ),
@@ -149,7 +149,7 @@ namespace Shopify.Tests {
             query.node(n => n
                 .onProduct(p => p
                     .id()
-                    .images(ic => DefaultQueries.products.ImageConnection(ic),
+                    .images(ic => DefaultQueries.products.ImageConnection(ic, ShopifyClient.DefaultImageResolutions),
                         first: DefaultQueries.MaxPageSize, after: "image249"
                     )
                     .variants(
@@ -203,7 +203,7 @@ namespace Shopify.Tests {
             query.node(n => n
                 .onProduct(p => p
                     .id()
-                    .images(ic => DefaultQueries.products.ImageConnection(ic),
+                    .images(ic => DefaultQueries.products.ImageConnection(ic, ShopifyClient.DefaultImageResolutions),
                         first: DefaultQueries.MaxPageSize, after: "image499"
                     )
                 ),
