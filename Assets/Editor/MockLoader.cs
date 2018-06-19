@@ -30,6 +30,12 @@ namespace Shopify.Tests {
             }
         }
 
+        public MockLoader(string domain, string accessToken) : base(domain, accessToken) {
+            if (!Initialized) {
+                Initialize();
+            }
+        }
+
         public MockLoader() : base("graphql.myshopify.com", "1234") {
             if (!Initialized) {
                 Initialize();
@@ -59,6 +65,12 @@ namespace Shopify.Tests {
 
         public override string SDKVariantName() {
             return "unity-test";
+        }
+    }
+
+    public class MockLoaderProvider : ILoaderProvider {
+        BaseLoader ILoaderProvider.GetLoader(string accessToken, string domain) {
+            return new MockLoader(domain, accessToken);
         }
     }
 }

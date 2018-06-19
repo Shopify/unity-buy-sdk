@@ -24,6 +24,7 @@ namespace Shopify.UIToolkit.Test.Unit {
         public void Setup() {
             _shopController = GlobalGameObject.AddComponent<MockShopController>();
             _shopController.Credentials = new ShopCredentials(Utils.TestShopDomain, Utils.TestAccessToken);
+            _shopController.LoaderProvider = new MockLoaderProvider();
 
             _shop = Substitute.For<IShop>();
             _shopController.Shop = _shop;
