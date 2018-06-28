@@ -10,6 +10,8 @@ var searchData=
   ['mergecheckout',['MergeCheckout',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_merge_checkout.html',1,'Shopify::Unity::SDK']]],
   ['mockshopcontroller',['MockShopController',['../class_shopify_1_1_u_i_toolkit_1_1_test_1_1_unit_1_1_test_shop_controller_base_editor_1_1_mock_shop_controller.html',1,'Shopify.UIToolkit.Test.Unit.TestShopControllerBaseEditor.MockShopController'],['../class_shopify_1_1_u_i_toolkit_1_1_test_1_1_unit_1_1_test_shop_controller_base_1_1_mock_shop_controller.html',1,'Shopify.UIToolkit.Test.Unit.TestShopControllerBase.MockShopController']]],
   ['mockshopcontrollereditor',['MockShopControllerEditor',['../class_shopify_1_1_u_i_toolkit_1_1_test_1_1_unit_1_1_test_shop_controller_base_editor_1_1_mock_shop_controller_editor.html',1,'Shopify::UIToolkit::Test::Unit::TestShopControllerBaseEditor']]],
+  ['moneyv2',['MoneyV2',['../class_shopify_1_1_unity_1_1_money_v2.html',1,'Shopify::Unity']]],
+  ['moneyv2query',['MoneyV2Query',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_money_v2_query.html',1,'Shopify::Unity::GraphQL']]],
   ['multiproductlistitem',['MultiProductListItem',['../class_shopify_1_1_u_i_toolkit_1_1_shops_1_1_multi_product_list_item.html',1,'Shopify::UIToolkit::Shops']]],
   ['multiproductshopcontroller',['MultiProductShopController',['../class_shopify_1_1_u_i_toolkit_1_1_multi_product_shop_controller.html',1,'Shopify::UIToolkit']]],
   ['multiproductshopcontrollereditor',['MultiProductShopControllerEditor',['../class_shopify_1_1_u_i_toolkit_1_1_editor_1_1_multi_product_shop_controller_editor.html',1,'Shopify::UIToolkit::Editor']]],

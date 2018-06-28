@@ -23,6 +23,8 @@ var searchData=
   ['productpanel',['ProductPanel',['../class_shopify_1_1_examples_1_1_panels_1_1_product_panel.html',1,'Shopify::Examples::Panels']]],
   ['productpicker',['ProductPicker',['../class_shopify_1_1_u_i_toolkit_1_1_editor_1_1_product_picker.html',1,'Shopify::UIToolkit::Editor']]],
   ['productpickerview',['ProductPickerView',['../class_shopify_1_1_u_i_toolkit_1_1_editor_1_1_product_picker_view.html',1,'Shopify::UIToolkit::Editor']]],
+  ['productpricerange',['ProductPriceRange',['../class_shopify_1_1_unity_1_1_product_price_range.html',1,'Shopify::Unity']]],
+  ['productpricerangequery',['ProductPriceRangeQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_product_price_range_query.html',1,'Shopify::Unity::GraphQL']]],
   ['productquery',['ProductQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_product_query.html',1,'Shopify::Unity::GraphQL']]],
   ['productspanel',['ProductsPanel',['../class_shopify_1_1_examples_1_1_panels_1_1_products_panel.html',1,'Shopify::Examples::Panels']]],
   ['productspanelcell',['ProductsPanelCell',['../class_shopify_1_1_examples_1_1_panels_1_1_products_panel_cell.html',1,'Shopify::Examples::Panels']]],

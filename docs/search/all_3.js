@@ -21,6 +21,8 @@ var searchData=
   ['digitalwallet',['DigitalWallet',['../namespace_shopify_1_1_unity.html#ae0b290d34c3c31410d1a17511d2fe70b',1,'Shopify::Unity']]],
   ['diners_5fclub',['DINERS_CLUB',['../namespace_shopify_1_1_unity.html#a09b6f1a20bdb64d15e3fb8359f7ced9aa31d5931882b8065c56689c25c4ce9c54',1,'Shopify::Unity']]],
   ['discover',['DISCOVER',['../namespace_shopify_1_1_unity.html#a09b6f1a20bdb64d15e3fb8359f7ced9aa987e4c5476405d9dab8a979f4ff8bba6',1,'Shopify::Unity']]],
+  ['displayableerror',['DisplayableError',['../interface_shopify_1_1_unity_1_1_displayable_error.html',1,'Shopify::Unity']]],
+  ['displayableerrorquery',['DisplayableErrorQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_displayable_error_query.html',1,'Shopify.Unity.GraphQL.DisplayableErrorQuery'],['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_displayable_error_query.html#abf7eace788c302b060ad9b11dfa745a9',1,'Shopify.Unity.GraphQL.DisplayableErrorQuery.DisplayableErrorQuery()']]],
   ['displayname',['displayName',['../class_shopify_1_1_unity_1_1_customer.html#aad376c8b996be49956f721c463ea10a7',1,'Shopify.Unity.Customer.displayName()'],['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_customer_query.html#a19e78165ed6b762e4b63ef40879ca803',1,'Shopify.Unity.GraphQL.CustomerQuery.displayName()']]],
   ['dj',['DJ',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a27a5773a603825cc6999e48cc2b1b270',1,'Shopify::Unity']]],
   ['dk',['DK',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7add65ef9a5579d4e518c6d4abbd0cb1c6',1,'Shopify::Unity']]],

@@ -36,6 +36,8 @@ var searchData=
   ['checkoutcustomerdisassociatepayloadquery',['CheckoutCustomerDisassociatePayloadQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_customer_disassociate_payload_query.html',1,'Shopify::Unity::GraphQL']]],
   ['checkoutdiscountcodeapplypayload',['CheckoutDiscountCodeApplyPayload',['../class_shopify_1_1_unity_1_1_checkout_discount_code_apply_payload.html',1,'Shopify::Unity']]],
   ['checkoutdiscountcodeapplypayloadquery',['CheckoutDiscountCodeApplyPayloadQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_discount_code_apply_payload_query.html',1,'Shopify::Unity::GraphQL']]],
+  ['checkoutdiscountcoderemovepayload',['CheckoutDiscountCodeRemovePayload',['../class_shopify_1_1_unity_1_1_checkout_discount_code_remove_payload.html',1,'Shopify::Unity']]],
+  ['checkoutdiscountcoderemovepayloadquery',['CheckoutDiscountCodeRemovePayloadQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_discount_code_remove_payload_query.html',1,'Shopify::Unity::GraphQL']]],
   ['checkoutemailupdatepayload',['CheckoutEmailUpdatePayload',['../class_shopify_1_1_unity_1_1_checkout_email_update_payload.html',1,'Shopify::Unity']]],
   ['checkoutemailupdatepayloadquery',['CheckoutEmailUpdatePayloadQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_email_update_payload_query.html',1,'Shopify::Unity::GraphQL']]],
   ['checkoutfailureevent',['CheckoutFailureEvent',['../class_shopify_1_1_examples_1_1_panels_1_1_checkout_failure_event.html',1,'Shopify::Examples::Panels']]],
