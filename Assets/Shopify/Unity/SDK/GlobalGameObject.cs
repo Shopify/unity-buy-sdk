@@ -22,6 +22,7 @@ namespace Shopify.Unity.SDK {
         public static T AddComponent<T>() where T: Component {
             if (GameObject == null) {
                 GameObject = new GameObject("Shopify");
+                GameObject.DontDestroyOnLoad(GameObject);
             }
 
             return GameObject.AddComponent<T>();
