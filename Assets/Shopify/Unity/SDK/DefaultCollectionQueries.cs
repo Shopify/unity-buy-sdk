@@ -34,7 +34,7 @@ namespace Shopify.Unity.SDK {
                 .descriptionHtml()
                 .updatedAt()
                 .products(pc => ProductConnection(pc),
-                    first : DefaultQueries.MaxPageSize
+                    first : DefaultQueries.MaxProductPageSize
                 );
 
             foreach (string alias in imageResolutions.Keys) {

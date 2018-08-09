@@ -467,7 +467,7 @@ namespace Shopify.Unity {
                         getConnection: (c) => ((Collection) c).products (),
                         query: (c, productsAfter) => {
                             ((CollectionQuery) c).products (pc => DefaultQueries.collections.ProductConnection (pc),
-                                first : DefaultQueries.MaxPageSize, after : productsAfter
+                                first : DefaultQueries.MaxProductPageSize, after : productsAfter
                             );
                         }
                     )

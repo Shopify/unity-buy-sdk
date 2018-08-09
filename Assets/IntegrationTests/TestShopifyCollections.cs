@@ -36,7 +36,7 @@ namespace Shopify.Unity.Tests
                     foreach(string alias in aliases) {
                         // this will throw an exception if image was not queried with alias
                         // no collections in our test store have values
-                        collections[0].image(alias);
+                        collections[0].image().transformedSrc(alias);
                     }
                 }
             );
