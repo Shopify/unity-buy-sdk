@@ -50,21 +50,15 @@ namespace Shopify.Tests {
                 int collection = page * DefaultQueries.MaxCollectionsPageSize + i;
                 bool productsHasNextPage = collection == 0;
 
-                StringBuilder resolutionImageResponses = new StringBuilder();
+                StringBuilder resolutionTransformedSrcs = new StringBuilder();
                 int numAliasIterated = 0;
                 foreach(string alias in ShopifyClient.DefaultImageResolutions.Keys) {
-                    string aliasedImages = String.Format(@"
-                        ""image___{0}"": {{
-                            ""altText"": ""I am an image {0}"",
-                            ""src"": ""http://cdn.com/images/collection{0}""
-                        }}
-                    ",
-                    alias);
+                    string aliasedImages = String.Format(@"""transformedSrc___{0}"": ""http://cdn.com/images/collection{0}""", alias);
 
-                    resolutionImageResponses.Append(aliasedImages);
+                    resolutionTransformedSrcs.Append(aliasedImages);
 
                     if (numAliasIterated < ShopifyClient.DefaultImageResolutions.Keys.Count - 1) {
-                        resolutionImageResponses.Append(",");
+                        resolutionTransformedSrcs.Append(",");
                     }
 
                     numAliasIterated++;
@@ -75,7 +69,7 @@ namespace Shopify.Tests {
                         ""id"": ""{0}"",
                         ""image"": {{
                             ""altText"": ""I am an image {0}"",
-                            ""src"": ""http://cdn.com/images/collection{0}""
+                            {3}
                         }},
                         ""title"": ""I am collection {0}"",
                         ""updatedAt"": ""2016-09-11T21:32:43Z"",
@@ -87,14 +81,13 @@ namespace Shopify.Tests {
                                 ""hasNextPage"": {2}
                             }}
                         }},
-                        {3}
                     }},
                     ""cursor"": ""{0}""
                 }}{4}", 
                 collection,
                 GetProductOnCollections(0, collection, productsHasNextPage ? DefaultQueries.MaxPageSize : 1), 
                 UtilsMockLoader.GetJSONBool(productsHasNextPage),
-                resolutionImageResponses.ToString(),
+                resolutionTransformedSrcs.ToString(),
                 i < DefaultQueries.MaxCollectionsPageSize - 1 ? "," : ""));
             }
 
@@ -125,7 +118,7 @@ namespace Shopify.Tests {
                 .onCollection(c => c
                     .id()
                     .products(pc => DefaultQueries.collections.ProductConnection(pc),
-                        first: DefaultQueries.MaxPageSize, after: "product249"
+                        first: DefaultQueries.MaxProductPageSize, after: "product249"
                     )
                 ),
                 id: "0", alias: "a0"
