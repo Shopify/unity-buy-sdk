@@ -951,11 +951,9 @@ namespace Shopify.Unity {
 
                     if (response == null || (countToLoad > 0 && response.data.shop ().collections ().pageInfo ().hasNextPage ())) {
                         query = new QueryRootQuery ();
-
-                        query = new QueryRootQuery ();
                         DefaultQueries.collections.ShopCollections (
                             query : query,
-                            first : countToLoad > DefaultQueries.MaxPageSize ? DefaultQueries.MaxPageSize : countToLoad,
+                            first : countToLoad > DefaultQueries.MaxCollectionsPageSize ? DefaultQueries.MaxCollectionsPageSize : countToLoad,
                             after : edges != null ? edges[edges.Count - 1].cursor () : after,
                             imageResolutions : DefaultImageResolutions
                         );

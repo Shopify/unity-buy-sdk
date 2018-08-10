@@ -25,10 +25,16 @@ namespace Shopify.Unity.SDK {
         public void Collection(CollectionQuery collection, Dictionary<string, int> imageResolutions) {
             collection
                 .id()
-                .image(pci => pci
-                    .altText()
-                    .transformedSrc()
-                )
+                .image(pci => {
+                    pci.altText();
+                    foreach (string alias in imageResolutions.Keys) {
+                        pci.transformedSrc(
+                            maxWidth : imageResolutions[alias],
+                            maxHeight : imageResolutions[alias],
+                            alias : alias
+                        );
+                    }
+                })
                 .title()
                 .description()
                 .descriptionHtml()
@@ -36,18 +42,6 @@ namespace Shopify.Unity.SDK {
                 .products(pc => ProductConnection(pc),
                     first : DefaultQueries.MaxProductPageSize
                 );
-
-            foreach (string alias in imageResolutions.Keys) {
-                collection
-                    .image(pci => pci
-                        .altText()
-                        .transformedSrc(
-                            maxWidth : imageResolutions[alias],
-                            maxHeight : imageResolutions[alias],
-                            alias : alias
-                        )
-                    );
-            }
         }
 
         public void ProductConnection(ProductConnectionQuery productConnection) {
