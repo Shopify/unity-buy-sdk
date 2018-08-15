@@ -53,6 +53,7 @@ private var activeWebPaySession: WebCheckoutSession?
             return false
         }
         
+        HTTPCookieStorage.shared.cookieAcceptPolicy = HTTPCookie.AcceptPolicy.always
         let webViewController = SFSafariViewController(url: url)
         webViewController.delegate = self
 
