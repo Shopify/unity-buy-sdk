@@ -148,7 +148,7 @@ module GraphQLGenerator
       when "SCALAR"
         scalars[type.name].cast_value(value)
       else
-        "(#{graph_type_to_csharp_type(type)}) #{value}"
+        "(#{graph_type_to_csharp_type(type, is_non_null: is_non_null)}) #{value}"
       end
     end
 
