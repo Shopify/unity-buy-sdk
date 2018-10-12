@@ -44,53 +44,57 @@ namespace Shopify.Unity.GraphQL {
             <% end %>
 
             <%# now create methods to add fields to queries %>
-            <% type.fields(include_deprecated: true).each do |field| %>
-                <%= docs_query_field(field) %>
-                public <%= type.classify_name %>Query <%= escape_reserved_word(field.name) %>(<%= field_args(field) %>) {
-                    <% if field.deprecated? %>
-                    Log.DeprecatedQueryField("<%= type.name %>", "<%= field.name %>", "<%= field.deprecation_reason.gsub(/\n/, "\\n") %>");
-                    <% end %>
 
-                    <%# now we we want to handle generating arguments %>
-                    <% if field.args.any? %>
-                        if (alias != null) {
-                            ValidationUtils.ValidateAlias(alias);
 
-                            Query.Append("<%= field.name + ALIAS_SEPARATOR %>");
-                            Query.Append(alias);
-                            Query.Append(":");
-                        }
-
-                        Query.Append("<%= field.name %> ");
-
-                        Arguments args = new Arguments();
-
-                        <%# handle adding required args to the args generator %>
-                        <% field.required_args.each do |arg| %>
-                            args.Add("<%= arg.name %>", <%= escape_reserved_word(arg.name) %>);
+            <% unless type.union? %>
+                <% type.fields(include_deprecated: true).each do |field| %>
+                    <%= docs_query_field(field) %>
+                    public <%= type.classify_name %>Query <%= escape_reserved_word(field.name) %>(<%= field_args(field) %>) {
+                        <% if field.deprecated? %>
+                        Log.DeprecatedQueryField("<%= type.name %>", "<%= field.name %>", "<%= field.deprecation_reason.gsub(/\n/, "\\n") %>");
                         <% end %>
 
-                        <% field.optional_args.each do |arg| %>
-                            if (<%= escape_reserved_word(arg.name) %> != null) {
-                                args.Add("<%= arg.name %>", <%= escape_reserved_word(arg.name) %>);
+                        <%# now we we want to handle generating arguments %>
+                        <% if field.args.any? %>
+                            if (alias != null) {
+                                ValidationUtils.ValidateAlias(alias);
+
+                                Query.Append("<%= field.name + ALIAS_SEPARATOR %>");
+                                Query.Append(alias);
+                                Query.Append(":");
                             }
+
+                            Query.Append("<%= field.name %> ");
+
+                            Arguments args = new Arguments();
+
+                            <%# handle adding required args to the args generator %>
+                            <% field.required_args.each do |arg| %>
+                                args.Add("<%= arg.name %>", <%= escape_reserved_word(arg.name) %>);
+                            <% end %>
+
+                            <% field.optional_args.each do |arg| %>
+                                if (<%= escape_reserved_word(arg.name) %> != null) {
+                                    args.Add("<%= arg.name %>", <%= escape_reserved_word(arg.name) %>);
+                                }
+                            <% end %>
+
+                            Query.Append(args.ToString());
+                        <% else %>
+                            Query.Append("<%= field.name %> ");
                         <% end %>
 
-                        Query.Append(args.ToString());
-                    <% else %>
-                        Query.Append("<%= field.name %> ");
-                    <% end %>
 
+                        <%# if this field is an OBJECT we want to be able to query subfields %>
+                        <% if field.type.subfields? %>
+                            Query.Append("{");
+                            buildQuery(new <%= field.type.unwrap.classify_name %>Query(Query));
+                            Query.Append("}");
+                        <% end %>
 
-                    <%# if this field is an OBJECT we want to be able to query subfields %>
-                    <% if field.type.subfields? %>
-                        Query.Append("{");
-                        buildQuery(new <%= field.type.unwrap.classify_name %>Query(Query));
-                        Query.Append("}");
-                    <% end %>
-
-                    return this;
-                }
+                        return this;
+                    }
+                <% end %>
             <% end %>
 
             <% unless type.object? %>
