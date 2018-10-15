@@ -1,16 +1,20 @@
-namespace Shopify.UIToolkit.Test.Unit {
-    using NUnit.Framework;
-    using Shopify.Tests;
+namespace Shopify.UIToolkit.Test.Integration {
+    using Shopify.UIToolkit;
+    using Shopify.Unity.Tests;
     using Shopify.Unity.SDK;
     using Shopify.Unity;
+    using Shopify.Tests;
+
     using System.Linq;
-    using UnityEngine;
-    using NSubstitute;
-    using UnityEngine.TestTools;
     using System.Collections.Generic;
     using System.Collections;
 
-    [TestFixture]
+    using UnityEngine;
+    using UnityEngine.TestTools;
+
+    using NUnit.Framework;
+    using NSubstitute;
+
     public class TestShopControllerBase {
         public class MockShopController : ShopControllerBase {
             public override void Unload() {}
@@ -68,10 +72,7 @@ namespace Shopify.UIToolkit.Test.Unit {
 
         [UnityTest]
         public IEnumerator TestAddVariantToCartAddsNewItemToCart() {
-            var waiter = LoadProductVariantsFromShop();
-            while (waiter.Await()) {
-                yield return null;
-            }
+            yield return LoadProductVariantsFromShop();
 
             _shopController.Cart.AddVariant(_variants.First(), _product);
             Assert.AreEqual(1, _shopController.Cart.LineItems.Get(_variants.First()).Quantity);
@@ -80,10 +81,7 @@ namespace Shopify.UIToolkit.Test.Unit {
 
         [UnityTest]
         public IEnumerator TestAddVariantToCartIncrementsExistingItem() {
-            var waiter = LoadProductVariantsFromShop();
-            while (waiter.Await()) {
-                yield return null;
-            }
+            yield return LoadProductVariantsFromShop();
 
             _shopController.Cart.LineItems.AddOrUpdate(_variants.First(), 5);
 
@@ -94,10 +92,7 @@ namespace Shopify.UIToolkit.Test.Unit {
 
         [UnityTest]
         public IEnumerator TestRemoveVariantFromCartWhenItemIsNotInCart() {
-            var waiter = LoadProductVariantsFromShop();
-            while (waiter.Await()) {
-                yield return null;
-            }
+            yield return LoadProductVariantsFromShop();
 
             _shopController.Cart.RemoveVariant(_variants.First(), _product);
             Assert.IsNull(_shopController.Cart.LineItems.Get(_variants.First()));
@@ -105,10 +100,7 @@ namespace Shopify.UIToolkit.Test.Unit {
 
         [UnityTest]
         public IEnumerator TestRemoveVariantFromCartDecrementsItemCount() {
-            var waiter = LoadProductVariantsFromShop();
-            while (waiter.Await()) {
-                yield return null;
-            }
+            yield return LoadProductVariantsFromShop();
 
             _shopController.Cart.LineItems.AddOrUpdate(_variants.First(), 5);
             _shopController.Cart.RemoveVariant(_variants.First(), _product);
@@ -118,10 +110,7 @@ namespace Shopify.UIToolkit.Test.Unit {
 
         [UnityTest]
         public IEnumerator TestRemoveVariantFromCartDeletesItemIfQuantityBecomesZero() {
-            var waiter = LoadProductVariantsFromShop();
-            while (waiter.Await()) {
-                yield return null;
-            }
+            yield return LoadProductVariantsFromShop();
 
             _shopController.Cart.LineItems.AddOrUpdate(_variants.First(), 1);
             _shopController.Cart.RemoveVariant(_variants.First(), _product);
@@ -131,10 +120,7 @@ namespace Shopify.UIToolkit.Test.Unit {
 
         [UnityTest]
         public IEnumerator TestUpdateItemsInCartSetsQuantity() {
-            var waiter = LoadProductVariantsFromShop();
-            while (waiter.Await()) {
-                yield return null;
-            }
+            yield return LoadProductVariantsFromShop();
 
             _shopController.Cart.LineItems.AddOrUpdate(_variants.First(), 3);
             _shopController.Cart.UpdateVariant(_variants.First(), _product, 1);
@@ -144,10 +130,7 @@ namespace Shopify.UIToolkit.Test.Unit {
 
         [UnityTest]
         public IEnumerator TestUpdateItemsInCartToZeroDeletesItem() {
-            var waiter = LoadProductVariantsFromShop();
-            while (waiter.Await()) {
-                yield return null;
-            }
+            yield return LoadProductVariantsFromShop();
 
             _shopController.Cart.LineItems.AddOrUpdate(_variants.First(), 1);
             _shopController.Cart.UpdateVariant(_variants.First(), _product, 0);
@@ -157,10 +140,7 @@ namespace Shopify.UIToolkit.Test.Unit {
 
         [UnityTest]
         public IEnumerator TestUpdateVariantInCartWithNoExistingItemAddsNewItem() {
-            var waiter = LoadProductVariantsFromShop();
-            while (waiter.Await()) {
-                yield return null;
-            }
+            yield return LoadProductVariantsFromShop();
 
             _shopController.Cart.UpdateVariant(_variants.First(), _product, 1);
             Assert.AreEqual(1, _shopController.Cart.LineItems.Get(_variants.First()).Quantity);
@@ -169,10 +149,7 @@ namespace Shopify.UIToolkit.Test.Unit {
 
         [UnityTest]
         public IEnumerator TestClearCartResetsCart() {
-            var waiter = LoadProductVariantsFromShop();
-            while (waiter.Await()) {
-                yield return null;
-            }
+            yield return LoadProductVariantsFromShop();
 
             _shopController.Cart.UpdateVariant(_variants.First(), _product, 1);
             _shopController.Cart.UpdateVariant(_variants[1], _product, 2);
@@ -184,8 +161,8 @@ namespace Shopify.UIToolkit.Test.Unit {
 
         private List<ProductVariant> _variants;
         private Product _product;
-        private EditorTimeoutWaiter LoadProductVariantsFromShop() {
-            var waiter = new EditorTimeoutWaiter(5f);
+        private StoppableWaitForTime LoadProductVariantsFromShop() {
+            var waiter = Utils.GetWaitQuery();
             _shopController.Client.products((products, error, after) => {
                 _variants = new List<ProductVariant>();
                 _product = products[0];
@@ -193,7 +170,7 @@ namespace Shopify.UIToolkit.Test.Unit {
                     _variants.AddRange(product.variants().edges().Select((x) => x.node()));
                 }
 
-                waiter.Complete();
+                waiter.Stop();
             });
 
             return waiter;
