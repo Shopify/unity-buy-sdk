@@ -22,7 +22,7 @@ namespace Shopify.UIToolkit.Test.Integration {
             bool requestFinished = false;
 
             loader.LoadImage(
-                imageURL: "https://cdn.shopify.com/s/files/1/2094/7261/products/product-image-305453751.jpg?v=1497377691", 
+                imageURL: "https://cdn.shopify.com/s/files/1/1312/0893/products/003_3e206539-20d3-49c0-8bff-006e449906ca_1024x1024.jpg?v=1491850970",
                 success: () => { requestFinished = true; },
                 failure: (e) =>  { requestFinished = true; }
             );
@@ -37,7 +37,7 @@ namespace Shopify.UIToolkit.Test.Integration {
 
         [UnityTest] 
         public IEnumerator TestDownloadImageThatsCached() {
-            var imageURL = "https://cdn.shopify.com/s/files/1/2094/7261/products/product-image-305453751.jpg?v=1497377691";  
+            var imageURL = "https://cdn.shopify.com/s/files/1/1312/0893/products/003_3e206539-20d3-49c0-8bff-006e449906ca_1024x1024.jpg?v=1491850970";
             var gameObject = new GameObject();
             var loader = gameObject.AddComponent<RemoteImageLoader>();
             loader.UseCache = true;

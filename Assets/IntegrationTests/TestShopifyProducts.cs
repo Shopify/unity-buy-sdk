@@ -83,8 +83,8 @@ namespace Shopify.Unity.Tests
         }
 
         [UnityTest]
-        public IEnumerator Loads20ProductsInLessThan6Seconds() {
-            float maxDuration = 6f;
+        public IEnumerator Loads20ProductsInLessThan8Seconds() {
+            float maxDuration = 8f;
             int maxProducts = 20;
             StoppableWaitForTime waiter = new StoppableWaitForTime (maxDuration);
             ShopifyError errorsFromQueries = null;

@@ -36,7 +36,7 @@ namespace Shopify.Unity.Tests
                     foreach(string alias in aliases) {
                         // this will throw an exception if image was not queried with alias
                         // no collections in our test store have values
-                        collections[0].image(alias);
+                        collections[0].image().transformedSrc(alias);
                     }
                 }
             );
@@ -48,7 +48,7 @@ namespace Shopify.Unity.Tests
 
         [UnityTest]
         public IEnumerator LoadAllCollections() {
-            float maxDuration = 6f;
+            float maxDuration = 8f;
             int maxCollections = 13;
             StoppableWaitForTime waiter = new StoppableWaitForTime (maxDuration);
             ShopifyError errorsFromQueries = null;
