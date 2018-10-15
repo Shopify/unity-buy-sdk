@@ -29,10 +29,8 @@ namespace Shopify.Unity.SDK.iOS {
         }
 
         public override void Checkout(string checkoutURL, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
-#if !SHOPIFY_MONO_UNIT_TEST
             SetupWebCheckoutMessageReceiver(success, cancelled, failure);
             _CheckoutWithWebView(GetNativeMessageReceiverName(), checkoutURL);
-#endif
         }
     }
 }

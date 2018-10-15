@@ -18,6 +18,4 @@ commands:
     desc:   'Publish a new unitypackage for the sdk'
     run:    scripts/publish.sh
   test:
-    run: scripts/test.sh
-  unitytest:
     run: scripts/test_unity.sh

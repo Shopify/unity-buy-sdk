@@ -1,4 +1,3 @@
-#if !SHOPIFY_MONO_UNIT_TEST
 namespace Shopify.Unity.UI {
     using System.Runtime.InteropServices;
     using System.Text;
@@ -107,4 +106,3 @@ namespace Shopify.Unity.UI {
         }
     }
 }
-#endif

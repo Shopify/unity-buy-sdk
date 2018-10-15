@@ -192,9 +192,7 @@ namespace Shopify.Unity {
             _AccessToken = accessToken;
             _Domain = domain;
 
-#if !SHOPIFY_MONO_UNIT_TEST
             Loader = new QueryLoader (new UnityLoader (domain, AccessToken));
-#endif
         }
 
         /// <summary>
@@ -673,13 +671,9 @@ namespace Shopify.Unity {
                     if (isReady (response)) {
                         callback (response, null);
                     } else {
-#if !SHOPIFY_MONO_UNIT_TEST
                         UnityTimeout.Start (POLL_DELAY_SECONDS, () => {
                             PollQuery (isReady, query, callback);
                         });
-#else
-                        PollQuery (isReady, query, callback);
-#endif
                     }
                 }
             });

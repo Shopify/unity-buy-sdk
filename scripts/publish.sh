@@ -57,8 +57,8 @@ printf "Version used %s: %s\n" "$1" "$VERSION"
 check "generate"
 
 # Run tests just in case
-"$SCRIPTS_ROOT"/test.sh
-check "test"
+"$SCRIPTS_ROOT"/test_unity.sh
+check "test_unity"
 
 # Now we'll attempt to actually generate the unitypackage
 UNITY_LOG_PATH="$PROJECT_ROOT"/export.log

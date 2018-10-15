@@ -1,11 +1,8 @@
 namespace Shopify.Unity.SDK.iOS {
     using System.Collections.Generic;
     using System.Collections;
-
-#if !SHOPIFY_MONO_UNIT_TEST
     using UnityEngine;
     public partial class ApplePayEventReceiverBridge : MonoBehaviour { }
-#endif
 
 #if UNITY_IOS
     public partial class ApplePayEventReceiverBridge : IApplePayEventReceiver {

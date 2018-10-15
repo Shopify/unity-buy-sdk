@@ -6,10 +6,7 @@ namespace Shopify.Unity.SDK.Android {
     using System;
     using Shopify.Unity.MiniJSON;
     using Shopify.Unity.SDK;
-
-#if !SHOPIFY_MONO_UNIT_TEST
     using UnityEngine;
-#endif
 
     public partial class AndroidNativeCheckout : INativeCheckout {
         /// <value>Android class name used to communicate between Unity and Android.</value>
@@ -22,10 +19,8 @@ namespace Shopify.Unity.SDK.Android {
         private String CountryCodeString;
         /// <value>Callback instance to receive invocations from the Android plugin.</value>
         private AndroidPayEventReceiverBridge AndroidPayEventBridge;
-#if !SHOPIFY_MONO_UNIT_TEST
         /// <value>Android object reference to invoke the Android plugin methods.</value>
         private AndroidJavaObject AndroidPayCheckoutSession;
-#endif
 
         /// <value>External callback for checkout success.</value>
         private CheckoutSuccessCallback OnSuccess;
@@ -41,13 +36,11 @@ namespace Shopify.Unity.SDK.Android {
         public AndroidNativeCheckout(CartState cartState) {
             CartState = cartState;
             const bool testing = true; // TODO parametrize for 3rd-party devs
-#if !SHOPIFY_MONO_UNIT_TEST
             AndroidPayCheckoutSession = new AndroidJavaObject(
                 ANDROID_CLASS_NAME,
                 GlobalGameObject.Name,
                 testing
             );
-#endif
         }
 
         /// <summary>
@@ -81,9 +74,7 @@ namespace Shopify.Unity.SDK.Android {
                 object[] args = {
                     SerializedPaymentNetworksFromCardBrands(paymentSettings.acceptedCardBrands())
                 };
-#if !SHOPIFY_MONO_UNIT_TEST
                 AndroidPayCheckoutSession.Call("canCheckoutWithAndroidPay", args);
-#endif
                 if (PendingCanCheckoutWithNativePayCallback != null) {
                     PendingCanCheckoutWithNativePayCallback(false);
                 }
@@ -132,7 +123,6 @@ namespace Shopify.Unity.SDK.Android {
             CountryCodeString = shopMetadata.PaymentSettings.countryCode().ToString("G");
             var requiresShipping = checkout.requiresShipping();
 
-#if !SHOPIFY_MONO_UNIT_TEST
             object[] args = {
                 MerchantName,
                 key,
@@ -146,7 +136,6 @@ namespace Shopify.Unity.SDK.Android {
                 AndroidPayEventBridge = GlobalGameObject.AddComponent<AndroidPayEventReceiverBridge>();
                 AndroidPayEventBridge.Receiver = this;
             }
-#endif
         }
 
         /// <summary>

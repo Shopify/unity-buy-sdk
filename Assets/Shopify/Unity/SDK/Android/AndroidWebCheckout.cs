@@ -2,10 +2,7 @@ namespace Shopify.Unity.SDK.Android {
 #if UNITY_ANDROID
     using System;
     using Shopify.Unity.SDK;
-
-#if !SHOPIFY_MONO_UNIT_TEST
     using UnityEngine;
-#endif
 
     class AndroidWebCheckout : WebCheckout {
         private ShopifyClient _client;
@@ -32,12 +29,10 @@ namespace Shopify.Unity.SDK.Android {
         }
 
         public override void Checkout(string checkoutURL, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
-#if !SHOPIFY_MONO_UNIT_TEST
             using(var webCheckoutSession = new AndroidJavaObject(WebCheckoutSessionClassName, GetNativeMessageReceiverName(), checkoutURL)) {
                 SetupWebCheckoutMessageReceiver(success, cancelled, failure);
                 webCheckoutSession.Call("checkout");
             }
-#endif
         }
     }
 #endif

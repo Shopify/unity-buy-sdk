@@ -3,11 +3,9 @@ namespace Shopify.Unity.SDK {
     using System;
     using Shopify.Unity.GraphQL;
     using Shopify.Unity.SDK;
-
-#if !SHOPIFY_MONO_UNIT_TEST
     using UnityEngine;
+
     public partial class WebCheckoutMessageReceiver : MonoBehaviour { }
-#endif
 
     public partial class WebCheckoutMessageReceiver {
         public ShopifyClient Client;
@@ -59,14 +57,10 @@ namespace Shopify.Unity.SDK {
                     var checkout = (Checkout) response.node();
                     if (checkout.completedAt() != null) {
                         OnSuccess();
-                        #if !SHOPIFY_MONO_UNIT_TEST
                         Destroy(this);
-                        #endif
                     } else {
                         OnCancelled();
-                        #if !SHOPIFY_MONO_UNIT_TEST
                         Destroy(this);
-                        #endif
                     }
                 }
             });

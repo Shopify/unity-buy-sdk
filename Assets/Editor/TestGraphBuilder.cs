@@ -1,4 +1,3 @@
-#if !SHOPIFY_MONO_UNIT_TEST
 namespace Shopify.Tests
 {
     using System;
@@ -102,4 +101,3 @@ namespace Shopify.Tests
         }
     }    
 }
-#endif

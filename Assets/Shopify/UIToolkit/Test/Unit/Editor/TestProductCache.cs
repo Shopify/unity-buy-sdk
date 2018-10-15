@@ -1,4 +1,3 @@
-#if !SHOPIFY_MONO_UNIT_TEST
 namespace Shopify.UIToolkit.Test.Unit {
     using System;
     using Shopify.UIToolkit;
@@ -72,4 +71,3 @@ namespace Shopify.UIToolkit.Test.Unit {
         }
     }
 }
-#endif
