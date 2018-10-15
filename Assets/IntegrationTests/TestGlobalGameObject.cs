@@ -15,13 +15,15 @@ namespace Shopify.Unity.Tests
     public class TestGlobalGameObject : MonoBehaviour {
         [SetUp]
         public void SetUp() {
-            // GlobalGameObject might have been created from previous test runs.
-            var globalGameObject = GameObject.Find(GlobalGameObject.Name);
-            GameObject.Destroy(globalGameObject);
+            CleanupGlobalGameObject();
         }
 
         [TearDown]
         public void TearDown() {
+            CleanupGlobalGameObject();
+        }
+
+        private void CleanupGlobalGameObject() {
             var globalGameObject = GameObject.Find(GlobalGameObject.Name);
             GameObject.Destroy(globalGameObject);
         }
