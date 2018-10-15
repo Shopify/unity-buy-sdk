@@ -1,4 +1,4 @@
-﻿namespace Shopify.UIToolkit.Test.Unit {
+﻿namespace Shopify.UIToolkit.Test.Integration {
     using UnityEngine;
     using System.Linq;
     using NUnit.Framework;
@@ -11,18 +11,24 @@
     using System.Collections.Generic;
     using Shopify.Unity.SDK.Editor;
 
-    [TestFixture]
     public class TestSingleProductShopController {
         private SingleProductShopController _controller;
         private ISingleProductShop _shop;
+        private GameObject _gameObject;
 
         [SetUp]
         public void Setup() {
-            _controller = GlobalGameObject.AddComponent<SingleProductShopController>();
+            _gameObject = new GameObject("TestSingleProductShopController");
+            _controller = _gameObject.AddComponent<SingleProductShopController>();
+            _controller.LoaderProvider = new UnityEditorLoaderProvider();
             _shop = Substitute.For<ISingleProductShop>();
-
             _controller.Shop = _shop;
             _controller.Credentials = new ShopCredentials(Utils.TestShopDomain, Utils.TestAccessToken);
+        }
+
+        [TearDown]
+        public void TearDown() {
+            GameObject.DestroyImmediate(_gameObject);
         }
 
         [Test]

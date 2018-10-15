@@ -37,40 +37,5 @@
             _view.DidNotReceive().DrawShopHasNoProductsState(null);
             _view.Received().DrawProductLoadingState(null);
         }
-
-        [UnityTest]
-        public IEnumerator TestProductPickerRendersProductPickerAfterLoadingProducts() {
-            _picker.OnShouldRefreshProductList();
-
-            while(!_picker.ProductsFinishedLoading()) {
-                yield return null;
-            }
-
-            _picker.DrawInspectorGUI(null);
-
-            _view.DidNotReceive().DrawProductLoadingState(null);
-            _view.DidNotReceive().DrawProductLoadingError(null);
-            _view.DidNotReceive().DrawShopHasNoProductsState(null);
-            _view.Received().DrawProductPicker(null, Arg.Any<Dictionary<string, string>>());
-        }
-
-        [UnityTest]
-        public IEnumerator TestProductPickerRendersErrorWhenError() {
-            _client = new ShopifyClient(new UnityEditorLoader(ShopDomain, "badbadbad"));
-            _view = Substitute.For<IProductPickerView>();
-            _picker = new ProductPicker(_client, _view);
-            _picker.OnShouldRefreshProductList();
-
-            while(!_picker.ProductsFinishedLoading()) {
-                yield return null;
-            }
-
-            _picker.DrawInspectorGUI(null);
-
-            _view.DidNotReceive().DrawProductPicker(null, Arg.Any<Dictionary<string, string>>());
-            _view.DidNotReceive().DrawProductLoadingState(null);
-            _view.DidNotReceive().DrawShopHasNoProductsState(null);
-            _view.Received().DrawProductLoadingError(null);
-        }
     }
 }

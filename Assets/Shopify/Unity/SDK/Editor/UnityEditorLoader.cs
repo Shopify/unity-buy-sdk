@@ -81,5 +81,11 @@ namespace Shopify.Unity.SDK.Editor {
 
         #endregion
     }
+
+    public class UnityEditorLoaderProvider : ILoaderProvider {
+        BaseLoader ILoaderProvider.GetLoader(string accessToken, string domain) {
+            return new UnityEditorLoader(domain, accessToken);
+        }
+    }
 }
 #endif

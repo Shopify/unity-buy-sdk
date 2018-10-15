@@ -23,10 +23,12 @@ namespace Shopify.UIToolkit.Test.Unit {
 
         private ShopControllerBaseEditor _editor;
         private MockShopController _controller;
+        private GameObject _gameObject;
 
         [SetUp]
         public void Setup() {
-            _controller = GlobalGameObject.AddComponent<MockShopController>();
+            _gameObject = new GameObject("TestShopControllerBaseEditor");
+            _controller = _gameObject.AddComponent<MockShopController>();
             _controller.Credentials = new ShopCredentials();
             _editor = Editor.CreateEditor(_controller) as ShopControllerBaseEditor;
             _editor.View = Substitute.For<IShopControllerBaseEditorView>();
@@ -34,7 +36,7 @@ namespace Shopify.UIToolkit.Test.Unit {
 
         [TearDown]
         public void TearDown() {
-            GlobalGameObject.Destroy();
+            GameObject.DestroyImmediate(_gameObject);
         }
 
         [Test]
@@ -46,7 +48,7 @@ namespace Shopify.UIToolkit.Test.Unit {
 
         [Test]
         public void TestBoundShopDoesNotDrawHelpBox() {
-            GlobalGameObject.AddComponent<DebugSingleProductShop>();
+            _gameObject.AddComponent<DebugSingleProductShop>();
             _editor.OnInspectorGUI();
             _editor.View.DidNotReceive().DrawShopHelp();
         }
