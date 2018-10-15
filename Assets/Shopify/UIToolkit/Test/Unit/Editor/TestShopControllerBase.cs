@@ -1,6 +1,7 @@
 namespace Shopify.UIToolkit.Test.Unit {
     using NUnit.Framework;
     using Shopify.Tests;
+    using Shopify.Unity.SDK.Editor;
     using Shopify.Unity.SDK;
     using Shopify.Unity;
     using System.Linq;
@@ -19,14 +20,22 @@ namespace Shopify.UIToolkit.Test.Unit {
 
         private MockShopController _shopController;
         private IShop _shop;
+        private GameObject _gameObject;
 
         [SetUp]
         public void Setup() {
-            _shopController = GlobalGameObject.AddComponent<MockShopController>();
+            _gameObject = new GameObject("TestShopControllerBase");
+            _shopController = _gameObject.AddComponent<MockShopController>();
             _shopController.Credentials = new ShopCredentials(Utils.TestShopDomain, Utils.TestAccessToken);
+            _shopController.LoaderProvider = new UnityEditorLoaderProvider();
 
             _shop = Substitute.For<IShop>();
             _shopController.Shop = _shop;
+        }
+
+        [TearDown]
+        public void TearDown() {
+            GameObject.DestroyImmediate(_gameObject);
         }
 
         [Test]
