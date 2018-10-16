@@ -106,7 +106,7 @@ module GraphQLGenerator
       # output type definitions
       schema.types.reject{ |type| type.builtin? || type.scalar? }.each do |type|
         # output
-        if type.object? || type.interface?
+        if type.object? || type.interface? || type.union?
           File.write("#{path_graphql}/#{type.name}Query.cs", reformat(TYPE_ERB.result(binding)))
           File.write("#{path}/#{type.name}.cs", reformat(TYPE_RESPONSE_ERB.result(binding)))
         elsif type.input_object? || type.kind == 'ENUM'
@@ -134,7 +134,7 @@ module GraphQLGenerator
         "List<#{graph_type_to_csharp_type(type.of_type)}>"
       when 'ENUM'
         is_non_null ? type.name : "#{type.name}?"
-      when 'INPUT_OBJECT', 'OBJECT', 'INTERFACE'
+      when 'INPUT_OBJECT', 'OBJECT', 'INTERFACE', 'UNION'
         type.classify_name
       else
         raise NotImplementedError, "Unhandled #{type.kind} input type"
@@ -211,6 +211,12 @@ module GraphQLGenerator
     end
 
     def response_init_interface(field)
+      type = field.type.unwrap_non_null
+
+      "Unknown#{type.classify_name}.Create((Dictionary<string,object>) dataJSON[key])"
+    end
+
+    def response_init_union(field)
       type = field.type.unwrap_non_null
 
       "Unknown#{type.classify_name}.Create((Dictionary<string,object>) dataJSON[key])"
@@ -363,6 +369,10 @@ module GraphQLGenerator
     end
 
     def docs_interface(type)
+      return summary_doc(type.description)
+    end
+
+    def docs_union(type)
       return summary_doc(type.description)
     end
 

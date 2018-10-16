@@ -25,6 +25,34 @@ namespace Shopify.Unity {
                 return connection.Nodes;
             }
         <% end %>
+    <% elsif type.union? %>
+        <%= docs_union(type) %>
+        public interface <%= type.classify_name %> {}
+
+        <%= docs_response_object(type) %>
+        public class Unknown<%= type.classify_name %> : AbstractResponse, ICloneable, <%= type.classify_name %> {
+            /// <summary>
+            /// Instantiate objects implementing <see cref="<%= type.classify_name %>" />. Possible types are:
+            /// <%= docs_possible_types(type).split("\n").join("\n/// ") %>
+            /// </summary>
+            public static <%= type.classify_name %> Create(Dictionary<string, object> dataJSON) {
+                string typeName = (string) dataJSON["__typename"];
+
+                switch(typeName) {
+                    <% type.possible_types.each do |possible_type| %>
+                        case "<%= possible_type.name %>":
+                            return new <%= possible_type.classify_name %>(dataJSON) as <%= type.classify_name %>;
+                    <% end %>
+
+                    default:
+                        return new Unknown<%= type.classify_name %>();
+                }
+            }
+
+            public object Clone() {
+                return new Unknown<%= type.classify_name %>();
+            }
+        }
     <% elsif type.interface? %>
         <%= docs_interface(type) %>
         public interface <%= type.classify_name %> {
@@ -54,6 +82,8 @@ namespace Shopify.Unity {
                 }
             }
     <% end %>
+
+    <% unless type.union? %>
         /// <summary>
         /// <see ref="<%= "Unknown" if type.interface? %><%= type.classify_name %>" /> Accepts deserialized json data.
         /// <see ref="<%= "Unknown" if type.interface? %><%= type.classify_name %>" /> Will further parse passed in data.
@@ -83,6 +113,8 @@ namespace Shopify.Unity {
                                     <%= response_init_object(field) %>
                                 <% when "INTERFACE" %>
                                     <%= response_init_interface(field) %>
+                                <% when "UNION" %>
+                                    <%= response_init_union(field) %>
                                 <% when "LIST" %>
                                     <% if field.name == 'nodes' %>
                                         DataToNodeList(dataJSON[key])
@@ -108,6 +140,8 @@ namespace Shopify.Unity {
                                         <%= response_init_object(field) %>
                                     <% when "INTERFACE" %>
                                         <%= response_init_interface(field) %>
+                                    <% when "UNION" %>
+                                        <%= response_init_union(field) %>
                                     <% when "LIST" %>
                                         <%= response_init_list(field) %>
                                     <% when "ENUM" %>
@@ -188,4 +222,5 @@ namespace Shopify.Unity {
             return nodes;
         }
     }
+    <% end %>
 }
