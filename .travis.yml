@@ -1,0 +1,20 @@
+os: osx
+
+env:
+  UNITY_DOWNLOAD_DIR: $HOME/unity
+  UNITY_PKG_LOCATION: $UNITY_DOWNLOAD_DIR/Unity.pkg
+  UNITY_PKG_URL: https://download.unity3d.com/download_unity/5d30cf096e79/MacEditorInstaller/Unity-2017.1.1f1.pkg
+
+cache:
+  directories:
+    - $HOME/unity
+
+install: ./scripts/install_unity.sh
+
+before_script:
+  - ./scripts/build.sh
+  - ./scripts/activate_license.sh
+
+script: ./scripts/test_unity.sh
+
+after_script: ./scripts/deactivate_license.sh
