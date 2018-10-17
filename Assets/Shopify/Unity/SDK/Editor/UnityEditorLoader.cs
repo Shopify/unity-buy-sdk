@@ -1,4 +1,3 @@
-#if !SHOPIFY_MONO_UNIT_TEST
 namespace Shopify.Unity.SDK.Editor {
     using System;
     using System.Collections.Generic;
@@ -88,4 +87,3 @@ namespace Shopify.Unity.SDK.Editor {
         }
     }
 }
-#endif

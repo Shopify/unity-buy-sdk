@@ -92,7 +92,7 @@ namespace Shopify.Unity.SDK.iOS {
             OnFailure = failure;
             StoreName = shopMetadata.Name;
 
-#if !(SHOPIFY_MONO_UNIT_TEST || SHOPIFY_TEST)
+#if !(SHOPIFY_TEST)
 
             var checkout = CartState.CurrentCheckout;
 

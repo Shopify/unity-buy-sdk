@@ -10,19 +10,15 @@ namespace Shopify.Unity.SDK {
         public abstract void Checkout(string checkoutURL, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure);
 
         protected void SetupWebCheckoutMessageReceiver(CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
-#if !SHOPIFY_MONO_UNIT_TEST
             if (_messageReceiver == null) {
                 _messageReceiver = GlobalGameObject.AddComponent<WebCheckoutMessageReceiver>();
             }
 
             _messageReceiver.Init(Client, Cart.CurrentCheckout, success, cancelled, failure);
-#endif
         }
 
-#if !SHOPIFY_MONO_UNIT_TEST
         protected String GetNativeMessageReceiverName() {
             return GlobalGameObject.Name;
         }
-#endif
     }
 }

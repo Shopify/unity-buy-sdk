@@ -17,19 +17,3 @@ To run tests in Headless Unity run the following command:
 ```bash
 $ scripts/test_unity.sh
 ```
-
-### Testing in Terminal using Mono
-There might be cases where you want to run tests fully outside of Unity.
-That's where using Mono to run tests is handy. We're using Mono as it's the development platform on which Unity is built.
-
-To run tests, run the following command:
-```bash
-$ scripts/test.sh
-```
-
-Alternatively, you might find it more efficient to run the following command:
-```bash
-$ scripts/test_watch.sh
-```
-
-`test_watch.sh` watches all development files for changes. When a change is detected, tests will be recompiled and run.

@@ -1,4 +1,3 @@
-#if !SHOPIFY_MONO_UNIT_TEST
 namespace Shopify.Tests {
     using NUnit.Framework;
     using UnityEditor;
@@ -34,4 +33,3 @@ namespace Shopify.Tests {
         }
     }
 }
-#endif

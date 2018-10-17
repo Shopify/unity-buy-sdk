@@ -5,10 +5,7 @@ namespace Shopify.Unity.SDK.Android {
     using System;
     using Shopify.Unity.MiniJSON;
     using Shopify.Unity.SDK;
-
-#if !SHOPIFY_MONO_UNIT_TEST
     using UnityEngine;
-#endif
 
     public partial class AndroidNativeCheckout : IAndroidPayEventReceiver {
         private delegate void AndroidPayEventHandlerCompletion(AndroidPayCheckoutResponse.Status status);

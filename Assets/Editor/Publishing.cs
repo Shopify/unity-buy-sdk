@@ -1,4 +1,3 @@
-#if !SHOPIFY_MONO_UNIT_TEST
 using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
@@ -83,4 +82,3 @@ public class Publishing {
         Publish("shopify-buy.unitypackage");
     }
 }
-#endif

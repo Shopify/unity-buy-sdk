@@ -26,10 +26,8 @@ namespace Shopify.Unity.SDK {
         }
 
         public override void Checkout(string checkoutURL, CheckoutSuccessCallback success, CheckoutCancelCallback cancelled, CheckoutFailureCallback failure) {
-#if !SHOPIFY_MONO_UNIT_TEST
             SetupWebCheckoutMessageReceiver(success, cancelled, failure);
             Application.OpenURL(checkoutURL);
-#endif
         }
     }
 }
