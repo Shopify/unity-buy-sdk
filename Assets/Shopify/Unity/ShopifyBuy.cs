@@ -901,8 +901,6 @@ namespace Shopify.Unity {
 
                     if (response == null || (countToLoad > 0 && response.data.shop ().products ().pageInfo ().hasNextPage ())) {
                         query = new QueryRootQuery ();
-
-                        query = new QueryRootQuery ();
                         DefaultQueries.products.ShopProducts (
                             query : query,
                             imageResolutions : DefaultImageResolutions,
@@ -950,8 +948,6 @@ namespace Shopify.Unity {
                     }
 
                     if (response == null || (countToLoad > 0 && response.data.shop ().collections ().pageInfo ().hasNextPage ())) {
-                        query = new QueryRootQuery ();
-
                         query = new QueryRootQuery ();
                         DefaultQueries.collections.ShopCollections (
                             query : query,

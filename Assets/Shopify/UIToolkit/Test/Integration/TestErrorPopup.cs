@@ -19,7 +19,7 @@ namespace Shopify.UIToolkit.Test.Integration {
             var go = new GameObject("Error Popup Test Fixture");
             Canvas = go.AddComponent<Canvas>();
 
-            var errorPopupAsset = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Shopify/UIToolkit/Themes/Generic/Assets/Error Popup/Error Popup.prefab");
+            var errorPopupAsset = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Shopify/UIToolkit/Shops/Generic/Assets/ErrorPopup/Error Popup.prefab");
             var errorPopupGo = GameObject.Instantiate(errorPopupAsset, Vector3.zero, Quaternion.identity);
             errorPopupGo.transform.SetParent(Canvas.transform, false);
             Popup = errorPopupGo.GetComponent<ErrorPopup>();
