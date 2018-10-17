@@ -11,10 +11,12 @@ namespace Shopify.UIToolkit.Test.Unit {
     public class TestSingleProductShopControllerEditor {
         private SingleProductShopControllerEditor _editor;
         private SingleProductShopController _controller;
+        private GameObject _gameObject;
 
         [SetUp]
         public void Setup() {
-            _controller = GlobalGameObject.AddComponent<SingleProductShopController>();
+            _gameObject = new GameObject("TestSingleProductShopControllerEditor");
+            _controller = _gameObject.AddComponent<SingleProductShopController>();
             _controller.Credentials = new ShopCredentials("","");
 
             _editor = Editor.CreateEditor(_controller) as SingleProductShopControllerEditor;
@@ -23,7 +25,7 @@ namespace Shopify.UIToolkit.Test.Unit {
 
         [TearDown]
         public void TearDown() {
-            GlobalGameObject.Destroy();
+            GameObject.DestroyImmediate(_gameObject);
         }
 
         [Test]
