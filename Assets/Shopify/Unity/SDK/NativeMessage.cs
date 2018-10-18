@@ -19,7 +19,7 @@ namespace Shopify.Unity.SDK {
         }
 
         public void Respond(string message) {
-#if (UNITY_IOS || UNITY_ANDROID)
+#if UNITY_IOS
             _RespondToNativeMessage(Identifier, message);
 #endif
         }
