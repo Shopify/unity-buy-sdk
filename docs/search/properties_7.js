@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['idempotencykey',['idempotencyKey',['../class_shopify_1_1_unity_1_1_credit_card_payment_input.html#a6c7cde1623447efb6ec48f92e49e3d26',1,'Shopify.Unity.CreditCardPaymentInput.idempotencyKey()'],['../class_shopify_1_1_unity_1_1_tokenized_payment_input.html#ad51765f16ca3b7b671b22dd52aa58df2',1,'Shopify.Unity.TokenizedPaymentInput.idempotencyKey()']]],
-  ['identifier',['identifier',['../class_shopify_1_1_unity_1_1_tokenized_payment_input.html#affab7f659c4b06de5ab0684c99ccad61',1,'Shopify::Unity::TokenizedPaymentInput']]]
+  ['idempotencykey',['idempotencyKey',['../class_shopify_1_1_unity_1_1_credit_card_payment_input.html#a6c7cde1623447efb6ec48f92e49e3d26',1,'Shopify.Unity.CreditCardPaymentInput.idempotencyKey()'],['../class_shopify_1_1_unity_1_1_credit_card_payment_input_v2.html#a5d2c4275d9ab137d70458fb385d591c3',1,'Shopify.Unity.CreditCardPaymentInputV2.idempotencyKey()'],['../class_shopify_1_1_unity_1_1_tokenized_payment_input.html#ad51765f16ca3b7b671b22dd52aa58df2',1,'Shopify.Unity.TokenizedPaymentInput.idempotencyKey()'],['../class_shopify_1_1_unity_1_1_tokenized_payment_input_v2.html#a0915453b970b683e4a914ff894450a42',1,'Shopify.Unity.TokenizedPaymentInputV2.idempotencyKey()']]],
+  ['identifier',['identifier',['../class_shopify_1_1_unity_1_1_tokenized_payment_input.html#affab7f659c4b06de5ab0684c99ccad61',1,'Shopify.Unity.TokenizedPaymentInput.identifier()'],['../class_shopify_1_1_unity_1_1_tokenized_payment_input_v2.html#afdc020005fb437f42237f92a5646af37',1,'Shopify.Unity.TokenizedPaymentInputV2.identifier()']]]
 ];

@@ -78,9 +78,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae90d6d2c68725117ca7d7bd96ada5b45"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_blog_query.html#ae90d6d2c68725117ca7d7bd96ada5b45">BlogQuery</a> (StringBuilder query)</td></tr>
 <tr class="memdesc:ae90d6d2c68725117ca7d7bd96ada5b45"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_blog_query.html">BlogQuery</a> is used to build queries. Typically <a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_blog_query.html">BlogQuery</a> will not be used directly but instead will be used when building queries from either <a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_query_root_query.html" title="QueryRootQuery is the root query builder. All Storefront API queries are built off of QueryRootQuery...">QueryRootQuery</a> or <a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_mutation_query.html" title="MutationQuery is the root mutation builder. All Storefront API mutation queries are built off of Muta...">MutationQuery</a>.  <a href="#ae90d6d2c68725117ca7d7bd96ada5b45">More...</a><br /></td></tr>
 <tr class="separator:ae90d6d2c68725117ca7d7bd96ada5b45"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af56ecab81ea0fcfa351d7760bd3059c9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_blog_query.html">BlogQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_blog_query.html#af56ecab81ea0fcfa351d7760bd3059c9">articleByHandle</a> (ArticleDelegate buildQuery, string <a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_blog_query.html#a3269bc61cd2a4c98a26278618697c11e">handle</a>, string alias=null)</td></tr>
+<tr class="memdesc:af56ecab81ea0fcfa351d7760bd3059c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find an article by its handle.  <a href="#af56ecab81ea0fcfa351d7760bd3059c9">More...</a><br /></td></tr>
+<tr class="separator:af56ecab81ea0fcfa351d7760bd3059c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a023ecb476aea8ba43a41a90c15b59423"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_blog_query.html">BlogQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_blog_query.html#a023ecb476aea8ba43a41a90c15b59423">articles</a> (ArticleConnectionDelegate buildQuery, long? first=null, string after=null, long? last=null, string before=null, bool? reverse=null, string alias=null)</td></tr>
 <tr class="memdesc:a023ecb476aea8ba43a41a90c15b59423"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of the blog's articles.  <a href="#a023ecb476aea8ba43a41a90c15b59423">More...</a><br /></td></tr>
 <tr class="separator:a023ecb476aea8ba43a41a90c15b59423"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae34b0e4e959e4b8395134261c58d7740"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_blog_query.html">BlogQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_blog_query.html#ae34b0e4e959e4b8395134261c58d7740">authors</a> (ArticleAuthorDelegate buildQuery)</td></tr>
+<tr class="memdesc:ae34b0e4e959e4b8395134261c58d7740"><td class="mdescLeft">&#160;</td><td class="mdescRight">The authors who have contributed to the blog.  <a href="#ae34b0e4e959e4b8395134261c58d7740">More...</a><br /></td></tr>
+<tr class="separator:ae34b0e4e959e4b8395134261c58d7740"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3269bc61cd2a4c98a26278618697c11e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_blog_query.html">BlogQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_blog_query.html#a3269bc61cd2a4c98a26278618697c11e">handle</a> ()</td></tr>
 <tr class="memdesc:a3269bc61cd2a4c98a26278618697c11e"><td class="mdescLeft">&#160;</td><td class="mdescRight">A human-friendly unique string for the <a class="el" href="class_shopify_1_1_unity_1_1_blog.html" title="Blog is a response object. ">Blog</a> automatically generated from its title.  <a href="#a3269bc61cd2a4c98a26278618697c11e">More...</a><br /></td></tr>
 <tr class="separator:a3269bc61cd2a4c98a26278618697c11e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -124,6 +130,56 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="af56ecab81ea0fcfa351d7760bd3059c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af56ecab81ea0fcfa351d7760bd3059c9">&#9670;&nbsp;</a></span>articleByHandle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_blog_query.html">BlogQuery</a> Shopify.Unity.GraphQL.BlogQuery.articleByHandle </td>
+          <td>(</td>
+          <td class="paramtype">ArticleDelegate&#160;</td>
+          <td class="paramname"><em>buildQuery</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>handle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>alias</em> = <code>null</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Find an article by its handle. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">handle</td><td>The handle of the article. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a023ecb476aea8ba43a41a90c15b59423"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a023ecb476aea8ba43a41a90c15b59423">&#9670;&nbsp;</a></span>articles()</h2>
 
@@ -199,6 +255,34 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="ae34b0e4e959e4b8395134261c58d7740"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae34b0e4e959e4b8395134261c58d7740">&#9670;&nbsp;</a></span>authors()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_blog_query.html">BlogQuery</a> Shopify.Unity.GraphQL.BlogQuery.authors </td>
+          <td>(</td>
+          <td class="paramtype">ArticleAuthorDelegate&#160;</td>
+          <td class="paramname"><em>buildQuery</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The authors who have contributed to the blog. </p>
 
 </div>
 </div>

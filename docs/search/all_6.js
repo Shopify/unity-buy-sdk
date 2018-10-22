@@ -19,6 +19,7 @@ var searchData=
   ['gh',['GH',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a6848ae6f8e786062f1b23476c9ecd258',1,'Shopify::Unity']]],
   ['ghs',['GHS',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba28a7282403cc7017c9e1d5d3f5041bfd',1,'Shopify::Unity']]],
   ['gi',['GI',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a02c73fe4efabc7a908c3768c18d8ffe3',1,'Shopify::Unity']]],
+  ['gift_5fcard_5funusable',['GIFT_CARD_UNUSABLE',['../namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28cac0505fb4af0a8c5602bc5594fbbff536',1,'Shopify::Unity']]],
   ['gl',['GL',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7aad70939237c6f0d638fe79884d91449b',1,'Shopify::Unity']]],
   ['globalgameobject',['GlobalGameObject',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_global_game_object.html',1,'Shopify::Unity::SDK']]],
   ['gm',['GM',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a64f3bd1741ab8d6ba545a1ae09bb8728',1,'Shopify::Unity']]],

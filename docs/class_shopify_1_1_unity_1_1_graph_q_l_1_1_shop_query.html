@@ -248,6 +248,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>List of the shop' articles. </p>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000021">Deprecated:</a></b></dt><dd>Use <code><a class="el" href="class_shopify_1_1_unity_1_1_query_root.html#a9412d927f884c75aa0a17f2640b9ddb4" title="List of the shop&#39;s articles. ">QueryRoot.articles</a></code> instead. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">first</td><td>Returns up to the first <code>n</code> elements from the list. </td></tr>
@@ -261,12 +262,13 @@ Public Member Functions</h2></td></tr>
 <li><code>updated_at</code></li>
 <li><code>created_at</code></li>
 <li><code>blog_title</code></li>
-<li><code>tag</code> </li>
+<li><code>tag</code></li>
 </ul>
 </td></tr>
   </table>
   </dd>
 </dl>
+<p>See the detailed <a href="https://help.shopify.com/api/getting-started/search-syntax">search syntax</a>. </p>
 
 </div>
 </div>
@@ -347,6 +349,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>List of the shop' blogs. </p>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000022">Deprecated:</a></b></dt><dd>Use <code><a class="el" href="class_shopify_1_1_unity_1_1_query_root.html#af0f8aab0400155f0eeb1f8250f10a4b0" title="List of the shop&#39;s blogs. ">QueryRoot.blogs</a></code> instead. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">first</td><td>Returns up to the first <code>n</code> elements from the list. </td></tr>
@@ -359,12 +362,13 @@ Public Member Functions</h2></td></tr>
 <li><code>handle</code></li>
 <li><code>title</code></li>
 <li><code>updated_at</code></li>
-<li><code>created_at</code> </li>
+<li><code>created_at</code></li>
 </ul>
 </td></tr>
   </table>
   </dd>
 </dl>
+<p>See the detailed <a href="https://help.shopify.com/api/getting-started/search-syntax">search syntax</a>. </p>
 
 </div>
 </div>
@@ -392,7 +396,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>The url pointing to the endpoint to vault credit cards. </p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000004">Deprecated:</a></b></dt><dd>Use <code>paymentSettings</code> instead </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000023">Deprecated:</a></b></dt><dd>Use <code>paymentSettings</code> instead </dd></dl>
 
 </div>
 </div>
@@ -437,6 +441,12 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Find a collection by its handle. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">handle</td><td>The handle of the collection. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -528,12 +538,13 @@ Public Member Functions</h2></td></tr>
     <tr><td class="paramname">query</td><td>Supported filter parameters:<ul>
 <li><code>title</code></li>
 <li><code>collection_type</code></li>
-<li><code>updated_at</code> </li>
+<li><code>updated_at</code></li>
 </ul>
 </td></tr>
   </table>
   </dd>
 </dl>
+<p>See the detailed <a href="https://help.shopify.com/api/getting-started/search-syntax">search syntax</a>. </p>
 
 </div>
 </div>
@@ -561,7 +572,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>The three-letter code for the currency that the shop accepts. </p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000005">Deprecated:</a></b></dt><dd>Use <code>paymentSettings</code> instead </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000024">Deprecated:</a></b></dt><dd>Use <code>paymentSettings</code> instead </dd></dl>
 
 </div>
 </div>
@@ -771,6 +782,12 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Find a product by its handle. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">handle</td><td>The handle of the product. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -865,12 +882,14 @@ Public Member Functions</h2></td></tr>
 <li><code>vendor</code></li>
 <li><code>created_at</code></li>
 <li><code>updated_at</code></li>
-<li><code>tag</code> </li>
+<li><code>variants.price</code></li>
+<li><code>tag</code></li>
 </ul>
 </td></tr>
   </table>
   </dd>
 </dl>
+<p>See the detailed <a href="https://help.shopify.com/api/getting-started/search-syntax">search syntax</a>. </p>
 
 </div>
 </div>
@@ -1003,7 +1022,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>The shop’s <a class="el" href="namespace_shopify.html">Shopify</a> Payments account id. </p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000006">Deprecated:</a></b></dt><dd>Use <code>paymentSettings</code> instead </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000025">Deprecated:</a></b></dt><dd>Use <code>paymentSettings</code> instead </dd></dl>
 
 </div>
 </div>
