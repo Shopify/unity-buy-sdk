@@ -8,10 +8,6 @@ env:
   IOS_PKG_LOCATION: $UNITY_DOWNLOAD_DIR/Unity-iOS.pkg
   IOS_PKG_URL: http://netstorage.unity3d.com/unity/5d30cf096e79/MacEditorTargetInstaller/UnitySetup-iOS-Support-for-Editor.pkg
 
-cache:
-  directories:
-    - $HOME/unity
-
 notifications:
   slack:
     secure: tcssuzUngHLy4xd8ue9LCaF8prIJTCqLWmDDhuIOcRDIyavBe7Td5hDgTK2Dsfzuv5h1y8fCHm/J9qH3EytM94t2aZVIWY03QHv6MCRRk8Wm4TePPtBQaReYWC5rnzFN3tFtGLzxgja99FLbsebNQmb79yUdlelfLfLcDpVos4LrfVadhHaGfOoyS8Jz3DEH7d5AeatmZIvvbiFqJOeSbhYZmiRXRmPNSWJEPthsZQg2eat8mmtJnxyCLB5B+kEZinSOgz8/ufnkAJoUAbH/bGIZ8WYpNIMhLDg96JdZ8bi2MYq6T6eSPTN44Fg2FQcC7gszPOCdS1PdeeGH4VtvcTj/RvhfUDBH9SWbh7yEpz6h83nzX4+B8Snri33zL43S8JGwThTBXJyY0Lq9NtMdKf3MRKrO+0ehJQSgL1lfiH51ILWpXuqPczeB3IK+8lsOTxbP/q9nFFi3QfBdnaZc2LGRGAkL7x1VJIezDaI/C4aIryOwoJjmBvIx+kNrBdiL6zLja/1BHOHGE/XSPnT/urusT/1QFV4xQXMscxqptzb5YxFlF+qVnIPTY2ESO7hCajQWIZxhAQukLwbFMyt1Znv97CrWoQyfeWU8pMBfaeOEFYRq0rjnsMl1VDt9uALmqUa2NFC4t9WDo1W5Ptih9pZlIgSXmfP5yN0aYexzu5M=
