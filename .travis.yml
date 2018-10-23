@@ -4,6 +4,8 @@ env:
   UNITY_DOWNLOAD_DIR: $HOME/unity
   UNITY_PKG_LOCATION: $UNITY_DOWNLOAD_DIR/Unity.pkg
   UNITY_PKG_URL: https://download.unity3d.com/download_unity/5d30cf096e79/MacEditorInstaller/Unity-2017.1.1f1.pkg
+  IOS_PKG_LOCATION: $UNITY_DOWNLOAD_DIR/Unity-iOS.pkg
+  IOS_PKG_URL: http://netstorage.unity3d.com/unity/5d30cf096e79/MacEditorTargetInstaller/UnitySetup-iOS-Support-for-Editor.pkg
 
 cache:
   directories:
@@ -18,7 +20,10 @@ install: ./scripts/install_unity.sh
 before_script:
   - ./scripts/build.sh
   - ./scripts/activate_license.sh
+  - xcrun instruments -w "iPhone 8 (12.0) [" || true
 
-script: ./scripts/test_unity.sh
+script:
+  - ./scripts/test_unity.sh
+  - ./scripts/test_iOS.sh
 
 after_script: ./scripts/deactivate_license.sh
