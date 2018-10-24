@@ -1,8 +1,6 @@
 <dependencies>
   <androidPackages>
-    <androidPackage spec="com.android.support:appcompat-v7:26.0.0" />
-    <androidPackage spec="com.android.support:customtabs:26.0.0" />
-    <androidPackage spec="com.android.support:design:26.0.0" />
-    <androidPackage spec="com.android.support.constraint:constraint-layout:1.0.2" />
+    <androidPackage spec="com.android.support:appcompat-v7:27.1.1" />
+    <androidPackage spec="com.android.support:customtabs:27.1.1" />
   </androidPackages>
 </dependencies>

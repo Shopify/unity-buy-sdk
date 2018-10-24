@@ -6,6 +6,8 @@ tmp/
 # ignore generated files for now
 Assets/Shopify/Unity/Generated/
 Assets/Shopify/Plugins/Android/*.aar
+Assets/Plugins/Android/*.aar
+Assets/Plugins/Android/*.jar
 
 ####### Documentation
 html/
