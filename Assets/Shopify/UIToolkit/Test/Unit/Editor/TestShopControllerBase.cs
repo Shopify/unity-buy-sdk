@@ -194,7 +194,7 @@ namespace Shopify.UIToolkit.Test.Unit {
         private List<ProductVariant> _variants;
         private Product _product;
         private EditorTimeoutWaiter LoadProductVariantsFromShop() {
-            var waiter = new EditorTimeoutWaiter(5f);
+            var waiter = new EditorTimeoutWaiter(8f);
             _shopController.Client.products((products, error, after) => {
                 _variants = new List<ProductVariant>();
                 _product = products[0];
