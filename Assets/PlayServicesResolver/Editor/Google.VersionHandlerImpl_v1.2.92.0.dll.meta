@@ -1,9 +1,9 @@
 fileFormatVersion: 2
 guid: e2315c2d1e044794ab23fde8111f1048
 labels:
+- gvh_version-1.2.92.0
 - gvh
 - gvh_targets-editor
-- gvh_version-1.2.92.0
 PluginImporter:
   externalObjects: {}
   serializedVersion: 2
@@ -20,7 +20,7 @@ PluginImporter:
   - first:
       Editor: Editor
     second:
-      enabled: 1
+      enabled: 0
       settings:
         DefaultValueInitialized: true
   - first:
