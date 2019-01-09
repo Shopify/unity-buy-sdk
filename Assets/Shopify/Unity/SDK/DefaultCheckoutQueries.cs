@@ -106,7 +106,7 @@ namespace Shopify.Unity.SDK {
         }
 
         public void ShippingAddressUpdate(MutationQuery query, string checkoutId, MailingAddressInput shippingAddress) {
-            query.checkoutShippingAddressUpdate(
+            query.checkoutShippingAddressUpdateV2(
                 buildQuery: shippingAddressUpdate => shippingAddressUpdate
                 .checkout(checkout => Checkout(checkout))
                 .userErrors(userErrors => userErrors

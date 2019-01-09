@@ -103,7 +103,7 @@ namespace Shopify.Tests
             DefaultQueries.checkout.ShippingAddressUpdate(query, checkoutId, addressInput);
 
             Assert.AreEqual(
-                "mutation{checkoutShippingAddressUpdate (shippingAddress:{address1:\"123 Test Street\",address2:\"456\",city:\"Toronto\",company:\"Shopify\",country:\"Canada\",firstName:\"First\",lastName:\"Last\",phone:\"1234567890\",province:\"Ontario\",zip:\"A1B2C3\"},checkoutId:\"an-id\"){checkout {id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready }userErrors {field message }}}",
+                "mutation{checkoutShippingAddressUpdateV2 (shippingAddress:{address1:\"123 Test Street\",address2:\"456\",city:\"Toronto\",company:\"Shopify\",country:\"Canada\",firstName:\"First\",lastName:\"Last\",phone:\"1234567890\",province:\"Ontario\",zip:\"A1B2C3\"},checkoutId:\"an-id\"){checkout {id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready }userErrors {field message }}}",
                 query.ToString()
             );
         }

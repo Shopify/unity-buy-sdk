@@ -112,7 +112,7 @@ namespace Shopify.Unity {
                 if (error != null) {
                     callback(error);
                 } else {
-                    if (UpdateState(response.checkoutShippingAddressUpdate().checkout(), response.checkoutShippingAddressUpdate().userErrors())) {
+                    if (UpdateState(response.checkoutShippingAddressUpdateV2().checkout(), response.checkoutShippingAddressUpdateV2().userErrors())) {
                         PollCheckoutAndUpdate(PollCheckoutAvailableShippingRatesReady, callback);
                     } else {
                         HandleUserError(callback);
@@ -135,7 +135,7 @@ namespace Shopify.Unity {
                 if (error != null) {
                     callback(error);
                 } else {
-                    var userErrors = response.checkoutShippingAddressUpdate().userErrors();
+                    var userErrors = response.checkoutShippingAddressUpdateV2().userErrors();
                     if (shippingFields.HasValue) {
                         userErrors.AddRange(response.checkoutShippingLineUpdate().userErrors());
                         userErrors.AddRange(response.checkoutEmailUpdateV2().userErrors());
