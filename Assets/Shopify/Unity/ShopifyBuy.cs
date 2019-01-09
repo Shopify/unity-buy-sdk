@@ -887,13 +887,13 @@ namespace Shopify.Unity {
                 (response) => {
                     QueryRootQuery query = null;
 
-                    List<ProductEdge> edges = response != null ? response.data.shop ().products ().edges () : null;
+                    List<ProductEdge> edges = response != null ? response.data.products ().edges () : null;
 
                     if (edges != null) {
                         countToLoad -= edges.Count;
                     }
 
-                    if (response == null || (countToLoad > 0 && response.data.shop ().products ().pageInfo ().hasNextPage ())) {
+                    if (response == null || (countToLoad > 0 && response.data.products ().pageInfo ().hasNextPage ())) {
                         query = new QueryRootQuery ();
                         DefaultQueries.products.ShopProducts (
                             query : query,
@@ -906,7 +906,7 @@ namespace Shopify.Unity {
                     return query;
                 },
                 (response) => {
-                    return ((QueryRoot) response).shop ().products ();
+                    return ((QueryRoot) response).products ();
                 },
                 (response) => {
                     var error = (ShopifyError) response;
@@ -915,13 +915,13 @@ namespace Shopify.Unity {
                     } else {
                         string lastCursor = null;
 
-                        if (response.data.shop ().products ().pageInfo ().hasNextPage ()) {
-                            List<ProductEdge> productEdges = response.data.shop ().products ().edges ();
+                        if (response.data.products ().pageInfo ().hasNextPage ()) {
+                            List<ProductEdge> productEdges = response.data.products ().edges ();
 
                             lastCursor = productEdges[productEdges.Count - 1].cursor ();
                         }
 
-                        callback ((List<Product>) response.data.shop ().products (), error, lastCursor);
+                        callback ((List<Product>) response.data.products (), error, lastCursor);
                     }
                 }
             );

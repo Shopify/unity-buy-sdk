@@ -8,17 +8,15 @@ namespace Shopify.Unity.SDK {
     /// </summary>
     public class DefaultProductQueries {
         public void ShopProducts(QueryRootQuery query, Dictionary<string,int> imageResolutions, int first = 20, string after = null) {
-            query.shop(s => s
-                .products(pc => pc
-                    .edges(e => e
-                        .node((p) => Product(p, imageResolutions))
-                        .cursor()
-                    )
-                    .pageInfo(pi => pi
-                        .hasNextPage()
-                    ),
-                    first : first, after : after
+            query.products(pc => pc
+                .edges(e => e
+                    .node((p) => Product(p, imageResolutions))
+                    .cursor()
                 )
+                .pageInfo(pi => pi
+                    .hasNextPage()
+                ),
+                first : first, after : after
             );
         }
 
