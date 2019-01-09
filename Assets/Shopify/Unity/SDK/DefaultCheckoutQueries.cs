@@ -22,9 +22,9 @@ namespace Shopify.Unity.SDK {
             );
         }
 
-        public void CheckoutCompleteWithTokenizedPayment(MutationQuery query, string checkoutId, TokenizedPaymentInput tokenizedPaymentInput) {
-            query.checkoutCompleteWithTokenizedPayment(
-                buildQuery: checkoutCompleteWithTokenizedPayment => checkoutCompleteWithTokenizedPayment
+        public void CheckoutCompleteWithTokenizedPaymentV2(MutationQuery query, string checkoutId, TokenizedPaymentInputV2 tokenizedPaymentInputV2) {
+            query.checkoutCompleteWithTokenizedPaymentV2(
+                buildQuery: checkoutCompleteWithTokenizedPaymentV2 => checkoutCompleteWithTokenizedPaymentV2
                 .checkout(checkout => Checkout(checkout))
                 .payment(payment => Payment(payment))
                 .userErrors(userErrors => userErrors
@@ -32,7 +32,7 @@ namespace Shopify.Unity.SDK {
                     .message()
                 ),
                 checkoutId : checkoutId,
-                payment : tokenizedPaymentInput
+                payment : tokenizedPaymentInputV2
             );
         }
 
@@ -119,8 +119,8 @@ namespace Shopify.Unity.SDK {
         }
 
         public void EmailUpdate(MutationQuery query, string checkoutId, String email) {
-            query.checkoutEmailUpdate(
-                buildQuery: emailUpdate => emailUpdate
+            query.checkoutEmailUpdateV2(
+                buildQuery: emailUpdateV2 => emailUpdateV2
                 .checkout(checkout => checkout
                     .email())
                 .userErrors(userErrors => userErrors
