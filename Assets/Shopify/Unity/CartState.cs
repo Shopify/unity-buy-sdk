@@ -185,7 +185,7 @@ namespace Shopify.Unity {
             });
         }
 
-        public void CheckoutWithTokenizedPayment(TokenizedPaymentInputV2 tokenizedPaymentInputV2, CompletionCallback callback) {
+        public void CheckoutWithTokenizedPaymentV2(TokenizedPaymentInputV2 tokenizedPaymentInputV2, CompletionCallback callback) {
             Action<Payment> pollPayment = (payment) => {
                 PollPaymentReady(payment.id(), (Payment newPayment, ShopifyError error) => {
                     if (error != null) {

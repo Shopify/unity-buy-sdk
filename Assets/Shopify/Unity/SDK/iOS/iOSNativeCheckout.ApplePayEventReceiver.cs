@@ -248,12 +248,18 @@ namespace Shopify.Unity.SDK.iOS {
         public void FetchApplePayCheckoutStatusForToken(string serializedMessage) {
             var checkout = CartState.CurrentCheckout;
             var message = NativeMessage.CreateFromJSON(serializedMessage);
-            var amount = checkout.totalPrice();
+            var paymentAmount = new MoneyInput(checkout.totalPrice(), checkout.currencyCode());
             var payment = new NativePayment(message.Content);
-            var tokenizedPaymentInput = new TokenizedPaymentInput(amount: amount, billingAddress: payment.BillingAddress, idempotencyKey: payment.TransactionIdentifier, paymentData: payment.PaymentData, type: "apple_pay");
+            var tokenizedPaymentInputV2 = new TokenizedPaymentInputV2(
+              paymentAmount: paymentAmount,
+              billingAddress: payment.BillingAddress,
+              idempotencyKey: payment.TransactionIdentifier,
+              paymentData: payment.PaymentData,
+              type: "apple_pay"
+            );
 
             Action performCheckout = () => {
-                CheckoutWithTokenizedPayment(tokenizedPaymentInput, checkout, (ApplePayEventResponse errorResponse) => {
+                CheckoutWithTokenizedPaymentV2(tokenizedPaymentInputV2, checkout, (ApplePayEventResponse errorResponse) => {
                     if (errorResponse == null) {
                         message.Respond((new ApplePayEventResponse(ApplePayAuthorizationStatus.Success)).ToJsonString());
                     } else {
@@ -330,8 +336,8 @@ namespace Shopify.Unity.SDK.iOS {
             });
         }
 
-        private void CheckoutWithTokenizedPayment(TokenizedPaymentInput tokenizedPaymentInput, Checkout checkout, ApplePayEventHandlerCompletion callback) {
-            CartState.CheckoutWithTokenizedPayment(tokenizedPaymentInput, (ShopifyError error) => {
+        private void CheckoutWithTokenizedPaymentV2(TokenizedPaymentInputV2 tokenizedPaymentInputV2, Checkout checkout, ApplePayEventHandlerCompletion callback) {
+            CartState.CheckoutWithTokenizedPaymentV2(tokenizedPaymentInputV2, (ShopifyError error) => {
                 if (error == null) {
                     callback(null);
                 } else {
