@@ -935,13 +935,13 @@ namespace Shopify.Unity {
                 (response) => {
                     QueryRootQuery query = null;
 
-                    List<CollectionEdge> edges = response != null ? response.data.shop ().collections ().edges () : null;
+                    List<CollectionEdge> edges = response != null ? response.data.collections ().edges () : null;
 
                     if (edges != null) {
                         countToLoad -= edges.Count;
                     }
 
-                    if (response == null || (countToLoad > 0 && response.data.shop ().collections ().pageInfo ().hasNextPage ())) {
+                    if (response == null || (countToLoad > 0 && response.data.collections ().pageInfo ().hasNextPage ())) {
                         query = new QueryRootQuery ();
                         DefaultQueries.collections.ShopCollections (
                             query : query,
@@ -954,7 +954,7 @@ namespace Shopify.Unity {
                     return query;
                 },
                 (response) => {
-                    return ((QueryRoot) response).shop ().collections ();
+                    return ((QueryRoot) response).collections ();
                 },
                 (response) => {
                     var error = (ShopifyError) response;
@@ -963,13 +963,13 @@ namespace Shopify.Unity {
                     } else {
                         string lastCursor = null;
 
-                        if (response.data.shop ().collections ().pageInfo ().hasNextPage ()) {
-                            List<CollectionEdge> collectionEdges = response.data.shop ().collections ().edges ();
+                        if (response.data.collections ().pageInfo ().hasNextPage ()) {
+                            List<CollectionEdge> collectionEdges = response.data.collections ().edges ();
 
                             lastCursor = collectionEdges[collectionEdges.Count - 1].cursor ();
                         }
 
-                        callback ((List<Collection>) response.data.shop ().collections (), error, lastCursor);
+                        callback ((List<Collection>) response.data.collections (), error, lastCursor);
                     }
                 }
             );
