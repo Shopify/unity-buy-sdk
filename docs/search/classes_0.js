@@ -19,6 +19,8 @@ var searchData=
   ['attribute',['Attribute',['../class_shopify_1_1_unity_1_1_attribute.html',1,'Shopify::Unity']]],
   ['attributeinput',['AttributeInput',['../class_shopify_1_1_unity_1_1_attribute_input.html',1,'Shopify::Unity']]],
   ['attributequery',['AttributeQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_attribute_query.html',1,'Shopify::Unity::GraphQL']]],
+  ['automaticdiscountapplication',['AutomaticDiscountApplication',['../class_shopify_1_1_unity_1_1_automatic_discount_application.html',1,'Shopify::Unity']]],
+  ['automaticdiscountapplicationquery',['AutomaticDiscountApplicationQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_automatic_discount_application_query.html',1,'Shopify::Unity::GraphQL']]],
   ['availableshippingrates',['AvailableShippingRates',['../class_shopify_1_1_unity_1_1_available_shipping_rates.html',1,'Shopify::Unity']]],
   ['availableshippingratesquery',['AvailableShippingRatesQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_available_shipping_rates_query.html',1,'Shopify::Unity::GraphQL']]]
 ];
