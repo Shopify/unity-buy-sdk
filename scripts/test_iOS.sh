@@ -31,7 +31,7 @@ xcodebuild test \
     -project "$IOS_PROJECT_PATH" \
     -sdk iphonesimulator \
     -scheme Unity-iPhone \
-    -destination 'platform=iOS Simulator,OS=12.0,name=iPhone 8'
+    -destination 'platform=iOS Simulator,OS=12.1,name=iPhone 8'
 
 IOS_TEST_RESULT=$?
 
