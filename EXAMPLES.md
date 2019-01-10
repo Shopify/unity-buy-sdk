@@ -15,7 +15,7 @@ The Shopify SDK for Unity queries Shopify's [Storefront API](https://help.shopif
 - [Build a cart based on selected options](#build-a-cart-based-on-selected-options)
 - [Checkout with a checkout link](#checkout-with-a-checkout-link)
 - [Checkout with a Web View](#checkout-with-a-web-view)
-- [Checkout with Native Pay (Apple Pay / Android Pay)](#checkout-with-native-pay-apple-pay--android-pay)
+- [Checkout with Native Pay (Apple Pay)](#checkout-with-native-pay-apple-pay)
 - [Custom queries](#custom-queries)
 
 ## Before you begin
@@ -333,9 +333,9 @@ ShopifyBuy.Client().products((products, error, after) => {
 });
 ```
 
-## Checkout with Native Pay (Apple Pay / Android Pay)
+## Checkout with Native Pay (Apple Pay)
 
-You can allow users to pay with Apple Pay or Android Pay (coming soon), depending on the device OS, providing a seamless checkout experience.
+You can allow users to pay with Apple Pay, depending on the device OS, providing a seamless checkout experience.
 
 To determine whether the user is able to make a payment with Native Pay, you can use the `CanCheckoutWithNativePay` method. If the user has this capability, then you can use `CheckoutWithNativePay` to present the native pay authentication interface to the user. If they do not, then you can accept payment using [Web View Checkout](#checkout-with-a-web-view).
 
@@ -343,7 +343,6 @@ To determine whether the user is able to make a payment with Native Pay, you can
 
 * `key`
   * **On iOS** is the Merchant ID of your application found on your [Apple Developer Portal](https://developer.apple.com/library/content/ApplePay_Guide/Configuration.html).
-  * **On Android** is a Base64-encoded public key found on your Shopify admin page. To locate the key, navigate to _Admin_ > _Apps_ > _Manage private apps_ > _{Your private app}_ > _Storefront API_ > _Configure Mobile Buy SDK settings (optional)_ > _MOBILE BUY SDK (ANDROID)_.
 * `CheckoutSuccessCallback` is called when the user has completed a checkout successfully.
 * `CheckoutCancelCallback` is called when the user cancels out of the checkout.
 * `CheckoutFailureCallback` is called when an error was encountered during the checkout. The callback will be passed an instance of `ShopifyError` describing the issue.
@@ -424,7 +423,6 @@ On failure, you will receive a `ShopifyError`. There are 3 types of `ShopifyErro
 This error is thrown whenever something goes wrong on the native pay side of the checkout. It is unrecoverable and you should fall back to a different payment method, or allow the user to try going through the process again. The reasons for this error to be thrown depend on the platform:
 
 * **iOS:** will be thrown when Apple Pay fails to generate a token while trying to authenticate the user's card.
-* **Android:** will be thrown for any unrecoverable Android Pay error that is prefixed with `ERROR_`, such as _service unavailable_, _unsupported country_ or _authentication error_. You can see a full list of errors [here](https://developers.google.com/android/reference/com/google/android/gms/wallet/WalletConstants).
 
 `GraphQL` error will be thrown when there is something wrong with the SDK. This error is unrecoverable and you should fall back to a different payment method.
 
