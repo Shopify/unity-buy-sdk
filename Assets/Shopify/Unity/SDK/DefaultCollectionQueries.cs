@@ -8,17 +8,15 @@ namespace Shopify.Unity.SDK {
     /// </summary>
     public class DefaultCollectionQueries {
         public void ShopCollections(QueryRootQuery query, Dictionary<string, int> imageResolutions, int first = 250, string after = null) {
-            query.shop(s => s
-                .collections(cc => cc
-                    .edges(e => e
-                        .node(c => Collection(c, imageResolutions))
-                        .cursor()
-                    )
-                    .pageInfo(pi => pi
-                        .hasNextPage()
-                    ),
-                    first : first, after : after
+            query.collections(cc => cc
+                .edges(e => e
+                    .node(c => Collection(c, imageResolutions))
+                    .cursor()
                 )
+                .pageInfo(pi => pi
+                    .hasNextPage()
+                ),
+                first : first, after : after
             );
         }
 
