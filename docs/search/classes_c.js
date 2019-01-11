@@ -1,7 +1,13 @@
 var searchData=
 [
+  ['page',['Page',['../class_shopify_1_1_unity_1_1_page.html',1,'Shopify::Unity']]],
+  ['pageconnection',['PageConnection',['../class_shopify_1_1_unity_1_1_page_connection.html',1,'Shopify::Unity']]],
+  ['pageconnectionquery',['PageConnectionQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_page_connection_query.html',1,'Shopify::Unity::GraphQL']]],
+  ['pageedge',['PageEdge',['../class_shopify_1_1_unity_1_1_page_edge.html',1,'Shopify::Unity']]],
+  ['pageedgequery',['PageEdgeQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_page_edge_query.html',1,'Shopify::Unity::GraphQL']]],
   ['pageinfo',['PageInfo',['../class_shopify_1_1_unity_1_1_page_info.html',1,'Shopify::Unity']]],
   ['pageinfoquery',['PageInfoQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_page_info_query.html',1,'Shopify::Unity::GraphQL']]],
+  ['pagequery',['PageQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_page_query.html',1,'Shopify::Unity::GraphQL']]],
   ['payment',['Payment',['../class_shopify_1_1_unity_1_1_payment.html',1,'Shopify::Unity']]],
   ['paymentnetwork',['PaymentNetwork',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_payment_network.html',1,'Shopify::Unity::SDK']]],
   ['paymentquery',['PaymentQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_payment_query.html',1,'Shopify::Unity::GraphQL']]],
@@ -37,6 +43,12 @@ var searchData=
   ['productvariantconnectionquery',['ProductVariantConnectionQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_product_variant_connection_query.html',1,'Shopify::Unity::GraphQL']]],
   ['productvariantedge',['ProductVariantEdge',['../class_shopify_1_1_unity_1_1_product_variant_edge.html',1,'Shopify::Unity']]],
   ['productvariantedgequery',['ProductVariantEdgeQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_product_variant_edge_query.html',1,'Shopify::Unity::GraphQL']]],
+  ['productvariantpricepair',['ProductVariantPricePair',['../class_shopify_1_1_unity_1_1_product_variant_price_pair.html',1,'Shopify::Unity']]],
+  ['productvariantpricepairconnection',['ProductVariantPricePairConnection',['../class_shopify_1_1_unity_1_1_product_variant_price_pair_connection.html',1,'Shopify::Unity']]],
+  ['productvariantpricepairconnectionquery',['ProductVariantPricePairConnectionQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_product_variant_price_pair_connection_query.html',1,'Shopify::Unity::GraphQL']]],
+  ['productvariantpricepairedge',['ProductVariantPricePairEdge',['../class_shopify_1_1_unity_1_1_product_variant_price_pair_edge.html',1,'Shopify::Unity']]],
+  ['productvariantpricepairedgequery',['ProductVariantPricePairEdgeQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_product_variant_price_pair_edge_query.html',1,'Shopify::Unity::GraphQL']]],
+  ['productvariantpricepairquery',['ProductVariantPricePairQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_product_variant_price_pair_query.html',1,'Shopify::Unity::GraphQL']]],
   ['productvariantquery',['ProductVariantQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_product_variant_query.html',1,'Shopify::Unity::GraphQL']]],
   ['purchasefailedevent',['PurchaseFailedEvent',['../class_shopify_1_1_u_i_toolkit_1_1_cart_controller_1_1_purchase_failed_event.html',1,'Shopify::UIToolkit::CartController']]]
 ];
