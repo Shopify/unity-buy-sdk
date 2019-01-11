@@ -18,22 +18,20 @@ namespace Shopify.Tests {
                 QueryRootQuery query = new QueryRootQuery();
 
                 DefaultQueries.collections.ShopCollections(
-                    query: query, 
-                    first: DefaultQueries.MaxCollectionsPageSize, 
+                    query: query,
+                    first: DefaultQueries.MaxCollectionsPageSize,
                     after: i > 0 ? (i * DefaultQueries.MaxCollectionsPageSize - 1).ToString() : null,
                     imageResolutions: ShopifyClient.DefaultImageResolutions
                 );
 
                 string response = String.Format(@"{{
                     ""data"": {{
-                        ""shop"": {{
-                            ""collections"": {{
-                                ""edges"": [
-                                    {0}
-                                ],
-                                ""pageInfo"": {{
-                                    ""hasNextPage"": {1}
-                                }}
+                        ""collections"": {{
+                            ""edges"": [
+                                {0}
+                            ],
+                            ""pageInfo"": {{
+                                ""hasNextPage"": {1}
                             }}
                         }}
                     }}
@@ -68,7 +66,7 @@ namespace Shopify.Tests {
                     }
 
                     numAliasIterated++;
-                }                
+                }
 
                 edges.Append(String.Format(@"{{
                     ""node"": {{
@@ -90,15 +88,15 @@ namespace Shopify.Tests {
                         {3}
                     }},
                     ""cursor"": ""{0}""
-                }}{4}", 
+                }}{4}",
                 collection,
-                GetProductOnCollections(0, collection, productsHasNextPage ? DefaultQueries.MaxPageSize : 1), 
+                GetProductOnCollections(0, collection, productsHasNextPage ? DefaultQueries.MaxPageSize : 1),
                 UtilsMockLoader.GetJSONBool(productsHasNextPage),
                 resolutionImageResponses.ToString(),
                 i < DefaultQueries.MaxCollectionsPageSize - 1 ? "," : ""));
             }
 
-            return edges.ToString();        
+            return edges.ToString();
         }
 
         private string GetProductOnCollections(int page, int collection, int countProducts = 1) {
@@ -115,7 +113,7 @@ namespace Shopify.Tests {
                 }}{1}", product, i < countProducts - 1 ? "," : ""));
             }
 
-            return edges.ToString(); 
+            return edges.ToString();
         }
 
         private void SetupQueriesOnNode() {

@@ -45,37 +45,33 @@ namespace Shopify.Tests {
         public override void Load(string query, LoaderResponseHandler callback) {
             if (query == CollectionTestQueries.query1.ToString()) {
                 callback(@"{""data"":{
-                    ""shop"": {
-                        ""products"": {
-                            ""edges"": [
-                                {
-                                    ""node"": {
-                                        ""title"": ""Product1""
-                                    },
-                                    ""cursor"": ""first page""
-                                }
-                            ],
-                            ""pageInfo"": {
-                                ""hasNextPage"": true
+                    ""products"": {
+                        ""edges"": [
+                            {
+                                ""node"": {
+                                    ""title"": ""Product1""
+                                },
+                                ""cursor"": ""first page""
                             }
+                        ],
+                        ""pageInfo"": {
+                            ""hasNextPage"": true
                         }
                     }
                 }}", null);
             } else if (query == CollectionTestQueries.query2.ToString()) {
                 callback(@"{""data"":{
-                    ""shop"": {
-                        ""products"": {
-                            ""edges"": [
-                                {
-                                    ""node"": {
-                                        ""title"": ""Product2""
-                                    },
-                                    ""cursor"": ""second page""
-                                }
-                            ],
-                            ""pageInfo"": {
-                                ""hasNextPage"": false
+                    ""products"": {
+                        ""edges"": [
+                            {
+                                ""node"": {
+                                    ""title"": ""Product2""
+                                },
+                                ""cursor"": ""second page""
                             }
+                        ],
+                        ""pageInfo"": {
+                            ""hasNextPage"": false
                         }
                     }
                 }}", null);
@@ -93,12 +89,12 @@ namespace Shopify.Tests {
 
     [TestFixture]
     public class TestRelay {
-        
+
 
         [Test]
         public void TestCastConnectionToList() {
             string stringJSON = @"{
-                ""edges"": [ 
+                ""edges"": [
                     {
                         ""node"": {
                             ""title"": ""Product 1""
@@ -220,7 +216,7 @@ namespace Shopify.Tests {
                     }
                 },
                 (response) => {
-                    return ((QueryRoot) response).shop().products();
+                    return ((QueryRoot) response).products();
                 },
                 (response) => {
                     mergedResponse = response;
@@ -229,10 +225,10 @@ namespace Shopify.Tests {
 
             Assert.AreEqual(3, responsesToRequestQuery.Count);
             Assert.AreEqual(null, responsesToRequestQuery[0]);
-            Assert.AreEqual("Product1", responsesToRequestQuery[1].data.shop().products().edges()[0].node().title());
-            Assert.AreEqual("Product2", responsesToRequestQuery[2].data.shop().products().edges()[0].node().title());
+            Assert.AreEqual("Product1", responsesToRequestQuery[1].data.products().edges()[0].node().title());
+            Assert.AreEqual("Product2", responsesToRequestQuery[2].data.products().edges()[0].node().title());
             Assert.AreEqual(2, countRequests);
-            Assert.AreEqual(2, mergedResponse.data.shop().products().edges().Count);
+            Assert.AreEqual(2, mergedResponse.data.products().edges().Count);
         }
     }
 }

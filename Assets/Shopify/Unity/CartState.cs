@@ -90,7 +90,7 @@ namespace Shopify.Unity {
                 if (error != null) {
                     callback(error);
                 } else {
-                    if (UpdateState(response.checkoutEmailUpdate().checkout(), response.checkoutEmailUpdate().userErrors())) {
+                    if (UpdateState(response.checkoutEmailUpdateV2().checkout(), response.checkoutEmailUpdateV2().userErrors())) {
                         if (CurrentCheckout.ready()) {
                             callback(null);
                         } else {
@@ -112,7 +112,7 @@ namespace Shopify.Unity {
                 if (error != null) {
                     callback(error);
                 } else {
-                    if (UpdateState(response.checkoutShippingAddressUpdate().checkout(), response.checkoutShippingAddressUpdate().userErrors())) {
+                    if (UpdateState(response.checkoutShippingAddressUpdateV2().checkout(), response.checkoutShippingAddressUpdateV2().userErrors())) {
                         PollCheckoutAndUpdate(PollCheckoutAvailableShippingRatesReady, callback);
                     } else {
                         HandleUserError(callback);
@@ -135,13 +135,13 @@ namespace Shopify.Unity {
                 if (error != null) {
                     callback(error);
                 } else {
-                    var userErrors = response.checkoutShippingAddressUpdate().userErrors();
+                    var userErrors = response.checkoutShippingAddressUpdateV2().userErrors();
                     if (shippingFields.HasValue) {
                         userErrors.AddRange(response.checkoutShippingLineUpdate().userErrors());
-                        userErrors.AddRange(response.checkoutEmailUpdate().userErrors());
+                        userErrors.AddRange(response.checkoutEmailUpdateV2().userErrors());
                     }
 
-                    if (UpdateState(response.checkoutEmailUpdate().checkout(), userErrors)) {
+                    if (UpdateState(response.checkoutEmailUpdateV2().checkout(), userErrors)) {
                         PollCheckoutAndUpdate(PollCheckoutReady, callback);
                     } else {
                         HandleUserError(callback);
@@ -185,7 +185,7 @@ namespace Shopify.Unity {
             });
         }
 
-        public void CheckoutWithTokenizedPayment(TokenizedPaymentInput tokenizedPaymentInput, CompletionCallback callback) {
+        public void CheckoutWithTokenizedPaymentV2(TokenizedPaymentInputV2 tokenizedPaymentInputV2, CompletionCallback callback) {
             Action<Payment> pollPayment = (payment) => {
                 PollPaymentReady(payment.id(), (Payment newPayment, ShopifyError error) => {
                     if (error != null) {
@@ -200,16 +200,16 @@ namespace Shopify.Unity {
                 });
             };
 
-            Action checkoutWithTokenizedPayment = () => {
+            Action checkoutWithTokenizedPaymentV2 = () => {
                 MutationQuery query = new MutationQuery();
-                DefaultQueries.checkout.CheckoutCompleteWithTokenizedPayment(query, CurrentCheckout.id(), tokenizedPaymentInput);
+                DefaultQueries.checkout.CheckoutCompleteWithTokenizedPaymentV2(query, CurrentCheckout.id(), tokenizedPaymentInputV2);
 
                 Client.Mutation(query, (Mutation response, ShopifyError error) => {
                     if (error != null) {
                         callback(error);
                         return;
                     } else {
-                        var responseNode = response.checkoutCompleteWithTokenizedPayment();
+                        var responseNode = response.checkoutCompleteWithTokenizedPaymentV2();
                         var payment = responseNode.payment();
 
                         if (UpdateState(responseNode.checkout(), responseNode.userErrors())) {
@@ -227,13 +227,13 @@ namespace Shopify.Unity {
 
             // Ensure we can checkout first
             if (CurrentCheckout.ready()) {
-                checkoutWithTokenizedPayment();
+                checkoutWithTokenizedPaymentV2();
             } else {
                 PollCheckoutReady((Checkout checkout, ShopifyError error) => {
                     if (error != null) {
                         callback(error);
                     } else {
-                        checkoutWithTokenizedPayment();
+                        checkoutWithTokenizedPaymentV2();
                     }
                 });
             }

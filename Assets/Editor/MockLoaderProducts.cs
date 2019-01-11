@@ -28,14 +28,12 @@ namespace Shopify.Tests {
 
                 string response = String.Format(@"{{
                     ""data"": {{
-                        ""shop"": {{
-                            ""products"": {{
-                                ""edges"": [
-                                    {0}
-                                ],
-                                ""pageInfo"": {{
-                                    ""hasNextPage"": {1}
-                                }}
+                        ""products"": {{
+                            ""edges"": [
+                                {0}
+                            ],
+                            ""pageInfo"": {{
+                                ""hasNextPage"": {1}
                             }}
                         }}
                     }}
