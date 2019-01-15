@@ -8,7 +8,7 @@ namespace Shopify.Tests {
     using Shopify.Unity.MiniJSON;
 
     class CollectionTestQueries {
-        public static QueryRootQuery query1 = (new QueryRootQuery()).shop(s => s.
+        public static QueryRootQuery query1 = (new QueryRootQuery()).
             products(p => p.
                 edges(e => e.
                     node(n => n.
@@ -20,9 +20,8 @@ namespace Shopify.Tests {
                     hasNextPage()
                 ),
                 first: 1
-            )
-        );
-        public static QueryRootQuery query2 = (new QueryRootQuery()).shop(s => s.
+            );
+        public static QueryRootQuery query2 = (new QueryRootQuery()).
             products(p => p.
                 edges(e => e.
                     node(n => n.
@@ -34,8 +33,7 @@ namespace Shopify.Tests {
                     hasNextPage()
                 ),
                 first: 1, after: "first page"
-            )
-        );
+            );
         public static List<QueryRootQuery> queries = new List<QueryRootQuery> {query1, query2};
     }
 
