@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['tester',['Tester',['../class_tester.html',1,'']]],
   ['testhttputils',['TestHTTPUtils',['../class_shopify_1_1_u_i_toolkit_1_1_test_1_1_unit_1_1_test_h_t_t_p_utils.html',1,'Shopify::UIToolkit::Test::Unit']]],
   ['testimagecache',['TestImageCache',['../class_shopify_1_1_u_i_toolkit_1_1_test_1_1_unit_1_1_test_image_cache.html',1,'Shopify::UIToolkit::Test::Unit']]],
   ['testmultiproductshopcontroller',['TestMultiProductShopController',['../class_shopify_1_1_u_i_toolkit_1_1_test_1_1_unit_1_1_test_multi_product_shop_controller.html',1,'Shopify::UIToolkit::Test::Unit']]],
