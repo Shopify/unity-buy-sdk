@@ -1,10 +1,11 @@
 fileFormatVersion: 2
 guid: 22fd2f06d934486fbc66744203985919
 labels:
-- gvh
 - gvh_version-1.2.92.0
+- gvh
+timeCreated: 1538009133
+licenseType: Pro
 DefaultImporter:
-  externalObjects: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 
