@@ -58,7 +58,7 @@ import Foundation
         }
     }
     
-    func complete(with response: String? = nil) {
+    @objc func complete(with response: String? = nil) {
         self.response = response
         semaphore.signal()
     }

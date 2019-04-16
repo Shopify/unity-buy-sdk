@@ -77,7 +77,7 @@ extension ApplePayErrorDeserializingTests {
             let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
-            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
+            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String)
             
             createErrorExpectation.fulfill()
         }
@@ -97,7 +97,7 @@ extension ApplePayErrorDeserializingTests {
             let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
-            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
+            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String)
             
             createErrorExpectation.fulfill()
         }
@@ -117,7 +117,7 @@ extension ApplePayErrorDeserializingTests {
             let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
-            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
+            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String)
             
             createErrorExpectation.fulfill()
         }
@@ -137,7 +137,7 @@ extension ApplePayErrorDeserializingTests {
             let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
-            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
+            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String)
             
             createErrorExpectation.fulfill()
         }
@@ -157,7 +157,7 @@ extension ApplePayErrorDeserializingTests {
             let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
-            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
+            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String)
             
             createErrorExpectation.fulfill()
         }
@@ -177,7 +177,7 @@ extension ApplePayErrorDeserializingTests {
             let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
-            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
+            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String)
             
             createErrorExpectation.fulfill()
         }
@@ -197,7 +197,7 @@ extension ApplePayErrorDeserializingTests {
             let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
-            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
+            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String)
             
             createErrorExpectation.fulfill()
         }
@@ -217,7 +217,7 @@ extension ApplePayErrorDeserializingTests {
             let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
-            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
+            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String)
             
             createErrorExpectation.fulfill()
         }
@@ -244,7 +244,7 @@ extension ApplePayErrorDeserializingTests {
             let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
-            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
+            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String)
             
             createErrorExpectation.fulfill()
         }
@@ -264,7 +264,7 @@ extension ApplePayErrorDeserializingTests {
             let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
-            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
+            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String)
             
             createErrorExpectation.fulfill()
         }
@@ -284,7 +284,7 @@ extension ApplePayErrorDeserializingTests {
             let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
-            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
+            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String)
             
             createErrorExpectation.fulfill()
         }
@@ -304,7 +304,7 @@ extension ApplePayErrorDeserializingTests {
             let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
-            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
+            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String)
             
             createErrorExpectation.fulfill()
         }
@@ -324,7 +324,7 @@ extension ApplePayErrorDeserializingTests {
             let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
-            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
+            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String)
             
             createErrorExpectation.fulfill()
         }
@@ -344,7 +344,7 @@ extension ApplePayErrorDeserializingTests {
             let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
-            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
+            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String)
             
             createErrorExpectation.fulfill()
         }
@@ -364,7 +364,7 @@ extension ApplePayErrorDeserializingTests {
             let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
-            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
+            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String)
             
             createErrorExpectation.fulfill()
         }
@@ -384,7 +384,7 @@ extension ApplePayErrorDeserializingTests {
             let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
-            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
+            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String)
             
             createErrorExpectation.fulfill()
         }
@@ -411,7 +411,7 @@ extension ApplePayErrorDeserializingTests {
             let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
-            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.contactFieldUserInfoKey] as! PKContactField, expectedError.userInfo[PKPaymentErrorKey.contactFieldUserInfoKey] as! PKContactField)
+            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.contactFieldUserInfoKey.rawValue] as! PKContactField, expectedError.userInfo[PKPaymentErrorKey.contactFieldUserInfoKey.rawValue] as! PKContactField)
             
             createErrorExpectation.fulfill()
         }
@@ -431,7 +431,7 @@ extension ApplePayErrorDeserializingTests {
             let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
-            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.contactFieldUserInfoKey] as! PKContactField, expectedError.userInfo[PKPaymentErrorKey.contactFieldUserInfoKey] as! PKContactField)
+            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.contactFieldUserInfoKey.rawValue] as! PKContactField, expectedError.userInfo[PKPaymentErrorKey.contactFieldUserInfoKey.rawValue] as! PKContactField)
             
             createErrorExpectation.fulfill()
         }
@@ -451,7 +451,7 @@ extension ApplePayErrorDeserializingTests {
             let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
-            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.contactFieldUserInfoKey] as! PKContactField, expectedError.userInfo[PKPaymentErrorKey.contactFieldUserInfoKey] as! PKContactField)
+            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.contactFieldUserInfoKey.rawValue] as! PKContactField, expectedError.userInfo[PKPaymentErrorKey.contactFieldUserInfoKey.rawValue] as! PKContactField)
             
             createErrorExpectation.fulfill()
         }
@@ -471,7 +471,7 @@ extension ApplePayErrorDeserializingTests {
             let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
-            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.contactFieldUserInfoKey] as! PKContactField, expectedError.userInfo[PKPaymentErrorKey.contactFieldUserInfoKey] as! PKContactField)
+            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.contactFieldUserInfoKey.rawValue] as! PKContactField, expectedError.userInfo[PKPaymentErrorKey.contactFieldUserInfoKey.rawValue] as! PKContactField)
             
             createErrorExpectation.fulfill()
         }
@@ -491,7 +491,7 @@ extension ApplePayErrorDeserializingTests {
             let paymentError  = PKPaymentRequest.paymentError(with: errorJson)! as NSError
             
             XCTAssertEqual(paymentError.localizedDescription, expectedError.localizedDescription)
-            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.contactFieldUserInfoKey] as! PKContactField, expectedError.userInfo[PKPaymentErrorKey.contactFieldUserInfoKey] as! PKContactField)
+            XCTAssertEqual(paymentError.userInfo[PKPaymentErrorKey.contactFieldUserInfoKey.rawValue] as! PKContactField, expectedError.userInfo[PKPaymentErrorKey.contactFieldUserInfoKey.rawValue] as! PKContactField)
             
             createErrorExpectation.fulfill()
         }

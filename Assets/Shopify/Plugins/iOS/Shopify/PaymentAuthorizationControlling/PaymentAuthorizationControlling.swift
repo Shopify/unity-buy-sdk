@@ -31,7 +31,7 @@ import PassKit
     
     var authorizationDelegate: NSObjectProtocol? { get set }
     
-    init(paymentRequest request: PKPaymentRequest)
+    init?(paymentRequest request: PKPaymentRequest)
     func present(completion: ((Bool) -> Void)?)
     func dismiss(completion: (() -> Void)?)
 }

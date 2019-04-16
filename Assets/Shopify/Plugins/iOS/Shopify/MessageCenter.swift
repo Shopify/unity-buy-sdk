@@ -51,7 +51,7 @@ import PassKit
         UnitySendMessage(object, method, content)
     }
     
-    static func message(forIdentifier identifier: String) -> UnityMessage? {
+    @objc static func message(forIdentifier identifier: String) -> UnityMessage? {
         return messages[identifier]
     }
 }

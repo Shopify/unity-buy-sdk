@@ -103,7 +103,7 @@ import PassKit
         request.paymentSummaryItems = summaryItems
         request.shippingMethods     = shippingMethods
     
-        controller = controllerType.init(paymentRequest: request)
+        controller = controllerType.init(paymentRequest: request)!
     
         super.init()
         
