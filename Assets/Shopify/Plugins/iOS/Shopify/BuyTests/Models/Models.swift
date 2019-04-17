@@ -184,7 +184,7 @@ struct Models {
                 supportedNetworks: supportedPaymentNetworks,
                 summaryItems: createSummaryItems(),
                 shippingMethods: createShippingMethods(),
-                controllerType: controllerType)
+                controllerType: controllerType)!
         } else {
             return PaymentSession(
                 merchantId: merchantId,
@@ -193,7 +193,7 @@ struct Models {
                 requiringShippingAddressFields: requiringShippingAddressFields,
                 supportedNetworks: supportedPaymentNetworks,
                 summaryItems: createSummaryItems(),
-                shippingMethods: createShippingMethods())
+                shippingMethods: createShippingMethods())!
         }
     }
     

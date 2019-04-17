@@ -56,7 +56,7 @@ import PassKit
         }
 
         dispatcher = ApplePayEventDispatcher(receiver: unityDelegateObjectName)
-        session    = PaymentSession(
+        self.session = PaymentSession(
                         merchantId: merchantID,
                         countryCode: countryCode,
                         currencyCode: currencyCode,
@@ -65,7 +65,7 @@ import PassKit
                         summaryItems: summaryItems,
                         shippingMethods: shippingMethods)
         
-        session!.delegate = dispatcher
+        self.session?.delegate = dispatcher
         
         return true
     }
