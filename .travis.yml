@@ -1,5 +1,5 @@
 os: osx
-osx_image: xcode10
+osx_image: xcode10.2
 
 env:
   UNITY_DOWNLOAD_DIR: $HOME/unity
