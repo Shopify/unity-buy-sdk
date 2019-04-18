@@ -25,7 +25,7 @@ namespace Shopify.Unity.Editor.BuildPipeline {
 
         // Sets the required project settings for the Xcode project to work with the SDK.
         public static void SetBuildProperties(ExtendedPBXProject project) {
-            project.SetBuildProperty(project.GetAllTargetGuids(), ExtendedPBXProject.SwiftVersionKey, "5.0");
+            project.SetBuildProperty(project.GetAllTargetGuids(), ExtendedPBXProject.SwiftVersionKey, "4.0");
             project.SetBuildProperty(project.UnityTargetGuid, ExtendedPBXProject.SwiftBridgingHeaderKey, "Libraries/Shopify/Plugins/iOS/Shopify/Unity-iPhone-Bridging-Header.h");
             project.SetBuildProperty(project.UnityTargetGuid, ExtendedPBXProject.RunpathSearchKey, "@executable_path/Frameworks");
 
