@@ -20,6 +20,7 @@ var searchData=
   ['blank',['BLANK',['../namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca56f031dd03707d695f76c63ddbf40bd7',1,'Shopify.Unity.BLANK()'],['../namespace_shopify_1_1_unity.html#ae516a5ae00064fc47e37436076b64d45a56f031dd03707d695f76c63ddbf40bd7',1,'Shopify.Unity.BLANK()']]],
   ['blog_5ftitle',['BLOG_TITLE',['../namespace_shopify_1_1_unity.html#a0e67fefb75cf80b4d61c9b5b070442ceac0f39f68de4731c0225807e4d024122e',1,'Shopify::Unity']]],
   ['bm',['BM',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a5089fa881630360a9b3361469c1a0c5d',1,'Shopify::Unity']]],
+  ['bmd',['BMD',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba48b404e590b3e435ec219a6f1cec68b4',1,'Shopify::Unity']]],
   ['bn',['BN',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7afc37fbde490e37c1258738a18b9aa4c7',1,'Shopify::Unity']]],
   ['bnd',['BND',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba76c31bb17aa485c58620656a77c13b11',1,'Shopify::Unity']]],
   ['bo',['BO',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a7b60a39fc2a49bbac1b3426abb5ada4b',1,'Shopify::Unity']]],

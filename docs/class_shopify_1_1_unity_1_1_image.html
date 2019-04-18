@@ -97,7 +97,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a5f1323bd9c0659ccb203ff64511e51d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">A unique identifier for the image.  <a href="#a5f1323bd9c0659ccb203ff64511e51d0">More...</a><br /></td></tr>
 <tr class="separator:a5f1323bd9c0659ccb203ff64511e51d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5d719003ade99d031f202861585f9c9"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_image.html#ac5d719003ade99d031f202861585f9c9">originalSrc</a> ()</td></tr>
-<tr class="memdesc:ac5d719003ade99d031f202861585f9c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The location of the original (untransformed) image as a URL.  <a href="#ac5d719003ade99d031f202861585f9c9">More...</a><br /></td></tr>
+<tr class="memdesc:ac5d719003ade99d031f202861585f9c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The location of the original image as a URL.  <a href="#ac5d719003ade99d031f202861585f9c9">More...</a><br /></td></tr>
 <tr class="separator:ac5d719003ade99d031f202861585f9c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a18260a4ead295cfe3861853746f6133e"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_image.html#a18260a4ead295cfe3861853746f6133e">src</a> ()</td></tr>
 <tr class="memdesc:a18260a4ead295cfe3861853746f6133e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The location of the image as a URL.  <a href="#a18260a4ead295cfe3861853746f6133e">More...</a><br /></td></tr>
@@ -239,7 +239,8 @@ Dictionary&lt; string, object &gt;&#160;</td><td class="memItemRight" valign="bo
 </table>
 </div><div class="memdoc">
 
-<p>The location of the original (untransformed) image as a URL. </p>
+<p>The location of the original image as a URL. </p>
+<p>If there are any existing transformations in the original source URL, they will remain and not be stripped. </p>
 
 </div>
 </div>
@@ -267,12 +268,12 @@ Dictionary&lt; string, object &gt;&#160;</td><td class="memItemRight" valign="bo
 </div><div class="memdoc">
 
 <p>The location of the image as a URL. </p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000071">Deprecated:</a></b></dt><dd>Previously an image had a single <code>src</code> field. This could either return the original image location or a URL that contained transformations such as sizing or scale.</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000127">Deprecated:</a></b></dt><dd>Previously an image had a single <code>src</code> field. This could either return the original image location or a URL that contained transformations such as sizing or scale.</dd></dl>
 <p>These transformations were specified by arguments on the parent field.</p>
 <p>Now an image has two distinct URL fields: <code>originalSrc</code> and <code>transformedSrc</code>.</p>
 <ul>
-<li><code>originalSrc</code> - the original, untransformed image URL</li>
-<li><code>transformedSrc</code> - the image URL with transformations included</li>
+<li><code>originalSrc</code> - the original unmodified image URL</li>
+<li><code>transformedSrc</code> - the image URL with the specified transformations included</li>
 </ul>
 <p>To migrate to the new fields, image transformations should be moved from the parent field to <code>transformedSrc</code>.</p>
 <p>Before: </p><div class="fragment"><div class="line">{</div><div class="line">shop {</div><div class="line">productImages(maxWidth: 200, scale: 2) {</div><div class="line">edges {</div><div class="line">node {</div><div class="line">src</div><div class="line">}</div><div class="line">}</div><div class="line">}</div><div class="line">}</div><div class="line">}</div></div><!-- fragment --><p>After: </p><div class="fragment"><div class="line">{</div><div class="line">shop {</div><div class="line">productImages {</div><div class="line">edges {</div><div class="line">node {</div><div class="line">transformedSrc(maxWidth: 200, scale: 2)</div><div class="line">}</div><div class="line">}</div><div class="line">}</div><div class="line">}</div><div class="line">}</div></div><!-- fragment --> 
