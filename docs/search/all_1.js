@@ -2,6 +2,7 @@ var searchData=
 [
   ['ba',['BA',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a5fc810cf62601df84b7923b9964c53e6',1,'Shopify::Unity']]],
   ['balance',['balance',['../class_shopify_1_1_unity_1_1_applied_gift_card.html#a25a5daa15bb9752fb1818534616f01cd',1,'Shopify.Unity.AppliedGiftCard.balance()'],['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_applied_gift_card_query.html#a3df946b00a45d9160a737b99caa9deda',1,'Shopify.Unity.GraphQL.AppliedGiftCardQuery.balance()']]],
+  ['balancev2',['balanceV2',['../class_shopify_1_1_unity_1_1_applied_gift_card.html#a500906d0327fe620bed7d5680e05f4e4',1,'Shopify.Unity.AppliedGiftCard.balanceV2()'],['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_applied_gift_card_query.html#a3f2d429b11607ad0b8b47ada239c1c05',1,'Shopify.Unity.GraphQL.AppliedGiftCardQuery.balanceV2()']]],
   ['bam',['BAM',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba1a7b8a7f177e024e1685e780c47649c6',1,'Shopify::Unity']]],
   ['baseloader',['BaseLoader',['../class_shopify_1_1_unity_1_1_s_d_k_1_1_base_loader.html',1,'Shopify::Unity::SDK']]],
   ['bb',['BB',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a9d3d9048db16a7eee539e93e3618cbe7',1,'Shopify::Unity']]],
@@ -34,6 +35,7 @@ var searchData=
   ['blogsortkeys',['BlogSortKeys',['../namespace_shopify_1_1_unity.html#a5dfb6dce6787178d88e9ca27502d4bc6',1,'Shopify::Unity']]],
   ['bluroptimized',['BlurOptimized',['../class_shopify_s_d_k_example_standard_assets_1_1_image_effects_1_1_blur_optimized.html',1,'ShopifySDKExampleStandardAssets::ImageEffects']]],
   ['bm',['BM',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a5089fa881630360a9b3361469c1a0c5d',1,'Shopify::Unity']]],
+  ['bmd',['BMD',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba48b404e590b3e435ec219a6f1cec68b4',1,'Shopify::Unity']]],
   ['bn',['BN',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7afc37fbde490e37c1258738a18b9aa4c7',1,'Shopify::Unity']]],
   ['bnd',['BND',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba76c31bb17aa485c58620656a77c13b11',1,'Shopify::Unity']]],
   ['bo',['BO',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a7b60a39fc2a49bbac1b3426abb5ada4b',1,'Shopify::Unity']]],

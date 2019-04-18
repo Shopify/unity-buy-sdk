@@ -114,6 +114,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:adedb3542848fceaa08649b1b878416ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html">CheckoutQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html#adedb3542848fceaa08649b1b878416ff">lineItems</a> (CheckoutLineItemConnectionDelegate buildQuery, long? first=null, string after=null, long? last=null, string before=null, bool? reverse=null, string alias=null)</td></tr>
 <tr class="memdesc:adedb3542848fceaa08649b1b878416ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">A list of line item objects, each one containing information about an item in the checkout.  <a href="#adedb3542848fceaa08649b1b878416ff">More...</a><br /></td></tr>
 <tr class="separator:adedb3542848fceaa08649b1b878416ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a499214426a44998f40cd8963f5fcecf5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html">CheckoutQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html#a499214426a44998f40cd8963f5fcecf5">lineItemsSubtotalPrice</a> (MoneyV2Delegate buildQuery)</td></tr>
+<tr class="memdesc:a499214426a44998f40cd8963f5fcecf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The sum of all the prices of all the items in the checkout. Taxes, shipping and discounts excluded.  <a href="#a499214426a44998f40cd8963f5fcecf5">More...</a><br /></td></tr>
+<tr class="separator:a499214426a44998f40cd8963f5fcecf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a587b4a996a14ea84beeff3f082254ab6"><td class="memItemLeft" align="right" valign="top"><a id="a587b4a996a14ea84beeff3f082254ab6"></a>
 <a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html">CheckoutQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><b>note</b> ()</td></tr>
 <tr class="separator:a587b4a996a14ea84beeff3f082254ab6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,6 +129,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a19e6c2342f77f4abe877f2bb6fd4aa29"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html">CheckoutQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html#a19e6c2342f77f4abe877f2bb6fd4aa29">paymentDue</a> ()</td></tr>
 <tr class="memdesc:a19e6c2342f77f4abe877f2bb6fd4aa29"><td class="mdescLeft">&#160;</td><td class="mdescRight">The amount left to be paid. This is equal to the cost of the line items, taxes and shipping minus discounts and gift cards.  <a href="#a19e6c2342f77f4abe877f2bb6fd4aa29">More...</a><br /></td></tr>
 <tr class="separator:a19e6c2342f77f4abe877f2bb6fd4aa29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7dfae7a8aa627e7cca636196dce7316b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html">CheckoutQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html#a7dfae7a8aa627e7cca636196dce7316b">paymentDueV2</a> (MoneyV2Delegate buildQuery)</td></tr>
+<tr class="memdesc:a7dfae7a8aa627e7cca636196dce7316b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The amount left to be paid. This is equal to the cost of the line items, taxes and shipping minus discounts and gift cards.  <a href="#a7dfae7a8aa627e7cca636196dce7316b">More...</a><br /></td></tr>
+<tr class="separator:a7dfae7a8aa627e7cca636196dce7316b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33289054a4014a3b6e281d26b4e12736"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html">CheckoutQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html#a33289054a4014a3b6e281d26b4e12736">ready</a> ()</td></tr>
 <tr class="memdesc:a33289054a4014a3b6e281d26b4e12736"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the <a class="el" href="class_shopify_1_1_unity_1_1_checkout.html" title="A container for all the information required to checkout items and pay.">Checkout</a> is ready and can be completed. Checkouts may have asynchronous operations that can take time to finish. If you want to complete a checkout or ensure all the fields are populated and up to date, polling is required until the value is true.  <a href="#a33289054a4014a3b6e281d26b4e12736">More...</a><br /></td></tr>
 <tr class="separator:a33289054a4014a3b6e281d26b4e12736"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -144,6 +150,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a59dae2f6ad3cf0045038b32e9c0b29c9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html">CheckoutQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html#a59dae2f6ad3cf0045038b32e9c0b29c9">subtotalPrice</a> ()</td></tr>
 <tr class="memdesc:a59dae2f6ad3cf0045038b32e9c0b29c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Price of the checkout before shipping and taxes.  <a href="#a59dae2f6ad3cf0045038b32e9c0b29c9">More...</a><br /></td></tr>
 <tr class="separator:a59dae2f6ad3cf0045038b32e9c0b29c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a293305ea1e06ac80e7353b5c64da5226"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html">CheckoutQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html#a293305ea1e06ac80e7353b5c64da5226">subtotalPriceV2</a> (MoneyV2Delegate buildQuery)</td></tr>
+<tr class="memdesc:a293305ea1e06ac80e7353b5c64da5226"><td class="mdescLeft">&#160;</td><td class="mdescRight">Price of the checkout before shipping and taxes.  <a href="#a293305ea1e06ac80e7353b5c64da5226">More...</a><br /></td></tr>
+<tr class="separator:a293305ea1e06ac80e7353b5c64da5226"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae581a5340ff43d431ea29d87dc70920b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html">CheckoutQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html#ae581a5340ff43d431ea29d87dc70920b">taxExempt</a> ()</td></tr>
 <tr class="memdesc:ae581a5340ff43d431ea29d87dc70920b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies if the <a class="el" href="class_shopify_1_1_unity_1_1_checkout.html" title="A container for all the information required to checkout items and pay.">Checkout</a> is tax exempt.  <a href="#ae581a5340ff43d431ea29d87dc70920b">More...</a><br /></td></tr>
 <tr class="separator:ae581a5340ff43d431ea29d87dc70920b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -153,9 +162,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abd115d53690397bf8271a123ef33f35b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html">CheckoutQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html#abd115d53690397bf8271a123ef33f35b">totalPrice</a> ()</td></tr>
 <tr class="memdesc:abd115d53690397bf8271a123ef33f35b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The sum of all the prices of all the items in the checkout, taxes and discounts included.  <a href="#abd115d53690397bf8271a123ef33f35b">More...</a><br /></td></tr>
 <tr class="separator:abd115d53690397bf8271a123ef33f35b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb72c384f07b8b8df68838ec732b0ab5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html">CheckoutQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html#acb72c384f07b8b8df68838ec732b0ab5">totalPriceV2</a> (MoneyV2Delegate buildQuery)</td></tr>
+<tr class="memdesc:acb72c384f07b8b8df68838ec732b0ab5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The sum of all the prices of all the items in the checkout, taxes and discounts included.  <a href="#acb72c384f07b8b8df68838ec732b0ab5">More...</a><br /></td></tr>
+<tr class="separator:acb72c384f07b8b8df68838ec732b0ab5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70cd66861b950a43d861ceb3685b26eb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html">CheckoutQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html#a70cd66861b950a43d861ceb3685b26eb">totalTax</a> ()</td></tr>
 <tr class="memdesc:a70cd66861b950a43d861ceb3685b26eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The sum of all the taxes applied to the line items and shipping lines in the checkout.  <a href="#a70cd66861b950a43d861ceb3685b26eb">More...</a><br /></td></tr>
 <tr class="separator:a70cd66861b950a43d861ceb3685b26eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ddcf580f217b8ca41ae504cb469f62f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html">CheckoutQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html#a3ddcf580f217b8ca41ae504cb469f62f">totalTaxV2</a> (MoneyV2Delegate buildQuery)</td></tr>
+<tr class="memdesc:a3ddcf580f217b8ca41ae504cb469f62f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The sum of all the taxes applied to the line items and shipping lines in the checkout.  <a href="#a3ddcf580f217b8ca41ae504cb469f62f">More...</a><br /></td></tr>
+<tr class="separator:a3ddcf580f217b8ca41ae504cb469f62f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca6776215017010016ebe456d765c0d3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html">CheckoutQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html#aca6776215017010016ebe456d765c0d3">updatedAt</a> ()</td></tr>
 <tr class="memdesc:aca6776215017010016ebe456d765c0d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The date and time when the checkout was last updated.  <a href="#aca6776215017010016ebe456d765c0d3">More...</a><br /></td></tr>
 <tr class="separator:aca6776215017010016ebe456d765c0d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -357,7 +372,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>The customer associated with the checkout. </p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000033">Deprecated:</a></b></dt><dd>This field will always return null. If you have an authentication token for the customer, you can use the <code>customer</code> field on the query root to retrieve it. </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000072">Deprecated:</a></b></dt><dd>This field will always return null. If you have an authentication token for the customer, you can use the <code>customer</code> field on the query root to retrieve it. </dd></dl>
 
 </div>
 </div>
@@ -571,6 +586,34 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a499214426a44998f40cd8963f5fcecf5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a499214426a44998f40cd8963f5fcecf5">&#9670;&nbsp;</a></span>lineItemsSubtotalPrice()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html">CheckoutQuery</a> Shopify.Unity.GraphQL.CheckoutQuery.lineItemsSubtotalPrice </td>
+          <td>(</td>
+          <td class="paramtype">MoneyV2Delegate&#160;</td>
+          <td class="paramname"><em>buildQuery</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The sum of all the prices of all the items in the checkout. Taxes, shipping and discounts excluded. </p>
+
+</div>
+</div>
 <a id="ac86b57cf1b92413038c8ad1f6c9577a5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac86b57cf1b92413038c8ad1f6c9577a5">&#9670;&nbsp;</a></span>order()</h2>
 
@@ -639,6 +682,35 @@ Public Member Functions</h2></td></tr>
           <td class="memname"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html">CheckoutQuery</a> Shopify.Unity.GraphQL.CheckoutQuery.paymentDue </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The amount left to be paid. This is equal to the cost of the line items, taxes and shipping minus discounts and gift cards. </p>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000073">Deprecated:</a></b></dt><dd>Use <code>paymentDueV2</code> instead </dd></dl>
+
+</div>
+</div>
+<a id="a7dfae7a8aa627e7cca636196dce7316b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7dfae7a8aa627e7cca636196dce7316b">&#9670;&nbsp;</a></span>paymentDueV2()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html">CheckoutQuery</a> Shopify.Unity.GraphQL.CheckoutQuery.paymentDueV2 </td>
+          <td>(</td>
+          <td class="paramtype">MoneyV2Delegate&#160;</td>
+          <td class="paramname"><em>buildQuery</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -815,6 +887,35 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Price of the checkout before shipping and taxes. </p>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000074">Deprecated:</a></b></dt><dd>Use <code>subtotalPriceV2</code> instead </dd></dl>
+
+</div>
+</div>
+<a id="a293305ea1e06ac80e7353b5c64da5226"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a293305ea1e06ac80e7353b5c64da5226">&#9670;&nbsp;</a></span>subtotalPriceV2()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html">CheckoutQuery</a> Shopify.Unity.GraphQL.CheckoutQuery.subtotalPriceV2 </td>
+          <td>(</td>
+          <td class="paramtype">MoneyV2Delegate&#160;</td>
+          <td class="paramname"><em>buildQuery</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Price of the checkout before shipping and taxes. </p>
 
 </div>
 </div>
@@ -896,6 +997,35 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>The sum of all the prices of all the items in the checkout, taxes and discounts included. </p>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000075">Deprecated:</a></b></dt><dd>Use <code>totalPriceV2</code> instead </dd></dl>
+
+</div>
+</div>
+<a id="acb72c384f07b8b8df68838ec732b0ab5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb72c384f07b8b8df68838ec732b0ab5">&#9670;&nbsp;</a></span>totalPriceV2()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html">CheckoutQuery</a> Shopify.Unity.GraphQL.CheckoutQuery.totalPriceV2 </td>
+          <td>(</td>
+          <td class="paramtype">MoneyV2Delegate&#160;</td>
+          <td class="paramname"><em>buildQuery</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The sum of all the prices of all the items in the checkout, taxes and discounts included. </p>
 
 </div>
 </div>
@@ -912,6 +1042,35 @@ Public Member Functions</h2></td></tr>
           <td class="memname"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html">CheckoutQuery</a> Shopify.Unity.GraphQL.CheckoutQuery.totalTax </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The sum of all the taxes applied to the line items and shipping lines in the checkout. </p>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000076">Deprecated:</a></b></dt><dd>Use <code>totalTaxV2</code> instead </dd></dl>
+
+</div>
+</div>
+<a id="a3ddcf580f217b8ca41ae504cb469f62f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ddcf580f217b8ca41ae504cb469f62f">&#9670;&nbsp;</a></span>totalTaxV2()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_checkout_query.html">CheckoutQuery</a> Shopify.Unity.GraphQL.CheckoutQuery.totalTaxV2 </td>
+          <td>(</td>
+          <td class="paramtype">MoneyV2Delegate&#160;</td>
+          <td class="paramname"><em>buildQuery</em></td><td>)</td>
           <td></td>
         </tr>
       </table>

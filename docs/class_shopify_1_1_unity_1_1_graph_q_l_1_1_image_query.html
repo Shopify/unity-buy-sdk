@@ -88,7 +88,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a28362098e1cfb2a4e5f6bfd258aee5ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">A unique identifier for the image.  <a href="#a28362098e1cfb2a4e5f6bfd258aee5ca">More...</a><br /></td></tr>
 <tr class="separator:a28362098e1cfb2a4e5f6bfd258aee5ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a50ee97493a5054965e268811e49b8fd7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_image_query.html">ImageQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_image_query.html#a50ee97493a5054965e268811e49b8fd7">originalSrc</a> ()</td></tr>
-<tr class="memdesc:a50ee97493a5054965e268811e49b8fd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The location of the original (untransformed) image as a URL.  <a href="#a50ee97493a5054965e268811e49b8fd7">More...</a><br /></td></tr>
+<tr class="memdesc:a50ee97493a5054965e268811e49b8fd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The location of the original image as a URL.  <a href="#a50ee97493a5054965e268811e49b8fd7">More...</a><br /></td></tr>
 <tr class="separator:a50ee97493a5054965e268811e49b8fd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a666ef9f7d7c4a9b3195424a2e2447993"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_image_query.html">ImageQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_image_query.html#a666ef9f7d7c4a9b3195424a2e2447993">src</a> ()</td></tr>
 <tr class="memdesc:a666ef9f7d7c4a9b3195424a2e2447993"><td class="mdescLeft">&#160;</td><td class="mdescRight">The location of the image as a URL.  <a href="#a666ef9f7d7c4a9b3195424a2e2447993">More...</a><br /></td></tr>
@@ -206,7 +206,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>The location of the original (untransformed) image as a URL. </p>
+<p>The location of the original image as a URL. </p>
+<p>If there are any existing transformations in the original source URL, they will remain and not be stripped. </p>
 
 </div>
 </div>
@@ -234,12 +235,12 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>The location of the image as a URL. </p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000045">Deprecated:</a></b></dt><dd>Previously an image had a single <code>src</code> field. This could either return the original image location or a URL that contained transformations such as sizing or scale.</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000091">Deprecated:</a></b></dt><dd>Previously an image had a single <code>src</code> field. This could either return the original image location or a URL that contained transformations such as sizing or scale.</dd></dl>
 <p>These transformations were specified by arguments on the parent field.</p>
 <p>Now an image has two distinct URL fields: <code>originalSrc</code> and <code>transformedSrc</code>.</p>
 <ul>
-<li><code>originalSrc</code> - the original, untransformed image URL</li>
-<li><code>transformedSrc</code> - the image URL with transformations included</li>
+<li><code>originalSrc</code> - the original unmodified image URL</li>
+<li><code>transformedSrc</code> - the image URL with the specified transformations included</li>
 </ul>
 <p>To migrate to the new fields, image transformations should be moved from the parent field to <code>transformedSrc</code>.</p>
 <p>Before: </p><div class="fragment"><div class="line">{</div><div class="line">shop {</div><div class="line">productImages(maxWidth: 200, scale: 2) {</div><div class="line">edges {</div><div class="line">node {</div><div class="line">src</div><div class="line">}</div><div class="line">}</div><div class="line">}</div><div class="line">}</div><div class="line">}</div></div><!-- fragment --><p>After: </p><div class="fragment"><div class="line">{</div><div class="line">shop {</div><div class="line">productImages {</div><div class="line">edges {</div><div class="line">node {</div><div class="line">transformedSrc(maxWidth: 200, scale: 2)</div><div class="line">}</div><div class="line">}</div><div class="line">}</div><div class="line">}</div><div class="line">}</div></div><!-- fragment --> 
