@@ -31,7 +31,7 @@ import SafariServices
 private var activeWebPaySession: WebCheckoutSession?
 
 @objc class WebCheckoutSession: NSObject {
-    static func createSession(unityDelegateObjectName: String, url: String) -> WebCheckoutSession {
+    @objc static func createSession(unityDelegateObjectName: String, url: String) -> WebCheckoutSession {
         let session = WebCheckoutSession(unityDelegateObjectName: unityDelegateObjectName,
                                          checkoutURL: url)
         activeWebPaySession = session
@@ -48,7 +48,7 @@ private var activeWebPaySession: WebCheckoutSession?
         super.init()
     }
     
-    func startCheckout() -> Bool {
+    @objc func startCheckout() -> Bool {
         guard let url = URL(string: checkoutURL) else {
             return false
         }

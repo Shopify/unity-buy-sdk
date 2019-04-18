@@ -80,7 +80,7 @@ import PassKit
     // ----------------------------------
     //  MARK: - Init -
     //
-    init(
+    init?(
         merchantId: String,
         countryCode: String,
         currencyCode: String,
@@ -103,11 +103,15 @@ import PassKit
         request.paymentSummaryItems = summaryItems
         request.shippingMethods     = shippingMethods
     
-        controller = controllerType.init(paymentRequest: request)
+        guard let controller = controllerType.init(paymentRequest: request) else {
+            return nil
+        }
+        
+        self.controller = controller
     
         super.init()
         
-        controller.authorizationDelegate = self
+        self.controller.authorizationDelegate = self
     }
     
     /// Presents the PKAuthorizationController with the current shipping methods

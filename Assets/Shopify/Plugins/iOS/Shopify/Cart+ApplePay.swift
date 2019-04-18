@@ -32,7 +32,7 @@ import PassKit
     private(set) static var session: PaymentSession?
     private static var dispatcher: ApplePayEventDispatcher?
     
-    static func createApplePaySession(unityDelegateObjectName: String, merchantID: String, countryCode: String, currencyCode: String, serializedSupportedNetworks: String, serializedSummaryItems: String, serializedShippingMethods: String?, requiringShipping: Bool) -> Bool {
+    @objc static func createApplePaySession(unityDelegateObjectName: String, merchantID: String, countryCode: String, currencyCode: String, serializedSupportedNetworks: String, serializedSummaryItems: String, serializedShippingMethods: String?, requiringShipping: Bool) -> Bool {
         
         guard
             let summaryItemsJson  = extractItems(from: serializedSummaryItems),
@@ -56,7 +56,7 @@ import PassKit
         }
 
         dispatcher = ApplePayEventDispatcher(receiver: unityDelegateObjectName)
-        session    = PaymentSession(
+        self.session = PaymentSession(
                         merchantId: merchantID,
                         countryCode: countryCode,
                         currencyCode: currencyCode,
@@ -65,12 +65,12 @@ import PassKit
                         summaryItems: summaryItems,
                         shippingMethods: shippingMethods)
         
-        session!.delegate = dispatcher
+        self.session?.delegate = dispatcher
         
         return true
     }
     
-    public static func presentAuthorizationController() -> Bool {
+    @objc public static func presentAuthorizationController() -> Bool {
         guard let session = session else {
             return false
         }
@@ -85,7 +85,7 @@ import PassKit
 //  MARK: - Static PaymentSession helpers -
 //
 extension Cart {
-    public static func canMakePayments(usingSerializedNetworks networks: String) -> Bool {
+    @objc public static func canMakePayments(usingSerializedNetworks networks: String) -> Bool {
         
         if let supportedNetworks = supportedPaymentNetworks(from: networks) {
             return PaymentSession.canMakePayments(usingNetworks: supportedNetworks)
@@ -94,7 +94,7 @@ extension Cart {
         return false
     }
     
-    public static func canShowSetup(forSerializedNetworks networks: String) -> Bool {
+    @objc public static func canShowSetup(forSerializedNetworks networks: String) -> Bool {
         
         if let supportedNetworks = supportedPaymentNetworks(from: networks) {
             return PaymentSession.canShowSetup(forNetworks: supportedNetworks)
@@ -103,7 +103,7 @@ extension Cart {
         return false
     }
     
-    public static func showPaymentSetup() {
+    @objc public static func showPaymentSetup() {
         PaymentSession.showSetup()
     }
 }

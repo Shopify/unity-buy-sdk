@@ -382,7 +382,7 @@ extension ApplePayFlowTests {
                 // Error Asserts
                 XCTAssertEqual(error.domain, expectedError.domain)
                 XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
-                XCTAssertEqual(error.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
+                XCTAssertEqual(error.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String)
                 XCTAssertEqual(update.errors.count, 1)
 
                 expectation.fulfill()
@@ -439,7 +439,7 @@ extension ApplePayFlowTests {
 
                     XCTAssertEqual(error.domain, expectedError.domain)
                     XCTAssertEqual(error.localizedDescription, expectedError.localizedDescription)
-                    XCTAssertEqual(error.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey] as! String)
+                    XCTAssertEqual(error.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String, expectedError.userInfo[PKPaymentErrorKey.postalAddressUserInfoKey.rawValue] as! String)
                     XCTAssertEqual(result.errors.count, 1)
 
                     authorizePaymentExpectation.fulfill()
