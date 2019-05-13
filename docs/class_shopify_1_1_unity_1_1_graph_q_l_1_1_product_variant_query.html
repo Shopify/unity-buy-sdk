@@ -99,6 +99,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a66298e9b6da3c88135bb7a87b42f4463"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_product_variant_query.html">ProductVariantQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_product_variant_query.html#a66298e9b6da3c88135bb7a87b42f4463">image</a> (ImageDelegate buildQuery, long? maxWidth=null, long? maxHeight=null, <a class="el" href="namespace_shopify_1_1_unity.html#ae6f7c4d6eba107063bbcd35e801753c1">CropRegion</a>? crop=null, long? scale=null, string alias=null)</td></tr>
 <tr class="memdesc:a66298e9b6da3c88135bb7a87b42f4463"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_shopify_1_1_unity_1_1_image.html" title="Represents an image resource.">Image</a> associated with the product variant. This field falls back to the product image if no image is available.  <a href="#a66298e9b6da3c88135bb7a87b42f4463">More...</a><br /></td></tr>
 <tr class="separator:a66298e9b6da3c88135bb7a87b42f4463"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1827b5a0b109f1dac7f6b19ed9935411"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_product_variant_query.html">ProductVariantQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_product_variant_query.html#a1827b5a0b109f1dac7f6b19ed9935411">metafield</a> (MetafieldDelegate buildQuery, string namespaceValue, string key, string alias=null)</td></tr>
+<tr class="memdesc:a1827b5a0b109f1dac7f6b19ed9935411"><td class="mdescLeft">&#160;</td><td class="mdescRight">The metafield associated with the resource.  <a href="#a1827b5a0b109f1dac7f6b19ed9935411">More...</a><br /></td></tr>
+<tr class="separator:a1827b5a0b109f1dac7f6b19ed9935411"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af106c74e3f9f3ef310f87e4263255cda"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_product_variant_query.html">ProductVariantQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_product_variant_query.html#af106c74e3f9f3ef310f87e4263255cda">metafields</a> (MetafieldConnectionDelegate buildQuery, string namespaceValue=null, long? first=null, string after=null, long? last=null, string before=null, bool? reverse=null, string alias=null)</td></tr>
+<tr class="memdesc:af106c74e3f9f3ef310f87e4263255cda"><td class="mdescLeft">&#160;</td><td class="mdescRight">A paginated list of metafields associated with the resource.  <a href="#af106c74e3f9f3ef310f87e4263255cda">More...</a><br /></td></tr>
+<tr class="separator:af106c74e3f9f3ef310f87e4263255cda"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f43c9815305f450480e678960df1f03"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_product_variant_query.html">ProductVariantQuery</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_product_variant_query.html#a2f43c9815305f450480e678960df1f03">presentmentPrices</a> (ProductVariantPricePairConnectionDelegate buildQuery, List&lt; <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbb">CurrencyCode</a> &gt; presentmentCurrencies=null, long? first=null, string after=null, long? last=null, string before=null, bool? reverse=null, string alias=null)</td></tr>
 <tr class="memdesc:a2f43c9815305f450480e678960df1f03"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of prices and compare-at prices in the presentment currencies for this shop.  <a href="#a2f43c9815305f450480e678960df1f03">More...</a><br /></td></tr>
 <tr class="separator:a2f43c9815305f450480e678960df1f03"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -362,6 +368,148 @@ Public Member Functions</h2></td></tr>
     <tr><td class="paramname">maxHeight</td><td><a class="el" href="class_shopify_1_1_unity_1_1_image.html" title="Represents an image resource.">Image</a> height in pixels between 1 and 2048. This argument is deprecated: Use <code>maxHeight</code> on <code><a class="el" href="class_shopify_1_1_unity_1_1_image.html#affd296d13ad33e8008a6a748ff46e353" title="The location of the transformed image as a URL.">Image.transformedSrc</a></code> instead. </td></tr>
     <tr><td class="paramname">crop</td><td>Crops the image according to the specified region. This argument is deprecated: Use <code>crop</code> on <code><a class="el" href="class_shopify_1_1_unity_1_1_image.html#affd296d13ad33e8008a6a748ff46e353" title="The location of the transformed image as a URL.">Image.transformedSrc</a></code> instead. </td></tr>
     <tr><td class="paramname">scale</td><td><a class="el" href="class_shopify_1_1_unity_1_1_image.html" title="Represents an image resource.">Image</a> size multiplier for high-resolution retina displays. Must be between 1 and 3. This argument is deprecated: Use <code>scale</code> on <code><a class="el" href="class_shopify_1_1_unity_1_1_image.html#affd296d13ad33e8008a6a748ff46e353" title="The location of the transformed image as a URL.">Image.transformedSrc</a></code> instead. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a1827b5a0b109f1dac7f6b19ed9935411"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1827b5a0b109f1dac7f6b19ed9935411">&#9670;&nbsp;</a></span>metafield()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_product_variant_query.html">ProductVariantQuery</a> Shopify.Unity.GraphQL.ProductVariantQuery.metafield </td>
+          <td>(</td>
+          <td class="paramtype">MetafieldDelegate&#160;</td>
+          <td class="paramname"><em>buildQuery</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>namespaceValue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>alias</em> = <code>null</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The metafield associated with the resource. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">namespace</td><td>Container for a set of metafields (maximum of 20 characters). </td></tr>
+    <tr><td class="paramname">key</td><td>Identifier for the metafield (maximum of 30 characters). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af106c74e3f9f3ef310f87e4263255cda"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af106c74e3f9f3ef310f87e4263255cda">&#9670;&nbsp;</a></span>metafields()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_shopify_1_1_unity_1_1_graph_q_l_1_1_product_variant_query.html">ProductVariantQuery</a> Shopify.Unity.GraphQL.ProductVariantQuery.metafields </td>
+          <td>(</td>
+          <td class="paramtype">MetafieldConnectionDelegate&#160;</td>
+          <td class="paramname"><em>buildQuery</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>namespaceValue</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long?&#160;</td>
+          <td class="paramname"><em>first</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>after</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long?&#160;</td>
+          <td class="paramname"><em>last</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>before</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool?&#160;</td>
+          <td class="paramname"><em>reverse</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>alias</em> = <code>null</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A paginated list of metafields associated with the resource. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">namespace</td><td>Container for a set of metafields (maximum of 20 characters). </td></tr>
+    <tr><td class="paramname">first</td><td>Returns up to the first <code>n</code> elements from the list. </td></tr>
+    <tr><td class="paramname">after</td><td>Returns the elements that come after the specified cursor. </td></tr>
+    <tr><td class="paramname">last</td><td>Returns up to the last <code>n</code> elements from the list. </td></tr>
+    <tr><td class="paramname">before</td><td>Returns the elements that come before the specified cursor. </td></tr>
+    <tr><td class="paramname">reverse</td><td>Reverse the order of the underlying list. </td></tr>
   </table>
   </dd>
 </dl>

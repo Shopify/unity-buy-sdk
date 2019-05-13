@@ -8,5 +8,6 @@ var searchData=
   ['jo',['JO',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a60aea2edd1105dd93c39e6e193080736',1,'Shopify::Unity']]],
   ['jod',['JOD',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbabbd6d81bfc55c33603ed6378bc630669',1,'Shopify::Unity']]],
   ['jp',['JP',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a24d22e03afb23edb45c6c8cfa16a280e',1,'Shopify::Unity']]],
-  ['jpy',['JPY',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba0d22295dba298b8a4831a943545b0810',1,'Shopify::Unity']]]
+  ['jpy',['JPY',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba0d22295dba298b8a4831a943545b0810',1,'Shopify::Unity']]],
+  ['json_5fstring',['JSON_STRING',['../namespace_shopify_1_1_unity.html#ab6c9fffcdf14ce85e1276f1b81baba4eabc0c096e19ed4561419903a21d913903',1,'Shopify::Unity']]]
 ];
