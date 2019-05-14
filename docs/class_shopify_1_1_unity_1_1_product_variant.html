@@ -82,7 +82,8 @@ Inheritance diagram for Shopify.Unity.ProductVariant:</div>
   <img src="class_shopify_1_1_unity_1_1_product_variant.png" usemap="#Shopify.Unity.ProductVariant_map" alt=""/>
   <map id="Shopify.Unity.ProductVariant_map" name="Shopify.Unity.ProductVariant_map">
 <area href="class_shopify_1_1_unity_1_1_s_d_k_1_1_abstract_response.html" alt="Shopify.Unity.SDK.AbstractResponse" shape="rect" coords="0,0,222,24"/>
-<area href="interface_shopify_1_1_unity_1_1_node.html" title="An object with an ID to support global identification." alt="Shopify.Unity.Node" shape="rect" coords="464,0,686,24"/>
+<area href="interface_shopify_1_1_unity_1_1_has_metafields.html" title="Represents information about the metafields associated to the specified resource." alt="Shopify.Unity.HasMetafields" shape="rect" coords="464,0,686,24"/>
+<area href="interface_shopify_1_1_unity_1_1_node.html" title="An object with an ID to support global identification." alt="Shopify.Unity.Node" shape="rect" coords="696,0,918,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -109,6 +110,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7fa3a0d4a22d057f83711e6e2d68525f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_image.html">Image</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_product_variant.html#a7fa3a0d4a22d057f83711e6e2d68525f">image</a> (string alias=null)</td></tr>
 <tr class="memdesc:a7fa3a0d4a22d057f83711e6e2d68525f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_shopify_1_1_unity_1_1_image.html" title="Represents an image resource.">Image</a> associated with the product variant. This field falls back to the product image if no image is available.  <a href="#a7fa3a0d4a22d057f83711e6e2d68525f">More...</a><br /></td></tr>
 <tr class="separator:a7fa3a0d4a22d057f83711e6e2d68525f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19648b459ec69e79ca0171874074a755"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_metafield.html">Metafield</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_product_variant.html#a19648b459ec69e79ca0171874074a755">metafield</a> (string alias=null)</td></tr>
+<tr class="memdesc:a19648b459ec69e79ca0171874074a755"><td class="mdescLeft">&#160;</td><td class="mdescRight">The metafield associated with the resource.  <a href="#a19648b459ec69e79ca0171874074a755">More...</a><br /></td></tr>
+<tr class="separator:a19648b459ec69e79ca0171874074a755"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fe7bc64d8607446312491a9c69e7fd0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_metafield_connection.html">MetafieldConnection</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_product_variant.html#a8fe7bc64d8607446312491a9c69e7fd0">metafields</a> (string alias=null)</td></tr>
+<tr class="memdesc:a8fe7bc64d8607446312491a9c69e7fd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">A paginated list of metafields associated with the resource.  <a href="#a8fe7bc64d8607446312491a9c69e7fd0">More...</a><br /></td></tr>
+<tr class="separator:a8fe7bc64d8607446312491a9c69e7fd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c3e1f20abbd3e7b7ed6e66b01849141"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_product_variant_price_pair_connection.html">ProductVariantPricePairConnection</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_product_variant.html#a0c3e1f20abbd3e7b7ed6e66b01849141">presentmentPrices</a> (string alias=null)</td></tr>
 <tr class="memdesc:a0c3e1f20abbd3e7b7ed6e66b01849141"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of prices and compare-at prices in the presentment currencies for this shop.  <a href="#a0c3e1f20abbd3e7b7ed6e66b01849141">More...</a><br /></td></tr>
 <tr class="separator:a0c3e1f20abbd3e7b7ed6e66b01849141"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -363,6 +370,78 @@ Dictionary&lt; string, object &gt;&#160;</td><td class="memItemRight" valign="bo
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a19648b459ec69e79ca0171874074a755"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19648b459ec69e79ca0171874074a755">&#9670;&nbsp;</a></span>metafield()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_shopify_1_1_unity_1_1_metafield.html">Metafield</a> Shopify.Unity.ProductVariant.metafield </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>alias</em> = <code>null</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The metafield associated with the resource. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">alias</td><td>If the original field queried was queried using an alias, then pass the matching string. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="interface_shopify_1_1_unity_1_1_has_metafields.html#ad004d783f29769df68f6c80971c6e0b1">Shopify.Unity.HasMetafields</a>.</p>
+
+</div>
+</div>
+<a id="a8fe7bc64d8607446312491a9c69e7fd0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fe7bc64d8607446312491a9c69e7fd0">&#9670;&nbsp;</a></span>metafields()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_shopify_1_1_unity_1_1_metafield_connection.html">MetafieldConnection</a> Shopify.Unity.ProductVariant.metafields </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>alias</em> = <code>null</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A paginated list of metafields associated with the resource. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">alias</td><td>If the original field queried was queried using an alias, then pass the matching string. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="interface_shopify_1_1_unity_1_1_has_metafields.html#ae41aec2da94c9f8007eaecefd83b4fe1">Shopify.Unity.HasMetafields</a>.</p>
 
 </div>
 </div>
