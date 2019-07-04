@@ -30,6 +30,7 @@ var searchData=
   ['inr',['INR',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba4ffae8c8c3bda724e6cc853513870137',1,'Shopify::Unity']]],
   ['integer',['INTEGER',['../namespace_shopify_1_1_unity.html#ab6c9fffcdf14ce85e1276f1b81baba4ea5d5cd46919fa987731fb2edefe0f2a0c',1,'Shopify::Unity']]],
   ['invalid',['INVALID',['../namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28caccc0377a8afbf50e7094f5c23a8af223',1,'Shopify.Unity.INVALID()'],['../namespace_shopify_1_1_unity.html#ae516a5ae00064fc47e37436076b64d45accc0377a8afbf50e7094f5c23a8af223',1,'Shopify.Unity.INVALID()']]],
+  ['invalid_5ffor_5fcountry',['INVALID_FOR_COUNTRY',['../namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28cabd9cd93c9f5c9c325962b30f3c5bddab',1,'Shopify::Unity']]],
   ['invalid_5ffor_5fcountry_5fand_5fprovince',['INVALID_FOR_COUNTRY_AND_PROVINCE',['../namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca4bf28b791673bd8040e47e5e57571ca6',1,'Shopify::Unity']]],
   ['invalid_5fprovince_5fin_5fcountry',['INVALID_PROVINCE_IN_COUNTRY',['../namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca93e2e726e241d9aa52ad55254cc4c51f',1,'Shopify::Unity']]],
   ['invalid_5fregion_5fin_5fcountry',['INVALID_REGION_IN_COUNTRY',['../namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28caba235c24ba1b18a20d107aaddc10c667',1,'Shopify::Unity']]],
