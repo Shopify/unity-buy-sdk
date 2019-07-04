@@ -64,7 +64,7 @@ namespace Shopify.Unity.SDK {
         /// <param name="callback">callback that receives a response</param>
         override public void Load(string query, LoaderResponseHandler callback) {
             GlobalGameObject.AddComponent<LoaderComponent>()
-                .SetURL("https://" + Domain + "/api/graphql.json")
+                .SetURL("https://" + Domain + "/api/2019-07/graphql.json")
                 .SetHeaders(_Headers)
                 .Load(query, callback);
         }
