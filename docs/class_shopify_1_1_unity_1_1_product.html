@@ -93,7 +93,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ad3394592c3eae3165eba01e94a440fc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accepts deserialized json data.  Will further parse passed in data.  <a href="#ad3394592c3eae3165eba01e94a440fc4">More...</a><br /></td></tr>
 <tr class="separator:ad3394592c3eae3165eba01e94a440fc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae15f0c342dfbaf4623d7d7f24d27e5c4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_product.html#ae15f0c342dfbaf4623d7d7f24d27e5c4">availableForSale</a> ()</td></tr>
-<tr class="memdesc:ae15f0c342dfbaf4623d7d7f24d27e5c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates if at least one product variant is available for sale.  <a href="#ae15f0c342dfbaf4623d7d7f24d27e5c4">More...</a><br /></td></tr>
+<tr class="memdesc:ae15f0c342dfbaf4623d7d7f24d27e5c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the product is available on the Online Store channel and in stock.  <a href="#ae15f0c342dfbaf4623d7d7f24d27e5c4">More...</a><br /></td></tr>
 <tr class="separator:ae15f0c342dfbaf4623d7d7f24d27e5c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4574f5802680f0fa00b907d3dc76b73"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_collection_connection.html">CollectionConnection</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_product.html#aa4574f5802680f0fa00b907d3dc76b73">collections</a> (string alias=null)</td></tr>
 <tr class="memdesc:aa4574f5802680f0fa00b907d3dc76b73"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of collections a product belongs to.  <a href="#aa4574f5802680f0fa00b907d3dc76b73">More...</a><br /></td></tr>
@@ -128,6 +128,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac1b50161f71a5c8d78fd71dff765e5ed"><td class="memItemLeft" align="right" valign="top">List&lt; <a class="el" href="class_shopify_1_1_unity_1_1_product_option.html">ProductOption</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_product.html#ac1b50161f71a5c8d78fd71dff765e5ed">options</a> (string alias=null)</td></tr>
 <tr class="memdesc:ac1b50161f71a5c8d78fd71dff765e5ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of custom product options (maximum of 3 per product).  <a href="#ac1b50161f71a5c8d78fd71dff765e5ed">More...</a><br /></td></tr>
 <tr class="separator:ac1b50161f71a5c8d78fd71dff765e5ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af63014c2c2a178f012a22c8efe8f8313"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_product_price_range_connection.html">ProductPriceRangeConnection</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_product.html#af63014c2c2a178f012a22c8efe8f8313">presentmentPriceRanges</a> (string alias=null)</td></tr>
+<tr class="memdesc:af63014c2c2a178f012a22c8efe8f8313"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of price ranges in the presentment currencies for this shop.  <a href="#af63014c2c2a178f012a22c8efe8f8313">More...</a><br /></td></tr>
+<tr class="separator:af63014c2c2a178f012a22c8efe8f8313"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9113d7f11b29fefe5b19e739dfc84e53"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_product_price_range.html">ProductPriceRange</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_product.html#a9113d7f11b29fefe5b19e739dfc84e53">priceRange</a> ()</td></tr>
 <tr class="memdesc:a9113d7f11b29fefe5b19e739dfc84e53"><td class="mdescLeft">&#160;</td><td class="mdescRight">The price range.  <a href="#a9113d7f11b29fefe5b19e739dfc84e53">More...</a><br /></td></tr>
 <tr class="separator:a9113d7f11b29fefe5b19e739dfc84e53"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -235,7 +238,7 @@ Dictionary&lt; string, object &gt;&#160;</td><td class="memItemRight" valign="bo
 </table>
 </div><div class="memdoc">
 
-<p>Indicates if at least one product variant is available for sale. </p>
+<p>Whether the product is available on the Online Store channel and in stock. </p>
 
 </div>
 </div>
@@ -575,6 +578,40 @@ Dictionary&lt; string, object &gt;&#160;</td><td class="memItemRight" valign="bo
 </div><div class="memdoc">
 
 <p>List of custom product options (maximum of 3 per product). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">alias</td><td>If the original field queried was queried using an alias, then pass the matching string. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af63014c2c2a178f012a22c8efe8f8313"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af63014c2c2a178f012a22c8efe8f8313">&#9670;&nbsp;</a></span>presentmentPriceRanges()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_shopify_1_1_unity_1_1_product_price_range_connection.html">ProductPriceRangeConnection</a> Shopify.Unity.Product.presentmentPriceRanges </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>alias</em> = <code>null</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>List of price ranges in the presentment currencies for this shop. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">alias</td><td>If the original field queried was queried using an alias, then pass the matching string. </td></tr>

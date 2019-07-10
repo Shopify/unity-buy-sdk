@@ -8,6 +8,6 @@ var searchData=
   ['imageedge',['ImageEdge',['../class_shopify_1_1_unity_1_1_image_edge.html#a95f3b5a7a11f05c65319963e7e0c9126',1,'Shopify::Unity::ImageEdge']]],
   ['imageedgequery',['ImageEdgeQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_image_edge_query.html#a22abdd53ad10aec2ebe921d3f8167b78',1,'Shopify::Unity::GraphQL::ImageEdgeQuery']]],
   ['imagequery',['ImageQuery',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_image_query.html#ad50483aa584df27e4e69d5a0d2fa7a2c',1,'Shopify::Unity::GraphQL::ImageQuery']]],
-  ['images',['images',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_product_query.html#afdb8a98b4a0d0aafe59bdc243b53bd0a',1,'Shopify.Unity.GraphQL.ProductQuery.images()'],['../class_shopify_1_1_unity_1_1_product.html#a254bf6a4a437376b99fc9bc21c26a4c7',1,'Shopify.Unity.Product.images()']]],
+  ['images',['images',['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_product_query.html#a34686e06d0fffd723bdf69f129cc8ab1',1,'Shopify.Unity.GraphQL.ProductQuery.images()'],['../class_shopify_1_1_unity_1_1_product.html#a254bf6a4a437376b99fc9bc21c26a4c7',1,'Shopify.Unity.Product.images()']]],
   ['init',['Init',['../class_shopify_1_1_unity_1_1_shopify_buy.html#a72623b45a5034bf418db4107e08c6d58',1,'Shopify.Unity.ShopifyBuy.Init(string accessToken, string domain)'],['../class_shopify_1_1_unity_1_1_shopify_buy.html#a3985faad28b040e2f4e8e68b6d3c6586',1,'Shopify.Unity.ShopifyBuy.Init(BaseLoader loader)']]]
 ];
