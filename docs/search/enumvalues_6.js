@@ -14,6 +14,7 @@ var searchData=
   ['gift_5fcard_5falready_5fapplied',['GIFT_CARD_ALREADY_APPLIED',['../namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28caa7cf0574b79848a416f3eaaa204c225d',1,'Shopify::Unity']]],
   ['gift_5fcard_5fcode_5finvalid',['GIFT_CARD_CODE_INVALID',['../namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca591c316435495a8949e2603bd26e7e7c',1,'Shopify::Unity']]],
   ['gift_5fcard_5fcurrency_5fmismatch',['GIFT_CARD_CURRENCY_MISMATCH',['../namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca1460abc639cbb6e9233b5cdbe71996da',1,'Shopify::Unity']]],
+  ['gift_5fcard_5fdepleted',['GIFT_CARD_DEPLETED',['../namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca0dd55d1dce18091136e762007b9328e6',1,'Shopify::Unity']]],
   ['gift_5fcard_5fdisabled',['GIFT_CARD_DISABLED',['../namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28caf160848e3ba2608a0171007c1ad57503',1,'Shopify::Unity']]],
   ['gift_5fcard_5fexpired',['GIFT_CARD_EXPIRED',['../namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28cafd9cd5061db8c00352d20062b960ba25',1,'Shopify::Unity']]],
   ['gift_5fcard_5fnot_5ffound',['GIFT_CARD_NOT_FOUND',['../namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca1f068500f249bb927dbf0023d8152184',1,'Shopify::Unity']]],

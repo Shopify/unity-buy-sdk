@@ -1,6 +1,7 @@
 var searchData=
 [
   ['ba',['BA',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a5fc810cf62601df84b7923b9964c53e6',1,'Shopify::Unity']]],
+  ['bad_5fdomain',['BAD_DOMAIN',['../namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca10a69fa4d3aef5c000caf63eaa21d122',1,'Shopify::Unity']]],
   ['balance',['balance',['../class_shopify_1_1_unity_1_1_applied_gift_card.html#a25a5daa15bb9752fb1818534616f01cd',1,'Shopify.Unity.AppliedGiftCard.balance()'],['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_applied_gift_card_query.html#a3df946b00a45d9160a737b99caa9deda',1,'Shopify.Unity.GraphQL.AppliedGiftCardQuery.balance()']]],
   ['balancev2',['balanceV2',['../class_shopify_1_1_unity_1_1_applied_gift_card.html#a500906d0327fe620bed7d5680e05f4e4',1,'Shopify.Unity.AppliedGiftCard.balanceV2()'],['../class_shopify_1_1_unity_1_1_graph_q_l_1_1_applied_gift_card_query.html#a3f2d429b11607ad0b8b47ada239c1c05',1,'Shopify.Unity.GraphQL.AppliedGiftCardQuery.balanceV2()']]],
   ['bam',['BAM',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba1a7b8a7f177e024e1685e780c47649c6',1,'Shopify::Unity']]],
@@ -54,7 +55,6 @@ var searchData=
   ['bw',['BW',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a81043f8c681575bca3e4eff6afbd9db9',1,'Shopify::Unity']]],
   ['bwp',['BWP',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba38f2cd3fe66b7b8a64b46bc06880d4b7',1,'Shopify::Unity']]],
   ['by',['BY',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7a925ab312a51a924ab68d9812baa788ff',1,'Shopify::Unity']]],
-  ['byr',['BYR',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbab52741e555b22de01ac3e002e30def8d',1,'Shopify::Unity']]],
   ['bz',['BZ',['../namespace_shopify_1_1_unity.html#a4ac2ce915c4dff60a384bb28448ea8c7ae45fbcf6ca3b21f17c5f355728a2fbec',1,'Shopify::Unity']]],
   ['bzd',['BZD',['../namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba12f48c676c18cee9f424d11554c49415',1,'Shopify::Unity']]]
 ];

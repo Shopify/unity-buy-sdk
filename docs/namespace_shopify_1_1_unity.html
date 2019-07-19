@@ -76,6 +76,9 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_api_version.html">ApiVersion</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A version of the API.  <a href="class_shopify_1_1_unity_1_1_api_version.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_applied_gift_card.html">AppliedGiftCard</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Details about the gift card used on the checkout.  <a href="class_shopify_1_1_unity_1_1_applied_gift_card.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -472,6 +475,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_product_price_range.html">ProductPriceRange</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The price range of the product.  <a href="class_shopify_1_1_unity_1_1_product_price_range.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_product_price_range_connection.html">ProductPriceRangeConnection</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_shopify_1_1_unity_1_1_product_price_range_connection.html" title="ProductPriceRangeConnection is a response object. ProductPriceRangeConnection can be cast to List&lt;Pro...">ProductPriceRangeConnection</a> is a response object. <a class="el" href="class_shopify_1_1_unity_1_1_product_price_range_connection.html" title="ProductPriceRangeConnection is a response object. ProductPriceRangeConnection can be cast to List&lt;Pro...">ProductPriceRangeConnection</a> can be cast to <code>List&lt;ProductPriceRange&gt;</code>.  <a href="class_shopify_1_1_unity_1_1_product_price_range_connection.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_product_price_range_edge.html">ProductPriceRangeEdge</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_shopify_1_1_unity_1_1_product_price_range_edge.html" title="ProductPriceRangeEdge is a response object.">ProductPriceRangeEdge</a> is a response object.  <a href="class_shopify_1_1_unity_1_1_product_price_range_edge.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_product_variant.html">ProductVariant</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A product variant represents a different version of a product, such as differing sizes or differing colors.  <a href="class_shopify_1_1_unity_1_1_product_variant.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -669,45 +678,50 @@ Enumerations</h2></td></tr>
 <tr class="memitem:af6342b82d86827ab7d3d061ef8f1c28c"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28c">CheckoutErrorCode</a> { <br />
 &#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca696b031073e74bf2cb98e5ef201d4aa3">CheckoutErrorCode.UNKNOWN</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28cad2968fd3d5f09366cf40c801ecfce269">CheckoutErrorCode.ALREADY_COMPLETED</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca10a69fa4d3aef5c000caf63eaa21d122">CheckoutErrorCode.BAD_DOMAIN</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca56f031dd03707d695f76c63ddbf40bd7">CheckoutErrorCode.BLANK</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28cab5a7a9ae4e8fc9ba97b6a2f73fc69993">CheckoutErrorCode.CART_DOES_NOT_MEET_DISCOUNT_REQUIREMENTS_NOTICE</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca8d495adbd0513d5f59a2a84e0ce782ed">CheckoutErrorCode.CUSTOMER_ALREADY_USED_ONCE_PER_CUSTOMER_DISCOUNT_NOTICE</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28cab5a7a9ae4e8fc9ba97b6a2f73fc69993">CheckoutErrorCode.CART_DOES_NOT_MEET_DISCOUNT_REQUIREMENTS_NOTICE</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca8d495adbd0513d5f59a2a84e0ce782ed">CheckoutErrorCode.CUSTOMER_ALREADY_USED_ONCE_PER_CUSTOMER_DISCOUNT_NOTICE</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca92177f5b5c07fd7d46f6a5ed0c2fc850">CheckoutErrorCode.DISCOUNT_DISABLED</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28caee991d3c4623d7a4e68bc8d1a5e6f3f2">CheckoutErrorCode.DISCOUNT_EXPIRED</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca76cd0e3f8dc0ebb7929c4de6a3d6e6c4">CheckoutErrorCode.DISCOUNT_LIMIT_REACHED</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28cabcd6febe74d848c080c2a3342fb928f8">CheckoutErrorCode.DISCOUNT_NOT_FOUND</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca76cd0e3f8dc0ebb7929c4de6a3d6e6c4">CheckoutErrorCode.DISCOUNT_LIMIT_REACHED</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28cabcd6febe74d848c080c2a3342fb928f8">CheckoutErrorCode.DISCOUNT_NOT_FOUND</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28caba2b45bdc11e2a4a6e86aab2ac693cbb">CheckoutErrorCode.EMPTY</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28caa7cf0574b79848a416f3eaaa204c225d">CheckoutErrorCode.GIFT_CARD_ALREADY_APPLIED</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca591c316435495a8949e2603bd26e7e7c">CheckoutErrorCode.GIFT_CARD_CODE_INVALID</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca1460abc639cbb6e9233b5cdbe71996da">CheckoutErrorCode.GIFT_CARD_CURRENCY_MISMATCH</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca591c316435495a8949e2603bd26e7e7c">CheckoutErrorCode.GIFT_CARD_CODE_INVALID</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca1460abc639cbb6e9233b5cdbe71996da">CheckoutErrorCode.GIFT_CARD_CURRENCY_MISMATCH</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca0dd55d1dce18091136e762007b9328e6">CheckoutErrorCode.GIFT_CARD_DEPLETED</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28caf160848e3ba2608a0171007c1ad57503">CheckoutErrorCode.GIFT_CARD_DISABLED</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28cafd9cd5061db8c00352d20062b960ba25">CheckoutErrorCode.GIFT_CARD_EXPIRED</a>, 
+<br />
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28cafd9cd5061db8c00352d20062b960ba25">CheckoutErrorCode.GIFT_CARD_EXPIRED</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca1f068500f249bb927dbf0023d8152184">CheckoutErrorCode.GIFT_CARD_NOT_FOUND</a>, 
-<br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28cac0505fb4af0a8c5602bc5594fbbff536">CheckoutErrorCode.GIFT_CARD_UNUSABLE</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28cac0505fb4af0a8c5602bc5594fbbff536">CheckoutErrorCode.GIFT_CARD_UNUSABLE</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28cab1057e560ae9cfb4f451e53341af1114">CheckoutErrorCode.GREATER_THAN_OR_EQUAL_TO</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28caccc0377a8afbf50e7094f5c23a8af223">CheckoutErrorCode.INVALID</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca4bf28b791673bd8040e47e5e57571ca6">CheckoutErrorCode.INVALID_FOR_COUNTRY_AND_PROVINCE</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca93e2e726e241d9aa52ad55254cc4c51f">CheckoutErrorCode.INVALID_PROVINCE_IN_COUNTRY</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28caba235c24ba1b18a20d107aaddc10c667">CheckoutErrorCode.INVALID_REGION_IN_COUNTRY</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28caccc0377a8afbf50e7094f5c23a8af223">CheckoutErrorCode.INVALID</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28cabd9cd93c9f5c9c325962b30f3c5bddab">CheckoutErrorCode.INVALID_FOR_COUNTRY</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca4bf28b791673bd8040e47e5e57571ca6">CheckoutErrorCode.INVALID_FOR_COUNTRY_AND_PROVINCE</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca93e2e726e241d9aa52ad55254cc4c51f">CheckoutErrorCode.INVALID_PROVINCE_IN_COUNTRY</a>, 
+<br />
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28caba235c24ba1b18a20d107aaddc10c667">CheckoutErrorCode.INVALID_REGION_IN_COUNTRY</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca87b25b5d157c5e53cb2a83900cf7c836">CheckoutErrorCode.INVALID_STATE_IN_COUNTRY</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28caa327176a0a845c117bdfadec134a95e9">CheckoutErrorCode.LESS_THAN</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca65fdda75d6d9ba052225e222d77a85d3">CheckoutErrorCode.LESS_THAN_OR_EQUAL_TO</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca65fdda75d6d9ba052225e222d77a85d3">CheckoutErrorCode.LESS_THAN_OR_EQUAL_TO</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28cae993df391059772a8b7504f3542ed968">CheckoutErrorCode.LINE_ITEM_NOT_FOUND</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28cae993df391059772a8b7504f3542ed968">CheckoutErrorCode.LINE_ITEM_NOT_FOUND</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28caaeff3f3f2731681b2ed6a27786a56203">CheckoutErrorCode.LOCKED</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28cae618ab7140510a76486d1687f23fccfc">CheckoutErrorCode.MISSING_PAYMENT_INPUT</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28caed0b49833dd1c3359dc345484da7632c">CheckoutErrorCode.NOT_ENOUGH_IN_STOCK</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28caed0b49833dd1c3359dc345484da7632c">CheckoutErrorCode.NOT_ENOUGH_IN_STOCK</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca5343bcd21aad65124478a61831f6949e">CheckoutErrorCode.NOT_SUPPORTED</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca5343bcd21aad65124478a61831f6949e">CheckoutErrorCode.NOT_SUPPORTED</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca720ff3fec5d13dcf3d3aec6d5726fc36">CheckoutErrorCode.PRESENT</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca8e9c7df6c44cf96213d678659e33b9c7">CheckoutErrorCode.SHIPPING_RATE_EXPIRED</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca96307b673d66e1f465af10eaaa8f7f37">CheckoutErrorCode.TOO_LONG</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca96307b673d66e1f465af10eaaa8f7f37">CheckoutErrorCode.TOO_LONG</a>
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28ca7199490ab712347369d106216695be74">CheckoutErrorCode.TOTAL_PRICE_MISMATCH</a>
 <br />
  }</td></tr>
 <tr class="memdesc:af6342b82d86827ab7d3d061ef8f1c28c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Possible error codes that could be returned by a checkout mutation.  <a href="namespace_shopify_1_1_unity.html#af6342b82d86827ab7d3d061ef8f1c28c">More...</a><br /></td></tr>
@@ -1074,153 +1088,152 @@ Enumerations</h2></td></tr>
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba59a16d9c66d488bf850d7fb1e36c4e38">CurrencyCode.BTN</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba38f2cd3fe66b7b8a64b46bc06880d4b7">CurrencyCode.BWP</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbab52741e555b22de01ac3e002e30def8d">CurrencyCode.BYR</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba12f48c676c18cee9f424d11554c49415">CurrencyCode.BZD</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba12f48c676c18cee9f424d11554c49415">CurrencyCode.BZD</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbaeccb0954fca9f2005aea084605df5ee9">CurrencyCode.CAD</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbab73cc6d3c1d3fbf4c49aea0b307498dd">CurrencyCode.CDF</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba2fc2052eaa45739a9fd0854d4ed60178">CurrencyCode.CHF</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba2fc2052eaa45739a9fd0854d4ed60178">CurrencyCode.CHF</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba5a8d0cfaadd7efd6c44c000085157da7">CurrencyCode.CLP</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba5a8d0cfaadd7efd6c44c000085157da7">CurrencyCode.CLP</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba889ee9331f891492f89b1e578fa377e0">CurrencyCode.CNY</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba97afc5c19a02014cfde1c064281437c5">CurrencyCode.COP</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba1a4b5d84a0328c4a33bd669c608a34c3">CurrencyCode.CRC</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba1a4b5d84a0328c4a33bd669c608a34c3">CurrencyCode.CRC</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba6ee17bdf4a7da206068fe02847a4aed5">CurrencyCode.CVE</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba6ee17bdf4a7da206068fe02847a4aed5">CurrencyCode.CVE</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbaf7798e50e553b23427e7df0a7a2652f5">CurrencyCode.CZK</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba5b006441e694cb45a1af078e58a66a87">CurrencyCode.DKK</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbaf08692555891e1161c5aef5b2748d7cb">CurrencyCode.DOP</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbaf08692555891e1161c5aef5b2748d7cb">CurrencyCode.DOP</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba76003fa8a8db1c8236e0ce931221b956">CurrencyCode.DZD</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba76003fa8a8db1c8236e0ce931221b956">CurrencyCode.DZD</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbae6ed1bff71ecb02abbf87ff7e45ea08d">CurrencyCode.EGP</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbab4c1a3389b8279a0ee135fb1f8368255">CurrencyCode.ETB</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbaa055562bdb59ad8ba9cc680367308118">CurrencyCode.EUR</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbaa055562bdb59ad8ba9cc680367308118">CurrencyCode.EUR</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbaa851f968b8dda606535c03efee304638">CurrencyCode.FJD</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbaa851f968b8dda606535c03efee304638">CurrencyCode.FJD</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba3add2285094fdc3186902810080c1465">CurrencyCode.GBP</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba7410c1195ce02fe459572628e9510004">CurrencyCode.GEL</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba28a7282403cc7017c9e1d5d3f5041bfd">CurrencyCode.GHS</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba28a7282403cc7017c9e1d5d3f5041bfd">CurrencyCode.GHS</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba92a50e2b3e0ba45b28ab150a385bafcc">CurrencyCode.GMD</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba92a50e2b3e0ba45b28ab150a385bafcc">CurrencyCode.GMD</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba7542616795c2eb9363971960a03be6d0">CurrencyCode.GTQ</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba8b8685e1618393d00e8a87328b75ddd6">CurrencyCode.GYD</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba050d052a26a3109d0fb06176ee1db8e8">CurrencyCode.HKD</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba050d052a26a3109d0fb06176ee1db8e8">CurrencyCode.HKD</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbaa5bc417468d5c8c378672f6bdd2e0c90">CurrencyCode.HNL</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbaa5bc417468d5c8c378672f6bdd2e0c90">CurrencyCode.HNL</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbac11a22bb557caefe8a0f3535dbf6d201">CurrencyCode.HRK</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba2543554071f12b79a96ac865112a53e0">CurrencyCode.HTG</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbab873c060922a67f64ac09d27d1232f3a">CurrencyCode.HUF</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbab873c060922a67f64ac09d27d1232f3a">CurrencyCode.HUF</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba662f521b12c240d2c3c195f3df817b0c">CurrencyCode.IDR</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba662f521b12c240d2c3c195f3df817b0c">CurrencyCode.IDR</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbae8eeaa7ee173b20212e40babe414c5c0">CurrencyCode.ILS</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba4ffae8c8c3bda724e6cc853513870137">CurrencyCode.INR</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba12c5b8740bddc29da3767cf7aa684995">CurrencyCode.IQD</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba12c5b8740bddc29da3767cf7aa684995">CurrencyCode.IQD</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba3f7d50b1685e7b14f5bfabf8b30c703a">CurrencyCode.ISK</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba3f7d50b1685e7b14f5bfabf8b30c703a">CurrencyCode.ISK</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbace7d5caea40df9e759a2c1e0ec747f69">CurrencyCode.JEP</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbaf181725eb3c84625bc1c77fa4b39f47c">CurrencyCode.JMD</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbabbd6d81bfc55c33603ed6378bc630669">CurrencyCode.JOD</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbabbd6d81bfc55c33603ed6378bc630669">CurrencyCode.JOD</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba0d22295dba298b8a4831a943545b0810">CurrencyCode.JPY</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba0d22295dba298b8a4831a943545b0810">CurrencyCode.JPY</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbaa30dde4ffcc7acd1174a05337056b552">CurrencyCode.KES</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba9776c6483767cddae0a38b6149c08539">CurrencyCode.KGS</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba65eb61d210f3ecf445f512103e765526">CurrencyCode.KHR</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba65eb61d210f3ecf445f512103e765526">CurrencyCode.KHR</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba08f07ee80338d2cf4fd65e7bc1909085">CurrencyCode.KMF</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba08f07ee80338d2cf4fd65e7bc1909085">CurrencyCode.KMF</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbac23f09a01b1dd2f943081b0b6febaf99">CurrencyCode.KRW</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba271d7a29c754eabd6a110781a1adbd2d">CurrencyCode.KWD</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba28947ba4750bacc0947be464145e08b0">CurrencyCode.KYD</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba28947ba4750bacc0947be464145e08b0">CurrencyCode.KYD</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba534bb16ce9b372e8099db6081da2f962">CurrencyCode.KZT</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba534bb16ce9b372e8099db6081da2f962">CurrencyCode.KZT</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbabe4e572a4ef045cdc91449b6c9435a8a">CurrencyCode.LAK</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbaf3f986eeada41af777ef5911d96c51ac">CurrencyCode.LBP</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbae71a32477769bac8d129a02cd467e3e6">CurrencyCode.LKR</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbae71a32477769bac8d129a02cd467e3e6">CurrencyCode.LKR</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbad528bfe5f0c992baffcc8a7bef5cdcfb">CurrencyCode.LRD</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbad528bfe5f0c992baffcc8a7bef5cdcfb">CurrencyCode.LRD</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba3005b8eab96f81df142d787d501d0537">CurrencyCode.LSL</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba0c170b4d97fea3638c0d84b328f70e5d">CurrencyCode.LTL</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbae3955236ad4646e67f60698abd71def9">CurrencyCode.LVL</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbae3955236ad4646e67f60698abd71def9">CurrencyCode.LVL</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba93720e823d9d9af2323095152cb82906">CurrencyCode.MAD</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba93720e823d9d9af2323095152cb82906">CurrencyCode.MAD</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba348d31a82fa0f420fc0cde4a1d0d845d">CurrencyCode.MDL</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbae4e393f29af8aac8d614354c3d5f3f4b">CurrencyCode.MGA</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba0548a9028acd6263c147e79e4f88cba9">CurrencyCode.MKD</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba0548a9028acd6263c147e79e4f88cba9">CurrencyCode.MKD</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba00afc6449b1df39f464ea2ca3e56af77">CurrencyCode.MMK</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba00afc6449b1df39f464ea2ca3e56af77">CurrencyCode.MMK</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba4ff42742f9523e698b35154f999f49a2">CurrencyCode.MNT</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbaaf291240e221bb0e94c2f09ee87606cf">CurrencyCode.MOP</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbaf0b2399fd4bf13d1d6a8e7bf52b27483">CurrencyCode.MUR</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbaf0b2399fd4bf13d1d6a8e7bf52b27483">CurrencyCode.MUR</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba8a9610503700ef6d0d6c1caf8f04ed9f">CurrencyCode.MVR</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba8a9610503700ef6d0d6c1caf8f04ed9f">CurrencyCode.MVR</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba2dcba686bf7216688c21aaf78f409d11">CurrencyCode.MWK</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbafd604fc0dab0ef9d793c9598ae881435">CurrencyCode.MXN</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbab46e678fc5474ec8216c5e3f4e9d327c">CurrencyCode.MYR</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbab46e678fc5474ec8216c5e3f4e9d327c">CurrencyCode.MYR</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbabfc5d29c78a266f33479d3fbad222d43">CurrencyCode.MZN</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbabfc5d29c78a266f33479d3fbad222d43">CurrencyCode.MZN</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba5086565b5604071b2d45d42afcb0d3e9">CurrencyCode.NAD</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba24438898da5334bffffc8ac71ad2bb4e">CurrencyCode.NGN</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbab6d9dfc0fb54277321cebc0fff55df2f">CurrencyCode.NIO</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbab6d9dfc0fb54277321cebc0fff55df2f">CurrencyCode.NIO</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba9da9d122fdf01b1db2816592e00f28ad">CurrencyCode.NOK</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba9da9d122fdf01b1db2816592e00f28ad">CurrencyCode.NOK</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba8c1a521d101eb24d139dc9ddfa30002f">CurrencyCode.NPR</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba2e3f914e325a1ca0cb82a132af1002d3">CurrencyCode.NZD</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba785c1fd450f5b42627e79c1890076425">CurrencyCode.OMR</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba785c1fd450f5b42627e79c1890076425">CurrencyCode.OMR</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbadcf47583029f79d64904cf78daa360cb">CurrencyCode.PAB</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbadcf47583029f79d64904cf78daa360cb">CurrencyCode.PAB</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbad3fa1aa45b9fe56e1fc1b558d8ed6678">CurrencyCode.PEN</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba02696515e6679650baaeb843d97cafd7">CurrencyCode.PGK</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba2fec392304a5c23ac138da22847f9b7c">CurrencyCode.PHP</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba2fec392304a5c23ac138da22847f9b7c">CurrencyCode.PHP</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba9267b1cbc6480d0ea037217688b3a655">CurrencyCode.PKR</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba9267b1cbc6480d0ea037217688b3a655">CurrencyCode.PKR</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba446687ea2db1ada75be5ed053be77f59">CurrencyCode.PLN</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba1bd5eed877a03f45eeb9e0d518e4834a">CurrencyCode.PYG</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbab9e33abf4608c4741652596350ea9718">CurrencyCode.QAR</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbab9e33abf4608c4741652596350ea9718">CurrencyCode.QAR</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbad9fe5d2850f1ed167451b193e8bd0e0c">CurrencyCode.RON</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbad9fe5d2850f1ed167451b193e8bd0e0c">CurrencyCode.RON</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba44bde19cbc0e830bcaf054b5413dd39d">CurrencyCode.RSD</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba67654743cc32dfeebf2d2d154db69cd8">CurrencyCode.RUB</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbac29c4eeb2e3797d5e67621f51f3aecc1">CurrencyCode.RWF</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbac29c4eeb2e3797d5e67621f51f3aecc1">CurrencyCode.RWF</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba269bdc1fb1aadcc5b575a68220158602">CurrencyCode.SAR</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba269bdc1fb1aadcc5b575a68220158602">CurrencyCode.SAR</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba6024317e5bdddf62aa295395cbde54ab">CurrencyCode.SBD</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbab9c29cd5f83c535b0bcaf31343315bad">CurrencyCode.SCR</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba69614e7441b01c9ba6d4974080d6d099">CurrencyCode.SDG</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba69614e7441b01c9ba6d4974080d6d099">CurrencyCode.SDG</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbab86a6b4eb2675aa98b7a63b568434502">CurrencyCode.SEK</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbab86a6b4eb2675aa98b7a63b568434502">CurrencyCode.SEK</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba50ecf75f1077e1d250a781764b89cbc2">CurrencyCode.SGD</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbaa4064eed91e071a8d451e0d09b480f78">CurrencyCode.SRD</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbacad9dc5510baf012abf902dfa6bd3ad0">CurrencyCode.SSP</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbacad9dc5510baf012abf902dfa6bd3ad0">CurrencyCode.SSP</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbac6ce23be5d350ce18a665427d2d950f7">CurrencyCode.STD</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbac6ce23be5d350ce18a665427d2d950f7">CurrencyCode.STD</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbae2fcd30d2212e6e0a029704038803f37">CurrencyCode.SYP</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba736b36e322b5593697b4927d6d9132ab">CurrencyCode.SZL</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba2835f7b90768ace1225a7821f5bcd131">CurrencyCode.THB</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba2835f7b90768ace1225a7821f5bcd131">CurrencyCode.THB</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba15c42a36053d894fef1a225ce99a3a2b">CurrencyCode.TMT</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba15c42a36053d894fef1a225ce99a3a2b">CurrencyCode.TMT</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba327c766ac8796b09f63da407c9c8967b">CurrencyCode.TND</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba59dfb83f7cac4e3c8ee91700ef2ad90d">CurrencyCode.TRY</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba486a950d9ad7a3ded9f6fe8a13803a97">CurrencyCode.TTD</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba486a950d9ad7a3ded9f6fe8a13803a97">CurrencyCode.TTD</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbabb050c779285632f0e532eab4d629b1c">CurrencyCode.TWD</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbabb050c779285632f0e532eab4d629b1c">CurrencyCode.TWD</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbaf18304033ca1591873b9752835a31c07">CurrencyCode.TZS</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba48f5bd393b268cb9f43a86af1a4d9e8c">CurrencyCode.UAH</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba9293aafd6e8e92d4bb85e72de96fd369">CurrencyCode.UGX</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba9293aafd6e8e92d4bb85e72de96fd369">CurrencyCode.UGX</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba3518f8944d42212dd37daffe097d216e">CurrencyCode.USD</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba3518f8944d42212dd37daffe097d216e">CurrencyCode.USD</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba7c18891210d2aecd27aea1e09562a989">CurrencyCode.UYU</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba7b8afbaf906a709601db6e066a527dd1">CurrencyCode.UZS</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba9a601487043d24178cf1047a3290bbdf">CurrencyCode.VEF</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba9a601487043d24178cf1047a3290bbdf">CurrencyCode.VEF</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbaf16e25cec4eccab3e643a66a8eccb1cb">CurrencyCode.VND</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbaf16e25cec4eccab3e643a66a8eccb1cb">CurrencyCode.VND</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba5dcf235420743b5636422f69a2f7822c">CurrencyCode.VUV</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba983a205329f77ebc1712be17806b8b0a">CurrencyCode.WST</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbaa9e9cd9e81ad58da5b9a608f70e1d7d9">CurrencyCode.XAF</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbaa9e9cd9e81ad58da5b9a608f70e1d7d9">CurrencyCode.XAF</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba448ddacf935102127e2c6374c945725d">CurrencyCode.XCD</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba448ddacf935102127e2c6374c945725d">CurrencyCode.XCD</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba0dad4cfd81831cfc78ca2aca02283588">CurrencyCode.XOF</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbaea10701c056918a81dc89906b9019c35">CurrencyCode.XPF</a>, 
+<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba65cca136f97e28f6ea8caf95ba0be3d6">CurrencyCode.YER</a>, 
 <br />
-&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbba65cca136f97e28f6ea8caf95ba0be3d6">CurrencyCode.YER</a>, 
-<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbaff803aa0c51703daa2dab2119613aa6f">CurrencyCode.ZAR</a>, 
+&#160;&#160;<a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbaff803aa0c51703daa2dab2119613aa6f">CurrencyCode.ZAR</a>, 
 <a class="el" href="namespace_shopify_1_1_unity.html#a99d081e99a38fbef1b41ea929d1eabbbad97f121505552c7709f4a998ebe7d84e">CurrencyCode.ZMW</a>
 <br />
  }</td></tr>
@@ -1549,6 +1562,8 @@ Enumerations</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="af6342b82d86827ab7d3d061ef8f1c28cad2968fd3d5f09366cf40c801ecfce269"></a>ALREADY_COMPLETED&#160;</td><td class="fielddoc"><p><a class="el" href="class_shopify_1_1_unity_1_1_checkout.html" title="A container for all the information required to checkout items and pay.">Checkout</a> is already completed. </p>
 </td></tr>
+<tr><td class="fieldname"><a id="af6342b82d86827ab7d3d061ef8f1c28ca10a69fa4d3aef5c000caf63eaa21d122"></a>BAD_DOMAIN&#160;</td><td class="fielddoc"><p>Input email contains an invalid domain name. </p>
+</td></tr>
 <tr><td class="fieldname"><a id="af6342b82d86827ab7d3d061ef8f1c28ca56f031dd03707d695f76c63ddbf40bd7"></a>BLANK&#160;</td><td class="fielddoc"><p>Input value is blank. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="af6342b82d86827ab7d3d061ef8f1c28cab5a7a9ae4e8fc9ba97b6a2f73fc69993"></a>CART_DOES_NOT_MEET_DISCOUNT_REQUIREMENTS_NOTICE&#160;</td><td class="fielddoc"><p><a class="el" href="class_shopify_1_1_unity_1_1_cart.html" title="Manages line items for an order. Can also be used to generate a web checkout link to check out in bro...">Cart</a> does not meet discount requirements notice. </p>
@@ -1571,6 +1586,8 @@ Enumerations</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="af6342b82d86827ab7d3d061ef8f1c28ca1460abc639cbb6e9233b5cdbe71996da"></a>GIFT_CARD_CURRENCY_MISMATCH&#160;</td><td class="fielddoc"><p>Gift card currency does not match checkout currency. </p>
 </td></tr>
+<tr><td class="fieldname"><a id="af6342b82d86827ab7d3d061ef8f1c28ca0dd55d1dce18091136e762007b9328e6"></a>GIFT_CARD_DEPLETED&#160;</td><td class="fielddoc"><p>Gift card has no funds left. </p>
+</td></tr>
 <tr><td class="fieldname"><a id="af6342b82d86827ab7d3d061ef8f1c28caf160848e3ba2608a0171007c1ad57503"></a>GIFT_CARD_DISABLED&#160;</td><td class="fielddoc"><p>Gift card is disabled. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="af6342b82d86827ab7d3d061ef8f1c28cafd9cd5061db8c00352d20062b960ba25"></a>GIFT_CARD_EXPIRED&#160;</td><td class="fielddoc"><p>Gift card is expired. </p>
@@ -1582,6 +1599,8 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="af6342b82d86827ab7d3d061ef8f1c28cab1057e560ae9cfb4f451e53341af1114"></a>GREATER_THAN_OR_EQUAL_TO&#160;</td><td class="fielddoc"><p>Input value should be greater than or equal to minimum allowed value. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="af6342b82d86827ab7d3d061ef8f1c28caccc0377a8afbf50e7094f5c23a8af223"></a>INVALID&#160;</td><td class="fielddoc"><p>Input value is invalid. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="af6342b82d86827ab7d3d061ef8f1c28cabd9cd93c9f5c9c325962b30f3c5bddab"></a>INVALID_FOR_COUNTRY&#160;</td><td class="fielddoc"><p>Input Zip is invalid for country provided. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="af6342b82d86827ab7d3d061ef8f1c28ca4bf28b791673bd8040e47e5e57571ca6"></a>INVALID_FOR_COUNTRY_AND_PROVINCE&#160;</td><td class="fielddoc"><p>Input Zip is invalid for country and province provided. </p>
 </td></tr>
@@ -1610,6 +1629,8 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="af6342b82d86827ab7d3d061ef8f1c28ca8e9c7df6c44cf96213d678659e33b9c7"></a>SHIPPING_RATE_EXPIRED&#160;</td><td class="fielddoc"><p>Shipping rate expired. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="af6342b82d86827ab7d3d061ef8f1c28ca96307b673d66e1f465af10eaaa8f7f37"></a>TOO_LONG&#160;</td><td class="fielddoc"><p>Input value is too long. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="af6342b82d86827ab7d3d061ef8f1c28ca7199490ab712347369d106216695be74"></a>TOTAL_PRICE_MISMATCH&#160;</td><td class="fielddoc"><p>The amount of the payment does not match the value to be paid. </p>
 </td></tr>
 </table>
 
@@ -2270,8 +2291,6 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="a99d081e99a38fbef1b41ea929d1eabbba59a16d9c66d488bf850d7fb1e36c4e38"></a>BTN&#160;</td><td class="fielddoc"><p>Bhutanese Ngultrum (BTN). </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a99d081e99a38fbef1b41ea929d1eabbba38f2cd3fe66b7b8a64b46bc06880d4b7"></a>BWP&#160;</td><td class="fielddoc"><p>Botswana Pula (BWP). </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a99d081e99a38fbef1b41ea929d1eabbbab52741e555b22de01ac3e002e30def8d"></a>BYR&#160;</td><td class="fielddoc"><p>Belarusian Ruble (BYR). </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a99d081e99a38fbef1b41ea929d1eabbba12f48c676c18cee9f424d11554c49415"></a>BZD&#160;</td><td class="fielddoc"><p>Belize Dollar (BZD). </p>
 </td></tr>

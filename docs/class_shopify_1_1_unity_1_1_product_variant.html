@@ -128,6 +128,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7ac4f46c8191b2e1d138661afc4af820"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shopify_1_1_unity_1_1_product.html">Product</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_product_variant.html#a7ac4f46c8191b2e1d138661afc4af820">product</a> ()</td></tr>
 <tr class="memdesc:a7ac4f46c8191b2e1d138661afc4af820"><td class="mdescLeft">&#160;</td><td class="mdescRight">The product object that the product variant belongs to.  <a href="#a7ac4f46c8191b2e1d138661afc4af820">More...</a><br /></td></tr>
 <tr class="separator:a7ac4f46c8191b2e1d138661afc4af820"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8701a012ac5b8cc3f4fbaff6dddd08a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_product_variant.html#af8701a012ac5b8cc3f4fbaff6dddd08a">requiresShipping</a> ()</td></tr>
+<tr class="memdesc:af8701a012ac5b8cc3f4fbaff6dddd08a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether a customer needs to provide a shipping address when placing an order for the product variant.  <a href="#af8701a012ac5b8cc3f4fbaff6dddd08a">More...</a><br /></td></tr>
+<tr class="separator:af8701a012ac5b8cc3f4fbaff6dddd08a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f6723262e576286a7e75c13c6f5c96f"><td class="memItemLeft" align="right" valign="top">List&lt; <a class="el" href="class_shopify_1_1_unity_1_1_selected_option.html">SelectedOption</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shopify_1_1_unity_1_1_product_variant.html#a1f6723262e576286a7e75c13c6f5c96f">selectedOptions</a> ()</td></tr>
 <tr class="memdesc:a1f6723262e576286a7e75c13c6f5c96f"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of product options applied to the variant.  <a href="#a1f6723262e576286a7e75c13c6f5c96f">More...</a><br /></td></tr>
 <tr class="separator:a1f6723262e576286a7e75c13c6f5c96f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -224,7 +227,7 @@ Dictionary&lt; string, object &gt;&#160;</td><td class="memItemRight" valign="bo
 </div><div class="memdoc">
 
 <p>Indicates if the product variant is in stock. </p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000147">Deprecated:</a></b></dt><dd>Use <code>availableForSale</code> instead </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000150">Deprecated:</a></b></dt><dd>Use <code>availableForSale</code> instead </dd></dl>
 
 </div>
 </div>
@@ -279,7 +282,7 @@ Dictionary&lt; string, object &gt;&#160;</td><td class="memItemRight" valign="bo
 </div><div class="memdoc">
 
 <p>The compare at price of the variant. This can be used to mark a variant as on sale, when <code>compareAtPrice</code> is higher than <code>price</code>. </p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000148">Deprecated:</a></b></dt><dd>Use <code>compareAtPriceV2</code> instead </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000151">Deprecated:</a></b></dt><dd>Use <code>compareAtPriceV2</code> instead </dd></dl>
 
 </div>
 </div>
@@ -503,7 +506,7 @@ Dictionary&lt; string, object &gt;&#160;</td><td class="memItemRight" valign="bo
 </div><div class="memdoc">
 
 <p>The product variant’s price. </p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000149">Deprecated:</a></b></dt><dd>Use <code>priceV2</code> instead </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000152">Deprecated:</a></b></dt><dd>Use <code>priceV2</code> instead </dd></dl>
 
 </div>
 </div>
@@ -558,6 +561,33 @@ Dictionary&lt; string, object &gt;&#160;</td><td class="memItemRight" valign="bo
 </div><div class="memdoc">
 
 <p>The product object that the product variant belongs to. </p>
+
+</div>
+</div>
+<a id="af8701a012ac5b8cc3f4fbaff6dddd08a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af8701a012ac5b8cc3f4fbaff6dddd08a">&#9670;&nbsp;</a></span>requiresShipping()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Shopify.Unity.ProductVariant.requiresShipping </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether a customer needs to provide a shipping address when placing an order for the product variant. </p>
 
 </div>
 </div>
