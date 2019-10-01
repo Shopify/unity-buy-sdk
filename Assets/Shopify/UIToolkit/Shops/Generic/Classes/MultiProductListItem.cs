@@ -25,7 +25,7 @@ namespace Shopify.UIToolkit.Shops {
             DescriptionLabel.text = StringHelper.Ellipsisize(product.description(), MaxDescriptionCharacters);
 
             var variants = (List<Shopify.Unity.ProductVariant>)product.variants();
-            PriceLabel.text = variants.First().price().ToString("C");
+            PriceLabel.text = variants.First().priceV2().amount().ToString("C");
 
             var images = (List<Shopify.Unity.Image>)product.images();
             if (images.Count > 0) {
