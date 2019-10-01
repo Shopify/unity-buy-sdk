@@ -286,7 +286,7 @@ namespace Shopify.Tests {
 
             ProductVariant variant = new ProductVariant((Dictionary<string,object>) Json.Deserialize(json));
         
-            Assert.AreEqual(3.23M, variant.price());
+            Assert.AreEqual(3.23M, variant.priceV2().amount());
         }
     }
 }
