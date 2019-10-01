@@ -11,7 +11,8 @@ namespace Shopify.Unity.SDK {
                     Checkout(checkout);
                     CheckoutLineItems(checkout);
                 })
-                .userErrors(userErrors => userErrors
+                .checkoutUserErrors(userErrors => userErrors
+                    .code()
                     .field()
                     .message()
                 ),

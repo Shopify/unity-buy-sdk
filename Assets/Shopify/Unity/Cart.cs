@@ -64,7 +64,7 @@ namespace Shopify.Unity {
         /// failure callback is invoked and the developer can reference this field to handle these issues.
         /// </summary>
         /// <returns>A list of <see ref="UserError">user errors</see> for this <see ref="Cart">Cart </see></returns>
-        public List<UserError> UserErrors {
+        public List<CheckoutUserError> UserErrors {
             get {
                 return State.UserErrors;
             }
