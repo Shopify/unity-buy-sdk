@@ -147,14 +147,18 @@ namespace Shopify.Unity.SDK {
         }
 
         private CheckoutQuery Checkout(CheckoutQuery checkout) {
+            MoneyV2Delegate moneyV2Query = (queryBuilder) => {
+                queryBuilder.amount().currencyCode();
+            };
+
             return checkout
                 .id()
                 .webUrl()
                 .currencyCode()
                 .requiresShipping()
-                .subtotalPrice()
-                .totalTax()
-                .totalPrice()
+                .subtotalPriceV2(moneyV2Query)
+                .totalTaxV2(moneyV2Query)
+                .totalPriceV2(moneyV2Query)
                 .ready();
         }
 
