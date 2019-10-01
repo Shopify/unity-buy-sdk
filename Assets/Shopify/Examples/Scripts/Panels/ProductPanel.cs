@@ -75,7 +75,7 @@ namespace Shopify.Examples.Panels {
 
             RenderVariantImages(images);
 
-            ProductPrice.text = variants[0].price().ToString("C");
+            ProductPrice.text = variants[0].priceV2().amount().ToString("C");
             ProductTitleDescription.text = product.description();
             ProductTitleDescNoVariant.text = product.description();
 
@@ -139,7 +139,7 @@ namespace Shopify.Examples.Panels {
 
             StartCoroutine(ImageHelper.AssignImage(imageSrc, ProductImage));
 
-            ProductPrice.text = variant.price().ToString("C");
+            ProductPrice.text = variant.priceV2().amount().ToString("C");
             ProductTitleDescription.text = CurrentProduct.description();
             ProductTitleDescNoVariant.text = CurrentProduct.description();
         }

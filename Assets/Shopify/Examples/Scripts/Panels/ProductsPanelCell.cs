@@ -51,7 +51,7 @@ namespace Shopify.Examples.Panels {
             DescriptionText.text = StringHelper.Ellipsisize(product.description(), MaxDescriptionCharacters);
 
             var variants = (List<Shopify.Unity.ProductVariant>)product.variants();
-            PriceText.text = variants.First().price().ToString("C");
+            PriceText.text = variants.First().priceV2().amount().ToString("C");
 
             var images = (List<Shopify.Unity.Image>)product.images();
 
