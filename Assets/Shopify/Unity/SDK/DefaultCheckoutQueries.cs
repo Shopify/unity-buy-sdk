@@ -28,7 +28,8 @@ namespace Shopify.Unity.SDK {
                 buildQuery: checkoutCompleteWithTokenizedPaymentV2 => checkoutCompleteWithTokenizedPaymentV2
                 .checkout(checkout => Checkout(checkout))
                 .payment(payment => Payment(payment))
-                .userErrors(userErrors => userErrors
+                .checkoutUserErrors(userErrors => userErrors
+                    .code()
                     .field()
                     .message()
                 ),
@@ -74,7 +75,8 @@ namespace Shopify.Unity.SDK {
         public void LineItemsRemove(MutationQuery query, string checkoutId, List<string> lineItemIds) {
             query.checkoutLineItemsRemove(
                 buildQuery: lineItemRemove => lineItemRemove
-                .userErrors(userErrors => userErrors
+                .checkoutUserErrors(userErrors => userErrors
+                    .code()
                     .field()
                     .message()
                 ),
@@ -90,7 +92,8 @@ namespace Shopify.Unity.SDK {
                     Checkout(checkout);
                     CheckoutLineItems(checkout);
                 })
-                .userErrors(userErrors => userErrors
+                .checkoutUserErrors(userErrors => userErrors
+                    .code()
                     .field()
                     .message()
                 ),
@@ -110,7 +113,8 @@ namespace Shopify.Unity.SDK {
             query.checkoutShippingAddressUpdateV2(
                 buildQuery: shippingAddressUpdate => shippingAddressUpdate
                 .checkout(checkout => Checkout(checkout))
-                .userErrors(userErrors => userErrors
+                .checkoutUserErrors(userErrors => userErrors
+                    .code()
                     .field()
                     .message()
                 ),
@@ -124,7 +128,8 @@ namespace Shopify.Unity.SDK {
                 buildQuery: emailUpdateV2 => emailUpdateV2
                 .checkout(checkout => checkout
                     .email())
-                .userErrors(userErrors => userErrors
+                .checkoutUserErrors(userErrors => userErrors
+                    .code()
                     .field()
                     .message()
                 ),
@@ -138,7 +143,8 @@ namespace Shopify.Unity.SDK {
                 buildQuery: emailUpdate => emailUpdate
                 .checkout(checkout => Checkout(checkout)
                     .shippingLine(shippingLine => ShippingRate(shippingLine)))
-                .userErrors(userErrors => userErrors
+                .checkoutUserErrors(userErrors => userErrors
+                    .code()
                     .field()
                     .message()
                 ),

@@ -349,7 +349,10 @@ namespace Shopify.Tests
                     {
                         ""node"": {
                             ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yODQ3MjY3MDUzMQ=="",
-                            ""price"": ""1.00"",
+                            ""priceV2"": {
+                                ""amount"": ""1.00"",
+                                ""currencyCode"": ""USD""
+                            },
                             ""selectedOptions"": [
                             {
                                 ""name"": ""Size"",
@@ -365,7 +368,10 @@ namespace Shopify.Tests
                     {
                         ""node"": {
                             ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yODQ3MjcwNTAyNw=="",
-                            ""price"": ""1.00"",
+                            ""priceV2"": {
+                                ""amount"": ""1.00"",
+                                ""currencyCode"": ""USD""
+                            },
                             ""selectedOptions"": [
                             {
                                 ""name"": ""Size"",
@@ -381,7 +387,10 @@ namespace Shopify.Tests
                     {
                         ""node"": {
                             ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yODQ3MjcwNTA5MQ=="",
-                            ""price"": ""1.00"",
+                            ""priceV2"": {
+                                ""amount"": ""1.00"",
+                                ""currencyCode"": ""USD""
+                            },
                             ""selectedOptions"": [
                             {
                                 ""name"": ""Size"",
@@ -397,7 +406,10 @@ namespace Shopify.Tests
                     {
                         ""node"": {
                             ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yODQ3MjcwNTE1NQ=="",
-                            ""price"": ""1.00"",
+                            ""priceV2"": {
+                                ""amount"": ""1.00"",
+                                ""currencyCode"": ""USD""
+                            },
                             ""selectedOptions"": [
                             {
                                 ""name"": ""Size"",
@@ -557,10 +569,13 @@ namespace Shopify.Tests
             Assert.AreEqual("bad things happened", cart.UserErrors[0].message(), "messaged was correct");
         }
 
-        private ProductVariant CreateProductVariant(string id, decimal price = 1.00m) {
+        private ProductVariant CreateProductVariant(string id, decimal price = 1.00m, string currencyCode="USD") {
             Dictionary<string,object> data = new Dictionary<string,object>();
             data.Add("id", id);
-            data.Add("price", price);
+            data.Add("priceV2", new Dictionary<string, object>{
+                { "amount", price },
+                { "currencyCode", currencyCode }
+            });
 
             return new ProductVariant(data);
         }

@@ -1,19 +1,19 @@
 namespace Shopify.Tests {
     public class MockLoaderCheckouts : BaseMockLoader {
         // The following query is for a straightforward checkout create
-        private const string CREATE_QUERY = @"mutation{checkoutCreate (input:{lineItems:[{quantity:33,variantId:""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTE1NQ==""},{quantity:2,variantId:""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTM0Nw==""}],allowPartialAddresses:true}){checkout {id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}userErrors {field message }}}";
+        private const string CREATE_QUERY = @"mutation{checkoutCreate (input:{lineItems:[{quantity:33,variantId:""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTE1NQ==""},{quantity:2,variantId:""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTM0Nw==""}],allowPartialAddresses:true}){checkout {id webUrl currencyCode requiresShipping subtotalPriceV2 {amount currencyCode }totalTaxV2 {amount currencyCode }totalPriceV2 {amount currencyCode }ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}checkoutUserErrors {code field message }}}";
 
         // The following two queries are used for a test where first a create is called and we return false for ready which forces a poll
         // then we return a result that ready is true and the new weburl is there
-        private const string CREATE_QUERY_THAT_POLLS = @"mutation{checkoutCreate (input:{lineItems:[{quantity:33,variantId:""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTPOLL==""},{quantity:2,variantId:""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTM0Nw==""}],allowPartialAddresses:true}){checkout {id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}userErrors {field message }}}";
-        private const string POLL_QUERY_AFTER_CREATE = @"{node (id:""checkout-id-poll""){__typename ...on Checkout{id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready }}}";
+        private const string CREATE_QUERY_THAT_POLLS = @"mutation{checkoutCreate (input:{lineItems:[{quantity:33,variantId:""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTPOLL==""},{quantity:2,variantId:""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTM0Nw==""}],allowPartialAddresses:true}){checkout {id webUrl currencyCode requiresShipping subtotalPriceV2 {amount currencyCode }totalTaxV2 {amount currencyCode }totalPriceV2 {amount currencyCode }ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}checkoutUserErrors {code field message }}}";
+        private const string POLL_QUERY_AFTER_CREATE = @"{node (id:""checkout-id-poll""){__typename ...on Checkout{id webUrl currencyCode requiresShipping subtotalPriceV2 {amount currencyCode }totalTaxV2 {amount currencyCode }totalPriceV2 {amount currencyCode }ready }}}";
 
         // The following queries are used to test creating a checkout, then modififying line items and getting a new url
-        private const string CREATE_QUERY_THAT_WILL_BE_UPDATED = @"mutation{checkoutCreate (input:{lineItems:[{quantity:33,variantId:""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyUpdate==""},{quantity:2,variantId:""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyDelete==""}],allowPartialAddresses:true}){checkout {id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}userErrors {field message }}}";
-        private const string ADD_UPDATE_DELETE_AFTER_CREATE = @"mutation{checkoutLineItemsRemove (checkoutId:""checkout-id-poll"",lineItemIds:[""line-item-id1"",""line-item-id2""]){userErrors {field message }}checkoutLineItemsAdd (lineItems:[{quantity:10,variantId:""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyUpdate==""},{quantity:3,variantId:""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NTMNewItem==""}],checkoutId:""checkout-id-poll""){checkout {id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}userErrors {field message }}}";
+        private const string CREATE_QUERY_THAT_WILL_BE_UPDATED = @"mutation{checkoutCreate (input:{lineItems:[{quantity:33,variantId:""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyUpdate==""},{quantity:2,variantId:""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyDelete==""}],allowPartialAddresses:true}){checkout {id webUrl currencyCode requiresShipping subtotalPriceV2 {amount currencyCode }totalTaxV2 {amount currencyCode }totalPriceV2 {amount currencyCode }ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}checkoutUserErrors {code field message }}}";
+        private const string ADD_UPDATE_DELETE_AFTER_CREATE = @"mutation{checkoutLineItemsRemove (checkoutId:""checkout-id-poll"",lineItemIds:[""line-item-id1"",""line-item-id2""]){checkoutUserErrors {code field message }}checkoutLineItemsAdd (lineItems:[{quantity:10,variantId:""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyUpdate==""},{quantity:3,variantId:""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NTMNewItem==""}],checkoutId:""checkout-id-poll""){checkout {id webUrl currencyCode requiresShipping subtotalPriceV2 {amount currencyCode }totalTaxV2 {amount currencyCode }totalPriceV2 {amount currencyCode }ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}checkoutUserErrors {code field message }}}";
 
         // The following query will return a user error
-        private const string CREATE_QUERY_SENDS_USERERROR = @"mutation{checkoutCreate (input:{lineItems:[{quantity:1,variantId:""Z2lkOi8vc2hvcGlmeS9Qcm9kdWNFyaWFudC8yMDc1NjEyUserError==""}],allowPartialAddresses:true}){checkout {id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}userErrors {field message }}}";
+        private const string CREATE_QUERY_SENDS_USERERROR = @"mutation{checkoutCreate (input:{lineItems:[{quantity:1,variantId:""Z2lkOi8vc2hvcGlmeS9Qcm9kdWNFyaWFudC8yMDc1NjEyUserError==""}],allowPartialAddresses:true}){checkout {id webUrl currencyCode requiresShipping subtotalPriceV2 {amount currencyCode }totalTaxV2 {amount currencyCode }totalPriceV2 {amount currencyCode }ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}checkoutUserErrors {code field message }}}";
 
         // The following queries will return the completedAt date for a checkout for validation tesitng
         private const string QUERY_COMPLETED_AT_WITH_DATE = @"{node (id:""checkout-id""){__typename ...on Checkout{completedAt }}}";
@@ -41,9 +41,18 @@ namespace Shopify.Tests {
                                 ""webUrl"": ""http://shopify.com/checkout-no-poll"",
                                 ""currencyCode"": ""CAD"",
                                 ""requiresShipping"": true,
-                                ""subtotalPrice"": ""267.96"",
-                                ""totalTax"": ""34.83"",
-                                ""totalPrice"": ""302.79"",
+                                ""subtotalPriceV2"": {
+                                    ""amount"": ""267.96"",
+                                    ""currencyCode"": ""CAD""
+                                },
+                                ""totalTaxV2"": {
+                                    ""amount"": ""34.83"",
+                                    ""currencyCode"": ""CAD""
+                                },
+                                ""totalPriceV2"": {
+                                    ""amount"": ""302.79"",
+                                    ""currencyCode"": ""CAD""
+                                },
                                 ""ready"": true,
                                 ""lineItems"": {
                                     ""edges"": [
@@ -52,7 +61,10 @@ namespace Shopify.Tests {
                                                 ""id"": ""line-item-id1"",
                                                 ""variant"": {
                                                     ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTE1NQ=="",
-                                                    ""price"": ""1.00""
+                                                    ""priceV2"": {
+                                                        ""amount"": ""1.00"",
+                                                        ""currencyCode"": ""CAD""
+                                                    }
                                                 }
                                             },
                                             ""cursor"": ""line-item-1-cursor""
@@ -62,7 +74,10 @@ namespace Shopify.Tests {
                                                 ""id"": ""line-item-id2"",
                                                 ""variant"": {
                                                     ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTM0Nw=="",
-                                                    ""price"": ""1.00""
+                                                    ""priceV2"": {
+                                                        ""amount"": ""1.00"",
+                                                        ""currencyCode"": ""CAD""
+                                                    }
                                                 }
                                             },
                                             ""cursor"": ""line-item-1-cursor""
@@ -73,7 +88,7 @@ namespace Shopify.Tests {
                                     }
                                 }
                             },
-                            ""userErrors"": []
+                            ""checkoutUserErrors"": []
                         }
                     }
                 }"
@@ -91,9 +106,18 @@ namespace Shopify.Tests {
                                 ""webUrl"": ""http://shopify.com/checkout-with-poll"",
                                 ""currencyCode"": ""CAD"",
                                 ""requiresShipping"": true,
-                                ""subtotalPrice"": ""267.96"",
-                                ""totalTax"": ""34.83"",
-                                ""totalPrice"": ""302.79"",
+                                ""subtotalPriceV2"": {
+                                    ""amount"": ""267.96"",
+                                    ""currencyCode"": ""CAD""
+                                }
+                                ""totalTaxV2"": {
+                                    ""amount"": ""34.83"",
+                                    ""currencyCode"": ""CAD""
+                                },
+                                ""totalPriceV2"": {
+                                    ""amount"": ""302.79"",
+                                    ""currencyCode"": ""CAD""
+                                },
                                 ""ready"": false,
                                 ""lineItems"": {
                                     ""edges"": [
@@ -102,7 +126,10 @@ namespace Shopify.Tests {
                                                 ""id"": ""line-item-id1"",
                                                 ""variant"": {
                                                     ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTPOLL=="",
-                                                    ""price"": ""1.00""
+                                                    ""priceV2"": {
+                                                        ""amount"": ""1.00"",
+                                                        ""currencyCode"": ""CAD""
+                                                    }
                                                 }
                                             },
                                             ""cursor"": ""line-item-1-cursor""
@@ -112,7 +139,10 @@ namespace Shopify.Tests {
                                                 ""id"": ""line-item-id2"",
                                                 ""variant"": {
                                                     ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyOTM0Nw=="",
-                                                    ""price"": ""1.00""
+                                                    ""priceV2"": {
+                                                        ""amount"": ""1.00"",
+                                                        ""currencyCode"": ""CAD""
+                                                    }
                                                 }
                                             },
                                             ""cursor"": ""line-item-1-cursor""
@@ -123,7 +153,7 @@ namespace Shopify.Tests {
                                     }
                                 }
                             },
-                            ""userErrors"": []
+                            ""checkoutUserErrors"": []
                         }
                     }
                 }"
@@ -155,9 +185,18 @@ namespace Shopify.Tests {
                                 ""webUrl"": ""http://shopify.com/checkout-create-before-update"",
                                 ""currencyCode"": ""CAD"",
                                 ""requiresShipping"": true,
-                                ""subtotalPrice"": ""267.96"",
-                                ""totalTax"": ""34.83"",
-                                ""totalPrice"": ""302.79"",
+                                ""subtotalPriceV2"": {
+                                    ""amount"": ""267.96"",
+                                    ""currencyCode"": ""CAD""
+                                }
+                                ""totalTaxV2"": {
+                                    ""amount"": ""34.83"",
+                                    ""currencyCode"": ""CAD""
+                                },
+                                ""totalPriceV2"": {
+                                    ""amount"": ""302.79"",
+                                    ""currencyCode"": ""CAD""
+                                },
                                 ""ready"": true,
                                 ""lineItems"": {
                                     ""edges"": [
@@ -166,7 +205,10 @@ namespace Shopify.Tests {
                                                 ""id"": ""line-item-id1"",
                                                 ""variant"": {
                                                     ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyUpdate=="",
-                                                    ""price"": ""1.00""
+                                                    ""priceV2"": {
+                                                        ""amount"": ""1.00"",
+                                                        ""currencyCode"": ""USD""
+                                                    }
                                                 }
                                             },
                                             ""cursor"": ""line-item-1-cursor""
@@ -176,7 +218,10 @@ namespace Shopify.Tests {
                                                 ""id"": ""line-item-id2"",
                                                 ""variant"": {
                                                     ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyDelete=="",
-                                                    ""price"": ""1.00""
+                                                    ""priceV2"": {
+                                                        ""amount"": ""1.00"",
+                                                        ""currencyCode"": ""USD""
+                                                    }
                                                 }
                                             },
                                             ""cursor"": ""line-item-1-cursor""
@@ -187,7 +232,7 @@ namespace Shopify.Tests {
                                     }
                                 }
                             },
-                            ""userErrors"": []
+                            ""checkoutUserErrors"": []
                         }
                     }
                 }"
@@ -198,7 +243,7 @@ namespace Shopify.Tests {
                 @"{
                     ""data"": {
                         ""checkoutLineItemsRemove"": {
-                            ""userErrors"": []
+                            ""checkoutUserErrors"": []
                         },
                         ""checkoutLineItemsAdd"": {
                             ""checkout"": {
@@ -206,9 +251,18 @@ namespace Shopify.Tests {
                                 ""webUrl"": ""http://shopify.com/checkout-create-after-update"",
                                 ""currencyCode"": ""CAD"",
                                 ""requiresShipping"": true,
-                                ""subtotalPrice"": ""267.96"",
-                                ""totalTax"": ""34.83"",
-                                ""totalPrice"": ""302.79"",
+                                ""subtotalPriceV2"": {
+                                    ""amount"": ""267.96"",
+                                    ""currencyCode"": ""CAD""
+                                },
+                                ""totalTaxV2"": {
+                                    ""amount"": ""34.83"",
+                                    ""currencyCode"": ""CAD""
+                                },
+                                ""totalPriceV2"": {
+                                    ""amount"": ""302.79"",
+                                    ""currencyCode"": ""CAD""
+                                },
                                 ""ready"": true,
                                 ""lineItems"": {
                                     ""edges"": [
@@ -217,7 +271,10 @@ namespace Shopify.Tests {
                                                 ""id"": ""line-item-id1"",
                                                 ""variant"": {
                                                     ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NjEyUpdate=="",
-                                                    ""price"": ""1.00""
+                                                    ""priceV2"": {
+                                                        ""amount"": ""1.00"",
+                                                        ""currencyCode"": ""CAD""
+                                                    }
                                                 }
                                             },
                                             ""cursor"": ""line-item-1-cursor""
@@ -227,7 +284,10 @@ namespace Shopify.Tests {
                                                 ""id"": ""line-item-id3"",
                                                 ""variant"": {
                                                     ""id"": ""Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yMDc1NTMNewItem=="",
-                                                    ""price"": ""1.00""
+                                                    ""priceV2"": {
+                                                        ""amount"": ""1.00"",
+                                                        ""currencyCode"": ""CAD""
+                                                    }
                                                 }
                                             },
                                             ""cursor"": ""line-item-3-cursor""
@@ -238,7 +298,7 @@ namespace Shopify.Tests {
                                     }
                                 }
                             },
-                            ""userErrors"": []
+                            ""checkoutUserErrors"": []
                         }
                     }
                 }"
@@ -252,8 +312,9 @@ namespace Shopify.Tests {
                     ""data"": {
                         ""checkoutCreate"": {
                             ""checkout"": null,
-                            ""userErrors"": [
+                            ""checkoutUserErrors"": [
                                 {
+                                    ""code"": ""400""
                                     ""field"": [ ""someField"" ],
                                     ""message"": ""bad things happened""
                                 }
