@@ -15,7 +15,7 @@ namespace Shopify.Tests
 
             DefaultQueries.checkout.Create(query, lineItems);
             Assert.AreEqual(
-                "mutation{checkoutCreate (input:{lineItems:[],allowPartialAddresses:true}){checkout {id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}userErrors {field message }}}",
+                "mutation{checkoutCreate (input:{lineItems:[],allowPartialAddresses:true}){checkout {id webUrl currencyCode requiresShipping subtotalPriceV2 {amount currencyCode }totalTaxV2 {amount currencyCode }totalPriceV2 {amount currencyCode }ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}checkoutUserErrors {code field message }}}",
                 query.ToString()
             );
         }
@@ -27,7 +27,7 @@ namespace Shopify.Tests
 
             DefaultQueries.checkout.Poll(query, checkoutId);
             Assert.AreEqual(
-                "{node (id:\"an-id\"){__typename ...on Checkout{id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready }}}",
+                "{node (id:\"an-id\"){__typename ...on Checkout{id webUrl currencyCode requiresShipping subtotalPriceV2 {amount currencyCode }totalTaxV2 {amount currencyCode }totalPriceV2 {amount currencyCode }ready }}}",
                 query.ToString()
             );
         }
@@ -39,7 +39,7 @@ namespace Shopify.Tests
 
             DefaultQueries.checkout.PaymentPoll(query, paymentId);
             Assert.AreEqual(
-                "{node (id:\"an-id\"){__typename ...on Payment{checkout {id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready completedAt }errorMessage id ready }}}",
+                "{node (id:\"an-id\"){__typename ...on Payment{checkout {id webUrl currencyCode requiresShipping subtotalPriceV2 {amount currencyCode }totalTaxV2 {amount currencyCode }totalPriceV2 {amount currencyCode }ready completedAt }errorMessage id ready }}}",
                 query.ToString()
             );
         }
@@ -51,7 +51,7 @@ namespace Shopify.Tests
 
             DefaultQueries.checkout.AvailableShippingRatesPoll(query, checkoutId);
             Assert.AreEqual(
-                "{node (id:\"an-id\"){__typename ...on Checkout{id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready availableShippingRates {shippingRates {handle title price }ready }}}}",
+                "{node (id:\"an-id\"){__typename ...on Checkout{id webUrl currencyCode requiresShipping subtotalPriceV2 {amount currencyCode }totalTaxV2 {amount currencyCode }totalPriceV2 {amount currencyCode }ready availableShippingRates {shippingRates {handle title price }ready }}}}",
                 query.ToString()
             );
         }
@@ -64,7 +64,7 @@ namespace Shopify.Tests
 
             DefaultQueries.checkout.LineItemsAdd(query, checkoutId, lineItems);
             Assert.AreEqual(
-                "mutation{checkoutLineItemsAdd (lineItems:[],checkoutId:\"an-id\"){checkout {id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}userErrors {field message }}}",
+                "mutation{checkoutLineItemsAdd (lineItems:[],checkoutId:\"an-id\"){checkout {id webUrl currencyCode requiresShipping subtotalPriceV2 {amount currencyCode }totalTaxV2 {amount currencyCode }totalPriceV2 {amount currencyCode }ready lineItems (first:250){edges {node {id variant {id }}cursor }pageInfo {hasNextPage }}}checkoutUserErrors {code field message }}}",
                 query.ToString()
             );
         }
@@ -77,7 +77,7 @@ namespace Shopify.Tests
 
             DefaultQueries.checkout.LineItemsRemove(query, checkoutId, lineItemIds);
             Assert.AreEqual(
-                "mutation{checkoutLineItemsRemove (checkoutId:\"an-id\",lineItemIds:[]){userErrors {field message }}}",
+                "mutation{checkoutLineItemsRemove (checkoutId:\"an-id\",lineItemIds:[]){checkoutUserErrors {code field message }}}",
                 query.ToString()
             );
         }
@@ -103,7 +103,7 @@ namespace Shopify.Tests
             DefaultQueries.checkout.ShippingAddressUpdate(query, checkoutId, addressInput);
 
             Assert.AreEqual(
-                "mutation{checkoutShippingAddressUpdateV2 (shippingAddress:{address1:\"123 Test Street\",address2:\"456\",city:\"Toronto\",company:\"Shopify\",country:\"Canada\",firstName:\"First\",lastName:\"Last\",phone:\"1234567890\",province:\"Ontario\",zip:\"A1B2C3\"},checkoutId:\"an-id\"){checkout {id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready }userErrors {field message }}}",
+                "mutation{checkoutShippingAddressUpdateV2 (shippingAddress:{address1:\"123 Test Street\",address2:\"456\",city:\"Toronto\",company:\"Shopify\",country:\"Canada\",firstName:\"First\",lastName:\"Last\",phone:\"1234567890\",province:\"Ontario\",zip:\"A1B2C3\"},checkoutId:\"an-id\"){checkout {id webUrl currencyCode requiresShipping subtotalPriceV2 {amount currencyCode }totalTaxV2 {amount currencyCode }totalPriceV2 {amount currencyCode }ready }checkoutUserErrors {code field message }}}",
                 query.ToString()
             );
         }
@@ -115,7 +115,7 @@ namespace Shopify.Tests
 
             DefaultQueries.checkout.EmailUpdate(query, checkoutId, "test@shopify.com");
             Assert.AreEqual(
-                "mutation{checkoutEmailUpdateV2 (checkoutId:\"an-id\",email:\"test@shopify.com\"){checkout {email }userErrors {field message }}}",
+                "mutation{checkoutEmailUpdateV2 (checkoutId:\"an-id\",email:\"test@shopify.com\"){checkout {email }checkoutUserErrors {code field message }}}",
                 query.ToString()
             );
         }
@@ -127,7 +127,7 @@ namespace Shopify.Tests
 
             DefaultQueries.checkout.ShippingLineUpdate(query, checkoutId, "handle");
             Assert.AreEqual(
-                "mutation{checkoutShippingLineUpdate (checkoutId:\"an-id\",shippingRateHandle:\"handle\"){checkout {id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready shippingLine {handle title price }}userErrors {field message }}}",
+                "mutation{checkoutShippingLineUpdate (checkoutId:\"an-id\",shippingRateHandle:\"handle\"){checkout {id webUrl currencyCode requiresShipping subtotalPriceV2 {amount currencyCode }totalTaxV2 {amount currencyCode }totalPriceV2 {amount currencyCode }ready shippingLine {handle title price }}checkoutUserErrors {code field message }}}",
                 query.ToString()
             );
         }
@@ -150,7 +150,7 @@ namespace Shopify.Tests
 
             DefaultQueries.checkout.CheckoutCompleteWithTokenizedPaymentV2(query, checkoutId, tokenizedPaymentInputV2);
             Assert.AreEqual(
-                "mutation{checkoutCompleteWithTokenizedPaymentV2 (checkoutId:\"an-id\",payment:{paymentAmount:{amount:1,currencyCode:CAD},idempotencyKey:\"unique_id\",billingAddress:{address1:\"123 Test Street\",address2:\"456\",city:\"Toronto\",company:\"Shopify\",country:\"Canada\",firstName:\"First\",lastName:\"Last\",phone:\"1234567890\",province:\"Ontario\",zip:\"A1B2C3\"},type:\"apple_pay\",paymentData:\"some_utf8_data_string\"}){checkout {id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready }payment {checkout {id webUrl currencyCode requiresShipping subtotalPrice totalTax totalPrice ready completedAt }errorMessage id ready }userErrors {field message }}}",
+                "mutation{checkoutCompleteWithTokenizedPaymentV2 (checkoutId:\"an-id\",payment:{paymentAmount:{amount:1,currencyCode:CAD},idempotencyKey:\"unique_id\",billingAddress:{address1:\"123 Test Street\",address2:\"456\",city:\"Toronto\",company:\"Shopify\",country:\"Canada\",firstName:\"First\",lastName:\"Last\",phone:\"1234567890\",province:\"Ontario\",zip:\"A1B2C3\"},type:\"apple_pay\",paymentData:\"some_utf8_data_string\"}){checkout {id webUrl currencyCode requiresShipping subtotalPriceV2 {amount currencyCode }totalTaxV2 {amount currencyCode }totalPriceV2 {amount currencyCode }ready }payment {checkout {id webUrl currencyCode requiresShipping subtotalPriceV2 {amount currencyCode }totalTaxV2 {amount currencyCode }totalPriceV2 {amount currencyCode }ready completedAt }errorMessage id ready }checkoutUserErrors {code field message }}}",
                 query.ToString()
             );
         }

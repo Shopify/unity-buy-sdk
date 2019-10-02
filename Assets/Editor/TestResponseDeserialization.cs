@@ -281,7 +281,10 @@ namespace Shopify.Tests {
         [Test]
         public void TestCustomScalarMoney() {
             string json = @"{
-                ""price"": ""3.23""
+                ""priceV2"":{
+                    ""amount"": 3.23,
+                    ""currencyCode"": ""CAD""
+                }
             }";
 
             ProductVariant variant = new ProductVariant((Dictionary<string,object>) Json.Deserialize(json));
