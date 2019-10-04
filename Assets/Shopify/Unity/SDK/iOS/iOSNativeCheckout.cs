@@ -134,7 +134,7 @@ namespace Shopify.Unity.SDK.iOS {
                 } catch { }
             }
 
-            summaryItems.Add(new SummaryItem("TAXES", checkout.totalTax().ToString()));
+            summaryItems.Add(new SummaryItem("TAXES", checkout.totalTaxV2().amount().ToString()));
 
             // We used the store name here instead of TOTAL due to Apple Pay design guidelines. This will read as `Pay storeName`.
             summaryItems.Add(new SummaryItem(StoreName, checkout.totalPriceV2().amount().ToString()));
