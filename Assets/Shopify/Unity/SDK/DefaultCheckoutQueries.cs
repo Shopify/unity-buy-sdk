@@ -183,7 +183,10 @@ namespace Shopify.Unity.SDK {
             return shippingRate
                 .handle()
                 .title()
-                .price();
+                .priceV2((queryBuilder)=> { queryBuilder
+                    .amount()
+                    .currencyCode();
+                });
         }
 
         private CheckoutQuery CheckoutLineItems(CheckoutQuery checkout, int first = 250, string after = null) {

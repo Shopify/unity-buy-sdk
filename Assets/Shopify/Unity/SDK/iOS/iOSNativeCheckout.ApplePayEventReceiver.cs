@@ -248,7 +248,7 @@ namespace Shopify.Unity.SDK.iOS {
         public void FetchApplePayCheckoutStatusForToken(string serializedMessage) {
             var checkout = CartState.CurrentCheckout;
             var message = NativeMessage.CreateFromJSON(serializedMessage);
-            var paymentAmount = new MoneyInput(checkout.totalPrice(), checkout.currencyCode());
+            var paymentAmount = new MoneyInput(checkout.totalPriceV2().amount(), checkout.currencyCode());
             var payment = new NativePayment(message.Content);
             var tokenizedPaymentInputV2 = new TokenizedPaymentInputV2(
               paymentAmount: paymentAmount,

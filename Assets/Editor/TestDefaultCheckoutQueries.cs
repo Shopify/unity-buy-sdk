@@ -51,7 +51,7 @@ namespace Shopify.Tests
 
             DefaultQueries.checkout.AvailableShippingRatesPoll(query, checkoutId);
             Assert.AreEqual(
-                "{node (id:\"an-id\"){__typename ...on Checkout{id webUrl currencyCode requiresShipping subtotalPriceV2 {amount currencyCode }totalTaxV2 {amount currencyCode }totalPriceV2 {amount currencyCode }ready availableShippingRates {shippingRates {handle title price }ready }}}}",
+                "{node (id:\"an-id\"){__typename ...on Checkout{id webUrl currencyCode requiresShipping subtotalPriceV2 {amount currencyCode }totalTaxV2 {amount currencyCode }totalPriceV2 {amount currencyCode }ready availableShippingRates {shippingRates {handle title priceV2 {amount currencyCode }}ready }}}}",
                 query.ToString()
             );
         }
@@ -127,7 +127,7 @@ namespace Shopify.Tests
 
             DefaultQueries.checkout.ShippingLineUpdate(query, checkoutId, "handle");
             Assert.AreEqual(
-                "mutation{checkoutShippingLineUpdate (checkoutId:\"an-id\",shippingRateHandle:\"handle\"){checkout {id webUrl currencyCode requiresShipping subtotalPriceV2 {amount currencyCode }totalTaxV2 {amount currencyCode }totalPriceV2 {amount currencyCode }ready shippingLine {handle title price }}checkoutUserErrors {code field message }}}",
+                "mutation{checkoutShippingLineUpdate (checkoutId:\"an-id\",shippingRateHandle:\"handle\"){checkout {id webUrl currencyCode requiresShipping subtotalPriceV2 {amount currencyCode }totalTaxV2 {amount currencyCode }totalPriceV2 {amount currencyCode }ready shippingLine {handle title priceV2 {amount currencyCode }}}checkoutUserErrors {code field message }}}",
                 query.ToString()
             );
         }
