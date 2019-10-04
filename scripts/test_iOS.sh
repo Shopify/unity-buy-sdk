@@ -2,7 +2,7 @@
 
 . "$(dirname "$0")"/common.sh
 
-IOS_BUILD_PATH="$PROJECT_ROOT"/Shopify-iOS-Tests
+IOS_BUILD_PATH="$PROJECT_ROOT"/Shopify-iOS
 IOS_PROJECT_PATH="$IOS_BUILD_PATH"/Unity-iPhone.xcodeproj
 UNITY_IOS_LOG_PATH="$PROJECT_ROOT"/buildIOS.log
 
@@ -31,7 +31,7 @@ xcodebuild test \
     -project "$IOS_PROJECT_PATH" \
     -sdk iphonesimulator \
     -scheme Unity-iPhone \
-    -destination 'platform=iOS Simulator,OS=12.0,name=iPhone 8'
+    -destination 'platform=iOS Simulator,OS=13.0,name=iPhone 8'
 
 IOS_TEST_RESULT=$?
 
