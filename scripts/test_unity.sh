@@ -35,7 +35,7 @@ if [[ $UNITY_BUILD_RESULT = 0 ]] ; then
     exit 0
 else
     printf "Tests failed. Exited with %s\n" "$UNITY_BUILD_RESULT"
-    printf "------------------\n\n"
+    printf "%s------------------\n\n"
     if [[ -e $UNITY_TEST_RESULTS_PATH ]]; then
         cat "$UNITY_TEST_RESULTS_PATH"
         convertNUnitToJUnit
