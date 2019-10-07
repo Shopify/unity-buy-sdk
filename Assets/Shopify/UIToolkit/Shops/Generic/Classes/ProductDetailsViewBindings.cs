@@ -99,7 +99,7 @@
         }
 
         private void UpdateDetailsUsingVariant(ProductVariant variant) {
-            Price.text = "$" + variant.price().ToString();
+            Price.text = "$" + variant.priceV2().amount().ToString();
         }
 
         private void UpdateProductImages(IList<Shopify.Unity.Image> images) {

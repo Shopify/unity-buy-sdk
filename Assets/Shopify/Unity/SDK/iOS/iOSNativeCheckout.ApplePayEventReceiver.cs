@@ -100,7 +100,7 @@ namespace Shopify.Unity.SDK.iOS {
             return field == "email";
         }
 
-        private static UpdateRequestStatus GetUpdateRequestStatusFromCheckoutUserErrors(List<UserError> errors) {
+        private static UpdateRequestStatus GetUpdateRequestStatusFromCheckoutUserErrors(List<CheckoutUserError> errors) {
             var payErrors = new List<ApplePayError>();
             var statusToReturn = ApplePayAuthorizationStatus.Failure;
 
@@ -139,7 +139,7 @@ namespace Shopify.Unity.SDK.iOS {
             }
         }
 
-        private static UpdateRequestStatus GetUpdateRequestStatusFromShippingUserErrors(List<UserError> errors) {
+        private static UpdateRequestStatus GetUpdateRequestStatusFromShippingUserErrors(List<CheckoutUserError> errors) {
             var statusToReturn = ApplePayAuthorizationStatus.Failure;
             var payErrors = new List<ApplePayError>();
 
@@ -180,7 +180,7 @@ namespace Shopify.Unity.SDK.iOS {
 
         // We only receive a partial shipping address before the user has authenticated
         // City, State, Zip, Country
-        private static UpdateRequestStatus GetUpdateRequestStatusFromPreliminaryShippingUserErrors(List<UserError> errors) {
+        private static UpdateRequestStatus GetUpdateRequestStatusFromPreliminaryShippingUserErrors(List<CheckoutUserError> errors) {
             var payErrors = new List<ApplePayError>();
 
             foreach (var error in errors) {
@@ -248,7 +248,7 @@ namespace Shopify.Unity.SDK.iOS {
         public void FetchApplePayCheckoutStatusForToken(string serializedMessage) {
             var checkout = CartState.CurrentCheckout;
             var message = NativeMessage.CreateFromJSON(serializedMessage);
-            var paymentAmount = new MoneyInput(checkout.totalPrice(), checkout.currencyCode());
+            var paymentAmount = new MoneyInput(checkout.totalPriceV2().amount(), checkout.currencyCode());
             var payment = new NativePayment(message.Content);
             var tokenizedPaymentInputV2 = new TokenizedPaymentInputV2(
               paymentAmount: paymentAmount,

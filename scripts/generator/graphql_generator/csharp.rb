@@ -76,6 +76,7 @@ module GraphQLGenerator
       Scalar.new(
         graph_type: 'Decimal',
         csharp_type: 'decimal',
+        custom_cast:  lambda {|value|"Convert.ToDecimal(#{value})"},
       ),
     ]
 

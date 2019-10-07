@@ -15,7 +15,7 @@ namespace Shopify.Unity {
             }
         }
 
-        public List<UserError> UserErrors {
+        public List<CheckoutUserError> UserErrors {
             get {
                 return _UserErrors;
             }
@@ -38,7 +38,7 @@ namespace Shopify.Unity {
         private ShopifyClient Client;
 
         private CartLineItems _LineItems;
-        private List<UserError> _UserErrors = null;
+        private List<CheckoutUserError> _UserErrors = null;
         private List<String> DeletedLineItems = new List<string>();
 
         public CartState(ShopifyClient client) {
@@ -69,7 +69,7 @@ namespace Shopify.Unity {
                     return;
                 }
 
-                if (UpdateState(response.checkoutShippingLineUpdate().checkout(), response.checkoutShippingLineUpdate().userErrors())) {
+                if (UpdateState(response.checkoutShippingLineUpdate().checkout(), response.checkoutShippingLineUpdate().checkoutUserErrors())) {
                     if (CurrentCheckout.ready()) {
                         callback(null);
                     } else {
@@ -90,7 +90,7 @@ namespace Shopify.Unity {
                 if (error != null) {
                     callback(error);
                 } else {
-                    if (UpdateState(response.checkoutEmailUpdateV2().checkout(), response.checkoutEmailUpdateV2().userErrors())) {
+                    if (UpdateState(response.checkoutEmailUpdateV2().checkout(), response.checkoutEmailUpdateV2().checkoutUserErrors())) {
                         if (CurrentCheckout.ready()) {
                             callback(null);
                         } else {
@@ -112,7 +112,7 @@ namespace Shopify.Unity {
                 if (error != null) {
                     callback(error);
                 } else {
-                    if (UpdateState(response.checkoutShippingAddressUpdateV2().checkout(), response.checkoutShippingAddressUpdateV2().userErrors())) {
+                    if (UpdateState(response.checkoutShippingAddressUpdateV2().checkout(), response.checkoutShippingAddressUpdateV2().checkoutUserErrors())) {
                         PollCheckoutAndUpdate(PollCheckoutAvailableShippingRatesReady, callback);
                     } else {
                         HandleUserError(callback);
@@ -135,10 +135,10 @@ namespace Shopify.Unity {
                 if (error != null) {
                     callback(error);
                 } else {
-                    var userErrors = response.checkoutShippingAddressUpdateV2().userErrors();
+                    var userErrors = response.checkoutShippingAddressUpdateV2().checkoutUserErrors();
                     if (shippingFields.HasValue) {
-                        userErrors.AddRange(response.checkoutShippingLineUpdate().userErrors());
-                        userErrors.AddRange(response.checkoutEmailUpdateV2().userErrors());
+                        userErrors.AddRange(response.checkoutShippingLineUpdate().checkoutUserErrors());
+                        userErrors.AddRange(response.checkoutEmailUpdateV2().checkoutUserErrors());
                     }
 
                     if (UpdateState(response.checkoutEmailUpdateV2().checkout(), userErrors)) {
@@ -173,7 +173,7 @@ namespace Shopify.Unity {
                     return;
                 }
 
-                if (UpdateState(response.checkoutCreate().checkout(), response.checkoutCreate().userErrors())) {
+                if (UpdateState(response.checkoutCreate().checkout(), response.checkoutCreate().checkoutUserErrors())) {
                     if (CurrentCheckout.ready()) {
                         callback(null);
                     } else {
@@ -212,7 +212,7 @@ namespace Shopify.Unity {
                         var responseNode = response.checkoutCompleteWithTokenizedPaymentV2();
                         var payment = responseNode.payment();
 
-                        if (UpdateState(responseNode.checkout(), responseNode.userErrors())) {
+                        if (UpdateState(responseNode.checkout(), responseNode.checkoutUserErrors())) {
                             if (payment.ready()) {
                                 callback(null);
                             } else {
@@ -259,7 +259,7 @@ namespace Shopify.Unity {
 
                 DeletedLineItems.Clear();
 
-                if (UpdateState(response.checkoutLineItemsAdd().checkout(), response.checkoutLineItemsAdd().userErrors())) {
+                if (UpdateState(response.checkoutLineItemsAdd().checkout(), response.checkoutLineItemsAdd().checkoutUserErrors())) {
                     if (CurrentCheckout.ready()) {
                         callback(null);
                     } else {
@@ -272,10 +272,10 @@ namespace Shopify.Unity {
         }
 
         private bool UpdateState(Checkout checkout) {
-            return UpdateState(checkout, new List<UserError>());
+            return UpdateState(checkout, new List<CheckoutUserError>());
         }
 
-        private bool UpdateState(Checkout checkout, List<UserError> userErrors) {
+        private bool UpdateState(Checkout checkout, List<CheckoutUserError> userErrors) {
             if (CurrentCheckout == null) {
                 CurrentCheckout = checkout;
             } else {

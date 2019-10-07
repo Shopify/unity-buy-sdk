@@ -98,7 +98,10 @@ namespace Shopify.Unity.SDK {
                 .id()
                 .availableForSale()
                 .image(i => AliasedTransformedSrcImages(i.altText().transformedSrc(), imageResolutions))
-                .price()
+                .priceV2(query => query
+                    .amount()
+                    .currencyCode()
+                )
                 .title()
                 .weight()
                 .selectedOptions(pnvso => pnvso

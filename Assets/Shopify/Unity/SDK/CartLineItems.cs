@@ -102,7 +102,7 @@ namespace Shopify.Unity.SDK {
         public CartLineItem(ProductVariant variant, LineItemChangeHandler onChange, long quantity = 1, IDictionary<string, string> customAttributes = null) {
             _VariantId = variant.id();
             _Quantity = quantity;
-            _Price = variant.price();
+            _Price = variant.priceV2().amount();
             OnChange = onChange;
 
             if (customAttributes != null) {

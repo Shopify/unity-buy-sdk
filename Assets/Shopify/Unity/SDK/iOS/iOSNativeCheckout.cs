@@ -126,18 +126,18 @@ namespace Shopify.Unity.SDK.iOS {
             }
 
             var summaryItems = new List<SummaryItem>();
-            summaryItems.Add(new SummaryItem("SUBTOTAL", checkout.subtotalPrice().ToString()));
+            summaryItems.Add(new SummaryItem("SUBTOTAL", checkout.subtotalPriceV2().amount().ToString()));
 
             if (checkout.requiresShipping()) {
                 try {
-                    summaryItems.Add(new SummaryItem("SHIPPING", checkout.shippingLine().price().ToString()));
+                    summaryItems.Add(new SummaryItem("SHIPPING", checkout.shippingLine().priceV2().amount().ToString()));
                 } catch { }
             }
 
-            summaryItems.Add(new SummaryItem("TAXES", checkout.totalTax().ToString()));
+            summaryItems.Add(new SummaryItem("TAXES", checkout.totalTaxV2().amount().ToString()));
 
             // We used the store name here instead of TOTAL due to Apple Pay design guidelines. This will read as `Pay storeName`.
-            summaryItems.Add(new SummaryItem(StoreName, checkout.totalPrice().ToString()));
+            summaryItems.Add(new SummaryItem(StoreName, checkout.totalPriceV2().amount().ToString()));
 
             return summaryItems;
         }
@@ -150,7 +150,7 @@ namespace Shopify.Unity.SDK.iOS {
                 var availableShippingRates = checkout.availableShippingRates().shippingRates();
 
                 foreach (var shippingRate in availableShippingRates) {
-                    shippingMethods.Add(new ShippingMethod(shippingRate.title(), shippingRate.price().ToString(), shippingRate.handle()));
+                    shippingMethods.Add(new ShippingMethod(shippingRate.title(), shippingRate.priceV2().amount().ToString(), shippingRate.handle()));
                 }
             } catch (Exception e) {
                 throw new Exception("Attempted to gather information on available shipping rates on CurrentCheckout, but CurrentCheckout do not have those properties queried", e);

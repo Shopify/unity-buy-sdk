@@ -45,7 +45,7 @@ namespace Shopify.UIToolkit {
             VariantLabel.gameObject.SetActive(!String.IsNullOrEmpty(_variant.title()));
             VariantLabel.text = _variant.title();
 
-            PriceLabel.text = string.Format("${0}", _variant.price());
+            PriceLabel.text = string.Format("${0}", _variant.priceV2().amount());
             QuantityLabel.text = item.Quantity.ToString();
 
             try {
