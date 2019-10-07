@@ -40,6 +40,6 @@ if [[ $IOS_TEST_RESULT = 0 ]] ; then
     exit 0
 else
     printf "Tests failed. Exited with %s\n" "$IOS_TEST_RESULT"
-    printf "%s------------------\n\n"
+    printf "%s\n\n" "------------------"
     exit 1
 fi

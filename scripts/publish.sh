@@ -8,7 +8,7 @@ check() {
         printf "Export %s finished properly\n." "$@"
     else
         printf "Export %s failed. Exited with %s\n" "$@" "$?"
-        printf "%s------------------\n\n"
+        printf "%s\n\n" "------------------"
         cat "$UNITY_LOG_PATH"
 
         exit 1
