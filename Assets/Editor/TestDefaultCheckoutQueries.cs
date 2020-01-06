@@ -148,10 +148,12 @@ namespace Shopify.Tests
                 type: "apple_pay"
             );
 
+            var expectedResult = "mutation{checkoutCompleteWithTokenizedPaymentV2 (checkoutId:\"an-id\",payment:{paymentAmount:{amount:1,currencyCode:CAD},idempotencyKey:\"unique_id\",billingAddress:{address1:\"123 Test Street\",address2:\"456\",city:\"Toronto\",company:\"Shopify\",country:\"Canada\",firstName:\"First\",lastName:\"Last\",phone:\"1234567890\",province:\"Ontario\",zip:\"A1B2C3\"},paymentData:\"some_utf8_data_string\",type:\"apple_pay\"}){checkout {id webUrl currencyCode requiresShipping subtotalPriceV2 {amount currencyCode }totalTaxV2 {amount currencyCode }totalPriceV2 {amount currencyCode }ready }payment {checkout {id webUrl currencyCode requiresShipping subtotalPriceV2 {amount currencyCode }totalTaxV2 {amount currencyCode }totalPriceV2 {amount currencyCode }ready completedAt }errorMessage id ready }checkoutUserErrors {code field message }}}";
+
             DefaultQueries.checkout.CheckoutCompleteWithTokenizedPaymentV2(query, checkoutId, tokenizedPaymentInputV2);
             Assert.AreEqual(
-                "mutation{checkoutCompleteWithTokenizedPaymentV2 (checkoutId:\"an-id\",payment:{paymentAmount:{amount:1,currencyCode:CAD},idempotencyKey:\"unique_id\",billingAddress:{address1:\"123 Test Street\",address2:\"456\",city:\"Toronto\",company:\"Shopify\",country:\"Canada\",firstName:\"First\",lastName:\"Last\",phone:\"1234567890\",province:\"Ontario\",zip:\"A1B2C3\"},type:\"apple_pay\",paymentData:\"some_utf8_data_string\"}){checkout {id webUrl currencyCode requiresShipping subtotalPriceV2 {amount currencyCode }totalTaxV2 {amount currencyCode }totalPriceV2 {amount currencyCode }ready }payment {checkout {id webUrl currencyCode requiresShipping subtotalPriceV2 {amount currencyCode }totalTaxV2 {amount currencyCode }totalPriceV2 {amount currencyCode }ready completedAt }errorMessage id ready }checkoutUserErrors {code field message }}}",
-                query.ToString()
+                expectedResult,
+                query.ToString(), string.Format("Unexpected mutation response.\n Expected response: {0}\n Actual response: {1}", expectedResult, query)
             );
         }
     }
