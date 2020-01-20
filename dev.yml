@@ -1,8 +1,6 @@
 name: unity-buy-sdk
 
 up:
-  - homebrew:
-    - openssl
   - ruby: 2.3.3
   - bundler
 
