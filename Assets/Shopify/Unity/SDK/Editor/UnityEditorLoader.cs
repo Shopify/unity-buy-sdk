@@ -49,7 +49,7 @@ namespace Shopify.Unity.SDK.Editor {
 
         private string Url {
             get {
-                return "https://" + Domain + "/api/2019-10/graphql.json";
+                return "https://" + Domain + "/api/2020-01/graphql.json";
             }
         }
 

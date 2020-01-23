@@ -31,6 +31,7 @@ public class ShopPopup : MonoBehaviour {
 
     public string AccessToken = "8f40b2ede3e02be97a81ac29cfabc6e0";
     public string ShopDomain = "unity-buy-sdk.myshopify.com";
+    public string Locale;
 
     public void ShowPopup() {
         AnimationCanvasAnimator.SetBool("Visible", true);
@@ -45,7 +46,7 @@ public class ShopPopup : MonoBehaviour {
 
     private void Start() {
         // Begin by initializing ShopifyHelper, to make connection to shop
-        ShopifyHelper.Init(AccessToken, ShopDomain);
+        ShopifyHelper.Init(AccessToken, ShopDomain, Locale);
         // With initialization complete, initial products panel
         ProductsPanel.Init();
 

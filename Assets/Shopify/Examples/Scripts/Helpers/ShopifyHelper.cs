@@ -13,12 +13,12 @@ namespace Shopify.Examples.Helpers {
     public static class ShopifyHelper {
         public static bool Initialized;
 
-        public static void Init(string accessToken, string shopDomain) {
+        public static void Init(string accessToken, string shopDomain, string locale = null) {
             if (Initialized) {
                 throw new ShopifyAlreadyInitializedException();
             }
 
-            ShopifyBuy.Init(accessToken, shopDomain);
+            ShopifyBuy.Init(accessToken, shopDomain, locale);
 
             Initialized = true;
         }

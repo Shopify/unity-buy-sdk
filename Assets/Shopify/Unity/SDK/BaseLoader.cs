@@ -21,17 +21,31 @@ namespace Shopify.Unity.SDK {
             }
         }
 
+        /// <summary>
+        /// Locale for translated content of supported types and fields.
+        /// </summary>
+        public string Locale {
+            get {
+                return _Locale;
+            }
+        }
+
         private string _AccessToken;
         private string _Domain;
+        private string _Locale;
 
-        public BaseLoader(string domain, string accessToken) {
+        public BaseLoader(string domain, string accessToken, string locale = null) {
             _AccessToken = accessToken;
             _Domain = domain;
+            _Locale = locale;
 
             SetHeader("Content-Type", "application/graphql");
             SetHeader("X-SDK-Version", VersionInformation.VERSION);
             SetHeader("X-Shopify-Storefront-Access-Token", accessToken);
             SetHeader("X-SDK-Variant", SDKVariantName());
+            if(locale != null) {
+                SetHeader("Accept-Language", locale);
+            }
         }
 
         /// <summary>
@@ -50,7 +64,7 @@ namespace Shopify.Unity.SDK {
 
         /// <summary>
         /// Returns the loader's X-SDK-Variant header value. Required by a BaseLoader implementation to
-        /// let the server know who is sending the request. 
+        /// let the server know who is sending the request.
         /// </summary>
         /// <returns>Identifying name of the loader to be sent to the server using the X-SDK-Variant header.</returns>
         public abstract string SDKVariantName();
