@@ -167,9 +167,20 @@ namespace Shopify.Unity {
             }
         }
 
+        /// <summary>
+        /// <see ref="ShopifyClient.Locale">Locale </see> is the language that supported translated content will be in.
+        /// </summary>
+        public string Locale {
+            get
+            {
+                return _Locale;
+            }
+        }
         QueryLoader Loader;
         string _AccessToken;
         string _Domain;
+        string _Locale;
+
         Cart DefaultCart;
         Dictionary<string, Cart> CartsById;
 
@@ -195,6 +206,7 @@ namespace Shopify.Unity {
         public ShopifyClient (string accessToken, string domain, string locale = null) {
             _AccessToken = accessToken;
             _Domain = domain;
+            _Locale = locale;
 
             Loader = new QueryLoader (new UnityLoader (domain, AccessToken, locale));
         }
@@ -225,6 +237,19 @@ namespace Shopify.Unity {
             _AccessToken = loader.AccessToken;
             _Domain = loader.Domain;
             Loader = new QueryLoader (loader);
+        }
+
+        /// <summary>
+        /// Overwrites the QueryLoader instance with a new one with the specified locale.
+        ///
+        /// <param name="locale">locale for fetching translated content of supported types and fields</param>
+        /// \code
+        /// // Example usage for updating the locale to French:
+        /// ShopifyBuy.Client(shopDomain).UpdateLocale("fr")
+        /// \endcode
+        public void UpdateLocale (string locale) {
+            Loader = new QueryLoader(new UnityLoader(_Domain, _AccessToken, locale));
+            _Locale = locale;
         }
 
         /// <summary>

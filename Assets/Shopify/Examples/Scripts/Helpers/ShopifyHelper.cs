@@ -23,6 +23,15 @@ namespace Shopify.Examples.Helpers {
             Initialized = true;
         }
 
+        public static void UpdateLocale(string locale, string shopDomain) {
+            // Updates the locale to fetch translated content for.
+            // For more information about supported content and fields, visit
+            // https://help.shopify.com/en/api/guides/multi-language/translating-content-api
+            if (Initialized) {
+                ShopifyBuy.Client(shopDomain).UpdateLocale(locale);
+            }
+        }
+
         public static void FetchProducts(Action<List<Product>, string> successCallback, Action failureCallback, string cursor) {
             // Fetch product listing from Shopify
             // For more information on querying products visit

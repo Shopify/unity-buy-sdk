@@ -13,7 +13,7 @@ namespace Shopify.Unity.Tests
     public class TestQueries {
         public static QueryRootQuery Query = new QueryRootQuery().shop(shop => shop.name());
     }
-        
+
     public class TestUnityLoader : MonoBehaviour {
         [UnityTest]
         public IEnumerator RanQueryUsingUnityLoader() {
@@ -66,6 +66,28 @@ namespace Shopify.Unity.Tests
             Assert.IsTrue (waiter.IsStopped, Utils.MaxQueryMessage);
             Assert.AreNotEqual(names[0], names[1]);
         }
-    }   
+
+        public IEnumerator AcceptsLocale() {
+            string domain = "graphql.myshopify.com";
+            string authorization = "351c122017d0f2a957d32ae728ad749c";
+            string locale = "fr";
+            StoppableWaitForTime waiter = Utils.GetWaitQuery();
+
+            QueryLoader queryLoader = new QueryLoader(new UnityLoader(domain, authorization, locale));
+
+            queryLoader.Query(TestQueries.Query, (QueryResponse response) => {
+                waiter.Stop();
+
+                Assert.IsNull(response.HTTPError, "http errors were not null: " + response.HTTPError);
+                Assert.IsNull(response.errors, "GraphQL errors were null");
+                Assert.IsNotNull(response.data, "Received a response");
+                Assert.AreEqual("graphql", response.data.shop().name());
+            });
+
+            yield return waiter;
+
+            Assert.IsTrue (waiter.IsStopped, Utils.MaxQueryMessage);
+        }
+    }
 }
 #endif

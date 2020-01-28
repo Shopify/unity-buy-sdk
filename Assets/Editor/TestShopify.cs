@@ -31,10 +31,19 @@ namespace Shopify.Tests
         }
 
         [Test]
+        public void TestUpdateLocale() {
+            ShopifyBuy.Init("AccessToken", "domain.com");
+            Assert.IsNull(ShopifyBuy.Client().Locale);
+
+            ShopifyBuy.Client("domain.com").UpdateLocale("fr");
+            Assert.AreEqual("fr", ShopifyBuy.Client("domain.com").Locale);
+        }
+
+        [Test]
         public void CannotInitTwiceUsingDomain() {
             ShopifyBuy.Init("AccessToken", "domain2.com");
             ShopifyClient client1 = ShopifyBuy.Client("domain2.com");
-
+            
             ShopifyBuy.Init("AccessToken", "domain2.com");
             ShopifyClient client2 = ShopifyBuy.Client("domain2.com");
 

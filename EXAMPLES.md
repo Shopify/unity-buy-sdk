@@ -47,7 +47,7 @@ After you initialize the SDK, you can use `ShopifyBuy.Client()` to query Shopify
 
 ## Supporting multiple languages
 
-If your store supports multiple languages, then the Storefront API can return translated content for supported resource types and fields.
+If your store supports multiple languages, then you can use the Storefront API to return translated content for supported resource types and fields.
 Learn more about [translating content](https://help.shopify.com/en/api/guides/multi-language/translating-content-api).
 
 To return translated content, include the `locale` parameter in `ShopifyBuy.Init`:
