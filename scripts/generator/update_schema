@@ -9,7 +9,7 @@ require_relative './graphql_generator/csharp'
 
 domain = "app.shopify.com"
 shared_storefront_api_key = '4a6c829ec3cb12ef9004bf8ed27adf12' # this is the public key
-storefront_api_version = '2019-10'
+storefront_api_version = '2020-01'
 schema_filename = nil
 ROOT_DIR = File.expand_path("../../..", __FILE__)
 GENERATOR_DIR = File.expand_path("..", __FILE__)

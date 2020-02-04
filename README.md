@@ -1,4 +1,4 @@
-![image](https://user-images.githubusercontent.com/12721181/29127322-c0acb984-7cee-11e7-97bd-e55f72af29aa.png) 
+![image](https://user-images.githubusercontent.com/12721181/29127322-c0acb984-7cee-11e7-97bd-e55f72af29aa.png)
 
 # Shopify SDK for Unity
 
@@ -16,6 +16,7 @@ The Shopify SDK for Unity allows Unity developers to query and sell products fro
 
 - [Query products](EXAMPLES.md#query-products)
 - [Query collections](EXAMPLES.md#query-collections)
+- [Multiple Languages](EXAMPLES.md#supporting-multiple-languages)
 - [Build a cart](EXAMPLES.md#build-a-cart)
 - [Check out via weblink](EXAMPLES.md#checkout-with-a-checkout-link)
 - [Checkouts via Safari Web View](EXAMPLES.md#checkout-with-a-web-view)

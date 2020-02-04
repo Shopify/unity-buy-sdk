@@ -45,6 +45,21 @@ ShopifyBuy.Init(accessToken, shopDomain);
 
 After you initialize the SDK, you can use `ShopifyBuy.Client()` to query Shopify. You need to initialize the SDK only once.
 
+## Supporting multiple languages
+
+If your store supports multiple languages, then you can use the Storefront API to return translated content for supported resource types and fields.
+Learn more about [translating content](https://help.shopify.com/en/api/guides/multi-language/translating-content-api).
+
+To return translated content, include the `locale` parameter in `ShopifyBuy.Init`:
+
+```cs
+string accessToken = "b8d417759a62f7b342f3735dbe86b322";
+string shopDomain = "unity-buy-sdk.myshopify.com";
+string locale = "es";
+
+ShopifyBuy.Init(accessToken, shopDomain, locale);
+```
+
 ## Query Products
 
 The following example shows how to query two pages of products in your Shopify store:

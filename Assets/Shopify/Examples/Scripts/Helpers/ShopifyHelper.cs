@@ -13,14 +13,23 @@ namespace Shopify.Examples.Helpers {
     public static class ShopifyHelper {
         public static bool Initialized;
 
-        public static void Init(string accessToken, string shopDomain) {
+        public static void Init(string accessToken, string shopDomain, string locale = null) {
             if (Initialized) {
                 throw new ShopifyAlreadyInitializedException();
             }
 
-            ShopifyBuy.Init(accessToken, shopDomain);
+            ShopifyBuy.Init(accessToken, shopDomain, locale);
 
             Initialized = true;
+        }
+
+        public static void UpdateLocale(string locale, string shopDomain) {
+            // Updates the locale to fetch translated content for.
+            // For more information about supported content and fields, visit
+            // https://help.shopify.com/en/api/guides/multi-language/translating-content-api
+            if (Initialized) {
+                ShopifyBuy.Client(shopDomain).UpdateLocale(locale);
+            }
         }
 
         public static void FetchProducts(Action<List<Product>, string> successCallback, Action failureCallback, string cursor) {

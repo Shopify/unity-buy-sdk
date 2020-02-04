@@ -16,10 +16,10 @@ namespace Shopify.Unity.Tests {
                 return GetClient("graphql-many-products.myshopify.com", "43b7fef8bd2f27f1d645586b72c9b825");
             }
         }
-        
-        private static ShopifyClient GetClient(string domain, string accessToken) {
+
+        private static ShopifyClient GetClient(string domain, string accessToken, string locale = null) {
             if (ShopifyBuy.Client(domain) == null) {
-                ShopifyBuy.Init(accessToken, domain);
+                ShopifyBuy.Init(accessToken, domain, locale);
             }
 
             return ShopifyBuy.Client(domain);

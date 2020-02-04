@@ -194,10 +194,10 @@ namespace Shopify.Unity {
         public void AddFromConnection(<%= type.classify_name %> connection) {
             connection.Nodes = null;
 
-            List<<%= field_from_type(type,"edges").type.unwrap.name %>> clonedList = new List<<%= field_from_type(type,"edges").type.unwrap.name %>>();
+            List<<%= field_from_type(type,"edges").type.unwrap.classify_name %>> clonedList = new List<<%= field_from_type(type,"edges").type.unwrap.classify_name %>>();
 
-            foreach(<%= field_from_type(type,"edges").type.unwrap.name %> edge in connection.edges()) {
-                clonedList.Add((<%= field_from_type(type,"edges").type.unwrap.name %>) edge.Clone());
+            foreach(<%= field_from_type(type,"edges").type.unwrap.classify_name %> edge in connection.edges()) {
+                clonedList.Add((<%= field_from_type(type,"edges").type.unwrap.classify_name %>) edge.Clone());
             }
 
             if (Data.ContainsKey("edges")) {

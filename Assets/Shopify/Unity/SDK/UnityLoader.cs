@@ -55,7 +55,7 @@ namespace Shopify.Unity.SDK {
 
         /// <param name="domain">Shopify store domain that you'd like to query on</param>
         /// <param name="accessToken">access token used to communicate with the Shopify Store</param>
-        public UnityLoader(string domain, string accessToken) : base(domain, accessToken) { }
+        public UnityLoader(string domain, string accessToken, string locale = null) : base(domain, accessToken, locale) { }
 
         /// <summary>
         /// Send a query to the Storefront API.
@@ -64,7 +64,7 @@ namespace Shopify.Unity.SDK {
         /// <param name="callback">callback that receives a response</param>
         override public void Load(string query, LoaderResponseHandler callback) {
             GlobalGameObject.AddComponent<LoaderComponent>()
-                .SetURL("https://" + Domain + "/api/2019-10/graphql.json")
+                .SetURL("https://" + Domain + "/api/2020-01/graphql.json")
                 .SetHeaders(_Headers)
                 .Load(query, callback);
         }
