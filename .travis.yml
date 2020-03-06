@@ -4,7 +4,7 @@ osx_image: xcode10
 env:
   UNITY_DOWNLOAD_DIR: $HOME/unity
   UNITY_PKG_LOCATION: $HOME/unity/Unity.pkg
-  UNITY_PKG_URL: https://download.unity3d.com/download_unity/5d30cf096e79/MacEditorInstaller/Unity-2017.1.1f1.pkg
+  UNITY_PKG_URL: https://download.unity3d.com/download_unity/6e9a27477296/MacEditorInstaller/Unity-2018.3.0f2.pkg
   IOS_PKG_LOCATION: $HOME/unity/Unity-iOS.pkg
   IOS_PKG_URL: http://netstorage.unity3d.com/unity/5d30cf096e79/MacEditorTargetInstaller/UnitySetup-iOS-Support-for-Editor.pkg
 
