@@ -7,7 +7,7 @@ UNITY_DOWNLOAD_DIR="${UNITY_DOWNLOAD_DIR:-`pwd`/unity}"
 UNITY_PKG_LOCATION=${UNITY_PKG_LOCATION:-"$UNITY_DOWNLOAD_DIR"/Unity.pkg}
 UNITY_PKG_URL=${UNITY_PKG_URL:-https://download.unity3d.com/download_unity/6e9a27477296/MacEditorInstaller/Unity-2018.3.0f2.pkg}
 IOS_PKG_LOCATION=${IOS_PKG_LOCATION:-"$UNITY_DOWNLOAD_DIR"/Unity-iOS.pkg}
-IOS_PKG_URL=${IOS_PKG_URL:-http://netstorage.unity3d.com/unity/5d30cf096e79/MacEditorTargetInstaller/UnitySetup-iOS-Support-for-Editor.pkg}
+IOS_PKG_URL=${IOS_PKG_URL:-http://netstorage.unity3d.com/unity/6e9a27477296/MacEditorTargetInstaller/UnitySetup-iOS-Support-for-Editor.pkg}
 
 if [[ ! -e $UNITY_PKG_LOCATION ]] ; then
     out "Downloading Unity to $UNITY_DOWNLOAD_DIR"
