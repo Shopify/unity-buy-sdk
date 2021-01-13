@@ -1,7 +1,7 @@
 name: unity-buy-sdk
 
 up:
-  - ruby: 2.3.3
+  - ruby: 2.6.0
   - bundler
 
 commands:
