@@ -15,7 +15,10 @@ convertNUnitToJUnit() {
 }
 
 # UNITY_VERSION=$(ls "$UNITY_PACKAGE_MANAGER_PATH")
-printf "Testing with Unity Version: 2019.4.18f1"
+# printf "Testing with Unity Version: 2019.4.18f1"
+
+UNITY_VERSION=$(ls "$UNITY_PACKAGE_MANAGER_PATH")
+printf "Testing with Unity Version: %s\n" "$UNITY_VERSION"
 
 "$UNITY_PATH" \
     -batchmode \
