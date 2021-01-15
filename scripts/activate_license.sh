@@ -22,6 +22,7 @@ do
     "$UNITY_PATH" \
         -quit \
         -batchmode \
+        -force-free \
         -serial "$UNITY_SERIAL" \
         -username "$UNITY_USERNAME" \
         -password "$UNITY_PASSWORD" \
