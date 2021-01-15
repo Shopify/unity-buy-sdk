@@ -29,7 +29,7 @@ namespace Shopify.Unity.Editor.BuildPipeline {
             this.BuildPath = buildPath;
             ReadFromFile(PBXProject.GetPBXProjectPath(buildPath));
             TestTargetGuid = TargetGuidByName(PBXProject.GetUnityTestTargetName());
-            UnityTargetGuid = TargetGuidByName(this.GetUnityMainTargetGuid());
+            UnityTargetGuid = GetUnityFrameworkTargetGuid();
         }
 
         /// <summary>
