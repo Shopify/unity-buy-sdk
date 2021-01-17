@@ -25,7 +25,6 @@
 //
 
 #include "Tester.h"
-#include "UnityFramework/UnityFramework-Swift.h"
 
 @implementation Tester
 
