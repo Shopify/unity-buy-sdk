@@ -27,6 +27,7 @@
 #import "Prefix.pch"
 #import "UnityBuyAppController.h"
 #import "UnityAppController+ViewHandling.h"
+#import "UnitySendMessageWrapper.h"
 #import "UnityInterface.h"
 #import "Tester.h"
 #import "Cart+ApplePay.h"

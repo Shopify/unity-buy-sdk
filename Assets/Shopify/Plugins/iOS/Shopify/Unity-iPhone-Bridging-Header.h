@@ -27,4 +27,5 @@
 #import "Prefix.pch"
 #import "UnityBuyAppController.h"
 #import "UnityAppController+ViewHandling.h"
+#import "UnitySendMessageWrapper.h"
 #import "UnityInterface.h"

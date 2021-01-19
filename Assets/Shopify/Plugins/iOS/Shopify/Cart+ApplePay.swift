@@ -27,12 +27,12 @@
 import Foundation
 import PassKit
 
-@objc class Cart: NSObject {
+@objc public class Cart: NSObject {
     
     private(set) static var session: PaymentSession?
     private static var dispatcher: ApplePayEventDispatcher?
     
-    @objc static func createApplePaySession(unityDelegateObjectName: String, merchantID: String, countryCode: String, currencyCode: String, serializedSupportedNetworks: String, serializedSummaryItems: String, serializedShippingMethods: String?, requiringShipping: Bool) -> Bool {
+    @objc public static func createApplePaySession(unityDelegateObjectName: String, merchantID: String, countryCode: String, currencyCode: String, serializedSupportedNetworks: String, serializedSummaryItems: String, serializedShippingMethods: String?, requiringShipping: Bool) -> Bool {
         
         guard
             let summaryItemsJson  = extractItems(from: serializedSummaryItems),

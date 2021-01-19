@@ -27,7 +27,7 @@
 import Foundation
 import PassKit
 
-@objc class MessageCenter: NSObject {
+@objc public class MessageCenter: NSObject {
     
     private static var messages = [String: UnityMessage]()
     
@@ -44,14 +44,14 @@ import PassKit
             }
         }
 
-        let object  = message.object.cString(using: .utf8)
-        let method  = message.method.cString(using: .utf8)
-        let content = try! message.serializedString().cString(using: .utf8)
+        let object  = message.object
+        let method  = message.method
+        let content = try! message.serializedString()
 
-        UnitySendMessage(object, method, content)
+        UnitySendMessageWrapper.sendMessage(object, method, content)
     }
     
-    @objc static func message(forIdentifier identifier: String) -> UnityMessage? {
+    @objc public static func message(forIdentifier identifier: String) -> UnityMessage? {
         return messages[identifier]
     }
 }

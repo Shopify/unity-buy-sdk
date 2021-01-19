@@ -28,7 +28,7 @@ import PassKit
 
 @available(iOS 10.0, *)
 extension PaymentSession: PKPaymentAuthorizationControllerDelegate {
-    func paymentAuthorizationControllerDidFinish(_ controller: PKPaymentAuthorizationController) {
+    public func paymentAuthorizationControllerDidFinish(_ controller: PKPaymentAuthorizationController) {
         paymentAuthorizationDidFinish()
     }
     

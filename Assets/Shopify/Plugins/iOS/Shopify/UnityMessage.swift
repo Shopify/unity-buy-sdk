@@ -27,7 +27,7 @@
 import Foundation
 
 
-@objc class UnityMessage: NSObject {
+@objc public class UnityMessage: NSObject {
     
     typealias MessageCompletion = (_ response: String?) -> Void
 
@@ -58,7 +58,7 @@ import Foundation
         }
     }
     
-    @objc func complete(with response: String? = nil) {
+    @objc public func complete(with response: String? = nil) {
         self.response = response
         semaphore.signal()
     }

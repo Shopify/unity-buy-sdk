@@ -64,7 +64,7 @@ import PassKit
 }
     
 
-@objc class PaymentSession: NSObject {
+@objc public class PaymentSession: NSObject {
     
     let request: PKPaymentRequest
     var controller: PaymentAuthorizationControlling

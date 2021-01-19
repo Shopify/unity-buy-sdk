@@ -29,7 +29,7 @@ import PassKit
 
 extension PKPaymentSummaryItem: Deserializable {
     
-    @objc class func deserialize(_ json: JSON) -> Self? {
+    @objc public class func deserialize(_ json: JSON) -> Self? {
         guard
             let label  = json[Field.label.rawValue] as? String,
             let amount = json[Field.amount.rawValue] as? String
