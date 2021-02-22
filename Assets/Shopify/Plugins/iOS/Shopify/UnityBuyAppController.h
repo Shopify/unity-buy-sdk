@@ -27,6 +27,15 @@
 
 #import "UnityAppController.h"
 
+// C Interface that the iOS Buy Plugin pulls in using extern.
+#ifdef __cplusplus
+extern "C" {
+#endif
+    void UnityBuyAppControllerSetShouldResign(bool value);
+#ifdef __cplusplus
+}
+#endif
+
 @interface UnityBuyAppController : UnityAppController
 
 @property (assign, nonatomic) bool shouldResignActive;
