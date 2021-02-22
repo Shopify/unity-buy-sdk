@@ -1,0 +1,28 @@
+ #!/usr/bin/env bash
+
+set -ex
+set -eo pipefail
+
+# Build device .a
+xcodebuild \
+-project "PluginDependencies/iOSPlugin/UnityBuySDKPlugin.xcodeproj" \
+-scheme "UnityBuySDKPlugin" build \
+-configuration release \
+-sdk iphoneos \
+-derivedDataPath "$OUTPUT_PATH" \
+  | xcpretty -c
+
+# Build simulator .a
+xcodebuild \
+ARCHS="i386 x86_64" \
+ONLY_ACTIVE_ARCH=NO \
+-project "PluginDependencies/iOSPlugin/UnityBuySDKPlugin.xcodeproj" \
+-scheme "UnityBuySDKPlugin" build \
+-configuration release \
+-sdk iphonesimulator \
+-derivedDataPath "$OUTPUT_PATH" \
+  | xcpretty -c
+
+lipo -create "$OUTPUT_PATH/Build/Products/Release-iphoneos/libUnityBuySDKPlugin.a" \
+  "$OUTPUT_PATH/Build/Products/Release-iphonesimulator/libUnityBuySDKPlugin.a" \
+  -output "$OUTPUT_PATH/libUnityBuySDKPlugin.a"

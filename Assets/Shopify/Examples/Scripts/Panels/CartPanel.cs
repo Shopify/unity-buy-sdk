@@ -16,7 +16,7 @@ namespace Shopify.Examples.Panels {
 
     public class CartPanel : MonoBehaviour {
 
-        // Shopify cart object which manages the items which are added for purchase, and handles 
+        // Shopify cart object which manages the items which are added for purchase, and handles
         // initiating the checkout process
         private Cart _cart;
 
@@ -82,12 +82,12 @@ namespace Shopify.Examples.Panels {
                 _lineItems.Remove(cartPanelLineItem);
                 _idCartPanelLineItemMapping.Remove(variant.id());
             } else {
-                // In the case where we have a new, non zero quantity, we take care of updating the UI to 
-                // reflect this changed quantity 
+                // In the case where we have a new, non zero quantity, we take care of updating the UI to
+                // reflect this changed quantity
                 cartPanelLineItem.Quantity.text = lineItem.Quantity.ToString();
             }
 
-            // Finally, we dispatch an event saying we've updated the cart quantity, so any secondary calculations 
+            // Finally, we dispatch an event saying we've updated the cart quantity, so any secondary calculations
             // can be handled
             DispatchCartQuantityChanged();
         }

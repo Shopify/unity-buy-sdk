@@ -6,8 +6,8 @@ using System.IO;
 
 public class Publishing {
     public static string[] DirectoriesInPackage = new string[] {
-        "Assets/PlayServicesResolver/",
-        "Assets/PlayServicesResolver/Editor/",
+        "Assets/ExternalDependencyManager/",
+        "Assets/ExternalDependencyManager/Editor/",
         "Assets/Shopify/",
         "Assets/Shopify/Examples/",
         "Assets/Shopify/Examples/3DAssets/",
@@ -41,10 +41,6 @@ public class Publishing {
         "Assets/Shopify/Plugins/Editor/",
         "Assets/Shopify/Plugins/iOS/",
         "Assets/Shopify/Plugins/iOS/Shopify/",
-        "Assets/Shopify/Plugins/iOS/Shopify/Deserializable/",
-        "Assets/Shopify/Plugins/iOS/Shopify/PaymentAuthorizationControlling/",
-        "Assets/Shopify/Plugins/iOS/Shopify/Serializable/",
-        "Assets/Shopify/Plugins/iOS/Shopify/String/",
         "Assets/Shopify/Unity/",
         "Assets/Shopify/Unity/Editor/",
         "Assets/Shopify/Unity/Editor/BuildPipeline/",

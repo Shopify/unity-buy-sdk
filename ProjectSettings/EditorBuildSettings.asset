@@ -5,6 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/IntegrationTestBlankScene.unity
     guid: edb8578fa02e54327b1d89db9b0130dd
+  - enabled: 1
+    path: Assets/Shopify/Examples/Scenes/Vending Machine Example.unity
+    guid: 0145d54c73f590845acd09f7d6920402
+  m_configObjects: {}
