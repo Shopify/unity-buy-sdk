@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "D43227F3-39C8-4ED7-BA31-11B136477292"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1FC017B2-755D-4C2F-95E6-BD06F98D6681"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UnityBuySDKPluginTests/PaymentSessionTests.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "115"
+            endingLineNumber = "115"
+            landmarkName = "testSelectShippingMethod()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A7C067AB-CC47-411E-BDFB-D23CE28BAE5A"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UnityBuySDKPluginTests/Mocks/MockAuthorizationController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "112"
+            endingLineNumber = "112"
+            landmarkName = "invokeDidSelectShippingMethod(_:handler:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "A7C067AB-CC47-411E-BDFB-D23CE28BAE5A - 83db62ef3cd8bece"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static UnityBuySDKPluginTests.MockAuthorizationController.invokeDidSelectShippingMethod(_: __C.PKShippingMethod, handler: (__C.PKPaymentRequestShippingMethodUpdate) -&gt; ()) -&gt; ()"
+                  moduleName = "UnityBuySDKPluginTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stephanleroux/shopify/unity-ios-buy-plugin/UnityBuySDKPluginTests/Mocks/MockAuthorizationController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "112"
+                  endingLineNumber = "112"
+                  offsetFromSymbolStart = "94">
+               </Location>
+               <Location
+                  uuid = "A7C067AB-CC47-411E-BDFB-D23CE28BAE5A - a4bb17a4caac2c98"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (UnityBuySDKPluginTests.MockAuthorizationController) -&gt; () in static UnityBuySDKPluginTests.MockAuthorizationController.invokeDidSelectShippingMethod(_: __C.PKShippingMethod, handler: (__C.PKPaymentRequestShippingMethodUpdate) -&gt; ()) -&gt; ()"
+                  moduleName = "UnityBuySDKPluginTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stephanleroux/shopify/unity-ios-buy-plugin/UnityBuySDKPluginTests/Mocks/MockAuthorizationController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "113"
+                  endingLineNumber = "113"
+                  offsetFromSymbolStart = "132">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "66DDA051-EED6-4D81-92EE-C5F3C4E0AB20"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UnityBuySDKPlugin/PKPaymentAuthorizationController+PaymentAuthorizationControlling.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
+            landmarkName = "authorizationDelegate"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6ADAB8E0-833E-4B04-8A42-A4D425EA908B"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UnityBuySDKPlugin/PKPaymentAuthorizationViewController+PaymentAuthorizationControlling.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
+            landmarkName = "authorizationDelegate"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

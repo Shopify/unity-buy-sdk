@@ -1,0 +1,687 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E98FCB9325E44C90001DB1A9 /* ApplePayButtonGenerator.mm in Sources */ = {isa = PBXBuildFile; fileRef = E9429E0225DEC94F00AB5E3C /* ApplePayButtonGenerator.mm */; };
+		E98FCB9425E44C90001DB1A9 /* Dictionary+RawRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931996525D7053A007C35DC /* Dictionary+RawRepresentable.swift */; };
+		E98FCB9525E44C90001DB1A9 /* PKPaymentAuthorizationController+PaymentAuthorizationControlling.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931996025D7053A007C35DC /* PKPaymentAuthorizationController+PaymentAuthorizationControlling.swift */; };
+		E98FCB9625E44C90001DB1A9 /* String+Lines.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931995A25D7053A007C35DC /* String+Lines.swift */; };
+		E98FCB9725E44C90001DB1A9 /* PaymentSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931995B25D7053A007C35DC /* PaymentSession.swift */; };
+		E98FCB9825E44C90001DB1A9 /* PKPaymentAuthorizationViewController+PaymentAuthorizationControlling.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931996E25D7053A007C35DC /* PKPaymentAuthorizationViewController+PaymentAuthorizationControlling.swift */; };
+		E98FCB9925E44C90001DB1A9 /* PKPaymentSummaryItem+Deserializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931997025D7053A007C35DC /* PKPaymentSummaryItem+Deserializable.swift */; };
+		E98FCB9A25E44C90001DB1A9 /* PKPaymentToken+Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931996325D7053A007C35DC /* PKPaymentToken+Serializable.swift */; };
+		E98FCB9B25E44C90001DB1A9 /* ApplePayEventResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931995F25D7053A007C35DC /* ApplePayEventResponse.swift */; };
+		E98FCB9C25E44C90001DB1A9 /* ApplePayEventDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931995525D7053A007C35DC /* ApplePayEventDispatcher.swift */; };
+		E98FCB9D25E44C90001DB1A9 /* Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931995C25D7053A007C35DC /* Serializable.swift */; };
+		E98FCB9E25E44C90001DB1A9 /* PKPayment+Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931995625D7053A007C35DC /* PKPayment+Serializable.swift */; };
+		E98FCB9F25E44C90001DB1A9 /* PKShippingMethod+Deserializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931995925D7053A007C35DC /* PKShippingMethod+Deserializable.swift */; };
+		E98FCBA025E44C90001DB1A9 /* PKPaymentAuthorizationStatus+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931995025D70539007C35DC /* PKPaymentAuthorizationStatus+String.swift */; };
+		E98FCBA125E44C90001DB1A9 /* PKShippingMethod+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931997525D7053A007C35DC /* PKShippingMethod+Init.swift */; };
+		E98FCBA225E44C90001DB1A9 /* PaymentSession+PaymentAuthorizationViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931997725D7053A007C35DC /* PaymentSession+PaymentAuthorizationViewControllerDelegate.swift */; };
+		E98FCBA325E44C90001DB1A9 /* Tester.mm in Sources */ = {isa = PBXBuildFile; fileRef = E93199B225D70559007C35DC /* Tester.mm */; };
+		E98FCBA425E44C90001DB1A9 /* PKContact+Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931996A25D7053A007C35DC /* PKContact+Serializable.swift */; };
+		E98FCBA525E44C90001DB1A9 /* Cart+ApplePay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931996B25D7053A007C35DC /* Cart+ApplePay.swift */; };
+		E98FCBA625E44C90001DB1A9 /* Cart+WebCheckout.mm in Sources */ = {isa = PBXBuildFile; fileRef = E931996125D7053A007C35DC /* Cart+WebCheckout.mm */; };
+		E98FCBA725E44C90001DB1A9 /* PKPaymentSummaryItemType+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931997125D7053A007C35DC /* PKPaymentSummaryItemType+String.swift */; };
+		E98FCBA825E44C90001DB1A9 /* MessageResponder.mm in Sources */ = {isa = PBXBuildFile; fileRef = E931997425D7053A007C35DC /* MessageResponder.mm */; };
+		E98FCBA925E44C90001DB1A9 /* Deserializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931996625D7053A007C35DC /* Deserializable.swift */; };
+		E98FCBAA25E44C90001DB1A9 /* PKError+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931996925D7053A007C35DC /* PKError+JSON.swift */; };
+		E98FCBAB25E44C90001DB1A9 /* PaymentSession+PaymentAuthorizationControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931997225D7053A007C35DC /* PaymentSession+PaymentAuthorizationControllerDelegate.swift */; };
+		E98FCBAC25E44C90001DB1A9 /* MessageCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931996225D7053A007C35DC /* MessageCenter.swift */; };
+		E98FCBAD25E44C90001DB1A9 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931996C25D7053A007C35DC /* UIColor+Hex.swift */; };
+		E98FCBAE25E44C90001DB1A9 /* UnityMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931995325D7053A007C35DC /* UnityMessage.swift */; };
+		E98FCBAF25E44C90001DB1A9 /* CNPostalAddress+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931995D25D7053A007C35DC /* CNPostalAddress+String.swift */; };
+		E98FCBB025E44C90001DB1A9 /* PaymentAuthorizationControlling.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931995725D7053A007C35DC /* PaymentAuthorizationControlling.swift */; };
+		E98FCBB125E44C90001DB1A9 /* WebCheckoutSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931996725D7053A007C35DC /* WebCheckoutSession.swift */; };
+		E98FCBB225E44C90001DB1A9 /* PKContactField+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = E931995225D7053A007C35DC /* PKContactField+String.swift */; };
+		E98FCBB325E44C90001DB1A9 /* Cart+ApplePay.mm in Sources */ = {isa = PBXBuildFile; fileRef = E931996D25D7053A007C35DC /* Cart+ApplePay.mm */; };
+		E98FCBB725E44CBB001DB1A9 /* ApplePayButtonGenerator.h in Headers */ = {isa = PBXBuildFile; fileRef = E9429E0125DEC94F00AB5E3C /* ApplePayButtonGenerator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E98FCBB825E44CBB001DB1A9 /* Cart+ApplePay.h in Headers */ = {isa = PBXBuildFile; fileRef = E931997925D7053A007C35DC /* Cart+ApplePay.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E98FCBB925E44CBB001DB1A9 /* Cart+WebCheckout.h in Headers */ = {isa = PBXBuildFile; fileRef = E931997825D7053A007C35DC /* Cart+WebCheckout.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E98FCBBA25E44CBB001DB1A9 /* Tester.h in Headers */ = {isa = PBXBuildFile; fileRef = E93199A825D70559007C35DC /* Tester.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E98FCBBB25E44CBB001DB1A9 /* UnityBuySDKPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = E98FCB1125E42DAB001DB1A9 /* UnityBuySDKPlugin.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E98FCBC225E44D07001DB1A9 /* PassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E98FCBC125E44D07001DB1A9 /* PassKit.framework */; };
+		E98FCBC425E44D0C001DB1A9 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E98FCBC325E44D0C001DB1A9 /* WebKit.framework */; };
+		E98FCBDC25E45584001DB1A9 /* libUnityBuySDKPlugin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E98FCB8625E44C46001DB1A9 /* libUnityBuySDKPlugin.a */; };
+		E9C5DE4F25E45B3F00AFB055 /* MockPaymentToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93199B325D70559007C35DC /* MockPaymentToken.swift */; };
+		E9C5DE5025E45B3F00AFB055 /* DeserializableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93199AC25D70559007C35DC /* DeserializableTests.swift */; };
+		E9C5DE5125E45B3F00AFB055 /* MessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93199AF25D70559007C35DC /* MessageTests.swift */; };
+		E9C5DE5225E45B3F00AFB055 /* SerializableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93199B425D70559007C35DC /* SerializableTests.swift */; };
+		E9C5DE5325E45B3F00AFB055 /* MockPayment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93199B725D70559007C35DC /* MockPayment.swift */; };
+		E9C5DE5425E45B3F00AFB055 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93199A725D70559007C35DC /* Models.swift */; };
+		E9C5DE5525E45B3F00AFB055 /* MockPaymentSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93199AD25D70559007C35DC /* MockPaymentSessionDelegate.swift */; };
+		E9C5DE5625E45B3F00AFB055 /* StringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93199B125D70559007C35DC /* StringTests.swift */; };
+		E9C5DE5725E45B3F00AFB055 /* CartTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93199A925D70559007C35DC /* CartTests.swift */; };
+		E9C5DE5825E45B3F00AFB055 /* ApplePayErrorDeserializingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93199AB25D70559007C35DC /* ApplePayErrorDeserializingTests.swift */; };
+		E9C5DE5925E45B3F00AFB055 /* TesterMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93199B825D70559007C35DC /* TesterMethod.swift */; };
+		E9C5DE5A25E45B3F00AFB055 /* MockAuthorizationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93199B625D70559007C35DC /* MockAuthorizationController.swift */; };
+		E9C5DE5B25E45B3F00AFB055 /* MockPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93199AA25D70559007C35DC /* MockPaymentMethod.swift */; };
+		E9C5DE5C25E45B3F00AFB055 /* MockUnityExterns.mm in Sources */ = {isa = PBXBuildFile; fileRef = E98FCAAF25E04184001DB1A9 /* MockUnityExterns.mm */; };
+		E9C5DE5D25E45B3F00AFB055 /* ApplePayEventDispatcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93199A525D70559007C35DC /* ApplePayEventDispatcherTests.swift */; };
+		E9C5DE5E25E45B3F00AFB055 /* ApplePayFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93199AE25D70559007C35DC /* ApplePayFlowTests.swift */; };
+		E9C5DE5F25E45B4000AFB055 /* PaymentSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93199B025D70559007C35DC /* PaymentSessionTests.swift */; };
+		E9C5DE6025E45B4000AFB055 /* PaymentNetworkStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93199A625D70559007C35DC /* PaymentNetworkStringTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E98FCBDD25E45584001DB1A9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E931992825D704BC007C35DC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E98FCB8525E44C46001DB1A9;
+			remoteInfo = UnityBuySDKPlugin;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E98FCB8425E44C46001DB1A9 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		E931995025D70539007C35DC /* PKPaymentAuthorizationStatus+String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PKPaymentAuthorizationStatus+String.swift"; sourceTree = "<group>"; };
+		E931995225D7053A007C35DC /* PKContactField+String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PKContactField+String.swift"; sourceTree = "<group>"; };
+		E931995325D7053A007C35DC /* UnityMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnityMessage.swift; sourceTree = "<group>"; };
+		E931995525D7053A007C35DC /* ApplePayEventDispatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplePayEventDispatcher.swift; sourceTree = "<group>"; };
+		E931995625D7053A007C35DC /* PKPayment+Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PKPayment+Serializable.swift"; sourceTree = "<group>"; };
+		E931995725D7053A007C35DC /* PaymentAuthorizationControlling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentAuthorizationControlling.swift; sourceTree = "<group>"; };
+		E931995925D7053A007C35DC /* PKShippingMethod+Deserializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PKShippingMethod+Deserializable.swift"; sourceTree = "<group>"; };
+		E931995A25D7053A007C35DC /* String+Lines.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Lines.swift"; sourceTree = "<group>"; };
+		E931995B25D7053A007C35DC /* PaymentSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentSession.swift; sourceTree = "<group>"; };
+		E931995C25D7053A007C35DC /* Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Serializable.swift; sourceTree = "<group>"; };
+		E931995D25D7053A007C35DC /* CNPostalAddress+String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CNPostalAddress+String.swift"; sourceTree = "<group>"; };
+		E931995F25D7053A007C35DC /* ApplePayEventResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplePayEventResponse.swift; sourceTree = "<group>"; };
+		E931996025D7053A007C35DC /* PKPaymentAuthorizationController+PaymentAuthorizationControlling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PKPaymentAuthorizationController+PaymentAuthorizationControlling.swift"; sourceTree = "<group>"; };
+		E931996125D7053A007C35DC /* Cart+WebCheckout.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "Cart+WebCheckout.mm"; sourceTree = "<group>"; };
+		E931996225D7053A007C35DC /* MessageCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageCenter.swift; sourceTree = "<group>"; };
+		E931996325D7053A007C35DC /* PKPaymentToken+Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PKPaymentToken+Serializable.swift"; sourceTree = "<group>"; };
+		E931996525D7053A007C35DC /* Dictionary+RawRepresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+RawRepresentable.swift"; sourceTree = "<group>"; };
+		E931996625D7053A007C35DC /* Deserializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Deserializable.swift; sourceTree = "<group>"; };
+		E931996725D7053A007C35DC /* WebCheckoutSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebCheckoutSession.swift; sourceTree = "<group>"; };
+		E931996925D7053A007C35DC /* PKError+JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PKError+JSON.swift"; sourceTree = "<group>"; };
+		E931996A25D7053A007C35DC /* PKContact+Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PKContact+Serializable.swift"; sourceTree = "<group>"; };
+		E931996B25D7053A007C35DC /* Cart+ApplePay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Cart+ApplePay.swift"; sourceTree = "<group>"; };
+		E931996C25D7053A007C35DC /* UIColor+Hex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
+		E931996D25D7053A007C35DC /* Cart+ApplePay.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "Cart+ApplePay.mm"; sourceTree = "<group>"; };
+		E931996E25D7053A007C35DC /* PKPaymentAuthorizationViewController+PaymentAuthorizationControlling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PKPaymentAuthorizationViewController+PaymentAuthorizationControlling.swift"; sourceTree = "<group>"; };
+		E931997025D7053A007C35DC /* PKPaymentSummaryItem+Deserializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PKPaymentSummaryItem+Deserializable.swift"; sourceTree = "<group>"; };
+		E931997125D7053A007C35DC /* PKPaymentSummaryItemType+String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PKPaymentSummaryItemType+String.swift"; sourceTree = "<group>"; };
+		E931997225D7053A007C35DC /* PaymentSession+PaymentAuthorizationControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PaymentSession+PaymentAuthorizationControllerDelegate.swift"; sourceTree = "<group>"; };
+		E931997425D7053A007C35DC /* MessageResponder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MessageResponder.mm; sourceTree = "<group>"; };
+		E931997525D7053A007C35DC /* PKShippingMethod+Init.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PKShippingMethod+Init.swift"; sourceTree = "<group>"; };
+		E931997725D7053A007C35DC /* PaymentSession+PaymentAuthorizationViewControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PaymentSession+PaymentAuthorizationViewControllerDelegate.swift"; sourceTree = "<group>"; };
+		E931997825D7053A007C35DC /* Cart+WebCheckout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Cart+WebCheckout.h"; sourceTree = "<group>"; };
+		E931997925D7053A007C35DC /* Cart+ApplePay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Cart+ApplePay.h"; sourceTree = "<group>"; };
+		E93199A225D70559007C35DC /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E93199A525D70559007C35DC /* ApplePayEventDispatcherTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplePayEventDispatcherTests.swift; sourceTree = "<group>"; };
+		E93199A625D70559007C35DC /* PaymentNetworkStringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentNetworkStringTests.swift; sourceTree = "<group>"; };
+		E93199A725D70559007C35DC /* Models.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		E93199A825D70559007C35DC /* Tester.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tester.h; sourceTree = "<group>"; };
+		E93199A925D70559007C35DC /* CartTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartTests.swift; sourceTree = "<group>"; };
+		E93199AA25D70559007C35DC /* MockPaymentMethod.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockPaymentMethod.swift; sourceTree = "<group>"; };
+		E93199AB25D70559007C35DC /* ApplePayErrorDeserializingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplePayErrorDeserializingTests.swift; sourceTree = "<group>"; };
+		E93199AC25D70559007C35DC /* DeserializableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeserializableTests.swift; sourceTree = "<group>"; };
+		E93199AD25D70559007C35DC /* MockPaymentSessionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockPaymentSessionDelegate.swift; sourceTree = "<group>"; };
+		E93199AE25D70559007C35DC /* ApplePayFlowTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplePayFlowTests.swift; sourceTree = "<group>"; };
+		E93199AF25D70559007C35DC /* MessageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageTests.swift; sourceTree = "<group>"; };
+		E93199B025D70559007C35DC /* PaymentSessionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentSessionTests.swift; sourceTree = "<group>"; };
+		E93199B125D70559007C35DC /* StringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringTests.swift; sourceTree = "<group>"; };
+		E93199B225D70559007C35DC /* Tester.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Tester.mm; sourceTree = "<group>"; };
+		E93199B325D70559007C35DC /* MockPaymentToken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockPaymentToken.swift; sourceTree = "<group>"; };
+		E93199B425D70559007C35DC /* SerializableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SerializableTests.swift; sourceTree = "<group>"; };
+		E93199B625D70559007C35DC /* MockAuthorizationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockAuthorizationController.swift; sourceTree = "<group>"; };
+		E93199B725D70559007C35DC /* MockPayment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockPayment.swift; sourceTree = "<group>"; };
+		E93199B825D70559007C35DC /* TesterMethod.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TesterMethod.swift; sourceTree = "<group>"; };
+		E9429DF125DEB82A00AB5E3C /* libswiftFoundation.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswiftFoundation.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/lib/swift/libswiftFoundation.tbd; sourceTree = DEVELOPER_DIR; };
+		E9429E0125DEC94F00AB5E3C /* ApplePayButtonGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplePayButtonGenerator.h; sourceTree = "<group>"; };
+		E9429E0225DEC94F00AB5E3C /* ApplePayButtonGenerator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ApplePayButtonGenerator.mm; sourceTree = "<group>"; };
+		E98FCAAF25E04184001DB1A9 /* MockUnityExterns.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MockUnityExterns.mm; sourceTree = "<group>"; };
+		E98FCB1125E42DAB001DB1A9 /* UnityBuySDKPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UnityBuySDKPlugin.h; sourceTree = "<group>"; };
+		E98FCB1225E42DAB001DB1A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E98FCB7B25E44AB0001DB1A9 /* libiPhone-lib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libiPhone-lib.a"; sourceTree = "<group>"; };
+		E98FCB8625E44C46001DB1A9 /* libUnityBuySDKPlugin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libUnityBuySDKPlugin.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E98FCBC125E44D07001DB1A9 /* PassKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PassKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/iOSSupport/System/Library/Frameworks/PassKit.framework; sourceTree = DEVELOPER_DIR; };
+		E98FCBC325E44D0C001DB1A9 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/iOSSupport/System/Library/Frameworks/WebKit.framework; sourceTree = DEVELOPER_DIR; };
+		E98FCBD725E45584001DB1A9 /* UnityBuySDKPluginTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnityBuySDKPluginTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9C5DE4525E4570100AFB055 /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E98FCB8325E44C46001DB1A9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E98FCBC425E44D0C001DB1A9 /* WebKit.framework in Frameworks */,
+				E98FCBC225E44D07001DB1A9 /* PassKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E98FCBD425E45584001DB1A9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E98FCBDC25E45584001DB1A9 /* libUnityBuySDKPlugin.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E931992725D704BC007C35DC = {
+			isa = PBXGroup;
+			children = (
+				E98FCB1025E42DAB001DB1A9 /* UnityBuySDKPlugin */,
+				E931994025D704EF007C35DC /* UnityBuySDKPluginTests */,
+				E931993125D704BC007C35DC /* Products */,
+				E9429DF025DEB82900AB5E3C /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		E931993125D704BC007C35DC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E98FCB8625E44C46001DB1A9 /* libUnityBuySDKPlugin.a */,
+				E98FCBD725E45584001DB1A9 /* UnityBuySDKPluginTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E931994025D704EF007C35DC /* UnityBuySDKPluginTests */ = {
+			isa = PBXGroup;
+			children = (
+				E9F9403C25DC287E001D21F0 /* Mocks */,
+				E93199AB25D70559007C35DC /* ApplePayErrorDeserializingTests.swift */,
+				E93199A525D70559007C35DC /* ApplePayEventDispatcherTests.swift */,
+				E93199AE25D70559007C35DC /* ApplePayFlowTests.swift */,
+				E93199A925D70559007C35DC /* CartTests.swift */,
+				E93199AC25D70559007C35DC /* DeserializableTests.swift */,
+				E93199A225D70559007C35DC /* Info.plist */,
+				E93199AF25D70559007C35DC /* MessageTests.swift */,
+				E93199A725D70559007C35DC /* Models.swift */,
+				E93199A625D70559007C35DC /* PaymentNetworkStringTests.swift */,
+				E93199B025D70559007C35DC /* PaymentSessionTests.swift */,
+				E93199B425D70559007C35DC /* SerializableTests.swift */,
+				E93199B125D70559007C35DC /* StringTests.swift */,
+			);
+			path = UnityBuySDKPluginTests;
+			sourceTree = "<group>";
+		};
+		E9429DF025DEB82900AB5E3C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E98FCBC325E44D0C001DB1A9 /* WebKit.framework */,
+				E98FCBC125E44D07001DB1A9 /* PassKit.framework */,
+				E98FCB7B25E44AB0001DB1A9 /* libiPhone-lib.a */,
+				E9429DF125DEB82A00AB5E3C /* libswiftFoundation.tbd */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E98FCB1025E42DAB001DB1A9 /* UnityBuySDKPlugin */ = {
+			isa = PBXGroup;
+			children = (
+				E9429E0125DEC94F00AB5E3C /* ApplePayButtonGenerator.h */,
+				E9429E0225DEC94F00AB5E3C /* ApplePayButtonGenerator.mm */,
+				E931995525D7053A007C35DC /* ApplePayEventDispatcher.swift */,
+				E931995F25D7053A007C35DC /* ApplePayEventResponse.swift */,
+				E931997925D7053A007C35DC /* Cart+ApplePay.h */,
+				E931996D25D7053A007C35DC /* Cart+ApplePay.mm */,
+				E931996B25D7053A007C35DC /* Cart+ApplePay.swift */,
+				E931997825D7053A007C35DC /* Cart+WebCheckout.h */,
+				E931996125D7053A007C35DC /* Cart+WebCheckout.mm */,
+				E931995D25D7053A007C35DC /* CNPostalAddress+String.swift */,
+				E931996625D7053A007C35DC /* Deserializable.swift */,
+				E931996525D7053A007C35DC /* Dictionary+RawRepresentable.swift */,
+				E931996225D7053A007C35DC /* MessageCenter.swift */,
+				E931997425D7053A007C35DC /* MessageResponder.mm */,
+				E931995725D7053A007C35DC /* PaymentAuthorizationControlling.swift */,
+				E931995B25D7053A007C35DC /* PaymentSession.swift */,
+				E931997225D7053A007C35DC /* PaymentSession+PaymentAuthorizationControllerDelegate.swift */,
+				E931997725D7053A007C35DC /* PaymentSession+PaymentAuthorizationViewControllerDelegate.swift */,
+				E931996A25D7053A007C35DC /* PKContact+Serializable.swift */,
+				E931995225D7053A007C35DC /* PKContactField+String.swift */,
+				E931996925D7053A007C35DC /* PKError+JSON.swift */,
+				E931995625D7053A007C35DC /* PKPayment+Serializable.swift */,
+				E931996025D7053A007C35DC /* PKPaymentAuthorizationController+PaymentAuthorizationControlling.swift */,
+				E931996E25D7053A007C35DC /* PKPaymentAuthorizationViewController+PaymentAuthorizationControlling.swift */,
+				E931995025D70539007C35DC /* PKPaymentAuthorizationStatus+String.swift */,
+				E931997025D7053A007C35DC /* PKPaymentSummaryItem+Deserializable.swift */,
+				E931997125D7053A007C35DC /* PKPaymentSummaryItemType+String.swift */,
+				E931996325D7053A007C35DC /* PKPaymentToken+Serializable.swift */,
+				E931995925D7053A007C35DC /* PKShippingMethod+Deserializable.swift */,
+				E931997525D7053A007C35DC /* PKShippingMethod+Init.swift */,
+				E931995C25D7053A007C35DC /* Serializable.swift */,
+				E931995A25D7053A007C35DC /* String+Lines.swift */,
+				E93199A825D70559007C35DC /* Tester.h */,
+				E93199B225D70559007C35DC /* Tester.mm */,
+				E931996C25D7053A007C35DC /* UIColor+Hex.swift */,
+				E931995325D7053A007C35DC /* UnityMessage.swift */,
+				E931996725D7053A007C35DC /* WebCheckoutSession.swift */,
+				E98FCB1125E42DAB001DB1A9 /* UnityBuySDKPlugin.h */,
+				E9C5DE4525E4570100AFB055 /* module.modulemap */,
+				E98FCB1225E42DAB001DB1A9 /* Info.plist */,
+			);
+			path = UnityBuySDKPlugin;
+			sourceTree = "<group>";
+		};
+		E9F9403C25DC287E001D21F0 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				E93199B825D70559007C35DC /* TesterMethod.swift */,
+				E93199B625D70559007C35DC /* MockAuthorizationController.swift */,
+				E93199B725D70559007C35DC /* MockPayment.swift */,
+				E93199AA25D70559007C35DC /* MockPaymentMethod.swift */,
+				E93199AD25D70559007C35DC /* MockPaymentSessionDelegate.swift */,
+				E93199B325D70559007C35DC /* MockPaymentToken.swift */,
+				E98FCAAF25E04184001DB1A9 /* MockUnityExterns.mm */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		E98FCBB625E44CAB001DB1A9 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E98FCBBB25E44CBB001DB1A9 /* UnityBuySDKPlugin.h in Headers */,
+				E98FCBB725E44CBB001DB1A9 /* ApplePayButtonGenerator.h in Headers */,
+				E98FCBB825E44CBB001DB1A9 /* Cart+ApplePay.h in Headers */,
+				E98FCBB925E44CBB001DB1A9 /* Cart+WebCheckout.h in Headers */,
+				E98FCBBA25E44CBB001DB1A9 /* Tester.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		E98FCB8525E44C46001DB1A9 /* UnityBuySDKPlugin */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E98FCB8A25E44C47001DB1A9 /* Build configuration list for PBXNativeTarget "UnityBuySDKPlugin" */;
+			buildPhases = (
+				E98FCBB625E44CAB001DB1A9 /* Headers */,
+				E98FCB8225E44C46001DB1A9 /* Sources */,
+				E98FCB8325E44C46001DB1A9 /* Frameworks */,
+				E98FCB8425E44C46001DB1A9 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = UnityBuySDKPlugin;
+			productName = UnityBuySDKPlugin;
+			productReference = E98FCB8625E44C46001DB1A9 /* libUnityBuySDKPlugin.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		E98FCBD625E45584001DB1A9 /* UnityBuySDKPluginTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E98FCBDF25E45584001DB1A9 /* Build configuration list for PBXNativeTarget "UnityBuySDKPluginTests" */;
+			buildPhases = (
+				E98FCBD325E45584001DB1A9 /* Sources */,
+				E98FCBD425E45584001DB1A9 /* Frameworks */,
+				E98FCBD525E45584001DB1A9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E98FCBDE25E45584001DB1A9 /* PBXTargetDependency */,
+			);
+			name = UnityBuySDKPluginTests;
+			productName = UnityBuySDKPluginTests;
+			productReference = E98FCBD725E45584001DB1A9 /* UnityBuySDKPluginTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E931992825D704BC007C35DC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1240;
+				LastUpgradeCheck = 1210;
+				TargetAttributes = {
+					E98FCB8525E44C46001DB1A9 = {
+						CreatedOnToolsVersion = 12.4;
+					};
+					E98FCBD625E45584001DB1A9 = {
+						CreatedOnToolsVersion = 12.4;
+					};
+				};
+			};
+			buildConfigurationList = E931992B25D704BC007C35DC /* Build configuration list for PBXProject "UnityBuySDKPlugin" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E931992725D704BC007C35DC;
+			productRefGroup = E931993125D704BC007C35DC /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E98FCB8525E44C46001DB1A9 /* UnityBuySDKPlugin */,
+				E98FCBD625E45584001DB1A9 /* UnityBuySDKPluginTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E98FCBD525E45584001DB1A9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E98FCB8225E44C46001DB1A9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E98FCBAC25E44C90001DB1A9 /* MessageCenter.swift in Sources */,
+				E98FCBAB25E44C90001DB1A9 /* PaymentSession+PaymentAuthorizationControllerDelegate.swift in Sources */,
+				E98FCBA625E44C90001DB1A9 /* Cart+WebCheckout.mm in Sources */,
+				E98FCBB225E44C90001DB1A9 /* PKContactField+String.swift in Sources */,
+				E98FCBAD25E44C90001DB1A9 /* UIColor+Hex.swift in Sources */,
+				E98FCBA225E44C90001DB1A9 /* PaymentSession+PaymentAuthorizationViewControllerDelegate.swift in Sources */,
+				E98FCBA725E44C90001DB1A9 /* PKPaymentSummaryItemType+String.swift in Sources */,
+				E98FCB9A25E44C90001DB1A9 /* PKPaymentToken+Serializable.swift in Sources */,
+				E98FCB9325E44C90001DB1A9 /* ApplePayButtonGenerator.mm in Sources */,
+				E98FCBA025E44C90001DB1A9 /* PKPaymentAuthorizationStatus+String.swift in Sources */,
+				E98FCBAF25E44C90001DB1A9 /* CNPostalAddress+String.swift in Sources */,
+				E98FCBA825E44C90001DB1A9 /* MessageResponder.mm in Sources */,
+				E98FCB9F25E44C90001DB1A9 /* PKShippingMethod+Deserializable.swift in Sources */,
+				E98FCBAE25E44C90001DB1A9 /* UnityMessage.swift in Sources */,
+				E98FCBB125E44C90001DB1A9 /* WebCheckoutSession.swift in Sources */,
+				E98FCB9B25E44C90001DB1A9 /* ApplePayEventResponse.swift in Sources */,
+				E98FCBA325E44C90001DB1A9 /* Tester.mm in Sources */,
+				E98FCB9825E44C90001DB1A9 /* PKPaymentAuthorizationViewController+PaymentAuthorizationControlling.swift in Sources */,
+				E98FCBA425E44C90001DB1A9 /* PKContact+Serializable.swift in Sources */,
+				E98FCB9425E44C90001DB1A9 /* Dictionary+RawRepresentable.swift in Sources */,
+				E98FCBB325E44C90001DB1A9 /* Cart+ApplePay.mm in Sources */,
+				E98FCB9925E44C90001DB1A9 /* PKPaymentSummaryItem+Deserializable.swift in Sources */,
+				E98FCB9D25E44C90001DB1A9 /* Serializable.swift in Sources */,
+				E98FCBAA25E44C90001DB1A9 /* PKError+JSON.swift in Sources */,
+				E98FCB9625E44C90001DB1A9 /* String+Lines.swift in Sources */,
+				E98FCBB025E44C90001DB1A9 /* PaymentAuthorizationControlling.swift in Sources */,
+				E98FCBA125E44C90001DB1A9 /* PKShippingMethod+Init.swift in Sources */,
+				E98FCBA925E44C90001DB1A9 /* Deserializable.swift in Sources */,
+				E98FCB9C25E44C90001DB1A9 /* ApplePayEventDispatcher.swift in Sources */,
+				E98FCB9525E44C90001DB1A9 /* PKPaymentAuthorizationController+PaymentAuthorizationControlling.swift in Sources */,
+				E98FCB9E25E44C90001DB1A9 /* PKPayment+Serializable.swift in Sources */,
+				E98FCB9725E44C90001DB1A9 /* PaymentSession.swift in Sources */,
+				E98FCBA525E44C90001DB1A9 /* Cart+ApplePay.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E98FCBD325E45584001DB1A9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E9C5DE5225E45B3F00AFB055 /* SerializableTests.swift in Sources */,
+				E9C5DE5F25E45B4000AFB055 /* PaymentSessionTests.swift in Sources */,
+				E9C5DE5A25E45B3F00AFB055 /* MockAuthorizationController.swift in Sources */,
+				E9C5DE5B25E45B3F00AFB055 /* MockPaymentMethod.swift in Sources */,
+				E9C5DE5925E45B3F00AFB055 /* TesterMethod.swift in Sources */,
+				E9C5DE5325E45B3F00AFB055 /* MockPayment.swift in Sources */,
+				E9C5DE4F25E45B3F00AFB055 /* MockPaymentToken.swift in Sources */,
+				E9C5DE5825E45B3F00AFB055 /* ApplePayErrorDeserializingTests.swift in Sources */,
+				E9C5DE5525E45B3F00AFB055 /* MockPaymentSessionDelegate.swift in Sources */,
+				E9C5DE5D25E45B3F00AFB055 /* ApplePayEventDispatcherTests.swift in Sources */,
+				E9C5DE6025E45B4000AFB055 /* PaymentNetworkStringTests.swift in Sources */,
+				E9C5DE5E25E45B3F00AFB055 /* ApplePayFlowTests.swift in Sources */,
+				E9C5DE5425E45B3F00AFB055 /* Models.swift in Sources */,
+				E9C5DE5C25E45B3F00AFB055 /* MockUnityExterns.mm in Sources */,
+				E9C5DE5125E45B3F00AFB055 /* MessageTests.swift in Sources */,
+				E9C5DE5625E45B3F00AFB055 /* StringTests.swift in Sources */,
+				E9C5DE5025E45B3F00AFB055 /* DeserializableTests.swift in Sources */,
+				E9C5DE5725E45B3F00AFB055 /* CartTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E98FCBDE25E45584001DB1A9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E98FCB8525E44C46001DB1A9 /* UnityBuySDKPlugin */;
+			targetProxy = E98FCBDD25E45584001DB1A9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		E931993525D704BC007C35DC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		E931993625D704BC007C35DC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E98FCB8B25E44C47001DB1A9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = A7XGC83MZE;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/UnityBuySDKPlugin/UnityBuySDKPlugin.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E98FCB8C25E44C47001DB1A9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = A7XGC83MZE;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/UnityBuySDKPlugin/UnityBuySDKPlugin.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		E98FCBE025E45584001DB1A9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = A7XGC83MZE;
+				INFOPLIST_FILE = UnityBuySDKPluginTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.shopify.UnityBuySDKPluginTests.UnityBuySDKPluginTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E98FCBE125E45584001DB1A9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = A7XGC83MZE;
+				INFOPLIST_FILE = UnityBuySDKPluginTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.shopify.UnityBuySDKPluginTests.UnityBuySDKPluginTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E931992B25D704BC007C35DC /* Build configuration list for PBXProject "UnityBuySDKPlugin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E931993525D704BC007C35DC /* Debug */,
+				E931993625D704BC007C35DC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E98FCB8A25E44C47001DB1A9 /* Build configuration list for PBXNativeTarget "UnityBuySDKPlugin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E98FCB8B25E44C47001DB1A9 /* Debug */,
+				E98FCB8C25E44C47001DB1A9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E98FCBDF25E45584001DB1A9 /* Build configuration list for PBXNativeTarget "UnityBuySDKPluginTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E98FCBE025E45584001DB1A9 /* Debug */,
+				E98FCBE125E45584001DB1A9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E931992825D704BC007C35DC /* Project object */;
+}

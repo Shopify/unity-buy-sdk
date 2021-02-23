@@ -1,0 +1,11 @@
+ #!/usr/bin/env bash
+
+set -ex
+set -eo pipefail
+
+xcodebuild test \
+-project "UnityBuySDKPlugin.xcodeproj" \
+-scheme "UnityBuySDKPlugin" \
+-sdk iphonesimulator \
+-destination "id=$CURRENT_SIMULATOR_UUID" \
+ | xcpretty -c
