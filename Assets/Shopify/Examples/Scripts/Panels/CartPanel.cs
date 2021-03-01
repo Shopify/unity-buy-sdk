@@ -28,6 +28,7 @@ namespace Shopify.Examples.Panels {
 
         public Button BackToProductsButton;
         public Button CheckoutButton;
+        public Button NativeCheckoutButton;
         public Text CheckoutButtonText;
         public Text SubtotalText;
 
@@ -35,6 +36,9 @@ namespace Shopify.Examples.Panels {
 
         public ScrollRect ScrollView;
         public RectTransform Content;
+
+        [HideInInspector]
+        public string iOSMerchantID;
 
         private readonly Dictionary<string, ProductVariant> _idVariantMapping = new Dictionary<string, ProductVariant>();
         private readonly Dictionary<string, Product> _idProductMapping = new Dictionary<string, Product>();
@@ -56,6 +60,25 @@ namespace Shopify.Examples.Panels {
                         OnCheckoutFailure.Invoke(checkoutError.Description);
                     }
                 );
+            });
+
+            NativeCheckoutButton.onClick.AddListener(() => {
+                _cart.CanCheckoutWithNativePay((isNativePayAvailable) => {
+                    if (isNativePayAvailable) {
+                        _cart.CheckoutWithNativePay(
+                            iOSMerchantID,
+                            success: () => {
+                            Debug.Log("User finished purchase/checkout!");
+                            },
+                            cancelled: () => {
+                                Debug.Log("User cancelled out of the native checkout.");
+                            },
+                            failure: (e) => {
+                                Debug.Log("Something bad happened - Error: " + e);
+                            }
+                        );
+                    }
+                });
             });
 
             gameObject.SetActive(false);
