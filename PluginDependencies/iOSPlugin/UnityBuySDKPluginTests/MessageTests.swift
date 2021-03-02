@@ -31,30 +31,22 @@ class MessageTests: XCTestCase {
     
     let timeout = 10.0
     
-    override func setUp() {
-        super.setUp()
-        if Tester.hasLoaded == false {
-            let didLoad = self.expectation(description: "Tester failed to load")
-            Tester.completion = {
-                didLoad.fulfill()
-            }
-            self.wait(for: [didLoad], timeout: timeout)
-        }
-    }
-    
     func testSendMessage() {
         let unityObject = TesterName
         let content     = "Test String{/!#^3;'][>}"
         let method      = TesterMethod.repeatMessage.rawValue
         let message     = UnityMessage(content: content, object: unityObject, method: method)
+        
+        MockUnityMessageResponseFor(method, content);
+        
         let expectation = self.expectation(description: "MessageCenter.send(TesterMethod.repeatMessage) failed to complete")
         
         MessageCenter.send(message) { response in
             XCTAssertEqual(message.content, response)
+            XCTAssertEqual(nil, MessageCenter.message(forIdentifier: message.identifier))
             expectation.fulfill()
         }
         
-        XCTAssertEqual(message, MessageCenter.message(forIdentifier: message.identifier))
         self.wait(for: [expectation], timeout: timeout)
     }
 }

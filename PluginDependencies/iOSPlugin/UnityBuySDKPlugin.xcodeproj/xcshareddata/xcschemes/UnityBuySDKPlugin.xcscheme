@@ -47,12 +47,6 @@
                <Test
                   Identifier = "ApplePayFlowTests">
                </Test>
-               <Test
-                  Identifier = "MessageTests">
-               </Test>
-               <Test
-                  Identifier = "PaymentNetworkStringTests">
-               </Test>
             </SkippedTests>
          </TestableReference>
       </Testables>

@@ -33,21 +33,12 @@ import XCTest
 class PaymentNetworkStringTests: XCTestCase {
     
     let timeout = 10.0
-    
-    override func setUp() {
-        super.setUp()
-        if Tester.hasLoaded == false {
-            let didLoad = expectation(description: "Tester failed to load")
-            Tester.completion = {
-                didLoad.fulfill()
-            }
-            self.wait(for: [didLoad], timeout: timeout)
-        }
-    }
-    
+
     func testAmexDeserialization() {
         let method = TesterMethod.getAmexPaymentNetworkString
         let expectedNetwork = PKPaymentNetwork.amex
+        
+        MockUnityMessageResponseFor(method.rawValue, "AmEx");
         
         let messageExpectation = expectation(description: "\(method.rawValue) failed to complete")
         
@@ -63,6 +54,8 @@ class PaymentNetworkStringTests: XCTestCase {
         let method = TesterMethod.getDiscoverPaymentNetworkString
         let expectedNetwork = PKPaymentNetwork.discover
         
+        MockUnityMessageResponseFor(method.rawValue, "Discover");
+        
         let messageExpectation = expectation(description: "\(method.rawValue) failed to complete")
         
         callMethod(method) { response in
@@ -77,6 +70,8 @@ class PaymentNetworkStringTests: XCTestCase {
         let method = TesterMethod.getMasterCardPaymentNetworkString
         let expectedNetwork = PKPaymentNetwork.masterCard
         
+        MockUnityMessageResponseFor(method.rawValue, "MasterCard");
+        
         let messageExpectation = expectation(description: "\(method.rawValue) failed to complete")
         
         callMethod(method) { response in
@@ -90,6 +85,8 @@ class PaymentNetworkStringTests: XCTestCase {
     func testVisaDeserialization() {
         let method = TesterMethod.getVisaPaymentNetworkString
         let expectedNetwork = PKPaymentNetwork.visa
+        
+        MockUnityMessageResponseFor(method.rawValue, "Visa");
         
         let messageExpectation = expectation(description: "\(method.rawValue) failed to complete")
         
@@ -106,6 +103,8 @@ class PaymentNetworkStringTests: XCTestCase {
         let method = TesterMethod.getJCBPaymentNetworkString
         let expectedNetwork = PKPaymentNetwork.JCB
         
+        MockUnityMessageResponseFor(method.rawValue, "JCB");
+        
         let messageExpectation = expectation(description: "\(method.rawValue) failed to complete")
         
         callMethod(method) { response in
@@ -119,6 +118,8 @@ class PaymentNetworkStringTests: XCTestCase {
     @available(iOS 10.1, *)
     func testAllCardBrandDeserialization() {
         let method = TesterMethod.getAllCardBrandPaymentNetworksString
+        
+        MockUnityMessageResponseFor(method.rawValue, "[\"AmEx\", \"Discover\", \"JCB\", \"MasterCard\", \"Visa\"]");
         
         let messageExpectation = expectation(description: "\(method.rawValue) failed to complete")
         

@@ -145,6 +145,8 @@
 		E98FCBC125E44D07001DB1A9 /* PassKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PassKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/iOSSupport/System/Library/Frameworks/PassKit.framework; sourceTree = DEVELOPER_DIR; };
 		E98FCBC325E44D0C001DB1A9 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/iOSSupport/System/Library/Frameworks/WebKit.framework; sourceTree = DEVELOPER_DIR; };
 		E98FCBD725E45584001DB1A9 /* UnityBuySDKPluginTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnityBuySDKPluginTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9AD3C9B25EEBD2800B6DFB0 /* MockUnityExterns.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MockUnityExterns.h; sourceTree = "<group>"; };
+		E9AD3C9E25EEBD8700B6DFB0 /* UnityBuySDKPluginTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UnityBuySDKPluginTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		E9C5DE4525E4570100AFB055 /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -204,6 +206,7 @@
 				E93199B025D70559007C35DC /* PaymentSessionTests.swift */,
 				E93199B425D70559007C35DC /* SerializableTests.swift */,
 				E93199B125D70559007C35DC /* StringTests.swift */,
+				E9AD3C9E25EEBD8700B6DFB0 /* UnityBuySDKPluginTests-Bridging-Header.h */,
 			);
 			path = UnityBuySDKPluginTests;
 			sourceTree = "<group>";
@@ -270,6 +273,7 @@
 				E93199AA25D70559007C35DC /* MockPaymentMethod.swift */,
 				E93199AD25D70559007C35DC /* MockPaymentSessionDelegate.swift */,
 				E93199B325D70559007C35DC /* MockPaymentToken.swift */,
+				E9AD3C9B25EEBD2800B6DFB0 /* MockUnityExterns.h */,
 				E98FCAAF25E04184001DB1A9 /* MockUnityExterns.mm */,
 			);
 			path = Mocks;
@@ -602,6 +606,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.shopify.UnityBuySDKPluginTests.UnityBuySDKPluginTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/UnityBuySDKPluginTests/UnityBuySDKPluginTests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -620,6 +625,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.shopify.UnityBuySDKPluginTests.UnityBuySDKPluginTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/UnityBuySDKPluginTests/UnityBuySDKPluginTests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
