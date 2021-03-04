@@ -31,6 +31,7 @@ namespace Shopify.Unity.Editor.BuildPipeline {
             project.AddBuildProperty(project.GetUnityFrameworkTargetGuid(), ExtendedPBXProject.LibrarySearchPathsKey, "$(inherited)");
             project.AddBuildProperty(project.GetUnityFrameworkTargetGuid(), ExtendedPBXProject.LibrarySearchPathsKey, "$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)");
             project.AddBuildProperty(project.GetUnityFrameworkTargetGuid(), ExtendedPBXProject.LibrarySearchPathsKey, "$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)");
+            project.AddBuildProperty(project.GetUnityFrameworkTargetGuid(), ExtendedPBXProject.OtherLinkerFlagsKey, "-all_load");
 
             bool isBelowMinimumTarget = false;
 

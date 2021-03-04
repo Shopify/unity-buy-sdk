@@ -19,6 +19,7 @@ namespace Shopify.Unity.Editor.BuildPipeline {
         public static string LibrarySearchPathsKey = "LIBRARY_SEARCH_PATHS";
         public static string EnableBitcodeKey = "ENABLE_BITCODE";
         public static string ClangAllowNonModularIncludesInFrameworkModules = "CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES";
+        public static string OtherLinkerFlagsKey = "OTHER_LDFLAGS";
 
         public readonly string BuildPath;
         public readonly string TestTargetGuid;
