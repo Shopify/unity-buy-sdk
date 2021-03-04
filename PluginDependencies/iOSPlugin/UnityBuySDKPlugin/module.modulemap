@@ -1,0 +1,6 @@
+framework module UnityBuySDKPlugin {
+    umbrella header "UnityBuySDKPlugin.h"
+    
+    export *
+    module * { export * }
+}

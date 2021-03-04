@@ -63,7 +63,7 @@ sysinfo.txt
 *.apk
 *.unitypackage
 !shopify-buy.unitypackage
-!play-services-resolver-1.2.92.0.unitypackage
+!external-dependency-manager-1.2.164.unitypackage
 
 ####### ruby
 *.gem

@@ -28,16 +28,21 @@
 
 extern bool _didResignActive;
 
+
+extern "C" void UnityBuyAppControllerSetShouldResign(bool value)
+{
+    UnityBuyAppController *rootAppController = [UIApplication sharedApplication].delegate;
+    rootAppController.shouldResignActive = value;
+}
+
 IMPL_APP_CONTROLLER_SUBCLASS(UnityBuyAppController)
 
 @implementation UnityBuyAppController
 
 - (id)init {
-    
     if (self = [super init]) {
         _shouldResignActive = true;
     }
-    
     return self;
 }
 

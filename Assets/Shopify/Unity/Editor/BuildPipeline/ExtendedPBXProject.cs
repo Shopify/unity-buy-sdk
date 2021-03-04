@@ -16,20 +16,23 @@ namespace Shopify.Unity.Editor.BuildPipeline {
         public static string EnableTestabilityKey = "ENABLE_TESTABILITY";
         public static string SwiftBridgingHeaderKey = "SWIFT_OBJC_BRIDGING_HEADER";
         public static string SwiftOptimizationLevelKey = "SWIFT_OPTIMIZATION_LEVEL";
+        public static string LibrarySearchPathsKey = "LIBRARY_SEARCH_PATHS";
+        public static string EnableBitcodeKey = "ENABLE_BITCODE";
+        public static string ClangAllowNonModularIncludesInFrameworkModules = "CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES";
 
         public readonly string BuildPath;
         public readonly string TestTargetGuid;
         public readonly string UnityTargetGuid;
 
         /// <summary>
-        /// Creates a ExtendedPBXProject from .xcodeproj 
+        /// Creates a ExtendedPBXProject from .xcodeproj
         /// </summary>
         /// <param name="buildPath">Unity Project build path</param>
         public ExtendedPBXProject(string buildPath) : base() {
             this.BuildPath = buildPath;
             ReadFromFile(PBXProject.GetPBXProjectPath(buildPath));
             TestTargetGuid = TargetGuidByName(PBXProject.GetUnityTestTargetName());
-            UnityTargetGuid = TargetGuidByName(PBXProject.GetUnityTargetName());
+            UnityTargetGuid = GetUnityFrameworkTargetGuid();
         }
 
         /// <summary>

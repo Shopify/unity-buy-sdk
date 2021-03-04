@@ -26,8 +26,11 @@ namespace Shopify.Unity.Editor.BuildPipeline {
         // Sets the required project settings for the Xcode project to work with the SDK.
         public static void SetBuildProperties(ExtendedPBXProject project) {
             project.SetBuildProperty(project.GetAllTargetGuids(), ExtendedPBXProject.SwiftVersionKey, "4.0");
-            project.SetBuildProperty(project.UnityTargetGuid, ExtendedPBXProject.SwiftBridgingHeaderKey, "Libraries/Shopify/Plugins/iOS/Shopify/Unity-iPhone-Bridging-Header.h");
             project.SetBuildProperty(project.UnityTargetGuid, ExtendedPBXProject.RunpathSearchKey, "@executable_path/Frameworks");
+
+            project.AddBuildProperty(project.GetUnityFrameworkTargetGuid(), ExtendedPBXProject.LibrarySearchPathsKey, "$(inherited)");
+            project.AddBuildProperty(project.GetUnityFrameworkTargetGuid(), ExtendedPBXProject.LibrarySearchPathsKey, "$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)");
+            project.AddBuildProperty(project.GetUnityFrameworkTargetGuid(), ExtendedPBXProject.LibrarySearchPathsKey, "$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)");
 
             bool isBelowMinimumTarget = false;
 
@@ -44,7 +47,7 @@ namespace Shopify.Unity.Editor.BuildPipeline {
 #endif
 
             if (isBelowMinimumTarget) {
-                project.SetBuildProperty(project.GetAllTargetGuids(), ExtendedPBXProject.DeploymentTarget, "9.0");
+                project.SetBuildProperty(project.GetAllTargetGuids(), ExtendedPBXProject.DeploymentTarget, "10.0");
             }
         }
 
@@ -61,7 +64,7 @@ namespace Shopify.Unity.Editor.BuildPipeline {
                 string[] lines = File.ReadAllLines(swiftInterfaceHeaderPath, System.Text.Encoding.UTF8);
 
                 if (lines.Length != 0) {
-                    lines[0] = "#import \"" + productName + "-Swift.h\"";
+                    lines[0] = "#import \"UnityFramework/UnityFramework-Swift.h\"";
                 }
 
                 File.WriteAllLines(swiftInterfaceHeaderPath, lines);

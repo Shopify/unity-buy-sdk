@@ -57,10 +57,18 @@ namespace Shopify.Unity.SDK {
                     var checkout = (Checkout) response.node();
                     if (checkout.completedAt() != null) {
                         OnSuccess();
+#if UNITY_EDITOR
+                        DestroyImmediate(this);
+#else
                         Destroy(this);
+#endif
                     } else {
                         OnCancelled();
+#if UNITY_EDITOR
+                        DestroyImmediate(this);
+#else
                         Destroy(this);
+#endif
                     }
                 }
             });
