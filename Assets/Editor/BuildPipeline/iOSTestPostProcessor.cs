@@ -29,6 +29,7 @@ namespace Shopify.Unity.Editor.BuildPipeline {
             project.SetBuildProperty(project.TestTargetGuid, ExtendedPBXProject.ProjectModuleNameKey, "$(PRODUCT_NAME:c99extidentifier)Tests");
             project.SetBuildPropertyForConfig(project.GetDebugConfig(project.UnityTargetGuid), ExtendedPBXProject.EnableTestabilityKey, "YES");
             project.SetBuildPropertyForConfig(project.GetDebugConfig(project.UnityTargetGuid), ExtendedPBXProject.SwiftOptimizationLevelKey, "-Onone");
+            project.SetBuildPropertyForConfig(project.GetDebugConfig(project.UnityTargetGuid), ExtendedPBXProject.ClangAllowNonModularIncludesInFrameworkModules, "YES");
         }
 
         /// Sets the correct target for Shopify Tests

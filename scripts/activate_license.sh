@@ -25,7 +25,8 @@ do
         -serial "$UNITY_SERIAL" \
         -username "$UNITY_USERNAME" \
         -password "$UNITY_PASSWORD" \
-        -logFile "$UNITY_LICENSE_LOG_PATH"
+        -logFile "$UNITY_LICENSE_LOG_PATH" \
+        -projectPath "/Users/travis/build/Shopify/unity-buy-sdk/"
 
     ACTIVATE_SUCCESS=$?
     LICENSE_EXIST=$(ls -A "$UNITY_LICENSE_PATH")

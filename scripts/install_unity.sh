@@ -5,9 +5,16 @@
 # set UNITY_DOWNLOAD_DIR if it hasn't been set. It may have been set from 
 UNITY_DOWNLOAD_DIR="${UNITY_DOWNLOAD_DIR:-`pwd`/unity}"
 UNITY_PKG_LOCATION=${UNITY_PKG_LOCATION:-"$UNITY_DOWNLOAD_DIR"/Unity.pkg}
-UNITY_PKG_URL=${UNITY_PKG_URL:-https://download.unity3d.com/download_unity/5d30cf096e79/MacEditorInstaller/Unity-2017.1.1f1.pkg}
+
+# To update this url go to https://unity3d.com/get-unity/download/archive release notes for the specific version
+# and get the component link for unity editor
+UNITY_PKG_URL=${UNITY_PKG_URL:-https://download.unity3d.com/download_unity/3310a4d4f880/MacEditorInstaller/Unity-2019.4.18f1.pkg}
+
 IOS_PKG_LOCATION=${IOS_PKG_LOCATION:-"$UNITY_DOWNLOAD_DIR"/Unity-iOS.pkg}
-IOS_PKG_URL=${IOS_PKG_URL:-http://netstorage.unity3d.com/unity/5d30cf096e79/MacEditorTargetInstaller/UnitySetup-iOS-Support-for-Editor.pkg}
+
+# To update this url go to https://unity3d.com/get-unity/download/archive release notes for the specific version
+# and get the component link for iOS target support
+IOS_PKG_URL=${IOS_PKG_URL:-http://netstorage.unity3d.com/unity/3310a4d4f880/MacEditorTargetInstaller/UnitySetup-iOS-Support-for-Editor.pkg}
 
 if [[ ! -e $UNITY_PKG_LOCATION ]] ; then
     out "Downloading Unity to $UNITY_DOWNLOAD_DIR"

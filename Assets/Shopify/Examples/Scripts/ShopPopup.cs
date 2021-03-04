@@ -32,6 +32,7 @@ public class ShopPopup : MonoBehaviour {
     public string AccessToken = "8f40b2ede3e02be97a81ac29cfabc6e0";
     public string ShopDomain = "unity-buy-sdk.myshopify.com";
     public string Locale;
+    public string iOSMerchantID = "";
 
     public void ShowPopup() {
         AnimationCanvasAnimator.SetBool("Visible", true);
@@ -70,6 +71,7 @@ public class ShopPopup : MonoBehaviour {
         // Handles click of the add to cart button, which transitions to the cart view
         ProductPanel.OnAddProductToCart.AddListener(CartPanel.AddToCart);
 
+        CartPanel.iOSMerchantID = iOSMerchantID;
         // Handle transition back to products list from cart view
         CartPanel.OnReturnToProducts.AddListener(() => ShowPanel(ProductsPanel.gameObject));
         // Handles a change in cart quanity, in order to update the cart quantity indicators
