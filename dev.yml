@@ -3,6 +3,8 @@ name: unity-buy-sdk
 up:
   - ruby: 2.6.0
   - bundler
+  - homebrew:
+    - doxygen
 
 commands:
   generate:
@@ -10,10 +12,8 @@ commands:
       argument: type
     desc:   'generate classes from erb class templates'
     run:    scripts/generate.sh
-  package:
+  publish:
     syntax:
       argument: type
-    desc:   'Publish a new unitypackage for the sdk'
-    run:    scripts/publish.sh
-  test:
-    run: scripts/test_unity.sh
+    desc:   'Publish a new .unitypackage for the sdk'
+    run:    scripts/publish_thin.sh
