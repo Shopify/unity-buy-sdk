@@ -570,6 +570,7 @@
 		E98FCB8B25E44C47001DB1A9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BITCODE_GENERATION_MODE = bitcode;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = A7XGC83MZE;
 				OTHER_LDFLAGS = "-ObjC";
@@ -583,6 +584,7 @@
 		E98FCB8C25E44C47001DB1A9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BITCODE_GENERATION_MODE = bitcode;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = A7XGC83MZE;
 				OTHER_LDFLAGS = "-ObjC";
