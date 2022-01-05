@@ -6,7 +6,7 @@ on:
 
 jobs:
   build_ios:
-    runs-on: macOS-latest
+    runs-on: macOS-10.15
     env:
       OUTPUT_PATH: ./Build
 
@@ -19,9 +19,6 @@ jobs:
 
     - name: Install xcpretty
       run: gem install xcpretty
-
-    - name: Use Xcode 12
-      run: sudo xcode-select -s /Applications/Xcode_12.app
 
     - name: Build iOS static libraries
       run: ./PluginDependencies/iOSPlugin/Scripts/build
@@ -66,29 +63,6 @@ jobs:
 
     - name: Copy Examples to Shopify/examples.txt
       run: cp ./EXAMPLES.md ./Assets/Shopify/examples.txt
-
-    - name: Publish .unitypackage
-      uses: MirrorNG/unity-runner@3.1.0
-      with:
-        args: |
-          -username ${{ secrets.UNITY_EMAIL }}
-          -password ${{ secrets.UNITY_PASSWORD }}
-          -serial ${{ secrets.UNITY_SERIAL }}
-          -gvh_disable
-          -batchmode
-          -nographics
-          -silent-crashes
-          -importPackage ./ThirdParty/external-dependency-manager-1.2.164.unitypackage
-          -projectPath ./
-          -executeMethod Publishing.PublishFromCommandLine
-          -quit $UNITY_PACKAGE
-
-    - name: Upload .unitypackage
-      uses: actions/upload-artifact@v2
-      with:
-        name: unity-package
-        path: ./*.unitypackage
-
 
 
 

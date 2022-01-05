@@ -6,7 +6,7 @@ on:
 
 jobs:
   test_ios:
-    runs-on: macOS-latest
+    runs-on: macOS-10.15
 
     steps:
     - uses: actions/checkout@master
@@ -18,16 +18,13 @@ jobs:
     - name: Install xcpretty
       run: gem install xcpretty
 
-    - name: Use Xcode 12
-      run: sudo xcode-select -s /Applications/Xcode_12.app
-
     - name: List available simulators
       run: xcrun simctl list devices
 
     - name: Setup simulator
       id: version
       run: |
-        CURRENT_SIMULATOR_UUID=$(xcrun simctl create TestDevice com.apple.CoreSimulator.SimDeviceType.iPhone-11 com.apple.CoreSimulator.SimRuntime.iOS-14-0)
+        CURRENT_SIMULATOR_UUID=$(xcrun simctl create TestDevice com.apple.CoreSimulator.SimDeviceType.iPhone-11 com.apple.CoreSimulator.SimRuntime.iOS-14-4)
         echo "CURRENT_SIMULATOR_UUID=$CURRENT_SIMULATOR_UUID" >> $GITHUB_ENV
 
     - name: Test iOS Plugin
