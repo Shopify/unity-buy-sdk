@@ -1,31 +1,37 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
-namespace Shopify.Examples.Helpers {
-    public static class ImageHelper {
+namespace Shopify.Examples.Helpers 
+{
+    public static class ImageHelper 
+    {
         private static readonly Dictionary<string, Texture2D> TextureCache = new Dictionary<string, Texture2D>();
 
         // Takes an image url, handles fetching the image and then assigning the retrieved texture to the image.
         // A cache is used to prevent re-requesting images.
-        public static IEnumerator AssignImage(string url, Image image, Image brokenImage = null) {
+        public static IEnumerator AssignImage(string url, Image image, Image brokenImage = null) 
+        {
             // If the url isn't in the cache, then we need to make the web request to fetch the image
-            if (!TextureCache.ContainsKey(url)) {
-                var www = new WWW(url);
+            if (!TextureCache.ContainsKey(url)) 
+            {
+                var www = UnityWebRequestTexture.GetTexture(url);
 
-                yield return www;
+                yield return www.SendWebRequest();
 
-                if (!string.IsNullOrEmpty(www.error)) {
-                    Debug.Log(www.error);
-
+                if (www.result != UnityWebRequest.Result.Success)
+                {
                     if (brokenImage != null) brokenImage.gameObject.SetActive(true);
 
                     yield break;
                 }
-
-                // Once the web request is done, assign the texture into the cache 
-                TextureCache[url] = www.texture;
+                else
+                {
+                    // Once the web request is done, assign the texture into the cache 
+                    TextureCache[url] = ((DownloadHandlerTexture)www.downloadHandler).texture;
+                }
             }
 
             // As we have already ensured that the url is in the cache, we can now safely pull the texture from the cache
