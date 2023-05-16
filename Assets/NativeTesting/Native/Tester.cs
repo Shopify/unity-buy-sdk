@@ -6,7 +6,8 @@
     using Shopify.Unity.SDK.iOS;
 
     public class Tester : MonoBehaviour {
-
+        
+#if UNITY_IOS
         [DllImport ("__Internal")]
         protected static extern void _TesterObjectFinishedLoading();
 
@@ -24,5 +25,6 @@
                 _TesterObjectFinishedLoading();
             }
         }
+#endif
     }
 }

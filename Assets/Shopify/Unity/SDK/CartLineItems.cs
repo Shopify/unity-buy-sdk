@@ -252,6 +252,8 @@ namespace Shopify.Unity.SDK {
                     OnChange(LineItemChangeType.Add, lineItem);
                 }
             }
+            
+            _IsSaved = false;
         }
 
         /// <summary>
@@ -379,6 +381,7 @@ namespace Shopify.Unity.SDK {
                     OnChange(LineItemChangeType.Remove, lineItemRemoved);
                 }
 
+                _IsSaved = false;
                 return true;
             }
         }
