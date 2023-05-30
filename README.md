@@ -1,3 +1,8 @@
+### **:warning: Important Announcement**
+**On July 1, 2023 the Unity Buy SDK will be no longer supported and this repository will go into read-only mode. For more information, please see our [changelog announcement on Shopify.dev](https://shopify.dev/changelog/deprecation-of-unity-buy-sdk).**
+
+---
+
 ![image](https://user-images.githubusercontent.com/12721181/29127322-c0acb984-7cee-11e7-97bd-e55f72af29aa.png)
 
 # Shopify SDK for Unity
